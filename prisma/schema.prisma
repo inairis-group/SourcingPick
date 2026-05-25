@@ -1,0 +1,892 @@
+// SourcingPick database schema
+//
+// Models: 22 (17 from spec §3.1 + TenderInvitation, AgentTask, EmailOtp, WebhookEvent + Auth.js Account/Session/VerificationToken/ThreadParticipant)
+// Enums:  18
+//
+// See docs/schema-design.md for rationale on every non-obvious decision.
+// Prisma 7 note: connection URL lives in prisma.config.ts, not here.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =============================================================
+// ENUMS
+// =============================================================
+
+enum Locale {
+  fr
+  en
+  zh
+  ar
+}
+
+enum Role {
+  CLIENT
+  FACTORY
+  AGENT
+  ADMIN
+}
+
+// Union of all sub-roles across all roles. Role/sub-role validity matrix is
+// enforced in src/lib/permissions/, not in the DB.
+enum SubRole {
+  OWNER
+  MEMBER
+  ACCOUNTANT
+  AGENT
+  SENIOR
+  SUPER
+}
+
+enum OrgType {
+  CLIENT
+  FACTORY
+  // Internal SourcingPick org. Admin and Agent users belong to a PLATFORM org
+  // so the User → Organization invariant holds without nullable FKs.
+  PLATFORM
+}
+
+enum KycStatus {
+  PENDING
+  VERIFIED
+  FLAGGED
+  REJECTED
+}
+
+// Internal identifiers in English — UI labels come from i18n dictionaries.
+enum Category {
+  TEXTILE
+  HOME
+  STATIONERY
+  COSMETICS
+  FOOD
+  ELECTRONICS
+  METAL
+  WOOD
+  PLASTIC
+  OTHER
+}
+
+// Coarse geographic regions for the sourcing filter. Kept Maghreb as
+// distinct from sub-Saharan Africa to reflect real supply-chain patterns.
+enum SourcingRegion {
+  EUROPE
+  MAGHREB
+  AFRICA
+  ASIA
+  AMERICAS
+  OCEANIA
+  MIDDLE_EAST
+  ANYWHERE
+}
+
+enum Incoterm {
+  EXW
+  FOB
+  DAP
+  DDP
+  CIF
+}
+
+enum SourcingStatus {
+  DRAFT
+  REQUEST_RECEIVED
+  ASSIGNED
+  QUOTE_SENT
+  QUOTE_ACCEPTED
+  QUOTE_REJECTED
+  PAYMENT_PENDING
+  PREPARATION
+  SHIPPED
+  IN_TRANSIT
+  COMPLETED
+  CANCELLED
+}
+
+// Discriminator for SourcingRequest. SOURCING_FLOW is the agent-led
+// procurement journey (client → agent → tender → quote → order).
+// MARKETPLACE is the synthetic record we materialise for marketplace
+// purchases so the Order/Invoice/Escrow pipeline can stay role-agnostic
+// without ever pulling an agent into the loop. Agent assignment is
+// explicitly blocked for MARKETPLACE rows.
+enum SourcingRequestOrigin {
+  SOURCING_FLOW
+  MARKETPLACE
+}
+
+enum TenderInvitationStatus {
+  INVITED
+  VIEWED
+  RESPONDED
+  DECLINED
+  EXPIRED
+}
+
+enum QuoteStatus {
+  DRAFT
+  SENT_TO_AGENT
+  SENT_TO_CLIENT
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum OrderStatus {
+  PAYMENT_PENDING
+  PREPARATION
+  QC
+  SHIPPED
+  IN_TRANSIT
+  COMPLETED
+  CANCELLED
+}
+
+enum MarketplaceProductStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  REJECTED
+  OUT_OF_STOCK
+  ARCHIVED
+}
+
+enum InvoiceType {
+  DEPOSIT
+  BALANCE
+  // Sourcing-flow research fee — billed per qualified request, credited back if order placed within 30 days.
+  RESEARCH_FEE
+  // Legacy from spec §1.1 (sourcing-side commission). Kept until commission wiring lands in Phase 3.
+  SOURCING_FEE
+  CERT_FEE
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  PAID
+  OVERDUE
+  VOID
+}
+
+enum EscrowStatus {
+  INITIATED
+  FUNDED
+  HELD
+  RELEASED
+  REFUNDED
+  DISPUTED
+}
+
+enum EscrowReleaseTrigger {
+  DELIVERY_CONFIRMED
+  ADMIN_OVERRIDE
+  AUTO_TIMEOUT
+}
+
+enum PayoutMethod {
+  SEPA
+  SWIFT
+  STRIPE_CONNECT
+}
+
+enum PayoutStatus {
+  PENDING
+  SCHEDULED
+  SENT
+  RECEIVED
+  FAILED
+}
+
+enum CertificationBody {
+  BUREAU_VERITAS
+  AFNOR
+  SGS
+  LNE
+}
+
+enum CertificationStatus {
+  DOSSIER
+  AUDIT_PROGRAMME
+  EN_COURS
+  CERTIFIE
+  REFUSE
+}
+
+enum ThreadContextType {
+  REQUEST
+  TENDER
+  QUOTE
+  ORDER
+  CERT
+  KYC
+  DISPUTE
+}
+
+enum NotificationType {
+  QUOTE_RECEIVED
+  QUOTE_ACCEPTED
+  PAYMENT_RECEIVED
+  SHIPMENT
+  INVOICE_DUE
+  CERT_UPDATE
+  KYC_DECISION
+  MESSAGE_MENTION
+  SYSTEM
+}
+
+enum AuditLevel {
+  INFO
+  WARN
+  ALERT
+}
+
+enum AgentTaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum AgentTaskStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+  CANCELLED
+}
+
+enum WebhookSource {
+  STRIPE
+  CARRIER
+  OTHER
+}
+
+enum WebhookStatus {
+  RECEIVED
+  PROCESSED
+  FAILED
+  RETRYING
+}
+
+// KYC documents submitted by factories at signup. Reviewed by Admin in
+// the KYC queue (admin/kyc).
+enum KycDocumentKind {
+  REGISTRY // Registre du commerce / business registration certificate (required per spec §10.1)
+  TAX // Certificat fiscal / tax compliance certificate (required)
+  FACILITY_PHOTO // Photo of installations (required, min. 3)
+  REFERENCES // List of reference clients (recommended)
+  INSURANCE // Quality assurance / liability insurance (recommended for risk categories)
+  OTHER // Catch-all for misc supporting docs
+}
+
+// =============================================================
+// ACCOUNT AGGREGATE — User, Auth.js tables, Organization, FactoryProfile
+// =============================================================
+
+model User {
+  id String @id @default(cuid(2))
+
+  // Auth.js v5 required shape
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+
+  // Domain
+  firstName        String
+  lastName         String
+  phone            String?
+  locale           Locale       @default(fr)
+  role             Role
+  subRole          SubRole
+  organizationId   String
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  passwordHash     String? // null when only OAuth
+  hasOnboarded     Boolean      @default(false)
+  twoFactorEnabled Boolean      @default(false)
+  lastSeenAt       DateTime?
+  deletedAt        DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  // Auth.js relations
+  accounts  Account[]
+  sessions  Session[]
+  emailOtps EmailOtp[]
+
+  // Domain relations
+  sourcingRequestsCreated SourcingRequest[]   @relation("RequestCreatedBy")
+  agentForRequests        SourcingRequest[]   @relation("RequestAgent")
+  quotesAsAgent           Quote[]             @relation("QuoteAgent")
+  ordersAsAgent           Order[]             @relation("OrderAgent")
+  authoredMessages        Message[]           @relation("MessageAuthor")
+  threadParticipations    ThreadParticipant[]
+  notifications           Notification[]
+  auditLogs               AuditLog[]
+  assignedTasks           AgentTask[]         @relation("TaskAgent")
+
+  @@index([organizationId])
+  @@index([role, deletedAt])
+}
+
+// Auth.js — OAuth provider account links
+model Account {
+  id                String  @id @default(cuid(2))
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+// Auth.js — DB session strategy
+model Session {
+  id           String   @id @default(cuid(2))
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expires])
+}
+
+// Auth.js — used for password reset tokens
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Our 2FA email-OTP records — not Auth.js
+model EmailOtp {
+  id         String    @id @default(cuid(2))
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash   String // bcrypt of the 6-digit code
+  attempts   Int       @default(0)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+model Organization {
+  id            String    @id @default(cuid(2))
+  type          OrgType
+  legalName     String
+  displayName   String
+  country       String
+  city          String
+  address       String
+  vatNumber     String?
+  siren         String? // FR only
+  kycStatus     KycStatus @default(PENDING)
+  kycVerifiedAt DateTime?
+  suspended     Boolean   @default(false)
+  // Stripe identifiers — populated lazily on first checkout / first onboarding.
+  // stripeCustomerId is used for clients (deposits + balance payments).
+  // stripeConnectAccountId is used for factories (Connect Express payouts).
+  stripeCustomerId       String?
+  stripeConnectAccountId String?
+  deletedAt              DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  users          User[]
+  factoryProfile FactoryProfile?
+
+  clientSourcingRequests SourcingRequest[]  @relation("RequestClientOrg")
+  factoryQuotes          Quote[]            @relation("QuoteFactoryOrg")
+  factoryTenderInvites   TenderInvitation[] @relation("TenderFactoryOrg")
+
+  clientOrders  Order[] @relation("OrderClientOrg")
+  factoryOrders Order[] @relation("OrderFactoryOrg")
+
+  marketplaceProducts MarketplaceProduct[]
+
+  invoices Invoice[]
+  payouts  Payout[]
+
+  factoryCertifications     Certification[] @relation("CertFactoryOrg")
+  sponsorshipCertifications Certification[] @relation("CertSponsorOrg")
+
+  kycDocuments KycDocument[]
+
+  @@index([type, kycStatus, deletedAt])
+  @@index([type, country])
+}
+
+model KycDocument {
+  id             String          @id @default(cuid(2))
+  organizationId String
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  kind           KycDocumentKind
+  fileName       String
+  mimeType       String
+  sizeBytes      Int
+  storageUrl     String // for v1 local dev: relative path under ./uploads/; later: R2/S3 URL
+  uploadedAt     DateTime        @default(now())
+
+  @@index([organizationId, kind])
+}
+
+model FactoryProfile {
+  organizationId String       @id
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  category       Category
+  foundedYear    Int?
+  employees      Int?
+  capabilities   String[]
+  languages      String[]
+  rating         Float        @default(0)
+  totalOrders    Int          @default(0)
+  iban           String? // encrypted at app layer
+  bic            String?
+  // High-level cert names for filtering; structured certs live in Certification
+  certifications String[]
+
+  @@index([category, rating])
+}
+
+// =============================================================
+// SOURCING AGGREGATE
+// =============================================================
+
+model SourcingRequest {
+  id                   String         @id @default(cuid(2))
+  reference            String         @unique // REQ-XXXXXX
+  clientOrgId          String
+  clientOrg            Organization   @relation("RequestClientOrg", fields: [clientOrgId], references: [id], onDelete: Restrict)
+  createdByUserId      String
+  createdBy            User           @relation("RequestCreatedBy", fields: [createdByUserId], references: [id], onDelete: Restrict)
+  agentId              String?
+  agent                User?          @relation("RequestAgent", fields: [agentId], references: [id], onDelete: SetNull)
+  title                String
+  category             Category
+  quantity             Int
+  budgetCents          Int?
+  targetUnitPriceCents Int?
+  deadline             DateTime
+  deliveryAddress      String
+  incoterm             Incoterm
+  sourcingRegion       SourcingRegion
+  requiredCerts        String[]
+  // ISO 3166-1 alpha-2 country code. Defaults to CN — China is the
+  // current sole sourcing country, but the column is here so the admin
+  // allowlist can expand the wizard's options without another migration.
+  sourcingCountry      String                @default("CN")
+  origin               SourcingRequestOrigin @default(SOURCING_FLOW)
+  status               SourcingStatus        @default(DRAFT)
+  assignedAt           DateTime?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  products          SourcingProduct[]
+  tenderInvitations TenderInvitation[]
+  quotes            Quote[]
+  orders            Order[]
+  agentTasks        AgentTask[]
+
+  @@index([status, agentId])
+  @@index([clientOrgId, status])
+  @@index([status, createdAt])
+}
+
+model SourcingProduct {
+  id               String          @id @default(cuid(2))
+  requestId        String
+  request          SourcingRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  name             String
+  description      String?
+  quantity         Int
+  targetPriceCents Int?
+  images           String[]
+
+  @@index([requestId])
+}
+
+model TenderInvitation {
+  id            String                 @id @default(cuid(2))
+  requestId     String
+  request       SourcingRequest        @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  factoryOrgId  String
+  factoryOrg    Organization           @relation("TenderFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  matchingScore Int // 0-100
+  status        TenderInvitationStatus @default(INVITED)
+  invitedAt     DateTime               @default(now())
+  viewedAt      DateTime?
+  respondedAt   DateTime?
+  expiresAt     DateTime
+
+  @@unique([requestId, factoryOrgId])
+  @@index([factoryOrgId, status])
+  @@index([requestId, status])
+}
+
+model Quote {
+  id                    String          @id @default(cuid(2))
+  requestId             String
+  request               SourcingRequest @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  factoryOrgId          String
+  factoryOrg            Organization    @relation("QuoteFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  agentId               String?
+  agent                 User?           @relation("QuoteAgent", fields: [agentId], references: [id], onDelete: SetNull)
+  unitPriceCentsFactory Int // private to platform
+  marginCents           Int // private to platform
+  unitPriceCentsClient  Int
+  totalCentsClient      Int
+  quantity              Int
+  leadTimeDays          Int
+  moq                   Int
+  incoterm              Incoterm
+  validUntil            DateTime
+  qualificationScore    Int // 0-100
+  status                QuoteStatus     @default(DRAFT)
+  notes                 String?
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  order Order?
+
+  @@index([requestId, status])
+  @@index([factoryOrgId, status])
+  @@index([status, validUntil])
+}
+
+model Order {
+  id              String          @id @default(cuid(2))
+  reference       String          @unique // ORD-XXXXX
+  quoteId         String          @unique
+  quote           Quote           @relation(fields: [quoteId], references: [id], onDelete: Restrict)
+  requestId       String
+  request         SourcingRequest @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  clientOrgId     String
+  clientOrg       Organization    @relation("OrderClientOrg", fields: [clientOrgId], references: [id], onDelete: Restrict)
+  factoryOrgId    String
+  factoryOrg      Organization    @relation("OrderFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  agentId         String?
+  agent           User?           @relation("OrderAgent", fields: [agentId], references: [id], onDelete: SetNull)
+  totalCents      Int
+  depositCents    Int // 30% default
+  balanceCents    Int // 70% default
+  commissionCents Int // platform margin — private
+  status          OrderStatus     @default(PAYMENT_PENDING)
+  estimatedEta    DateTime?
+  shippedAt       DateTime?
+  deliveredAt     DateTime?
+  trackingNumber  String?
+  trackingCarrier String?
+  trackingUrl     String?
+  deletedAt       DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  invoices Invoice[]
+  escrows  EscrowTransaction[]
+
+  @@index([status, factoryOrgId])
+  @@index([status, clientOrgId])
+  @@index([status, createdAt])
+}
+
+// =============================================================
+// CATALOGUE AGGREGATE
+// =============================================================
+
+model MarketplaceProduct {
+  id                String                   @id @default(cuid(2))
+  reference         String                   @unique // MKT-XXX
+  factoryOrgId      String
+  factoryOrg        Organization             @relation(fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  name              String
+  category          Category
+  description       String
+  images            String[]
+  priceCentsClient  Int
+  priceCentsFactory Int // private
+  moq               Int
+  stockAvailable    Int                      @default(0)
+  stockLowThreshold Int?
+  leadTimeDays      Int
+  certifications    String[]
+  status            MarketplaceProductStatus @default(DRAFT)
+  publishedAt       DateTime?
+  viewsCount        Int                      @default(0)
+  soldCount         Int                      @default(0)
+  deletedAt         DateTime?
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+
+  @@index([status, category])
+  @@index([factoryOrgId, status])
+}
+
+// =============================================================
+// FINANCE AGGREGATE
+// =============================================================
+
+model Invoice {
+  id             String        @id @default(cuid(2))
+  reference      String        @unique // INV-YYYY-NNNN
+  orderId        String?
+  order          Order?        @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  type           InvoiceType
+  amountCents    Int // TTC
+  vatRateBps     Int           @default(2000) // 20.00% in basis points (1bp = 0.01%)
+  issuedAt       DateTime
+  dueAt          DateTime
+  paidAt         DateTime?
+  status         InvoiceStatus @default(DRAFT)
+  pdfUrl         String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  escrow EscrowTransaction?
+
+  @@index([organizationId, status])
+  @@index([status, dueAt])
+  @@index([type, issuedAt])
+}
+
+model EscrowTransaction {
+  id             String                @id @default(cuid(2))
+  reference      String                @unique // ESC-YYYY-NNNN
+  orderId        String
+  order          Order                 @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  invoiceId      String                @unique
+  invoice        Invoice               @relation(fields: [invoiceId], references: [id], onDelete: Restrict)
+  amountCents    Int
+  status         EscrowStatus          @default(INITIATED)
+  fundedAt       DateTime?
+  releasedAt     DateTime?
+  releaseTrigger EscrowReleaseTrigger?
+  provider       String // "stripe_connect" | "bank_internal" | etc.
+  providerRef    String?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  payout Payout?
+
+  @@index([status, orderId])
+  @@index([provider, providerRef])
+}
+
+model Payout {
+  id              String            @id @default(cuid(2))
+  reference       String            @unique // PAY-YYYY-NNNN
+  factoryOrgId    String
+  factoryOrg      Organization      @relation(fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  escrowId        String            @unique
+  escrow          EscrowTransaction @relation(fields: [escrowId], references: [id], onDelete: Restrict)
+  amountCents     Int // order total − commission
+  commissionCents Int
+  method          PayoutMethod
+  status          PayoutStatus      @default(PENDING)
+  scheduledAt     DateTime?
+  sentAt          DateTime?
+  providerRef     String?
+  failureReason   String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([factoryOrgId, status])
+  @@index([status, scheduledAt])
+}
+
+// =============================================================
+// ANNEXE — Certification, Threads, Notifications, Audit, Tasks, Webhooks
+// =============================================================
+
+model Certification {
+  id                 String              @id @default(cuid(2))
+  reference          String              @unique // CERT-YYYY-NNN
+  factoryOrgId       String
+  factoryOrg         Organization        @relation("CertFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  sponsorClientOrgId String?
+  sponsorClientOrg   Organization?       @relation("CertSponsorOrg", fields: [sponsorClientOrgId], references: [id], onDelete: SetNull)
+  standard           String // e.g. "ISO 9001:2015"
+  body               CertificationBody
+  status             CertificationStatus @default(DOSSIER)
+  progress           Int                 @default(0) // 0-100
+  preAuditDate       DateTime?
+  auditDate          DateTime?
+  etaDate            DateTime?
+  certificateUrl     String?
+  issuedAt           DateTime?
+  expiresAt          DateTime?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  @@index([factoryOrgId, status])
+  @@index([body, status])
+}
+
+model Thread {
+  id            String            @id @default(cuid(2))
+  contextType   ThreadContextType
+  // Polymorphic — id of the SourcingRequest / Quote / Order / Certification / Organization (KYC) / Order (Dispute)
+  contextId     String
+  title         String?
+  lastMessageAt DateTime          @default(now())
+  createdAt     DateTime          @default(now())
+
+  participants ThreadParticipant[]
+  messages     Message[]
+
+  @@index([contextType, contextId])
+  @@index([lastMessageAt])
+}
+
+// Many-to-many User <-> Thread with per-user unread tracking.
+model ThreadParticipant {
+  threadId    String
+  thread      Thread    @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  unreadCount Int       @default(0)
+  joinedAt    DateTime  @default(now())
+  lastReadAt  DateTime?
+
+  @@id([threadId, userId])
+  @@index([userId, unreadCount])
+}
+
+model Message {
+  id           String    @id @default(cuid(2))
+  threadId     String
+  thread       Thread    @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  authorUserId String? // null for SYSTEM messages
+  author       User?     @relation("MessageAuthor", fields: [authorUserId], references: [id], onDelete: SetNull)
+  body         String // markdown
+  deletedAt    DateTime?
+  createdAt    DateTime  @default(now())
+
+  attachments Attachment[]
+
+  @@index([threadId, createdAt])
+}
+
+model Attachment {
+  id           String   @id @default(cuid(2))
+  messageId    String
+  message      Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  fileName     String
+  mimeType     String
+  sizeBytes    Int
+  storageUrl   String
+  thumbnailUrl String?
+  scanStatus   String   @default("pending") // pending | clean | infected
+  createdAt    DateTime @default(now())
+}
+
+model Notification {
+  id              String           @id @default(cuid(2))
+  recipientUserId String
+  recipient       User             @relation(fields: [recipientUserId], references: [id], onDelete: Cascade)
+  type            NotificationType
+  title           String
+  description     String?
+  contextType     String?
+  contextId       String?
+  read            Boolean          @default(false)
+  readAt          DateTime?
+  deliveredInapp  Boolean          @default(true)
+  deliveredEmail  Boolean          @default(false)
+  deliveredSms    Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+
+  @@index([recipientUserId, read, createdAt])
+  @@index([type, createdAt])
+}
+
+model AuditLog {
+  id          String     @id @default(cuid(2))
+  actorUserId String? // null for SYSTEM
+  actor       User?      @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+  action      String // e.g. "kyc.validated"
+  targetType  String? // e.g. "Organization"
+  targetId    String?
+  payload     Json?
+  ipAddress   String?
+  userAgent   String?
+  level       AuditLevel @default(INFO)
+  createdAt   DateTime   @default(now())
+
+  @@index([actorUserId, createdAt])
+  @@index([targetType, targetId])
+  @@index([level, createdAt])
+  @@index([action, createdAt])
+}
+
+model AgentTask {
+  id          String            @id @default(cuid(2))
+  agentId     String
+  agent       User              @relation("TaskAgent", fields: [agentId], references: [id], onDelete: Cascade)
+  requestId   String?
+  request     SourcingRequest?  @relation(fields: [requestId], references: [id], onDelete: SetNull)
+  title       String
+  description String?
+  priority    AgentTaskPriority @default(MEDIUM)
+  status      AgentTaskStatus   @default(PENDING)
+  dueAt       DateTime?
+  completedAt DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([agentId, status, dueAt])
+}
+
+// Operator-visible webhook log — supports the admin "substance" rule
+// (every async system needs a status surface).
+model WebhookEvent {
+  id          String        @id @default(cuid(2))
+  source      WebhookSource
+  eventType   String
+  signature   String?
+  payload     Json
+  status      WebhookStatus @default(RECEIVED)
+  attempts    Int           @default(0)
+  lastError   String?
+  processedAt DateTime?
+  receivedAt  DateTime      @default(now())
+
+  @@index([source, status, receivedAt])
+  @@index([eventType, receivedAt])
+}
+
+/**
+ * Operator-controlled platform settings. Singleton row (id = "default").
+ *
+ * Lets admins expand the geographic footprint (regions / countries
+ * available in the new-request wizard, factory directory filters, etc.)
+ * without a code change. Read everywhere via getSourcingAllowlist().
+ *
+ * `allowedSourcingCountries` are ISO 3166-1 alpha-2 codes. A country can
+ * be allowed without its parent region (lets ops onboard a single country
+ * like UAE without unlocking the whole MIDDLE_EAST region).
+ */
+model PlatformSettings {
+  id                       String           @id @default("default")
+  allowedSourcingRegions   SourcingRegion[] @default([])
+  allowedSourcingCountries String[]         @default([])
+  updatedAt                DateTime         @updatedAt
+}

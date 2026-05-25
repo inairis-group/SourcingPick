@@ -1,0 +1,1608 @@
+{
+  "brand": {
+    "name": "SourcingPick",
+    "tagline": "International sourcing, industrialised."
+  },
+  "client": {
+    "dashboard": {
+      "eyebrow": "Dashboard",
+      "title": "Overview",
+      "description": "Your requests, quotes and orders at a glance.",
+      "kpiOpenRequests": "Open requests",
+      "kpiActiveOrders": "Active orders",
+      "kpiAwaitingPayment": "Awaiting payment",
+      "kpiTotalSpent": "Spent (completed)",
+      "kpiTotalSpentHint": "{n} closed order(s)",
+      "quotesAwaitingTitle": "Quotes to decide",
+      "quotesAwaitingDesc": "Quotes your agent has forwarded.",
+      "quotesEmpty": "No quotes awaiting decision. Your agent will notify you.",
+      "quoteValidUntil": "Valid until",
+      "awaitingPaymentTitle": "To pay",
+      "awaitingPaymentDesc": "Pending 30% deposits.",
+      "awaitingPaymentEmpty": "No payments pending.",
+      "recentOrdersTitle": "Recent orders",
+      "recentOrdersEmpty": "No orders yet.",
+      "recentRequestsTitle": "Recent requests",
+      "recentRequestsEmpty": "No requests yet.",
+      "seeAll": "See all"
+    },
+    "requests": {
+      "eyebrow": "Sourcing on demand",
+      "title": "My requests",
+      "description": "Track your sourcing requests and start new ones.",
+      "newRequest": "New request",
+      "newTitle": "New sourcing request",
+      "newDescription": "Describe your need in a few steps. An agent will reach out within 24 hours.",
+      "submitRequest": "Submit request",
+      "backToList": "Back to requests",
+      "emptyTitle": "No requests yet",
+      "emptyBody": "Start your first sourcing request — a dedicated agent will guide you from qualification through delivery.",
+      "colReference": "Reference",
+      "colTitle": "Request",
+      "colCategory": "Category",
+      "colQuantity": "Quantity",
+      "colBudget": "Budget",
+      "colStatus": "Status",
+      "deadlineShort": "deadline",
+      "stepProduct": "Product",
+      "stepLogistics": "Logistics",
+      "stepRequirements": "Requirements",
+      "stepReview": "Review",
+      "titleLabel": "Request title",
+      "titleHint": "A short name that summarises your need.",
+      "titlePlaceholder": "Cotton tote 250gsm — summer collection",
+      "categoryLabel": "Category",
+      "categoryPlaceholder": "Choose a category…",
+      "productNameLabel": "Product name",
+      "productNamePlaceholder": "Tote bag, A5 notebook, etc.",
+      "productDescriptionLabel": "Detailed description",
+      "productDescriptionHint": "Materials, dimensions, colours, finishes, specific constraints.",
+      "productDescriptionPlaceholder": "Organic cotton 250 gsm, 38×42 cm, 60 cm handles, 1-colour silkscreen front…",
+      "quantityLabel": "Quantity",
+      "targetPriceLabel": "Target unit price",
+      "budgetLabel": "Total budget",
+      "priceHintEur": "In euros, excluding tax.",
+      "deadlineLabel": "Desired delivery date",
+      "addressLabel": "Delivery address",
+      "addressPlaceholder": "12 rue de la République, 69001 Lyon",
+      "incotermLabel": "Incoterm",
+      "incotermPlaceholder": "Choose an incoterm…",
+      "incotermHint": "Defines who handles transport, insurance and duties.",
+      "regionLabel": "Sourcing region",
+      "regionLockedHint": "SourcingPick currently sources from China. More countries open soon.",
+      "regionLockedCountry": "China",
+      "regionLockedBadge": "Locked",
+      "countryLabel": "Sourcing country",
+      "countryHint": "Narrow your search to a single country within the region.",
+      "countryPlaceholder": "Choose a country…",
+      "errorCountry": "Please choose a sourcing country.",
+      "certsLabel": "Required certifications",
+      "certsHint": "List your mandatory certifications, comma-separated.",
+      "certsPlaceholder": "GOTS, OEKO-TEX, FSC, CE…",
+      "certsExplainer": "The more precise your requirements, the faster your agent can qualify the request.",
+      "reviewDescription": "Check your request before submitting. You'll be able to chat with your agent after via the request messaging.",
+      "sectionProduct": "Product",
+      "sectionLogistics": "Logistics",
+      "sectionAgent": "Tracking",
+      "agentLabel": "Assigned agent",
+      "agentPending": "No agent assigned yet — your request is queued. SLA: 24 business hours.",
+      "tenderInvitationsCount": "{n} tender invitations sent",
+      "quotesCount": "{n} quotes received",
+      "errorTitle": "Please enter a request title.",
+      "errorCategory": "Please choose a category.",
+      "errorProductName": "Please enter the product name.",
+      "errorQuantity": "Quantity must be a positive integer.",
+      "errorDeadline": "Please enter a delivery date.",
+      "errorDeadlineFuture": "Delivery date must be in the future.",
+      "errorAddress": "Please enter the full delivery address.",
+      "errorIncoterm": "Please choose an incoterm.",
+      "errorRegion": "Please choose a sourcing region.",
+      "incoterms": {
+        "EXW": "Ex Works — you handle all transport",
+        "FOB": "Free On Board — factory delivers to port",
+        "DAP": "Delivered At Place — factory delivers to address, no duties",
+        "DDP": "Delivered Duty Paid — factory delivers to address, duties included",
+        "CIF": "Cost, Insurance, Freight — factory delivers to port + insurance"
+      },
+      "regions": {
+        "ANYWHERE": "No preference",
+        "EUROPE": "Europe",
+        "MAGHREB": "Maghreb",
+        "AFRICA": "Africa",
+        "ASIA": "Asia",
+        "AMERICAS": "Americas",
+        "OCEANIA": "Oceania",
+        "MIDDLE_EAST": "Middle East"
+      },
+      "statuses": {
+        "DRAFT": "Draft",
+        "REQUEST_RECEIVED": "Received",
+        "ASSIGNED": "Assigned",
+        "QUOTE_SENT": "Quotes sent",
+        "QUOTE_ACCEPTED": "Quote accepted",
+        "QUOTE_REJECTED": "Quotes rejected",
+        "PAYMENT_PENDING": "Payment pending",
+        "PREPARATION": "In production",
+        "SHIPPED": "Shipped",
+        "IN_TRANSIT": "In transit",
+        "COMPLETED": "Completed",
+        "CANCELLED": "Cancelled"
+      }
+    },
+    "certifications": {
+      "eyebrow": "Certification programme",
+      "title": "Sponsor a certification",
+      "description": "Help a partner factory get certified. In return, you're listed as the sponsor on the dossier and get priority visibility on progress.",
+      "mineTitle": "Sponsored enrollments",
+      "sponsorableTitle": "Open for sponsorship",
+      "empty": "No enrollments open for sponsorship right now.",
+      "sponsorCta": "Sponsor"
+    },
+    "marketplace": {
+      "eyebrow": "Marketplace",
+      "title": "Pre-negotiated products",
+      "description": "Catalogue of already-sourced, negotiated products. Live MOQ and lead times, one-click order, built-in escrow.",
+      "backToBrowse": "Back to marketplace",
+      "searchPlaceholder": "Search products…",
+      "allCategories": "All",
+      "empty": "No products match your search.",
+      "inStock": "in stock",
+      "outOfStock": "Out of stock",
+      "unitPrice": "Unit price",
+      "orderTitle": "Order",
+      "totalLabel": "Total",
+      "buyCta": "Buy now",
+      "moqHint": "MOQ: {n} units.",
+      "addressHint": "Final delivery address."
+    },
+    "quotes": {
+      "sectionTitle": "Quotes received",
+      "empty": "Your agent will share quotes here as soon as they're ready.",
+      "agentRecommendation": "Agent's pick",
+      "unitPrice": "Unit price",
+      "total": "Total",
+      "leadTime": "Lead time",
+      "incoterm": "Incoterm",
+      "validUntil": "Valid until",
+      "expired": "Expired",
+      "statusAwaitingDecision": "Awaiting decision",
+      "statusAccepted": "Accepted",
+      "statusRejected": "Rejected",
+      "accept": "Accept this quote",
+      "reject": "Reject",
+      "cancel": "Cancel",
+      "confirmAccept": "Confirm and create order",
+      "confirmAcceptCopy": "Other quotes will be rejected.",
+      "orderCreatedTitle": "Order created",
+      "orderCreatedBody": "Your order {ref} is awaiting payment.",
+      "viewOrder": "View order"
+    },
+    "invoices": {
+      "eyebrow": "Billing",
+      "title": "My invoices",
+      "description": "All your SourcingPick invoices — deposits, balances, and research fees.",
+      "kpiOpen": "Open",
+      "kpiOverdue": "Overdue",
+      "kpiPaid": "Paid",
+      "tableTitle": "Invoice history",
+      "empty": "No invoices yet.",
+      "colReference": "Reference",
+      "colSubject": "Subject",
+      "colType": "Type",
+      "colAmount": "Amount",
+      "colStatus": "Status",
+      "colDue": "Due",
+      "dueOn": "Due",
+      "downloadPdf": "Download PDF",
+      "viewOrder": "View order"
+    },
+    "orders": {
+      "eyebrow": "My orders",
+      "title": "Active orders",
+      "description": "Track production, shipping and delivery of your orders.",
+      "backToList": "Back to orders",
+      "emptyTitle": "No orders yet",
+      "emptyBody": "Orders show up here once you accept a quote.",
+      "createdAt": "Created",
+      "eta": "ETA",
+      "factoryLabel": "Factory",
+      "totalLabel": "Total",
+      "depositLabel": "Deposit (30%)",
+      "depositHint": "Paid to the factory to start production.",
+      "balanceLabel": "Balance (70%)",
+      "balanceHint": "Released on confirmed delivery.",
+      "timelineTitle": "Progress",
+      "sectionLogistics": "Delivery",
+      "sectionTracking": "Tracking",
+      "sectionContact": "Contact",
+      "carrierLabel": "Carrier",
+      "trackingNumberLabel": "Tracking number",
+      "shippedAtLabel": "Shipped on",
+      "trackingPending": "The factory will add tracking when the order ships.",
+      "paymentPendingTitle": "Payment required",
+      "paymentPendingBody": "Pay the 30% deposit by card. Funds are held in escrow until you confirm delivery.",
+      "payDepositCta": "Pay deposit",
+      "paymentSuccessTitle": "Payment received",
+      "paymentSuccessBody": "Your deposit is in escrow. The factory has been notified and production can start.",
+      "paymentCancelledTitle": "Payment cancelled",
+      "paymentCancelledBody": "The payment did not go through. You can retry at any time.",
+      "sectionInvoices": "Invoices",
+      "invoiceTypeDeposit": "Deposit",
+      "invoiceTypeBalance": "Balance",
+      "invoicePaidOn": "Paid on",
+      "invoiceIssuedOn": "Issued on",
+      "invoiceStatuses": {
+        "DRAFT": "Draft",
+        "ISSUED": "Issued",
+        "PAID": "Paid",
+        "OVERDUE": "Overdue",
+        "VOID": "Void"
+      },
+      "cancelOrder": "Cancel order",
+      "confirmCancelTitle": "Cancel order",
+      "confirmCancelBody": "This cannot be undone. The order will be cancelled and the factory notified.",
+      "confirmCancelCta": "Confirm cancellation",
+      "back": "Back",
+      "confirmReceiptTitle": "Confirm receipt",
+      "confirmReceiptBody": "Confirming delivery releases the balance to the factory.",
+      "confirmReceiptCta": "Confirm receipt",
+      "payBalanceCta": "Pay balance and confirm receipt",
+      "payBalanceBody": "Paying the 70% balance automatically releases the payout to the factory.",
+      "waitingForFactory": "Waiting on the factory's next action."
+    }
+  },
+  "onboarding": {
+    "client": {
+      "step1Eyebrow": "Welcome",
+      "step1Title": "Hi {firstName}, welcome to SourcingPick.",
+      "step1Body": "The {orgName} account is set up. Here's what changes about how you source.",
+      "pillarAgentTitle": "A dedicated agent",
+      "pillarAgentBody": "On your first request, an agent qualifies the need and reaches out to 3-5 vetted factories within 72 hours.",
+      "pillarEscrowTitle": "Built-in escrow",
+      "pillarEscrowBody": "Your funds stay blocked at our payment provider until you confirm conforming delivery.",
+      "pillarReachTitle": "A global network",
+      "pillarReachBody": "Europe, Maghreb, Asia, Africa, Americas. Our team speaks your supplier's language.",
+      "step2Eyebrow": "How it works",
+      "step2Title": "Your first request in 4 steps.",
+      "step2Body": "Here's what happens between posting a need and receiving your order.",
+      "step2Item1": "You post your need (product, quantity, certifications, deadline).",
+      "step2Item2": "Within 24 hours, your agent contacts the relevant factories.",
+      "step2Item3": "You receive 1-3 qualified quotes with a recommendation.",
+      "step2Item4": "You accept, pay via escrow, receive your order.",
+      "finish": "Go to my dashboard"
+    },
+    "factory": {
+      "step1Eyebrow": "Welcome",
+      "step1Title": "Hi {firstName}, welcome to SourcingPick.",
+      "step1Body": "The {orgName} account is set up. Here's the status of your file.",
+      "kycPendingTitle": "Your KYC is under review",
+      "kycPendingBody": "Our team reviews your documents within 48 business hours. You'll get an email once verified. In the meantime, you can finish setting up your profile.",
+      "kycVerifiedTitle": "Your KYC is verified",
+      "kycVerifiedBody": "You can receive tender invitations and list products on the Marketplace.",
+      "kycFlaggedTitle": "Your KYC needs attention",
+      "kycFlaggedBody": "A team member will reach out to clarify a few points.",
+      "kycRejectedTitle": "Your file was rejected",
+      "kycRejectedBody": "Contact kyc@sourcingpick.com to understand the reasons and submit a new file.",
+      "step2Eyebrow": "Next steps",
+      "step2Title": "While your KYC is being reviewed, here's what you can do.",
+      "step2Body": "These actions get you ready to receive your first tender invitations the moment your file is verified.",
+      "step2Item1": "Complete your factory profile: capabilities, languages spoken, existing certifications.",
+      "step2Item2": "Prepare 3-5 high-resolution photos of your flagship products.",
+      "step2Item3": "Check that your IBAN is up to date so you can receive payouts.",
+      "finish": "Go to my dashboard"
+    }
+  },
+  "settings": {
+    "eyebrow": "Account settings",
+    "title": "Settings",
+    "description": "Manage your account and the {org} organisation.",
+    "profile": {
+      "title": "Profile",
+      "description": "Your personal information, visible to your agent and the SourcingPick team.",
+      "phoneLabel": "Phone",
+      "emailHint": "Email cannot be changed here — please contact support.",
+      "localeLabel": "Preferred language",
+      "localeHint": "Sets the interface and notification language.",
+      "saved": "Profile updated."
+    },
+    "security": {
+      "title": "Security",
+      "description": "Change your password.",
+      "currentPasswordLabel": "Current password",
+      "newPasswordLabel": "New password",
+      "submit": "Update password",
+      "saved": "Password updated."
+    },
+    "twoFactor": {
+      "title": "Two-factor authentication",
+      "description": "Receive a code by email on every sign-in. Recommended for all accounts.",
+      "toggleLabel": "Enable email 2FA",
+      "toggleDescription": "A 6-digit code will be required at every sign-in.",
+      "adminLocked": "2FA is mandatory for administrator accounts and cannot be disabled."
+    },
+    "members": {
+      "title": "Organisation members",
+      "description": "People with access to your SourcingPick account.",
+      "inviteSoon": "Inviting new members will be available soon.",
+      "subRoleOwner": "Owner",
+      "subRoleMember": "Member",
+      "subRoleAccountant": "Accountant"
+    }
+  },
+  "agent": {
+    "dashboard": {
+      "eyebrow": "Dashboard",
+      "title": "My desk",
+      "description": "Your requests, quotes to forward, and orders in progress.",
+      "kpiAssigned": "Assigned requests",
+      "kpiAssignedHint": "{overdue} overdue · {approaching} at risk · {ok} on track",
+      "kpiQuotesToForward": "Quotes to forward",
+      "kpiActiveOrders": "Orders tracked",
+      "kpiCommission": "Commission earned",
+      "kpiCommissionHint": "{n} closed order(s)",
+      "queueTitle": "SLA queue",
+      "queueDesc": "Oldest first.",
+      "queueEmpty": "No active requests.",
+      "quotesSuffix": "quotes received",
+      "quotesToForwardTitle": "Quotes received, to forward",
+      "quotesToForwardDesc": "Quotes waiting for you to push to the client.",
+      "quotesToForwardEmpty": "No quotes awaiting forwarding.",
+      "activeOrdersTitle": "Orders you're tracking",
+      "activeOrdersEmpty": "No active orders."
+    },
+    "requests": {
+      "eyebrow": "My portfolio",
+      "title": "My assigned requests",
+      "description": "Requests where you are the lead agent. Click to qualify and run a tender.",
+      "emptyTitle": "No assigned requests",
+      "emptyBody": "When an Admin assigns you a request, it appears here.",
+      "backToList": "Back to requests",
+      "clientLabel": "Client",
+      "sectionContact": "Client contact",
+      "sectionTenders": "Tender invitations",
+      "sectionQuotes": "Quotes received",
+      "sectionOrder": "Order",
+      "findFactories": "Find factories",
+      "browseFactories": "Browse the factory pool",
+      "slaOk": "{h}h",
+      "slaApproaching": "{h}h — SLA approaching",
+      "slaOverdue": "{h}h — SLA missed",
+      "tenderInvitationsCount": "{n} tenders",
+      "quotesCount": "{n} quotes"
+    },
+    "quotes": {
+      "empty": "No quotes received for this request yet.",
+      "submittedAt": "Received on",
+      "factoryPrice": "Factory price",
+      "clientPrice": "Client price",
+      "total": "Total",
+      "validUntil": "Valid until",
+      "expired": "Expired",
+      "scoreRecommended": "Recommended",
+      "scoreGood": "Good match",
+      "scoreOk": "Consider",
+      "sendToClient": "Send to client",
+      "sentToClientLabel": "Sent to client",
+      "statusDraft": "Draft",
+      "statusReceived": "Received",
+      "statusSentToClient": "Sent to client",
+      "statusAccepted": "Accepted",
+      "statusRejected": "Rejected",
+      "statusExpired": "Expired"
+    },
+    "factories": {
+      "eyebrow": "Factory pool",
+      "title": "Verified factories",
+      "description": "All partner factories cleared by our KYC team.",
+      "contextHint": "Filtered for region: {region}.",
+      "filterAll": "All",
+      "searchPlaceholder": "Search factory, country, capability…",
+      "empty": "No factory matches this filter.",
+      "ordersSuffix": "orders"
+    },
+    "tasks": {
+      "eyebrow": "My tasks",
+      "title": "Tasks",
+      "description": "Personal reminders — SLA follow-ups, nudges, things to watch.",
+      "kpiOpen": "Open",
+      "kpiDueSoon": "Due in 48h",
+      "kpiOverdue": "Overdue",
+      "newTaskTitle": "New task",
+      "openTitle": "To do · {n}",
+      "openEmpty": "No open tasks. Use the quiet to get ahead.",
+      "closedTitle": "Recently closed · {n}",
+      "fieldTitle": "Title",
+      "titlePlaceholder": "Chase invoice INV-2026-0142",
+      "fieldPriority": "Priority",
+      "fieldDueAt": "Due",
+      "fieldRequest": "Linked request",
+      "requestPlaceholder": "None",
+      "noRequestLink": "— No link —",
+      "fieldDescription": "Notes",
+      "descriptionPlaceholder": "Context, next steps, who to contact…",
+      "createCta": "Create task",
+      "completeCta": "Mark done",
+      "cancelCta": "Cancel",
+      "reopenCta": "Reopen",
+      "dueAt": "Due",
+      "completedAt": "Completed",
+      "overdueBadge": "Overdue",
+      "priorityLow": "Low",
+      "priorityMedium": "Medium",
+      "priorityHigh": "High",
+      "statuses": {
+        "PENDING": "To do",
+        "IN_PROGRESS": "In progress",
+        "DONE": "Done",
+        "CANCELLED": "Cancelled"
+      }
+    },
+    "tenders": {
+      "eyebrow": "Tender invitation",
+      "backToRequest": "Back to request",
+      "sectionInvitation": "Invitation",
+      "sectionFactory": "Factory profile",
+      "sectionQuote": "Quote received",
+      "statusLabel": "Status",
+      "invitedAtLabel": "Invited on",
+      "viewedAtLabel": "Viewed on",
+      "expiresAtLabel": "Expires on",
+      "matchScoreLabel": "Match score",
+      "languagesLabel": "Languages",
+      "totalOrdersLabel": "Orders shipped",
+      "capabilitiesLabel": "Capabilities",
+      "noFactoryProfile": "This factory hasn't completed its profile yet."
+    }
+  },
+  "orders": {
+    "statuses": {
+      "PAYMENT_PENDING": "Payment pending",
+      "PREPARATION": "In production",
+      "QC": "Quality control",
+      "SHIPPED": "Shipped",
+      "IN_TRANSIT": "In transit",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+    "cancelledBanner": "This order was cancelled."
+  },
+  "publicMarketplace": {
+    "loadMoreTitle": "More than 20 products available",
+    "loadMoreBody": "Create a client account to browse the full catalogue and order in one click.",
+    "endOfPreviewTitle": "That's the preview",
+    "endOfPreviewBody": "Create an account to track orders, message our agents, and unlock exclusives.",
+    "signupCta": "Create a client account",
+    "loginCta": "Sign in",
+    "orderTitle": "Order this product",
+    "orderBody": "Sign in or create an account to complete your order with a secured deposit.",
+    "signupToBuyCta": "Sign up to order"
+  },
+  "notifications": {
+    "bellLabel": "Notifications",
+    "title": "Notifications",
+    "empty": "No notifications yet.",
+    "markAllRead": "Mark all as read"
+  },
+  "messaging": {
+    "bellLabel": "Messages",
+    "bellTitle": "Messages",
+    "bellEmpty": "No conversations yet.",
+    "unreadCount": "{n} unread",
+    "sectionTitle": "Messages",
+    "loading": "Loading messages…",
+    "empty": "No messages yet. Start the conversation.",
+    "placeholder": "Write a message…",
+    "send": "Send",
+    "shortcutHint": "⌘/Ctrl + Enter to send",
+    "systemAuthor": "SourcingPick",
+    "errorLoad": "Couldn't load messages. Try again.",
+    "errorStream": "Live updates disconnected. Reload the page to reconnect.",
+    "contextHints": {
+      "REQUEST": "Conversation for this sourcing request — between the client and the agent.",
+      "TENDER": "Private conversation between the agent and this factory for the tender. Other invited factories don't see these messages.",
+      "QUOTE": "Conversation for this quote — client, agent, and factory.",
+      "ORDER": "Conversation for this order — all parties included.",
+      "KYC": "Conversation with our team about your KYC file.",
+      "CERT": "Conversation about your certification programme.",
+      "DISPUTE": "Dispute thread, moderated by the SourcingPick team."
+    }
+  },
+  "tender": {
+    "selectFactoriesTitle": "Choose factories to invite",
+    "selectFactoriesDescription": "Pick up to {n} factories for the request \"{title}\". Same-category factories are prioritised.",
+    "backToRequest": "Back to request",
+    "matchOnly": "{category} only",
+    "matchedTag": "match",
+    "alreadyInvited": "Already invited",
+    "selectedCount": "{n}/{max} factories selected",
+    "sendInvitations": "Send {n} invitations",
+    "sendCta": "Run a tender",
+    "invitedCount": "{n} factories invited",
+    "errorMaxInvitations": "You can pick at most {n} factories.",
+    "errorMinSelection": "Select at least one factory."
+  },
+  "factory": {
+    "dashboard": {
+      "eyebrow": "Dashboard",
+      "title": "Overview",
+      "description": "Tenders, production, payouts and catalogue in one place.",
+      "kycPendingTitle": "KYC pending",
+      "kycPendingBody": "Your file is under review. You'll receive tender invitations as soon as it's approved.",
+      "connectPendingTitle": "Connect Stripe to receive payouts",
+      "connectPendingBody": "Stripe Connect must be set up before we can pay you out on delivery.",
+      "kpiOpenTenders": "Awaiting tenders",
+      "kpiOpenTendersHint": "Received so far: {n}",
+      "kpiActiveOrders": "Active orders",
+      "kpiPendingPayouts": "Pending payouts",
+      "kpiPendingPayoutsHint": "{n} transfer(s) queued",
+      "kpiTotalEarned": "Earned (paid out)",
+      "kpiTotalEarnedHint": "{n} payout(s) completed",
+      "openTendersTitle": "Open tender invitations",
+      "openTendersDesc": "Click to review and respond.",
+      "openTendersEmpty": "No tender invitations awaiting response.",
+      "catalogueTitle": "Catalogue",
+      "activeOrdersTitle": "Orders in production",
+      "activeOrdersEmpty": "No active orders."
+    },
+    "catalogue": {
+      "eyebrow": "Catalogue",
+      "title": "My products",
+      "description": "List your pre-negotiated products on the SourcingPick marketplace.",
+      "newCta": "Add product",
+      "newTitle": "New product",
+      "newDescription": "Describe your product. Our team reviews every listing before it goes live.",
+      "backToList": "Back to catalogue",
+      "emptyTitle": "No products yet",
+      "emptyBody": "List your first product to make it appear on the marketplace once approved.",
+      "noImage": "No image",
+      "detailsTitle": "Product details",
+      "nameLabel": "Product name",
+      "namePlaceholder": "Cotton tote bag 250gsm — summer collection",
+      "categoryLabel": "Category",
+      "descriptionLabel": "Description",
+      "descriptionHint": "Materials, dimensions, finishes, options. At least 20 characters.",
+      "descriptionPlaceholder": "Organic cotton 250 gsm, 38×42 cm, 60 cm handles, 1-colour screen print front…",
+      "priceLabel": "Factory unit price",
+      "clientPriceLabel": "Client unit price",
+      "clientPriceHint": "Computed with the platform's 12% markup.",
+      "leadTimeLabel": "Lead time",
+      "moqLabel": "MOQ",
+      "stockLabel": "Stock",
+      "stockLowLabel": "Low-stock alert",
+      "stockLowHint": "Optional — we'll notify you below this threshold.",
+      "viewsLabel": "Views",
+      "soldLabel": "Sold",
+      "imagesLabel": "Images",
+      "imagesHint": "JPG / PNG / WebP, max 10 MB each, up to 6 images",
+      "imagesDropHint": "Click to upload up to {n} image(s).",
+      "imagesMaxReached": "Maximum images reached.",
+      "imagesTooMany": "You exceeded the 6-image limit — only the first six will be kept.",
+      "saveDraft": "Save draft",
+      "saveChanges": "Save changes",
+      "archiveCta": "Archive",
+      "submitForReviewCta": "Submit for review",
+      "submitNeedsImage": "Add at least one image before submitting.",
+      "pendingReviewBanner": "Awaiting review by the SourcingPick team.",
+      "rejectedBanner": "Rejected — fix the issues and resubmit.",
+      "statuses": {
+        "DRAFT": "Draft",
+        "PENDING_REVIEW": "In review",
+        "PUBLISHED": "Published",
+        "REJECTED": "Rejected",
+        "OUT_OF_STOCK": "Out of stock",
+        "ARCHIVED": "Archived"
+      }
+    },
+    "certification": {
+      "eyebrow": "Certification programme",
+      "title": "My certifications",
+      "description": "Enrol in the SourcingPick certification programme — one of our partner bodies walks you from dossier to audit to issuance.",
+      "kycRequiredTitle": "KYC required",
+      "kycRequiredBody": "Certification bodies require a verified entity. Complete your KYC to start.",
+      "enrollTitle": "New enrollment",
+      "enrollDescription": "Pick a standard and a certification body. Our team handles the schedule.",
+      "standardLabel": "Target standard",
+      "standardHint": "e.g. ISO 9001:2015, GOTS, OEKO-TEX Standard 100",
+      "bodyLabel": "Body",
+      "bodyPlaceholder": "Choose a body…",
+      "targetMonthsLabel": "Target (months)",
+      "targetMonthsHint": "How many months until you want to be certified?",
+      "enrollCta": "Start enrollment",
+      "activeTitle": "Active",
+      "closedTitle": "Closed",
+      "empty": "No enrollments yet.",
+      "sponsoredBy": "Sponsored by",
+      "preAuditLabel": "Pre-audit",
+      "auditLabel": "Audit",
+      "etaLabel": "Target date",
+      "issuedLabel": "Issued",
+      "expiresLabel": "Expires",
+      "viewCertificate": "View certificate",
+      "withdrawCta": "Withdraw",
+      "statuses": {
+        "DOSSIER": "Dossier",
+        "AUDIT_PROGRAMME": "Audit scheduled",
+        "EN_COURS": "In progress",
+        "CERTIFIE": "Certified",
+        "REFUSE": "Rejected"
+      }
+    },
+    "payouts": {
+      "eyebrow": "Payouts",
+      "title": "My payouts",
+      "description": "Manage your Stripe payout account and review payment history.",
+      "startTitle": "Enable payouts",
+      "startBody": "Connect a Stripe account to receive payouts when orders are delivered.",
+      "startOnboardingCta": "Connect Stripe",
+      "pendingTitle": "Stripe account incomplete",
+      "pendingBody": "Stripe needs more information before we can pay you out. Resume the form to enable payouts.",
+      "resumeOnboardingCta": "Resume",
+      "readyTitle": "Stripe account active",
+      "readyBody": "Payouts are enabled. Each delivered order triggers a transfer net of the 3% commission.",
+      "manageAccountCta": "Manage",
+      "unreachableTitle": "Stripe unreachable",
+      "unreachableBody": "We couldn't reach Stripe. Try again in a few minutes — your in-flight payouts are not affected.",
+      "onboardingError": "Couldn't generate the Stripe onboarding link.",
+      "historyTitle": "Payout history",
+      "historyEmpty": "No payouts yet. They show up here when clients confirm delivery.",
+      "sentOn": "Sent on",
+      "createdOn": "Created on",
+      "failurePendingOnboarding": "Payout pending: finish your Stripe connection to receive it.",
+      "statusPending": "Pending",
+      "statusScheduled": "Scheduled",
+      "statusSent": "Sent",
+      "statusReceived": "Received",
+      "statusFailed": "Failed"
+    },
+    "orders": {
+      "eyebrow": "My orders",
+      "title": "Production orders",
+      "description": "Active orders for your clients. Update statuses as production moves forward.",
+      "backToList": "Back to orders",
+      "emptyTitle": "No orders yet",
+      "emptyBody": "Orders show up here once a client accepts one of your quotes.",
+      "clientLabel": "Client",
+      "revenueLabel": "Gross revenue",
+      "supplierFeeLabel": "SourcingPick fee (3%)",
+      "supplierFeeHint": "Capped at €5,000 — pricing v2.",
+      "netLabel": "Net payout",
+      "netHint": "Estimate; the actual payout goes through escrow (Phase 3).",
+      "sectionSpec": "Specs",
+      "deadlineLabel": "Requested delivery",
+      "waitingPaymentTitle": "Waiting for client payment",
+      "waitingPaymentBody": "You'll be notified as soon as payment is confirmed and you can start production.",
+      "preparationCtaTitle": "Production in progress",
+      "preparationCtaBody": "Mark the order ready for QC as soon as production is done.",
+      "markQcCta": "Move to QC",
+      "qcCtaTitle": "Quality control",
+      "qcCtaBody": "Once QC passes, add tracking info to ship.",
+      "markShippedCta": "Mark as shipped",
+      "shipFormTitle": "Shipping details",
+      "trackingUrlLabel": "Tracking URL",
+      "trackingUrlHint": "Optional — the carrier link to track the package.",
+      "confirmShipCta": "Confirm shipment",
+      "shippedCtaTitle": "Package shipped",
+      "shippedCtaBody": "Mark as in transit once the carrier confirms the package is moving.",
+      "markInTransitCta": "Mark as in transit",
+      "errorTrackingRequired": "Carrier and tracking number are required."
+    },
+    "tenders": {
+      "eyebrow": "Tender invitations",
+      "title": "My tender invitations",
+      "description": "Qualified requests that match your business. Respond within 48 hours to stay prioritised.",
+      "backToList": "Back to tenders",
+      "emptyTitle": "No tender invitations",
+      "emptyBody": "When an agent invites you to bid on a request, it appears here.",
+      "respondBy": "respond by",
+      "respondCta": "Respond",
+      "matchScore": "Score",
+      "statusInvited": "New",
+      "statusViewed": "Viewed",
+      "statusResponded": "Quote sent",
+      "statusDeclined": "Declined",
+      "statusExpired": "Expired",
+      "quoteSubmittedTitle": "Your quote",
+      "quoteSubmittedBody": "Your quote has been forwarded to the agent. You'll be notified when it's presented to the client.",
+      "expiredBanner": "This tender has expired. Contact your agent if you still want to submit a quote.",
+      "submitQuoteTitle": "Submit a quote",
+      "submitQuoteBody": "Give your best price and lead time. The client will receive a recommendation comparing the quotes received.",
+      "unitPriceLabel": "Unit price (excl. tax)",
+      "leadTimeLabel": "Lead time",
+      "moqLabel": "MOQ",
+      "validityLabel": "Quote validity",
+      "validityHint": "Number of days your quote remains valid (max 60).",
+      "daysSuffix": "days",
+      "daysShort": "d",
+      "validUntilLabel": "Valid until",
+      "notesLabel": "Notes",
+      "notesHint": "Useful info for the agent: alternatives, conditions, options.",
+      "notesPlaceholder": "Recycled cotton alternative available · 50 free units above 5,000 …",
+      "submitQuote": "Submit quote"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "eyebrow": "Operator view",
+      "title": "SourcingPick platform",
+      "description": "Key metrics, priority queues and live system activity.",
+      "kpiGmv": "GMV this month",
+      "kpiGmvHint": "{n} order(s) this month",
+      "kpiCommission": "Commission earned",
+      "kpiActiveOrders": "Active orders",
+      "kpiActiveRequests": "Active requests: {n}",
+      "kpiAgents": "Active agents",
+      "kpiAgentsHint": "{n} verified factories",
+      "kpiKycQueue": "KYC to review",
+      "kpiPendingListings": "Listings to moderate",
+      "kpiEscrowHeld": "Escrow held",
+      "kpiEscrowHeldHint": "{n} transaction(s)",
+      "kpiWebhookFailures": "Webhook failures",
+      "unassignedTitle": "Requests to assign",
+      "unassignedDesc": "Oldest first.",
+      "unassignedEmpty": "No unassigned requests.",
+      "payoutsTitle": "Pending payouts",
+      "payoutsDesc": "To push to Stripe Connect.",
+      "payoutsPending": "Amount in queue",
+      "payoutsPendingHint": "{n} payout(s) to schedule",
+      "auditTitle": "Recent system activity",
+      "auditEmpty": "No activity recorded.",
+      "systemActor": "System"
+    },
+    "audit": {
+      "eyebrow": "Audit",
+      "title": "Audit log",
+      "description": "Every sensitive action, append-only. Filter by level or action.",
+      "actionPlaceholder": "Filter by action (e.g. quote.accepted)",
+      "empty": "No entries match these filters.",
+      "truncated": "Showing the last {n} entries. Tighten the filters to see more.",
+      "colTime": "Time",
+      "colLevel": "Level",
+      "colAction": "Action",
+      "colActor": "Actor",
+      "colTarget": "Target",
+      "colIp": "IP",
+      "levels": { "INFO": "Info", "WARN": "Warning", "ALERT": "Alert" }
+    },
+    "finance": {
+      "eyebrow": "Finance",
+      "title": "Finance overview",
+      "description": "GMV, commission, issued and overdue invoices.",
+      "kpiGmvMtd": "GMV month-to-date",
+      "kpiGmvYtd": "GMV year-to-date",
+      "kpiCommissionMtd": "Commission MTD",
+      "kpiCommissionYtd": "Commission YTD",
+      "kpiOrdersCount": "{n} order(s)",
+      "kpiInvoicesIssued": "Issued invoices",
+      "kpiInvoicesOverdue": "Overdue invoices",
+      "kpiInvoicesPaid": "Paid invoices",
+      "invoicesTitle": "Recent invoices",
+      "empty": "No invoices.",
+      "colReference": "Reference",
+      "colType": "Type",
+      "colOrg": "Organisation",
+      "colAmount": "Amount",
+      "colStatus": "Status",
+      "colIssued": "Issued"
+    },
+    "escrow": {
+      "eyebrow": "Escrow",
+      "title": "Escrow ledger",
+      "description": "Held, released and disputed funds.",
+      "kpiHeld": "Held",
+      "kpiReleased": "Released",
+      "kpiDisputed": "Disputed",
+      "ledgerTitle": "Recent movements",
+      "empty": "No transactions.",
+      "colReference": "Ref",
+      "colOrder": "Order",
+      "colParties": "Parties",
+      "colAmount": "Amount",
+      "colStatus": "Status",
+      "colProvider": "Provider",
+      "colReleased": "Released",
+      "statuses": {
+        "INITIATED": "Initiated",
+        "FUNDED": "Funded",
+        "HELD": "Held",
+        "RELEASED": "Released",
+        "REFUNDED": "Refunded",
+        "DISPUTED": "Disputed"
+      }
+    },
+    "payouts": {
+      "eyebrow": "Payouts",
+      "title": "Payout queue",
+      "description": "Payouts pushed to factories via Stripe Connect.",
+      "kpiPending": "Pending",
+      "kpiSent": "Sent",
+      "kpiFailed": "Failed",
+      "ledgerTitle": "Recent payouts",
+      "empty": "No payouts.",
+      "colReference": "Ref",
+      "colFactory": "Factory",
+      "colOrder": "Order",
+      "colAmount": "Amount",
+      "colCommission": "Commission",
+      "colStatus": "Status",
+      "colSent": "Sent"
+    },
+    "organizations": {
+      "eyebrow": "Organizations",
+      "title": "All organizations",
+      "description": "Clients, factories, agents and platform.",
+      "searchPlaceholder": "Search name, legal name…",
+      "tableTitle": "Organizations",
+      "empty": "No organizations found.",
+      "colName": "Name",
+      "colType": "Type",
+      "colLocation": "Location",
+      "colKyc": "KYC",
+      "colUsers": "Users",
+      "colCreated": "Created",
+      "suspended": "Suspended",
+      "types": {
+        "CLIENT": "Client",
+        "FACTORY": "Factory",
+        "AGENT": "Agent",
+        "PLATFORM": "Platform"
+      }
+    },
+    "users": {
+      "eyebrow": "Users",
+      "title": "All users",
+      "description": "Accounts across every role and organization.",
+      "searchPlaceholder": "Search name, email…",
+      "tableTitle": "Users",
+      "empty": "No users found.",
+      "colName": "Name",
+      "colEmail": "Email",
+      "colRole": "Role",
+      "colOrg": "Organization",
+      "col2fa": "2FA",
+      "colLastLogin": "Last login",
+      "neverLoggedIn": "Never"
+    },
+    "agents": {
+      "eyebrow": "Team",
+      "title": "Agent performance",
+      "description": "Active load, closed orders and commission earned per agent.",
+      "tableTitle": "Agents",
+      "empty": "No agents registered.",
+      "colName": "Name",
+      "colEmail": "Email",
+      "colActive": "Active load",
+      "colCompleted": "Closed",
+      "colCommission": "Commission",
+      "colLastLogin": "Last login"
+    },
+    "webhooks": {
+      "eyebrow": "Webhooks",
+      "title": "Webhook events",
+      "description": "Incoming events from Stripe and other providers.",
+      "kpiReceived": "Received",
+      "kpiProcessed": "Processed",
+      "kpiFailed": "Failed",
+      "tableTitle": "Recent events",
+      "empty": "No events.",
+      "colReceived": "Received",
+      "colSource": "Source",
+      "colType": "Type",
+      "colStatus": "Status",
+      "colAttempts": "Attempts",
+      "colError": "Error"
+    },
+    "logins": {
+      "eyebrow": "Security",
+      "title": "Login activity",
+      "description": "Successful and failed logins over the last 24 h and 7 days.",
+      "kpiTodaySuccess": "Today · success",
+      "kpiTodayFailed": "Today · failed",
+      "kpiWeekSuccess": "7 d · success",
+      "kpiWeekFailed": "7 d · failed",
+      "tableTitle": "Recent login events",
+      "empty": "No events recorded.",
+      "colTime": "Time",
+      "colEvent": "Event",
+      "colUser": "User",
+      "colIp": "IP",
+      "colUa": "User agent",
+      "unknownUser": "Unknown user"
+    },
+    "support": {
+      "eyebrow": "Support",
+      "title": "Marketplace support queue",
+      "description": "Conversations on marketplace orders (no assigned agent). Support is handled by the platform team.",
+      "tableTitle": "Conversations",
+      "empty": "No active support conversations.",
+      "messagesSuffix": "messages",
+      "note": "Sourcing-flow orders are handled by their assigned agent and don't appear here."
+    },
+    "certifications": {
+      "eyebrow": "Certifications",
+      "title": "Active enrollments",
+      "description": "Drive the certification pipeline: schedule audits, advance stages, issue certificates.",
+      "empty": "No active enrollments.",
+      "enrolledOn": "Enrolled on",
+      "sponsorPrefix": "Sponsored by",
+      "advanceCta": "Advance",
+      "cancel": "Cancel",
+      "nextStatusLabel": "Next stage",
+      "nextStatusPlaceholder": "Pick a stage…",
+      "progressLabel": "Manual progress",
+      "progressHint": "0-100. Leave blank to keep the current value.",
+      "certifiedRequiresAll": "Certification: URL and dates are required",
+      "certificateUrlLabel": "Certificate URL",
+      "applyCta": "Apply"
+    },
+    "marketplace": {
+      "eyebrow": "Moderation",
+      "title": "Listings awaiting review",
+      "description": "Approve or reject products submitted by factories before they go live.",
+      "empty": "No listings to moderate right now.",
+      "noImage": "No images uploaded",
+      "factoryKycMissing": "KYC not verified",
+      "submittedAt": "Submitted on",
+      "rejectCta": "Reject",
+      "approveCta": "Approve & publish",
+      "rejectReasonLabel": "Rejection reason (audit-visible)",
+      "rejectReasonPlaceholder": "Describe what needs fixing…",
+      "confirmReject": "Confirm rejection",
+      "back": "Back"
+    },
+    "dispatch": {
+      "eyebrow": "Dispatch",
+      "title": "Requests to assign",
+      "description": "Assign incoming requests to an agent. Qualification SLA: 24 business hours.",
+      "filterAll": "All",
+      "filterUnassigned": "To assign",
+      "filterAssigned": "Assigned",
+      "searchPlaceholder": "Search reference, title, client…",
+      "empty": "Nothing to dispatch right now.",
+      "pickAgent": "Pick an agent",
+      "agentPlaceholder": "Choose an agent…",
+      "currentAgent": "Current agent: {name}",
+      "assign": "Assign",
+      "reassign": "Reassign",
+      "loadSuffix": "active requests",
+      "errorPickAgent": "Pick an agent before assigning."
+    },
+    "kyc": {
+      "eyebrow": "KYC verification",
+      "title": "KYC queue",
+      "description": "Review the documents factories submitted before they receive tender invitations.",
+      "filterAll": "All",
+      "searchPlaceholder": "Search factory, email, city…",
+      "empty": "No records match this filter.",
+      "colFactory": "Factory",
+      "colCategory": "Category",
+      "colCountry": "Location",
+      "colSubmitted": "Submitted",
+      "colStatus": "Status",
+      "drawerEyebrow": "KYC record",
+      "sectionContact": "Contact",
+      "sectionCompany": "Company",
+      "sectionManufacturing": "Manufacturing",
+      "sectionDocuments": "Documents",
+      "contactName": "Contact name",
+      "contactEmail": "Email",
+      "submittedAt": "Submitted",
+      "noOwner": "No primary contact linked to this factory.",
+      "noDocuments": "No documents uploaded.",
+      "openDocument": "Open document",
+      "approve": "Approve KYC",
+      "flag": "Flag",
+      "reject": "Reject",
+      "rejectReasonLabel": "Reason for rejection (audit-visible)",
+      "flagReasonLabel": "Reason for flagging (audit-visible)",
+      "reasonPlaceholder": "Briefly describe the reason…",
+      "confirmReject": "Confirm rejection",
+      "confirmFlag": "Confirm flag",
+      "errorReasonRequired": "Please provide a reason of at least 3 characters.",
+      "docKinds": {
+        "REGISTRY": "Business registration",
+        "TAX": "Tax certificate",
+        "FACILITY_PHOTO": "Facility photo",
+        "REFERENCES": "Reference clients",
+        "INSURANCE": "Quality insurance",
+        "OTHER": "Other"
+      }
+    },
+    "sourcingAllowlist": {
+      "eyebrow": "Platform settings",
+      "title": "Sourcing allowlist",
+      "description": "Control which regions and countries clients can choose when creating a request. Changes take effect within a minute.",
+      "regionsTitle": "Open regions",
+      "regionsDescription": "At least one region must be selected. Each region opens its country list to be picked below.",
+      "countriesTitle": "Open countries",
+      "countriesDescription": "Pick the specific countries you want to allow. Wizards mute the picker when only one is selected.",
+      "selectedLabel": "Selected",
+      "removeHint": "Click to remove",
+      "searchLabel": "Search countries",
+      "searchHint": "Type a name or ISO code (e.g. \"viet\" or \"VN\").",
+      "searchPlaceholder": "Search countries…",
+      "searchEmpty": "No country matches that search.",
+      "saveCta": "Save allowlist",
+      "saved": "Allowlist saved."
+    }
+  },
+  "common": {
+    "actions": {
+      "continue": "Continue",
+      "cancel": "Cancel",
+      "save": "Save",
+      "delete": "Delete",
+      "edit": "Edit",
+      "back": "Back",
+      "next": "Next",
+      "submit": "Submit",
+      "close": "Close",
+      "search": "Search",
+      "filter": "Filter",
+      "export": "Export",
+      "loading": "Loading…"
+    },
+    "status": {
+      "pending": "Pending",
+      "active": "Active",
+      "verified": "Verified",
+      "flagged": "Flagged",
+      "rejected": "Rejected",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "roles": {
+      "client": "Client",
+      "factory": "Factory",
+      "agent": "Agent",
+      "admin": "Administrator"
+    }
+  },
+  "categories": {
+    "TEXTILE": "Textile",
+    "HOME": "Home goods",
+    "STATIONERY": "Stationery",
+    "COSMETICS": "Cosmetics",
+    "FOOD": "Food & beverage",
+    "ELECTRONICS": "Electronics",
+    "METAL": "Metal",
+    "WOOD": "Wood",
+    "PLASTIC": "Plastic",
+    "OTHER": "Other"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "requests": "Requests",
+    "marketplace": "Marketplace",
+    "orders": "Orders",
+    "invoices": "Invoices",
+    "tenders": "Tenders",
+    "catalogue": "Catalogue",
+    "payouts": "Payouts",
+    "certification": "Certification",
+    "tasks": "Tasks",
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "theme": {
+    "toggleLabel": "Change theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "marketing": {
+    "hero": {
+      "eyebrow": "Sourcing · Marketplace · Certification",
+      "title": "Source internationally, without opaque middlemen.",
+      "subtitle": "Post your need, get qualified quotes in under 72 hours, and pay with confidence through built-in escrow.",
+      "ctaPrimary": "Get started free",
+      "ctaSecondary": "Browse marketplace",
+      "assurance": "No credit card. No commitment."
+    },
+    "pillars": {
+      "eyebrow": "Three disciplines, one platform",
+      "title": "Everything you need to buy with confidence.",
+      "sourcing": {
+        "title": "Sourcing on demand",
+        "body": "A dedicated agent qualifies your need, solicits 3 to 5 relevant factories, and orchestrates your order through delivery."
+      },
+      "marketplace": {
+        "title": "Marketplace",
+        "body": "A catalogue of products already sourced and pre-negotiated. In-stock, MOQ-friendly, one-click ordering."
+      },
+      "certification": {
+        "title": "Certification programme",
+        "body": "End-to-end factory support for ISO, CE, GOTS, FSC certifications via four French standards bodies."
+      }
+    },
+    "howItWorks": {
+      "eyebrow": "How it works",
+      "title": "From request to delivery, without friction.",
+      "step1": {
+        "title": "You post your need",
+        "body": "Quantity, deadline, required certifications, sourcing region. A three-step form."
+      },
+      "step2": {
+        "title": "An agent takes over",
+        "body": "Within 24 hours, your agent contacts 3 to 5 vetted factories and computes a qualification score."
+      },
+      "step3": {
+        "title": "You receive 1 to 3 quotes",
+        "body": "Unit price, MOQ, lead times, incoterm. Side-by-side, with a recommendation."
+      },
+      "step4": {
+        "title": "Escrow payment, delivery",
+        "body": "Your funds stay blocked at our provider until you confirm conforming receipt."
+      }
+    },
+    "trust": {
+      "eyebrow": "Why teams trust us",
+      "title": "Infrastructure built for the buyer.",
+      "escrow": {
+        "title": "Built-in escrow",
+        "body": "No payment to the factory without your confirmation of conforming receipt. SourcingPick acts as a trusted third party."
+      },
+      "agents": {
+        "title": "A dedicated agent",
+        "body": "Not a chatbot. A human who knows your file, negotiates on your behalf, and tracks production."
+      },
+      "certs": {
+        "title": "Vetted factories",
+        "body": "Every partner factory passes KYC. Many are enrolled in our certification programme with French standards bodies."
+      },
+      "partnersLabel": "Partner standards bodies"
+    },
+    "cta": {
+      "title": "Ready to source differently?",
+      "subtitle": "Create your account in two minutes. First request is free, no commitment.",
+      "primaryButton": "Create an account",
+      "secondaryButton": "See pricing"
+    }
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "Sourcing shouldn't be an act of faith.",
+    "body": [
+      "SourcingPick exists because international procurement, in 2026, is still a chain of patience, WhatsApp threads, and wire transfers in the dark. Buyers pay upfront to suppliers they've never met. Factories accept specs they haven't had time to qualify. The opaque middleman pockets the difference.",
+      "We're building the opposite: a platform where every request is qualified by a human, every quote is compared on the same scoring grid, and every payment stays in escrow until confirmed delivery. The platform's margin is transparent, not buried in the price.",
+      "We're based in France but our factory network covers Europe, the Maghreb, Asia, Africa, and the Americas. Language is not a barrier — neither is time zone."
+    ],
+    "principles": {
+      "eyebrow": "Our principles",
+      "title": "What we won't compromise on."
+    },
+    "values": {
+      "escrow": {
+        "title": "No payment without receipt",
+        "body": "Buyer funds stay blocked at our payment provider until conforming delivery is confirmed. This is non-negotiable."
+      },
+      "agents": {
+        "title": "A human, never a script",
+        "body": "Every request is carried by an agent who knows your file, your account, and our factories. No hotline, no chatbot."
+      },
+      "global": {
+        "title": "Genuinely global",
+        "body": "Our partner factories span five continents. We speak both your supplier's language and your procurement team's."
+      }
+    }
+  },
+  "pricing": {
+    "eyebrow": "No subscription, ever.",
+    "title": "You only pay on successful orders.",
+    "subtitle": "Transparent commission, capped, taken on conforming delivery. Escrow, tracking, and insurance included.",
+    "popular": "Core flow",
+    "flows": {
+      "sourcing": {
+        "name": "Sourcing on demand",
+        "tagline": "For bespoke needs, negotiated by a dedicated agent.",
+        "buyer": {
+          "label": "Buyer side",
+          "rate": "12 %",
+          "cap": "capped at €15,000",
+          "note": "Commission taken on conforming delivery. The cap binds at €125,000 order value."
+        },
+        "supplier": {
+          "label": "Supplier side",
+          "rate": "3 %",
+          "cap": "capped at €5,000",
+          "note": "Commission deducted from the factory payout once escrow is released."
+        },
+        "research": {
+          "label": "Research fee",
+          "amount": "€125 / day",
+          "cap": "or €500 / week",
+          "note": "Custom quote per request based on scope. Credited back as platform credit if an order is placed within 30 days. Applies to every request, including small orders."
+        },
+        "cta": "Post a request"
+      },
+      "marketplace": {
+        "name": "Marketplace",
+        "tagline": "For products already sourced and negotiated, one-click ready.",
+        "buyer": {
+          "label": "Buyer side",
+          "rate": "12 %",
+          "cap": "capped at €15,000",
+          "note": "Built into the listed price. You pay what you see — no surprises at checkout."
+        },
+        "supplier": {
+          "label": "Seller side",
+          "rate": "3 %",
+          "cap": "capped at €5,000",
+          "note": "Commission deducted from the seller payout once escrow is released."
+        },
+        "cta": "Browse the catalogue"
+      }
+    },
+    "included": {
+      "title": "Included in every transaction",
+      "items": [
+        "Funds held in escrow until conforming delivery is confirmed",
+        "Tracking of the shipment to your premises",
+        "Insurance specific to the product category"
+      ]
+    },
+    "excluded": {
+      "title": "Not included",
+      "items": [
+        "Shipping cost (buyer's responsibility, per the agreed Incoterm)"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "emailLabel": "Email address",
+      "passwordLabel": "Password",
+      "submit": "Sign in",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Create an account",
+      "google": "Continue with Google",
+      "divider": "or"
+    },
+    "signup": {
+      "title": "Create an account",
+      "pickerDescription": "Choose the account type that matches your business.",
+      "asClient": "I'm a buyer",
+      "clientBody": "SME, brand, or larger company sourcing from vetted factories with a dedicated agent.",
+      "asFactory": "I'm a factory",
+      "factoryBody": "Manufacturer who wants to respond to tenders and list products.",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in",
+      "clientEyebrow": "Buyer account",
+      "clientTitle": "Create your buyer account",
+      "firstNameLabel": "First name",
+      "lastNameLabel": "Last name",
+      "orgNameLabel": "Organisation name",
+      "orgNameHint": "The trading name your business operates under.",
+      "countryLabel": "Country",
+      "countryPlaceholder": "France, Brazil, Japan…",
+      "passwordHint": "At least 12 characters.",
+      "termsAccept": "I accept the",
+      "termsLink": "terms of service",
+      "termsAnd": "and the",
+      "privacyLink": "privacy policy",
+      "submit": "Create my account",
+      "factoryEyebrow": "Factory account",
+      "factoryTitle": "Create your factory account",
+      "sectionAccount": "Your account",
+      "sectionCompany": "Your company",
+      "sectionFactory": "Manufacturing profile",
+      "sectionDocuments": "KYC documents",
+      "documentsDescription": "Our team reviews these documents before your factory receives tender invitations. We recommend adding more facility photos (3 minimum is ideal).",
+      "legalNameLabel": "Legal name",
+      "displayNameLabel": "Display name",
+      "displayNameHint": "The name your factory appears under to buyers.",
+      "cityLabel": "City",
+      "addressLabel": "Address",
+      "vatLabel": "VAT number",
+      "vatHint": "Optional for now; required for invoicing.",
+      "categoryLabel": "Primary category",
+      "categoryPlaceholder": "Choose a category…",
+      "capabilitiesLabel": "Production capabilities",
+      "capabilitiesHint": "Comma-separated. E.g.: weaving, dyeing, finishing.",
+      "capabilitiesPlaceholder": "weaving, dyeing, finishing, quality control…",
+      "docRegistryLabel": "Business registration",
+      "docRegistryHint": "Registry extract or equivalent. PDF, JPG, PNG (max 10 MB).",
+      "docTaxLabel": "Tax certificate",
+      "docTaxHint": "Proof of tax compliance. PDF, JPG, PNG (max 10 MB).",
+      "docFacilityLabel": "Facility photos",
+      "docFacilityHint": "At least 1 photo, ideally 3 or more. JPG, PNG, WebP, HEIC (max 10 MB each).",
+      "fileChoose": "Choose file",
+      "fileReplace": "Replace",
+      "stepAccount": "Account",
+      "stepCompany": "Company",
+      "stepFactory": "Manufacturing",
+      "stepDocuments": "Documents",
+      "stepReview": "Review",
+      "reviewDescription": "Check everything is correct before finalising your signup. You'll be able to complete your profile after submitting.",
+      "errorFirstName": "Please enter your first name.",
+      "errorLastName": "Please enter your last name.",
+      "errorEmail": "Enter a valid email address.",
+      "errorPassword": "Password must be at least 12 characters.",
+      "errorLegalName": "Please enter your company's legal name.",
+      "errorDisplayName": "Please enter a display name.",
+      "errorCountry": "Please enter the country.",
+      "errorCity": "Please enter the city.",
+      "errorAddress": "Please enter the full address.",
+      "errorCategory": "Please choose a category.",
+      "errorRegistry": "Business registration document is required.",
+      "errorTax": "Tax certificate is required.",
+      "errorFacility": "Please add at least one facility photo.",
+      "errorTerms": "You must accept the terms to continue."
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "description": "Enter your email address. If an account exists, you'll receive a reset link.",
+      "submit": "Send reset link",
+      "sentTitle": "Link sent",
+      "sentBody": "If a SourcingPick account exists for that email, a message just went out. Check your inbox (and your spam folder).",
+      "backToLogin": "Back to sign in"
+    },
+    "reset": {
+      "title": "New password",
+      "description": "Choose a new password for your account.",
+      "newPasswordLabel": "New password",
+      "confirmPasswordLabel": "Confirm password",
+      "passwordHint": "At least 12 characters.",
+      "submit": "Reset password",
+      "missingTokenTitle": "Invalid link",
+      "missingTokenBody": "This reset link is incomplete. Request a new one from the forgot-password page.",
+      "requestNew": "Request a new link"
+    },
+    "otp": {
+      "title": "Two-step verification",
+      "description": "Enter the 6-digit code we sent to your email.",
+      "codeLabel": "Verification code",
+      "resend": "Resend code",
+      "resentNotice": "A new code has been sent.",
+      "verify": "Verify"
+    }
+  },
+  "cookies": {
+    "title": "Cookies",
+    "description": "We use cookies essential to the platform (language, session). With your consent, we also measure usage to improve the service.",
+    "accept": "Accept all",
+    "decline": "Decline non-essential",
+    "manage": "Manage choices"
+  },
+  "legal": {
+    "eyebrow": "Legal",
+    "lastUpdated": "Last updated: May 2026",
+    "draftNotice": "This is a v0 draft. The final wording will be reviewed by legal counsel before production. For any questions, write to legal@sourcingpick.com.",
+    "terms": {
+      "title": "Terms of service",
+      "sections": [
+        {
+          "heading": "Acceptance of terms",
+          "body": [
+            "By accessing SourcingPick or creating an account, you agree to be bound by these terms of service. If you do not accept these terms, you must not use the service."
+          ]
+        },
+        {
+          "heading": "Description of the service",
+          "body": [
+            "SourcingPick is a SaaS platform that connects buyers (\"Clients\") with manufacturers (\"Factories\") through three main services: on-demand sourcing, a marketplace of pre-negotiated products, and a certification programme.",
+            "SourcingPick acts as a trusted third party and operates a funds-escrow mechanism via a licensed payment provider."
+          ]
+        },
+        {
+          "heading": "Accounts and verification",
+          "body": [
+            "Account creation is free. Each organisation must provide accurate, up-to-date information and complete a verification (KYC) procedure before transacting.",
+            "You are responsible for the confidentiality of your credentials. Any activity carried out from your account is presumed to be yours."
+          ]
+        },
+        {
+          "heading": "Acceptable use",
+          "body": [
+            "You may not use SourcingPick for illegal or fraudulent activities, or activities contrary to French and European regulations on international trade, labour law, or intellectual property.",
+            "Any circumvention of the escrow mechanism, the certification programme, or our verification tools is strictly prohibited."
+          ]
+        },
+        {
+          "heading": "Payments, commissions, and escrow",
+          "body": [
+            "Funds paid by Clients are collected by our payment provider and held in escrow until the buyer confirms conforming receipt of the goods.",
+            "SourcingPick takes a commission on each transaction. The rate depends on the subscribed plan and is disclosed at quote time."
+          ]
+        },
+        {
+          "heading": "Intellectual property",
+          "body": [
+            "All elements of the platform (software, design, trademarks, editorial content) are the exclusive property of SourcingPick or its licensors.",
+            "You retain all rights in the content you publish (specifications, photos, documents) and grant SourcingPick a limited licence to use it for operating the service."
+          ]
+        },
+        {
+          "heading": "Warranties and limitation of liability",
+          "body": [
+            "SourcingPick takes all reasonable steps to vet its partner factories but cannot guarantee absolute conformity of manufactured products. The escrow mechanism is designed precisely to protect the buyer in case of non-conformity.",
+            "Our liability is limited, to the extent permitted by law, to the amount actually received in respect of the affected transaction."
+          ]
+        },
+        {
+          "heading": "Termination",
+          "body": [
+            "You may terminate your account at any time from your settings. SourcingPick may suspend or terminate an account in case of breach of these terms, after notice."
+          ]
+        },
+        {
+          "heading": "Changes to the terms",
+          "body": [
+            "We may modify these terms to reflect changes in the service or in regulations. Any material change will be notified to you by email at least 30 days before it takes effect."
+          ]
+        },
+        {
+          "heading": "Governing law and jurisdiction",
+          "body": [
+            "These terms are governed by French law. Any dispute shall fall within the exclusive jurisdiction of the courts of the Paris Court of Appeal, subject to mandatory legal provisions to the contrary."
+          ]
+        },
+        {
+          "heading": "Contact",
+          "body": [
+            "For any question about these terms: legal@sourcingpick.com."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "sections": [
+        {
+          "heading": "Data controller",
+          "body": [
+            "SourcingPick SAS, headquartered in France, is the controller of personal data collected via the platform. To exercise your rights or contact our Data Protection Officer: dpo@sourcingpick.com."
+          ]
+        },
+        {
+          "heading": "Data we collect",
+          "body": [
+            "Account data: first name, last name, email, phone, preferred language, role, and parent organisation.",
+            "Organisation data: legal name, registration number, VAT number, address, bank details, KYC documents.",
+            "Usage data: login history, requests created, quotes received, orders, messages exchanged."
+          ]
+        },
+        {
+          "heading": "Purposes and legal bases",
+          "body": [
+            "Contract performance: delivery of the sourcing service, processing of orders and payments.",
+            "Legal obligations: KYC compliance, anti-money-laundering, invoicing, accounting retention.",
+            "Legitimate interest: platform security, fraud prevention, service improvement.",
+            "Consent: audience measurement, marketing communications (where you explicitly opt in)."
+          ]
+        },
+        {
+          "heading": "Data sharing",
+          "body": [
+            "We share certain data with technical service providers under contract (hosting, email, payments, KYC) acting as processors under GDPR.",
+            "We never sell your data. We may be required to disclose it to competent authorities under legal obligation."
+          ]
+        },
+        {
+          "heading": "Retention periods",
+          "body": [
+            "Account data: kept while your account is active, then archived for 3 years after the last transaction.",
+            "KYC documents: kept for 5 years after the end of the business relationship, per AML-CFT obligations.",
+            "Invoicing data: kept for 10 years, per the French Commercial Code."
+          ]
+        },
+        {
+          "heading": "Your rights (GDPR)",
+          "body": [
+            "You have rights of access, rectification, erasure, restriction, portability, and objection regarding your personal data. You can exercise these from your settings or by writing to dpo@sourcingpick.com.",
+            "In case of disagreement, you may lodge a complaint with the CNIL (www.cnil.fr)."
+          ]
+        },
+        {
+          "heading": "International transfers",
+          "body": [
+            "Our primary infrastructure is hosted in the European Union. When processing an order involves partners outside the EU, we apply the European Commission's Standard Contractual Clauses to govern the transfers."
+          ]
+        },
+        {
+          "heading": "Cookies",
+          "body": [
+            "Our use of cookies is detailed in our dedicated cookies policy."
+          ]
+        },
+        {
+          "heading": "Security",
+          "body": [
+            "Sensitive data (passwords, IBANs, KYC documents) are encrypted at rest. Access is restricted on a need-to-know basis and logged. Two-factor authentication is mandatory for Admin accounts."
+          ]
+        },
+        {
+          "heading": "Contact",
+          "body": [
+            "Data Protection Officer: dpo@sourcingpick.com."
+          ]
+        }
+      ]
+    },
+    "cookies": {
+      "title": "Cookie policy",
+      "sections": [
+        {
+          "heading": "What is a cookie?",
+          "body": [
+            "A cookie is a small text file placed on your device when you visit a website. It lets the site remember certain information (language, login session, consent choice) between visits."
+          ]
+        },
+        {
+          "heading": "Strictly necessary cookies",
+          "body": [
+            "These cookies are essential to the platform's operation and do not require your prior consent.",
+            "sp_locale (1 year) — remembers your preferred language.",
+            "sp_consent (1 year) — records your choice regarding non-essential cookies.",
+            "next-auth.session-token (session) — keeps you signed in while authenticated.",
+            "next-auth.csrf-token (session) — protects authentication forms against CSRF attacks."
+          ]
+        },
+        {
+          "heading": "Non-essential cookies",
+          "body": [
+            "In the current version, SourcingPick does not set any non-essential cookies. If we introduce analytics or marketing tools in the future, they will only be set after your explicit consent via the dedicated banner."
+          ]
+        },
+        {
+          "heading": "Managing your choices",
+          "body": [
+            "You can change your choice at any time by deleting the sp_consent cookie from your browser settings, then reloading the page: the consent banner will reappear.",
+            "You can also block or delete all cookies via your browser settings. Note that this may affect certain features of the service (notably authentication)."
+          ]
+        },
+        {
+          "heading": "Contact",
+          "body": [
+            "For any question about our use of cookies: dpo@sourcingpick.com."
+          ]
+        }
+      ]
+    }
+  },
+  "footer": {
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "pricing": "Pricing",
+    "about": "About",
+    "howItWorks": "How it works",
+    "becomePartner": "Become a partner factory",
+    "terms": "Terms of service",
+    "privacy": "Privacy policy",
+    "cookies": "Cookie policy",
+    "allRights": "All rights reserved.",
+    "madeIn": "Made with ❤️ by INAIRIS"
+  },
+  "errors": {
+    "404": {
+      "title": "Page not found",
+      "description": "The page you're looking for doesn't exist or has moved.",
+      "back": "Back to home"
+    },
+    "500": {
+      "title": "Something went wrong",
+      "description": "Something broke on our end. Please try again.",
+      "retry": "Try again"
+    },
+    "notFound": {
+      "title": "We lost that page.",
+      "body": "The address you tried doesn't exist or has moved. Let's get you back on track.",
+      "home": "Back to home",
+      "browse": "Browse the marketplace"
+    },
+    "systemError": {
+      "code": "System error",
+      "title": "Something broke on our end.",
+      "body": "We couldn't render this page. The team has been notified. Try again in a moment.",
+      "retry": "Retry"
+    }
+  },
+  "locale": {
+    "switch": "Language",
+    "fr": "Français",
+    "en": "English",
+    "zh": "中文"
+  }
+}

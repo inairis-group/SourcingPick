@@ -1,0 +1,1609 @@
+{
+  "brand": {
+    "name": "SourcingPick",
+    "tagline": "التوريد الدولي، بمعايير صناعية."
+  },
+  "client": {
+    "dashboard": {
+      "eyebrow": "لوحة التحكم",
+      "title": "نظرة عامة",
+      "description": "طلباتك وعروض الأسعار والطلبيات في لمحة واحدة.",
+      "kpiOpenRequests": "الطلبات المفتوحة",
+      "kpiActiveOrders": "الطلبيات النشطة",
+      "kpiAwaitingPayment": "في انتظار الدفع",
+      "kpiTotalSpent": "إجمالي المصروف (طلبيات مكتملة)",
+      "kpiTotalSpentHint": "{n} طلبية مغلقة",
+      "quotesAwaitingTitle": "عروض أسعار بانتظار قرارك",
+      "quotesAwaitingDesc": "عروض الأسعار التي أرسلها وكيلك.",
+      "quotesEmpty": "لا توجد عروض أسعار بانتظار القرار. سيُعلمك وكيلك حين تتوفر.",
+      "quoteValidUntil": "صالح حتى",
+      "awaitingPaymentTitle": "للدفع",
+      "awaitingPaymentDesc": "دفعات مقدمة بنسبة 30٪ معلقة.",
+      "awaitingPaymentEmpty": "لا توجد دفعات معلقة.",
+      "recentOrdersTitle": "الطلبيات الأخيرة",
+      "recentOrdersEmpty": "لا توجد طلبيات بعد.",
+      "recentRequestsTitle": "الطلبات الأخيرة",
+      "recentRequestsEmpty": "لا توجد طلبات بعد.",
+      "seeAll": "عرض الكل"
+    },
+    "requests": {
+      "eyebrow": "توريد عند الطلب",
+      "title": "طلباتي",
+      "description": "تتبع طلبات التوريد الخاصة بك وأطلق طلبات جديدة.",
+      "newRequest": "طلب جديد",
+      "newTitle": "طلب توريد جديد",
+      "newDescription": "صف احتياجك في خطوات قليلة. سيتواصل معك وكيل خلال 24 ساعة.",
+      "submitRequest": "إرسال الطلب",
+      "backToList": "العودة إلى الطلبات",
+      "emptyTitle": "لا توجد طلبات بعد",
+      "emptyBody": "أطلق أول طلب توريد لك — وكيل متخصص سيرافقك من التأهيل وحتى التسليم.",
+      "colReference": "المرجع",
+      "colTitle": "الطلب",
+      "colCategory": "الفئة",
+      "colQuantity": "الكمية",
+      "colBudget": "الميزانية",
+      "colStatus": "الحالة",
+      "deadlineShort": "الموعد النهائي",
+      "stepProduct": "المنتج",
+      "stepLogistics": "اللوجستيات",
+      "stepRequirements": "المتطلبات",
+      "stepReview": "المراجعة",
+      "titleLabel": "عنوان الطلب",
+      "titleHint": "اسم مختصر يلخص احتياجك.",
+      "titlePlaceholder": "حقيبة قطنية 250 غ/م² — مجموعة الصيف",
+      "categoryLabel": "الفئة",
+      "categoryPlaceholder": "اختر فئة…",
+      "productNameLabel": "اسم المنتج",
+      "productNamePlaceholder": "حقيبة قماشية، دفتر A5، إلخ.",
+      "productDescriptionLabel": "وصف تفصيلي",
+      "productDescriptionHint": "المواد، الأبعاد، الألوان، اللمسات الأخيرة، القيود الخاصة.",
+      "productDescriptionPlaceholder": "قطن عضوي 250 غ/م²، 38×42 سم، مقابض 60 سم، طباعة سيلك سكرين بلون واحد على الواجهة…",
+      "quantityLabel": "الكمية",
+      "targetPriceLabel": "سعر الوحدة المستهدف",
+      "budgetLabel": "إجمالي الميزانية",
+      "priceHintEur": "باليورو، دون احتساب الضرائب.",
+      "deadlineLabel": "تاريخ التسليم المطلوب",
+      "addressLabel": "عنوان التسليم",
+      "addressPlaceholder": "12 شارع الجمهورية، 69001 ليون",
+      "incotermLabel": "إنكوترم",
+      "incotermPlaceholder": "اختر إنكوترم…",
+      "incotermHint": "يحدد من يتحمل مسؤولية النقل والتأمين والرسوم.",
+      "regionLabel": "منطقة التوريد",
+      "regionLockedHint": "حالياً يقوم SourcingPick بالتوريد من الصين. ستُفتح دول أخرى قريباً.",
+      "regionLockedCountry": "الصين",
+      "regionLockedBadge": "مُقفل",
+      "countryLabel": "بلد التوريد",
+      "countryHint": "حدد بحثك ببلد واحد ضمن المنطقة.",
+      "countryPlaceholder": "اختر بلداً…",
+      "errorCountry": "يرجى اختيار بلد التوريد.",
+      "certsLabel": "الشهادات المطلوبة",
+      "certsHint": "اذكر شهاداتك الإلزامية مفصولة بفواصل.",
+      "certsPlaceholder": "GOTS, OEKO-TEX, FSC, CE…",
+      "certsExplainer": "كلما كانت متطلباتك أدق، كان تأهيل الطلب من قبل الوكيل أسرع.",
+      "reviewDescription": "تحقق من طلبك قبل إرساله. ستتمكن من التحاور مع وكيلك لاحقاً عبر مراسلات الطلب.",
+      "sectionProduct": "المنتج",
+      "sectionLogistics": "اللوجستيات",
+      "sectionAgent": "المتابعة",
+      "agentLabel": "الوكيل المعيَّن",
+      "agentPending": "لم يُعيَّن وكيل بعد — طلبك في قائمة الانتظار. اتفاقية مستوى الخدمة: 24 ساعة عمل.",
+      "tenderInvitationsCount": "تم إرسال {n} دعوة عطاء",
+      "quotesCount": "تم استلام {n} عرض سعر",
+      "errorTitle": "يرجى إدخال عنوان للطلب.",
+      "errorCategory": "يرجى اختيار فئة.",
+      "errorProductName": "يرجى إدخال اسم المنتج.",
+      "errorQuantity": "يجب أن تكون الكمية عدداً صحيحاً موجباً.",
+      "errorDeadline": "يرجى إدخال تاريخ التسليم.",
+      "errorDeadlineFuture": "يجب أن يكون تاريخ التسليم في المستقبل.",
+      "errorAddress": "يرجى إدخال عنوان التسليم كاملاً.",
+      "errorIncoterm": "يرجى اختيار إنكوترم.",
+      "errorRegion": "يرجى اختيار منطقة التوريد.",
+      "incoterms": {
+        "EXW": "EXW — تسليم من المصنع، أنت تتولى كامل عملية النقل",
+        "FOB": "FOB — المصنع يسلّم إلى الميناء",
+        "DAP": "DAP — المصنع يسلّم إلى العنوان، دون الرسوم",
+        "DDP": "DDP — المصنع يسلّم إلى العنوان مع الرسوم",
+        "CIF": "CIF — المصنع يسلّم إلى الميناء مع التأمين"
+      },
+      "regions": {
+        "ANYWHERE": "بدون تفضيل",
+        "EUROPE": "أوروبا",
+        "MAGHREB": "المغرب العربي",
+        "AFRICA": "أفريقيا",
+        "ASIA": "آسيا",
+        "AMERICAS": "الأمريكتان",
+        "OCEANIA": "أوقيانوسيا",
+        "MIDDLE_EAST": "الشرق الأوسط"
+      },
+      "statuses": {
+        "DRAFT": "مسودة",
+        "REQUEST_RECEIVED": "مُستلم",
+        "ASSIGNED": "مُعيَّن",
+        "QUOTE_SENT": "تم إرسال العروض",
+        "QUOTE_ACCEPTED": "تم قبول العرض",
+        "QUOTE_REJECTED": "تم رفض العروض",
+        "PAYMENT_PENDING": "في انتظار الدفع",
+        "PREPARATION": "قيد الإنتاج",
+        "SHIPPED": "تم الشحن",
+        "IN_TRANSIT": "في الطريق",
+        "COMPLETED": "مكتمل",
+        "CANCELLED": "ملغى"
+      }
+    },
+    "certifications": {
+      "eyebrow": "برنامج الشهادات",
+      "title": "ارعَ شهادة",
+      "description": "ساعد مصنعاً شريكاً في الحصول على شهادة. في المقابل، تُدرَج كراعٍ للملف وتحصل على رؤية ذات أولوية لتقدمه.",
+      "mineTitle": "الملفات المرعية",
+      "sponsorableTitle": "ملفات قابلة للرعاية",
+      "empty": "لا توجد ملفات مفتوحة للرعاية حالياً.",
+      "sponsorCta": "ارعَ"
+    },
+    "marketplace": {
+      "eyebrow": "السوق",
+      "title": "منتجات بأسعار متفاوض عليها مسبقاً",
+      "description": "كتالوج لمنتجات تم توريدها والتفاوض عليها مسبقاً. الحد الأدنى للطلب ومدد التسليم ظاهرة، طلب بنقرة واحدة، حساب ضمان مدمج.",
+      "backToBrowse": "العودة إلى السوق",
+      "searchPlaceholder": "ابحث عن منتج…",
+      "allCategories": "الكل",
+      "empty": "لا يوجد منتج يطابق بحثك.",
+      "inStock": "متوفر في المخزون",
+      "outOfStock": "نفد المخزون",
+      "unitPrice": "سعر الوحدة",
+      "orderTitle": "اطلب",
+      "totalLabel": "الإجمالي",
+      "buyCta": "اشترِ الآن",
+      "moqHint": "الحد الأدنى للطلب: {n} وحدة.",
+      "addressHint": "عنوان التسليم النهائي."
+    },
+    "quotes": {
+      "sectionTitle": "عروض الأسعار المستلمة",
+      "empty": "سيشاركك وكيلك عروض الأسعار هنا فور جاهزيتها.",
+      "agentRecommendation": "اختيار الوكيل",
+      "unitPrice": "سعر الوحدة",
+      "total": "الإجمالي",
+      "leadTime": "مدة التسليم",
+      "incoterm": "إنكوترم",
+      "validUntil": "صالح حتى",
+      "expired": "منتهي الصلاحية",
+      "statusAwaitingDecision": "بانتظار القرار",
+      "statusAccepted": "مقبول",
+      "statusRejected": "مرفوض",
+      "accept": "اقبل هذا العرض",
+      "reject": "ارفض",
+      "cancel": "إلغاء",
+      "confirmAccept": "تأكيد وإنشاء الطلبية",
+      "confirmAcceptCopy": "سيتم رفض العروض الأخرى.",
+      "orderCreatedTitle": "تم إنشاء الطلبية",
+      "orderCreatedBody": "طلبيتك {ref} في انتظار الدفع.",
+      "viewOrder": "عرض الطلبية"
+    },
+    "invoices": {
+      "eyebrow": "الفوترة",
+      "title": "فواتيري",
+      "description": "جميع فواتير SourcingPick الخاصة بك — الدفعات المقدمة، المبالغ المتبقية، ورسوم البحث.",
+      "kpiOpen": "مفتوحة",
+      "kpiOverdue": "متأخرة",
+      "kpiPaid": "مدفوعة",
+      "tableTitle": "سجل الفواتير",
+      "empty": "لا توجد فواتير بعد.",
+      "colReference": "المرجع",
+      "colSubject": "الموضوع",
+      "colType": "النوع",
+      "colAmount": "المبلغ",
+      "colStatus": "الحالة",
+      "colDue": "الاستحقاق",
+      "dueOn": "الاستحقاق",
+      "downloadPdf": "تحميل PDF",
+      "viewOrder": "عرض الطلبية"
+    },
+    "orders": {
+      "eyebrow": "طلبياتي",
+      "title": "الطلبيات النشطة",
+      "description": "تتبع الإنتاج والشحن والتسليم لطلبياتك.",
+      "backToList": "العودة إلى الطلبيات",
+      "emptyTitle": "لا توجد طلبيات بعد",
+      "emptyBody": "تظهر الطلبيات هنا بمجرد قبولك عرض سعر.",
+      "createdAt": "تاريخ الإنشاء",
+      "eta": "الموعد المتوقع",
+      "factoryLabel": "المصنع",
+      "totalLabel": "الإجمالي",
+      "depositLabel": "الدفعة المقدمة (30٪)",
+      "depositHint": "تُدفع للمصنع لبدء الإنتاج.",
+      "balanceLabel": "المبلغ المتبقي (70٪)",
+      "balanceHint": "يُفرَج عنه عند تأكيد التسليم.",
+      "timelineTitle": "التقدم",
+      "sectionLogistics": "التسليم",
+      "sectionTracking": "التتبع",
+      "sectionContact": "التواصل",
+      "carrierLabel": "شركة الشحن",
+      "trackingNumberLabel": "رقم التتبع",
+      "shippedAtLabel": "تاريخ الشحن",
+      "trackingPending": "سيُضيف المصنع معلومات التتبع عند شحن الطلبية.",
+      "paymentPendingTitle": "الدفع مطلوب",
+      "paymentPendingBody": "ادفع الدفعة المقدمة بنسبة 30٪ بالبطاقة. تُحتجَز الأموال في حساب الضمان حتى تؤكد التسليم.",
+      "payDepositCta": "ادفع الدفعة المقدمة",
+      "paymentSuccessTitle": "تم استلام الدفع",
+      "paymentSuccessBody": "دفعتك المقدمة في حساب الضمان. تم إبلاغ المصنع ويمكن بدء الإنتاج.",
+      "paymentCancelledTitle": "تم إلغاء الدفع",
+      "paymentCancelledBody": "لم تتم عملية الدفع. يمكنك المحاولة مجدداً في أي وقت.",
+      "sectionInvoices": "الفواتير",
+      "invoiceTypeDeposit": "دفعة مقدمة",
+      "invoiceTypeBalance": "المبلغ المتبقي",
+      "invoicePaidOn": "تاريخ الدفع",
+      "invoiceIssuedOn": "تاريخ الإصدار",
+      "invoiceStatuses": {
+        "DRAFT": "مسودة",
+        "ISSUED": "صادرة",
+        "PAID": "مدفوعة",
+        "OVERDUE": "متأخرة",
+        "VOID": "ملغاة"
+      },
+      "cancelOrder": "إلغاء الطلبية",
+      "confirmCancelTitle": "إلغاء الطلبية",
+      "confirmCancelBody": "لا يمكن التراجع عن هذا الإجراء. ستُلغى الطلبية وسيُبلَّغ المصنع.",
+      "confirmCancelCta": "تأكيد الإلغاء",
+      "back": "رجوع",
+      "confirmReceiptTitle": "تأكيد الاستلام",
+      "confirmReceiptBody": "تأكيد التسليم يحرّر المبلغ المتبقي للمصنع.",
+      "confirmReceiptCta": "تأكيد الاستلام",
+      "payBalanceCta": "ادفع المبلغ المتبقي وأكّد الاستلام",
+      "payBalanceBody": "دفع المبلغ المتبقي بنسبة 70٪ يُطلِق تلقائياً صرف المبلغ للمصنع.",
+      "waitingForFactory": "بانتظار الإجراء التالي من المصنع."
+    }
+  },
+  "onboarding": {
+    "client": {
+      "step1Eyebrow": "مرحباً بك",
+      "step1Title": "مرحباً {firstName}، أهلاً بك في SourcingPick.",
+      "step1Body": "تم إعداد حساب {orgName}. إليك ما سيتغير في طريقة توريدك.",
+      "pillarAgentTitle": "وكيل مخصص",
+      "pillarAgentBody": "عند طلبك الأول، يقوم وكيل بتأهيل الاحتياج والتواصل مع 3 إلى 5 مصانع موثقة خلال 72 ساعة.",
+      "pillarEscrowTitle": "حساب ضمان مدمج",
+      "pillarEscrowBody": "تبقى أموالك محتجزة لدى مزود الدفع لدينا حتى تؤكد استلامك للطلبية مطابِقة للمواصفات.",
+      "pillarReachTitle": "شبكة عالمية",
+      "pillarReachBody": "أوروبا، المغرب العربي، آسيا، أفريقيا، الأمريكتان. فريقنا يتحدث لغة موردك.",
+      "step2Eyebrow": "كيف تعمل المنصة",
+      "step2Title": "طلبك الأول في 4 خطوات.",
+      "step2Body": "إليك ما يحدث بين نشر الاحتياج واستلام طلبيتك.",
+      "step2Item1": "تنشر احتياجك (المنتج، الكمية، الشهادات، الموعد النهائي).",
+      "step2Item2": "خلال 24 ساعة، يتواصل وكيلك مع المصانع المناسبة.",
+      "step2Item3": "تستلم من 1 إلى 3 عروض أسعار مؤهلة مع توصية.",
+      "step2Item4": "تقبل، تدفع عبر الضمان، وتستلم طلبيتك.",
+      "finish": "الانتقال إلى لوحتي"
+    },
+    "factory": {
+      "step1Eyebrow": "مرحباً بك",
+      "step1Title": "مرحباً {firstName}، أهلاً بك في SourcingPick.",
+      "step1Body": "تم إعداد حساب {orgName}. إليك حالة ملفك.",
+      "kycPendingTitle": "ملف التحقق (KYC) قيد المراجعة",
+      "kycPendingBody": "يراجع فريقنا مستنداتك خلال 48 ساعة عمل. ستتلقى بريداً إلكترونياً بمجرد التحقق. في غضون ذلك، يمكنك إكمال إعداد ملفك التعريفي.",
+      "kycVerifiedTitle": "تم التحقق من ملف KYC",
+      "kycVerifiedBody": "يمكنك استقبال دعوات العطاءات وإدراج منتجات في السوق.",
+      "kycFlaggedTitle": "ملف KYC يستدعي مراجعة",
+      "kycFlaggedBody": "سيتواصل معك أحد أعضاء الفريق لتوضيح بعض النقاط.",
+      "kycRejectedTitle": "تم رفض ملفك",
+      "kycRejectedBody": "تواصل مع kyc@sourcingpick.com لمعرفة الأسباب وتقديم ملف جديد.",
+      "step2Eyebrow": "الخطوات التالية",
+      "step2Title": "بينما يُراجَع ملف KYC، إليك ما يمكنك فعله.",
+      "step2Body": "هذه الإجراءات تجعلك جاهزاً لاستقبال أول دعوات عطاء فور التحقق من ملفك.",
+      "step2Item1": "أكمل الملف التعريفي للمصنع: القدرات، اللغات المتحدث بها، الشهادات الحالية.",
+      "step2Item2": "جهّز من 3 إلى 5 صور عالية الجودة لمنتجاتك الرئيسية.",
+      "step2Item3": "تحقق من تحديث رقم IBAN الخاص بك لاستلام المدفوعات."
+,
+      "finish": "الانتقال إلى لوحتي"
+    }
+  },
+  "settings": {
+    "eyebrow": "إعدادات الحساب",
+    "title": "الإعدادات",
+    "description": "أدر حسابك ومنظمة {org}.",
+    "profile": {
+      "title": "الملف التعريفي",
+      "description": "معلوماتك الشخصية، الظاهرة لوكيلك ولفريق SourcingPick.",
+      "phoneLabel": "الهاتف",
+      "emailHint": "لا يمكن تغيير البريد الإلكتروني من هنا — يرجى التواصل مع الدعم.",
+      "localeLabel": "اللغة المفضلة",
+      "localeHint": "تحدد لغة الواجهة والإشعارات.",
+      "saved": "تم تحديث الملف التعريفي."
+    },
+    "security": {
+      "title": "الأمان",
+      "description": "غيّر كلمة المرور.",
+      "currentPasswordLabel": "كلمة المرور الحالية",
+      "newPasswordLabel": "كلمة المرور الجديدة",
+      "submit": "تحديث كلمة المرور",
+      "saved": "تم تحديث كلمة المرور."
+    },
+    "twoFactor": {
+      "title": "المصادقة الثنائية",
+      "description": "استلم رمزاً عبر البريد الإلكتروني عند كل تسجيل دخول. موصى به لجميع الحسابات.",
+      "toggleLabel": "تفعيل المصادقة الثنائية عبر البريد",
+      "toggleDescription": "سيُطلب منك رمز من 6 أرقام عند كل تسجيل دخول.",
+      "adminLocked": "المصادقة الثنائية إلزامية لحسابات المسؤولين ولا يمكن تعطيلها."
+    },
+    "members": {
+      "title": "أعضاء المنظمة",
+      "description": "الأشخاص الذين لديهم وصول إلى حساب SourcingPick الخاص بك.",
+      "inviteSoon": "دعوة أعضاء جدد ستتوفر قريباً.",
+      "subRoleOwner": "المالك",
+      "subRoleMember": "عضو",
+      "subRoleAccountant": "محاسب"
+    }
+  },
+  "agent": {
+    "dashboard": {
+      "eyebrow": "لوحة التحكم",
+      "title": "مكتبي",
+      "description": "طلباتك، عروض الأسعار للإحالة، والطلبيات الجارية.",
+      "kpiAssigned": "الطلبات المُعيَّنة",
+      "kpiAssignedHint": "{overdue} متأخرة · {approaching} في خطر · {ok} على المسار",
+      "kpiQuotesToForward": "عروض أسعار للإحالة",
+      "kpiActiveOrders": "الطلبيات المتابَعة",
+      "kpiCommission": "العمولة المكتسبة",
+      "kpiCommissionHint": "{n} طلبية مغلقة",
+      "queueTitle": "طابور اتفاقية مستوى الخدمة",
+      "queueDesc": "الأقدم أولاً.",
+      "queueEmpty": "لا توجد طلبات نشطة.",
+      "quotesSuffix": "عروض أسعار مستلمة",
+      "quotesToForwardTitle": "عروض أسعار مستلمة، للإحالة",
+      "quotesToForwardDesc": "عروض أسعار بانتظار دفعها إلى العميل.",
+      "quotesToForwardEmpty": "لا توجد عروض أسعار بانتظار الإحالة.",
+      "activeOrdersTitle": "الطلبيات التي تتابعها",
+      "activeOrdersEmpty": "لا توجد طلبيات نشطة."
+    },
+    "requests": {
+      "eyebrow": "محفظتي",
+      "title": "طلباتي المُعيَّنة",
+      "description": "الطلبات التي تكون فيها الوكيل الرئيسي. اضغط للتأهيل وإطلاق العطاء.",
+      "emptyTitle": "لا توجد طلبات مُعيَّنة",
+      "emptyBody": "عندما يُعيّن لك المسؤول طلباً، يظهر هنا.",
+      "backToList": "العودة إلى الطلبات",
+      "clientLabel": "العميل",
+      "sectionContact": "بيانات التواصل مع العميل",
+      "sectionTenders": "دعوات العطاءات",
+      "sectionQuotes": "عروض الأسعار المستلمة",
+      "sectionOrder": "الطلبية",
+      "findFactories": "ابحث عن مصانع",
+      "browseFactories": "تصفح قاعدة المصانع",
+      "slaOk": "{h} ساعة",
+      "slaApproaching": "{h} ساعة — اقتراب موعد اتفاقية الخدمة",
+      "slaOverdue": "{h} ساعة — تجاوز اتفاقية الخدمة",
+      "tenderInvitationsCount": "{n} عطاء",
+      "quotesCount": "{n} عرض سعر"
+    },
+    "quotes": {
+      "empty": "لم تُستلم أي عروض أسعار لهذا الطلب بعد.",
+      "submittedAt": "تاريخ الاستلام",
+      "factoryPrice": "سعر المصنع",
+      "clientPrice": "سعر العميل",
+      "total": "الإجمالي",
+      "validUntil": "صالح حتى",
+      "expired": "منتهي الصلاحية",
+      "scoreRecommended": "موصى به",
+      "scoreGood": "تطابق جيد",
+      "scoreOk": "للنظر فيه",
+      "sendToClient": "أرسل إلى العميل",
+      "sentToClientLabel": "تم الإرسال إلى العميل",
+      "statusDraft": "مسودة",
+      "statusReceived": "مُستلم",
+      "statusSentToClient": "أُرسِل إلى العميل",
+      "statusAccepted": "مقبول",
+      "statusRejected": "مرفوض",
+      "statusExpired": "منتهي الصلاحية"
+    },
+    "factories": {
+      "eyebrow": "قاعدة المصانع",
+      "title": "المصانع الموثقة",
+      "description": "جميع المصانع الشريكة التي اعتمدها فريق KYC لدينا.",
+      "contextHint": "تمت التصفية حسب المنطقة: {region}.",
+      "filterAll": "الكل",
+      "searchPlaceholder": "ابحث عن مصنع، بلد، قدرة…",
+      "empty": "لا يوجد مصنع يطابق هذا الفلتر.",
+      "ordersSuffix": "طلبية"
+    },
+    "tasks": {
+      "eyebrow": "مهامي",
+      "title": "المهام",
+      "description": "تذكيرات شخصية — متابعات اتفاقيات الخدمة، تنبيهات، أمور للمراقبة.",
+      "kpiOpen": "مفتوحة",
+      "kpiDueSoon": "تستحق خلال 48 ساعة",
+      "kpiOverdue": "متأخرة",
+      "newTaskTitle": "مهمة جديدة",
+      "openTitle": "للتنفيذ · {n}",
+      "openEmpty": "لا توجد مهام مفتوحة. استثمر الهدوء للتقدم.",
+      "closedTitle": "مغلقة حديثاً · {n}",
+      "fieldTitle": "العنوان",
+      "titlePlaceholder": "متابعة الفاتورة INV-2026-0142",
+      "fieldPriority": "الأولوية",
+      "fieldDueAt": "الاستحقاق",
+      "fieldRequest": "الطلب المرتبط",
+      "requestPlaceholder": "لا شيء",
+      "noRequestLink": "— بدون ربط —",
+      "fieldDescription": "ملاحظات",
+      "descriptionPlaceholder": "السياق، الخطوات التالية، جهة الاتصال…",
+      "createCta": "إنشاء المهمة",
+      "completeCta": "تحديد كمنجزة",
+      "cancelCta": "إلغاء",
+      "reopenCta": "إعادة الفتح",
+      "dueAt": "الاستحقاق",
+      "completedAt": "تاريخ الإنجاز",
+      "overdueBadge": "متأخرة",
+      "priorityLow": "منخفضة",
+      "priorityMedium": "متوسطة",
+      "priorityHigh": "عالية",
+      "statuses": {
+        "PENDING": "للتنفيذ",
+        "IN_PROGRESS": "قيد التنفيذ",
+        "DONE": "منجزة",
+        "CANCELLED": "ملغاة"
+      }
+    },
+    "tenders": {
+      "eyebrow": "دعوة عطاء",
+      "backToRequest": "العودة إلى الطلب",
+      "sectionInvitation": "الدعوة",
+      "sectionFactory": "ملف المصنع",
+      "sectionQuote": "عرض السعر المستلم",
+      "statusLabel": "الحالة",
+      "invitedAtLabel": "تاريخ الدعوة",
+      "viewedAtLabel": "تاريخ الاطلاع",
+      "expiresAtLabel": "تاريخ الانتهاء",
+      "matchScoreLabel": "درجة التطابق",
+      "languagesLabel": "اللغات",
+      "totalOrdersLabel": "الطلبيات المشحونة",
+      "capabilitiesLabel": "القدرات",
+      "noFactoryProfile": "لم يكمل هذا المصنع ملفه التعريفي بعد."
+    }
+  },
+  "orders": {
+    "statuses": {
+      "PAYMENT_PENDING": "في انتظار الدفع",
+      "PREPARATION": "قيد الإنتاج",
+      "QC": "مراقبة الجودة",
+      "SHIPPED": "تم الشحن",
+      "IN_TRANSIT": "في الطريق",
+      "COMPLETED": "مكتمل",
+      "CANCELLED": "ملغى"
+    },
+    "cancelledBanner": "تم إلغاء هذه الطلبية."
+  },
+  "publicMarketplace": {
+    "loadMoreTitle": "أكثر من 20 منتجاً متاحاً",
+    "loadMoreBody": "أنشئ حساب عميل لتصفح الكتالوج الكامل والطلب بنقرة واحدة.",
+    "endOfPreviewTitle": "هذا ختام المعاينة",
+    "endOfPreviewBody": "أنشئ حساباً لتتبع الطلبيات، ومراسلة وكلائنا، وفتح ميزات حصرية.",
+    "signupCta": "إنشاء حساب عميل",
+    "loginCta": "تسجيل الدخول",
+    "orderTitle": "اطلب هذا المنتج",
+    "orderBody": "سجّل الدخول أو أنشئ حساباً لإتمام طلبيتك مع دفعة مقدمة مؤمَّنة.",
+    "signupToBuyCta": "سجّل لتطلب"
+  },
+  "notifications": {
+    "bellLabel": "الإشعارات",
+    "title": "الإشعارات",
+    "empty": "لا توجد إشعارات بعد.",
+    "markAllRead": "تحديد الكل كمقروء"
+  },
+  "messaging": {
+    "bellLabel": "الرسائل",
+    "bellTitle": "الرسائل",
+    "bellEmpty": "لا توجد محادثات بعد.",
+    "unreadCount": "{n} غير مقروءة",
+    "sectionTitle": "الرسائل",
+    "loading": "جارٍ تحميل الرسائل…",
+    "empty": "لا توجد رسائل بعد. ابدأ المحادثة.",
+    "placeholder": "اكتب رسالة…",
+    "send": "إرسال",
+    "shortcutHint": "⌘/Ctrl + Enter للإرسال",
+    "systemAuthor": "SourcingPick",
+    "errorLoad": "تعذّر تحميل الرسائل. حاول مجدداً.",
+    "errorStream": "انقطع البث المباشر للتحديثات. أعد تحميل الصفحة لإعادة الاتصال.",
+    "contextHints": {
+      "REQUEST": "محادثة طلب التوريد هذا — بين العميل والوكيل.",
+      "TENDER": "محادثة خاصة بين الوكيل وهذا المصنع للعطاء. المصانع المدعوة الأخرى لا ترى هذه الرسائل.",
+      "QUOTE": "محادثة عرض السعر هذا — العميل، الوكيل، والمصنع.",
+      "ORDER": "محادثة الطلبية هذه — جميع الأطراف مشمولة.",
+      "KYC": "محادثة مع فريقنا حول ملف KYC الخاص بك.",
+      "CERT": "محادثة حول برنامج شهاداتك.",
+      "DISPUTE": "خيط نزاع، يتولى الإشراف عليه فريق SourcingPick."
+    }
+  },
+  "tender": {
+    "selectFactoriesTitle": "اختر المصانع للدعوة",
+    "selectFactoriesDescription": "اختر حتى {n} مصانع للطلب \"{title}\". تُعطى الأولوية لمصانع الفئة نفسها.",
+    "backToRequest": "العودة إلى الطلب",
+    "matchOnly": "{category} فقط",
+    "matchedTag": "تطابق",
+    "alreadyInvited": "تمت دعوته مسبقاً",
+    "selectedCount": "{n}/{max} مصنع مختار",
+    "sendInvitations": "إرسال {n} دعوة",
+    "sendCta": "إطلاق عطاء",
+    "invitedCount": "تمت دعوة {n} مصنع",
+    "errorMaxInvitations": "يمكنك اختيار {n} مصانع كحد أقصى.",
+    "errorMinSelection": "اختر مصنعاً واحداً على الأقل."
+  },
+  "factory": {
+    "dashboard": {
+      "eyebrow": "لوحة التحكم",
+      "title": "نظرة عامة",
+      "description": "العطاءات، الإنتاج، المدفوعات، والكتالوج في مكان واحد.",
+      "kycPendingTitle": "KYC قيد المراجعة",
+      "kycPendingBody": "ملفك قيد المراجعة. ستستلم دعوات العطاءات بمجرد اعتماده.",
+      "connectPendingTitle": "اربط Stripe لاستلام المدفوعات",
+      "connectPendingBody": "يجب إعداد Stripe Connect قبل أن نتمكن من صرف المدفوعات لك عند التسليم.",
+      "kpiOpenTenders": "عطاءات بانتظار الرد",
+      "kpiOpenTendersHint": "المستلمة حتى الآن: {n}",
+      "kpiActiveOrders": "الطلبيات النشطة",
+      "kpiPendingPayouts": "مدفوعات معلقة",
+      "kpiPendingPayoutsHint": "{n} تحويل في الطابور",
+      "kpiTotalEarned": "المكتسب (مدفوع)",
+      "kpiTotalEarnedHint": "{n} دفعة مكتملة",
+      "openTendersTitle": "دعوات العطاءات المفتوحة",
+      "openTendersDesc": "اضغط للمراجعة والرد.",
+      "openTendersEmpty": "لا توجد دعوات عطاءات بانتظار الرد.",
+      "catalogueTitle": "الكتالوج",
+      "activeOrdersTitle": "الطلبيات قيد الإنتاج",
+      "activeOrdersEmpty": "لا توجد طلبيات نشطة."
+    },
+    "catalogue": {
+      "eyebrow": "الكتالوج",
+      "title": "منتجاتي",
+      "description": "أدرج منتجاتك المتفاوض عليها مسبقاً في سوق SourcingPick.",
+      "newCta": "إضافة منتج",
+      "newTitle": "منتج جديد",
+      "newDescription": "صف منتجك. يراجع فريقنا كل إدراج قبل نشره.",
+      "backToList": "العودة إلى الكتالوج",
+      "emptyTitle": "لا توجد منتجات بعد",
+      "emptyBody": "أدرج أول منتج لك ليظهر في السوق بعد الاعتماد.",
+      "noImage": "لا توجد صورة",
+      "detailsTitle": "تفاصيل المنتج",
+      "nameLabel": "اسم المنتج",
+      "namePlaceholder": "حقيبة قطنية 250 غ/م² — مجموعة الصيف",
+      "categoryLabel": "الفئة",
+      "descriptionLabel": "الوصف",
+      "descriptionHint": "المواد، الأبعاد، اللمسات الأخيرة، الخيارات. 20 حرفاً على الأقل.",
+      "descriptionPlaceholder": "قطن عضوي 250 غ/م²، 38×42 سم، مقابض 60 سم، طباعة سيلك سكرين بلون واحد على الواجهة…",
+      "priceLabel": "سعر وحدة المصنع",
+      "clientPriceLabel": "سعر وحدة العميل",
+      "clientPriceHint": "محسوب مع هامش المنصة بنسبة 12٪.",
+      "leadTimeLabel": "مدة التسليم",
+      "moqLabel": "الحد الأدنى للطلب",
+      "stockLabel": "المخزون",
+      "stockLowLabel": "تنبيه انخفاض المخزون",
+      "stockLowHint": "اختياري — سنُعلمك عند انخفاض المخزون عن هذا الحد.",
+      "viewsLabel": "المشاهدات",
+      "soldLabel": "المباع",
+      "imagesLabel": "الصور",
+      "imagesHint": "JPG / PNG / WebP، 10 ميغابايت كحد أقصى لكل صورة، حتى 6 صور",
+      "imagesDropHint": "اضغط لرفع حتى {n} صورة.",
+      "imagesMaxReached": "تم الوصول إلى الحد الأقصى للصور.",
+      "imagesTooMany": "تجاوزت حد الـ 6 صور — لن يُحتفظ إلا بالست الأولى.",
+      "saveDraft": "حفظ كمسودة",
+      "saveChanges": "حفظ التغييرات",
+      "archiveCta": "أرشفة",
+      "submitForReviewCta": "تقديم للمراجعة",
+      "submitNeedsImage": "أضف صورة واحدة على الأقل قبل التقديم.",
+      "pendingReviewBanner": "بانتظار مراجعة فريق SourcingPick.",
+      "rejectedBanner": "مرفوض — عالج المشكلات وأعد التقديم.",
+      "statuses": {
+        "DRAFT": "مسودة",
+        "PENDING_REVIEW": "قيد المراجعة",
+        "PUBLISHED": "منشور",
+        "REJECTED": "مرفوض",
+        "OUT_OF_STOCK": "نفد المخزون",
+        "ARCHIVED": "مؤرشف"
+      }
+    },
+    "certification": {
+      "eyebrow": "برنامج الشهادات",
+      "title": "شهاداتي",
+      "description": "انضم إلى برنامج شهادات SourcingPick — تقودك إحدى الهيئات الشريكة لدينا من الملف إلى التدقيق إلى الإصدار.",
+      "kycRequiredTitle": "KYC مطلوب",
+      "kycRequiredBody": "تشترط هيئات الاعتماد جهة موثقة. أكمل عملية KYC للبدء.",
+      "enrollTitle": "تسجيل جديد",
+      "enrollDescription": "اختر معياراً وهيئة اعتماد. يتولى فريقنا الجدولة.",
+      "standardLabel": "المعيار المستهدف",
+      "standardHint": "مثلاً ISO 9001:2015، GOTS، OEKO-TEX Standard 100",
+      "bodyLabel": "الهيئة",
+      "bodyPlaceholder": "اختر هيئة…",
+      "targetMonthsLabel": "الهدف (بالأشهر)",
+      "targetMonthsHint": "كم شهراً تريد أن يستغرق الحصول على الشهادة؟",
+      "enrollCta": "بدء التسجيل",
+      "activeTitle": "نشطة",
+      "closedTitle": "مغلقة",
+      "empty": "لا توجد تسجيلات بعد.",
+      "sponsoredBy": "برعاية",
+      "preAuditLabel": "تدقيق أولي",
+      "auditLabel": "التدقيق",
+      "etaLabel": "التاريخ المستهدف",
+      "issuedLabel": "تاريخ الإصدار",
+      "expiresLabel": "تاريخ الانتهاء",
+      "viewCertificate": "عرض الشهادة",
+      "withdrawCta": "انسحاب",
+      "statuses": {
+        "DOSSIER": "ملف",
+        "AUDIT_PROGRAMME": "تم جدولة التدقيق",
+        "EN_COURS": "قيد التنفيذ",
+        "CERTIFIE": "حاصل على الشهادة",
+        "REFUSE": "مرفوض"
+      }
+    },
+    "payouts": {
+      "eyebrow": "المدفوعات",
+      "title": "مدفوعاتي",
+      "description": "أدر حساب Stripe الخاص بالمدفوعات وراجع سجل الدفعات.",
+      "startTitle": "تفعيل المدفوعات",
+      "startBody": "اربط حساب Stripe لاستلام المدفوعات عند تسليم الطلبيات.",
+      "startOnboardingCta": "اربط Stripe",
+      "pendingTitle": "حساب Stripe غير مكتمل",
+      "pendingBody": "يحتاج Stripe إلى مزيد من المعلومات قبل أن نتمكن من صرف المدفوعات لك. استأنف النموذج لتفعيل المدفوعات.",
+      "resumeOnboardingCta": "استئناف",
+      "readyTitle": "حساب Stripe مفعَّل",
+      "readyBody": "تم تفعيل المدفوعات. كل طلبية مُسلَّمة تُحرّك تحويلاً صافياً بعد خصم عمولة 3٪.",
+      "manageAccountCta": "إدارة",
+      "unreachableTitle": "Stripe غير متاح",
+      "unreachableBody": "تعذّر علينا الوصول إلى Stripe. حاول مجدداً بعد بضع دقائق — لن تتأثر مدفوعاتك الجارية.",
+      "onboardingError": "تعذّر إنشاء رابط الانضمام إلى Stripe.",
+      "historyTitle": "سجل المدفوعات",
+      "historyEmpty": "لا توجد مدفوعات بعد. تظهر هنا عند تأكيد العملاء للتسليم.",
+      "sentOn": "تاريخ الإرسال",
+      "createdOn": "تاريخ الإنشاء",
+      "failurePendingOnboarding": "الدفعة معلّقة: أكمل ربط حساب Stripe لاستلامها.",
+      "statusPending": "معلّقة",
+      "statusScheduled": "مجدوَلة",
+      "statusSent": "مُرسَلة",
+      "statusReceived": "مستلَمة",
+      "statusFailed": "فاشلة"
+    },
+    "orders": {
+      "eyebrow": "طلبياتي",
+      "title": "طلبيات الإنتاج",
+      "description": "الطلبيات النشطة لعملائك. حدّث الحالات مع تقدم الإنتاج.",
+      "backToList": "العودة إلى الطلبيات",
+      "emptyTitle": "لا توجد طلبيات بعد",
+      "emptyBody": "تظهر الطلبيات هنا بمجرد قبول العميل لأحد عروض أسعارك.",
+      "clientLabel": "العميل",
+      "revenueLabel": "الإيراد الإجمالي",
+      "supplierFeeLabel": "رسوم SourcingPick (3٪)",
+      "supplierFeeHint": "بحد أقصى 5,000 € — التسعير الإصدار الثاني.",
+      "netLabel": "صافي الدفعة",
+      "netHint": "تقديري؛ الدفعة الفعلية تمر عبر الضمان (المرحلة 3).",
+      "sectionSpec": "المواصفات",
+      "deadlineLabel": "موعد التسليم المطلوب",
+      "waitingPaymentTitle": "بانتظار دفع العميل",
+      "waitingPaymentBody": "ستُعلَم فور تأكيد الدفع لتتمكن من بدء الإنتاج.",
+      "preparationCtaTitle": "الإنتاج جارٍ",
+      "preparationCtaBody": "حدّد الطلبية كجاهزة لمراقبة الجودة بمجرد انتهاء الإنتاج.",
+      "markQcCta": "الانتقال إلى مراقبة الجودة",
+      "qcCtaTitle": "مراقبة الجودة",
+      "qcCtaBody": "بمجرد اجتياز مراقبة الجودة، أضف معلومات التتبع للشحن.",
+      "markShippedCta": "تحديد كمشحونة",
+      "shipFormTitle": "تفاصيل الشحن",
+      "trackingUrlLabel": "رابط التتبع",
+      "trackingUrlHint": "اختياري — رابط شركة الشحن لتتبع الطرد.",
+      "confirmShipCta": "تأكيد الشحن",
+      "shippedCtaTitle": "تم شحن الطرد",
+      "shippedCtaBody": "حدّد كـ \"في الطريق\" بمجرد تأكيد شركة الشحن لتحرك الطرد.",
+      "markInTransitCta": "تحديد كفي الطريق",
+      "errorTrackingRequired": "شركة الشحن ورقم التتبع مطلوبان."
+    },
+    "tenders": {
+      "eyebrow": "دعوات العطاءات",
+      "title": "دعوات العطاءات الخاصة بي",
+      "description": "طلبات مؤهلة تتناسب مع نشاطك. ردّ خلال 48 ساعة للبقاء في الأولوية.",
+      "backToList": "العودة إلى العطاءات",
+      "emptyTitle": "لا توجد دعوات عطاءات",
+      "emptyBody": "عندما يدعوك وكيل لتقديم عرض على طلب، يظهر هنا.",
+      "respondBy": "الرد قبل",
+      "respondCta": "الرد",
+      "matchScore": "الدرجة",
+      "statusInvited": "جديد",
+      "statusViewed": "تمت المشاهدة",
+      "statusResponded": "تم إرسال العرض",
+      "statusDeclined": "مرفوض",
+      "statusExpired": "منتهي الصلاحية",
+      "quoteSubmittedTitle": "عرضك",
+      "quoteSubmittedBody": "تم تحويل عرضك إلى الوكيل. ستُعلَم عند تقديمه للعميل.",
+      "expiredBanner": "انتهت صلاحية هذا العطاء. تواصل مع وكيلك إذا كنت لا تزال ترغب في تقديم عرض.",
+      "submitQuoteTitle": "تقديم عرض سعر",
+      "submitQuoteBody": "قدّم أفضل سعر ومدة تسليم لديك. سيتلقى العميل توصية بمقارنة العروض المستلمة.",
+      "unitPriceLabel": "سعر الوحدة (دون الضريبة)",
+      "leadTimeLabel": "مدة التسليم",
+      "moqLabel": "الحد الأدنى للطلب",
+      "validityLabel": "صلاحية العرض",
+      "validityHint": "عدد الأيام التي يبقى فيها عرضك صالحاً (حد أقصى 60).",
+      "daysSuffix": "أيام",
+      "daysShort": "ي",
+      "validUntilLabel": "صالح حتى",
+      "notesLabel": "ملاحظات",
+      "notesHint": "معلومات مفيدة للوكيل: بدائل، شروط، خيارات.",
+      "notesPlaceholder": "بديل قطن معاد تدويره متوفر · 50 وحدة مجانية فوق 5,000 …",
+      "submitQuote": "تقديم العرض"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "eyebrow": "عرض المشغّل",
+      "title": "منصة SourcingPick",
+      "description": "المؤشرات الرئيسية، طوابير الأولويات، ونشاط النظام المباشر.",
+      "kpiGmv": "إجمالي قيمة البضائع هذا الشهر",
+      "kpiGmvHint": "{n} طلبية هذا الشهر",
+      "kpiCommission": "العمولة المكتسبة",
+      "kpiActiveOrders": "الطلبيات النشطة",
+      "kpiActiveRequests": "الطلبات النشطة: {n}",
+      "kpiAgents": "الوكلاء النشطون",
+      "kpiAgentsHint": "{n} مصنع موثق",
+      "kpiKycQueue": "ملفات KYC للمراجعة",
+      "kpiPendingListings": "إدراجات للإشراف",
+      "kpiEscrowHeld": "محتجز في الضمان",
+      "kpiEscrowHeldHint": "{n} معاملة",
+      "kpiWebhookFailures": "إخفاقات الويب هوك",
+      "unassignedTitle": "طلبات للتعيين",
+      "unassignedDesc": "الأقدم أولاً.",
+      "unassignedEmpty": "لا توجد طلبات غير معيّنة.",
+      "payoutsTitle": "مدفوعات معلّقة",
+      "payoutsDesc": "للدفع إلى Stripe Connect.",
+      "payoutsPending": "المبلغ في الطابور",
+      "payoutsPendingHint": "{n} دفعة للجدولة",
+      "auditTitle": "نشاط النظام الأخير",
+      "auditEmpty": "لا يوجد نشاط مسجَّل.",
+      "systemActor": "النظام"
+    },
+    "audit": {
+      "eyebrow": "التدقيق",
+      "title": "سجل التدقيق",
+      "description": "كل إجراء حساس، إضافة فقط دون تعديل. صفِّ حسب المستوى أو الإجراء.",
+      "actionPlaceholder": "تصفية حسب الإجراء (مثلاً quote.accepted)",
+      "empty": "لا توجد سجلات تطابق هذه الفلاتر.",
+      "truncated": "عرض آخر {n} سجل. ضيّق الفلاتر لرؤية المزيد.",
+      "colTime": "الوقت",
+      "colLevel": "المستوى",
+      "colAction": "الإجراء",
+      "colActor": "الفاعل",
+      "colTarget": "الهدف",
+      "colIp": "عنوان IP",
+      "levels": { "INFO": "معلومة", "WARN": "تحذير", "ALERT": "تنبيه" }
+    },
+    "finance": {
+      "eyebrow": "المالية",
+      "title": "نظرة عامة على المالية",
+      "description": "إجمالي قيمة البضائع، العمولة، الفواتير الصادرة والمتأخرة.",
+      "kpiGmvMtd": "إجمالي قيمة البضائع منذ بداية الشهر",
+      "kpiGmvYtd": "إجمالي قيمة البضائع منذ بداية السنة",
+      "kpiCommissionMtd": "العمولة منذ بداية الشهر",
+      "kpiCommissionYtd": "العمولة منذ بداية السنة",
+      "kpiOrdersCount": "{n} طلبية",
+      "kpiInvoicesIssued": "الفواتير الصادرة",
+      "kpiInvoicesOverdue": "الفواتير المتأخرة",
+      "kpiInvoicesPaid": "الفواتير المدفوعة",
+      "invoicesTitle": "الفواتير الأخيرة",
+      "empty": "لا توجد فواتير.",
+      "colReference": "المرجع",
+      "colType": "النوع",
+      "colOrg": "المنظمة",
+      "colAmount": "المبلغ",
+      "colStatus": "الحالة",
+      "colIssued": "تاريخ الإصدار"
+    },
+    "escrow": {
+      "eyebrow": "الضمان",
+      "title": "دفتر حسابات الضمان",
+      "description": "الأموال المحتجزة والمفرَج عنها والمتنازَع عليها.",
+      "kpiHeld": "محتجز",
+      "kpiReleased": "مُفرَج عنه",
+      "kpiDisputed": "متنازَع عليه",
+      "ledgerTitle": "الحركات الأخيرة",
+      "empty": "لا توجد معاملات.",
+      "colReference": "المرجع",
+      "colOrder": "الطلبية",
+      "colParties": "الأطراف",
+      "colAmount": "المبلغ",
+      "colStatus": "الحالة",
+      "colProvider": "المزود",
+      "colReleased": "تاريخ الإفراج",
+      "statuses": {
+        "INITIATED": "تم البدء",
+        "FUNDED": "تم التمويل",
+        "HELD": "محتجز",
+        "RELEASED": "مُفرَج عنه",
+        "REFUNDED": "مُسترَد",
+        "DISPUTED": "متنازَع عليه"
+      }
+    },
+    "payouts": {
+      "eyebrow": "المدفوعات",
+      "title": "طابور المدفوعات",
+      "description": "المدفوعات المرسلة إلى المصانع عبر Stripe Connect.",
+      "kpiPending": "معلّقة",
+      "kpiSent": "مُرسَلة",
+      "kpiFailed": "فاشلة",
+      "ledgerTitle": "المدفوعات الأخيرة",
+      "empty": "لا توجد مدفوعات.",
+      "colReference": "المرجع",
+      "colFactory": "المصنع",
+      "colOrder": "الطلبية",
+      "colAmount": "المبلغ",
+      "colCommission": "العمولة",
+      "colStatus": "الحالة",
+      "colSent": "تاريخ الإرسال"
+    },
+    "organizations": {
+      "eyebrow": "المنظمات",
+      "title": "جميع المنظمات",
+      "description": "العملاء، المصانع، الوكلاء، والمنصة.",
+      "searchPlaceholder": "ابحث بالاسم، الاسم القانوني…",
+      "tableTitle": "المنظمات",
+      "empty": "لم يُعثر على منظمات.",
+      "colName": "الاسم",
+      "colType": "النوع",
+      "colLocation": "الموقع",
+      "colKyc": "KYC",
+      "colUsers": "المستخدمون",
+      "colCreated": "تاريخ الإنشاء",
+      "suspended": "موقوف",
+      "types": {
+        "CLIENT": "عميل",
+        "FACTORY": "مصنع",
+        "AGENT": "وكيل",
+        "PLATFORM": "منصة"
+      }
+    },
+    "users": {
+      "eyebrow": "المستخدمون",
+      "title": "جميع المستخدمين",
+      "description": "الحسابات عبر كل الأدوار والمنظمات.",
+      "searchPlaceholder": "ابحث بالاسم، البريد الإلكتروني…",
+      "tableTitle": "المستخدمون",
+      "empty": "لم يُعثر على مستخدمين.",
+      "colName": "الاسم",
+      "colEmail": "البريد الإلكتروني",
+      "colRole": "الدور",
+      "colOrg": "المنظمة",
+      "col2fa": "المصادقة الثنائية",
+      "colLastLogin": "آخر تسجيل دخول",
+      "neverLoggedIn": "أبداً"
+    },
+    "agents": {
+      "eyebrow": "الفريق",
+      "title": "أداء الوكلاء",
+      "description": "الحمل النشط، الطلبيات المغلقة، والعمولة المكتسبة لكل وكيل.",
+      "tableTitle": "الوكلاء",
+      "empty": "لا يوجد وكلاء مسجَّلون.",
+      "colName": "الاسم",
+      "colEmail": "البريد الإلكتروني",
+      "colActive": "الحمل النشط",
+      "colCompleted": "مغلقة",
+      "colCommission": "العمولة",
+      "colLastLogin": "آخر تسجيل دخول"
+    },
+    "webhooks": {
+      "eyebrow": "Webhooks",
+      "title": "أحداث الويب هوك",
+      "description": "الأحداث الواردة من Stripe وغيره من المزودين.",
+      "kpiReceived": "مُستلَمة",
+      "kpiProcessed": "مُعالَجة",
+      "kpiFailed": "فاشلة",
+      "tableTitle": "الأحداث الأخيرة",
+      "empty": "لا توجد أحداث.",
+      "colReceived": "تاريخ الاستلام",
+      "colSource": "المصدر",
+      "colType": "النوع",
+      "colStatus": "الحالة",
+      "colAttempts": "المحاولات",
+      "colError": "الخطأ"
+    },
+    "logins": {
+      "eyebrow": "الأمان",
+      "title": "نشاط تسجيل الدخول",
+      "description": "تسجيلات الدخول الناجحة والفاشلة خلال آخر 24 ساعة و7 أيام.",
+      "kpiTodaySuccess": "اليوم · ناجحة",
+      "kpiTodayFailed": "اليوم · فاشلة",
+      "kpiWeekSuccess": "7 أيام · ناجحة",
+      "kpiWeekFailed": "7 أيام · فاشلة",
+      "tableTitle": "أحداث تسجيل الدخول الأخيرة",
+      "empty": "لا توجد أحداث مسجَّلة.",
+      "colTime": "الوقت",
+      "colEvent": "الحدث",
+      "colUser": "المستخدم",
+      "colIp": "عنوان IP",
+      "colUa": "وكيل المستخدم",
+      "unknownUser": "مستخدم غير معروف"
+    },
+    "support": {
+      "eyebrow": "الدعم",
+      "title": "طابور دعم السوق",
+      "description": "محادثات حول طلبيات السوق (دون وكيل معيَّن). يتولى فريق المنصة الدعم.",
+      "tableTitle": "المحادثات",
+      "empty": "لا توجد محادثات دعم نشطة.",
+      "messagesSuffix": "رسائل",
+      "note": "طلبيات تدفق التوريد يديرها وكيلها المعيَّن ولا تظهر هنا."
+    },
+    "certifications": {
+      "eyebrow": "الشهادات",
+      "title": "التسجيلات النشطة",
+      "description": "قُد سلسلة الشهادات: جدوِل التدقيقات، تقدّم بالمراحل، أصدِر الشهادات.",
+      "empty": "لا توجد تسجيلات نشطة.",
+      "enrolledOn": "تاريخ التسجيل",
+      "sponsorPrefix": "برعاية",
+      "advanceCta": "تقدّم",
+      "cancel": "إلغاء",
+      "nextStatusLabel": "المرحلة التالية",
+      "nextStatusPlaceholder": "اختر مرحلة…",
+      "progressLabel": "تقدم يدوي",
+      "progressHint": "0-100. اتركه فارغاً للإبقاء على القيمة الحالية.",
+      "certifiedRequiresAll": "الشهادة: الرابط والتواريخ مطلوبة",
+      "certificateUrlLabel": "رابط الشهادة",
+      "applyCta": "تطبيق"
+    },
+    "marketplace": {
+      "eyebrow": "الإشراف",
+      "title": "إدراجات بانتظار المراجعة",
+      "description": "اعتمد أو ارفض المنتجات التي تقدّم بها المصانع قبل نشرها.",
+      "empty": "لا توجد إدراجات للإشراف عليها حالياً.",
+      "noImage": "لم تُرفع صور",
+      "factoryKycMissing": "KYC غير موثق",
+      "submittedAt": "تاريخ التقديم",
+      "rejectCta": "رفض",
+      "approveCta": "اعتمد وانشر",
+      "rejectReasonLabel": "سبب الرفض (ظاهر في التدقيق)",
+      "rejectReasonPlaceholder": "صف ما يحتاج إلى إصلاح…",
+      "confirmReject": "تأكيد الرفض",
+      "back": "رجوع"
+    },
+    "dispatch": {
+      "eyebrow": "التوزيع",
+      "title": "طلبات للتعيين",
+      "description": "عيّن الطلبات الواردة إلى وكيل. اتفاقية مستوى الخدمة للتأهيل: 24 ساعة عمل.",
+      "filterAll": "الكل",
+      "filterUnassigned": "للتعيين",
+      "filterAssigned": "مُعيَّن",
+      "searchPlaceholder": "ابحث بالمرجع، العنوان، العميل…",
+      "empty": "لا يوجد ما يستدعي التوزيع الآن.",
+      "pickAgent": "اختر وكيلاً",
+      "agentPlaceholder": "اختر وكيلاً…",
+      "currentAgent": "الوكيل الحالي: {name}",
+      "assign": "تعيين",
+      "reassign": "إعادة تعيين",
+      "loadSuffix": "طلبات نشطة",
+      "errorPickAgent": "اختر وكيلاً قبل التعيين."
+    },
+    "kyc": {
+      "eyebrow": "التحقق من KYC",
+      "title": "طابور KYC",
+      "description": "راجع المستندات التي قدّمتها المصانع قبل أن تستلم دعوات العطاءات.",
+      "filterAll": "الكل",
+      "searchPlaceholder": "ابحث بالمصنع، البريد الإلكتروني، المدينة…",
+      "empty": "لا توجد سجلات تطابق هذا الفلتر.",
+      "colFactory": "المصنع",
+      "colCategory": "الفئة",
+      "colCountry": "الموقع",
+      "colSubmitted": "تاريخ التقديم",
+      "colStatus": "الحالة",
+      "drawerEyebrow": "سجل KYC",
+      "sectionContact": "التواصل",
+      "sectionCompany": "الشركة",
+      "sectionManufacturing": "التصنيع",
+      "sectionDocuments": "المستندات",
+      "contactName": "اسم جهة الاتصال",
+      "contactEmail": "البريد الإلكتروني",
+      "submittedAt": "تاريخ التقديم",
+      "noOwner": "لا توجد جهة اتصال رئيسية مرتبطة بهذا المصنع.",
+      "noDocuments": "لم تُرفع أي مستندات.",
+      "openDocument": "فتح المستند",
+      "approve": "اعتماد KYC",
+      "flag": "وضع علامة",
+      "reject": "رفض",
+      "rejectReasonLabel": "سبب الرفض (ظاهر في التدقيق)",
+      "flagReasonLabel": "سبب وضع العلامة (ظاهر في التدقيق)",
+      "reasonPlaceholder": "صف السبب باختصار…",
+      "confirmReject": "تأكيد الرفض",
+      "confirmFlag": "تأكيد العلامة",
+      "errorReasonRequired": "يرجى تقديم سبب لا يقل عن 3 أحرف.",
+      "docKinds": {
+        "REGISTRY": "السجل التجاري",
+        "TAX": "شهادة ضريبية",
+        "FACILITY_PHOTO": "صورة المنشأة",
+        "REFERENCES": "عملاء مرجعيون",
+        "INSURANCE": "تأمين الجودة",
+        "OTHER": "أخرى"
+      }
+    },
+    "sourcingAllowlist": {
+      "eyebrow": "إعدادات المنصة",
+      "title": "قائمة مناطق التوريد المسموح بها",
+      "description": "تحكّم في المناطق والدول التي يمكن للعملاء اختيارها عند إنشاء طلب. تسري التغييرات خلال دقيقة.",
+      "regionsTitle": "المناطق المفتوحة",
+      "regionsDescription": "يجب اختيار منطقة واحدة على الأقل. كل منطقة تفتح قائمة دولها لاختيارها أدناه.",
+      "countriesTitle": "الدول المفتوحة",
+      "countriesDescription": "اختر الدول المحددة التي تريد السماح بها. تُسكت المعالجات أداة الاختيار عند تحديد دولة واحدة فقط.",
+      "selectedLabel": "المحدد",
+      "removeHint": "اضغط للإزالة",
+      "searchLabel": "ابحث في الدول",
+      "searchHint": "اكتب اسماً أو رمز ISO (مثلاً \"viet\" أو \"VN\").",
+      "searchPlaceholder": "ابحث عن دول…",
+      "searchEmpty": "لا توجد دولة تطابق هذا البحث.",
+      "saveCta": "حفظ القائمة",
+      "saved": "تم حفظ القائمة."
+    }
+  },
+  "common": {
+    "actions": {
+      "continue": "متابعة",
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "delete": "حذف",
+      "edit": "تعديل",
+      "back": "رجوع",
+      "next": "التالي",
+      "submit": "إرسال",
+      "close": "إغلاق",
+      "search": "بحث",
+      "filter": "تصفية",
+      "export": "تصدير",
+      "loading": "جارٍ التحميل…"
+    },
+    "status": {
+      "pending": "معلّق",
+      "active": "نشط",
+      "verified": "موثق",
+      "flagged": "موضوع عليه علامة",
+      "rejected": "مرفوض",
+      "completed": "مكتمل",
+      "cancelled": "ملغى"
+    },
+    "roles": {
+      "client": "عميل",
+      "factory": "مصنع",
+      "agent": "وكيل",
+      "admin": "مسؤول"
+    }
+  },
+  "categories": {
+    "TEXTILE": "النسيج",
+    "HOME": "مستلزمات المنزل",
+    "STATIONERY": "القرطاسية",
+    "COSMETICS": "مستحضرات التجميل",
+    "FOOD": "الأغذية والمشروبات",
+    "ELECTRONICS": "الإلكترونيات",
+    "METAL": "المعادن",
+    "WOOD": "الأخشاب",
+    "PLASTIC": "البلاستيك",
+    "OTHER": "أخرى"
+  },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "requests": "الطلبات",
+    "marketplace": "السوق",
+    "orders": "الطلبيات",
+    "invoices": "الفواتير",
+    "tenders": "العطاءات",
+    "catalogue": "الكتالوج",
+    "payouts": "المدفوعات",
+    "certification": "الشهادات",
+    "tasks": "المهام",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "theme": {
+    "toggleLabel": "تغيير السمة",
+    "light": "فاتح",
+    "dark": "داكن",
+    "system": "النظام"
+  },
+  "marketing": {
+    "hero": {
+      "eyebrow": "توريد · سوق · شهادات",
+      "title": "ورّد دولياً، دون وسطاء غامضين.",
+      "subtitle": "انشر احتياجك، احصل على عروض أسعار مؤهلة خلال أقل من 72 ساعة، وادفع باطمئنان عبر حساب ضمان مدمج.",
+      "ctaPrimary": "ابدأ مجاناً",
+      "ctaSecondary": "تصفح السوق",
+      "assurance": "بدون بطاقة ائتمان. بدون التزام."
+    },
+    "pillars": {
+      "eyebrow": "ثلاثة تخصصات، منصة واحدة",
+      "title": "كل ما تحتاجه للشراء باطمئنان.",
+      "sourcing": {
+        "title": "توريد عند الطلب",
+        "body": "وكيل مخصص يؤهل احتياجك، يستجلب 3 إلى 5 مصانع ملائمة، ويدير طلبيتك حتى التسليم."
+      },
+      "marketplace": {
+        "title": "السوق",
+        "body": "كتالوج لمنتجات تم توريدها والتفاوض عليها مسبقاً. متوفرة في المخزون، بحد أدنى طلب مرن، وطلب بنقرة واحدة."
+      },
+      "certification": {
+        "title": "برنامج الشهادات",
+        "body": "دعم شامل للمصانع للحصول على شهادات ISO وCE وGOTS وFSC عبر أربع هيئات اعتماد فرنسية."
+      }
+    },
+    "howItWorks": {
+      "eyebrow": "كيف تعمل المنصة",
+      "title": "من الطلب إلى التسليم، دون احتكاك.",
+      "step1": {
+        "title": "تنشر احتياجك",
+        "body": "الكمية، الموعد النهائي، الشهادات المطلوبة، منطقة التوريد. نموذج من ثلاث خطوات."
+      },
+      "step2": {
+        "title": "يتولى وكيل المهمة",
+        "body": "خلال 24 ساعة، يتواصل وكيلك مع 3 إلى 5 مصانع موثقة ويحتسب درجة التأهيل."
+      },
+      "step3": {
+        "title": "تستلم من 1 إلى 3 عروض أسعار",
+        "body": "سعر الوحدة، الحد الأدنى للطلب، مدد التسليم، الإنكوترم. جنباً إلى جنب، مع توصية."
+      },
+      "step4": {
+        "title": "الدفع عبر الضمان والتسليم",
+        "body": "تبقى أموالك محتجزة لدى مزودنا حتى تؤكد الاستلام مطابقاً للمواصفات."
+      }
+    },
+    "trust": {
+      "eyebrow": "لماذا تثق بنا الفرق",
+      "title": "بنية تحتية مصمَّمة للمشتري.",
+      "escrow": {
+        "title": "حساب ضمان مدمج",
+        "body": "لا دفع للمصنع دون تأكيدك للاستلام مطابقاً للمواصفات. يعمل SourcingPick كطرف ثالث موثوق."
+      },
+      "agents": {
+        "title": "وكيل مخصص",
+        "body": "ليس روبوت محادثة. بل إنسان يعرف ملفك، يفاوض نيابة عنك، ويتابع الإنتاج."
+      },
+      "certs": {
+        "title": "مصانع موثقة",
+        "body": "كل مصنع شريك يجتاز إجراءات KYC. وكثير منها مسجَّل في برنامج شهاداتنا مع هيئات اعتماد فرنسية."
+      },
+      "partnersLabel": "هيئات الاعتماد الشريكة"
+    },
+    "cta": {
+      "title": "مستعد للتوريد بطريقة مختلفة؟",
+      "subtitle": "أنشئ حسابك في دقيقتين. الطلب الأول مجاناً، دون التزام.",
+      "primaryButton": "إنشاء حساب",
+      "secondaryButton": "اطّلع على الأسعار"
+    }
+  },
+  "about": {
+    "eyebrow": "من نحن",
+    "title": "التوريد لا يجب أن يكون عملاً قائماً على الإيمان الأعمى.",
+    "body": [
+      "وُجد SourcingPick لأن المشتريات الدولية، في عام 2026، لا تزال سلسلة من الصبر، ومحادثات واتساب، وتحويلات مصرفية في الظلام. المشترون يدفعون مقدماً لموردين لم يلتقوا بهم قط. والمصانع تقبل مواصفات لم يتسن لها تأهيلها. والوسيط الغامض يجني الفارق.",
+      "نحن نبني العكس: منصة يؤهل فيها كل طلب إنسان، وتُقارَن فيها كل عروض الأسعار على شبكة تقييم واحدة، وتبقى فيها كل دفعة محتجزة في الضمان حتى تأكيد التسليم. هامش المنصة شفاف، لا مدفون في السعر.",
+      "مقرنا في فرنسا، لكن شبكة مصانعنا تغطي أوروبا والمغرب العربي وآسيا وأفريقيا والأمريكتين. اللغة ليست عائقاً — ولا المنطقة الزمنية."
+    ],
+    "principles": {
+      "eyebrow": "مبادئنا",
+      "title": "ما لا نتنازل عنه."
+    },
+    "values": {
+      "escrow": {
+        "title": "لا دفع دون استلام",
+        "body": "أموال المشتري تبقى محتجزة لدى مزود الدفع لدينا حتى يُؤكَّد التسليم مطابقاً للمواصفات. هذا غير قابل للتفاوض."
+      },
+      "agents": {
+        "title": "إنسان، لا نص آلي",
+        "body": "كل طلب يحمله وكيل يعرف ملفك وحسابك ومصانعنا. لا خط ساخن، ولا روبوت محادثة."
+      },
+      "global": {
+        "title": "عالمي حقاً",
+        "body": "مصانعنا الشريكة تمتد عبر خمس قارات. نتحدث لغة موردك ولغة فريق المشتريات لديك."
+      }
+    }
+  },
+  "pricing": {
+    "eyebrow": "بدون اشتراك، أبداً.",
+    "title": "لا تدفع إلا على الطلبيات الناجحة.",
+    "subtitle": "عمولة شفافة، بحد أقصى، تُؤخذ عند التسليم المطابق للمواصفات. الضمان والتتبع والتأمين مشمولة.",
+    "popular": "التدفق الأساسي",
+    "flows": {
+      "sourcing": {
+        "name": "توريد عند الطلب",
+        "tagline": "للاحتياجات المخصصة، يتفاوض عليها وكيل مخصص.",
+        "buyer": {
+          "label": "جانب المشتري",
+          "rate": "12 ٪",
+          "cap": "بحد أقصى 15,000 €",
+          "note": "تُؤخذ العمولة عند التسليم المطابق للمواصفات. يبدأ الحد الأقصى من قيمة طلبية 125,000 €."
+        },
+        "supplier": {
+          "label": "جانب المورد",
+          "rate": "3 ٪",
+          "cap": "بحد أقصى 5,000 €",
+          "note": "تُخصم العمولة من دفعة المصنع عند الإفراج عن الضمان."
+        },
+        "research": {
+          "label": "رسوم البحث",
+          "amount": "125 € / يوم",
+          "cap": "أو 500 € / أسبوع",
+          "note": "عرض سعر مخصص لكل طلب حسب النطاق. تُعاد كرصيد للمنصة إذا تمت طلبية خلال 30 يوماً. تنطبق على كل طلب، بما في ذلك الطلبيات الصغيرة."
+        },
+        "cta": "انشر طلباً"
+      },
+      "marketplace": {
+        "name": "السوق",
+        "tagline": "لمنتجات تم توريدها والتفاوض عليها مسبقاً، جاهزة بنقرة واحدة.",
+        "buyer": {
+          "label": "جانب المشتري",
+          "rate": "12 ٪",
+          "cap": "بحد أقصى 15,000 €",
+          "note": "مضمَّنة في السعر المعروض. تدفع ما تراه — دون مفاجآت عند الدفع."
+        },
+        "supplier": {
+          "label": "جانب البائع",
+          "rate": "3 ٪",
+          "cap": "بحد أقصى 5,000 €",
+          "note": "تُخصم العمولة من دفعة البائع عند الإفراج عن الضمان."
+        },
+        "cta": "تصفّح الكتالوج"
+      }
+    },
+    "included": {
+      "title": "مشمول في كل معاملة",
+      "items": [
+        "احتجاز الأموال في الضمان حتى تأكيد التسليم المطابق للمواصفات",
+        "تتبع الشحنة حتى مقرك",
+        "تأمين خاص بفئة المنتج"
+      ]
+    },
+    "excluded": {
+      "title": "غير مشمول",
+      "items": [
+        "تكلفة الشحن (على مسؤولية المشتري، وفقاً للإنكوترم المتفق عليه)"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول",
+      "emailLabel": "البريد الإلكتروني",
+      "passwordLabel": "كلمة المرور",
+      "submit": "تسجيل الدخول",
+      "forgotPassword": "هل نسيت كلمة المرور؟",
+      "noAccount": "ليس لديك حساب؟",
+      "signupLink": "أنشئ حساباً",
+      "google": "المتابعة عبر Google",
+      "divider": "أو"
+    },
+    "signup": {
+      "title": "إنشاء حساب",
+      "pickerDescription": "اختر نوع الحساب الذي يناسب نشاطك.",
+      "asClient": "أنا مشترٍ",
+      "clientBody": "شركة صغيرة أو متوسطة، علامة تجارية، أو شركة كبرى توردّ من مصانع موثقة مع وكيل مخصص.",
+      "asFactory": "أنا مصنع",
+      "factoryBody": "مصنّع يرغب في الرد على العطاءات وإدراج منتجات.",
+      "hasAccount": "هل لديك حساب بالفعل؟",
+      "loginLink": "تسجيل الدخول",
+      "clientEyebrow": "حساب مشترٍ",
+      "clientTitle": "أنشئ حسابك كمشترٍ",
+      "firstNameLabel": "الاسم الأول",
+      "lastNameLabel": "اسم العائلة",
+      "orgNameLabel": "اسم المنظمة",
+      "orgNameHint": "الاسم التجاري الذي تمارس به نشاطك.",
+      "countryLabel": "الدولة",
+      "countryPlaceholder": "فرنسا، البرازيل، اليابان…",
+      "passwordHint": "12 حرفاً على الأقل.",
+      "termsAccept": "أوافق على",
+      "termsLink": "شروط الخدمة",
+      "termsAnd": "و",
+      "privacyLink": "سياسة الخصوصية",
+      "submit": "إنشاء حسابي",
+      "factoryEyebrow": "حساب مصنع",
+      "factoryTitle": "أنشئ حسابك كمصنع",
+      "sectionAccount": "حسابك",
+      "sectionCompany": "شركتك",
+      "sectionFactory": "ملف التصنيع",
+      "sectionDocuments": "مستندات KYC",
+      "documentsDescription": "يراجع فريقنا هذه المستندات قبل أن يستلم مصنعك دعوات العطاءات. ننصح بإضافة مزيد من صور المنشأة (3 صور كحد أدنى مثالي).",
+      "legalNameLabel": "الاسم القانوني",
+      "displayNameLabel": "الاسم المعروض",
+      "displayNameHint": "الاسم الذي يظهر به مصنعك للمشترين.",
+      "cityLabel": "المدينة",
+      "addressLabel": "العنوان",
+      "vatLabel": "الرقم الضريبي (VAT)",
+      "vatHint": "اختياري حالياً؛ مطلوب للفوترة.",
+      "categoryLabel": "الفئة الرئيسية",
+      "categoryPlaceholder": "اختر فئة…",
+      "capabilitiesLabel": "قدرات الإنتاج",
+      "capabilitiesHint": "مفصولة بفواصل. مثلاً: نسيج، صباغة، تشطيب.",
+      "capabilitiesPlaceholder": "نسيج، صباغة، تشطيب، مراقبة جودة…",
+      "docRegistryLabel": "السجل التجاري",
+      "docRegistryHint": "مستخرج السجل أو ما يعادله. PDF، JPG، PNG (10 ميغابايت كحد أقصى).",
+      "docTaxLabel": "شهادة ضريبية",
+      "docTaxHint": "إثبات الامتثال الضريبي. PDF، JPG، PNG (10 ميغابايت كحد أقصى).",
+      "docFacilityLabel": "صور المنشأة",
+      "docFacilityHint": "صورة واحدة على الأقل، يفضّل 3 صور أو أكثر. JPG، PNG، WebP، HEIC (10 ميغابايت كحد أقصى لكل صورة).",
+      "fileChoose": "اختر ملفاً",
+      "fileReplace": "استبدال",
+      "stepAccount": "الحساب",
+      "stepCompany": "الشركة",
+      "stepFactory": "التصنيع",
+      "stepDocuments": "المستندات",
+      "stepReview": "المراجعة",
+      "reviewDescription": "تأكد من صحة كل شيء قبل إتمام التسجيل. يمكنك إكمال ملفك التعريفي بعد الإرسال.",
+      "errorFirstName": "يرجى إدخال اسمك الأول.",
+      "errorLastName": "يرجى إدخال اسم العائلة.",
+      "errorEmail": "أدخل بريداً إلكترونياً صحيحاً.",
+      "errorPassword": "يجب أن تكون كلمة المرور 12 حرفاً على الأقل.",
+      "errorLegalName": "يرجى إدخال الاسم القانوني لشركتك.",
+      "errorDisplayName": "يرجى إدخال اسم معروض.",
+      "errorCountry": "يرجى إدخال الدولة.",
+      "errorCity": "يرجى إدخال المدينة.",
+      "errorAddress": "يرجى إدخال العنوان كاملاً.",
+      "errorCategory": "يرجى اختيار فئة.",
+      "errorRegistry": "السجل التجاري مطلوب.",
+      "errorTax": "الشهادة الضريبية مطلوبة.",
+      "errorFacility": "يرجى إضافة صورة واحدة على الأقل للمنشأة.",
+      "errorTerms": "يجب قبول الشروط للمتابعة."
+    },
+    "forgot": {
+      "title": "نسيت كلمة المرور",
+      "description": "أدخل بريدك الإلكتروني. إذا كان هناك حساب موجود، ستتلقى رابط إعادة تعيين.",
+      "submit": "إرسال رابط إعادة التعيين",
+      "sentTitle": "تم إرسال الرابط",
+      "sentBody": "إذا كان هناك حساب SourcingPick بهذا البريد، فقد أُرسلت رسالة للتو. تحقق من صندوق الوارد (ومجلد البريد العشوائي).",
+      "backToLogin": "العودة إلى تسجيل الدخول"
+    },
+    "reset": {
+      "title": "كلمة مرور جديدة",
+      "description": "اختر كلمة مرور جديدة لحسابك.",
+      "newPasswordLabel": "كلمة المرور الجديدة",
+      "confirmPasswordLabel": "تأكيد كلمة المرور",
+      "passwordHint": "12 حرفاً على الأقل.",
+      "submit": "إعادة تعيين كلمة المرور",
+      "missingTokenTitle": "رابط غير صالح",
+      "missingTokenBody": "هذا الرابط غير مكتمل. اطلب رابطاً جديداً من صفحة استعادة كلمة المرور.",
+      "requestNew": "طلب رابط جديد"
+    },
+    "otp": {
+      "title": "التحقق بخطوتين",
+      "description": "أدخل الرمز المكوّن من 6 أرقام الذي أرسلناه إلى بريدك الإلكتروني.",
+      "codeLabel": "رمز التحقق",
+      "resend": "إعادة إرسال الرمز",
+      "resentNotice": "تم إرسال رمز جديد.",
+      "verify": "تحقق"
+    }
+  },
+  "cookies": {
+    "title": "ملفات تعريف الارتباط",
+    "description": "نستخدم ملفات تعريف ارتباط أساسية للمنصة (اللغة، الجلسة). وبموافقتك، نقيس أيضاً الاستخدام لتحسين الخدمة.",
+    "accept": "قبول الكل",
+    "decline": "رفض غير الأساسية",
+    "manage": "إدارة الخيارات"
+  },
+  "legal": {
+    "eyebrow": "قانوني",
+    "lastUpdated": "آخر تحديث: مايو 2026",
+    "draftNotice": "هذه مسودة v0. ستراجع الصياغة النهائية من قبل مستشار قانوني قبل الإنتاج. لأي استفسار، اكتب إلى legal@sourcingpick.com.",
+    "terms": {
+      "title": "شروط الخدمة",
+      "sections": [
+        {
+          "heading": "قبول الشروط",
+          "body": [
+            "بدخولك إلى SourcingPick أو إنشاء حساب، فإنك توافق على الالتزام بشروط الخدمة هذه. إذا لم تقبل هذه الشروط، فلا يجوز لك استخدام الخدمة."
+          ]
+        },
+        {
+          "heading": "وصف الخدمة",
+          "body": [
+            "SourcingPick منصة SaaS تربط المشترين (\"العملاء\") بالمصنّعين (\"المصانع\") عبر ثلاث خدمات رئيسية: التوريد عند الطلب، وسوق لمنتجات تم التفاوض عليها مسبقاً، وبرنامج شهادات.",
+            "تعمل SourcingPick كطرف ثالث موثوق وتشغّل آلية احتجاز للأموال عبر مزود دفع مرخّص."
+          ]
+        },
+        {
+          "heading": "الحسابات والتحقق",
+          "body": [
+            "إنشاء الحساب مجاني. على كل منظمة تقديم معلومات دقيقة ومحدّثة وإكمال إجراءات التحقق (KYC) قبل إجراء أي معاملات.",
+            "أنت مسؤول عن سرية بياناتك. أي نشاط يجري من حسابك يُفترض أنه صادر منك."
+          ]
+        },
+        {
+          "heading": "الاستخدام المقبول",
+          "body": [
+            "لا يجوز لك استخدام SourcingPick لأنشطة غير قانونية أو احتيالية، أو لأنشطة مخالفة للتنظيمات الفرنسية والأوروبية المتعلقة بالتجارة الدولية أو قانون العمل أو الملكية الفكرية.",
+            "يُمنع منعاً باتاً أي التفاف على آلية الضمان أو برنامج الشهادات أو أدوات التحقق لدينا."
+          ]
+        },
+        {
+          "heading": "المدفوعات والعمولات والضمان",
+          "body": [
+            "تُحصَّل الأموال المدفوعة من العملاء من قبل مزود الدفع لدينا وتُحتجَز في الضمان حتى يؤكد المشتري الاستلام مطابقاً للمواصفات.",
+            "تأخذ SourcingPick عمولة على كل معاملة. تعتمد النسبة على الخطة المشترك بها ويُفصَح عنها عند تقديم عرض السعر."
+          ]
+        },
+        {
+          "heading": "الملكية الفكرية",
+          "body": [
+            "جميع عناصر المنصة (البرمجيات، التصميم، العلامات التجارية، المحتوى التحريري) ملك حصري لـ SourcingPick أو لمرخّصيها.",
+            "تحتفظ بكل حقوقك في المحتوى الذي تنشره (المواصفات، الصور، المستندات) وتمنح SourcingPick ترخيصاً محدوداً لاستخدامه في تشغيل الخدمة."
+          ]
+        },
+        {
+          "heading": "الضمانات وحدود المسؤولية",
+          "body": [
+            "تتخذ SourcingPick كل الخطوات المعقولة لتأهيل مصانعها الشريكة، لكنها لا تستطيع ضمان المطابقة المطلقة للمنتجات المصنّعة. آلية الضمان مصممة تحديداً لحماية المشتري في حالة عدم المطابقة.",
+            "مسؤوليتنا محدودة، إلى الحد الذي يسمح به القانون، بالمبلغ المستلَم فعلياً بخصوص المعاملة المتأثرة."
+          ]
+        },
+        {
+          "heading": "الإنهاء",
+          "body": [
+            "يمكنك إنهاء حسابك في أي وقت من إعداداتك. يجوز لـ SourcingPick تعليق أو إنهاء حساب في حال انتهاك هذه الشروط، بعد إشعار."
+          ]
+        },
+        {
+          "heading": "تعديلات الشروط",
+          "body": [
+            "قد نعدّل هذه الشروط لتعكس تغييرات في الخدمة أو في التنظيمات. أي تغيير جوهري سيُبلَّغ إليك بالبريد الإلكتروني قبل 30 يوماً على الأقل من نفاذه."
+          ]
+        },
+        {
+          "heading": "القانون الواجب التطبيق والاختصاص القضائي",
+          "body": [
+            "تخضع هذه الشروط للقانون الفرنسي. وأي نزاع يندرج تحت الاختصاص الحصري لمحاكم محكمة استئناف باريس، مع مراعاة الأحكام القانونية الإلزامية المخالفة."
+          ]
+        },
+        {
+          "heading": "التواصل",
+          "body": [
+            "لأي استفسار بشأن هذه الشروط: legal@sourcingpick.com."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "سياسة الخصوصية",
+      "sections": [
+        {
+          "heading": "المسؤول عن البيانات",
+          "body": [
+            "SourcingPick SAS، التي يقع مقرها في فرنسا، هي المسؤولة عن البيانات الشخصية المجمَّعة عبر المنصة. لممارسة حقوقك أو التواصل مع مسؤول حماية البيانات: dpo@sourcingpick.com."
+          ]
+        },
+        {
+          "heading": "البيانات التي نجمعها",
+          "body": [
+            "بيانات الحساب: الاسم الأول، اسم العائلة، البريد الإلكتروني، الهاتف، اللغة المفضلة، الدور، والمنظمة الأم.",
+            "بيانات المنظمة: الاسم القانوني، رقم التسجيل، الرقم الضريبي، العنوان، البيانات المصرفية، مستندات KYC.",
+            "بيانات الاستخدام: سجل تسجيل الدخول، الطلبات المُنشأة، العروض المستلمة، الطلبيات، الرسائل المتبادلة."
+          ]
+        },
+        {
+          "heading": "الأغراض والأساس القانوني",
+          "body": [
+            "تنفيذ العقد: تقديم خدمة التوريد، ومعالجة الطلبيات والمدفوعات.",
+            "الالتزامات القانونية: الامتثال لإجراءات KYC، مكافحة غسل الأموال، الفوترة، الاحتفاظ المحاسبي.",
+            "المصلحة المشروعة: أمن المنصة، الوقاية من الاحتيال، تحسين الخدمة.",
+            "الموافقة: قياس الجمهور، التواصلات التسويقية (حيث توافق صراحةً)."
+          ]
+        },
+        {
+          "heading": "مشاركة البيانات",
+          "body": [
+            "نشارك بعض البيانات مع مزودي خدمات تقنية متعاقدين (الاستضافة، البريد، المدفوعات، KYC) بصفتهم معالجين بموجب اللائحة العامة لحماية البيانات.",
+            "لا نبيع بياناتك أبداً. قد يُطلَب منا الإفصاح عنها للسلطات المختصة بموجب التزام قانوني."
+          ]
+        },
+        {
+          "heading": "مدد الاحتفاظ",
+          "body": [
+            "بيانات الحساب: تُحفَظ طالما حسابك نشط، ثم تُؤرشَف لمدة 3 سنوات بعد آخر معاملة.",
+            "مستندات KYC: تُحفَظ لمدة 5 سنوات بعد انتهاء العلاقة التجارية، وفق التزامات مكافحة غسل الأموال وتمويل الإرهاب.",
+            "بيانات الفوترة: تُحفَظ لمدة 10 سنوات، وفق القانون التجاري الفرنسي."
+          ]
+        },
+        {
+          "heading": "حقوقك (اللائحة العامة لحماية البيانات)",
+          "body": [
+            "لديك حقوق الوصول، التصحيح، المحو، التقييد، نقل البيانات، والاعتراض بشأن بياناتك الشخصية. يمكنك ممارستها من إعداداتك أو بالكتابة إلى dpo@sourcingpick.com.",
+            "في حال عدم الاتفاق، يمكنك تقديم شكوى لدى CNIL (www.cnil.fr)."
+          ]
+        },
+        {
+          "heading": "التحويلات الدولية",
+          "body": [
+            "بنيتنا التحتية الرئيسية مستضافة في الاتحاد الأوروبي. عندما تتطلب معالجة طلبية تدخل شركاء من خارج الاتحاد الأوروبي، نطبّق البنود التعاقدية الموحدة للمفوضية الأوروبية لتنظيم التحويلات."
+          ]
+        },
+        {
+          "heading": "ملفات تعريف الارتباط",
+          "body": [
+            "استخدامنا لملفات تعريف الارتباط مفصَّل في سياسة ملفات تعريف الارتباط المخصصة لدينا."
+          ]
+        },
+        {
+          "heading": "الأمان",
+          "body": [
+            "البيانات الحساسة (كلمات المرور، أرقام IBAN، مستندات KYC) مشفّرة أثناء الحفظ. الوصول مقيّد على أساس الحاجة للمعرفة ومسجَّل. المصادقة الثنائية إلزامية لحسابات المسؤولين."
+          ]
+        },
+        {
+          "heading": "التواصل",
+          "body": [
+            "مسؤول حماية البيانات: dpo@sourcingpick.com."
+          ]
+        }
+      ]
+    },
+    "cookies": {
+      "title": "سياسة ملفات تعريف الارتباط",
+      "sections": [
+        {
+          "heading": "ما هو ملف تعريف الارتباط؟",
+          "body": [
+            "ملف تعريف الارتباط هو ملف نصي صغير يوضع على جهازك عند زيارتك لموقع ويب. يتيح للموقع تذكّر معلومات معينة (اللغة، جلسة تسجيل الدخول، خيار الموافقة) بين الزيارات."
+          ]
+        },
+        {
+          "heading": "ملفات تعريف الارتباط الضرورية",
+          "body": [
+            "هذه الملفات أساسية لعمل المنصة ولا تتطلب موافقتك المسبقة.",
+            "sp_locale (سنة) — يتذكر لغتك المفضلة.",
+            "sp_consent (سنة) — يسجّل اختيارك بشأن ملفات تعريف الارتباط غير الأساسية.",
+            "next-auth.session-token (للجلسة) — يبقيك مسجَّل الدخول أثناء المصادقة.",
+            "next-auth.csrf-token (للجلسة) — يحمي نماذج المصادقة من هجمات CSRF."
+          ]
+        },
+        {
+          "heading": "ملفات تعريف الارتباط غير الأساسية",
+          "body": [
+            "في الإصدار الحالي، لا يضع SourcingPick أي ملفات تعريف ارتباط غير أساسية. إذا قدّمنا أدوات تحليل أو تسويق مستقبلاً، فلن تُوضَع إلا بعد موافقتك الصريحة عبر الشريط المخصص."
+          ]
+        },
+        {
+          "heading": "إدارة خياراتك",
+          "body": [
+            "يمكنك تغيير خيارك في أي وقت بحذف ملف sp_consent من إعدادات متصفحك، ثم إعادة تحميل الصفحة: سيظهر شريط الموافقة من جديد.",
+            "يمكنك أيضاً حظر أو حذف جميع ملفات تعريف الارتباط عبر إعدادات متصفحك. لاحظ أن ذلك قد يؤثر على بعض ميزات الخدمة (لا سيما المصادقة)."
+          ]
+        },
+        {
+          "heading": "التواصل",
+          "body": [
+            "لأي استفسار بشأن استخدامنا لملفات تعريف الارتباط: dpo@sourcingpick.com."
+          ]
+        }
+      ]
+    }
+  },
+  "footer": {
+    "product": "المنتج",
+    "company": "الشركة",
+    "legal": "قانوني",
+    "pricing": "الأسعار",
+    "about": "من نحن",
+    "howItWorks": "كيف تعمل",
+    "becomePartner": "كن مصنعاً شريكاً",
+    "terms": "شروط الخدمة",
+    "privacy": "سياسة الخصوصية",
+    "cookies": "سياسة ملفات تعريف الارتباط",
+    "allRights": "جميع الحقوق محفوظة.",
+    "madeIn": "صُنع بحب ❤️ من قبل INAIRIS"
+  },
+  "errors": {
+    "404": {
+      "title": "الصفحة غير موجودة",
+      "description": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+      "back": "العودة إلى الرئيسية"
+    },
+    "500": {
+      "title": "حدث خطأ ما",
+      "description": "حدث عطل من جانبنا. يرجى المحاولة مجدداً.",
+      "retry": "حاول مجدداً"
+    },
+    "notFound": {
+      "title": "فقدنا تلك الصفحة.",
+      "body": "العنوان الذي حاولت الوصول إليه غير موجود أو تم نقله. لنُعِدك إلى المسار الصحيح.",
+      "home": "العودة إلى الرئيسية",
+      "browse": "تصفح السوق"
+    },
+    "systemError": {
+      "code": "خطأ في النظام",
+      "title": "حدث عطل من جانبنا.",
+      "body": "لم نتمكن من عرض هذه الصفحة. تم إبلاغ الفريق. حاول مجدداً بعد لحظات.",
+      "retry": "إعادة المحاولة"
+    }
+  },
+  "locale": {
+    "switch": "اللغة",
+    "fr": "Français",
+    "en": "English",
+    "zh": "中文"
+  }
+}

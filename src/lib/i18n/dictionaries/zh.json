@@ -1,0 +1,1608 @@
+{
+  "brand": {
+    "name": "SourcingPick",
+    "tagline": "工业化的国际采购平台。"
+  },
+  "client": {
+    "dashboard": {
+      "eyebrow": "仪表盘",
+      "title": "概览",
+      "description": "一目了然查看您的需求、报价和订单。",
+      "kpiOpenRequests": "进行中需求",
+      "kpiActiveOrders": "进行中订单",
+      "kpiAwaitingPayment": "待付款",
+      "kpiTotalSpent": "已完成订单支出",
+      "kpiTotalSpentHint": "共 {n} 笔完成订单",
+      "quotesAwaitingTitle": "待决定报价",
+      "quotesAwaitingDesc": "代理转发给您的报价。",
+      "quotesEmpty": "暂无待决定报价。代理会通知您。",
+      "quoteValidUntil": "有效期至",
+      "awaitingPaymentTitle": "待支付",
+      "awaitingPaymentDesc": "30% 定金待支付。",
+      "awaitingPaymentEmpty": "无待支付款项。",
+      "recentOrdersTitle": "近期订单",
+      "recentOrdersEmpty": "暂无订单。",
+      "recentRequestsTitle": "近期需求",
+      "recentRequestsEmpty": "暂无需求。",
+      "seeAll": "查看全部"
+    },
+    "requests": {
+      "eyebrow": "按需采购",
+      "title": "我的需求",
+      "description": "跟踪您的采购需求进度并发起新需求。",
+      "newRequest": "新需求",
+      "newTitle": "新采购需求",
+      "newDescription": "用几个步骤描述您的需求。代理将在 24 小时内与您联系。",
+      "submitRequest": "提交需求",
+      "backToList": "返回需求列表",
+      "emptyTitle": "暂无需求",
+      "emptyBody": "发起您的首个采购需求 — 专属代理将从评估到交付全程陪伴。",
+      "colReference": "编号",
+      "colTitle": "需求",
+      "colCategory": "类别",
+      "colQuantity": "数量",
+      "colBudget": "预算",
+      "colStatus": "状态",
+      "deadlineShort": "截止",
+      "stepProduct": "产品",
+      "stepLogistics": "物流",
+      "stepRequirements": "要求",
+      "stepReview": "确认",
+      "titleLabel": "需求标题",
+      "titleHint": "简短的名称,概括您的需求。",
+      "titlePlaceholder": "棉布手提袋 250gsm — 夏季系列",
+      "categoryLabel": "类别",
+      "categoryPlaceholder": "选择类别…",
+      "productNameLabel": "产品名称",
+      "productNamePlaceholder": "手提袋、A5 笔记本等。",
+      "productDescriptionLabel": "详细描述",
+      "productDescriptionHint": "材料、尺寸、颜色、工艺、具体要求。",
+      "productDescriptionPlaceholder": "有机棉 250 gsm,38×42 cm,60 cm 手柄,正面单色丝网印刷…",
+      "quantityLabel": "数量",
+      "targetPriceLabel": "目标单价",
+      "budgetLabel": "总预算",
+      "priceHintEur": "以欧元计,不含税。",
+      "deadlineLabel": "期望交货日期",
+      "addressLabel": "交货地址",
+      "addressPlaceholder": "12 rue de la République, 69001 Lyon",
+      "incotermLabel": "贸易术语",
+      "incotermPlaceholder": "选择贸易术语…",
+      "incotermHint": "定义运输、保险和关税的承担方。",
+      "regionLabel": "采购地区",
+      "regionLockedHint": "SourcingPick 目前仅在中国采购。其他国家即将开放。",
+      "regionLockedCountry": "中国",
+      "regionLockedBadge": "锁定",
+      "countryLabel": "采购国家",
+      "countryHint": "在该地区内进一步缩小到单一国家。",
+      "countryPlaceholder": "选择一个国家…",
+      "errorCountry": "请选择采购国家。",
+      "certsLabel": "必需认证",
+      "certsHint": "列出您必需的认证,以逗号分隔。",
+      "certsPlaceholder": "GOTS、OEKO-TEX、FSC、CE…",
+      "certsExplainer": "您的要求越明确,代理评估的速度就越快。",
+      "reviewDescription": "在提交前确认您的需求。之后您可以通过需求消息与代理沟通。",
+      "sectionProduct": "产品",
+      "sectionLogistics": "物流",
+      "sectionAgent": "跟进",
+      "agentLabel": "指派代理",
+      "agentPending": "尚未指派代理 — 您的需求已在队列中。SLA:24 个工作小时。",
+      "tenderInvitationsCount": "已发送 {n} 个招标邀请",
+      "quotesCount": "已收到 {n} 个报价",
+      "errorTitle": "请输入需求标题。",
+      "errorCategory": "请选择类别。",
+      "errorProductName": "请输入产品名称。",
+      "errorQuantity": "数量必须为正整数。",
+      "errorDeadline": "请输入交货日期。",
+      "errorDeadlineFuture": "交货日期必须在未来。",
+      "errorAddress": "请输入完整交货地址。",
+      "errorIncoterm": "请选择贸易术语。",
+      "errorRegion": "请选择采购地区。",
+      "incoterms": {
+        "EXW": "工厂交货 — 您负责所有运输",
+        "FOB": "船上交货 — 工厂送至港口",
+        "DAP": "目的地交货 — 工厂送至地址,不含关税",
+        "DDP": "完税后交货 — 工厂送至地址,含关税",
+        "CIF": "成本、保险加运费 — 工厂送至港口 + 保险"
+      },
+      "regions": {
+        "ANYWHERE": "不限",
+        "EUROPE": "欧洲",
+        "MAGHREB": "马格里布",
+        "AFRICA": "非洲",
+        "ASIA": "亚洲",
+        "AMERICAS": "美洲",
+        "OCEANIA": "大洋洲",
+        "MIDDLE_EAST": "中东"
+      },
+      "statuses": {
+        "DRAFT": "草稿",
+        "REQUEST_RECEIVED": "已接收",
+        "ASSIGNED": "已分配",
+        "QUOTE_SENT": "已发送报价",
+        "QUOTE_ACCEPTED": "报价已接受",
+        "QUOTE_REJECTED": "报价已拒绝",
+        "PAYMENT_PENDING": "等待付款",
+        "PREPARATION": "生产中",
+        "SHIPPED": "已发货",
+        "IN_TRANSIT": "运输中",
+        "COMPLETED": "已完成",
+        "CANCELLED": "已取消"
+      }
+    },
+    "certifications": {
+      "eyebrow": "认证项目",
+      "title": "赞助认证",
+      "description": "帮助合作工厂获得认证。作为回报,您将作为赞助方列入项目并优先查看进度。",
+      "mineTitle": "已赞助的项目",
+      "sponsorableTitle": "开放赞助",
+      "empty": "目前没有开放赞助的项目。",
+      "sponsorCta": "赞助"
+    },
+    "marketplace": {
+      "eyebrow": "市场",
+      "title": "预先协商的产品",
+      "description": "已采购和协商的产品目录。实时库存和交期、一键下单、内置托管。",
+      "backToBrowse": "返回市场",
+      "searchPlaceholder": "搜索产品…",
+      "allCategories": "全部",
+      "empty": "没有符合搜索条件的产品。",
+      "inStock": "件库存",
+      "outOfStock": "缺货",
+      "unitPrice": "单价",
+      "orderTitle": "下单",
+      "totalLabel": "合计",
+      "buyCta": "立即购买",
+      "moqHint": "MOQ:{n} 件。",
+      "addressHint": "最终送货地址。"
+    },
+    "quotes": {
+      "sectionTitle": "已收报价",
+      "empty": "您的代理会在报价准备好后在此展示。",
+      "agentRecommendation": "代理推荐",
+      "unitPrice": "单价",
+      "total": "合计",
+      "leadTime": "交期",
+      "incoterm": "贸易术语",
+      "validUntil": "有效期至",
+      "expired": "已过期",
+      "statusAwaitingDecision": "待决定",
+      "statusAccepted": "已接受",
+      "statusRejected": "已拒绝",
+      "accept": "接受此报价",
+      "reject": "拒绝",
+      "cancel": "取消",
+      "confirmAccept": "确认并创建订单",
+      "confirmAcceptCopy": "其他报价将被拒绝。",
+      "orderCreatedTitle": "订单已创建",
+      "orderCreatedBody": "您的订单 {ref} 等待付款中。",
+      "viewOrder": "查看订单"
+    },
+    "invoices": {
+      "eyebrow": "账单",
+      "title": "我的发票",
+      "description": "您在 SourcingPick 的所有发票 — 定金、尾款及研究费。",
+      "kpiOpen": "待支付",
+      "kpiOverdue": "逾期",
+      "kpiPaid": "已支付",
+      "tableTitle": "发票历史",
+      "empty": "暂无发票。",
+      "colReference": "编号",
+      "colSubject": "主题",
+      "colType": "类型",
+      "colAmount": "金额",
+      "colStatus": "状态",
+      "colDue": "到期",
+      "dueOn": "到期",
+      "downloadPdf": "下载 PDF",
+      "viewOrder": "查看订单"
+    },
+    "orders": {
+      "eyebrow": "我的订单",
+      "title": "进行中的订单",
+      "description": "跟踪您订单的生产、发货和交付。",
+      "backToList": "返回订单列表",
+      "emptyTitle": "暂无订单",
+      "emptyBody": "当您接受报价后,订单会显示在这里。",
+      "createdAt": "创建于",
+      "eta": "预计到达",
+      "factoryLabel": "工厂",
+      "totalLabel": "合计",
+      "depositLabel": "定金 (30%)",
+      "depositHint": "支付给工厂以启动生产。",
+      "balanceLabel": "尾款 (70%)",
+      "balanceHint": "确认收货后释放。",
+      "timelineTitle": "进度",
+      "sectionLogistics": "物流",
+      "sectionTracking": "追踪",
+      "sectionContact": "联系人",
+      "carrierLabel": "承运商",
+      "trackingNumberLabel": "追踪号",
+      "shippedAtLabel": "发货时间",
+      "trackingPending": "工厂会在发货时添加追踪号。",
+      "paymentPendingTitle": "需要付款",
+      "paymentPendingBody": "请通过信用卡支付 30% 定金。资金将托管直至您确认收货。",
+      "payDepositCta": "支付定金",
+      "paymentSuccessTitle": "已收到付款",
+      "paymentSuccessBody": "您的定金已托管。工厂已收到通知,可以开始生产。",
+      "paymentCancelledTitle": "付款已取消",
+      "paymentCancelledBody": "付款未完成。您可以随时重试。",
+      "sectionInvoices": "发票",
+      "invoiceTypeDeposit": "定金",
+      "invoiceTypeBalance": "尾款",
+      "invoicePaidOn": "付款时间",
+      "invoiceIssuedOn": "开具时间",
+      "invoiceStatuses": {
+        "DRAFT": "草稿",
+        "ISSUED": "已开具",
+        "PAID": "已支付",
+        "OVERDUE": "逾期",
+        "VOID": "已作废"
+      },
+      "cancelOrder": "取消订单",
+      "confirmCancelTitle": "取消订单",
+      "confirmCancelBody": "此操作无法撤销。订单将被取消并通知工厂。",
+      "confirmCancelCta": "确认取消",
+      "back": "返回",
+      "confirmReceiptTitle": "确认收货",
+      "confirmReceiptBody": "确认交付即可向工厂释放尾款。",
+      "confirmReceiptCta": "确认收货",
+      "payBalanceCta": "支付尾款并确认收货",
+      "payBalanceBody": "支付 70% 尾款后将自动向工厂释放付款。",
+      "waitingForFactory": "等待工厂的下一步操作。"
+    }
+  },
+  "onboarding": {
+    "client": {
+      "step1Eyebrow": "欢迎",
+      "step1Title": "{firstName} 您好,欢迎加入 SourcingPick。",
+      "step1Body": "{orgName} 账户已创建。以下是您采购方式将发生的变化。",
+      "pillarAgentTitle": "专属代理",
+      "pillarAgentBody": "首次提交需求时,代理将评估您的需求,并在 72 小时内联系 3 至 5 家经过审核的工厂。",
+      "pillarEscrowTitle": "内置资金托管",
+      "pillarEscrowBody": "您的资金会冻结在我们的支付服务商处,直到您确认收到符合要求的货物。",
+      "pillarReachTitle": "全球网络",
+      "pillarReachBody": "欧洲、马格里布、亚洲、非洲、美洲。我们的团队会说您供应商的语言。",
+      "step2Eyebrow": "工作流程",
+      "step2Title": "您的第一个需求,4 步完成。",
+      "step2Body": "从发布需求到收到订单,这是中间发生的事情。",
+      "step2Item1": "您发布需求(产品、数量、认证、截止日期)。",
+      "step2Item2": "24 小时内,您的代理联系相关工厂。",
+      "step2Item3": "您收到 1 至 3 份合格报价及推荐意见。",
+      "step2Item4": "您接受、通过托管付款、收到订单。",
+      "finish": "进入我的仪表盘"
+    },
+    "factory": {
+      "step1Eyebrow": "欢迎",
+      "step1Title": "{firstName} 您好,欢迎加入 SourcingPick。",
+      "step1Body": "{orgName} 账户已创建。以下是您的文件状态。",
+      "kycPendingTitle": "您的 KYC 正在审核中",
+      "kycPendingBody": "我们的团队会在 48 个工作小时内审核您的文件。审核通过后您会收到邮件通知。在此期间,您可以继续完善您的资料。",
+      "kycVerifiedTitle": "您的 KYC 已通过",
+      "kycVerifiedBody": "您可以接收招标邀请并在市场上列出产品。",
+      "kycFlaggedTitle": "您的 KYC 需要关注",
+      "kycFlaggedBody": "我们的团队成员将与您联系以澄清一些事项。",
+      "kycRejectedTitle": "您的文件已被拒绝",
+      "kycRejectedBody": "请联系 kyc@sourcingpick.com 了解原因并提交新的文件。",
+      "step2Eyebrow": "下一步",
+      "step2Title": "在您的 KYC 审核期间,您可以做这些事。",
+      "step2Body": "这些操作将帮助您在文件通过审核后立即接收首批招标邀请。",
+      "step2Item1": "完善您的工厂资料:生产能力、所讲语言、现有认证。",
+      "step2Item2": "准备 3 至 5 张高分辨率的旗舰产品照片。",
+      "step2Item3": "确认您的 IBAN 已更新以便接收付款。",
+      "finish": "进入我的仪表盘"
+    }
+  },
+  "settings": {
+    "eyebrow": "账户设置",
+    "title": "设置",
+    "description": "管理您的账户和 {org} 组织。",
+    "profile": {
+      "title": "个人资料",
+      "description": "您的个人信息,对您的代理和 SourcingPick 团队可见。",
+      "phoneLabel": "电话",
+      "emailHint": "无法在此处更改邮箱 — 请联系客服。",
+      "localeLabel": "首选语言",
+      "localeHint": "设置界面和通知的语言。",
+      "saved": "个人资料已更新。"
+    },
+    "security": {
+      "title": "安全",
+      "description": "修改您的密码。",
+      "currentPasswordLabel": "当前密码",
+      "newPasswordLabel": "新密码",
+      "submit": "更新密码",
+      "saved": "密码已更新。"
+    },
+    "twoFactor": {
+      "title": "双因素认证",
+      "description": "每次登录时通过邮件接收验证码。建议所有账户启用。",
+      "toggleLabel": "启用邮件 2FA",
+      "toggleDescription": "每次登录时需要输入 6 位验证码。",
+      "adminLocked": "管理员账户必须启用 2FA,不可禁用。"
+    },
+    "members": {
+      "title": "组织成员",
+      "description": "可以访问您的 SourcingPick 账户的人员。",
+      "inviteSoon": "邀请新成员的功能即将推出。",
+      "subRoleOwner": "所有者",
+      "subRoleMember": "成员",
+      "subRoleAccountant": "会计"
+    }
+  },
+  "agent": {
+    "dashboard": {
+      "eyebrow": "仪表盘",
+      "title": "我的工作台",
+      "description": "您的需求、待转发的报价以及进行中的订单。",
+      "kpiAssigned": "已指派需求",
+      "kpiAssignedHint": "{overdue} 超时 · {approaching} 临近 · {ok} 正常",
+      "kpiQuotesToForward": "待转发报价",
+      "kpiActiveOrders": "跟进中订单",
+      "kpiCommission": "已产生佣金",
+      "kpiCommissionHint": "已完成 {n} 笔订单",
+      "queueTitle": "SLA 队列",
+      "queueDesc": "最早的优先。",
+      "queueEmpty": "暂无进行中需求。",
+      "quotesSuffix": "份报价",
+      "quotesToForwardTitle": "已收报价,待转发",
+      "quotesToForwardDesc": "等待您转发给客户的报价。",
+      "quotesToForwardEmpty": "暂无待转发的报价。",
+      "activeOrdersTitle": "您跟进的订单",
+      "activeOrdersEmpty": "暂无进行中订单。"
+    },
+    "requests": {
+      "eyebrow": "我的工作",
+      "title": "我负责的需求",
+      "description": "您作为主责代理的需求。点击进行评估并发起招标。",
+      "emptyTitle": "没有指派的需求",
+      "emptyBody": "当管理员将需求指派给您时,会显示在这里。",
+      "backToList": "返回需求列表",
+      "clientLabel": "客户",
+      "sectionContact": "客户联系人",
+      "sectionTenders": "招标邀请",
+      "sectionQuotes": "已收报价",
+      "sectionOrder": "订单",
+      "findFactories": "查找工厂",
+      "browseFactories": "浏览工厂池",
+      "slaOk": "{h} 小时",
+      "slaApproaching": "{h} 小时 — SLA 临近",
+      "slaOverdue": "{h} 小时 — SLA 已超时",
+      "tenderInvitationsCount": "{n} 个招标",
+      "quotesCount": "{n} 个报价"
+    },
+    "quotes": {
+      "empty": "此需求尚未收到报价。",
+      "submittedAt": "收到时间",
+      "factoryPrice": "工厂价",
+      "clientPrice": "客户价",
+      "total": "合计",
+      "validUntil": "有效期至",
+      "expired": "已过期",
+      "scoreRecommended": "推荐",
+      "scoreGood": "良好匹配",
+      "scoreOk": "可考虑",
+      "sendToClient": "发送给客户",
+      "sentToClientLabel": "已发送给客户",
+      "statusDraft": "草稿",
+      "statusReceived": "已收到",
+      "statusSentToClient": "已发送给客户",
+      "statusAccepted": "已接受",
+      "statusRejected": "已拒绝",
+      "statusExpired": "已过期"
+    },
+    "factories": {
+      "eyebrow": "供应商池",
+      "title": "已验证工厂",
+      "description": "所有通过我们 KYC 团队审核的合作工厂。",
+      "contextHint": "已按地区筛选:{region}。",
+      "filterAll": "全部",
+      "searchPlaceholder": "搜索工厂、国家、能力…",
+      "empty": "没有工厂符合此筛选。",
+      "ordersSuffix": "订单"
+    },
+    "tasks": {
+      "eyebrow": "我的任务",
+      "title": "任务",
+      "description": "个人提醒 — SLA 跟进、催办、待关注事项。",
+      "kpiOpen": "进行中",
+      "kpiDueSoon": "48 小时内",
+      "kpiOverdue": "已逾期",
+      "newTaskTitle": "新建任务",
+      "openTitle": "待办 · {n}",
+      "openEmpty": "暂无未完成任务。趁机提前安排吧。",
+      "closedTitle": "近期已结束 · {n}",
+      "fieldTitle": "标题",
+      "titlePlaceholder": "催收发票 INV-2026-0142",
+      "fieldPriority": "优先级",
+      "fieldDueAt": "截止",
+      "fieldRequest": "关联需求",
+      "requestPlaceholder": "无",
+      "noRequestLink": "— 不关联 —",
+      "fieldDescription": "备注",
+      "descriptionPlaceholder": "背景、下一步、联系人…",
+      "createCta": "创建任务",
+      "completeCta": "标记完成",
+      "cancelCta": "取消",
+      "reopenCta": "重新打开",
+      "dueAt": "截止",
+      "completedAt": "完成于",
+      "overdueBadge": "已逾期",
+      "priorityLow": "低",
+      "priorityMedium": "中",
+      "priorityHigh": "高",
+      "statuses": {
+        "PENDING": "待办",
+        "IN_PROGRESS": "进行中",
+        "DONE": "已完成",
+        "CANCELLED": "已取消"
+      }
+    },
+    "tenders": {
+      "eyebrow": "招标邀请",
+      "backToRequest": "返回需求",
+      "sectionInvitation": "邀请",
+      "sectionFactory": "工厂资料",
+      "sectionQuote": "已收报价",
+      "statusLabel": "状态",
+      "invitedAtLabel": "邀请时间",
+      "viewedAtLabel": "查看时间",
+      "expiresAtLabel": "过期时间",
+      "matchScoreLabel": "匹配评分",
+      "languagesLabel": "语言",
+      "totalOrdersLabel": "已完成订单",
+      "capabilitiesLabel": "能力",
+      "noFactoryProfile": "此工厂尚未完善资料。"
+    }
+  },
+  "orders": {
+    "statuses": {
+      "PAYMENT_PENDING": "等待付款",
+      "PREPARATION": "生产中",
+      "QC": "质量控制",
+      "SHIPPED": "已发货",
+      "IN_TRANSIT": "运输中",
+      "COMPLETED": "已完成",
+      "CANCELLED": "已取消"
+    },
+    "cancelledBanner": "此订单已取消。"
+  },
+  "publicMarketplace": {
+    "loadMoreTitle": "超过 20 件产品可供浏览",
+    "loadMoreBody": "创建客户账户即可浏览完整目录并一键下单。",
+    "endOfPreviewTitle": "您已浏览完预览",
+    "endOfPreviewBody": "创建账户以跟踪订单、与代理沟通,并获取独家产品。",
+    "signupCta": "创建客户账户",
+    "loginCta": "登录",
+    "orderTitle": "购买此产品",
+    "orderBody": "登录或创建账户即可完成下单(含安全定金)。",
+    "signupToBuyCta": "注册以下单"
+  },
+  "notifications": {
+    "bellLabel": "通知",
+    "title": "通知",
+    "empty": "暂无通知。",
+    "markAllRead": "全部标为已读"
+  },
+  "messaging": {
+    "bellLabel": "消息",
+    "bellTitle": "消息",
+    "bellEmpty": "暂无对话。",
+    "unreadCount": "{n} 条未读",
+    "sectionTitle": "消息",
+    "loading": "正在加载消息…",
+    "empty": "暂无消息。开始对话吧。",
+    "placeholder": "输入消息…",
+    "send": "发送",
+    "shortcutHint": "⌘/Ctrl + Enter 发送",
+    "systemAuthor": "SourcingPick",
+    "errorLoad": "无法加载消息。请重试。",
+    "errorStream": "实时更新已断开。请刷新页面重新连接。",
+    "contextHints": {
+      "REQUEST": "与此采购需求相关的对话 — 客户与代理之间。",
+      "TENDER": "代理与此工厂之间的私密对话。其他被邀请的工厂看不到这些消息。",
+      "QUOTE": "与此报价相关的对话 — 客户、代理和工厂。",
+      "ORDER": "与此订单相关的对话 — 所有相关方均参与。",
+      "KYC": "与我们团队就您的 KYC 文件进行的对话。",
+      "CERT": "关于您的认证项目的对话。",
+      "DISPUTE": "争议讨论 — 由 SourcingPick 团队调解。"
+    }
+  },
+  "tender": {
+    "selectFactoriesTitle": "选择要邀请的工厂",
+    "selectFactoriesDescription": "为需求「{title}」选择最多 {n} 家工厂。优先选择同类别工厂。",
+    "backToRequest": "返回需求",
+    "matchOnly": "仅 {category}",
+    "matchedTag": "匹配",
+    "alreadyInvited": "已邀请",
+    "selectedCount": "已选 {n}/{max} 家工厂",
+    "sendInvitations": "发送 {n} 份邀请",
+    "sendCta": "发起招标",
+    "invitedCount": "{n} 家工厂已邀请",
+    "errorMaxInvitations": "最多只能选择 {n} 家工厂。",
+    "errorMinSelection": "至少选择一家工厂。"
+  },
+  "factory": {
+    "dashboard": {
+      "eyebrow": "仪表盘",
+      "title": "概览",
+      "description": "招标、生产、收款和产品目录,一站式管理。",
+      "kycPendingTitle": "KYC 审核中",
+      "kycPendingBody": "您的文件正在审核。审核通过后即可接收首批招标邀请。",
+      "connectPendingTitle": "连接 Stripe 接收收款",
+      "connectPendingBody": "必须先设置 Stripe Connect,我们才能在交付后向您付款。",
+      "kpiOpenTenders": "待回复招标",
+      "kpiOpenTendersHint": "累计收到:{n}",
+      "kpiActiveOrders": "进行中订单",
+      "kpiPendingPayouts": "待处理收款",
+      "kpiPendingPayoutsHint": "{n} 笔待转账",
+      "kpiTotalEarned": "已收款",
+      "kpiTotalEarnedHint": "已完成 {n} 笔收款",
+      "openTendersTitle": "进行中招标",
+      "openTendersDesc": "点击查看并回复。",
+      "openTendersEmpty": "暂无待回复的招标。",
+      "catalogueTitle": "产品目录",
+      "activeOrdersTitle": "生产中订单",
+      "activeOrdersEmpty": "暂无进行中订单。"
+    },
+    "catalogue": {
+      "eyebrow": "产品目录",
+      "title": "我的产品",
+      "description": "在 SourcingPick 市场上列出您已预先协商的产品。",
+      "newCta": "添加产品",
+      "newTitle": "新产品",
+      "newDescription": "描述您的产品。我们的团队会在发布前审核每个产品页面。",
+      "backToList": "返回产品目录",
+      "emptyTitle": "暂无产品",
+      "emptyBody": "上架您的第一个产品,审核通过后将出现在市场中。",
+      "noImage": "无图片",
+      "detailsTitle": "产品详情",
+      "nameLabel": "产品名称",
+      "namePlaceholder": "棉质环保袋 250 克 — 夏季系列",
+      "categoryLabel": "类别",
+      "descriptionLabel": "描述",
+      "descriptionHint": "材料、尺寸、工艺、选项。至少 20 个字符。",
+      "descriptionPlaceholder": "有机棉 250 gsm,38×42 cm,提手 60 cm,正面单色丝印…",
+      "priceLabel": "工厂单价",
+      "clientPriceLabel": "客户单价",
+      "clientPriceHint": "已包含平台 12% 加成。",
+      "leadTimeLabel": "交期",
+      "moqLabel": "MOQ",
+      "stockLabel": "库存",
+      "stockLowLabel": "低库存提醒",
+      "stockLowHint": "可选 — 低于此值时将通知您。",
+      "viewsLabel": "浏览量",
+      "soldLabel": "已售",
+      "imagesLabel": "图片",
+      "imagesHint": "JPG / PNG / WebP,每张最多 10MB,共最多 6 张",
+      "imagesDropHint": "点击上传最多 {n} 张图片。",
+      "imagesMaxReached": "已达图片上限。",
+      "imagesTooMany": "超过 6 张图片限制 — 只保留前 6 张。",
+      "saveDraft": "保存草稿",
+      "saveChanges": "保存修改",
+      "archiveCta": "归档",
+      "submitForReviewCta": "提交审核",
+      "submitNeedsImage": "提交前请至少添加一张图片。",
+      "pendingReviewBanner": "等待 SourcingPick 团队审核。",
+      "rejectedBanner": "已拒绝 — 请修改后重新提交。",
+      "statuses": {
+        "DRAFT": "草稿",
+        "PENDING_REVIEW": "审核中",
+        "PUBLISHED": "已发布",
+        "REJECTED": "已拒绝",
+        "OUT_OF_STOCK": "缺货",
+        "ARCHIVED": "已归档"
+      }
+    },
+    "certification": {
+      "eyebrow": "认证项目",
+      "title": "我的认证",
+      "description": "加入 SourcingPick 认证项目 — 我们的合作机构将带您从材料准备到审核再到颁证。",
+      "kycRequiredTitle": "需要 KYC",
+      "kycRequiredBody": "认证机构需要已验证的实体。请先完成 KYC 才能开始。",
+      "enrollTitle": "新建认证",
+      "enrollDescription": "选择标准和认证机构,我们的团队负责安排后续。",
+      "standardLabel": "目标标准",
+      "standardHint": "例如 ISO 9001:2015、GOTS、OEKO-TEX Standard 100",
+      "bodyLabel": "机构",
+      "bodyPlaceholder": "选择机构…",
+      "targetMonthsLabel": "目标(月)",
+      "targetMonthsHint": "您希望在多少个月内获得认证?",
+      "enrollCta": "开始申请",
+      "activeTitle": "进行中",
+      "closedTitle": "已关闭",
+      "empty": "暂无认证申请。",
+      "sponsoredBy": "赞助方:",
+      "preAuditLabel": "预审",
+      "auditLabel": "审核",
+      "etaLabel": "预计完成",
+      "issuedLabel": "颁发于",
+      "expiresLabel": "到期于",
+      "viewCertificate": "查看证书",
+      "withdrawCta": "撤回申请",
+      "statuses": {
+        "DOSSIER": "材料",
+        "AUDIT_PROGRAMME": "已安排审核",
+        "EN_COURS": "进行中",
+        "CERTIFIE": "已认证",
+        "REFUSE": "已拒绝"
+      }
+    },
+    "payouts": {
+      "eyebrow": "收款",
+      "title": "我的收款",
+      "description": "管理您的 Stripe 收款账户并查看付款历史。",
+      "startTitle": "启用收款",
+      "startBody": "连接 Stripe 账户以在订单交付时收款。",
+      "startOnboardingCta": "连接 Stripe",
+      "pendingTitle": "Stripe 账户未完成",
+      "pendingBody": "Stripe 需要更多信息后才能向您付款。请继续填写表单以启用收款。",
+      "resumeOnboardingCta": "继续",
+      "readyTitle": "Stripe 账户已激活",
+      "readyBody": "收款已启用。每个已交付的订单将扣除 3% 佣金后自动转账。",
+      "manageAccountCta": "管理",
+      "unreachableTitle": "无法连接 Stripe",
+      "unreachableBody": "暂时无法连接到 Stripe。请稍后重试 — 您正在处理的收款不会受影响。",
+      "onboardingError": "无法生成 Stripe 入驻链接。",
+      "historyTitle": "收款历史",
+      "historyEmpty": "暂无收款记录。当客户确认收货后将显示在此处。",
+      "sentOn": "发送时间",
+      "createdOn": "创建时间",
+      "failurePendingOnboarding": "收款待处理:请完成 Stripe 连接以接收款项。",
+      "statusPending": "待处理",
+      "statusScheduled": "已安排",
+      "statusSent": "已发送",
+      "statusReceived": "已收到",
+      "statusFailed": "失败"
+    },
+    "orders": {
+      "eyebrow": "我的订单",
+      "title": "生产订单",
+      "description": "您客户的进行中订单。在生产推进时更新状态。",
+      "backToList": "返回订单列表",
+      "emptyTitle": "暂无订单",
+      "emptyBody": "当客户接受您的报价后,订单会显示在这里。",
+      "clientLabel": "客户",
+      "revenueLabel": "毛收入",
+      "supplierFeeLabel": "SourcingPick 佣金(3%)",
+      "supplierFeeHint": "上限 5,000 € — 定价 v2。",
+      "netLabel": "净收款",
+      "netHint": "估算值;实际付款通过托管完成(第 3 阶段)。",
+      "sectionSpec": "规格",
+      "deadlineLabel": "客户要求交付日期",
+      "waitingPaymentTitle": "等待客户付款",
+      "waitingPaymentBody": "付款确认后您将收到通知并可以开始生产。",
+      "preparationCtaTitle": "生产中",
+      "preparationCtaBody": "生产完成后请标记为进入质量控制。",
+      "markQcCta": "进入质量控制",
+      "qcCtaTitle": "质量控制",
+      "qcCtaBody": "质量控制通过后,添加发货信息以发货。",
+      "markShippedCta": "标记为已发货",
+      "shipFormTitle": "发货信息",
+      "trackingUrlLabel": "追踪 URL",
+      "trackingUrlHint": "可选 — 承运商追踪链接。",
+      "confirmShipCta": "确认发货",
+      "shippedCtaTitle": "包裹已发出",
+      "shippedCtaBody": "当承运商确认包裹正在运输时,标记为运输中。",
+      "markInTransitCta": "标记为运输中",
+      "errorTrackingRequired": "承运商和追踪号为必填项。"
+    },
+    "tenders": {
+      "eyebrow": "招标邀请",
+      "title": "我的招标邀请",
+      "description": "与您业务匹配的合格需求。请在 48 小时内回复以保持优先级。",
+      "backToList": "返回招标列表",
+      "emptyTitle": "暂无招标邀请",
+      "emptyBody": "当代理邀请您对某需求报价时,会显示在这里。",
+      "respondBy": "回复截止",
+      "respondCta": "回复",
+      "matchScore": "评分",
+      "statusInvited": "新邀请",
+      "statusViewed": "已查看",
+      "statusResponded": "已报价",
+      "statusDeclined": "已拒绝",
+      "statusExpired": "已过期",
+      "quoteSubmittedTitle": "您的报价",
+      "quoteSubmittedBody": "您的报价已转发给代理。当报价提交给客户时您会收到通知。",
+      "expiredBanner": "此招标已过期。如果您仍希望提交报价,请联系您的代理。",
+      "submitQuoteTitle": "提交报价",
+      "submitQuoteBody": "请给出您的最优价格和交期。客户将收到一份比较所有报价的推荐。",
+      "unitPriceLabel": "单价(不含税)",
+      "leadTimeLabel": "生产周期",
+      "moqLabel": "MOQ",
+      "validityLabel": "报价有效期",
+      "validityHint": "您的报价保持有效的天数(最长 60 天)。",
+      "daysSuffix": "天",
+      "daysShort": "天",
+      "validUntilLabel": "有效期至",
+      "notesLabel": "备注",
+      "notesHint": "对代理有用的信息:替代方案、条件、选项。",
+      "notesPlaceholder": "可提供再生棉替代方案 · 5000 件以上赠 50 件 …",
+      "submitQuote": "提交报价"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "eyebrow": "运营视图",
+      "title": "SourcingPick 平台",
+      "description": "关键指标、优先队列与系统实时活动。",
+      "kpiGmv": "本月 GMV",
+      "kpiGmvHint": "本月 {n} 笔订单",
+      "kpiCommission": "已产生佣金",
+      "kpiActiveOrders": "进行中订单",
+      "kpiActiveRequests": "进行中需求:{n}",
+      "kpiAgents": "活跃代理",
+      "kpiAgentsHint": "{n} 家已验证工厂",
+      "kpiKycQueue": "待审 KYC",
+      "kpiPendingListings": "待审核产品",
+      "kpiEscrowHeld": "托管金额",
+      "kpiEscrowHeldHint": "{n} 笔交易",
+      "kpiWebhookFailures": "Webhook 失败",
+      "unassignedTitle": "待分配需求",
+      "unassignedDesc": "最早的优先。",
+      "unassignedEmpty": "暂无未分配需求。",
+      "payoutsTitle": "待处理收款",
+      "payoutsDesc": "待推送至 Stripe Connect。",
+      "payoutsPending": "队列金额",
+      "payoutsPendingHint": "{n} 笔待安排",
+      "auditTitle": "近期系统活动",
+      "auditEmpty": "暂无活动记录。",
+      "systemActor": "系统"
+    },
+    "audit": {
+      "eyebrow": "审计",
+      "title": "审计日志",
+      "description": "所有敏感操作的只增日志。按级别或操作过滤。",
+      "actionPlaceholder": "按操作过滤(例如 quote.accepted)",
+      "empty": "没有符合筛选条件的条目。",
+      "truncated": "显示最近 {n} 条。请收窄筛选以查看更多。",
+      "colTime": "时间",
+      "colLevel": "级别",
+      "colAction": "操作",
+      "colActor": "执行者",
+      "colTarget": "目标",
+      "colIp": "IP",
+      "levels": { "INFO": "信息", "WARN": "警告", "ALERT": "警报" }
+    },
+    "finance": {
+      "eyebrow": "财务",
+      "title": "财务概览",
+      "description": "GMV、佣金、已开和逾期发票。",
+      "kpiGmvMtd": "本月 GMV",
+      "kpiGmvYtd": "年初至今 GMV",
+      "kpiCommissionMtd": "本月佣金",
+      "kpiCommissionYtd": "年初至今佣金",
+      "kpiOrdersCount": "{n} 笔订单",
+      "kpiInvoicesIssued": "已开发票",
+      "kpiInvoicesOverdue": "逾期发票",
+      "kpiInvoicesPaid": "已付发票",
+      "invoicesTitle": "最新发票",
+      "empty": "暂无发票。",
+      "colReference": "编号",
+      "colType": "类型",
+      "colOrg": "组织",
+      "colAmount": "金额",
+      "colStatus": "状态",
+      "colIssued": "开具时间"
+    },
+    "escrow": {
+      "eyebrow": "托管",
+      "title": "托管账目",
+      "description": "持有、已释放和争议中的资金。",
+      "kpiHeld": "持有",
+      "kpiReleased": "已释放",
+      "kpiDisputed": "争议中",
+      "ledgerTitle": "最近交易",
+      "empty": "暂无交易。",
+      "colReference": "编号",
+      "colOrder": "订单",
+      "colParties": "双方",
+      "colAmount": "金额",
+      "colStatus": "状态",
+      "colProvider": "提供方",
+      "colReleased": "释放时间",
+      "statuses": {
+        "INITIATED": "已发起",
+        "FUNDED": "已注资",
+        "HELD": "持有中",
+        "RELEASED": "已释放",
+        "REFUNDED": "已退款",
+        "DISPUTED": "有争议"
+      }
+    },
+    "payouts": {
+      "eyebrow": "收款",
+      "title": "收款队列",
+      "description": "通过 Stripe Connect 推送给工厂的收款。",
+      "kpiPending": "待处理",
+      "kpiSent": "已发送",
+      "kpiFailed": "失败",
+      "ledgerTitle": "最近收款",
+      "empty": "暂无收款。",
+      "colReference": "编号",
+      "colFactory": "工厂",
+      "colOrder": "订单",
+      "colAmount": "金额",
+      "colCommission": "佣金",
+      "colStatus": "状态",
+      "colSent": "发送时间"
+    },
+    "organizations": {
+      "eyebrow": "组织",
+      "title": "所有组织",
+      "description": "客户、工厂、代理与平台。",
+      "searchPlaceholder": "搜索名称、注册名…",
+      "tableTitle": "组织",
+      "empty": "未找到组织。",
+      "colName": "名称",
+      "colType": "类型",
+      "colLocation": "所在地",
+      "colKyc": "KYC",
+      "colUsers": "用户",
+      "colCreated": "创建时间",
+      "suspended": "已暂停",
+      "types": {
+        "CLIENT": "客户",
+        "FACTORY": "工厂",
+        "AGENT": "代理",
+        "PLATFORM": "平台"
+      }
+    },
+    "users": {
+      "eyebrow": "用户",
+      "title": "所有用户",
+      "description": "跨角色和组织的全部账户。",
+      "searchPlaceholder": "搜索姓名、邮箱…",
+      "tableTitle": "用户",
+      "empty": "未找到用户。",
+      "colName": "姓名",
+      "colEmail": "邮箱",
+      "colRole": "角色",
+      "colOrg": "组织",
+      "col2fa": "2FA",
+      "colLastLogin": "最近登录",
+      "neverLoggedIn": "从未"
+    },
+    "agents": {
+      "eyebrow": "团队",
+      "title": "代理绩效",
+      "description": "各代理的活跃负荷、已完成订单与产生的佣金。",
+      "tableTitle": "代理",
+      "empty": "未登记代理。",
+      "colName": "姓名",
+      "colEmail": "邮箱",
+      "colActive": "活跃负荷",
+      "colCompleted": "已完成",
+      "colCommission": "佣金",
+      "colLastLogin": "最近登录"
+    },
+    "webhooks": {
+      "eyebrow": "Webhook",
+      "title": "Webhook 事件",
+      "description": "来自 Stripe 等供应方的事件追踪。",
+      "kpiReceived": "已接收",
+      "kpiProcessed": "已处理",
+      "kpiFailed": "失败",
+      "tableTitle": "近期事件",
+      "empty": "暂无事件。",
+      "colReceived": "接收时间",
+      "colSource": "来源",
+      "colType": "类型",
+      "colStatus": "状态",
+      "colAttempts": "尝试次数",
+      "colError": "错误"
+    },
+    "logins": {
+      "eyebrow": "安全",
+      "title": "登录活动",
+      "description": "过去 24 小时与 7 天的成功与失败登录。",
+      "kpiTodaySuccess": "今日 · 成功",
+      "kpiTodayFailed": "今日 · 失败",
+      "kpiWeekSuccess": "7 天 · 成功",
+      "kpiWeekFailed": "7 天 · 失败",
+      "tableTitle": "最近登录事件",
+      "empty": "未记录到事件。",
+      "colTime": "时间",
+      "colEvent": "事件",
+      "colUser": "用户",
+      "colIp": "IP",
+      "colUa": "User-agent",
+      "unknownUser": "未知用户"
+    },
+    "support": {
+      "eyebrow": "支持",
+      "title": "市场支持队列",
+      "description": "市场订单的对话(无指派代理)。由平台团队处理支持。",
+      "tableTitle": "对话",
+      "empty": "暂无活跃支持对话。",
+      "messagesSuffix": "条消息",
+      "note": "采购流订单由其指派代理处理,不在此显示。"
+    },
+    "certifications": {
+      "eyebrow": "认证",
+      "title": "进行中的申请",
+      "description": "驱动认证流水线:安排审核、推进阶段、颁发证书。",
+      "empty": "暂无进行中的申请。",
+      "enrolledOn": "申请时间",
+      "sponsorPrefix": "赞助方:",
+      "advanceCta": "推进",
+      "cancel": "取消",
+      "nextStatusLabel": "下一阶段",
+      "nextStatusPlaceholder": "选择阶段…",
+      "progressLabel": "手动进度",
+      "progressHint": "0-100。留空则保留当前值。",
+      "certifiedRequiresAll": "颁证:必须填写 URL 和日期",
+      "certificateUrlLabel": "证书 URL",
+      "applyCta": "应用"
+    },
+    "marketplace": {
+      "eyebrow": "审核",
+      "title": "待审核产品",
+      "description": "在产品发布前审核或拒绝工厂提交的产品。",
+      "empty": "目前没有需要审核的产品。",
+      "noImage": "未提供图片",
+      "factoryKycMissing": "KYC 未验证",
+      "submittedAt": "提交时间",
+      "rejectCta": "拒绝",
+      "approveCta": "批准并发布",
+      "rejectReasonLabel": "拒绝原因(可在审计中查看)",
+      "rejectReasonPlaceholder": "描述需要修改的内容…",
+      "confirmReject": "确认拒绝",
+      "back": "返回"
+    },
+    "dispatch": {
+      "eyebrow": "派单",
+      "title": "待分配的需求",
+      "description": "将新进需求分配给代理。评估 SLA:24 个工作小时。",
+      "filterAll": "全部",
+      "filterUnassigned": "待分配",
+      "filterAssigned": "已分配",
+      "searchPlaceholder": "搜索编号、标题、客户…",
+      "empty": "目前没有需要派单的请求。",
+      "pickAgent": "选择代理",
+      "agentPlaceholder": "选择一个代理…",
+      "currentAgent": "当前代理:{name}",
+      "assign": "分配",
+      "reassign": "重新分配",
+      "loadSuffix": "个活跃需求",
+      "errorPickAgent": "分配前请先选择代理。"
+    },
+    "kyc": {
+      "eyebrow": "KYC 审核",
+      "title": "KYC 队列",
+      "description": "在工厂接收招标邀请前审查其提交的资质文件。",
+      "filterAll": "全部",
+      "searchPlaceholder": "搜索工厂、邮箱、城市…",
+      "empty": "没有符合此筛选条件的记录。",
+      "colFactory": "工厂",
+      "colCategory": "类别",
+      "colCountry": "所在地",
+      "colSubmitted": "提交时间",
+      "colStatus": "状态",
+      "drawerEyebrow": "KYC 详情",
+      "sectionContact": "联系人",
+      "sectionCompany": "公司",
+      "sectionManufacturing": "生产",
+      "sectionDocuments": "文件",
+      "contactName": "联系人姓名",
+      "contactEmail": "邮箱",
+      "submittedAt": "提交时间",
+      "noOwner": "此工厂没有关联的主要联系人。",
+      "noDocuments": "尚未上传任何文件。",
+      "openDocument": "打开文件",
+      "approve": "批准 KYC",
+      "flag": "标记",
+      "reject": "拒绝",
+      "rejectReasonLabel": "拒绝原因(可在审计中查看)",
+      "flagReasonLabel": "标记原因(可在审计中查看)",
+      "reasonPlaceholder": "简要说明原因…",
+      "confirmReject": "确认拒绝",
+      "confirmFlag": "确认标记",
+      "errorReasonRequired": "请输入至少 3 个字符的原因。",
+      "docKinds": {
+        "REGISTRY": "工商注册证明",
+        "TAX": "税务证明",
+        "FACILITY_PHOTO": "设施照片",
+        "REFERENCES": "客户参考",
+        "INSURANCE": "质量保险",
+        "OTHER": "其他"
+      }
+    },
+    "sourcingAllowlist": {
+      "eyebrow": "平台设置",
+      "title": "采购开放清单",
+      "description": "控制客户在创建请求时可选择的地区与国家。变更通常一分钟内生效。",
+      "regionsTitle": "开放的地区",
+      "regionsDescription": "至少需选择一个地区。每个地区会在下方开启对应的国家列表。",
+      "countriesTitle": "开放的国家",
+      "countriesDescription": "选择允许的具体国家。当只有一个国家可选时,表单会将选择器隐藏为只读。",
+      "selectedLabel": "已选择",
+      "removeHint": "点击取消选择",
+      "searchLabel": "搜索国家",
+      "searchHint": "输入名称或 ISO 代码(例如 \"viet\" 或 \"VN\")。",
+      "searchPlaceholder": "搜索国家…",
+      "searchEmpty": "未找到匹配的国家。",
+      "saveCta": "保存清单",
+      "saved": "已保存。"
+    }
+  },
+  "common": {
+    "actions": {
+      "continue": "继续",
+      "cancel": "取消",
+      "save": "保存",
+      "delete": "删除",
+      "edit": "编辑",
+      "back": "返回",
+      "next": "下一步",
+      "submit": "提交",
+      "close": "关闭",
+      "search": "搜索",
+      "filter": "筛选",
+      "export": "导出",
+      "loading": "加载中…"
+    },
+    "status": {
+      "pending": "待处理",
+      "active": "活跃",
+      "verified": "已验证",
+      "flagged": "已标记",
+      "rejected": "已拒绝",
+      "completed": "已完成",
+      "cancelled": "已取消"
+    },
+    "roles": {
+      "client": "客户",
+      "factory": "工厂",
+      "agent": "代理",
+      "admin": "管理员"
+    }
+  },
+  "categories": {
+    "TEXTILE": "纺织品",
+    "HOME": "家居用品",
+    "STATIONERY": "文具",
+    "COSMETICS": "化妆品",
+    "FOOD": "食品饮料",
+    "ELECTRONICS": "电子产品",
+    "METAL": "金属",
+    "WOOD": "木材",
+    "PLASTIC": "塑料",
+    "OTHER": "其他"
+  },
+  "nav": {
+    "dashboard": "仪表盘",
+    "requests": "需求",
+    "marketplace": "市场",
+    "orders": "订单",
+    "invoices": "发票",
+    "tenders": "招标",
+    "catalogue": "产品目录",
+    "payouts": "付款",
+    "certification": "认证",
+    "tasks": "任务",
+    "settings": "设置",
+    "logout": "退出登录"
+  },
+  "theme": {
+    "toggleLabel": "切换主题",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
+  "marketing": {
+    "hero": {
+      "eyebrow": "采购 · 市场 · 认证",
+      "title": "跨境采购,无需不透明的中间商。",
+      "subtitle": "发布您的需求,在 72 小时内收到合格的报价,并通过内置的资金托管系统安心付款。",
+      "ctaPrimary": "免费开始",
+      "ctaSecondary": "浏览市场",
+      "assurance": "无需信用卡。无任何承诺。"
+    },
+    "pillars": {
+      "eyebrow": "三大业务,一个平台",
+      "title": "让您安心采购的一切。",
+      "sourcing": {
+        "title": "按需采购",
+        "body": "专属代理评估您的需求,联系 3 至 5 家相关工厂,并全程协调订单直至交付。"
+      },
+      "marketplace": {
+        "title": "市场",
+        "body": "已采购和预先谈判的产品目录。库存现货、低起订量、一键下单。"
+      },
+      "certification": {
+        "title": "认证计划",
+        "body": "通过四家法国标准机构,为工厂提供 ISO、CE、GOTS、FSC 认证的全流程支持。"
+      }
+    },
+    "howItWorks": {
+      "eyebrow": "工作流程",
+      "title": "从需求到交付,顺畅无阻。",
+      "step1": {
+        "title": "发布您的需求",
+        "body": "数量、截止日期、所需认证、采购地区。三步表单即可完成。"
+      },
+      "step2": {
+        "title": "代理接手处理",
+        "body": "24 小时内,您的代理联系 3 至 5 家经过审核的工厂,并计算资格评分。"
+      },
+      "step3": {
+        "title": "收到 1 至 3 份报价",
+        "body": "单价、起订量、交货期、贸易术语。并排比较,附推荐意见。"
+      },
+      "step4": {
+        "title": "托管付款,送达",
+        "body": "您的资金将冻结在我们的服务商处,直到您确认收到符合要求的货物。"
+      }
+    },
+    "trust": {
+      "eyebrow": "团队信任我们的原因",
+      "title": "为买家打造的基础设施。",
+      "escrow": {
+        "title": "内置资金托管",
+        "body": "未经您确认收到合格货物前,工厂不会收到任何付款。SourcingPick 作为受信任的第三方。"
+      },
+      "agents": {
+        "title": "专属代理",
+        "body": "不是聊天机器人。是真正了解您订单的人,代表您谈判并跟踪生产。"
+      },
+      "certs": {
+        "title": "经过审核的工厂",
+        "body": "所有合作工厂均通过 KYC 审核。许多工厂已加入我们与法国标准机构的认证计划。"
+      },
+      "partnersLabel": "合作标准机构"
+    },
+    "cta": {
+      "title": "准备好以全新方式采购了吗?",
+      "subtitle": "两分钟创建账户。首次需求免费,无任何承诺。",
+      "primaryButton": "创建账户",
+      "secondaryButton": "查看价格"
+    }
+  },
+  "about": {
+    "eyebrow": "关于我们",
+    "title": "采购不应该是一种信仰行为。",
+    "body": [
+      "SourcingPick 的存在是因为即使在 2026 年,国际采购仍然是一条充满耐心、WhatsApp 消息和盲目转账的链条。买家向素未谋面的供应商预付款。工厂接受没有时间评估的规格。不透明的中间商赚取差价。",
+      "我们正在构建相反的模式:每个需求都由真人评估资格,每份报价都按同一评分标准比较,每笔付款都托管至确认交付。平台的利润是透明的,而不是隐藏在价格中。",
+      "我们总部位于法国,但工厂网络覆盖欧洲、马格里布、亚洲、非洲和美洲。语言不是障碍,时区也不是。"
+    ],
+    "principles": {
+      "eyebrow": "我们的原则",
+      "title": "我们不妥协的底线。"
+    },
+    "values": {
+      "escrow": {
+        "title": "未收货,不付款",
+        "body": "买家的资金将冻结在我们的支付服务商处,直到确认收到符合要求的货物。这一点不容妥协。"
+      },
+      "agents": {
+        "title": "始终由真人服务",
+        "body": "每个需求都由了解您的订单、账户和我们工厂的代理负责。没有客服热线,没有聊天机器人。"
+      },
+      "global": {
+        "title": "真正的全球网络",
+        "body": "我们的合作工厂遍布五大洲。我们既能与您的供应商沟通,也能与您的采购团队对接。"
+      }
+    }
+  },
+  "pricing": {
+    "eyebrow": "永远没有订阅费。",
+    "title": "您只为成功的订单付费。",
+    "subtitle": "透明的佣金,设有上限,在确认收货后收取。资金托管、物流跟踪和保险均包含在内。",
+    "popular": "核心业务",
+    "flows": {
+      "sourcing": {
+        "name": "按需采购",
+        "tagline": "为您量身定制的需求,由专属代理协商。",
+        "buyer": {
+          "label": "买家方",
+          "rate": "12 %",
+          "cap": "上限 15 000 €",
+          "note": "佣金在确认收货后收取。订单金额达到 125 000 € 时触发上限。"
+        },
+        "supplier": {
+          "label": "供应商方",
+          "rate": "3 %",
+          "cap": "上限 5 000 €",
+          "note": "佣金在托管释放后从工厂付款中扣除。"
+        },
+        "research": {
+          "label": "研究服务费",
+          "amount": "125 € / 天",
+          "cap": "或 500 € / 周",
+          "note": "根据您的需求范围定制报价。如在 30 天内下单,将以平台积分形式退还。适用于所有需求,包括小额订单。"
+        },
+        "cta": "发布需求"
+      },
+      "marketplace": {
+        "name": "市场",
+        "tagline": "已采购并谈判好的产品,一键购买。",
+        "buyer": {
+          "label": "买家方",
+          "rate": "12 %",
+          "cap": "上限 15 000 €",
+          "note": "已包含在标示价格中。所见即所付,结算时无附加费用。"
+        },
+        "supplier": {
+          "label": "卖家方",
+          "rate": "3 %",
+          "cap": "上限 5 000 €",
+          "note": "佣金在托管释放后从卖家付款中扣除。"
+        },
+        "cta": "浏览目录"
+      }
+    },
+    "included": {
+      "title": "每笔交易均包含",
+      "items": [
+        "资金托管至确认收到符合要求的货物",
+        "物流跟踪至您的所在地",
+        "针对产品类别的专项保险"
+      ]
+    },
+    "excluded": {
+      "title": "不包含",
+      "items": [
+        "运费(由买家根据约定的贸易术语承担)"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "登录",
+      "emailLabel": "电子邮箱",
+      "passwordLabel": "密码",
+      "submit": "登录",
+      "forgotPassword": "忘记密码?",
+      "noAccount": "还没有账户?",
+      "signupLink": "创建账户",
+      "google": "使用 Google 继续",
+      "divider": "或"
+    },
+    "signup": {
+      "title": "创建账户",
+      "pickerDescription": "选择与您业务相匹配的账户类型。",
+      "asClient": "我是买家",
+      "clientBody": "希望通过专属代理从经审核的工厂采购的中小企业、品牌或大型公司。",
+      "asFactory": "我是工厂",
+      "factoryBody": "希望回应招标并列出产品的制造商。",
+      "hasAccount": "已有账户?",
+      "loginLink": "登录",
+      "clientEyebrow": "买家账户",
+      "clientTitle": "创建您的买家账户",
+      "firstNameLabel": "名",
+      "lastNameLabel": "姓",
+      "orgNameLabel": "组织名称",
+      "orgNameHint": "您企业经营所用的商业名称。",
+      "countryLabel": "国家/地区",
+      "countryPlaceholder": "法国、巴西、日本…",
+      "passwordHint": "至少 12 个字符。",
+      "termsAccept": "我接受",
+      "termsLink": "服务条款",
+      "termsAnd": "和",
+      "privacyLink": "隐私政策",
+      "submit": "创建账户",
+      "factoryEyebrow": "工厂账户",
+      "factoryTitle": "创建您的工厂账户",
+      "sectionAccount": "您的账户",
+      "sectionCompany": "您的公司",
+      "sectionFactory": "生产信息",
+      "sectionDocuments": "KYC 文件",
+      "documentsDescription": "我们的团队会在您的工厂接收招标邀请前审核这些文件。建议您上传更多设施照片(理想情况下不少于 3 张)。",
+      "legalNameLabel": "法定名称",
+      "displayNameLabel": "展示名称",
+      "displayNameHint": "您的工厂在买家面前显示的名称。",
+      "cityLabel": "城市",
+      "addressLabel": "地址",
+      "vatLabel": "增值税号",
+      "vatHint": "目前为可选;开票时需要。",
+      "categoryLabel": "主要类别",
+      "categoryPlaceholder": "选择类别…",
+      "capabilitiesLabel": "生产能力",
+      "capabilitiesHint": "以逗号分隔。例如:织造、染色、整理。",
+      "capabilitiesPlaceholder": "织造、染色、整理、质量控制…",
+      "docRegistryLabel": "工商注册证明",
+      "docRegistryHint": "营业执照或同等文件。PDF、JPG、PNG(最大 10 MB)。",
+      "docTaxLabel": "税务证明",
+      "docTaxHint": "税务合规证明。PDF、JPG、PNG(最大 10 MB)。",
+      "docFacilityLabel": "设施照片",
+      "docFacilityHint": "至少 1 张,建议 3 张或更多。JPG、PNG、WebP、HEIC(每张最大 10 MB)。",
+      "fileChoose": "选择文件",
+      "fileReplace": "替换",
+      "stepAccount": "账户",
+      "stepCompany": "公司",
+      "stepFactory": "生产",
+      "stepDocuments": "文件",
+      "stepReview": "确认",
+      "reviewDescription": "请在完成注册前确认所有信息无误。提交后您可以继续完善个人资料。",
+      "errorFirstName": "请输入您的名。",
+      "errorLastName": "请输入您的姓。",
+      "errorEmail": "请输入有效的电子邮箱地址。",
+      "errorPassword": "密码必须至少包含 12 个字符。",
+      "errorLegalName": "请输入公司法定名称。",
+      "errorDisplayName": "请输入展示名称。",
+      "errorCountry": "请输入国家。",
+      "errorCity": "请输入城市。",
+      "errorAddress": "请输入完整地址。",
+      "errorCategory": "请选择类别。",
+      "errorRegistry": "需要工商注册证明。",
+      "errorTax": "需要税务证明。",
+      "errorFacility": "请添加至少一张设施照片。",
+      "errorTerms": "您必须接受条款才能继续。"
+    },
+    "forgot": {
+      "title": "忘记密码",
+      "description": "输入您的电子邮箱。如果账户存在,您将收到重置链接。",
+      "submit": "发送重置链接",
+      "sentTitle": "链接已发送",
+      "sentBody": "如果该邮箱存在 SourcingPick 账户,邮件已发送。请检查您的收件箱(以及垃圾邮件文件夹)。",
+      "backToLogin": "返回登录"
+    },
+    "reset": {
+      "title": "新密码",
+      "description": "为您的账户选择一个新密码。",
+      "newPasswordLabel": "新密码",
+      "confirmPasswordLabel": "确认密码",
+      "passwordHint": "至少 12 个字符。",
+      "submit": "重置密码",
+      "missingTokenTitle": "无效链接",
+      "missingTokenBody": "此重置链接不完整。请从忘记密码页面申请新的链接。",
+      "requestNew": "申请新链接"
+    },
+    "otp": {
+      "title": "两步验证",
+      "description": "请输入发送至您邮箱的 6 位验证码。",
+      "codeLabel": "验证码",
+      "resend": "重新发送",
+      "resentNotice": "新验证码已发送。",
+      "verify": "验证"
+    }
+  },
+  "cookies": {
+    "title": "Cookie",
+    "description": "我们使用平台必需的 Cookie(语言、会话)。在您同意的情况下,我们还会统计使用情况以改进服务。",
+    "accept": "全部接受",
+    "decline": "拒绝非必需",
+    "manage": "管理选择"
+  },
+  "legal": {
+    "eyebrow": "法律条款",
+    "lastUpdated": "最后更新:2026 年 5 月",
+    "draftNotice": "本文档为 v0 草稿。最终内容将由我们的法律顾问在正式上线前审核。如有任何疑问,请发送邮件至 legal@sourcingpick.com。",
+    "terms": {
+      "title": "服务条款",
+      "sections": [
+        {
+          "heading": "接受条款",
+          "body": [
+            "访问 SourcingPick 或创建账户即表示您同意受本服务条款的约束。如果您不接受这些条款,请勿使用本服务。"
+          ]
+        },
+        {
+          "heading": "服务描述",
+          "body": [
+            "SourcingPick 是一个 SaaS 平台,通过三项主要服务连接买家(\"客户\")与制造商(\"工厂\"):按需采购、预先谈判产品的市场,以及认证支持计划。",
+            "SourcingPick 作为受信任的第三方运营,并通过持牌支付服务商运行资金托管机制。"
+          ]
+        },
+        {
+          "heading": "账户与验证",
+          "body": [
+            "账户创建免费。每个组织必须提供准确、最新的信息,并完成验证(KYC)程序后才能进行交易。",
+            "您应对您的凭证保密性负责。从您的账户进行的任何活动均被视为您的活动。"
+          ]
+        },
+        {
+          "heading": "可接受使用",
+          "body": [
+            "您不得将 SourcingPick 用于非法或欺诈活动,或违反法国和欧洲有关国际贸易、劳动法或知识产权的法规。",
+            "严禁规避资金托管机制、认证计划或我们的验证工具。"
+          ]
+        },
+        {
+          "heading": "付款、佣金与资金托管",
+          "body": [
+            "客户支付的资金由我们的支付服务商收取,并在买家确认收到符合要求的货物之前保留在托管中。",
+            "SourcingPick 对每笔交易收取佣金。费率取决于所订阅的方案,并在报价时披露。"
+          ]
+        },
+        {
+          "heading": "知识产权",
+          "body": [
+            "平台的所有元素(软件、设计、商标、编辑内容)均为 SourcingPick 或其许可方的专有财产。",
+            "您保留您发布内容(规格、照片、文件)的所有权利,并授予 SourcingPick 用于运营服务的有限许可。"
+          ]
+        },
+        {
+          "heading": "保证与责任限制",
+          "body": [
+            "SourcingPick 采取一切合理措施审核其合作工厂,但无法保证所制造产品的绝对合规性。资金托管机制正是为了在不合规时保护买家而设计。",
+            "在法律允许的范围内,我们的责任限于就受影响交易实际收到的金额。"
+          ]
+        },
+        {
+          "heading": "终止",
+          "body": [
+            "您可以随时从您的设置中终止账户。SourcingPick 可在违反本条款的情况下经通知后暂停或终止账户。"
+          ]
+        },
+        {
+          "heading": "条款变更",
+          "body": [
+            "我们可能会修改本条款以反映服务或法规的变化。任何重大变更将至少在生效前 30 天通过电子邮件通知您。"
+          ]
+        },
+        {
+          "heading": "适用法律与司法管辖",
+          "body": [
+            "本条款受法国法律管辖。任何争议应由巴黎上诉法院的法院专属管辖,除非强制性法律规定相反。"
+          ]
+        },
+        {
+          "heading": "联系方式",
+          "body": [
+            "关于本条款的任何问题:legal@sourcingpick.com。"
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "隐私政策",
+      "sections": [
+        {
+          "heading": "数据控制者",
+          "body": [
+            "SourcingPick SAS 总部位于法国,是通过平台收集的个人数据的控制者。如需行使您的权利或联系我们的数据保护官:dpo@sourcingpick.com。"
+          ]
+        },
+        {
+          "heading": "我们收集的数据",
+          "body": [
+            "账户数据:名、姓、电子邮件、电话、首选语言、角色和所属组织。",
+            "组织数据:法定名称、注册号、增值税号、地址、银行详细信息、KYC 文件。",
+            "使用数据:登录历史、创建的需求、收到的报价、订单、交换的消息。"
+          ]
+        },
+        {
+          "heading": "目的与法律依据",
+          "body": [
+            "履行合同:提供采购服务、处理订单和付款。",
+            "法律义务:KYC 合规、反洗钱、开票、会计保留。",
+            "合法利益:平台安全、欺诈预防、服务改进。",
+            "同意:受众测量、营销通讯(在您明确选择加入时)。"
+          ]
+        },
+        {
+          "heading": "数据共享",
+          "body": [
+            "我们将某些数据与合同下的技术服务提供商(托管、电子邮件、付款、KYC)共享,他们根据 GDPR 作为数据处理者行事。",
+            "我们绝不出售您的数据。在法律义务下,我们可能需要向主管当局披露数据。"
+          ]
+        },
+        {
+          "heading": "保留期限",
+          "body": [
+            "账户数据:在您的账户活跃期间保留,然后在最后一笔交易后存档 3 年。",
+            "KYC 文件:在业务关系结束后根据 AML-CFT 义务保留 5 年。",
+            "开票数据:根据法国商法保留 10 年。"
+          ]
+        },
+        {
+          "heading": "您的权利(GDPR)",
+          "body": [
+            "您对您的个人数据拥有访问、更正、删除、限制、可携带和反对的权利。您可以从设置中行使这些权利,或写信至 dpo@sourcingpick.com。",
+            "如有分歧,您可以向法国国家信息与自由委员会(CNIL,www.cnil.fr)提出投诉。"
+          ]
+        },
+        {
+          "heading": "国际传输",
+          "body": [
+            "我们的主要基础设施托管在欧盟。当处理订单涉及欧盟以外的合作伙伴时,我们应用欧盟委员会的标准合同条款来管理传输。"
+          ]
+        },
+        {
+          "heading": "Cookie",
+          "body": [
+            "我们对 Cookie 的使用在我们专门的 Cookie 政策中有详细说明。"
+          ]
+        },
+        {
+          "heading": "安全",
+          "body": [
+            "敏感数据(密码、IBAN、KYC 文件)在静态时加密。访问严格限于必要范围并记录。Admin 账户必须启用双因素身份验证。"
+          ]
+        },
+        {
+          "heading": "联系方式",
+          "body": [
+            "数据保护官:dpo@sourcingpick.com。"
+          ]
+        }
+      ]
+    },
+    "cookies": {
+      "title": "Cookie 政策",
+      "sections": [
+        {
+          "heading": "什么是 Cookie?",
+          "body": [
+            "Cookie 是您访问网站时放置在您设备上的一个小文本文件。它让网站能在两次访问之间记住某些信息(语言、登录会话、同意选择)。"
+          ]
+        },
+        {
+          "heading": "严格必需的 Cookie",
+          "body": [
+            "这些 Cookie 对平台的运行至关重要,无需您事先同意。",
+            "sp_locale(1 年)— 记住您的首选语言。",
+            "sp_consent(1 年)— 记录您对非必需 Cookie 的选择。",
+            "next-auth.session-token(会话)— 在您已验证身份时保持登录。",
+            "next-auth.csrf-token(会话)— 保护身份验证表单免受 CSRF 攻击。"
+          ]
+        },
+        {
+          "heading": "非必需 Cookie",
+          "body": [
+            "在当前版本中,SourcingPick 不设置任何非必需 Cookie。如果我们将来引入分析或营销工具,只有在您通过专用横幅明确同意后才会设置。"
+          ]
+        },
+        {
+          "heading": "管理您的选择",
+          "body": [
+            "您可以随时通过从浏览器设置中删除 sp_consent Cookie,然后重新加载页面来更改您的选择:同意横幅将重新出现。",
+            "您也可以通过浏览器设置阻止或删除所有 Cookie。请注意,这可能会影响服务的某些功能(尤其是身份验证)。"
+          ]
+        },
+        {
+          "heading": "联系方式",
+          "body": [
+            "关于我们使用 Cookie 的任何问题:dpo@sourcingpick.com。"
+          ]
+        }
+      ]
+    }
+  },
+  "footer": {
+    "product": "产品",
+    "company": "公司",
+    "legal": "法律",
+    "pricing": "价格",
+    "about": "关于",
+    "howItWorks": "工作流程",
+    "becomePartner": "成为合作工厂",
+    "terms": "服务条款",
+    "privacy": "隐私政策",
+    "cookies": "Cookie 政策",
+    "allRights": "保留所有权利。",
+    "madeIn": "由 INAIRIS 用 ❤️ 制作"
+  },
+  "errors": {
+    "404": {
+      "title": "页面不存在",
+      "description": "您要查找的页面不存在或已迁移。",
+      "back": "返回首页"
+    },
+    "500": {
+      "title": "发生错误",
+      "description": "我们这边出了点问题,请重试。",
+      "retry": "重试"
+    },
+    "notFound": {
+      "title": "找不到该页面。",
+      "body": "您访问的地址不存在或已迁移。让我们回到正轨。",
+      "home": "返回首页",
+      "browse": "浏览市场"
+    },
+    "systemError": {
+      "code": "系统错误",
+      "title": "我们这边出了点问题。",
+      "body": "无法显示此页面。团队已收到通知。请稍后重试。",
+      "retry": "重试"
+    }
+  },
+  "locale": {
+    "switch": "语言",
+    "fr": "Français",
+    "en": "English",
+    "zh": "中文"
+  }
+}

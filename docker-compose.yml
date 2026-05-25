@@ -1,0 +1,37 @@
+# Local development services for SourcingPick.
+# Postgres only in v1 — no Redis. SSE fan-out uses Postgres LISTEN/NOTIFY.
+# This setup mirrors what we'll provision on the dev VPS so behaviour is consistent.
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: sourcingpick-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: sourcingpick
+      POSTGRES_PASSWORD: sourcingpick_dev
+      POSTGRES_DB: sourcingpick
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sourcingpick -d sourcingpick"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Catches outbound SMTP traffic in dev — emails appear at
+  # http://localhost:8025 instead of leaving the machine. The 2FA OTP flow
+  # depends on this; without it you can't log in as the super-admin.
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: sourcingpick-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"  # SMTP — point SMTP_HOST/SMTP_PORT here in .env
+      - "8025:8025"  # web UI
+
+volumes:
+  postgres_data:

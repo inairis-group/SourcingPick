@@ -1,0 +1,444 @@
+@import "tailwindcss";
+
+/* Tailwind v4 dark variant: matches our manual `.dark` class on <html>.
+ * `prefers-color-scheme: dark` is handled separately in the :root rules. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* =============================================================
+ * SourcingPick design tokens
+ *
+ * Two layers:
+ *   1. Raw palette + scales in @theme — become Tailwind utilities
+ *      (bg-brand-500, text-ink, shadow-md, duration-fast, etc.)
+ *   2. Semantic tokens under :root — reference the raw palette
+ *      (--color-fg, --color-action, --color-line, ...).
+ *      Tailwind v4 picks these up too via @theme inline, so they
+ *      ship as utilities with short names (text-fg, bg-action,
+ *      border-line). Dark mode in Phase 6 = override these once.
+ *
+ * See docs/design-tokens.md for the rationale behind every value.
+ * ============================================================= */
+
+@theme {
+  /* ---------- Brand: derived from logo SVG #155DFC ---------- */
+  --color-brand-50: #eff4ff;
+  --color-brand-100: #dce6ff;
+  --color-brand-200: #b9cdff;
+  --color-brand-300: #8aabff;
+  --color-brand-400: #5582ff;
+  --color-brand-500: #155dfc;
+  --color-brand-600: #0a48d6;
+  --color-brand-700: #0738ab;
+  --color-brand-800: #0a2f86;
+  --color-brand-900: #0c2a6a;
+  --color-brand-950: #061846;
+
+  /* ---------- Ink: from logo wordmark #162456 ---------- */
+  --color-ink: #162456;
+  --color-ink-deep: #0a1330;
+
+  /* ---------- Neutral: slate-leaning, harmonises with brand-blue ---------- */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f8fafc;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1e293b;
+  --color-neutral-900: #0f172a;
+
+  /* ---------- Status: restrained, single-shade hierarchy ---------- */
+  --color-success: #166534;
+  --color-success-soft: #dcfce7;
+  --color-success-edge: #86efac;
+
+  --color-warning: #92400e;
+  --color-warning-soft: #fef3c7;
+  --color-warning-edge: #fcd34d;
+
+  --color-danger: #991b1b;
+  --color-danger-soft: #fee2e2;
+  --color-danger-edge: #fca5a5;
+
+  --color-info: var(--color-brand-700);
+  --color-info-soft: var(--color-brand-50);
+  --color-info-edge: var(--color-brand-200);
+
+  /* ---------- Typography ---------- */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --text-xs: 0.6875rem; /* 11px */
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.8125rem; /* 13px */
+  --text-sm--line-height: 1.125rem;
+  --text-base: 0.875rem; /* 14px — DEFAULT */
+  --text-base--line-height: 1.25rem;
+  --text-md: 1rem; /* 16px — long-form reading */
+  --text-md--line-height: 1.5rem;
+  --text-lg: 1.125rem; /* 18px */
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem; /* 20px */
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem; /* 24px */
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 1.875rem; /* 30px */
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl: 2.25rem; /* 36px — in-app h1 */
+  --text-4xl--line-height: 2.5rem;
+  --text-5xl: 3rem; /* 48px — marketing h1 */
+  --text-5xl--line-height: 3.5rem;
+  --text-6xl: 3.75rem; /* 60px — marketing display */
+  --text-6xl--line-height: 4rem;
+
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.04em;
+
+  /* ---------- Radii: deliberately small ---------- */
+  --radius-none: 0;
+  --radius-sm: 3px;
+  --radius-md: 5px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  /* ---------- Shadows: restrained, neutral-tinted ---------- */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-sm:
+    0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md:
+    0 4px 12px rgba(15, 23, 42, 0.1), 0 2px 4px rgba(15, 23, 42, 0.04);
+  --shadow-lg:
+    0 12px 32px rgba(15, 23, 42, 0.14), 0 4px 8px rgba(15, 23, 42, 0.05);
+
+  /* ---------- Motion ---------- */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --duration-pageish: 480ms;
+
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-emphasize: cubic-bezier(0.2, 0, 0, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+
+  /* ---------- Breakpoints (default Tailwind + 3xl for admin) ---------- */
+  --breakpoint-3xl: 1920px;
+}
+
+/* =============================================================
+ * Semantic tokens — components consume THESE, not raw palette.
+ * Light theme only in v1. Phase 6 adds dark by re-declaring
+ * these inside a `.dark` selector or media query.
+ * @theme inline registers them as Tailwind utilities too:
+ * bg-page, bg-surface, text-fg, text-muted, border-line, etc.
+ * ============================================================= */
+
+@theme inline {
+  --color-page: var(--color-page);
+  --color-surface: var(--color-surface);
+  --color-subtle: var(--color-subtle);
+  --color-sunken: var(--color-sunken);
+  --color-overlay: var(--color-overlay);
+
+  --color-fg: var(--color-fg);
+  --color-muted: var(--color-muted);
+  --color-faint: var(--color-faint);
+  --color-disabled: var(--color-disabled);
+  --color-inverse: var(--color-inverse);
+  --color-headline: var(--color-headline);
+  --color-link: var(--color-link);
+  --color-link-hover: var(--color-link-hover);
+
+  --color-line: var(--color-line);
+  --color-line-strong: var(--color-line-strong);
+  --color-line-subtle: var(--color-line-subtle);
+  --color-focus: var(--color-focus);
+
+  --color-action: var(--color-action);
+  --color-action-hover: var(--color-action-hover);
+  --color-action-active: var(--color-action-active);
+  --color-on-action: var(--color-on-action);
+  --color-ghost-hover: var(--color-ghost-hover);
+}
+
+:root {
+  /* Surfaces */
+  --color-page: var(--color-neutral-0);
+  --color-surface: var(--color-neutral-0);
+  --color-subtle: var(--color-neutral-50);
+  --color-sunken: var(--color-neutral-100);
+  --color-overlay: rgba(15, 23, 42, 0.4);
+
+  /* Text */
+  --color-fg: var(--color-neutral-800);
+  --color-muted: var(--color-neutral-600);
+  --color-faint: var(--color-neutral-500);
+  --color-disabled: var(--color-neutral-400);
+  --color-inverse: var(--color-neutral-0);
+  --color-headline: var(--color-ink);
+  --color-link: var(--color-brand-600);
+  --color-link-hover: var(--color-brand-700);
+
+  /* Borders */
+  --color-line: var(--color-neutral-200);
+  --color-line-strong: var(--color-neutral-300);
+  --color-line-subtle: var(--color-neutral-100);
+  --color-focus: var(--color-brand-500);
+
+  /* Actions */
+  --color-action: var(--color-brand-500);
+  --color-action-hover: var(--color-brand-600);
+  --color-action-active: var(--color-brand-700);
+  --color-on-action: var(--color-neutral-0);
+  --color-ghost-hover: var(--color-brand-50);
+}
+
+/* =============================================================
+ * Dark theme
+ *
+ * Two activation paths, in priority order:
+ *   1. Explicit `.dark` class on <html> (set by ThemeProvider when the
+ *      user toggles, persists in localStorage).
+ *   2. `prefers-color-scheme: dark` media query — fallback when the user
+ *      hasn't expressed a preference.
+ *
+ * Components consume semantic tokens (--color-fg, --color-surface, …)
+ * so the swap is automatic — no per-component overrides needed.
+ *
+ * The `.dark` selector wins because it's higher specificity than the
+ * `:root` rule, and the media-query block sits behind it so an
+ * explicit choice always overrides system preference.
+ * ============================================================= */
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    /* Surfaces — slate near-black, slightly warmer than #000 */
+    --color-page: #0b1220;
+    --color-surface: #131c2e;
+    --color-subtle: #1a2438;
+    --color-sunken: #0f1729;
+    --color-overlay: rgba(2, 6, 23, 0.6);
+
+    /* Text */
+    --color-fg: var(--color-neutral-100);
+    --color-muted: var(--color-neutral-300);
+    --color-faint: var(--color-neutral-500);
+    --color-disabled: var(--color-neutral-600);
+    --color-inverse: var(--color-neutral-900);
+    --color-headline: var(--color-neutral-0);
+    --color-link: var(--color-brand-300);
+    --color-link-hover: var(--color-brand-200);
+
+    /* Borders */
+    --color-line: #1f2a44;
+    --color-line-strong: #2a3854;
+    --color-line-subtle: #16203a;
+    --color-focus: var(--color-brand-400);
+
+    /* Actions — keep brand bright; the dark page makes it pop */
+    --color-action: var(--color-brand-500);
+    --color-action-hover: var(--color-brand-400);
+    --color-action-active: var(--color-brand-300);
+    --color-on-action: var(--color-neutral-0);
+    --color-ghost-hover: #1a2438;
+
+    /* Status — soften to keep contrast pleasant */
+    --color-success: #4ade80;
+    --color-success-soft: #07260f;
+    --color-success-edge: #166534;
+
+    --color-warning: #facc15;
+    --color-warning-soft: #2a1f06;
+    --color-warning-edge: #854d0e;
+
+    --color-danger: #f87171;
+    --color-danger-soft: #2a0a0a;
+    --color-danger-edge: #991b1b;
+
+    --color-info: var(--color-brand-300);
+    --color-info-soft: #0a1d3a;
+    --color-info-edge: var(--color-brand-700);
+  }
+}
+
+.dark {
+  --color-page: #0b1220;
+  --color-surface: #131c2e;
+  --color-subtle: #1a2438;
+  --color-sunken: #0f1729;
+  --color-overlay: rgba(2, 6, 23, 0.6);
+
+  --color-fg: var(--color-neutral-100);
+  --color-muted: var(--color-neutral-300);
+  --color-faint: var(--color-neutral-500);
+  --color-disabled: var(--color-neutral-600);
+  --color-inverse: var(--color-neutral-900);
+  --color-headline: var(--color-neutral-0);
+  --color-link: var(--color-brand-300);
+  --color-link-hover: var(--color-brand-200);
+
+  --color-line: #1f2a44;
+  --color-line-strong: #2a3854;
+  --color-line-subtle: #16203a;
+  --color-focus: var(--color-brand-400);
+
+  --color-action: var(--color-brand-500);
+  --color-action-hover: var(--color-brand-400);
+  --color-action-active: var(--color-brand-300);
+  --color-on-action: var(--color-neutral-0);
+  --color-ghost-hover: #1a2438;
+
+  --color-success: #4ade80;
+  --color-success-soft: #07260f;
+  --color-success-edge: #166534;
+
+  --color-warning: #facc15;
+  --color-warning-soft: #2a1f06;
+  --color-warning-edge: #854d0e;
+
+  --color-danger: #f87171;
+  --color-danger-soft: #2a0a0a;
+  --color-danger-edge: #991b1b;
+
+  --color-info: var(--color-brand-300);
+  --color-info-soft: #0a1d3a;
+  --color-info-edge: var(--color-brand-700);
+}
+
+/* Selection in dark mode — tinted with brand at lower lightness */
+.dark ::selection {
+  background-color: var(--color-brand-800);
+  color: var(--color-neutral-0);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) ::selection {
+    background-color: var(--color-brand-800);
+    color: var(--color-neutral-0);
+  }
+}
+
+/* =============================================================
+ * Base layer
+ * ============================================================= */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-page);
+    color: var(--color-fg);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+
+  /* Tabular numbers for IBANs, prices, references */
+  .font-mono,
+  code,
+  pre,
+  kbd,
+  samp {
+    font-family: var(--font-mono), ui-monospace, monospace;
+  }
+
+  /* Focus-visible: one accessible ring everywhere, never a shadow */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Selection: tinted with brand */
+  ::selection {
+    background-color: var(--color-brand-100);
+    color: var(--color-ink);
+  }
+
+  /* =========================================================
+   * Motion vocabulary
+   * One keyframe (fade-up), one utility (`animate-fade-up`).
+   * Used sparingly — primarily on page-enter for hero sections.
+   * Anything else animated should use `transition-*` with the
+   * --duration-* and --ease-* tokens, never a new keyframe.
+   * ========================================================= */
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fade-up var(--duration-pageish) var(--ease-emphasize) both;
+  }
+
+  /* Decorative dot grid for the CTA section.
+   * Dots are rendered with a tiled radial gradient. A horizontal mask fades
+   * the left third so the text remains crisp; the right side carries the
+   * visual interest. A 40s linear drift gives quiet continuous motion. */
+  @keyframes cta-dots-drift {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 36px 36px;
+    }
+  }
+
+  .cta-dots {
+    background-image: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.45) 1.25px,
+      transparent 1.5px
+    );
+    background-size: 36px 36px;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 35%,
+      black 80%,
+      black 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 35%,
+      black 80%,
+      black 100%
+    );
+    animation: cta-dots-drift 40s linear infinite;
+  }
+
+  /* Respect user motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

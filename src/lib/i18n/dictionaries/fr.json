@@ -1,0 +1,1608 @@
+{
+  "brand": {
+    "name": "SourcingPick",
+    "tagline": "Le sourcing international, industrialisé."
+  },
+  "client": {
+    "dashboard": {
+      "eyebrow": "Tableau de bord",
+      "title": "Vue d'ensemble",
+      "description": "Vos demandes, devis et commandes en un coup d'œil.",
+      "kpiOpenRequests": "Demandes ouvertes",
+      "kpiActiveOrders": "Commandes actives",
+      "kpiAwaitingPayment": "Paiements en attente",
+      "kpiTotalSpent": "Dépensé (commandes livrées)",
+      "kpiTotalSpentHint": "{n} commande(s) clôturée(s)",
+      "quotesAwaitingTitle": "Devis à décider",
+      "quotesAwaitingDesc": "Devis que votre agent vous a transmis.",
+      "quotesEmpty": "Pas de devis en attente. Votre agent vous notifiera.",
+      "quoteValidUntil": "Valide jusqu'au",
+      "awaitingPaymentTitle": "À régler",
+      "awaitingPaymentDesc": "Acomptes 30% en attente.",
+      "awaitingPaymentEmpty": "Aucun paiement en attente.",
+      "recentOrdersTitle": "Commandes récentes",
+      "recentOrdersEmpty": "Aucune commande pour l'instant.",
+      "recentRequestsTitle": "Demandes récentes",
+      "recentRequestsEmpty": "Aucune demande pour l'instant.",
+      "seeAll": "Tout voir"
+    },
+    "requests": {
+      "eyebrow": "Sourcing à la demande",
+      "title": "Mes demandes",
+      "description": "Suivez l'avancement de vos demandes de sourcing et lancez-en de nouvelles.",
+      "newRequest": "Nouvelle demande",
+      "newTitle": "Nouvelle demande de sourcing",
+      "newDescription": "Décrivez votre besoin en quelques étapes. Un agent vous contactera sous 24 h.",
+      "submitRequest": "Envoyer la demande",
+      "backToList": "Retour aux demandes",
+      "emptyTitle": "Aucune demande pour l'instant",
+      "emptyBody": "Lancez votre première demande de sourcing — un agent dédié vous accompagne de la qualification à la livraison.",
+      "colReference": "Référence",
+      "colTitle": "Demande",
+      "colCategory": "Catégorie",
+      "colQuantity": "Quantité",
+      "colBudget": "Budget",
+      "colStatus": "Statut",
+      "deadlineShort": "échéance",
+      "stepProduct": "Produit",
+      "stepLogistics": "Logistique",
+      "stepRequirements": "Exigences",
+      "stepReview": "Récapitulatif",
+      "titleLabel": "Titre de la demande",
+      "titleHint": "Un nom court qui résume votre besoin.",
+      "titlePlaceholder": "Tote bag coton 250gsm — collection été",
+      "categoryLabel": "Catégorie",
+      "categoryPlaceholder": "Choisir une catégorie…",
+      "productNameLabel": "Nom du produit",
+      "productNamePlaceholder": "Tote bag, A5 notebook, etc.",
+      "productDescriptionLabel": "Description détaillée",
+      "productDescriptionHint": "Matières, dimensions, couleurs, finitions, contraintes spécifiques.",
+      "productDescriptionPlaceholder": "Coton bio 250 gsm, format 38×42 cm, anses 60 cm, impression sérigraphie 1 couleur recto…",
+      "quantityLabel": "Quantité",
+      "targetPriceLabel": "Prix unitaire cible",
+      "budgetLabel": "Budget total",
+      "priceHintEur": "En euros, hors taxes.",
+      "deadlineLabel": "Date de livraison souhaitée",
+      "addressLabel": "Adresse de livraison",
+      "addressPlaceholder": "12 rue de la République, 69001 Lyon",
+      "incotermLabel": "Incoterm",
+      "incotermPlaceholder": "Choisir un incoterm…",
+      "incotermHint": "Définit qui prend en charge le transport, l'assurance et les droits.",
+      "regionLabel": "Zone de sourcing",
+      "regionLockedHint": "Actuellement, SourcingPick source en Chine. D'autres pays seront ouverts prochainement.",
+      "regionLockedCountry": "Chine",
+      "regionLockedBadge": "Verrouillé",
+      "countryLabel": "Pays de sourcing",
+      "countryHint": "Affinez votre recherche à un pays précis dans la zone.",
+      "countryPlaceholder": "Choisissez un pays…",
+      "errorCountry": "Veuillez choisir un pays de sourcing.",
+      "certsLabel": "Certifications requises",
+      "certsHint": "Listez vos certifications obligatoires, séparées par des virgules.",
+      "certsPlaceholder": "GOTS, OEKO-TEX, FSC, CE…",
+      "certsExplainer": "Plus vos exigences sont précises, plus rapide sera la qualification par l'agent.",
+      "reviewDescription": "Vérifiez votre demande avant de l'envoyer. Vous pourrez échanger avec votre agent ensuite via la messagerie de la demande.",
+      "sectionProduct": "Produit",
+      "sectionLogistics": "Logistique",
+      "sectionAgent": "Suivi",
+      "agentLabel": "Agent assigné",
+      "agentPending": "Aucun agent assigné pour le moment — votre demande est en file d'attente. SLA : 24 h en heures ouvrées.",
+      "tenderInvitationsCount": "{n} appels d'offres envoyés",
+      "quotesCount": "{n} devis reçus",
+      "errorTitle": "Indiquez un titre pour votre demande.",
+      "errorCategory": "Choisissez une catégorie.",
+      "errorProductName": "Indiquez le nom du produit.",
+      "errorQuantity": "La quantité doit être un nombre entier positif.",
+      "errorDeadline": "Indiquez une date de livraison.",
+      "errorDeadlineFuture": "La date de livraison doit être dans le futur.",
+      "errorAddress": "Indiquez l'adresse de livraison complète.",
+      "errorIncoterm": "Choisissez un incoterm.",
+      "errorRegion": "Choisissez une zone de sourcing.",
+      "incoterms": {
+        "EXW": "Départ usine — vous gérez tout le transport",
+        "FOB": "Free On Board — l'usine livre au port",
+        "DAP": "Delivered At Place — l'usine livre à l'adresse, hors droits",
+        "DDP": "Delivered Duty Paid — l'usine livre à l'adresse, droits inclus",
+        "CIF": "Cost, Insurance, Freight — l'usine livre au port + assurance"
+      },
+      "regions": {
+        "ANYWHERE": "Indifférent",
+        "EUROPE": "Europe",
+        "MAGHREB": "Maghreb",
+        "AFRICA": "Afrique",
+        "ASIA": "Asie",
+        "AMERICAS": "Amériques",
+        "OCEANIA": "Océanie",
+        "MIDDLE_EAST": "Moyen-Orient"
+      },
+      "statuses": {
+        "DRAFT": "Brouillon",
+        "REQUEST_RECEIVED": "Reçue",
+        "ASSIGNED": "Assignée",
+        "QUOTE_SENT": "Devis envoyés",
+        "QUOTE_ACCEPTED": "Devis accepté",
+        "QUOTE_REJECTED": "Devis refusés",
+        "PAYMENT_PENDING": "Paiement en attente",
+        "PREPARATION": "En production",
+        "SHIPPED": "Expédié",
+        "IN_TRANSIT": "En transit",
+        "COMPLETED": "Terminée",
+        "CANCELLED": "Annulée"
+      }
+    },
+    "certifications": {
+      "eyebrow": "Programme certification",
+      "title": "Sponsoriser une certification",
+      "description": "Aidez une usine partenaire à obtenir une certification. En retour, vous figurez comme sponsor sur le dossier et bénéficiez d'une vue prioritaire sur sa progression.",
+      "mineTitle": "Dossiers sponsorisés",
+      "sponsorableTitle": "Dossiers à sponsoriser",
+      "empty": "Aucun dossier ouvert à sponsoriser pour le moment.",
+      "sponsorCta": "Sponsoriser"
+    },
+    "marketplace": {
+      "eyebrow": "Marketplace",
+      "title": "Produits pré-négociés",
+      "description": "Catalogue de produits déjà sourcés et négociés. MOQ et délais visibles, commande en un clic, séquestre intégré.",
+      "backToBrowse": "Retour à la marketplace",
+      "searchPlaceholder": "Rechercher un produit…",
+      "allCategories": "Toutes",
+      "empty": "Aucun produit ne correspond à votre recherche.",
+      "inStock": "en stock",
+      "outOfStock": "Rupture",
+      "unitPrice": "Prix unitaire",
+      "orderTitle": "Commander",
+      "totalLabel": "Total",
+      "buyCta": "Commander maintenant",
+      "moqHint": "MOQ : {n} unités.",
+      "addressHint": "Adresse de livraison finale."
+    },
+    "quotes": {
+      "sectionTitle": "Devis reçus",
+      "empty": "Votre agent vous présentera bientôt les devis reçus.",
+      "agentRecommendation": "Recommandé par l'agent",
+      "unitPrice": "Prix unitaire",
+      "total": "Total",
+      "leadTime": "Délai",
+      "incoterm": "Incoterm",
+      "validUntil": "Valide jusqu'au",
+      "expired": "Expiré",
+      "statusAwaitingDecision": "À décider",
+      "statusAccepted": "Accepté",
+      "statusRejected": "Refusé",
+      "accept": "Accepter ce devis",
+      "reject": "Refuser",
+      "cancel": "Annuler",
+      "confirmAccept": "Confirmer et créer la commande",
+      "confirmAcceptCopy": "Les autres devis seront refusés.",
+      "orderCreatedTitle": "Commande créée",
+      "orderCreatedBody": "Votre commande {ref} est en paiement.",
+      "viewOrder": "Voir la commande"
+    },
+    "invoices": {
+      "eyebrow": "Facturation",
+      "title": "Mes factures",
+      "description": "Toutes vos factures SourcingPick — acomptes, soldes, et frais de recherche.",
+      "kpiOpen": "À régler",
+      "kpiOverdue": "En retard",
+      "kpiPaid": "Payé",
+      "tableTitle": "Historique des factures",
+      "empty": "Aucune facture pour l'instant.",
+      "colReference": "Référence",
+      "colSubject": "Objet",
+      "colType": "Type",
+      "colAmount": "Montant",
+      "colStatus": "Statut",
+      "colDue": "Échéance",
+      "dueOn": "Échéance",
+      "downloadPdf": "Télécharger le PDF",
+      "viewOrder": "Voir la commande"
+    },
+    "orders": {
+      "eyebrow": "Mes commandes",
+      "title": "Commandes en cours",
+      "description": "Suivez la production, l'expédition et la livraison de vos commandes.",
+      "backToList": "Retour aux commandes",
+      "emptyTitle": "Aucune commande pour l'instant",
+      "emptyBody": "Vos commandes apparaissent ici une fois qu'un devis est accepté.",
+      "createdAt": "Créée le",
+      "eta": "ETA",
+      "factoryLabel": "Usine",
+      "totalLabel": "Total",
+      "depositLabel": "Acompte (30%)",
+      "depositHint": "Versé à l'usine pour démarrer la production.",
+      "balanceLabel": "Solde (70%)",
+      "balanceHint": "Libéré à la livraison conforme.",
+      "timelineTitle": "Avancement",
+      "sectionLogistics": "Livraison",
+      "sectionTracking": "Suivi colis",
+      "sectionContact": "Contact",
+      "carrierLabel": "Transporteur",
+      "trackingNumberLabel": "Numéro de suivi",
+      "shippedAtLabel": "Expédiée le",
+      "trackingPending": "Le numéro de suivi sera ajouté par l'usine au moment de l'expédition.",
+      "paymentPendingTitle": "Paiement requis",
+      "paymentPendingBody": "Réglez l'acompte de 30% par carte. Vos fonds sont gardés en séquestre jusqu'à la livraison conforme.",
+      "payDepositCta": "Payer l'acompte",
+      "paymentSuccessTitle": "Paiement reçu",
+      "paymentSuccessBody": "Votre acompte est en séquestre. L'usine est notifiée et la production peut démarrer.",
+      "paymentCancelledTitle": "Paiement annulé",
+      "paymentCancelledBody": "Le paiement n'a pas abouti. Vous pouvez relancer la transaction à tout moment.",
+      "sectionInvoices": "Factures",
+      "invoiceTypeDeposit": "Acompte",
+      "invoiceTypeBalance": "Solde",
+      "invoicePaidOn": "Payée le",
+      "invoiceIssuedOn": "Émise le",
+      "invoiceStatuses": {
+        "DRAFT": "Brouillon",
+        "ISSUED": "Émise",
+        "PAID": "Payée",
+        "OVERDUE": "En retard",
+        "VOID": "Annulée"
+      },
+      "cancelOrder": "Annuler la commande",
+      "confirmCancelTitle": "Annuler la commande",
+      "confirmCancelBody": "Cette action est irréversible. La commande sera annulée et l'usine notifiée.",
+      "confirmCancelCta": "Confirmer l'annulation",
+      "back": "Retour",
+      "confirmReceiptTitle": "Confirmer la réception",
+      "confirmReceiptBody": "Confirmez la livraison pour libérer le solde à l'usine.",
+      "confirmReceiptCta": "Confirmer la réception",
+      "payBalanceCta": "Régler le solde et confirmer la réception",
+      "payBalanceBody": "Le règlement du solde 70% libère automatiquement le paiement vers l'usine.",
+      "waitingForFactory": "En attente d'une action de l'usine."
+    }
+  },
+  "onboarding": {
+    "client": {
+      "step1Eyebrow": "Bienvenue",
+      "step1Title": "Bonjour {firstName}, bienvenue chez SourcingPick.",
+      "step1Body": "Le compte {orgName} est créé. Voici ce qui change dans votre sourcing.",
+      "pillarAgentTitle": "Un agent dédié",
+      "pillarAgentBody": "À votre première demande, un agent qualifie votre besoin et sollicite 3 à 5 usines vérifiées en moins de 72 h.",
+      "pillarEscrowTitle": "Séquestre intégré",
+      "pillarEscrowBody": "Vos fonds restent bloqués chez notre prestataire de paiement jusqu'à la confirmation de réception conforme.",
+      "pillarReachTitle": "Un réseau global",
+      "pillarReachBody": "Europe, Maghreb, Asie, Afrique, Amériques. Notre équipe parle la langue de votre fournisseur.",
+      "step2Eyebrow": "Comment ça marche",
+      "step2Title": "Votre première demande en 4 étapes.",
+      "step2Body": "Voici ce qui se passe entre le moment où vous déposez un besoin et la livraison.",
+      "step2Item1": "Vous déposez votre besoin (produit, quantité, certifs, deadline).",
+      "step2Item2": "Sous 24 h, votre agent contacte les usines pertinentes.",
+      "step2Item3": "Vous recevez 1 à 3 devis qualifiés avec une recommandation.",
+      "step2Item4": "Vous acceptez, payez via séquestre, recevez votre commande.",
+      "finish": "Accéder à mon tableau de bord"
+    },
+    "factory": {
+      "step1Eyebrow": "Bienvenue",
+      "step1Title": "Bonjour {firstName}, bienvenue chez SourcingPick.",
+      "step1Body": "Le compte {orgName} est créé. Voici l'état de votre dossier.",
+      "kycPendingTitle": "Votre KYC est en cours d'examen",
+      "kycPendingBody": "Notre équipe vérifie vos documents sous 48 h ouvrées. Vous recevrez un e-mail dès la validation. Vous pouvez commencer à compléter votre profil dès maintenant.",
+      "kycVerifiedTitle": "Votre KYC est validé",
+      "kycVerifiedBody": "Vous pouvez recevoir des appels d'offres et lister vos produits sur la Marketplace.",
+      "kycFlaggedTitle": "Votre KYC nécessite une attention",
+      "kycFlaggedBody": "Un membre de notre équipe vous contactera pour clarifier certains éléments.",
+      "kycRejectedTitle": "Votre dossier a été refusé",
+      "kycRejectedBody": "Contactez kyc@sourcingpick.com pour comprendre les motifs et soumettre un nouveau dossier.",
+      "step2Eyebrow": "Prochaines étapes",
+      "step2Title": "Pendant que votre KYC est examiné, voici ce que vous pouvez faire.",
+      "step2Body": "Ces actions vous préparent à recevoir vos premiers appels d'offres dès la validation.",
+      "step2Item1": "Complétez votre profil usine : capacités, langues parlées, certifications existantes.",
+      "step2Item2": "Préparez 3 à 5 photos haute résolution de produits-phares.",
+      "step2Item3": "Vérifiez que votre IBAN est à jour pour recevoir les versements.",
+      "finish": "Accéder à mon tableau de bord"
+    }
+  },
+  "settings": {
+    "eyebrow": "Paramètres du compte",
+    "title": "Paramètres",
+    "description": "Gérez votre compte et l'organisation {org}.",
+    "profile": {
+      "title": "Profil",
+      "description": "Vos informations personnelles, visibles par votre agent et l'équipe SourcingPick.",
+      "phoneLabel": "Téléphone",
+      "emailHint": "L'adresse e-mail ne peut pas être modifiée ici — contactez le support.",
+      "localeLabel": "Langue préférée",
+      "localeHint": "La langue de l'interface et des notifications.",
+      "saved": "Profil mis à jour."
+    },
+    "security": {
+      "title": "Sécurité",
+      "description": "Changez votre mot de passe.",
+      "currentPasswordLabel": "Mot de passe actuel",
+      "newPasswordLabel": "Nouveau mot de passe",
+      "submit": "Mettre à jour le mot de passe",
+      "saved": "Mot de passe mis à jour."
+    },
+    "twoFactor": {
+      "title": "Authentification à deux facteurs",
+      "description": "Recevez un code par e-mail à chaque connexion. Recommandé pour tous les comptes.",
+      "toggleLabel": "Activer la 2FA par e-mail",
+      "toggleDescription": "Un code à 6 chiffres vous sera demandé à chaque connexion.",
+      "adminLocked": "La 2FA est obligatoire pour les comptes administrateurs et ne peut pas être désactivée."
+    },
+    "members": {
+      "title": "Membres de l'organisation",
+      "description": "Les personnes qui ont accès à votre compte SourcingPick.",
+      "inviteSoon": "L'invitation de nouveaux membres sera disponible prochainement.",
+      "subRoleOwner": "Propriétaire",
+      "subRoleMember": "Membre",
+      "subRoleAccountant": "Comptable"
+    }
+  },
+  "agent": {
+    "dashboard": {
+      "eyebrow": "Tableau de bord",
+      "title": "Mon poste",
+      "description": "Vos demandes, devis à transmettre et commandes en cours.",
+      "kpiAssigned": "Demandes assignées",
+      "kpiAssignedHint": "{overdue} dépassées · {approaching} proches · {ok} OK",
+      "kpiQuotesToForward": "Devis à transmettre",
+      "kpiActiveOrders": "Commandes suivies",
+      "kpiCommission": "Commission générée",
+      "kpiCommissionHint": "{n} commande(s) clôturée(s)",
+      "queueTitle": "File d'attente SLA",
+      "queueDesc": "Plus anciennes en premier.",
+      "queueEmpty": "Aucune demande active.",
+      "quotesSuffix": "devis reçus",
+      "quotesToForwardTitle": "Devis reçus, à transmettre",
+      "quotesToForwardDesc": "Devis qui attendent votre transfert au client.",
+      "quotesToForwardEmpty": "Aucun devis en attente de transmission.",
+      "activeOrdersTitle": "Commandes que vous suivez",
+      "activeOrdersEmpty": "Aucune commande active."
+    },
+    "requests": {
+      "eyebrow": "Mon portefeuille",
+      "title": "Mes demandes assignées",
+      "description": "Demandes dont vous êtes l'agent de référence. Cliquez pour qualifier et lancer un appel d'offres.",
+      "emptyTitle": "Aucune demande assignée",
+      "emptyBody": "Lorsqu'un Admin vous assignera une demande, elle apparaîtra ici.",
+      "backToList": "Retour aux demandes",
+      "clientLabel": "Client",
+      "sectionContact": "Contact client",
+      "sectionTenders": "Appels d'offres",
+      "sectionQuotes": "Devis reçus",
+      "sectionOrder": "Commande",
+      "findFactories": "Trouver des usines",
+      "browseFactories": "Parcourir le pool de fournisseurs",
+      "slaOk": "{h} h",
+      "slaApproaching": "{h} h — SLA proche",
+      "slaOverdue": "{h} h — SLA dépassé",
+      "tenderInvitationsCount": "{n} appels d'offres",
+      "quotesCount": "{n} devis"
+    },
+    "quotes": {
+      "empty": "Aucun devis reçu pour cette demande.",
+      "submittedAt": "Reçu le",
+      "factoryPrice": "Prix usine",
+      "clientPrice": "Prix client",
+      "total": "Total",
+      "validUntil": "Valide jusqu'au",
+      "expired": "Expiré",
+      "scoreRecommended": "Recommandé",
+      "scoreGood": "Bon match",
+      "scoreOk": "À considérer",
+      "sendToClient": "Envoyer au client",
+      "sentToClientLabel": "Envoyé au client",
+      "statusDraft": "Brouillon",
+      "statusReceived": "Reçu",
+      "statusSentToClient": "Envoyé au client",
+      "statusAccepted": "Accepté",
+      "statusRejected": "Refusé",
+      "statusExpired": "Expiré"
+    },
+    "factories": {
+      "eyebrow": "Pool de fournisseurs",
+      "title": "Usines vérifiées",
+      "description": "Toutes les usines partenaires validées par notre équipe KYC.",
+      "contextHint": "Filtré pour la zone : {region}.",
+      "filterAll": "Toutes",
+      "searchPlaceholder": "Rechercher usine, pays, capacité…",
+      "empty": "Aucune usine ne correspond à ce filtre.",
+      "ordersSuffix": "commandes"
+    },
+    "tasks": {
+      "eyebrow": "Mes tâches",
+      "title": "Tâches",
+      "description": "Vos rappels personnels — suivis SLA, relances, points d'attention.",
+      "kpiOpen": "Ouvertes",
+      "kpiDueSoon": "Sous 48 h",
+      "kpiOverdue": "En retard",
+      "newTaskTitle": "Nouvelle tâche",
+      "openTitle": "À traiter · {n}",
+      "openEmpty": "Aucune tâche en cours. Profitez-en pour anticiper.",
+      "closedTitle": "Récemment clôturées · {n}",
+      "fieldTitle": "Titre",
+      "titlePlaceholder": "Relancer la facture INV-2026-0142",
+      "fieldPriority": "Priorité",
+      "fieldDueAt": "Échéance",
+      "fieldRequest": "Demande liée",
+      "requestPlaceholder": "Aucune",
+      "noRequestLink": "— Sans lien —",
+      "fieldDescription": "Notes",
+      "descriptionPlaceholder": "Contexte, prochaines étapes, personnes à contacter…",
+      "createCta": "Créer la tâche",
+      "completeCta": "Marquer fait",
+      "cancelCta": "Annuler",
+      "reopenCta": "Rouvrir",
+      "dueAt": "Échéance",
+      "completedAt": "Terminée",
+      "overdueBadge": "En retard",
+      "priorityLow": "Basse",
+      "priorityMedium": "Moyenne",
+      "priorityHigh": "Haute",
+      "statuses": {
+        "PENDING": "À faire",
+        "IN_PROGRESS": "En cours",
+        "DONE": "Terminée",
+        "CANCELLED": "Annulée"
+      }
+    },
+    "tenders": {
+      "eyebrow": "Appel d'offres",
+      "backToRequest": "Retour à la demande",
+      "sectionInvitation": "Invitation",
+      "sectionFactory": "Profil usine",
+      "sectionQuote": "Devis reçu",
+      "statusLabel": "Statut",
+      "invitedAtLabel": "Invitée le",
+      "viewedAtLabel": "Consultée le",
+      "expiresAtLabel": "Expire le",
+      "matchScoreLabel": "Score de match",
+      "languagesLabel": "Langues",
+      "totalOrdersLabel": "Commandes réalisées",
+      "capabilitiesLabel": "Capacités",
+      "noFactoryProfile": "Cette usine n'a pas encore complété son profil."
+    }
+  },
+  "orders": {
+    "statuses": {
+      "PAYMENT_PENDING": "Paiement en attente",
+      "PREPARATION": "En production",
+      "QC": "Contrôle qualité",
+      "SHIPPED": "Expédiée",
+      "IN_TRANSIT": "En transit",
+      "COMPLETED": "Terminée",
+      "CANCELLED": "Annulée"
+    },
+    "cancelledBanner": "Cette commande a été annulée."
+  },
+  "publicMarketplace": {
+    "loadMoreTitle": "Plus de 20 produits disponibles",
+    "loadMoreBody": "Créez un compte client pour parcourir l'intégralité du catalogue et passer commande en un clic.",
+    "endOfPreviewTitle": "Vous avez fait le tour",
+    "endOfPreviewBody": "Créez un compte pour suivre vos commandes, échanger avec nos agents et accéder aux exclusivités.",
+    "signupCta": "Créer un compte client",
+    "loginCta": "Se connecter",
+    "orderTitle": "Commander ce produit",
+    "orderBody": "Connectez-vous ou créez un compte pour finaliser votre commande avec acompte sécurisé.",
+    "signupToBuyCta": "S'inscrire pour commander"
+  },
+  "notifications": {
+    "bellLabel": "Notifications",
+    "title": "Notifications",
+    "empty": "Aucune notification pour l'instant.",
+    "markAllRead": "Tout marquer comme lu"
+  },
+  "messaging": {
+    "bellLabel": "Messages",
+    "bellTitle": "Messages",
+    "bellEmpty": "Aucune conversation pour l'instant.",
+    "unreadCount": "{n} non lue(s)",
+    "sectionTitle": "Messagerie",
+    "loading": "Chargement des messages…",
+    "empty": "Pas encore de message. Lancez la conversation.",
+    "placeholder": "Écrivez un message…",
+    "send": "Envoyer",
+    "shortcutHint": "⌘/Ctrl + Entrée pour envoyer",
+    "systemAuthor": "SourcingPick",
+    "errorLoad": "Impossible de charger les messages. Réessayez.",
+    "errorStream": "Connexion temps réel interrompue. Rechargez la page pour rétablir.",
+    "contextHints": {
+      "REQUEST": "Discussion liée à cette demande de sourcing. Les participants : client, agent.",
+      "TENDER": "Discussion privée entre l'agent et cette usine pour l'appel d'offres. Les autres usines ne voient pas ces échanges.",
+      "QUOTE": "Discussion liée à ce devis. Les participants : client, agent, usine.",
+      "ORDER": "Discussion liée à cette commande. Tous les acteurs sont inclus.",
+      "KYC": "Discussion liée à votre dossier KYC avec notre équipe.",
+      "CERT": "Discussion liée à votre programme de certification.",
+      "DISPUTE": "Discussion liée à un litige. Modérée par l'équipe SourcingPick."
+    }
+  },
+  "tender": {
+    "selectFactoriesTitle": "Choisir les usines à solliciter",
+    "selectFactoriesDescription": "Sélectionnez jusqu'à {n} usines pour la demande « {title} ». Privilégiez les usines de la même catégorie.",
+    "backToRequest": "Retour à la demande",
+    "matchOnly": "Catégorie {category} uniquement",
+    "matchedTag": "match",
+    "alreadyInvited": "Déjà sollicitée",
+    "selectedCount": "{n}/{max} usines sélectionnées",
+    "sendInvitations": "Envoyer {n} invitations",
+    "sendCta": "Lancer un appel d'offres",
+    "invitedCount": "{n} usines sollicitées",
+    "errorMaxInvitations": "Vous ne pouvez sélectionner que {n} usines maximum.",
+    "errorMinSelection": "Sélectionnez au moins une usine."
+  },
+  "factory": {
+    "dashboard": {
+      "eyebrow": "Tableau de bord",
+      "title": "Vue d'ensemble",
+      "description": "Appels d'offres, production, paiements et catalogue en un endroit.",
+      "kycPendingTitle": "KYC en attente",
+      "kycPendingBody": "Votre dossier est en cours de validation. Vous recevrez les premiers appels d'offres dès l'approbation.",
+      "connectPendingTitle": "Activez Stripe pour recevoir vos versements",
+      "connectPendingBody": "Stripe Connect doit être configuré pour qu'on puisse vous payer après livraison.",
+      "kpiOpenTenders": "Appels en attente",
+      "kpiOpenTendersHint": "Reçus à ce jour : {n}",
+      "kpiActiveOrders": "Commandes actives",
+      "kpiPendingPayouts": "Versements en attente",
+      "kpiPendingPayoutsHint": "{n} virement(s) en file",
+      "kpiTotalEarned": "Revenus reçus",
+      "kpiTotalEarnedHint": "{n} versement(s) effectué(s)",
+      "openTendersTitle": "Appels d'offres actifs",
+      "openTendersDesc": "Cliquez pour consulter et répondre.",
+      "openTendersEmpty": "Pas d'appel d'offres en attente.",
+      "catalogueTitle": "Catalogue",
+      "activeOrdersTitle": "Commandes en production",
+      "activeOrdersEmpty": "Aucune commande active."
+    },
+    "catalogue": {
+      "eyebrow": "Catalogue",
+      "title": "Mes produits",
+      "description": "Listez vos produits pré-négociés sur la marketplace SourcingPick.",
+      "newCta": "Ajouter un produit",
+      "newTitle": "Nouveau produit",
+      "newDescription": "Décrivez votre produit. Notre équipe vérifie chaque fiche avant publication.",
+      "backToList": "Retour au catalogue",
+      "emptyTitle": "Aucun produit pour l'instant",
+      "emptyBody": "Listez votre premier produit pour qu'il apparaisse dans la marketplace une fois validé.",
+      "noImage": "Pas d'image",
+      "detailsTitle": "Détail produit",
+      "nameLabel": "Nom du produit",
+      "namePlaceholder": "Tote bag coton 250 gsm — collection été",
+      "categoryLabel": "Catégorie",
+      "descriptionLabel": "Description",
+      "descriptionHint": "Matières, dimensions, finitions, options. Au moins 20 caractères.",
+      "descriptionPlaceholder": "Coton bio 250 gsm, 38×42 cm, anses 60 cm, impression sérigraphie 1 couleur recto…",
+      "priceLabel": "Prix unitaire usine",
+      "clientPriceLabel": "Prix unitaire client",
+      "clientPriceHint": "Calculé avec la marge plateforme 12%.",
+      "leadTimeLabel": "Délai de production",
+      "moqLabel": "MOQ",
+      "stockLabel": "Stock",
+      "stockLowLabel": "Seuil d'alerte",
+      "stockLowHint": "Optionnel — vous serez alerté en dessous.",
+      "viewsLabel": "Vues",
+      "soldLabel": "Vendus",
+      "imagesLabel": "Images",
+      "imagesHint": "JPG / PNG / WebP, max 10 Mo chacune, jusqu'à 6 images",
+      "imagesDropHint": "Cliquez pour téléverser jusqu'à {n} image(s).",
+      "imagesMaxReached": "Maximum d'images atteint.",
+      "imagesTooMany": "Vous dépassez la limite de 6 images — les premières seront conservées.",
+      "saveDraft": "Enregistrer en brouillon",
+      "saveChanges": "Enregistrer les modifications",
+      "archiveCta": "Archiver",
+      "submitForReviewCta": "Soumettre pour validation",
+      "submitNeedsImage": "Ajoutez au moins une image avant de soumettre.",
+      "pendingReviewBanner": "En attente de validation par l'équipe SourcingPick.",
+      "rejectedBanner": "Refusé — corrigez le produit et resoumettez.",
+      "statuses": {
+        "DRAFT": "Brouillon",
+        "PENDING_REVIEW": "En validation",
+        "PUBLISHED": "Publié",
+        "REJECTED": "Refusé",
+        "OUT_OF_STOCK": "Rupture",
+        "ARCHIVED": "Archivé"
+      }
+    },
+    "certification": {
+      "eyebrow": "Programme certification",
+      "title": "Mes certifications",
+      "description": "Inscrivez-vous au programme certification SourcingPick : un de nos organismes partenaires vous accompagne du dossier à l'audit, puis à l'obtention.",
+      "kycRequiredTitle": "KYC requis",
+      "kycRequiredBody": "Les organismes de certification exigent une entité vérifiée. Complétez votre KYC pour démarrer.",
+      "enrollTitle": "Nouveau dossier",
+      "enrollDescription": "Choisissez votre standard et l'organisme. Notre équipe planifie la suite.",
+      "standardLabel": "Standard visé",
+      "standardHint": "Ex. ISO 9001:2015, GOTS, OEKO-TEX Standard 100",
+      "bodyLabel": "Organisme",
+      "bodyPlaceholder": "Choisir un organisme…",
+      "targetMonthsLabel": "Objectif (mois)",
+      "targetMonthsHint": "Combien de mois visez-vous jusqu'à l'obtention ?",
+      "enrollCta": "Démarrer le dossier",
+      "activeTitle": "En cours",
+      "closedTitle": "Clôturés",
+      "empty": "Aucun dossier pour l'instant.",
+      "sponsoredBy": "Sponsorisé par",
+      "preAuditLabel": "Pré-audit",
+      "auditLabel": "Audit",
+      "etaLabel": "Délai prévu",
+      "issuedLabel": "Émis le",
+      "expiresLabel": "Expire le",
+      "viewCertificate": "Voir le certificat",
+      "withdrawCta": "Retirer le dossier",
+      "statuses": {
+        "DOSSIER": "Dossier",
+        "AUDIT_PROGRAMME": "Audit programmé",
+        "EN_COURS": "En cours",
+        "CERTIFIE": "Certifié",
+        "REFUSE": "Refusé"
+      }
+    },
+    "payouts": {
+      "eyebrow": "Paiements",
+      "title": "Mes versements",
+      "description": "Gérez votre compte de versement Stripe et consultez l'historique des paiements.",
+      "startTitle": "Activez vos versements",
+      "startBody": "Connectez un compte Stripe pour recevoir vos paiements à la livraison d'une commande.",
+      "startOnboardingCta": "Connecter Stripe",
+      "pendingTitle": "Compte Stripe à compléter",
+      "pendingBody": "Stripe nous indique qu'il manque des informations avant de pouvoir verser. Reprenez le formulaire pour activer les paiements.",
+      "resumeOnboardingCta": "Reprendre",
+      "readyTitle": "Compte Stripe actif",
+      "readyBody": "Vos versements sont activés. Chaque commande livrée déclenche un virement net de la commission 3%.",
+      "manageAccountCta": "Gérer",
+      "unreachableTitle": "Stripe injoignable",
+      "unreachableBody": "Nous n'avons pas pu interroger Stripe. Réessayez dans quelques minutes ; vos versements en cours ne sont pas impactés.",
+      "onboardingError": "Impossible de générer le lien d'onboarding Stripe.",
+      "historyTitle": "Historique des versements",
+      "historyEmpty": "Aucun versement pour l'instant. Vos versements apparaîtront ici lorsque les clients confirmeront les livraisons.",
+      "sentOn": "Versé le",
+      "createdOn": "Créé le",
+      "failurePendingOnboarding": "Versement en attente : finissez la connexion Stripe pour le recevoir.",
+      "statusPending": "En attente",
+      "statusScheduled": "Programmé",
+      "statusSent": "Versé",
+      "statusReceived": "Reçu",
+      "statusFailed": "Échec"
+    },
+    "orders": {
+      "eyebrow": "Mes commandes",
+      "title": "Commandes en production",
+      "description": "Commandes en cours pour vos clients. Mettez à jour les statuts au fil de la production.",
+      "backToList": "Retour aux commandes",
+      "emptyTitle": "Aucune commande pour l'instant",
+      "emptyBody": "Vos commandes apparaissent ici une fois qu'un client a accepté votre devis.",
+      "clientLabel": "Client",
+      "revenueLabel": "Revenu brut",
+      "supplierFeeLabel": "Commission SourcingPick (3%)",
+      "supplierFeeHint": "Plafonnée à 5 000 € — pricing v2.",
+      "netLabel": "Versement net",
+      "netHint": "Estimation ; le versement réel passe par le séquestre (Phase 3).",
+      "sectionSpec": "Spécifications",
+      "deadlineLabel": "Date livraison souhaitée",
+      "waitingPaymentTitle": "En attente de paiement client",
+      "waitingPaymentBody": "Vous serez notifié dès la confirmation du paiement. Vous pourrez alors démarrer la production.",
+      "preparationCtaTitle": "Production en cours",
+      "preparationCtaBody": "Marquez la commande comme prête pour contrôle qualité dès que la production est terminée.",
+      "markQcCta": "Passer en contrôle qualité",
+      "qcCtaTitle": "Contrôle qualité",
+      "qcCtaBody": "Une fois le contrôle qualité validé, ajoutez les informations de suivi pour expédier.",
+      "markShippedCta": "Marquer comme expédiée",
+      "shipFormTitle": "Informations d'expédition",
+      "trackingUrlLabel": "URL de suivi",
+      "trackingUrlHint": "Optionnel — le lien du transporteur pour suivre le colis.",
+      "confirmShipCta": "Confirmer l'expédition",
+      "shippedCtaTitle": "Colis expédié",
+      "shippedCtaBody": "Marquez comme en transit dès que le colis est confirmé en mouvement par le transporteur.",
+      "markInTransitCta": "Marquer en transit",
+      "errorTrackingRequired": "Le transporteur et le numéro de suivi sont obligatoires."
+    },
+    "tenders": {
+      "eyebrow": "Appels d'offres",
+      "title": "Mes appels d'offres",
+      "description": "Demandes qualifiées qui correspondent à votre activité. Répondez sous 48 h pour rester prioritaire.",
+      "backToList": "Retour aux appels d'offres",
+      "emptyTitle": "Aucun appel d'offres",
+      "emptyBody": "Lorsqu'un agent vous sollicitera pour une demande, elle apparaîtra ici.",
+      "respondBy": "à répondre avant le",
+      "respondCta": "Répondre",
+      "matchScore": "Score",
+      "statusInvited": "Nouvel appel",
+      "statusViewed": "Consulté",
+      "statusResponded": "Devis envoyé",
+      "statusDeclined": "Décliné",
+      "statusExpired": "Expiré",
+      "quoteSubmittedTitle": "Votre devis",
+      "quoteSubmittedBody": "Votre devis a été transmis à l'agent. Vous serez notifié dès qu'il sera présenté au client.",
+      "expiredBanner": "Cet appel d'offres est expiré. Contactez votre agent si vous souhaitez encore proposer un devis.",
+      "submitQuoteTitle": "Soumettre un devis",
+      "submitQuoteBody": "Indiquez votre meilleur prix et vos délais. Le client recevra une recommandation comparant les devis reçus.",
+      "unitPriceLabel": "Prix unitaire (HT)",
+      "leadTimeLabel": "Délai de production",
+      "moqLabel": "MOQ",
+      "validityLabel": "Validité du devis",
+      "validityHint": "Nombre de jours pendant lesquels votre devis reste valide (max 60).",
+      "daysSuffix": "jours",
+      "daysShort": "j",
+      "validUntilLabel": "Valide jusqu'au",
+      "notesLabel": "Notes",
+      "notesHint": "Informations utiles à l'agent : alternatives, conditions, options.",
+      "notesPlaceholder": "Alternative en coton recyclé disponible · 50 unités gratuites au-delà de 5 000 …",
+      "submitQuote": "Envoyer le devis"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "eyebrow": "Vue opérateur",
+      "title": "Plateforme SourcingPick",
+      "description": "Indicateurs clés, files d'attente prioritaires et activité système en temps réel.",
+      "kpiGmv": "GMV mois courant",
+      "kpiGmvHint": "{n} commande(s) ce mois-ci",
+      "kpiCommission": "Commission générée",
+      "kpiActiveOrders": "Commandes actives",
+      "kpiActiveRequests": "Demandes actives : {n}",
+      "kpiAgents": "Agents actifs",
+      "kpiAgentsHint": "{n} usine(s) vérifiée(s)",
+      "kpiKycQueue": "KYC à valider",
+      "kpiPendingListings": "Fiches à modérer",
+      "kpiEscrowHeld": "Séquestre détenu",
+      "kpiEscrowHeldHint": "{n} transaction(s)",
+      "kpiWebhookFailures": "Webhooks en échec",
+      "unassignedTitle": "Demandes à assigner",
+      "unassignedDesc": "Plus anciennes en premier.",
+      "unassignedEmpty": "Aucune demande non assignée.",
+      "payoutsTitle": "Versements en attente",
+      "payoutsDesc": "À pousser vers Stripe Connect.",
+      "payoutsPending": "Montant en file",
+      "payoutsPendingHint": "{n} versement(s) à programmer",
+      "auditTitle": "Activité système récente",
+      "auditEmpty": "Aucune activité enregistrée.",
+      "systemActor": "Système"
+    },
+    "audit": {
+      "eyebrow": "Audit",
+      "title": "Journal d'audit",
+      "description": "Toutes les actions sensibles, append-only. Filtrez par niveau ou par action.",
+      "actionPlaceholder": "Filtrer par action (ex. quote.accepted)",
+      "empty": "Aucune entrée pour ces filtres.",
+      "truncated": "Affichage des {n} dernières entrées. Affinez les filtres pour voir plus.",
+      "colTime": "Horodatage",
+      "colLevel": "Niveau",
+      "colAction": "Action",
+      "colActor": "Acteur",
+      "colTarget": "Cible",
+      "colIp": "IP",
+      "levels": { "INFO": "Info", "WARN": "Avertissement", "ALERT": "Alerte" }
+    },
+    "finance": {
+      "eyebrow": "Finance",
+      "title": "Vue finance",
+      "description": "GMV, commission, factures émises et en retard.",
+      "kpiGmvMtd": "GMV mois courant",
+      "kpiGmvYtd": "GMV année courante",
+      "kpiCommissionMtd": "Commission mois courant",
+      "kpiCommissionYtd": "Commission YTD",
+      "kpiOrdersCount": "{n} commande(s)",
+      "kpiInvoicesIssued": "Factures émises",
+      "kpiInvoicesOverdue": "Factures en retard",
+      "kpiInvoicesPaid": "Factures payées",
+      "invoicesTitle": "Dernières factures",
+      "empty": "Aucune facture.",
+      "colReference": "Référence",
+      "colType": "Type",
+      "colOrg": "Organisation",
+      "colAmount": "Montant",
+      "colStatus": "Statut",
+      "colIssued": "Émise"
+    },
+    "escrow": {
+      "eyebrow": "Séquestre",
+      "title": "Registre séquestre",
+      "description": "Suivi des fonds détenus, libérés et en litige.",
+      "kpiHeld": "Détenu",
+      "kpiReleased": "Libéré",
+      "kpiDisputed": "En litige",
+      "ledgerTitle": "Mouvements récents",
+      "empty": "Aucune transaction.",
+      "colReference": "Réf",
+      "colOrder": "Commande",
+      "colParties": "Parties",
+      "colAmount": "Montant",
+      "colStatus": "Statut",
+      "colProvider": "Fournisseur",
+      "colReleased": "Libéré le",
+      "statuses": {
+        "INITIATED": "Initié",
+        "FUNDED": "Approvisionné",
+        "HELD": "Détenu",
+        "RELEASED": "Libéré",
+        "REFUNDED": "Remboursé",
+        "DISPUTED": "En litige"
+      }
+    },
+    "payouts": {
+      "eyebrow": "Versements",
+      "title": "File des versements",
+      "description": "Versements envoyés vers les usines via Stripe Connect.",
+      "kpiPending": "En attente",
+      "kpiSent": "Versés",
+      "kpiFailed": "Échoués",
+      "ledgerTitle": "Versements récents",
+      "empty": "Aucun versement.",
+      "colReference": "Réf",
+      "colFactory": "Usine",
+      "colOrder": "Commande",
+      "colAmount": "Montant",
+      "colCommission": "Commission",
+      "colStatus": "Statut",
+      "colSent": "Envoyé"
+    },
+    "organizations": {
+      "eyebrow": "Organisations",
+      "title": "Toutes les organisations",
+      "description": "Clients, usines, agents et plateforme.",
+      "searchPlaceholder": "Rechercher nom, raison sociale…",
+      "tableTitle": "Organisations",
+      "empty": "Aucune organisation trouvée.",
+      "colName": "Nom",
+      "colType": "Type",
+      "colLocation": "Localisation",
+      "colKyc": "KYC",
+      "colUsers": "Utilisateurs",
+      "colCreated": "Créée le",
+      "suspended": "Suspendue",
+      "types": {
+        "CLIENT": "Client",
+        "FACTORY": "Usine",
+        "AGENT": "Agent",
+        "PLATFORM": "Plateforme"
+      }
+    },
+    "users": {
+      "eyebrow": "Utilisateurs",
+      "title": "Tous les utilisateurs",
+      "description": "Comptes de tous les rôles et organisations.",
+      "searchPlaceholder": "Rechercher nom, e-mail…",
+      "tableTitle": "Utilisateurs",
+      "empty": "Aucun utilisateur trouvé.",
+      "colName": "Nom",
+      "colEmail": "E-mail",
+      "colRole": "Rôle",
+      "colOrg": "Organisation",
+      "col2fa": "2FA",
+      "colLastLogin": "Dernière connexion",
+      "neverLoggedIn": "Jamais"
+    },
+    "agents": {
+      "eyebrow": "Équipe",
+      "title": "Performance agents",
+      "description": "Charge active, commandes clôturées et commission générée par agent.",
+      "tableTitle": "Agents",
+      "empty": "Aucun agent enregistré.",
+      "colName": "Nom",
+      "colEmail": "E-mail",
+      "colActive": "Charge active",
+      "colCompleted": "Clôturées",
+      "colCommission": "Commission",
+      "colLastLogin": "Dernière connexion"
+    },
+    "webhooks": {
+      "eyebrow": "Webhooks",
+      "title": "Événements webhook",
+      "description": "Trace des événements entrants Stripe et autres fournisseurs.",
+      "kpiReceived": "Reçus",
+      "kpiProcessed": "Traités",
+      "kpiFailed": "Échoués",
+      "tableTitle": "Événements récents",
+      "empty": "Aucun événement.",
+      "colReceived": "Reçu",
+      "colSource": "Source",
+      "colType": "Type",
+      "colStatus": "Statut",
+      "colAttempts": "Tentatives",
+      "colError": "Erreur"
+    },
+    "logins": {
+      "eyebrow": "Sécurité",
+      "title": "Activité de connexion",
+      "description": "Connexions réussies et échouées sur les dernières 24 h et 7 jours.",
+      "kpiTodaySuccess": "Aujourd'hui · réussies",
+      "kpiTodayFailed": "Aujourd'hui · échouées",
+      "kpiWeekSuccess": "7 j · réussies",
+      "kpiWeekFailed": "7 j · échouées",
+      "tableTitle": "Événements de connexion récents",
+      "empty": "Aucun événement enregistré.",
+      "colTime": "Horodatage",
+      "colEvent": "Événement",
+      "colUser": "Utilisateur",
+      "colIp": "IP",
+      "colUa": "User-agent",
+      "unknownUser": "Utilisateur inconnu"
+    },
+    "support": {
+      "eyebrow": "Support",
+      "title": "File support marketplace",
+      "description": "Conversations sur les commandes marketplace (sans agent assigné). Le support est géré par l'équipe plateforme.",
+      "tableTitle": "Conversations",
+      "empty": "Aucune conversation support active.",
+      "messagesSuffix": "messages",
+      "note": "Les commandes du flux sourcing sont gérées par leur agent dédié et n'apparaissent pas ici."
+    },
+    "certifications": {
+      "eyebrow": "Certifications",
+      "title": "Dossiers en cours",
+      "description": "Pilotez les dossiers de certification : planifiez les audits, faites avancer les étapes, délivrez les certificats.",
+      "empty": "Aucun dossier actif.",
+      "enrolledOn": "Inscrit le",
+      "sponsorPrefix": "Sponsorisé par",
+      "advanceCta": "Faire avancer",
+      "cancel": "Annuler",
+      "nextStatusLabel": "Prochaine étape",
+      "nextStatusPlaceholder": "Choisir une étape…",
+      "progressLabel": "Progression manuelle",
+      "progressHint": "0-100. Laisser vide pour conserver la valeur actuelle.",
+      "certifiedRequiresAll": "Certification : URL et dates obligatoires",
+      "certificateUrlLabel": "URL du certificat",
+      "applyCta": "Appliquer"
+    },
+    "marketplace": {
+      "eyebrow": "Modération",
+      "title": "Fiches en attente",
+      "description": "Validez ou refusez les produits soumis par les usines avant publication.",
+      "empty": "Aucune fiche en attente de modération.",
+      "noImage": "Aucune image fournie",
+      "factoryKycMissing": "KYC non validé",
+      "submittedAt": "Soumis le",
+      "rejectCta": "Refuser",
+      "approveCta": "Valider et publier",
+      "rejectReasonLabel": "Motif de refus (visible dans l'audit)",
+      "rejectReasonPlaceholder": "Décrivez ce qui doit être corrigé…",
+      "confirmReject": "Confirmer le refus",
+      "back": "Retour"
+    },
+    "dispatch": {
+      "eyebrow": "Dispatch",
+      "title": "Demandes à assigner",
+      "description": "Assignez les demandes non traitées à un agent. SLA de qualification : 24 h ouvrées.",
+      "filterAll": "Toutes",
+      "filterUnassigned": "À assigner",
+      "filterAssigned": "Assignées",
+      "searchPlaceholder": "Rechercher référence, titre, client…",
+      "empty": "Aucune demande à traiter pour le moment.",
+      "pickAgent": "Sélectionner un agent",
+      "agentPlaceholder": "Choisir un agent…",
+      "currentAgent": "Agent actuel : {name}",
+      "assign": "Assigner",
+      "reassign": "Réassigner",
+      "loadSuffix": "demandes actives",
+      "errorPickAgent": "Sélectionnez un agent avant d'assigner."
+    },
+    "kyc": {
+      "eyebrow": "Vérification KYC",
+      "title": "File d'attente KYC",
+      "description": "Examinez les pièces justificatives soumises par les usines avant qu'elles ne reçoivent des appels d'offres.",
+      "filterAll": "Toutes",
+      "searchPlaceholder": "Rechercher usine, e-mail, ville…",
+      "empty": "Aucun dossier ne correspond à ce filtre.",
+      "colFactory": "Usine",
+      "colCategory": "Catégorie",
+      "colCountry": "Localisation",
+      "colSubmitted": "Soumis le",
+      "colStatus": "Statut",
+      "drawerEyebrow": "Détail du dossier KYC",
+      "sectionContact": "Contact",
+      "sectionCompany": "Entreprise",
+      "sectionManufacturing": "Activité",
+      "sectionDocuments": "Documents",
+      "contactName": "Nom du contact",
+      "contactEmail": "E-mail",
+      "submittedAt": "Soumis le",
+      "noOwner": "Aucun contact principal lié à cette usine.",
+      "noDocuments": "Aucun document n'a été téléversé.",
+      "openDocument": "Ouvrir le document",
+      "approve": "Valider le KYC",
+      "flag": "Signaler",
+      "reject": "Refuser",
+      "rejectReasonLabel": "Motif de refus (visible dans l'audit)",
+      "flagReasonLabel": "Motif du signalement (visible dans l'audit)",
+      "reasonPlaceholder": "Décrivez brièvement la raison…",
+      "confirmReject": "Confirmer le refus",
+      "confirmFlag": "Confirmer le signalement",
+      "errorReasonRequired": "Veuillez indiquer un motif d'au moins 3 caractères.",
+      "docKinds": {
+        "REGISTRY": "Registre du commerce",
+        "TAX": "Certificat fiscal",
+        "FACILITY_PHOTO": "Photo d'installation",
+        "REFERENCES": "Références clients",
+        "INSURANCE": "Assurance qualité",
+        "OTHER": "Autre"
+      }
+    },
+    "sourcingAllowlist": {
+      "eyebrow": "Paramètres plateforme",
+      "title": "Zones de sourcing autorisées",
+      "description": "Contrôlez les régions et pays disponibles dans le formulaire de demande. Les changements sont effectifs en moins d'une minute.",
+      "regionsTitle": "Régions ouvertes",
+      "regionsDescription": "Au moins une région doit être sélectionnée. Chaque région ouvre la liste de pays correspondante ci-dessous.",
+      "countriesTitle": "Pays ouverts",
+      "countriesDescription": "Sélectionnez les pays autorisés. Les formulaires masquent le sélecteur quand un seul pays est ouvert.",
+      "selectedLabel": "Sélectionnés",
+      "removeHint": "Cliquer pour retirer",
+      "searchLabel": "Rechercher un pays",
+      "searchHint": "Tapez un nom ou un code ISO (ex. « viet » ou « VN »).",
+      "searchPlaceholder": "Rechercher un pays…",
+      "searchEmpty": "Aucun pays ne correspond à cette recherche.",
+      "saveCta": "Enregistrer",
+      "saved": "Liste enregistrée."
+    }
+  },
+  "common": {
+    "actions": {
+      "continue": "Continuer",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "back": "Retour",
+      "next": "Suivant",
+      "submit": "Envoyer",
+      "close": "Fermer",
+      "search": "Rechercher",
+      "filter": "Filtrer",
+      "export": "Exporter",
+      "loading": "Chargement…"
+    },
+    "status": {
+      "pending": "En attente",
+      "active": "Actif",
+      "verified": "Vérifié",
+      "flagged": "Signalé",
+      "rejected": "Refusé",
+      "completed": "Terminé",
+      "cancelled": "Annulé"
+    },
+    "roles": {
+      "client": "Client",
+      "factory": "Usine",
+      "agent": "Agent",
+      "admin": "Administrateur"
+    }
+  },
+  "categories": {
+    "TEXTILE": "Textile",
+    "HOME": "Articles de maison",
+    "STATIONERY": "Papeterie",
+    "COSMETICS": "Cosmétique",
+    "FOOD": "Alimentaire",
+    "ELECTRONICS": "Électronique",
+    "METAL": "Métal",
+    "WOOD": "Bois",
+    "PLASTIC": "Plastique",
+    "OTHER": "Autre"
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "requests": "Demandes",
+    "marketplace": "Marketplace",
+    "orders": "Commandes",
+    "invoices": "Factures",
+    "tenders": "Appels d'offres",
+    "catalogue": "Catalogue",
+    "payouts": "Versements",
+    "certification": "Certification",
+    "tasks": "Tâches",
+    "settings": "Paramètres",
+    "logout": "Se déconnecter"
+  },
+  "theme": {
+    "toggleLabel": "Changer de thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
+  "marketing": {
+    "hero": {
+      "eyebrow": "Sourcing · Marketplace · Certification",
+      "title": "Sourcez à l'international, sans intermédiaires opaques.",
+      "subtitle": "Déposez votre besoin, recevez des devis qualifiés en moins de 72 h, et payez en toute sérénité grâce au séquestre intégré.",
+      "ctaPrimary": "Démarrer gratuitement",
+      "ctaSecondary": "Voir la marketplace",
+      "assurance": "Sans carte bancaire. Sans engagement."
+    },
+    "pillars": {
+      "eyebrow": "Trois métiers, une plateforme",
+      "title": "Tout ce qu'il faut pour acheter en confiance.",
+      "sourcing": {
+        "title": "Sourcing à la demande",
+        "body": "Un agent dédié qualifie votre besoin, sollicite 3 à 5 usines pertinentes et orchestre votre commande jusqu'à la livraison."
+      },
+      "marketplace": {
+        "title": "Marketplace",
+        "body": "Catalogue de produits déjà sourcés et négociés. Stock disponible, MOQ pré-négociée, commande en un clic."
+      },
+      "certification": {
+        "title": "Programme Certification",
+        "body": "Accompagnement bout-en-bout des usines vers les normes ISO, CE, GOTS, FSC, avec quatre organismes français."
+      }
+    },
+    "howItWorks": {
+      "eyebrow": "Comment ça marche",
+      "title": "De la demande à la livraison, sans friction.",
+      "step1": {
+        "title": "Vous déposez votre besoin",
+        "body": "Quantité, deadline, certifications, zone de sourcing. Formulaire en 3 étapes."
+      },
+      "step2": {
+        "title": "Un agent prend la main",
+        "body": "Sous 24 h, votre agent contacte 3 à 5 usines vérifiées et calcule un score de qualification."
+      },
+      "step3": {
+        "title": "Vous recevez 1 à 3 devis",
+        "body": "Prix unitaire, MOQ, délais, incoterm. Tous comparés, recommandation à l'appui."
+      },
+      "step4": {
+        "title": "Paiement en séquestre, livraison",
+        "body": "Vos fonds restent bloqués chez notre prestataire jusqu'à la réception conforme."
+      }
+    },
+    "trust": {
+      "eyebrow": "Pourquoi nous faire confiance",
+      "title": "Une infrastructure pensée pour l'acheteur.",
+      "escrow": {
+        "title": "Séquestre intégré",
+        "body": "Aucun versement à l'usine sans confirmation de réception conforme. SourcingPick agit comme tiers de confiance."
+      },
+      "agents": {
+        "title": "Un agent dédié",
+        "body": "Pas un chatbot. Un humain qui connaît votre dossier, négocie en votre nom et suit la production."
+      },
+      "certs": {
+        "title": "Usines certifiées",
+        "body": "Toutes nos usines partenaires passent un KYC. Beaucoup sont engagées dans notre programme de certification."
+      },
+      "partnersLabel": "Organismes partenaires"
+    },
+    "cta": {
+      "title": "Prêt à sourcer autrement ?",
+      "subtitle": "Créez votre compte en deux minutes. Première demande gratuite, sans engagement.",
+      "primaryButton": "Créer un compte",
+      "secondaryButton": "Voir les tarifs"
+    }
+  },
+  "about": {
+    "eyebrow": "À propos",
+    "title": "Sourcer ne devrait pas être un acte de foi.",
+    "body": [
+      "SourcingPick existe parce que l'acte d'acheter à l'international reste, en 2026, un parcours de patience, de WhatsApp et de virements à l'aveugle. Les acheteurs paient d'avance des fournisseurs qu'ils n'ont jamais vus. Les usines acceptent des cahiers des charges qu'elles n'ont pas le temps de qualifier. L'intermédiaire opaque rentre dans sa marge.",
+      "Nous construisons l'inverse : une plateforme où chaque demande est qualifiée par un humain, chaque devis est comparé sur la même grille, et chaque paiement reste en séquestre jusqu'à confirmation. La marge de la plateforme est transparente, pas cachée dans le prix.",
+      "Nous sommes basés en France mais notre réseau d'usines couvre l'Europe, le Maghreb, l'Asie, l'Afrique et les Amériques. La langue n'est pas une barrière, le fuseau horaire non plus."
+    ],
+    "principles": {
+      "eyebrow": "Nos principes",
+      "title": "Ce sur quoi nous ne transigeons pas."
+    },
+    "values": {
+      "escrow": {
+        "title": "Pas de virement sans réception",
+        "body": "Les fonds des acheteurs restent bloqués chez notre prestataire de paiement jusqu'à la confirmation de livraison conforme. C'est non-négociable."
+      },
+      "agents": {
+        "title": "Un humain, jamais un script",
+        "body": "Chaque demande est portée par un agent qui connaît son dossier, son client et ses usines. Pas de hotline, pas de chatbot."
+      },
+      "global": {
+        "title": "Un réseau réellement global",
+        "body": "Nos usines partenaires sont sur cinq continents. Nous parlons la langue de votre fournisseur et de votre service achats."
+      }
+    }
+  },
+  "pricing": {
+    "eyebrow": "Pas d'abonnement, jamais.",
+    "title": "Vous payez uniquement sur les commandes réussies.",
+    "subtitle": "Commission claire, plafonnée, prélevée à la livraison conforme. Le séquestre, le suivi et les assurances sont inclus.",
+    "popular": "Cœur d'activité",
+    "flows": {
+      "sourcing": {
+        "name": "Sourcing à la demande",
+        "tagline": "Pour vos besoins sur mesure, négociés par un agent dédié.",
+        "buyer": {
+          "label": "Côté acheteur",
+          "rate": "12 %",
+          "cap": "plafonné à 15 000 €",
+          "note": "Commission prélevée à la livraison conforme. Le plafond se déclenche à 125 000 € de commande."
+        },
+        "supplier": {
+          "label": "Côté fournisseur",
+          "rate": "3 %",
+          "cap": "plafonné à 5 000 €",
+          "note": "Commission déduite du versement à l'usine après libération du séquestre."
+        },
+        "research": {
+          "label": "Frais de recherche",
+          "amount": "125 € / jour",
+          "cap": "ou 500 € / semaine",
+          "note": "Devis sur mesure selon l'ampleur de votre demande. Remboursés en crédit plateforme si une commande est passée dans les 30 jours. S'applique à toutes les demandes, y compris les petites commandes."
+        },
+        "cta": "Déposer une demande"
+      },
+      "marketplace": {
+        "name": "Marketplace",
+        "tagline": "Pour les produits déjà sourcés et négociés, achetables en un clic.",
+        "buyer": {
+          "label": "Côté acheteur",
+          "rate": "12 %",
+          "cap": "plafonné à 15 000 €",
+          "note": "Intégré au prix affiché. Vous payez ce que vous voyez, sans surcoût au checkout."
+        },
+        "supplier": {
+          "label": "Côté vendeur",
+          "rate": "3 %",
+          "cap": "plafonné à 5 000 €",
+          "note": "Commission déduite du versement au vendeur après libération du séquestre."
+        },
+        "cta": "Parcourir le catalogue"
+      }
+    },
+    "included": {
+      "title": "Inclus dans tous les tarifs",
+      "items": [
+        "Séquestre des fonds jusqu'à la confirmation de réception conforme",
+        "Suivi du colis jusqu'à vos locaux",
+        "Assurances spécifiques selon la catégorie"
+      ]
+    },
+    "excluded": {
+      "title": "Non inclus",
+      "items": [
+        "Frais de livraison (à la charge de l'acheteur, selon l'incoterm)"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "emailLabel": "Adresse e-mail",
+      "passwordLabel": "Mot de passe",
+      "submit": "Se connecter",
+      "forgotPassword": "Mot de passe oublié ?",
+      "noAccount": "Pas encore de compte ?",
+      "signupLink": "Créer un compte",
+      "google": "Continuer avec Google",
+      "divider": "ou"
+    },
+    "signup": {
+      "title": "Créer un compte",
+      "pickerDescription": "Choisissez le type de compte qui correspond à votre activité.",
+      "asClient": "Je suis un acheteur",
+      "clientBody": "PME, marque ou ETI qui veut sourcer auprès d'usines vérifiées avec un agent dédié.",
+      "asFactory": "Je suis une usine",
+      "factoryBody": "Fabricant qui souhaite répondre aux appels d'offres et lister des produits.",
+      "hasAccount": "Déjà inscrit ?",
+      "loginLink": "Se connecter",
+      "clientEyebrow": "Compte acheteur",
+      "clientTitle": "Créer votre compte acheteur",
+      "firstNameLabel": "Prénom",
+      "lastNameLabel": "Nom",
+      "orgNameLabel": "Nom de l'organisation",
+      "orgNameHint": "Le nom commercial sous lequel vous opérez.",
+      "countryLabel": "Pays",
+      "countryPlaceholder": "France, Brésil, Japon…",
+      "passwordHint": "Au moins 12 caractères.",
+      "termsAccept": "J'accepte les",
+      "termsLink": "conditions générales",
+      "termsAnd": "et la",
+      "privacyLink": "politique de confidentialité",
+      "submit": "Créer mon compte",
+      "factoryEyebrow": "Compte usine",
+      "factoryTitle": "Créer votre compte usine",
+      "sectionAccount": "Votre compte",
+      "sectionCompany": "Votre entreprise",
+      "sectionFactory": "Activité industrielle",
+      "sectionDocuments": "Documents KYC",
+      "documentsDescription": "Ces documents sont vérifiés par notre équipe avant que votre usine ne reçoive des appels d'offres. Vous pouvez ajouter des photos d'installations supplémentaires (3 minimum recommandé).",
+      "legalNameLabel": "Raison sociale",
+      "displayNameLabel": "Nom commercial",
+      "displayNameHint": "Le nom sous lequel votre usine apparaît auprès des acheteurs.",
+      "cityLabel": "Ville",
+      "addressLabel": "Adresse",
+      "vatLabel": "Numéro de TVA",
+      "vatHint": "Optionnel pour le moment, requis pour la facturation.",
+      "categoryLabel": "Catégorie principale",
+      "categoryPlaceholder": "Choisir une catégorie…",
+      "capabilitiesLabel": "Capacités de production",
+      "capabilitiesHint": "Séparez les capacités par des virgules. Ex : tissage, teinture, finitions.",
+      "capabilitiesPlaceholder": "tissage, teinture, finitions, contrôle qualité…",
+      "docRegistryLabel": "Registre du commerce",
+      "docRegistryHint": "Extrait Kbis ou équivalent. PDF, JPG, PNG (max 10 Mo).",
+      "docTaxLabel": "Certificat fiscal",
+      "docTaxHint": "Attestation de régularité fiscale. PDF, JPG, PNG (max 10 Mo).",
+      "docFacilityLabel": "Photos de vos installations",
+      "docFacilityHint": "Minimum 1 photo, idéalement 3 ou plus. JPG, PNG, WebP, HEIC (max 10 Mo chacune).",
+      "fileChoose": "Choisir un fichier",
+      "fileReplace": "Remplacer",
+      "stepAccount": "Compte",
+      "stepCompany": "Entreprise",
+      "stepFactory": "Activité",
+      "stepDocuments": "Documents",
+      "stepReview": "Récapitulatif",
+      "reviewDescription": "Vérifiez que tout est correct avant de finaliser votre inscription. Vous pourrez compléter votre profil après validation.",
+      "errorFirstName": "Indiquez votre prénom.",
+      "errorLastName": "Indiquez votre nom.",
+      "errorEmail": "Saisissez une adresse e-mail valide.",
+      "errorPassword": "Le mot de passe doit contenir au moins 12 caractères.",
+      "errorLegalName": "Indiquez la raison sociale de l'entreprise.",
+      "errorDisplayName": "Indiquez le nom commercial.",
+      "errorCountry": "Indiquez le pays.",
+      "errorCity": "Indiquez la ville.",
+      "errorAddress": "Indiquez l'adresse complète.",
+      "errorCategory": "Choisissez une catégorie.",
+      "errorRegistry": "Le registre du commerce est requis.",
+      "errorTax": "Le certificat fiscal est requis.",
+      "errorFacility": "Ajoutez au moins une photo de vos installations.",
+      "errorTerms": "Vous devez accepter les conditions pour continuer."
+    },
+    "forgot": {
+      "title": "Mot de passe oublié",
+      "description": "Saisissez votre adresse e-mail. Si un compte existe, vous recevrez un lien de réinitialisation.",
+      "submit": "Envoyer le lien",
+      "sentTitle": "Lien envoyé",
+      "sentBody": "Si un compte SourcingPick existe avec cette adresse, un e-mail vient de partir. Vérifiez votre boîte de réception (et vos spams).",
+      "backToLogin": "Retour à la connexion"
+    },
+    "reset": {
+      "title": "Nouveau mot de passe",
+      "description": "Choisissez un nouveau mot de passe pour votre compte.",
+      "newPasswordLabel": "Nouveau mot de passe",
+      "confirmPasswordLabel": "Confirmer le mot de passe",
+      "passwordHint": "Au moins 12 caractères.",
+      "submit": "Réinitialiser le mot de passe",
+      "missingTokenTitle": "Lien invalide",
+      "missingTokenBody": "Ce lien de réinitialisation est incomplet. Demandez-en un nouveau depuis la page mot de passe oublié.",
+      "requestNew": "Demander un nouveau lien"
+    },
+    "otp": {
+      "title": "Vérification en deux étapes",
+      "description": "Saisissez le code à 6 chiffres envoyé à votre adresse e-mail.",
+      "codeLabel": "Code de vérification",
+      "resend": "Renvoyer le code",
+      "resentNotice": "Un nouveau code vient d'être envoyé.",
+      "verify": "Vérifier"
+    }
+  },
+  "cookies": {
+    "title": "Cookies",
+    "description": "Nous utilisons des cookies essentiels au fonctionnement du site (langue, session). Avec votre accord, nous mesurons l'audience pour améliorer le service.",
+    "accept": "Tout accepter",
+    "decline": "Refuser les non-essentiels",
+    "manage": "Gérer mes choix"
+  },
+  "legal": {
+    "eyebrow": "Mentions légales",
+    "lastUpdated": "Dernière mise à jour : mai 2026",
+    "draftNotice": "Document en version v0. Le contenu définitif sera revu par notre conseil juridique avant la mise en production. Pour toute question, écrivez-nous à legal@sourcingpick.com.",
+    "terms": {
+      "title": "Conditions générales d'utilisation",
+      "sections": [
+        {
+          "heading": "Acceptation des conditions",
+          "body": [
+            "En accédant à SourcingPick ou en créant un compte, vous acceptez d'être lié par les présentes conditions générales d'utilisation. Si vous n'acceptez pas ces conditions, vous ne devez pas utiliser le service."
+          ]
+        },
+        {
+          "heading": "Description du service",
+          "body": [
+            "SourcingPick est une plateforme SaaS qui met en relation des acheteurs (« Clients ») et des fabricants (« Usines ») via trois services principaux : sourcing à la demande, marketplace de produits pré-négociés, et programme d'accompagnement à la certification.",
+            "SourcingPick agit en qualité de tiers de confiance et opère un mécanisme de séquestre des fonds via un prestataire de paiement agréé."
+          ]
+        },
+        {
+          "heading": "Comptes et vérification",
+          "body": [
+            "L'inscription est gratuite. Chaque organisation doit fournir des informations exactes et à jour, et compléter une procédure de vérification (KYC) avant de pouvoir transacter.",
+            "Vous êtes responsable de la confidentialité de vos identifiants. Toute activité réalisée depuis votre compte est présumée être la vôtre."
+          ]
+        },
+        {
+          "heading": "Utilisation acceptable",
+          "body": [
+            "Il est interdit d'utiliser SourcingPick pour des activités illégales, frauduleuses, ou contraires à la réglementation française et européenne en matière de commerce international, de droit du travail ou de propriété intellectuelle.",
+            "Tout contournement du mécanisme de séquestre, du programme de certification ou des outils de vérification est strictement interdit."
+          ]
+        },
+        {
+          "heading": "Paiements, commissions et séquestre",
+          "body": [
+            "Les fonds versés par les Clients sont collectés par notre prestataire de paiement et conservés en séquestre jusqu'à la confirmation de réception conforme des marchandises.",
+            "Une commission est prélevée par SourcingPick sur chaque transaction. Le taux dépend du plan d'abonnement souscrit et est communiqué au moment du devis."
+          ]
+        },
+        {
+          "heading": "Propriété intellectuelle",
+          "body": [
+            "L'ensemble des éléments de la plateforme (logiciel, design, marques, contenus éditoriaux) est la propriété exclusive de SourcingPick ou de ses concédants.",
+            "Vous conservez tous les droits sur les contenus que vous publiez (cahiers des charges, photos, documents) et accordez à SourcingPick une licence d'utilisation limitée à l'exploitation du service."
+          ]
+        },
+        {
+          "heading": "Garanties et limitation de responsabilité",
+          "body": [
+            "SourcingPick met tout en œuvre pour vérifier la qualité de ses usines partenaires mais ne peut garantir la conformité absolue des produits fabriqués. Le mécanisme de séquestre vise précisément à protéger l'acheteur en cas de non-conformité.",
+            "Notre responsabilité est limitée, dans la mesure permise par la loi, au montant des sommes effectivement perçues au titre de la transaction concernée."
+          ]
+        },
+        {
+          "heading": "Résiliation",
+          "body": [
+            "Vous pouvez résilier votre compte à tout moment depuis vos paramètres. SourcingPick peut suspendre ou résilier un compte en cas de manquement aux présentes conditions, après notification."
+          ]
+        },
+        {
+          "heading": "Modifications des conditions",
+          "body": [
+            "Nous pouvons modifier les présentes conditions pour refléter l'évolution du service ou de la réglementation. Toute modification substantielle vous sera notifiée par e-mail au moins 30 jours avant son entrée en vigueur."
+          ]
+        },
+        {
+          "heading": "Droit applicable et juridiction",
+          "body": [
+            "Les présentes conditions sont régies par le droit français. Tout litige relèvera de la compétence exclusive des tribunaux du ressort de la Cour d'appel de Paris, sauf disposition légale impérative contraire."
+          ]
+        },
+        {
+          "heading": "Contact",
+          "body": [
+            "Pour toute question relative aux présentes conditions : legal@sourcingpick.com."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "sections": [
+        {
+          "heading": "Responsable du traitement",
+          "body": [
+            "SourcingPick SAS, dont le siège est situé en France, est responsable du traitement des données personnelles collectées via la plateforme. Pour exercer vos droits ou contacter notre Délégué à la Protection des Données : dpo@sourcingpick.com."
+          ]
+        },
+        {
+          "heading": "Données que nous collectons",
+          "body": [
+            "Données de compte : nom, prénom, e-mail, téléphone, langue préférée, rôle et organisation de rattachement.",
+            "Données d'entreprise : raison sociale, SIREN, numéro de TVA, adresse, coordonnées bancaires, documents KYC.",
+            "Données d'usage : historique des connexions, demandes créées, devis reçus, commandes, messages échangés."
+          ]
+        },
+        {
+          "heading": "Finalités et bases légales",
+          "body": [
+            "Exécution du contrat : fourniture du service de sourcing, traitement des commandes et des paiements.",
+            "Obligations légales : conformité KYC, lutte contre le blanchiment, facturation, archivage comptable.",
+            "Intérêt légitime : sécurité de la plateforme, prévention de la fraude, amélioration du service.",
+            "Consentement : mesure d'audience, communications marketing (lorsque vous y consentez explicitement)."
+          ]
+        },
+        {
+          "heading": "Partage des données",
+          "body": [
+            "Nous partageons certaines données avec des prestataires techniques sous contrat (hébergement, e-mail, paiement, KYC) qui agissent en qualité de sous-traitants au sens du RGPD.",
+            "Nous ne vendons jamais vos données. Nous pouvons être amenés à les transmettre aux autorités compétentes en cas d'obligation légale."
+          ]
+        },
+        {
+          "heading": "Durée de conservation",
+          "body": [
+            "Données de compte : conservées tant que votre compte est actif, puis archivées pendant 3 ans après la dernière transaction.",
+            "Documents KYC : conservés 5 ans après la fin de la relation commerciale, conformément aux obligations LCB-FT.",
+            "Données de facturation : conservées 10 ans, conformément au Code de commerce."
+          ]
+        },
+        {
+          "heading": "Vos droits (RGPD)",
+          "body": [
+            "Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, de portabilité et d'opposition concernant vos données personnelles. Vous pouvez exercer ces droits depuis vos paramètres ou en écrivant à dpo@sourcingpick.com.",
+            "En cas de désaccord, vous pouvez introduire une réclamation auprès de la CNIL (www.cnil.fr)."
+          ]
+        },
+        {
+          "heading": "Transferts internationaux",
+          "body": [
+            "Notre infrastructure principale est hébergée dans l'Union européenne. Lorsque le traitement d'une commande implique des partenaires en dehors de l'UE, nous appliquons les clauses contractuelles types de la Commission européenne pour encadrer les transferts."
+          ]
+        },
+        {
+          "heading": "Cookies",
+          "body": [
+            "Notre utilisation des cookies est détaillée dans notre politique cookies dédiée."
+          ]
+        },
+        {
+          "heading": "Sécurité",
+          "body": [
+            "Les données sensibles (mots de passe, IBAN, documents KYC) sont chiffrées au repos. L'accès est restreint au strict nécessaire et journalisé. L'authentification à deux facteurs est obligatoire pour les comptes Admin."
+          ]
+        },
+        {
+          "heading": "Contact",
+          "body": [
+            "Délégué à la Protection des Données : dpo@sourcingpick.com."
+          ]
+        }
+      ]
+    },
+    "cookies": {
+      "title": "Politique cookies",
+      "sections": [
+        {
+          "heading": "Qu'est-ce qu'un cookie ?",
+          "body": [
+            "Un cookie est un petit fichier texte déposé sur votre appareil lorsque vous visitez un site web. Il permet au site de mémoriser certaines informations (langue, session de connexion, choix de consentement) entre deux visites."
+          ]
+        },
+        {
+          "heading": "Cookies strictement nécessaires",
+          "body": [
+            "Ces cookies sont indispensables au fonctionnement de la plateforme et ne nécessitent pas votre consentement préalable.",
+            "sp_locale (1 an) — mémorise votre langue préférée.",
+            "sp_consent (1 an) — enregistre votre choix concernant les cookies non essentiels.",
+            "next-auth.session-token (session) — maintient votre session de connexion lorsque vous êtes authentifié.",
+            "next-auth.csrf-token (session) — protège les formulaires d'authentification contre les attaques CSRF."
+          ]
+        },
+        {
+          "heading": "Cookies non essentiels",
+          "body": [
+            "En version actuelle, SourcingPick ne dépose aucun cookie non essentiel. Si nous introduisons des outils de mesure d'audience ou de marketing à l'avenir, ils ne seront déposés qu'après votre consentement explicite via la bannière dédiée."
+          ]
+        },
+        {
+          "heading": "Gérer vos choix",
+          "body": [
+            "Vous pouvez modifier votre choix à tout moment en supprimant le cookie sp_consent depuis les paramètres de votre navigateur, puis en rechargeant la page : la bannière de consentement réapparaîtra.",
+            "Vous pouvez également bloquer ou supprimer tous les cookies via les paramètres de votre navigateur. Notez que cela peut altérer certaines fonctionnalités du service (notamment la connexion)."
+          ]
+        },
+        {
+          "heading": "Contact",
+          "body": [
+            "Pour toute question relative à notre utilisation des cookies : dpo@sourcingpick.com."
+          ]
+        }
+      ]
+    }
+  },
+  "footer": {
+    "product": "Produit",
+    "company": "Entreprise",
+    "legal": "Mentions légales",
+    "pricing": "Tarifs",
+    "about": "À propos",
+    "howItWorks": "Comment ça marche",
+    "becomePartner": "Devenir usine partenaire",
+    "terms": "Conditions générales",
+    "privacy": "Politique de confidentialité",
+    "cookies": "Politique cookies",
+    "allRights": "Tous droits réservés.",
+    "madeIn": "Fait avec ❤️ par INAIRIS"
+  },
+  "errors": {
+    "404": {
+      "title": "Page introuvable",
+      "description": "La page que vous cherchez n'existe pas ou a été déplacée.",
+      "back": "Retour à l'accueil"
+    },
+    "500": {
+      "title": "Une erreur est survenue",
+      "description": "Quelque chose s'est mal passé de notre côté. Veuillez réessayer.",
+      "retry": "Réessayer"
+    },
+    "notFound": {
+      "title": "On a perdu cette page.",
+      "body": "L'adresse demandée n'existe pas ou a été déplacée. Repartons du bon pied.",
+      "home": "Retour à l'accueil",
+      "browse": "Parcourir la marketplace"
+    },
+    "systemError": {
+      "code": "Erreur système",
+      "title": "Une erreur est survenue.",
+      "body": "Nous n'avons pas pu afficher cette page. L'équipe a été notifiée. Réessayez dans un instant.",
+      "retry": "Réessayer"
+    }
+  },
+  "locale": {
+    "switch": "Langue",
+    "fr": "Français",
+    "en": "English",
+    "zh": "中文"
+  }
+}
