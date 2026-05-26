@@ -63,7 +63,7 @@ async function main() {
   await prisma.user.createMany({
     data: [
       {
-        email: "super@sourcingpick.dev",
+        email: "caleb@inairis.fr",
         firstName: "Caystone",
         lastName: "Admin",
         passwordHash,
@@ -118,11 +118,11 @@ async function main() {
   const clientFR = await prisma.organization.create({
     data: {
       type: OrgType.CLIENT,
-      legalName: "Maison Lumière SARL",
-      displayName: "Maison Lumière",
+      legalName: "emmanuelcaleb546@gmail.com",
+      displayName: "Caleb-Livingstone Emmanuel",
       country: "FR",
-      city: "Lyon",
-      address: "12 rue de la République, 69001 Lyon",
+      city: "Cotonou",
+      address: "229 rue de la République, 69001 Lyon",
       siren: "812345678",
       vatNumber: "FR40812345678",
       kycStatus: KycStatus.VERIFIED,
