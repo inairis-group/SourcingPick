@@ -1,6 +1,6 @@
 # Pricing model v2 — overrides spec §1.1
 
-**Status:** locked 2026-05-24 (Caystone + partner alignment).
+**Status:** locked 2026-05-24 (Caystone + partner alignment). Caps removed 2026-05-26 — see "Why no caps" below.
 **Supersedes:** spec §1.1 ("Modèle de revenus"). The spec's SaaS subscription tiers (Starter / Growth / Pro) and per-plan commission rates (8% / 6% / 4%) are **dropped**.
 
 This doc is the source of truth for pricing in the v1 build. When the schema enforces commission calculation (Phase 3, payments), the values here are what get seeded into the `PricingRule` table.
@@ -11,21 +11,21 @@ This doc is the source of truth for pricing in the v1 build. When the schema enf
 
 ### Sourcing flow (agent-orchestrated, custom build)
 
-| Side | Rate | Cap | Trigger | Notes |
-|------|------|-----|---------|-------|
-| **Buyer** (client) | **12%** of order value | **€15,000** (binds at €125k GMV) | Order completion (escrow released) | Built into the quote shown to the buyer |
-| **Buyer** (client) | Research fee at **€125/day or €500/week** | quoted per request | Per qualified sourcing request, before agent work starts | **Credited back** as platform credit if the buyer places an order within 30 days. Applies to every request — including small orders below €1,000. |
-| **Supplier** (factory) | **3%** of order value | **€5,000** (binds at €166k GMV) | Order completion (escrow released) | Deducted from the payout to the factory |
+| Side | Rate | Trigger | Notes |
+|------|------|---------|-------|
+| **Buyer** (client) | **12%** of order value | Order completion (escrow released) | Built into the quote shown to the buyer |
+| **Buyer** (client) | Research fee at **€125/day or €500/week** | Per qualified sourcing request, before agent work starts | **Credited back** as platform credit if the buyer places an order within 30 days. Applies to every request — including small orders below €1,000. |
+| **Supplier** (factory) | **3%** of order value | Order completion (escrow released) | Deducted from the payout to the factory |
 
-Total platform take on a typical sourcing transaction: **15% of GMV** below caps, decreasing as a percentage above caps. With agents based in China (loaded cost ~€80–€120/day), even orders down to €5k GMV are profitable per-request once you add the research fee.
+Total platform take on a sourcing transaction: **15% of GMV**, flat. With agents based in China (loaded cost ~€80–€120/day), even orders down to €5k GMV are profitable per-request once you add the research fee.
 
 ### Marketplace flow (pre-negotiated catalogue, one-click buy)
 
-| Side | Rate | Cap | Trigger | Notes |
-|------|------|-----|---------|-------|
-| **Buyer** | **12%** of listed price | **€15,000** (binds at €125k GMV) | Order completion | Baked into the listed price — buyer pays sticker price, no add-on at checkout |
-| **Buyer** | no research fee | — | — | One-click purchase, no agent labor to pay for |
-| **Supplier** (factory listing) | **3%** of listed price | **€5,000** (binds at €166k GMV) | Order completion | Deducted from the payout to the factory |
+| Side | Rate | Trigger | Notes |
+|------|------|---------|-------|
+| **Buyer** | **12%** of listed price | Order completion | Baked into the listed price — buyer pays sticker price, no add-on at checkout |
+| **Buyer** | no research fee | — | One-click purchase, no agent labor to pay for |
+| **Supplier** (factory listing) | **3%** of listed price | Order completion | Deducted from the payout to the factory |
 
 Marketplace listed price = factory net target ÷ (1 − 12% − 3%) = factory net ÷ 0.85. The 12% is invisible to the buyer (they see only the all-in price); the 3% is invisible to the buyer for the same reason.
 
@@ -68,9 +68,17 @@ Unchanged from spec §8.3. Per-norm forfait, billed to the factory or to a spons
 ## Why this model, not the spec's SaaS-tier model
 
 - **Sourcing is episodic.** A buyer who runs one campaign per quarter resents a monthly fee that runs whether they use the platform or not. Subscription would create churn that pure commission doesn't.
-- **Caps prevent supplier defection.** A €60k commission on a €500k order (uncapped 12%) would push the supplier to route around the platform on big deals. The €15k cap puts SourcingPick in the same price range as Alibaba Trade Assurance (~5-8% effective) and direct sourcing brokers (~5%) on large orders, while still capturing strong margin on the typical €10–125k order.
 - **Research fee filters speculative requests AND covers agent time.** Charged per day or week of agent work (quoted upfront per request based on scope). SourcingPick's sourcing agents are based in China — loaded cost ~€80–€120/day in tier-1 Chinese cities — so €125/day sits slightly above labor cost while remaining well within reach of small buyers. The fee carries its own margin; the order commission is upside on top.
 - **Why per-day/per-week instead of a flat token fee:** a flat fee disconnects revenue from actual scope. Per-day lets the agent quote in proportion to the work involved — a half-day catalogue scan and a two-week multi-region factory hunt are paid differently. With the credit-back on order placement, serious buyers net to zero on the research fee; speculative buyers self-select on whether the proposed scope is worth their order value.
+
+## Why no caps (decided 2026-05-26)
+
+The original v2 capped the buyer side at €15,000 (binding at €125k GMV) and the supplier side at €5,000 (binding at €166k GMV). Both caps are removed.
+
+- **The 15% flat rate is already competitive on large orders.** Alibaba Trade Assurance lands around 5–8% effective on big deals, but bundles a thinner version of escrow + tracking + insurance and no agent labour. SourcingPick's 15% buys a dedicated agent, full escrow with dispute mediation, and category-specific insurance. The premium is the product, not the cap.
+- **Caps add complexity for no benefit at our current order distribution.** The bulk of v1 orders sit in the €5k–€80k range, well below the cap thresholds. The cap math (when does it bind, how is it surfaced on the quote, how does it interact with disputes) was Phase-3 work we'd rather skip.
+- **Simpler pricing is easier to defend.** "12% buyer, 3% supplier, on every order" is one sentence. "12%/3% capped at €15k/€5k, binding above €125k/€166k GMV" is a paragraph that invites haggling.
+- **If the very-large-order objection comes back,** we re-introduce a cap as a per-customer negotiation, not a global rule. Big-deal supplier defection risk is real, but it's a sales conversation, not a pricing-page promise.
 
 ## Memory cross-references
 

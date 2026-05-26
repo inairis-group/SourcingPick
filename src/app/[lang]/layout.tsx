@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { CookieBanner } from "@/components/layout/cookie-banner";
+import { TopProgressBar } from "@/components/layout/top-progress";
 import { I18nProvider } from "@/lib/i18n/client-provider";
 import { ThemeScript } from "@/components/theme/theme-script";
 import { directionFor, isLocale, locales } from "@/lib/i18n/config";
@@ -51,6 +53,12 @@ export default async function RootLayout({
         <ThemeScript />
       </head>
       <body>
+        {/* Suspense wraps the top progress bar because useSearchParams
+            opts the subtree into client-side rendering for the search-
+            params change detection — App Router requires a boundary. */}
+        <Suspense fallback={null}>
+          <TopProgressBar />
+        </Suspense>
         <I18nProvider locale={lang} dict={dict}>
           {children}
           <CookieBanner />

@@ -1,6 +1,12 @@
 "use client";
 
-import { useActionState, useEffect, useState, useTransition } from "react";
+import {
+  startTransition,
+  useActionState,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { FormError } from "@/components/ui/form-error";
@@ -34,7 +40,11 @@ export function OtpForm() {
     setCode(value);
     const fd = new FormData();
     fd.append("code", value);
-    formAction(fd);
+    // Wrap in startTransition so useActionState's `pending` flips correctly
+    // and React doesn't warn ("async function called outside a transition").
+    // When formAction is invoked via the form's `action` prop React wraps it
+    // automatically — programmatic calls must do it themselves.
+    startTransition(() => formAction(fd));
   };
 
   // Clear "code resent" notice when user starts typing again.

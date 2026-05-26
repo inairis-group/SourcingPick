@@ -65,7 +65,20 @@ async function main() {
       {
         email: "caleb@inairis.fr",
         firstName: "Caystone",
-        lastName: "Admin",
+        lastName: "Inairis",
+        passwordHash,
+        emailVerified: new Date(),
+        role: Role.ADMIN,
+        subRole: SubRole.SUPER,
+        organizationId: platform.id,
+        hasOnboarded: true,
+        twoFactorEnabled: true,
+        locale: Locale.en,
+      },
+      {
+        email: "admin@inairis.fr",
+        firstName: "Adam",
+        lastName: "Inairis",
         passwordHash,
         emailVerified: new Date(),
         role: Role.ADMIN,
@@ -115,14 +128,14 @@ async function main() {
   });
 
   // ---- CLIENT orgs (global spread) ----
-  const clientFR = await prisma.organization.create({
+  const clientBJ = await prisma.organization.create({
     data: {
       type: OrgType.CLIENT,
-      legalName: "emmanuelcaleb546@gmail.com",
-      displayName: "Caleb-Livingstone Emmanuel",
-      country: "FR",
+      legalName: "Caleb-Livingstone Emmanuel",
+      displayName: "Caystone",
+      country: "BJ",
       city: "Cotonou",
-      address: "229 rue de la République, 69001 Lyon",
+      address: "Lot 4125, Haie Vive, Cotonou",
       siren: "812345678",
       vatNumber: "FR40812345678",
       kycStatus: KycStatus.VERIFIED,
@@ -130,14 +143,14 @@ async function main() {
     },
   });
 
-  const clientBR = await prisma.organization.create({
+  const clientFR = await prisma.organization.create({
     data: {
       type: OrgType.CLIENT,
-      legalName: "Casa Bossa LTDA",
-      displayName: "Casa Bossa",
-      country: "BR",
-      city: "São Paulo",
-      address: "Av. Paulista 1000, 01310-100 São Paulo",
+      legalName: "Adam Fernandez",
+      displayName: "Adam Fernandez",
+      country: "FR",
+      city: "Paris",
+      address: "15 Rue de la Paix, 75002 Paris",
       kycStatus: KycStatus.VERIFIED,
       kycVerifiedAt: new Date(),
     },
@@ -159,9 +172,9 @@ async function main() {
   await prisma.user.createMany({
     data: [
       {
-        email: "owner@maison-lumiere.example",
-        firstName: "Hélène",
-        lastName: "Dubois",
+        email: "inairiscore@gmail.com",
+        firstName: "Adam",
+        lastName: "Fernandez",
         passwordHash,
         emailVerified: new Date(),
         role: Role.CLIENT,
@@ -171,14 +184,14 @@ async function main() {
         locale: Locale.fr,
       },
       {
-        email: "owner@casabossa.example",
-        firstName: "Rafael",
-        lastName: "Costa",
+        email: "emmanuelcaleb546@gmail.com",
+        firstName: "Caleb-Livingstone",
+        lastName: "Emmanuel",
         passwordHash,
         emailVerified: new Date(),
         role: Role.CLIENT,
         subRole: SubRole.OWNER,
-        organizationId: clientBR.id,
+        organizationId: clientBJ.id,
         hasOnboarded: true,
         locale: Locale.en,
       },
@@ -534,11 +547,12 @@ async function main() {
   console.log(`Default dev password: ${DEV_PASSWORD}`);
   console.log("");
   console.log("Login as:");
-  console.log("  super@sourcingpick.dev          (Admin Super)");
+  console.log("  caleb@inairis.fr          (Admin Super)");
+  console.log("  admin@inairis.fr          (Admin Super)");
   console.log("  ops@sourcingpick.dev            (Admin Member)");
   console.log("  senior-agent@sourcingpick.dev   (Agent Senior)");
   console.log("  agent@sourcingpick.dev          (Agent)");
-  console.log("  owner@maison-lumiere.example    (Client FR — Growth plan)");
+  console.log("  emmanuelcaleb546@gmail.com    (Client FR — Growth plan)");
   console.log("  owner@casabossa.example         (Client BR — Starter plan)");
   console.log("  owner@tokyokura.example         (Client JP — Pro plan)");
   console.log("  owner@textil-norte.example      (Factory PT — verified)");

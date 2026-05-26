@@ -1188,7 +1188,7 @@
   "pricing": {
     "eyebrow": "Pas d'abonnement, jamais.",
     "title": "Vous payez uniquement sur les commandes réussies.",
-    "subtitle": "Commission claire, plafonnée, prélevée à la livraison conforme. Le séquestre, le suivi et les assurances sont inclus.",
+    "subtitle": "Commission claire, prélevée à la livraison conforme. Le séquestre, le suivi et les assurances sont inclus.",
     "popular": "Cœur d'activité",
     "flows": {
       "sourcing": {
@@ -1197,13 +1197,13 @@
         "buyer": {
           "label": "Côté acheteur",
           "rate": "12 %",
-          "cap": "plafonné à 15 000 €",
-          "note": "Commission prélevée à la livraison conforme. Le plafond se déclenche à 125 000 € de commande."
+          "cap": null,
+          "note": "Commission prélevée à la livraison conforme. Le même taux sur toutes les commandes, sans plafond."
         },
         "supplier": {
           "label": "Côté fournisseur",
           "rate": "3 %",
-          "cap": "plafonné à 5 000 €",
+          "cap": null,
           "note": "Commission déduite du versement à l'usine après libération du séquestre."
         },
         "research": {
@@ -1220,13 +1220,13 @@
         "buyer": {
           "label": "Côté acheteur",
           "rate": "12 %",
-          "cap": "plafonné à 15 000 €",
+          "cap": null,
           "note": "Intégré au prix affiché. Vous payez ce que vous voyez, sans surcoût au checkout."
         },
         "supplier": {
           "label": "Côté vendeur",
           "rate": "3 %",
-          "cap": "plafonné à 5 000 €",
+          "cap": null,
           "note": "Commission déduite du versement au vendeur après libération du séquestre."
         },
         "cta": "Parcourir le catalogue"

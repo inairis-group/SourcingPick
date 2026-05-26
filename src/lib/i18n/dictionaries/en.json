@@ -1188,7 +1188,7 @@
   "pricing": {
     "eyebrow": "No subscription, ever.",
     "title": "You only pay on successful orders.",
-    "subtitle": "Transparent commission, capped, taken on conforming delivery. Escrow, tracking, and insurance included.",
+    "subtitle": "Transparent commission, taken on conforming delivery. Escrow, tracking, and insurance included.",
     "popular": "Core flow",
     "flows": {
       "sourcing": {
@@ -1197,13 +1197,13 @@
         "buyer": {
           "label": "Buyer side",
           "rate": "12 %",
-          "cap": "capped at €15,000",
-          "note": "Commission taken on conforming delivery. The cap binds at €125,000 order value."
+          "cap": null,
+          "note": "Commission taken on conforming delivery. Same rate on every order, no ceiling."
         },
         "supplier": {
           "label": "Supplier side",
           "rate": "3 %",
-          "cap": "capped at €5,000",
+          "cap": null,
           "note": "Commission deducted from the factory payout once escrow is released."
         },
         "research": {
@@ -1220,13 +1220,13 @@
         "buyer": {
           "label": "Buyer side",
           "rate": "12 %",
-          "cap": "capped at €15,000",
+          "cap": null,
           "note": "Built into the listed price. You pay what you see — no surprises at checkout."
         },
         "supplier": {
           "label": "Seller side",
           "rate": "3 %",
-          "cap": "capped at €5,000",
+          "cap": null,
           "note": "Commission deducted from the seller payout once escrow is released."
         },
         "cta": "Browse the catalogue"

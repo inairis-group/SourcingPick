@@ -31,10 +31,10 @@ const SCRIPT = `(function(){
 })();`;
 
 export function ThemeScript() {
-  return (
-    <script
-      id="sp-theme-init"
-      dangerouslySetInnerHTML={{ __html: SCRIPT }}
-    />
-  );
+  // React 19: inline scripts use children, not dangerouslySetInnerHTML —
+  // the latter triggers "Encountered a script tag while rendering React
+  // component" because React can't tell whether the markup is intended
+  // to execute. With children, React serialises the content into the
+  // HTML and the browser runs it as a normal inline script on parse.
+  return <script id="sp-theme-init">{SCRIPT}</script>;
 }
