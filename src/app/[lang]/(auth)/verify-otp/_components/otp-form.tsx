@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState, useTransition } from "react";
+import { useActionState, useEffect, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { FormError } from "@/components/ui/form-error";
@@ -17,15 +17,24 @@ const INITIAL: VerifyOtpState = {};
 export function OtpForm() {
   const dict = useDictionary();
   const [state, formAction, pending] = useActionState(verifyOtpAction, INITIAL);
-  const formRef = useRef<HTMLFormElement>(null);
   const [code, setCode] = useState("");
   const [resending, startResend] = useTransition();
   const [resentNotice, setResentNotice] = useState<string | null>(null);
 
   // Auto-submit when the user finishes typing the 6 digits.
+  //
+  // We dispatch the action with an explicit FormData built from `value`
+  // instead of calling requestSubmit() on the form. The form serialises
+  // the PinInput's hidden <input name="code">, whose value derives from
+  // the parent's `code` state — and setCode(value) is async, so the
+  // hidden input still holds the previous (stale) digit string at the
+  // moment requestSubmit fires. Result: the server rejected the freshly-
+  // entered code as "missing" even though the UI showed all six digits.
   const onComplete = (value: string) => {
     setCode(value);
-    formRef.current?.requestSubmit();
+    const fd = new FormData();
+    fd.append("code", value);
+    formAction(fd);
   };
 
   // Clear "code resent" notice when user starts typing again.
@@ -54,7 +63,7 @@ export function OtpForm() {
         <p className="text-sm text-muted">{dict.auth.otp.description}</p>
       </header>
 
-      <form ref={formRef} action={formAction} className="flex flex-col gap-5">
+      <form action={formAction} className="flex flex-col gap-5">
         {state.error && <FormError>{state.error}</FormError>}
         {resentNotice?.startsWith("ok:") && (
           <div
