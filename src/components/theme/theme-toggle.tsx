@@ -40,7 +40,17 @@ function applyTheme(theme: Theme) {
   const html = document.documentElement;
   html.classList.remove("dark", "light");
   if (theme === "dark") html.classList.add("dark");
-  if (theme === "light") html.classList.add("light");
+  else if (theme === "light") html.classList.add("light");
+  else {
+    // "system" — resolve the OS preference once and apply the matching
+    // class so assets that key off `.dark` (logos, illustrations) flip in
+    // sync with the color tokens. Without this, only the CSS tokens would
+    // follow the OS and theme-aware images would stay light.
+    const prefersDark =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    html.classList.add(prefersDark ? "dark" : "light");
+  }
   writeThemeCookie(theme);
   try {
     if (theme === "system") localStorage.removeItem(THEME_STORAGE_KEY);
@@ -51,7 +61,10 @@ function applyTheme(theme: Theme) {
 }
 
 function readStoredTheme(): Theme {
-  if (typeof document === "undefined") return "system";
+  // Default to "light" — first-time visitors should not inherit OS dark
+  // mode. The server-rendered <html> also defaults to .light so the
+  // toggle's initial label and the actual applied class agree.
+  if (typeof document === "undefined") return "light";
   // Cookie is the source of truth (the server reads it); fall back to
   // localStorage only for legacy clients that haven't written the cookie yet.
   const match = document.cookie
@@ -65,7 +78,7 @@ function readStoredTheme(): Theme {
   } catch {
     /* ignore */
   }
-  return "system";
+  return "light";
 }
 
 const ICONS: Record<Theme, typeof Moon02Icon> = {

@@ -13,7 +13,10 @@ type Props = {
 export function CtaSection({ dict, locale, hidePricingLink }: Props) {
   return (
     <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-      <div className="relative overflow-hidden rounded-xl bg-headline text-inverse px-6 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
+      {/* Fixed dark surface (ink-deep) so the banner reads identically in
+          light and dark mode — flipping bg-headline made the card go white
+          on dark, killing contrast against the dark page background. */}
+      <div className="relative overflow-hidden rounded-xl bg-ink-deep text-white px-6 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
         {/* Decorative dot grid — sparse on the left where the text sits, dense
             on the right. Slow linear drift (40s loop) — paused under
             prefers-reduced-motion via the global base layer. */}
@@ -26,7 +29,7 @@ export function CtaSection({ dict, locale, hidePricingLink }: Props) {
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight">
             {dict.marketing.cta.title}
           </h2>
-          <p className="mt-4 text-md text-inverse/80 leading-relaxed">
+          <p className="mt-4 text-md text-white/75 leading-relaxed">
             {dict.marketing.cta.subtitle}
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -39,7 +42,7 @@ export function CtaSection({ dict, locale, hidePricingLink }: Props) {
             {!hidePricingLink && (
               <Link
                 href={`/${locale}/pricing`}
-                className="inline-flex items-center justify-center h-12 px-5 text-md font-semibold rounded-md text-inverse hover:bg-inverse/10 transition-colors duration-fast"
+                className="inline-flex items-center justify-center h-12 px-5 text-md font-semibold rounded-md text-white hover:bg-white/10 transition-colors duration-fast"
               >
                 {dict.marketing.cta.secondaryButton}
               </Link>

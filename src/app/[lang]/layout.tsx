@@ -33,10 +33,12 @@ export default async function RootLayout({
 
   // Read the theme cookie so the className matches reality before the JS
   // runs. Without this, React reconciles <html> on locale change and
-  // wipes the runtime-applied .dark/.light class.
+  // wipes the runtime-applied .dark/.light class. Default to "light" when
+  // the user hasn't picked anything — we don't want OS dark mode to win
+  // for first-time visitors (per brand: launch in light, opt into dark).
   const cookieStore = await cookies();
   const themeCookie = cookieStore.get(THEME_COOKIE)?.value;
-  const themeClass = isStoredTheme(themeCookie) ? ` ${themeCookie}` : "";
+  const themeClass = isStoredTheme(themeCookie) ? ` ${themeCookie}` : " light";
 
   return (
     <html

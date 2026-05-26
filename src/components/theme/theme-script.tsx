@@ -20,10 +20,12 @@ const SCRIPT = `(function(){
     var t=localStorage.getItem(k);
     var ck=(document.cookie.match(/(?:^|; )sp_theme=([^;]+)/)||[])[1];
     var cls=document.documentElement.classList;
-    var pick=ck||t;
+    // Default is 'light' — first-time visitors should NOT inherit OS dark
+    // mode. Dark is opt-in via the toggle. Only an explicit pick (cookie
+    // or legacy localStorage) overrides this default.
+    var pick=ck||t||'light';
     if(pick==='dark'){ if(!cls.contains('dark')) cls.add('dark'); cls.remove('light'); }
-    else if(pick==='light'){ if(!cls.contains('light')) cls.add('light'); cls.remove('dark'); }
-    else { cls.remove('dark'); cls.remove('light'); }
+    else { if(!cls.contains('light')) cls.add('light'); cls.remove('dark'); }
     if(t && !ck){ document.cookie=k+'='+t+'; path=/; max-age=31536000; samesite=lax'; }
   } catch(e) {}
 })();`;

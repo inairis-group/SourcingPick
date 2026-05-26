@@ -37,7 +37,7 @@ export default async function GlobalNotFound() {
   const dict = await getDictionary(lang);
 
   const themeCookie = cookieStore.get(THEME_COOKIE)?.value;
-  const themeClass = isStoredTheme(themeCookie) ? ` ${themeCookie}` : "";
+  const themeClass = isStoredTheme(themeCookie) ? ` ${themeCookie}` : " light";
 
   return (
     <html

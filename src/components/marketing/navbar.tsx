@@ -16,6 +16,7 @@ import {
 import { Link } from "@/components/ui/link";
 import { buttonClass } from "@/components/ui/button";
 import { LocaleDropdown } from "@/components/layout/locale-dropdown";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Logo } from "./logo";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { cn } from "@/lib/utils";
@@ -59,7 +60,7 @@ export function MarketingNavbar({
               "rounded-full border border-line/70 bg-page/85 backdrop-blur-xl",
             )}
           >
-            <Link href={`/${locale}`} variant="muted" className="flex-shrink-0 px-1">
+            <Link href={`/${locale}`} variant="muted" className="shrink-0 px-1">
               <Logo height={24} priority />
               <span className="sr-only">SourcingPick</span>
             </Link>
@@ -79,6 +80,7 @@ export function MarketingNavbar({
             </ul>
 
             <div className="hidden md:flex items-center gap-1">
+              <ThemeToggle display="compact" />
               <LocaleDropdown display="compact" />
               {signedIn ? (
                 <Link
@@ -113,6 +115,7 @@ export function MarketingNavbar({
             </div>
 
             <div className="md:hidden flex items-center gap-1">
+              <ThemeToggle display="compact" />
               <LocaleDropdown display="compact" />
               <button
                 type="button"
