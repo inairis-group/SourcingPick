@@ -53,8 +53,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const ok = await verifyPassword(parsed.data.password, user.passwordHash);
         if (!ok) return null;
 
-        // TODO Phase 1.x: if user.twoFactorEnabled, route through OTP challenge
-        // instead of returning the user here. For now we sign them in directly.
+        // Users with 2FA on do NOT complete sign-in here — the login server
+        // action sends them to /verify-otp and finishes via the
+        // `credentials-otp` provider below after the OTP is consumed.
+        if (user.twoFactorEnabled) return null;
 
         await prisma.user.update({
           where: { id: user.id },
@@ -69,7 +71,60 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           subRole: user.subRole,
           organizationId: user.organizationId,
           locale: user.locale,
-          twoFactorVerified: !user.twoFactorEnabled,
+          twoFactorVerified: true,
+        };
+      },
+    }),
+    /**
+     * Step-2 completer for the 2FA flow. The OTP server action validates and
+     * consumes the OTP, then calls signIn("credentials-otp", { userId }) to
+     * mint the JWT.
+     *
+     * Security: this provider trusts the caller's userId ONLY when a fresh
+     * EmailOtp.consumedAt exists for that user within the last 60 seconds.
+     * Anyone calling signIn("credentials-otp") with an arbitrary userId
+     * without first burning a real OTP gets null. The 60s window matches the
+     * server action's lifetime — a stolen call replayed minutes later fails.
+     */
+    Credentials({
+      id: "credentials-otp",
+      name: "Email OTP",
+      credentials: {
+        userId: { label: "User ID", type: "text" },
+      },
+      async authorize(raw) {
+        const userId = typeof raw?.userId === "string" ? raw.userId : null;
+        if (!userId) return null;
+
+        const recent = await prisma.emailOtp.findFirst({
+          where: {
+            userId,
+            consumedAt: { gte: new Date(Date.now() - 60_000) },
+          },
+          orderBy: { consumedAt: "desc" },
+          select: { id: true },
+        });
+        if (!recent) return null;
+
+        const user = await prisma.user.findUnique({
+          where: { id: userId, deletedAt: null },
+        });
+        if (!user) return null;
+
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { lastSeenAt: new Date() },
+        });
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: `${user.firstName} ${user.lastName}`.trim(),
+          role: user.role,
+          subRole: user.subRole,
+          organizationId: user.organizationId,
+          locale: user.locale,
+          twoFactorVerified: true,
         };
       },
     }),
