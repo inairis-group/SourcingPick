@@ -80,6 +80,9 @@
       "certsHint": "Listez vos certifications obligatoires, séparées par des virgules.",
       "certsPlaceholder": "GOTS, OEKO-TEX, FSC, CE…",
       "certsExplainer": "Plus vos exigences sont précises, plus rapide sera la qualification par l'agent.",
+      "attachmentsLabel": "Fichiers de référence",
+      "attachmentsHint": "Photos de référence, fiches techniques, vidéos · jusqu'à 10 fichiers",
+      "mediaTitle": "Médias de référence",
       "reviewDescription": "Vérifiez votre demande avant de l'envoyer. Vous pourrez échanger avec votre agent ensuite via la messagerie de la demande.",
       "sectionProduct": "Produit",
       "sectionLogistics": "Logistique",
@@ -153,7 +156,13 @@
       "totalLabel": "Total",
       "buyCta": "Commander maintenant",
       "moqHint": "MOQ : {n} unités.",
-      "addressHint": "Adresse de livraison finale."
+      "addressHint": "Adresse de livraison finale.",
+      "percentOff": "-{n}%",
+      "flashSaleBadge": "Flash",
+      "allConditions": "Tous états",
+      "dealsOnly": "Promos seulement",
+      "deliveryEtasTitle": "Délais de livraison estimés",
+      "deliveryEtasDisclaimer": "Les délais sont des estimations et peuvent varier selon le fournisseur, le volume, la destination et les modalités logistiques."
     },
     "quotes": {
       "sectionTitle": "Devis reçus",
@@ -327,6 +336,26 @@
       "subRoleOwner": "Propriétaire",
       "subRoleMember": "Membre",
       "subRoleAccountant": "Comptable"
+    },
+    "payouts": {
+      "title": "Versements",
+      "description": "Là où SourcingPick vous envoie votre part une fois la commande terminée. Vous choisissez un prestataire une seule fois ; le changer ultérieurement invalide les références d'audit.",
+      "pickIntro": "Choisissez le prestataire adapté à votre région — l'onboarding (KYC, RIB, vérification d'identité) se fait directement chez lui.",
+      "startCta": "Démarrer l'onboarding",
+      "continueCta": "Continuer l'onboarding",
+      "resumeTitle": "Onboarding {provider} non terminé",
+      "resumeBody": "Terminez les étapes dans le portail du prestataire pour que SourcingPick puisse vous verser vos paiements.",
+      "activeWith": "Versements via {provider}",
+      "activeBody": "Votre compte est vérifié. Les paiements arrivent dessus à la fin de chaque commande.",
+      "lockedHint": "Pour changer de prestataire, contactez le support — changer en cours de route invaliderait les références d'audit sur les commandes déjà payées.",
+      "statusLabel": "Statut actuel",
+      "statuses": {
+        "none": "Non démarré",
+        "pending": "En attente de vérification",
+        "active": "Actif",
+        "restricted": "Restreint",
+        "rejected": "Refusé"
+      }
     }
   },
   "agent": {
@@ -494,6 +523,8 @@
     "placeholder": "Écrivez un message…",
     "send": "Envoyer",
     "shortcutHint": "⌘/Ctrl + Entrée pour envoyer",
+    "attachLabel": "Joindre des fichiers",
+    "attachHint": "Images, vidéos ou documents · jusqu'à 10 par message",
     "systemAuthor": "SourcingPick",
     "errorLoad": "Impossible de charger les messages. Réessayez.",
     "errorStream": "Connexion temps réel interrompue. Rechargez la page pour rétablir.",
@@ -564,7 +595,22 @@
       "descriptionPlaceholder": "Coton bio 250 gsm, 38×42 cm, anses 60 cm, impression sérigraphie 1 couleur recto…",
       "priceLabel": "Prix unitaire usine",
       "clientPriceLabel": "Prix unitaire client",
-      "clientPriceHint": "Calculé avec la marge plateforme 12%.",
+      "clientPriceHint": "Calculé avec la marge plateforme 6%.",
+      "conditionLabel": "État",
+      "conditions": {
+        "NEW": "Neuf",
+        "USED": "Occasion",
+        "REFURBISHED": "Reconditionné"
+      },
+      "compareAtLabel": "Prix barré (avant)",
+      "compareAtHint": "Prix d'origine côté usine, affiché barré. Laissez vide pour ne pas afficher de remise.",
+      "flashSaleLabel": "Fin de la vente flash",
+      "flashSaleHint": "Optionnel. Tant que la date est à venir, l'annonce affiche un badge \"vente flash\" et un compte à rebours aux acheteurs.",
+      "promotionTitle": "Promotions",
+      "promotionDescription": "Ajouter ou retirer un prix barré et une vente flash sur cette annonce en ligne, sans la republier.",
+      "promotionSave": "Enregistrer la promotion",
+      "promotionClear": "Retirer",
+      "promotionSaved": "Promotion enregistrée.",
       "leadTimeLabel": "Délai de production",
       "moqLabel": "MOQ",
       "stockLabel": "Stock",
@@ -577,6 +623,9 @@
       "imagesDropHint": "Cliquez pour téléverser jusqu'à {n} image(s).",
       "imagesMaxReached": "Maximum d'images atteint.",
       "imagesTooMany": "Vous dépassez la limite de 6 images — les premières seront conservées.",
+      "mediaLabel": "Vidéos et documents (optionnel)",
+      "mediaHint": "Vidéos de démo, fiches techniques, certificats · jusqu'à 10 fichiers",
+      "mediaSectionTitle": "Vidéos et documents",
       "saveDraft": "Enregistrer en brouillon",
       "saveChanges": "Enregistrer les modifications",
       "archiveCta": "Archiver",
@@ -966,6 +1015,49 @@
       "loadSuffix": "demandes actives",
       "errorPickAgent": "Sélectionnez un agent avant d'assigner."
     },
+    "requestDetail": {
+      "backToDispatch": "Retour au dispatch",
+      "marketplaceBadge": "Marketplace",
+      "createdBy": "Déposée par",
+      "sectionClient": "Client",
+      "sectionAssignment": "Affectation",
+      "sectionInvitations": "Appels d'offres",
+      "sectionQuotes": "Devis",
+      "sectionOrders": "Commandes",
+      "orgLabel": "Organisation",
+      "locationLabel": "Localisation",
+      "kycLabel": "KYC",
+      "contactLabel": "Contact",
+      "agentLabel": "Agent",
+      "assignedAtLabel": "Affecté le",
+      "unassigned": "Pas encore affectée.",
+      "invitationsLabel": "Invitations envoyées",
+      "quotesLabel": "Devis reçus",
+      "countryLabel": "Pays de sourcing",
+      "sentAt": "Envoyé",
+      "respondedAt": "Réponse",
+      "factoryUnit": "Usine",
+      "clientUnit": "Client",
+      "margin": "Marge",
+      "leadTimeDays": "Délai {n} j",
+      "moqLabel": "MOQ {n}",
+      "score": "Score",
+      "invitationStatuses": {
+        "INVITED": "Invité",
+        "VIEWED": "Vu",
+        "RESPONDED": "Répondu",
+        "DECLINED": "Refusé",
+        "EXPIRED": "Expiré"
+      },
+      "quoteStatuses": {
+        "DRAFT": "Brouillon",
+        "SENT_TO_AGENT": "Envoyé à l'agent",
+        "SENT_TO_CLIENT": "Envoyé au client",
+        "ACCEPTED": "Accepté",
+        "REJECTED": "Refusé",
+        "EXPIRED": "Expiré"
+      }
+    },
     "kyc": {
       "eyebrow": "Vérification KYC",
       "title": "File d'attente KYC",
@@ -1006,6 +1098,38 @@
         "INSURANCE": "Assurance qualité",
         "OTHER": "Autre"
       }
+    },
+    "payments": {
+      "eyebrow": "Paramètres plateforme",
+      "title": "Prestataires de paiement",
+      "description": "État de chaque prestataire de versement. Les identifiants se trouvent dans les variables d'environnement du serveur, pas en base — cette page affiche ce qui est configuré et exécute un test de santé pour chaque prestataire.",
+      "secretsNoticeTitle": "Pourquoi n'y a-t-il pas de formulaire pour saisir les clés API ?",
+      "secretsNoticeBody": "Les clés API doivent rester dans le coffre de secrets de votre plateforme d'hébergement (variables Vercel, K8s secrets, etc.) — pas en base, où elles fuient dans les sauvegardes et sont lisibles par quiconque accède à la BDD. Configurez les variables ci-dessous, redéployez, puis rechargez cette page.",
+      "statuses": {
+        "active": "Actif",
+        "configured": "Configuré",
+        "missing": "Non configuré"
+      }
+    },
+    "deliveryEtas": {
+      "title": "Délais de livraison estimés (marketplace)",
+      "description": "Délais estimés affichés sur la marketplace, par continent. Laissez le champ vide pour masquer la ligne.",
+      "africaLabel": "Afrique",
+      "europeLabel": "Europe",
+      "americasLabel": "Amériques",
+      "asiaLabel": "Asie",
+      "save": "Enregistrer les délais",
+      "saved": "Délais enregistrés."
+    },
+    "adminListing": {
+      "eyebrow": "Outils admin",
+      "title": "Publier une annonce pour le compte d'une usine",
+      "description": "Pratique quand une usine n'a pas encore rejoint la plateforme mais que les produits sont prêts. L'annonce passe quand même par la modération avant publication.",
+      "backToModeration": "Retour à la modération",
+      "factoryLabel": "Usine",
+      "newCta": "Créer une annonce",
+      "submit": "Créer l'annonce",
+      "noFactories": "Aucune usine vérifiée disponible. Validez d'abord le KYC d'une usine."
     },
     "sourcingAllowlist": {
       "eyebrow": "Paramètres plateforme",
@@ -1166,6 +1290,13 @@
       "Nous construisons l'inverse : une plateforme où chaque demande est qualifiée par un humain, chaque devis est comparé sur la même grille, et chaque paiement reste en séquestre jusqu'à confirmation. La marge de la plateforme est transparente, pas cachée dans le prix.",
       "Nous sommes basés en France mais notre réseau d'usines couvre l'Europe, le Maghreb, l'Asie, l'Afrique et les Amériques. La langue n'est pas une barrière, le fuseau horaire non plus."
     ],
+    "tiles": {
+      "factories": "Usines qualifiées",
+      "escrow": "Séquestre",
+      "certified": "Certifié",
+      "global": "International",
+      "tracking": "Suivi"
+    },
     "principles": {
       "eyebrow": "Nos principes",
       "title": "Ce sur quoi nous ne transigeons pas."
@@ -1196,7 +1327,7 @@
         "tagline": "Pour vos besoins sur mesure, négociés par un agent dédié.",
         "buyer": {
           "label": "Côté acheteur",
-          "rate": "12 %",
+          "rate": "6 %",
           "cap": null,
           "note": "Commission prélevée à la livraison conforme. Le même taux sur toutes les commandes, sans plafond."
         },
@@ -1219,7 +1350,7 @@
         "tagline": "Pour les produits déjà sourcés et négociés, achetables en un clic.",
         "buyer": {
           "label": "Côté acheteur",
-          "rate": "12 %",
+          "rate": "6 %",
           "cap": null,
           "note": "Intégré au prix affiché. Vous payez ce que vous voyez, sans surcoût au checkout."
         },

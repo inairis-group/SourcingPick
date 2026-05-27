@@ -155,6 +155,59 @@ enum MarketplaceProductStatus {
   ARCHIVED
 }
 
+enum MarketplaceCondition {
+  NEW
+  USED
+  REFURBISHED
+}
+
+enum AttachmentContext {
+  MESSAGE
+  SOURCING_REQUEST
+  ORDER
+  MARKETPLACE_PRODUCT
+}
+
+enum AttachmentKind {
+  IMAGE
+  VIDEO
+  FILE
+}
+
+/**
+ * Payout provider a factory or agent has onboarded with.
+ *
+ *   STRIPE_CONNECT — default for the EU/US/UK/SG/HK/UAE/MX/JP/AU/NZ
+ *                   footprint plus parts of Africa (ZA, NG, KE, etc.).
+ *   LIANLIAN       — cross-border payouts to mainland China + SE Asia.
+ *   ALIPAY         — Alipay Cross-border / Ant International, also for
+ *                   mainland China factories that prefer Alipay over
+ *                   LianLian's bank-account flow.
+ *
+ * Locked once chosen (changing mid-relationship invalidates prior
+ * payout audit references). Each provider has its own credential set
+ * in env and its own KYC flow; see lib/payouts/* for adapters.
+ */
+enum PayoutProvider {
+  STRIPE_CONNECT
+  LIANLIAN
+  ALIPAY
+}
+
+/**
+ * Per-provider onboarding/account state on a factory or agent org. We
+ * track this separately from Organization.kycStatus because payout
+ * providers run their *own* KYB/AML — being verified by us doesn't
+ * mean Stripe/LianLian/Alipay accepted the account.
+ */
+enum PayoutAccountStatus {
+  NONE          // No provider chosen / no account opened
+  PENDING       // Provider onboarding started, awaiting provider verification
+  ACTIVE        // Account verified and can receive payouts
+  RESTRICTED    // Provider returned a restriction (missing docs, suspended)
+  REJECTED      // Provider permanently refused
+}
+
 enum InvoiceType {
   DEPOSIT
   BALANCE
@@ -317,6 +370,8 @@ model User {
   sessions  Session[]
   emailOtps EmailOtp[]
 
+  attachments Attachment[]
+
   // Domain relations
   sourcingRequestsCreated SourcingRequest[]   @relation("RequestCreatedBy")
   agentForRequests        SourcingRequest[]   @relation("RequestAgent")
@@ -405,6 +460,17 @@ model Organization {
   // stripeConnectAccountId is used for factories (Connect Express payouts).
   stripeCustomerId       String?
   stripeConnectAccountId String?
+
+  // Payouts — which provider this org has chosen (factories + agents).
+  // Locked once `payoutOnboardedAt` is set: changing provider mid-relationship
+  // invalidates audit references on already-paid orders. The provider-specific
+  // ID lives in `payoutAccountId` (Stripe acct_..., LianLian payee id, Alipay
+  // login id) and is interpreted by the adapter in `lib/payouts/<provider>.ts`.
+  payoutProvider     PayoutProvider?
+  payoutAccountId    String?
+  payoutStatus       PayoutAccountStatus @default(NONE)
+  payoutOnboardedAt  DateTime?
+
   deletedAt              DateTime?
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
@@ -621,6 +687,17 @@ model MarketplaceProduct {
   images            String[]
   priceCentsClient  Int
   priceCentsFactory Int // private
+  /// Optional "was" price for strikethrough display. When set and greater
+  /// than priceCentsClient, the storefront renders a discount badge.
+  /// Independent of flashSaleEndsAt — used for permanent discounts on
+  /// used / refurbished / clearance items.
+  compareAtCents    Int?
+  /// Optional flash-sale end timestamp. When in the future, the storefront
+  /// renders a flash-sale badge with a countdown alongside the discount.
+  /// After this passes, the listing keeps its discounted price but the
+  /// urgency badge disappears — factory must update the listing to revert.
+  flashSaleEndsAt   DateTime?
+  condition         MarketplaceCondition     @default(NEW)
   moq               Int
   stockAvailable    Int                      @default(0)
   stockLowThreshold Int?
@@ -636,6 +713,9 @@ model MarketplaceProduct {
 
   @@index([status, category])
   @@index([factoryOrgId, status])
+  // Lets the storefront cheaply find listings whose flash sale ends soon —
+  // used by the "ending soon" rail and any future flash-sale cron sweeps.
+  @@index([flashSaleEndsAt])
 }
 
 // =============================================================
@@ -780,22 +860,10 @@ model Message {
   deletedAt    DateTime?
   createdAt    DateTime  @default(now())
 
-  attachments Attachment[]
+  // Attachments link via the polymorphic Attachment table
+  // (contextType=MESSAGE, contextId=this.id) — no FK relation here.
 
   @@index([threadId, createdAt])
-}
-
-model Attachment {
-  id           String   @id @default(cuid(2))
-  messageId    String
-  message      Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
-  fileName     String
-  mimeType     String
-  sizeBytes    Int
-  storageUrl   String
-  thumbnailUrl String?
-  scanStatus   String   @default("pending") // pending | clean | infected
-  createdAt    DateTime @default(now())
 }
 
 model Notification {
@@ -857,6 +925,35 @@ model AgentTask {
 
 // Operator-visible webhook log — supports the admin "substance" rule
 // (every async system needs a status surface).
+/**
+ * Polymorphic attachment — images, videos, or files attached to any
+ * context: messages, sourcing requests, orders, or marketplace listings.
+ *
+ * Stored URL is whatever `storeFile()` returns (today: local disk, later:
+ * S3 / R2). `mimeType` is what we sniffed at upload time; `kind` is the
+ * coarse bucket used for grouping in the gallery UI (images grid, video
+ * players, file links). We don't put attachments behind the existing
+ * MarketplaceProduct.images String[] column because that one's already
+ * load-bearing for the storefront card — keeping it lets the cards stay
+ * fast (no extra join) while the polymorphic table picks up the new
+ * surfaces.
+ */
+model Attachment {
+  id           String            @id @default(cuid(2))
+  contextType  AttachmentContext
+  contextId    String
+  uploaderId   String?
+  uploader     User?             @relation(fields: [uploaderId], references: [id], onDelete: SetNull)
+  kind         AttachmentKind
+  storageUrl   String
+  mimeType     String
+  sizeBytes    Int
+  originalName String
+  createdAt    DateTime          @default(now())
+
+  @@index([contextType, contextId])
+}
+
 model WebhookEvent {
   id          String        @id @default(cuid(2))
   source      WebhookSource
@@ -888,5 +985,13 @@ model PlatformSettings {
   id                       String           @id @default("default")
   allowedSourcingRegions   SourcingRegion[] @default([])
   allowedSourcingCountries String[]         @default([])
+  /// Free-text estimated delivery windows shown on the marketplace per
+  /// continent. Stored as strings (e.g. "20–35 jours") so the admin can
+  /// express ranges or qualifiers without us baking units into the schema.
+  /// Null = nothing displayed for that continent.
+  deliveryEtaAfrica        String?
+  deliveryEtaEurope        String?
+  deliveryEtaAmericas      String?
+  deliveryEtaAsia          String?
   updatedAt                DateTime         @updatedAt
 }

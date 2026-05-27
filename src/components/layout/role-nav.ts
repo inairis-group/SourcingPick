@@ -281,6 +281,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               icon: GlobalIcon,
             },
             {
+              href: `${base}/admin/settings/payments`,
+              label: dict.admin.payments.title,
+              icon: Wallet01Icon,
+            },
+            {
               href: `${base}/admin/settings`,
               label: dict.nav.settings,
               icon: Settings01Icon,

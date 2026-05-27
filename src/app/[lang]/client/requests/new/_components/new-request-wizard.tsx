@@ -15,6 +15,7 @@ import { Select } from "@/components/ui/select";
 import { FormError } from "@/components/ui/form-error";
 import { Link } from "@/components/ui/link";
 import { createSourcingRequestAction } from "@/lib/sourcing/actions";
+import { AttachmentPicker } from "@/components/attachments/attachment-picker";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { cn } from "@/lib/utils";
 
@@ -101,6 +102,7 @@ export function NewRequestWizard({
     requiredCerts: "",
   });
   const [error, setError] = useState<string | null>(null);
+  const [attachments, setAttachments] = useState<File[]>([]);
   const [pending, startTransition] = useTransition();
 
   const stepLabels = [
@@ -172,6 +174,7 @@ export function NewRequestWizard({
     fd.append("sourcingRegion", state.sourcingRegion);
     fd.append("sourcingCountry", state.sourcingCountry);
     fd.append("requiredCerts", state.requiredCerts);
+    for (const file of attachments) fd.append("attachments", file);
 
     startTransition(async () => {
       const result = await createSourcingRequestAction({}, fd);
@@ -221,6 +224,8 @@ export function NewRequestWizard({
             set={set}
             allowedRegions={allowedRegions}
             allowedCountries={allowedCountries}
+            attachments={attachments}
+            onAttachmentsChange={setAttachments}
           />
         )}
         {step === 4 && (
@@ -560,7 +565,16 @@ function StepLogistics({
   );
 }
 
-function StepRequirements({ dict, state, set }: StepProps) {
+function StepRequirements({
+  dict,
+  state,
+  set,
+  attachments,
+  onAttachmentsChange,
+}: StepProps & {
+  attachments: File[];
+  onAttachmentsChange: (next: File[]) => void;
+}) {
   return (
     <section className="flex flex-col gap-4">
       <Field
@@ -574,6 +588,13 @@ function StepRequirements({ dict, state, set }: StepProps) {
           placeholder={dict.client.requests.certsPlaceholder}
         />
       </Field>
+
+      <AttachmentPicker
+        label={dict.client.requests.attachmentsLabel}
+        hint={dict.client.requests.attachmentsHint}
+        files={attachments}
+        onChange={onAttachmentsChange}
+      />
 
       <div className="rounded-md border border-info-edge bg-info-soft p-4 text-sm text-info">
         {dict.client.requests.certsExplainer}

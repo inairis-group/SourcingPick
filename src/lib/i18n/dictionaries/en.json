@@ -80,6 +80,9 @@
       "certsHint": "List your mandatory certifications, comma-separated.",
       "certsPlaceholder": "GOTS, OEKO-TEX, FSC, CE…",
       "certsExplainer": "The more precise your requirements, the faster your agent can qualify the request.",
+      "attachmentsLabel": "Reference files",
+      "attachmentsHint": "Reference photos, spec sheets, videos · up to 10 files",
+      "mediaTitle": "Reference media",
       "reviewDescription": "Check your request before submitting. You'll be able to chat with your agent after via the request messaging.",
       "sectionProduct": "Product",
       "sectionLogistics": "Logistics",
@@ -153,7 +156,13 @@
       "totalLabel": "Total",
       "buyCta": "Buy now",
       "moqHint": "MOQ: {n} units.",
-      "addressHint": "Final delivery address."
+      "addressHint": "Final delivery address.",
+      "percentOff": "-{n}%",
+      "flashSaleBadge": "Flash",
+      "allConditions": "Any condition",
+      "dealsOnly": "Deals only",
+      "deliveryEtasTitle": "Estimated delivery windows",
+      "deliveryEtasDisclaimer": "Delivery times are estimates and may vary based on supplier, volume, destination, and logistics."
     },
     "quotes": {
       "sectionTitle": "Quotes received",
@@ -327,6 +336,26 @@
       "subRoleOwner": "Owner",
       "subRoleMember": "Member",
       "subRoleAccountant": "Accountant"
+    },
+    "payouts": {
+      "title": "Payouts",
+      "description": "Where SourcingPick sends your share when an order completes. You pick a provider once; SourcingPick can't change it without invalidating audit references.",
+      "pickIntro": "Pick the provider that matches your region — onboarding happens directly with the provider (KYC, bank details, identity verification).",
+      "startCta": "Start onboarding",
+      "continueCta": "Continue onboarding",
+      "resumeTitle": "Onboarding with {provider} not yet complete",
+      "resumeBody": "Finish the steps in the provider's portal so we can release payouts to you.",
+      "activeWith": "Receiving payouts via {provider}",
+      "activeBody": "Your account is verified. Order payouts land in this account on completion.",
+      "lockedHint": "To change providers, contact support — switching mid-relationship invalidates audit references on already-paid orders.",
+      "statusLabel": "Current status",
+      "statuses": {
+        "none": "Not started",
+        "pending": "Awaiting verification",
+        "active": "Active",
+        "restricted": "Restricted",
+        "rejected": "Rejected"
+      }
     }
   },
   "agent": {
@@ -494,6 +523,8 @@
     "placeholder": "Write a message…",
     "send": "Send",
     "shortcutHint": "⌘/Ctrl + Enter to send",
+    "attachLabel": "Attach files",
+    "attachHint": "Images, videos or documents · up to 10 per message",
     "systemAuthor": "SourcingPick",
     "errorLoad": "Couldn't load messages. Try again.",
     "errorStream": "Live updates disconnected. Reload the page to reconnect.",
@@ -564,7 +595,22 @@
       "descriptionPlaceholder": "Organic cotton 250 gsm, 38×42 cm, 60 cm handles, 1-colour screen print front…",
       "priceLabel": "Factory unit price",
       "clientPriceLabel": "Client unit price",
-      "clientPriceHint": "Computed with the platform's 12% markup.",
+      "clientPriceHint": "Computed with the platform's 6% markup.",
+      "conditionLabel": "Condition",
+      "conditions": {
+        "NEW": "New",
+        "USED": "Used",
+        "REFURBISHED": "Refurbished"
+      },
+      "compareAtLabel": "Compare-at price",
+      "compareAtHint": "Original factory-net price for a strikethrough. Leave empty for no discount badge.",
+      "flashSaleLabel": "Flash-sale ends",
+      "flashSaleHint": "Optional. While set in the future, the listing shows a flash-sale badge and countdown to buyers.",
+      "promotionTitle": "Promotions",
+      "promotionDescription": "Set or clear a compare-at price and flash-sale window on this live listing without re-publishing.",
+      "promotionSave": "Save promotion",
+      "promotionClear": "Clear",
+      "promotionSaved": "Promotion saved.",
       "leadTimeLabel": "Lead time",
       "moqLabel": "MOQ",
       "stockLabel": "Stock",
@@ -577,6 +623,9 @@
       "imagesDropHint": "Click to upload up to {n} image(s).",
       "imagesMaxReached": "Maximum images reached.",
       "imagesTooMany": "You exceeded the 6-image limit — only the first six will be kept.",
+      "mediaLabel": "Videos & files (optional)",
+      "mediaHint": "Demo videos, spec sheets, certificates · up to 10 files",
+      "mediaSectionTitle": "Videos & documents",
       "saveDraft": "Save draft",
       "saveChanges": "Save changes",
       "archiveCta": "Archive",
@@ -966,6 +1015,49 @@
       "loadSuffix": "active requests",
       "errorPickAgent": "Pick an agent before assigning."
     },
+    "requestDetail": {
+      "backToDispatch": "Back to dispatch",
+      "marketplaceBadge": "Marketplace",
+      "createdBy": "Posted by",
+      "sectionClient": "Client",
+      "sectionAssignment": "Assignment",
+      "sectionInvitations": "Tender invitations",
+      "sectionQuotes": "Quotes",
+      "sectionOrders": "Orders",
+      "orgLabel": "Organization",
+      "locationLabel": "Location",
+      "kycLabel": "KYC",
+      "contactLabel": "Contact",
+      "agentLabel": "Agent",
+      "assignedAtLabel": "Assigned",
+      "unassigned": "Not yet assigned.",
+      "invitationsLabel": "Invitations sent",
+      "quotesLabel": "Quotes received",
+      "countryLabel": "Sourcing country",
+      "sentAt": "Sent",
+      "respondedAt": "Responded",
+      "factoryUnit": "Factory",
+      "clientUnit": "Client",
+      "margin": "Margin",
+      "leadTimeDays": "Lead time {n} days",
+      "moqLabel": "MOQ {n}",
+      "score": "Score",
+      "invitationStatuses": {
+        "INVITED": "Invited",
+        "VIEWED": "Viewed",
+        "RESPONDED": "Responded",
+        "DECLINED": "Declined",
+        "EXPIRED": "Expired"
+      },
+      "quoteStatuses": {
+        "DRAFT": "Draft",
+        "SENT_TO_AGENT": "Sent to agent",
+        "SENT_TO_CLIENT": "Sent to client",
+        "ACCEPTED": "Accepted",
+        "REJECTED": "Rejected",
+        "EXPIRED": "Expired"
+      }
+    },
     "kyc": {
       "eyebrow": "KYC verification",
       "title": "KYC queue",
@@ -1006,6 +1098,38 @@
         "INSURANCE": "Quality insurance",
         "OTHER": "Other"
       }
+    },
+    "payments": {
+      "eyebrow": "Platform settings",
+      "title": "Payment providers",
+      "description": "Status of each payout provider. Credentials live in the server's environment variables, not in the database — this page shows what's configured and runs a cheap health check against each provider.",
+      "secretsNoticeTitle": "Why isn't there a form to enter API keys?",
+      "secretsNoticeBody": "API keys belong in your hosting platform's secrets store (Vercel env vars, K8s secrets, etc.) — not in our database, where they'd leak into backups and be readable by anyone with DB access. Set the env vars listed below, redeploy, and refresh this page.",
+      "statuses": {
+        "active": "Active",
+        "configured": "Configured",
+        "missing": "Not configured"
+      }
+    },
+    "deliveryEtas": {
+      "title": "Marketplace delivery estimates",
+      "description": "Free-text estimated delivery windows shown on the marketplace, by continent. Leave a field empty to hide that row.",
+      "africaLabel": "Africa",
+      "europeLabel": "Europe",
+      "americasLabel": "Americas",
+      "asiaLabel": "Asia",
+      "save": "Save estimates",
+      "saved": "Estimates saved."
+    },
+    "adminListing": {
+      "eyebrow": "Admin tools",
+      "title": "Create listing on behalf of factory",
+      "description": "Use when a factory hasn't joined the dashboard yet but the goods are ready to ship. The listing still flows through moderation before going live.",
+      "backToModeration": "Back to moderation queue",
+      "factoryLabel": "Factory",
+      "newCta": "Create listing",
+      "submit": "Create listing",
+      "noFactories": "No verified factories available. Approve a factory's KYC first."
     },
     "sourcingAllowlist": {
       "eyebrow": "Platform settings",
@@ -1166,6 +1290,13 @@
       "We're building the opposite: a platform where every request is qualified by a human, every quote is compared on the same scoring grid, and every payment stays in escrow until confirmed delivery. The platform's margin is transparent, not buried in the price.",
       "We're based in France but our factory network covers Europe, the Maghreb, Asia, Africa, and the Americas. Language is not a barrier — neither is time zone."
     ],
+    "tiles": {
+      "factories": "Qualified factories",
+      "escrow": "Escrow",
+      "certified": "Certified",
+      "global": "Global",
+      "tracking": "Tracking"
+    },
     "principles": {
       "eyebrow": "Our principles",
       "title": "What we won't compromise on."
@@ -1196,7 +1327,7 @@
         "tagline": "For bespoke needs, negotiated by a dedicated agent.",
         "buyer": {
           "label": "Buyer side",
-          "rate": "12 %",
+          "rate": "6 %",
           "cap": null,
           "note": "Commission taken on conforming delivery. Same rate on every order, no ceiling."
         },
@@ -1219,7 +1350,7 @@
         "tagline": "For products already sourced and negotiated, one-click ready.",
         "buyer": {
           "label": "Buyer side",
-          "rate": "12 %",
+          "rate": "6 %",
           "cap": null,
           "note": "Built into the listed price. You pay what you see — no surprises at checkout."
         },

@@ -22,6 +22,7 @@ import {
   emitNotificationToMany,
 } from "@/lib/notifications/emit";
 import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
+import { applyBuyerMarkup } from "@/lib/orders/pricing";
 
 // =============================================================
 // Tender invitations (agent → factories)
@@ -163,13 +164,13 @@ export type SubmitQuoteState = {
 /**
  * Factory submits a quote in response to a tender invitation.
  *
- * v1 pricing math:
- *   unitPriceCentsClient = unitPriceCentsFactory × 1.12   (buyer-side 12%)
+ * v1 pricing math (rates live in src/lib/orders/pricing.ts):
+ *   unitPriceCentsClient = applyBuyerMarkup(unitPriceCentsFactory)
  *   marginCents          = totalClient − (factoryUnit × quantity)
  *
- * Caps (from docs/pricing-v2.md) aren't applied yet — that lands in
- * Phase 3 when commission is wired into Order/Invoice. Margin shown here
- * is the absolute platform take for the quote, not the per-side split.
+ * No caps (removed 2026-05-26 — see docs/pricing-v2.md). Margin shown
+ * here is the absolute platform take for the quote, not the per-side
+ * split — supplier fee is deducted later at payout time.
  *
  * qualificationScore defaults to 80 — proper scoring per spec §4.4 is a
  * Phase 6 item once we have median-of-received-quotes context.
@@ -217,7 +218,7 @@ export async function submitQuoteAction(
   }
 
   const unitPriceCentsFactory = Math.round(parsed.data.unitPriceEur * 100);
-  const unitPriceCentsClient = Math.round(unitPriceCentsFactory * 1.12);
+  const unitPriceCentsClient = applyBuyerMarkup(unitPriceCentsFactory);
   const totalCentsClient = unitPriceCentsClient * parsed.data.quantity;
   const marginCents = totalCentsClient - unitPriceCentsFactory * parsed.data.quantity;
   const validUntil = new Date(

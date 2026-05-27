@@ -5,6 +5,9 @@ import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR } from "@/lib/i18n/formatters";
+import { Link } from "@/components/ui/link";
+import { buttonClass } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { ModerationQueue } from "./_components/moderation-queue";
 
 export async function generateMetadata({
@@ -72,16 +75,24 @@ export default async function AdminMarketplacePage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-      <header className="flex flex-col gap-1 mb-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
-          {dict.admin.marketplace.eyebrow}
-        </p>
-        <h1 className="text-2xl font-bold text-headline tracking-tight">
-          {dict.admin.marketplace.title}
-        </h1>
-        <p className="text-sm text-muted">
-          {dict.admin.marketplace.description}
-        </p>
+      <header className="flex items-start justify-between gap-4 mb-6 flex-wrap">
+        <div className="flex flex-col gap-1">
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
+            {dict.admin.marketplace.eyebrow}
+          </p>
+          <h1 className="text-2xl font-bold text-headline tracking-tight">
+            {dict.admin.marketplace.title}
+          </h1>
+          <p className="text-sm text-muted">
+            {dict.admin.marketplace.description}
+          </p>
+        </div>
+        <Link
+          href={`/${lang}/admin/marketplace/new`}
+          className={cn(buttonClass({ variant: "primary", size: "md" }))}
+        >
+          {dict.admin.adminListing.newCta}
+        </Link>
       </header>
 
       <ModerationQueue items={rows} />

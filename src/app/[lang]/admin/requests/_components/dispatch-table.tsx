@@ -7,6 +7,7 @@ import { Search01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Link } from "@/components/ui/link";
 import { FormError } from "@/components/ui/form-error";
 import { assignAgentAction } from "@/lib/admin/dispatch-actions";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
@@ -168,12 +169,18 @@ export function DispatchTable({
             >
               <div className="flex items-start justify-between gap-3 flex-wrap">
                 <div className="min-w-0">
-                  <p className="text-xs font-mono uppercase tracking-wide text-faint">
-                    {r.reference}
-                  </p>
-                  <h3 className="text-base font-semibold text-headline">
-                    {r.title}
-                  </h3>
+                  <Link
+                    href={`/${locale}/admin/requests/${r.id}`}
+                    variant="muted"
+                    className="block group"
+                  >
+                    <p className="text-xs font-mono uppercase tracking-wide text-faint group-hover:text-brand-700 transition-colors duration-fast">
+                      {r.reference}
+                    </p>
+                    <h3 className="text-base font-semibold text-headline group-hover:text-brand-700 transition-colors duration-fast">
+                      {r.title}
+                    </h3>
+                  </Link>
                   <p className="text-xs text-muted mt-1">
                     {r.clientOrg.displayName} · {r.clientOrg.country}
                   </p>

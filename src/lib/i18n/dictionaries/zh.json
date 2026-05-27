@@ -80,6 +80,9 @@
       "certsHint": "列出您必需的认证,以逗号分隔。",
       "certsPlaceholder": "GOTS、OEKO-TEX、FSC、CE…",
       "certsExplainer": "您的要求越明确,代理评估的速度就越快。",
+      "attachmentsLabel": "参考文件",
+      "attachmentsHint": "参考照片、规格表、视频 · 最多 10 个文件",
+      "mediaTitle": "参考素材",
       "reviewDescription": "在提交前确认您的需求。之后您可以通过需求消息与代理沟通。",
       "sectionProduct": "产品",
       "sectionLogistics": "物流",
@@ -153,7 +156,13 @@
       "totalLabel": "合计",
       "buyCta": "立即购买",
       "moqHint": "MOQ:{n} 件。",
-      "addressHint": "最终送货地址。"
+      "addressHint": "最终送货地址。",
+      "percentOff": "-{n}%",
+      "flashSaleBadge": "限时",
+      "allConditions": "全部成色",
+      "dealsOnly": "仅看促销",
+      "deliveryEtasTitle": "预计配送时效",
+      "deliveryEtasDisclaimer": "配送时间为估算,可能因供应商、数量、目的地与物流条件而异。"
     },
     "quotes": {
       "sectionTitle": "已收报价",
@@ -327,6 +336,26 @@
       "subRoleOwner": "所有者",
       "subRoleMember": "成员",
       "subRoleAccountant": "会计"
+    },
+    "payouts": {
+      "title": "结算账户",
+      "description": "订单完成后 SourcingPick 将您的份额结算至此账户。选择一次后不可在 SourcingPick 内更改,以避免审计引用失效。",
+      "pickIntro": "请按所在地区选择对应的结算服务商 —— 入驻流程(KYC、银行账户、身份验证)在服务商一侧完成。",
+      "startCta": "开始入驻",
+      "continueCta": "继续入驻",
+      "resumeTitle": "{provider} 入驻尚未完成",
+      "resumeBody": "请前往服务商的门户完成剩余步骤,以便我们向您发放款项。",
+      "activeWith": "通过 {provider} 接收款项",
+      "activeBody": "账户已通过验证。订单完成后款项将打入该账户。",
+      "lockedHint": "如需更换服务商,请联系客服 —— 中途更换会使已完成订单的审计引用失效。",
+      "statusLabel": "当前状态",
+      "statuses": {
+        "none": "未开始",
+        "pending": "等待验证",
+        "active": "已启用",
+        "restricted": "受限",
+        "rejected": "已拒绝"
+      }
     }
   },
   "agent": {
@@ -494,6 +523,8 @@
     "placeholder": "输入消息…",
     "send": "发送",
     "shortcutHint": "⌘/Ctrl + Enter 发送",
+    "attachLabel": "添加附件",
+    "attachHint": "图片、视频或文档 · 每条消息最多 10 个",
     "systemAuthor": "SourcingPick",
     "errorLoad": "无法加载消息。请重试。",
     "errorStream": "实时更新已断开。请刷新页面重新连接。",
@@ -564,7 +595,22 @@
       "descriptionPlaceholder": "有机棉 250 gsm,38×42 cm,提手 60 cm,正面单色丝印…",
       "priceLabel": "工厂单价",
       "clientPriceLabel": "客户单价",
-      "clientPriceHint": "已包含平台 12% 加成。",
+      "clientPriceHint": "已包含平台 6% 加成。",
+      "conditionLabel": "成色",
+      "conditions": {
+        "NEW": "全新",
+        "USED": "二手",
+        "REFURBISHED": "翻新"
+      },
+      "compareAtLabel": "原价(划线)",
+      "compareAtHint": "原工厂净价,用于划线显示。留空则不显示折扣徽章。",
+      "flashSaleLabel": "限时促销结束时间",
+      "flashSaleHint": "可选。当结束时间在未来时,商品页面会显示限时促销徽章及倒计时。",
+      "promotionTitle": "促销活动",
+      "promotionDescription": "为已上架商品设置或清除划线价与限时促销窗口,无需重新发布。",
+      "promotionSave": "保存促销",
+      "promotionClear": "清除",
+      "promotionSaved": "促销已保存。",
       "leadTimeLabel": "交期",
       "moqLabel": "MOQ",
       "stockLabel": "库存",
@@ -577,6 +623,9 @@
       "imagesDropHint": "点击上传最多 {n} 张图片。",
       "imagesMaxReached": "已达图片上限。",
       "imagesTooMany": "超过 6 张图片限制 — 只保留前 6 张。",
+      "mediaLabel": "视频与文件(可选)",
+      "mediaHint": "演示视频、规格表、证书 · 最多 10 个文件",
+      "mediaSectionTitle": "视频与文档",
       "saveDraft": "保存草稿",
       "saveChanges": "保存修改",
       "archiveCta": "归档",
@@ -966,6 +1015,49 @@
       "loadSuffix": "个活跃需求",
       "errorPickAgent": "分配前请先选择代理。"
     },
+    "requestDetail": {
+      "backToDispatch": "返回派单",
+      "marketplaceBadge": "市场",
+      "createdBy": "发起人",
+      "sectionClient": "客户",
+      "sectionAssignment": "分配",
+      "sectionInvitations": "招标邀请",
+      "sectionQuotes": "报价",
+      "sectionOrders": "订单",
+      "orgLabel": "组织",
+      "locationLabel": "所在地",
+      "kycLabel": "KYC",
+      "contactLabel": "联系人",
+      "agentLabel": "代理",
+      "assignedAtLabel": "分配时间",
+      "unassigned": "尚未分配。",
+      "invitationsLabel": "已发出邀请",
+      "quotesLabel": "收到报价",
+      "countryLabel": "采购国家",
+      "sentAt": "发送",
+      "respondedAt": "回复",
+      "factoryUnit": "工厂价",
+      "clientUnit": "客户价",
+      "margin": "毛利",
+      "leadTimeDays": "交期 {n} 天",
+      "moqLabel": "MOQ {n}",
+      "score": "评分",
+      "invitationStatuses": {
+        "INVITED": "已邀请",
+        "VIEWED": "已查看",
+        "RESPONDED": "已回复",
+        "DECLINED": "已拒绝",
+        "EXPIRED": "已过期"
+      },
+      "quoteStatuses": {
+        "DRAFT": "草稿",
+        "SENT_TO_AGENT": "已发送给代理",
+        "SENT_TO_CLIENT": "已发送给客户",
+        "ACCEPTED": "已接受",
+        "REJECTED": "已拒绝",
+        "EXPIRED": "已过期"
+      }
+    },
     "kyc": {
       "eyebrow": "KYC 审核",
       "title": "KYC 队列",
@@ -1006,6 +1098,38 @@
         "INSURANCE": "质量保险",
         "OTHER": "其他"
       }
+    },
+    "payments": {
+      "eyebrow": "平台设置",
+      "title": "支付服务商",
+      "description": "各打款服务商的状态。凭证保存在服务器环境变量中,而非数据库 —— 本页仅展示已配置的项,并对各服务商执行轻量级健康检查。",
+      "secretsNoticeTitle": "为什么没有可输入 API 密钥的表单?",
+      "secretsNoticeBody": "API 密钥应放在托管平台的密钥库(Vercel 环境变量、K8s secrets 等),而非数据库 —— 否则会泄漏到备份,且任何拥有数据库访问权限的人都能读取。请配置下方列出的环境变量,重新部署后刷新本页。",
+      "statuses": {
+        "active": "已启用",
+        "configured": "已配置",
+        "missing": "未配置"
+      }
+    },
+    "deliveryEtas": {
+      "title": "市场配送时效估算",
+      "description": "按大洲在市场上展示的预计配送时间(自由文本)。留空则不显示该项。",
+      "africaLabel": "非洲",
+      "europeLabel": "欧洲",
+      "americasLabel": "美洲",
+      "asiaLabel": "亚洲",
+      "save": "保存时效",
+      "saved": "已保存。"
+    },
+    "adminListing": {
+      "eyebrow": "管理员工具",
+      "title": "代工厂创建商品",
+      "description": "适用于工厂尚未加入控制台但货品已就绪的情况。商品仍需经过审核才能上架。",
+      "backToModeration": "返回审核队列",
+      "factoryLabel": "工厂",
+      "newCta": "创建商品",
+      "submit": "创建商品",
+      "noFactories": "没有可用的已验证工厂,请先通过一个工厂的 KYC。"
     },
     "sourcingAllowlist": {
       "eyebrow": "平台设置",
@@ -1166,6 +1290,13 @@
       "我们正在构建相反的模式:每个需求都由真人评估资格,每份报价都按同一评分标准比较,每笔付款都托管至确认交付。平台的利润是透明的,而不是隐藏在价格中。",
       "我们总部位于法国,但工厂网络覆盖欧洲、马格里布、亚洲、非洲和美洲。语言不是障碍,时区也不是。"
     ],
+    "tiles": {
+      "factories": "合格工厂",
+      "escrow": "资金托管",
+      "certified": "已认证",
+      "global": "全球网络",
+      "tracking": "物流跟踪"
+    },
     "principles": {
       "eyebrow": "我们的原则",
       "title": "我们不妥协的底线。"
@@ -1196,7 +1327,7 @@
         "tagline": "为您量身定制的需求,由专属代理协商。",
         "buyer": {
           "label": "买家方",
-          "rate": "12 %",
+          "rate": "6 %",
           "cap": null,
           "note": "佣金在确认收货后收取。所有订单同一费率,无上限。"
         },
@@ -1219,7 +1350,7 @@
         "tagline": "已采购并谈判好的产品,一键购买。",
         "buyer": {
           "label": "买家方",
-          "rate": "12 %",
+          "rate": "6 %",
           "cap": null,
           "note": "已包含在标示价格中。所见即所付,结算时无附加费用。"
         },

@@ -2,11 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { NotificationType, ThreadContextType } from "@prisma/client";
+import {
+  AttachmentContext,
+  NotificationType,
+  ThreadContextType,
+} from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
 import { writeAuditLog } from "@/lib/audit/log";
 import { emitNotificationToMany } from "@/lib/notifications/emit";
+import { storeAttachments } from "@/lib/storage/attachments";
 import { canAccessThreadContext } from "./participants";
 import { getOrCreateThread } from "./threads";
 import { notifyThread } from "./pubsub";
@@ -43,6 +48,134 @@ const MessageSchema = z.object({
 export type SendMessageResult =
   | { ok: true; messageId: string }
   | { ok: false; error: string };
+
+/**
+ * Variant that accepts attachments via FormData. Attachments-only messages
+ * (no body) are allowed when at least one file is included. Attachments
+ * land in the polymorphic Attachment table with contextType=MESSAGE.
+ *
+ * On a partial-failure during attachment storage we still keep the message
+ * — bad files come back in `errors`. Surfacing them as a warning is
+ * preferable to deleting a sent message because one of three pictures was
+ * too big.
+ */
+export async function sendMessageWithAttachmentsAction(
+  formData: FormData,
+): Promise<SendMessageResult & { warnings?: string[] }> {
+  const threadId = String(formData.get("threadId") ?? "");
+  const rawBody = String(formData.get("body") ?? "").trim();
+  const files = formData
+    .getAll("attachments")
+    .filter((f): f is File => f instanceof File && f.size > 0);
+
+  if (!threadId) {
+    return { ok: false, error: "Missing thread." };
+  }
+  if (rawBody.length === 0 && files.length === 0) {
+    return { ok: false, error: "Type a message or attach a file." };
+  }
+  if (rawBody.length > 5000) {
+    return { ok: false, error: "Message too long." };
+  }
+
+  const user = await requireAuth();
+  const participant = await prisma.threadParticipant.findUnique({
+    where: { threadId_userId: { threadId, userId: user.id } },
+    select: { threadId: true },
+  });
+  if (!participant) {
+    return { ok: false, error: "You're not a participant of this thread." };
+  }
+
+  const now = new Date();
+  const message = await prisma.$transaction(async (tx) => {
+    const msg = await tx.message.create({
+      data: {
+        threadId,
+        authorUserId: user.id,
+        // Empty-body attachment messages get a single-space placeholder so
+        // any downstream renderer that expects non-empty doesn't choke.
+        body: rawBody.length > 0 ? rawBody : " ",
+      },
+      select: { id: true, createdAt: true },
+    });
+    await tx.thread.update({
+      where: { id: threadId },
+      data: { lastMessageAt: now },
+    });
+    await tx.threadParticipant.updateMany({
+      where: { threadId, userId: { not: user.id } },
+      data: { unreadCount: { increment: 1 } },
+    });
+    await tx.threadParticipant.update({
+      where: { threadId_userId: { threadId, userId: user.id } },
+      data: { lastReadAt: now },
+    });
+    return msg;
+  });
+
+  const { errors: attachmentErrors } =
+    files.length > 0
+      ? await storeAttachments({
+          contextType: AttachmentContext.MESSAGE,
+          contextId: message.id,
+          uploaderId: user.id,
+          files,
+        })
+      : { errors: [] };
+
+  notifyThread(threadId, {
+    type: "message",
+    messageId: message.id,
+    threadId,
+    authorUserId: user.id,
+    createdAt: message.createdAt.toISOString(),
+  }).catch(() => {});
+
+  await writeAuditLog({
+    actorUserId: user.id,
+    action: "message.sent",
+    targetType: "Thread",
+    targetId: threadId,
+    payload: {
+      messageId: message.id,
+      attachments: files.length,
+      attachmentErrors,
+    },
+  });
+
+  prisma.threadParticipant
+    .findMany({
+      where: { threadId, userId: { not: user.id } },
+      select: {
+        userId: true,
+        thread: { select: { contextType: true, contextId: true } },
+      },
+    })
+    .then(async (rows) => {
+      if (rows.length === 0) return;
+      const ctx = rows[0]!.thread;
+      const snippet = (rawBody || (files.length > 0 ? `(${files.length} attachment${files.length > 1 ? "s" : ""})` : "")).slice(0, 80);
+      await emitNotificationToMany(
+        rows.map((r) => r.userId),
+        {
+          type: NotificationType.MESSAGE_MENTION,
+          vars: { title: snippet },
+          contextType: ctx.contextType,
+          contextId: ctx.contextId,
+        },
+      );
+    })
+    .catch(() => {});
+
+  revalidatePath("/[lang]", "layout");
+
+  return {
+    ok: true,
+    messageId: message.id,
+    ...(attachmentErrors.length > 0 ? { warnings: attachmentErrors } : {}),
+  };
+}
 
 export async function sendMessageAction(
   threadId: string,

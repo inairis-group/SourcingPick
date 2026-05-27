@@ -9,6 +9,7 @@ import { formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import type { Locale } from "@/lib/i18n/config";
 import { ProductForm } from "../_components/product-form";
 import { ProductActions } from "./_components/product-actions";
+import { PromotionForm } from "./_components/promotion-form";
 
 export async function generateMetadata({
   params,
@@ -40,6 +41,9 @@ export default async function FactoryProductDetailPage({
       description: true,
       priceCentsFactory: true,
       priceCentsClient: true,
+      compareAtCents: true,
+      flashSaleEndsAt: true,
+      condition: true,
       moq: true,
       stockAvailable: true,
       stockLowThreshold: true,
@@ -122,6 +126,9 @@ export default async function FactoryProductDetailPage({
               category: product.category,
               description: product.description,
               priceCentsFactory: product.priceCentsFactory,
+              compareAtCents: product.compareAtCents,
+              flashSaleEndsAt: product.flashSaleEndsAt,
+              condition: product.condition,
               moq: product.moq,
               stockAvailable: product.stockAvailable,
               stockLowThreshold: product.stockLowThreshold,
@@ -132,12 +139,34 @@ export default async function FactoryProductDetailPage({
           />
         </div>
       ) : (
-        <ReadOnlyDetail
-          product={product}
-          imageUrls={imageUrls}
-          dict={dict}
-          lang={lang}
-        />
+        <>
+          <ReadOnlyDetail
+            product={product}
+            imageUrls={imageUrls}
+            dict={dict}
+            lang={lang}
+          />
+          {(product.status === MarketplaceProductStatus.PUBLISHED ||
+            product.status === MarketplaceProductStatus.OUT_OF_STOCK) && (
+            <section className="mt-6 rounded-lg border border-line bg-surface p-5">
+              <header className="mb-3">
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700">
+                  {dict.factory.catalogue.promotionTitle}
+                </h2>
+                <p className="text-xs text-muted mt-0.5">
+                  {dict.factory.catalogue.promotionDescription}
+                </p>
+              </header>
+              <PromotionForm
+                productId={product.id}
+                defaults={{
+                  compareAtCents: product.compareAtCents,
+                  flashSaleEndsAt: product.flashSaleEndsAt,
+                }}
+              />
+            </section>
+          )}
+        </>
       )}
     </div>
   );

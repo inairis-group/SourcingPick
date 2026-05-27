@@ -6,7 +6,10 @@ import { Role, SourcingRegion } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { writeAuditLog } from "@/lib/audit/log";
-import { clearSourcingAllowlistCache } from "./settings";
+import {
+  clearDeliveryEtasCache,
+  clearSourcingAllowlistCache,
+} from "./settings";
 
 const UpdateSchema = z.object({
   regions: z.array(z.enum(SourcingRegion)),
@@ -67,5 +70,70 @@ export async function updateSourcingAllowlistAction(
 
   revalidatePath("/[lang]/admin/settings/sourcing", "page");
   revalidatePath("/[lang]/client/requests/new", "page");
+  return { ok: true };
+}
+
+const EtaSchema = z.object({
+  africa: z.string().trim().max(120).optional().or(z.literal("")),
+  europe: z.string().trim().max(120).optional().or(z.literal("")),
+  americas: z.string().trim().max(120).optional().or(z.literal("")),
+  asia: z.string().trim().max(120).optional().or(z.literal("")),
+});
+
+export type UpdateEtasResult =
+  | { ok: true }
+  | { ok: false; error: string };
+
+/**
+ * Admin updates the per-continent estimated delivery windows shown on the
+ * marketplace. Empty strings clear the entry (null in DB). Admin-only.
+ */
+export async function updateDeliveryEtasAction(
+  input: {
+    africa: string;
+    europe: string;
+    americas: string;
+    asia: string;
+  },
+): Promise<UpdateEtasResult> {
+  const admin = await requireRole(Role.ADMIN);
+
+  const parsed = EtaSchema.safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input." };
+  }
+  const norm = (v: string | undefined) =>
+    !v || v.length === 0 ? null : v;
+
+  await prisma.platformSettings.upsert({
+    where: { id: "default" },
+    create: {
+      id: "default",
+      deliveryEtaAfrica: norm(parsed.data.africa),
+      deliveryEtaEurope: norm(parsed.data.europe),
+      deliveryEtaAmericas: norm(parsed.data.americas),
+      deliveryEtaAsia: norm(parsed.data.asia),
+    },
+    update: {
+      deliveryEtaAfrica: norm(parsed.data.africa),
+      deliveryEtaEurope: norm(parsed.data.europe),
+      deliveryEtaAmericas: norm(parsed.data.americas),
+      deliveryEtaAsia: norm(parsed.data.asia),
+    },
+  });
+
+  clearDeliveryEtasCache();
+
+  await writeAuditLog({
+    actorUserId: admin.id,
+    action: "platform.delivery_etas_updated",
+    targetType: "PlatformSettings",
+    targetId: "default",
+    payload: parsed.data,
+  });
+
+  revalidatePath("/[lang]/admin/settings/sourcing", "page");
+  revalidatePath("/[lang]/marketplace", "page");
+  revalidatePath("/[lang]/client/marketplace", "page");
   return { ok: true };
 }

@@ -3,6 +3,8 @@ import { ProfileForm } from "./profile-form";
 import { PasswordForm } from "./password-form";
 import { TwoFactorToggle } from "./two-factor-toggle";
 import { MembersList } from "./members-list";
+import { PayoutSection } from "./payout-section";
+import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import type { Locale } from "@/lib/i18n/config";
@@ -20,6 +22,14 @@ export async function SettingsView({ locale }: { locale: Locale }) {
 
   const isOwner = user.subRole === SubRole.OWNER;
   const isAdmin = user.role === Role.ADMIN;
+  const needsPayouts =
+    user.role === Role.FACTORY || user.role === Role.AGENT;
+  const payouts = needsPayouts
+    ? await prisma.organization.findUnique({
+        where: { id: user.organizationId },
+        select: { payoutProvider: true, payoutStatus: true },
+      })
+    : null;
 
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8">
@@ -67,6 +77,20 @@ export async function SettingsView({ locale }: { locale: Locale }) {
             isAdmin={isAdmin}
           />
         </Section>
+
+        {needsPayouts && payouts && (
+          <Section
+            title={dict.settings.payouts.title}
+            description={dict.settings.payouts.description}
+          >
+            <PayoutSection
+              current={{
+                provider: payouts.payoutProvider,
+                status: payouts.payoutStatus,
+              }}
+            />
+          </Section>
+        )}
 
         {isOwner && (
           <Section

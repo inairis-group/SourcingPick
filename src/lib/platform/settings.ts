@@ -51,3 +51,42 @@ export async function getSourcingAllowlist(): Promise<Allowlist> {
 export function clearSourcingAllowlistCache(): void {
   cached = null;
 }
+
+export type DeliveryEtas = {
+  africa: string | null;
+  europe: string | null;
+  americas: string | null;
+  asia: string | null;
+};
+
+let etaCached: { value: DeliveryEtas; expiresAt: number } | null = null;
+
+/**
+ * Free-text estimated delivery windows per continent, surfaced on the
+ * marketplace. Admin-editable; null/empty hides the row for that
+ * continent. Cached for 60s alongside the allowlist.
+ */
+export async function getDeliveryEtas(): Promise<DeliveryEtas> {
+  if (etaCached && etaCached.expiresAt > Date.now()) return etaCached.value;
+  const row = await prisma.platformSettings.findUnique({
+    where: { id: "default" },
+    select: {
+      deliveryEtaAfrica: true,
+      deliveryEtaEurope: true,
+      deliveryEtaAmericas: true,
+      deliveryEtaAsia: true,
+    },
+  });
+  const value: DeliveryEtas = {
+    africa: row?.deliveryEtaAfrica ?? null,
+    europe: row?.deliveryEtaEurope ?? null,
+    americas: row?.deliveryEtaAmericas ?? null,
+    asia: row?.deliveryEtaAsia ?? null,
+  };
+  etaCached = { value, expiresAt: Date.now() + CACHE_TTL_MS };
+  return value;
+}
+
+export function clearDeliveryEtasCache(): void {
+  etaCached = null;
+}

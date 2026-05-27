@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { AttachmentContext } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
 
@@ -12,7 +13,9 @@ const PAGE_SIZE = 50;
  * SSE — payload + role context all live on the server).
  *
  * `?after=<iso>` returns messages strictly newer than the timestamp; used
- * for the incremental top-up after a notify.
+ * for the incremental top-up after a notify. Each message comes with its
+ * attachments inlined so the client can render images/videos/files
+ * without a second round-trip per message.
  */
 export async function GET(
   req: Request,
@@ -58,6 +61,33 @@ export async function GET(
     },
   });
 
+  // Batch-fetch attachments for every message in the page so we don't
+  // N+1 the DB. Bucket by contextId client-side.
+  const attachments =
+    messages.length === 0
+      ? []
+      : await prisma.attachment.findMany({
+          where: {
+            contextType: AttachmentContext.MESSAGE,
+            contextId: { in: messages.map((m) => m.id) },
+          },
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            contextId: true,
+            kind: true,
+            mimeType: true,
+            sizeBytes: true,
+            originalName: true,
+          },
+        });
+  const byMessage = new Map<string, typeof attachments>();
+  for (const a of attachments) {
+    const arr = byMessage.get(a.contextId) ?? [];
+    arr.push(a);
+    byMessage.set(a.contextId, arr);
+  }
+
   return NextResponse.json({
     messages: messages.map((m) => ({
       id: m.id,
@@ -71,6 +101,13 @@ export async function GET(
           }
         : null,
       createdAt: m.createdAt.toISOString(),
+      attachments: (byMessage.get(m.id) ?? []).map((a) => ({
+        id: a.id,
+        kind: a.kind,
+        mimeType: a.mimeType,
+        sizeBytes: a.sizeBytes,
+        originalName: a.originalName,
+      })),
     })),
     selfUserId: user.id,
   });

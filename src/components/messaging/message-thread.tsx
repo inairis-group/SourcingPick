@@ -7,18 +7,32 @@ import {
   useState,
   useTransition,
 } from "react";
-import { Role } from "@prisma/client";
+import { AttachmentKind, Role } from "@prisma/client";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Sent02Icon } from "@hugeicons/core-free-icons";
+import {
+  Attachment01Icon,
+  File01Icon,
+  Sent02Icon,
+} from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/ui/form-error";
 import {
   markThreadReadAction,
   sendMessageAction,
+  sendMessageWithAttachmentsAction,
 } from "@/lib/messaging/actions";
+import { AttachmentPicker } from "@/components/attachments/attachment-picker";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { formatDate } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
+
+type MessageAttachment = {
+  id: string;
+  kind: AttachmentKind;
+  mimeType: string;
+  sizeBytes: number;
+  originalName: string;
+};
 
 type Message = {
   id: string;
@@ -30,6 +44,7 @@ type Message = {
     role: Role;
   } | null;
   createdAt: string;
+  attachments: MessageAttachment[];
 };
 
 type FetchPayload = {
@@ -55,6 +70,8 @@ export function MessageThread({ threadId }: { threadId: string }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [selfId, setSelfId] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [showPicker, setShowPicker] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
@@ -159,24 +176,49 @@ export function MessageThread({ threadId }: { threadId: string }) {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const body = draft.trim();
-    if (!body || sending) return;
+    if (sending) return;
+    // Allow attachment-only sends (no body) but require at least one of
+    // body or files. The server enforces the same; this is just to skip
+    // a pointless round-trip when both are empty.
+    if (!body && pendingFiles.length === 0) return;
     setError(null);
     setSending(true);
-    sendMessageAction(threadId, body)
-      .then((result) => {
-        if (!result.ok) {
-          setError(result.error);
-          return;
-        }
-        setDraft("");
-        // Don't wait for NOTIFY — append optimistically by fetching the
-        // last-known timestamp's increment.
-        const lastTs =
-          messagesRef.current[messagesRef.current.length - 1]?.createdAt ??
-          new Date(0).toISOString();
-        loadIncremental(lastTs);
-      })
-      .finally(() => setSending(false));
+
+    const finish = (ok: boolean, errMsg?: string, warnings?: string[]) => {
+      setSending(false);
+      if (!ok) {
+        setError(errMsg ?? null);
+        return;
+      }
+      // Warnings come from per-file storage errors; surface but don't
+      // block — the message itself sent successfully.
+      if (warnings && warnings.length > 0) setError(warnings.join(" · "));
+      setDraft("");
+      setPendingFiles([]);
+      setShowPicker(false);
+      const lastTs =
+        messagesRef.current[messagesRef.current.length - 1]?.createdAt ??
+        new Date(0).toISOString();
+      loadIncremental(lastTs);
+    };
+
+    if (pendingFiles.length === 0) {
+      // Fast path: keep the legacy text-only action so existing call
+      // patterns don't churn.
+      sendMessageAction(threadId, body)
+        .then((r) => (r.ok ? finish(true) : finish(false, r.error)))
+        .catch(() => finish(false, dict.messaging.errorLoad));
+    } else {
+      const fd = new FormData();
+      fd.append("threadId", threadId);
+      if (body) fd.append("body", body);
+      for (const f of pendingFiles) fd.append("attachments", f);
+      sendMessageWithAttachmentsAction(fd)
+        .then((r) =>
+          r.ok ? finish(true, undefined, r.warnings) : finish(false, r.error),
+        )
+        .catch(() => finish(false, dict.messaging.errorLoad));
+    }
   };
 
   return (
@@ -216,10 +258,10 @@ export function MessageThread({ threadId }: { threadId: string }) {
                         ·{" "}
                         {dict.common.roles[
                           m.author.role.toLowerCase() as
-                            | "client"
-                            | "factory"
-                            | "agent"
-                            | "admin"
+                          | "client"
+                          | "factory"
+                          | "agent"
+                          | "admin"
                         ]}
                       </span>
                     )}
@@ -227,13 +269,19 @@ export function MessageThread({ threadId }: { threadId: string }) {
                 )}
                 <div
                   className={cn(
-                    "rounded-md px-3 py-2 text-sm leading-snug whitespace-pre-wrap break-words",
+                    "rounded-md px-3 py-2 text-sm leading-snug whitespace-pre-wrap wrap-break-word flex flex-col gap-2",
                     mine
                       ? "bg-action text-on-action"
                       : "bg-subtle text-fg border border-line-subtle",
                   )}
                 >
-                  {m.body}
+                  {m.body.trim().length > 0 && <span>{m.body}</span>}
+                  {m.attachments.length > 0 && (
+                    <MessageAttachments
+                      attachments={m.attachments}
+                      mine={mine}
+                    />
+                  )}
                 </div>
                 <span className="text-[10px] text-faint mt-0.5 px-1">
                   {formatDate(new Date(m.createdAt), locale, "short")}
@@ -266,22 +314,137 @@ export function MessageThread({ threadId }: { threadId: string }) {
             }
           }}
         />
+
+        {(showPicker || pendingFiles.length > 0) && (
+          <AttachmentPicker
+            label={dict.messaging.attachLabel}
+            hint={dict.messaging.attachHint}
+            files={pendingFiles}
+            onChange={setPendingFiles}
+          />
+        )}
+
         <div className="flex items-center justify-between gap-2">
-          <span className="text-[10px] text-faint">
-            {dict.messaging.shortcutHint}
-          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowPicker((v) => !v)}
+              aria-label={dict.messaging.attachLabel}
+              className={cn(
+                "inline-flex items-center justify-center h-7 w-7 rounded-full",
+                "text-muted hover:text-fg hover:bg-subtle transition-colors duration-fast",
+                (showPicker || pendingFiles.length > 0) &&
+                "bg-subtle text-fg",
+              )}
+            >
+              <HugeiconsIcon
+                icon={Attachment01Icon}
+                size={14}
+                strokeWidth={1.5}
+              />
+            </button>
+            <span className="text-[10px] text-faint">
+              {dict.messaging.shortcutHint}
+            </span>
+          </div>
           <Button
             type="submit"
             variant="primary"
             size="sm"
             loading={sending}
-            disabled={!draft.trim()}
+            disabled={!draft.trim() && pendingFiles.length === 0}
           >
             <HugeiconsIcon icon={Sent02Icon} size={14} strokeWidth={1.5} />
             <span className="ms-1.5">{dict.messaging.send}</span>
           </Button>
         </div>
       </form>
+    </div>
+  );
+}
+
+/**
+ * Inline attachments rendered inside a message bubble. Server-rendered
+ * `MediaGrid` exists for detail-page galleries; this is the lightweight
+ * in-bubble version that handles per-kind layout.
+ */
+function MessageAttachments({
+  attachments,
+  mine,
+}: {
+  attachments: MessageAttachment[];
+  mine: boolean;
+}) {
+  const images = attachments.filter((a) => a.kind === AttachmentKind.IMAGE);
+  const videos = attachments.filter((a) => a.kind === AttachmentKind.VIDEO);
+  const files = attachments.filter((a) => a.kind === AttachmentKind.FILE);
+
+  return (
+    <div className="flex flex-col gap-1.5">
+      {images.length > 0 && (
+        <div
+          className={cn(
+            "grid gap-1",
+            images.length === 1 ? "grid-cols-1" : "grid-cols-2",
+          )}
+        >
+          {images.map((a) => (
+            <a
+              key={a.id}
+              href={`/api/attachments/${a.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-sm overflow-hidden"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`/api/attachments/${a.id}`}
+                alt={a.originalName}
+                className="w-full max-h-60 object-cover bg-black/10"
+                loading="lazy"
+              />
+            </a>
+          ))}
+        </div>
+      )}
+
+      {videos.map((a) => (
+        <video
+          key={a.id}
+          src={`/api/attachments/${a.id}`}
+          controls
+          preload="metadata"
+          className="w-full max-h-64 rounded-sm bg-black"
+        />
+      ))}
+
+      {files.length > 0 && (
+        <ul className="flex flex-col gap-1">
+          {files.map((a) => (
+            <li key={a.id}>
+              <a
+                href={`/api/attachments/${a.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "flex items-center gap-1.5 rounded-sm px-2 py-1 text-xs",
+                  mine
+                    ? "bg-on-action/15 hover:bg-on-action/25"
+                    : "bg-surface hover:bg-subtle border border-line-subtle",
+                )}
+              >
+                <HugeiconsIcon
+                  icon={File01Icon}
+                  size={12}
+                  strokeWidth={1.5}
+                  className="shrink-0"
+                />
+                <span className="truncate">{a.originalName}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

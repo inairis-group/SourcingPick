@@ -1,9 +1,15 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import {
+  startTransition,
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Category } from "@prisma/client";
+import { Category, MarketplaceCondition } from "@prisma/client";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ImageUpload01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
@@ -16,10 +22,12 @@ import {
   updateProductAction,
   type ProductActionState,
 } from "@/lib/marketplace/actions";
+import { AttachmentPicker } from "@/components/attachments/attachment-picker";
 import { useDictionary } from "@/lib/i18n/client-provider";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = Object.values(Category);
+const CONDITIONS = Object.values(MarketplaceCondition);
 const INITIAL: ProductActionState = {};
 
 export type ProductDefaults = {
@@ -28,6 +36,12 @@ export type ProductDefaults = {
   category: Category;
   description: string;
   priceCentsFactory: number;
+  /// "Was" price stored on the buyer side. The form re-derives the factory-
+  /// net equivalent for the input so the factory always edits factory-net
+  /// numbers, consistent with the main price field.
+  compareAtCents: number | null;
+  flashSaleEndsAt: Date | null;
+  condition: MarketplaceCondition;
   moq: number;
   stockAvailable: number;
   stockLowThreshold: number | null;
@@ -53,6 +67,7 @@ export function ProductForm({
   const [state, formAction, pending] = useActionState(action, INITIAL);
 
   const [newImagePreviews, setNewImagePreviews] = useState<string[]>([]);
+  const [extraMedia, setExtraMedia] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -74,8 +89,22 @@ export function ProductForm({
   const totalAfterUpload = existingCount + newImagePreviews.length;
   const remainingSlots = Math.max(0, 6 - existingCount);
 
+  // Intercept submit so we can fold the staged video/file attachments
+  // (held in React state, not a native <input>) into the FormData before
+  // calling the server action.
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    for (const f of extraMedia) fd.append("attachments", f);
+    startTransition(() => formAction(fd));
+  };
+
   return (
-    <form action={formAction} className="flex flex-col gap-5" encType="multipart/form-data">
+    <form
+      onSubmit={onSubmit}
+      className="flex flex-col gap-5"
+      encType="multipart/form-data"
+    >
       {state.error && <FormError>{state.error}</FormError>}
 
       <Field label={dict.factory.catalogue.nameLabel} required>
@@ -150,6 +179,57 @@ export function ProductForm({
           />
         </Field>
       </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Field label={dict.factory.catalogue.conditionLabel} required>
+          <Select
+            name="condition"
+            required
+            defaultValue={defaults?.condition ?? MarketplaceCondition.NEW}
+            options={CONDITIONS.map((c) => ({
+              value: c,
+              label: dict.factory.catalogue.conditions[c],
+            }))}
+          />
+        </Field>
+        <Field
+          label={dict.factory.catalogue.compareAtLabel}
+          hint={dict.factory.catalogue.compareAtHint}
+        >
+          <Input
+            name="compareAtEur"
+            type="number"
+            inputMode="decimal"
+            step="0.01"
+            min="0"
+            defaultValue={
+              // Reverse the buyer markup so the factory edits factory-net,
+              // matching how the main `priceEur` field works. The action
+              // re-applies the markup before persisting.
+              defaults?.compareAtCents
+                ? (
+                    defaults.compareAtCents / 1.06 / 100
+                  ).toFixed(2)
+                : ""
+            }
+          />
+        </Field>
+      </div>
+
+      <Field
+        label={dict.factory.catalogue.flashSaleLabel}
+        hint={dict.factory.catalogue.flashSaleHint}
+      >
+        <Input
+          name="flashSaleEndsAt"
+          type="datetime-local"
+          defaultValue={
+            defaults?.flashSaleEndsAt
+              ? toDateTimeLocal(defaults.flashSaleEndsAt)
+              : ""
+          }
+        />
+      </Field>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Field label={dict.factory.catalogue.moqLabel}>
@@ -284,6 +364,13 @@ export function ProductForm({
         )}
       </div>
 
+      <AttachmentPicker
+        label={dict.factory.catalogue.mediaLabel}
+        hint={dict.factory.catalogue.mediaHint}
+        files={extraMedia}
+        onChange={setExtraMedia}
+      />
+
       <div className="pt-2 flex items-center justify-end gap-3">
         <Button type="submit" variant="primary" size="md" loading={pending}>
           {isEdit
@@ -292,5 +379,18 @@ export function ProductForm({
         </Button>
       </div>
     </form>
+  );
+}
+
+/**
+ * Format a Date for `<input type="datetime-local">`, which needs
+ * `YYYY-MM-DDTHH:mm` in the user's *local* time (no timezone suffix).
+ * `toISOString()` would force UTC and shift the displayed value.
+ */
+function toDateTimeLocal(d: Date): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return (
+    `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` +
+    `T${pad(d.getHours())}:${pad(d.getMinutes())}`
   );
 }

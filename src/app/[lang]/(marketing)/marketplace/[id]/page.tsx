@@ -1,11 +1,16 @@
 import { notFound } from "next/navigation";
-import { MarketplaceProductStatus } from "@prisma/client";
+import { AttachmentContext, MarketplaceProductStatus } from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { buttonClass } from "@/components/ui/button";
 import { prisma } from "@/lib/db/client";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
-import { formatEUR, formatNumber } from "@/lib/i18n/formatters";
+import { formatNumber } from "@/lib/i18n/formatters";
+import {
+  ListingBadges,
+  ListingPrice,
+} from "@/components/marketplace/listing-price";
+import { MediaGrid } from "@/components/attachments/media-grid";
 import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
@@ -41,6 +46,9 @@ export default async function PublicMarketplaceProductPage({
       category: true,
       description: true,
       priceCentsClient: true,
+      compareAtCents: true,
+      flashSaleEndsAt: true,
+      condition: true,
       moq: true,
       stockAvailable: true,
       leadTimeDays: true,
@@ -59,7 +67,7 @@ export default async function PublicMarketplaceProductPage({
       where: { id: product.id },
       data: { viewsCount: { increment: 1 } },
     })
-    .catch(() => {});
+    .catch(() => { });
 
   const imageUrls = product.images.map(
     (_, i) => `/api/marketplace/image/${product.id}/${i}`,
@@ -80,7 +88,7 @@ export default async function PublicMarketplaceProductPage({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="flex flex-col gap-3">
-          <div className="aspect-[4/3] bg-subtle rounded-lg border border-line overflow-hidden relative">
+          <div className="aspect-4/3 bg-subtle rounded-lg border border-line overflow-hidden relative">
             {imageUrls[0] && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -124,10 +132,21 @@ export default async function PublicMarketplaceProductPage({
             </p>
           </div>
 
-          <div className="flex items-baseline gap-4">
-            <span className="text-3xl font-bold text-headline">
-              {formatEUR(product.priceCentsClient / 100, lang)}
-            </span>
+          <ListingBadges
+            condition={product.condition}
+            flashSaleEndsAt={product.flashSaleEndsAt}
+            dict={dict}
+            locale={lang}
+          />
+
+          <div className="flex items-baseline gap-4 flex-wrap">
+            <ListingPrice
+              priceCentsClient={product.priceCentsClient}
+              compareAtCents={product.compareAtCents}
+              locale={lang}
+              dict={dict}
+              size="lg"
+            />
             <span className="text-xs text-faint uppercase">
               {dict.client.marketplace.unitPrice}
             </span>
@@ -191,6 +210,13 @@ export default async function PublicMarketplaceProductPage({
           </div>
         </div>
       </div>
+
+      <MediaGrid
+        contextType={AttachmentContext.MARKETPLACE_PRODUCT}
+        contextId={product.id}
+        title={dict.factory.catalogue.mediaSectionTitle}
+        className="mt-8"
+      />
     </div>
   );
 }

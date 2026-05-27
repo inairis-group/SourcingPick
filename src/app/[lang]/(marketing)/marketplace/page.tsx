@@ -1,12 +1,21 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Category, MarketplaceProductStatus } from "@prisma/client";
+import {
+  Category,
+  MarketplaceCondition,
+  MarketplaceProductStatus,
+} from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
-import { formatEUR, formatNumber } from "@/lib/i18n/formatters";
+import { formatNumber } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
+import {
+  ListingBadges,
+  ListingPrice,
+} from "@/components/marketplace/listing-price";
+import { DeliveryEtaNotice } from "@/components/marketplace/delivery-eta-notice";
 import { LoadMoreNudge } from "./_components/load-more-nudge";
 import { MarketplaceFilters } from "./_components/filters";
 
@@ -32,10 +41,18 @@ export default async function PublicMarketplacePage({
 
   const rawCategory =
     typeof search?.category === "string" ? search.category : "";
+  const rawCondition =
+    typeof search?.condition === "string" ? search.condition : "";
   const rawQuery = typeof search?.q === "string" ? search.q.trim() : "";
+  const dealsOnly = search?.deals === "1";
 
   const category = (Object.values(Category) as string[]).includes(rawCategory)
     ? (rawCategory as Category)
+    : undefined;
+  const condition = (Object.values(MarketplaceCondition) as string[]).includes(
+    rawCondition,
+  )
+    ? (rawCondition as MarketplaceCondition)
     : undefined;
 
   // Fetch one extra to detect whether there are more products beyond the
@@ -45,14 +62,38 @@ export default async function PublicMarketplacePage({
       status: MarketplaceProductStatus.PUBLISHED,
       deletedAt: null,
       ...(category ? { category } : {}),
-      ...(rawQuery
-        ? {
-            OR: [
-              { name: { contains: rawQuery, mode: "insensitive" } },
-              { description: { contains: rawQuery, mode: "insensitive" } },
-            ],
-          }
-        : {}),
+      ...(condition ? { condition } : {}),
+      // Compose "deals only" + free-text search via AND so each can carry
+      // its own OR-list. Without this, the second `OR` would silently
+      // replace the first under Prisma's WHERE-merge semantics.
+      AND: [
+        ...(dealsOnly
+          ? [
+            {
+              // "Deals only" = active flash sale OR a strikethrough.
+              OR: [
+                { flashSaleEndsAt: { gt: new Date() } },
+                { compareAtCents: { not: null } },
+              ],
+            },
+          ]
+          : []),
+        ...(rawQuery
+          ? [
+            {
+              OR: [
+                { name: { contains: rawQuery, mode: "insensitive" as const } },
+                {
+                  description: {
+                    contains: rawQuery,
+                    mode: "insensitive" as const,
+                  },
+                },
+              ],
+            },
+          ]
+          : []),
+      ],
     },
     orderBy: [{ publishedAt: "desc" }],
     take: PUBLIC_LIMIT + 1,
@@ -62,6 +103,9 @@ export default async function PublicMarketplacePage({
       name: true,
       category: true,
       priceCentsClient: true,
+      compareAtCents: true,
+      flashSaleEndsAt: true,
+      condition: true,
       stockAvailable: true,
       images: true,
       factoryOrg: { select: { displayName: true, country: true } },
@@ -85,7 +129,15 @@ export default async function PublicMarketplacePage({
         </p>
       </header>
 
-      <MarketplaceFilters lang={lang} category={category} query={rawQuery} />
+      <MarketplaceFilters
+        lang={lang}
+        category={category}
+        condition={condition}
+        deals={dealsOnly}
+        query={rawQuery}
+      />
+
+      <DeliveryEtaNotice dict={dict} />
 
       {visible.length === 0 ? (
         <div className="rounded-lg border border-line bg-surface px-6 py-16 text-center mt-6">
@@ -100,7 +152,7 @@ export default async function PublicMarketplacePage({
                 variant="muted"
                 className="block rounded-lg border border-line bg-surface overflow-hidden hover:bg-subtle transition-colors duration-fast"
               >
-                <div className="aspect-[4/3] bg-subtle relative">
+                <div className="aspect-4/3 bg-subtle relative">
                   {p.images.length > 0 ? (
                     <Image
                       src={`/api/marketplace/image/${p.id}/0`}
@@ -115,6 +167,14 @@ export default async function PublicMarketplacePage({
                       {dict.factory.catalogue.noImage}
                     </div>
                   )}
+                  <div className="absolute top-2 inset-s-2">
+                    <ListingBadges
+                      condition={p.condition}
+                      flashSaleEndsAt={p.flashSaleEndsAt}
+                      dict={dict}
+                      locale={lang}
+                    />
+                  </div>
                 </div>
                 <div className="p-4 flex flex-col gap-2">
                   <div>
@@ -129,9 +189,12 @@ export default async function PublicMarketplacePage({
                     </p>
                   </div>
                   <div className="flex items-end justify-between gap-2 pt-2 border-t border-line-subtle">
-                    <span className="text-base font-semibold text-headline">
-                      {formatEUR(p.priceCentsClient / 100, lang)}
-                    </span>
+                    <ListingPrice
+                      priceCentsClient={p.priceCentsClient}
+                      compareAtCents={p.compareAtCents}
+                      locale={lang}
+                      dict={dict}
+                    />
                     <span
                       className={cn(
                         "text-[11px] uppercase tracking-wide font-medium",

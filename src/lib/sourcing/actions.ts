@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";
 import {
+  AttachmentContext,
   Category,
   Incoterm,
   NotificationType,
@@ -18,6 +19,7 @@ import { writeAuditLog } from "@/lib/audit/log";
 import { emitNotificationToMany } from "@/lib/notifications/emit";
 import { generateUniqueReference } from "@/lib/sourcing/reference";
 import { getSourcingAllowlist } from "@/lib/platform/settings";
+import { storeAttachments } from "@/lib/storage/attachments";
 import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
 
 const RequestSchema = z.object({
@@ -165,6 +167,31 @@ export async function createSourcingRequestAction(
       level: "WARN",
     });
     return { error: "Something went wrong creating your request. Please try again." };
+  }
+
+  // Persist any attachments uploaded with the request. Failures are
+  // collected but don't fail the request — the user already saw a
+  // success-ish path, and storage errors get logged for ops to chase.
+  const attachmentFiles = formData
+    .getAll("attachments")
+    .filter((f): f is File => f instanceof File && f.size > 0);
+  if (attachmentFiles.length > 0) {
+    const { errors: storageErrors } = await storeAttachments({
+      contextType: AttachmentContext.SOURCING_REQUEST,
+      contextId: requestId,
+      uploaderId: user.id,
+      files: attachmentFiles,
+    });
+    if (storageErrors.length > 0) {
+      await writeAuditLog({
+        actorUserId: user.id,
+        action: "request.attachment_store_failed",
+        targetType: "SourcingRequest",
+        targetId: requestId,
+        payload: { errors: storageErrors },
+        level: "WARN",
+      });
+    }
   }
 
   // Notify admins so the dispatch queue surfaces the new request.

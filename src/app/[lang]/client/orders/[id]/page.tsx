@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Role, ThreadContextType } from "@prisma/client";
+import { AttachmentContext, Role, ThreadContextType } from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
@@ -8,6 +8,7 @@ import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { OrderTimeline } from "@/components/orders/timeline";
 import { ContextThread } from "@/components/messaging/context-thread";
+import { MediaGrid } from "@/components/attachments/media-grid";
 import { OrderActions } from "./_components/order-actions";
 
 export async function generateMetadata({
@@ -263,6 +264,13 @@ export default async function ClientOrderDetailPage({
           </ul>
         </Section>
       )}
+
+      <MediaGrid
+        contextType={AttachmentContext.ORDER}
+        contextId={order.id}
+        title={dict.client.requests.mediaTitle}
+        className="mt-6"
+      />
 
       <div className="mt-6">
         <ContextThread

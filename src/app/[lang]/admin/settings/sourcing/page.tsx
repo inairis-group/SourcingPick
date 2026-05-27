@@ -3,10 +3,14 @@ import { Role, SourcingRegion } from "@prisma/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
-import { getSourcingAllowlist } from "@/lib/platform/settings";
+import {
+  getDeliveryEtas,
+  getSourcingAllowlist,
+} from "@/lib/platform/settings";
 import { countriesFor } from "@/lib/countries";
 import { DashboardHeader } from "@/components/dashboard/primitives";
 import { SourcingAllowlistForm } from "./_components/allowlist-form";
+import { DeliveryEtasForm } from "./_components/delivery-etas-form";
 
 export async function generateMetadata({
   params,
@@ -25,9 +29,10 @@ export default async function AdminSourcingSettingsPage({
   await requireRole(Role.ADMIN);
   const dict = await getDictionary(lang);
 
-  const [allowlist, countries] = await Promise.all([
+  const [allowlist, countries, etas] = await Promise.all([
     getSourcingAllowlist(),
     Promise.resolve(countriesFor(lang)),
+    getDeliveryEtas(),
   ]);
 
   const allRegions = Object.values(SourcingRegion);
@@ -52,6 +57,10 @@ export default async function AdminSourcingSettingsPage({
         initialRegions={allowlist.regions}
         initialCountries={allowlist.countries}
       />
+
+      <div className="mt-8">
+        <DeliveryEtasForm initial={etas} />
+      </div>
     </div>
   );
 }

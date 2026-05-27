@@ -1,5 +1,10 @@
 import { notFound } from "next/navigation";
-import { QuoteStatus, Role, ThreadContextType } from "@prisma/client";
+import {
+  AttachmentContext,
+  QuoteStatus,
+  Role,
+  ThreadContextType,
+} from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
@@ -7,6 +12,7 @@ import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { ContextThread } from "@/components/messaging/context-thread";
+import { MediaGrid } from "@/components/attachments/media-grid";
 import { cn } from "@/lib/utils";
 import { ClientQuotesPanel } from "./_components/client-quotes-panel";
 
@@ -208,6 +214,13 @@ export default async function RequestDetailPage({
         </div>
       </Section>
 
+      <MediaGrid
+        contextType={AttachmentContext.SOURCING_REQUEST}
+        contextId={req.id}
+        title={dict.client.requests.mediaTitle}
+        className="mt-6"
+      />
+
       <div className="mt-6">
         <ContextThread
           contextType={ThreadContextType.REQUEST}
@@ -284,7 +297,7 @@ function Detail({ label, children }: { label: string; children: React.ReactNode 
       <dt className="text-xs font-medium uppercase tracking-wide text-faint">
         {label}
       </dt>
-      <dd className="text-sm text-fg sm:col-span-2 break-words">{children}</dd>
+      <dd className="text-sm text-fg sm:col-span-2 wrap-break-word">{children}</dd>
     </div>
   );
 }

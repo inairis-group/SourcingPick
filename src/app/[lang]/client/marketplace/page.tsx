@@ -1,13 +1,23 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { Category, MarketplaceProductStatus, Role } from "@prisma/client";
+import {
+  Category,
+  MarketplaceCondition,
+  MarketplaceProductStatus,
+  Role,
+} from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
-import { formatEUR, formatNumber } from "@/lib/i18n/formatters";
+import { formatNumber } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
+import {
+  ListingBadges,
+  ListingPrice,
+} from "@/components/marketplace/listing-price";
+import { DeliveryEtaNotice } from "@/components/marketplace/delivery-eta-notice";
 import { MarketplaceFilters } from "./_components/filters";
 
 export async function generateMetadata({
@@ -31,10 +41,18 @@ export default async function ClientMarketplacePage({
 
   const rawCategory =
     typeof search?.category === "string" ? search.category : "";
+  const rawCondition =
+    typeof search?.condition === "string" ? search.condition : "";
   const rawQuery = typeof search?.q === "string" ? search.q.trim() : "";
+  const dealsOnly = search?.deals === "1";
 
   const category = (Object.values(Category) as string[]).includes(rawCategory)
     ? (rawCategory as Category)
+    : undefined;
+  const condition = (Object.values(MarketplaceCondition) as string[]).includes(
+    rawCondition,
+  )
+    ? (rawCondition as MarketplaceCondition)
     : undefined;
 
   const products = await prisma.marketplaceProduct.findMany({
@@ -42,14 +60,35 @@ export default async function ClientMarketplacePage({
       status: MarketplaceProductStatus.PUBLISHED,
       deletedAt: null,
       ...(category ? { category } : {}),
-      ...(rawQuery
-        ? {
-            OR: [
-              { name: { contains: rawQuery, mode: "insensitive" } },
-              { description: { contains: rawQuery, mode: "insensitive" } },
-            ],
-          }
-        : {}),
+      ...(condition ? { condition } : {}),
+      // See marketing/marketplace/page.tsx for the AND-of-ORs rationale.
+      AND: [
+        ...(dealsOnly
+          ? [
+            {
+              OR: [
+                { flashSaleEndsAt: { gt: new Date() } },
+                { compareAtCents: { not: null } },
+              ],
+            },
+          ]
+          : []),
+        ...(rawQuery
+          ? [
+            {
+              OR: [
+                { name: { contains: rawQuery, mode: "insensitive" as const } },
+                {
+                  description: {
+                    contains: rawQuery,
+                    mode: "insensitive" as const,
+                  },
+                },
+              ],
+            },
+          ]
+          : []),
+      ],
     },
     orderBy: [{ publishedAt: "desc" }],
     take: 60,
@@ -59,6 +98,9 @@ export default async function ClientMarketplacePage({
       name: true,
       category: true,
       priceCentsClient: true,
+      compareAtCents: true,
+      flashSaleEndsAt: true,
+      condition: true,
       stockAvailable: true,
       leadTimeDays: true,
       moq: true,
@@ -84,8 +126,12 @@ export default async function ClientMarketplacePage({
       <MarketplaceFilters
         lang={lang}
         category={category}
+        condition={condition}
+        deals={dealsOnly}
         query={rawQuery}
       />
+
+      <DeliveryEtaNotice dict={dict} />
 
       {products.length === 0 ? (
         <div className="rounded-lg border border-line bg-surface px-6 py-16 text-center mt-6">
@@ -102,7 +148,7 @@ export default async function ClientMarketplacePage({
                 variant="muted"
                 className="block rounded-lg border border-line bg-surface overflow-hidden hover:bg-subtle transition-colors duration-fast"
               >
-                <div className="aspect-[4/3] bg-subtle relative">
+                <div className="aspect-4/3 bg-subtle relative">
                   {p.images.length > 0 ? (
                     <Image
                       src={`/api/marketplace/image/${p.id}/0`}
@@ -117,6 +163,14 @@ export default async function ClientMarketplacePage({
                       {dict.factory.catalogue.noImage}
                     </div>
                   )}
+                  <div className="absolute top-2 inset-s-2">
+                    <ListingBadges
+                      condition={p.condition}
+                      flashSaleEndsAt={p.flashSaleEndsAt}
+                      dict={dict}
+                      locale={lang}
+                    />
+                  </div>
                 </div>
                 <div className="p-4 flex flex-col gap-2">
                   <div>
@@ -131,9 +185,12 @@ export default async function ClientMarketplacePage({
                     </p>
                   </div>
                   <div className="flex items-end justify-between gap-2 pt-2 border-t border-line-subtle">
-                    <span className="text-base font-semibold text-headline">
-                      {formatEUR(p.priceCentsClient / 100, lang)}
-                    </span>
+                    <ListingPrice
+                      priceCentsClient={p.priceCentsClient}
+                      compareAtCents={p.compareAtCents}
+                      locale={lang}
+                      dict={dict}
+                    />
                     <span
                       className={cn(
                         "text-[11px] uppercase tracking-wide font-medium",
