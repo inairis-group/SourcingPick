@@ -59,3 +59,64 @@ export function computeFactoryPayout(
     netCents: grossCents - feeCents,
   };
 }
+
+/**
+ * Research fee rates (docs/pricing-v2.md): €125/day or €500/week. Quoted
+ * per request by the agent based on scope. Stored in cents.
+ */
+export const RESEARCH_FEE_DAY_CENTS = 125_00;
+export const RESEARCH_FEE_WEEK_CENTS = 500_00;
+
+export type ResearchFeeUnitLite = "DAY" | "WEEK";
+
+/**
+ * Compute the research fee for a unit × quantity. Pure — the agent picks a
+ * unit (day/week) and a count; this is the only place the rates live.
+ */
+export function computeResearchFee(
+  unit: ResearchFeeUnitLite,
+  quantity: number,
+): number {
+  const rate = unit === "WEEK" ? RESEARCH_FEE_WEEK_CENTS : RESEARCH_FEE_DAY_CENTS;
+  return rate * Math.max(0, Math.floor(quantity));
+}
+
+/** Platform retains 20% of a disputed escrow on a standard partial refund. */
+export const DISPUTE_STANDARD_RETAINED_BPS = 2000;
+
+export type DisputeOutcome = "STANDARD" | "CUSTOM";
+
+export type DisputeRefundBreakdown = {
+  /** Amount refunded to the buyer. */
+  refundCents: number;
+  /** Amount the platform retains (0 on a full/custom refund). */
+  retainedCents: number;
+  /** Supplier's half of the retained amount (compensation for committed work). */
+  supplierShareCents: number;
+  /** Platform's half of the retained amount. */
+  platformShareCents: number;
+};
+
+/**
+ * Dispute refund math, per docs/pricing-v2.md:
+ *   CUSTOM   → full refund of the escrowed amount (personalised goods are
+ *              unsellable; the platform shouldn't shift that risk to the buyer).
+ *   STANDARD → buyer refunded 80%; platform retains 20%, split 50/50 with
+ *              the supplier as compensation for materials/labour committed.
+ *
+ * Pure — extracted from resolveDisputeAction so the policy is unit-testable.
+ */
+export function computeDisputeRefund(
+  escrowAmountCents: number,
+  outcome: DisputeOutcome,
+): DisputeRefundBreakdown {
+  const refundCents =
+    outcome === "CUSTOM"
+      ? escrowAmountCents
+      : escrowAmountCents -
+        Math.round((escrowAmountCents * DISPUTE_STANDARD_RETAINED_BPS) / 10_000);
+  const retainedCents = escrowAmountCents - refundCents;
+  const supplierShareCents = Math.round(retainedCents / 2);
+  const platformShareCents = retainedCents - supplierShareCents;
+  return { refundCents, retainedCents, supplierShareCents, platformShareCents };
+}

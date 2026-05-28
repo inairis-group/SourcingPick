@@ -92,6 +92,10 @@ async function canRead(att: {
   contextId: string;
 }): Promise<boolean> {
   switch (att.contextType) {
+    case AttachmentContext.MARKETPLACE_BANNER:
+      // Banner media is public marketing content shown on the storefront.
+      return true;
+
     case AttachmentContext.MARKETPLACE_PRODUCT: {
       const product = await prisma.marketplaceProduct.findUnique({
         where: { id: att.contextId },

@@ -20,6 +20,7 @@ import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
+import { getOrgCreditBalanceCents } from "@/lib/credit/balance";
 import {
   ActivityList,
   DashboardHeader,
@@ -68,6 +69,7 @@ export default async function ClientDashboardPage({
     recentOrders,
     recentRequests,
     completedOrdersAgg,
+    creditBalanceCents,
   ] = await Promise.all([
     prisma.sourcingRequest.count({
       where: {
@@ -147,6 +149,7 @@ export default async function ClientDashboardPage({
       _sum: { totalCents: true },
       _count: true,
     }),
+    getOrgCreditBalanceCents(user.organizationId),
   ]);
 
   return (
@@ -165,6 +168,23 @@ export default async function ClientDashboardPage({
           </Link>
         }
       />
+
+      {creditBalanceCents > 0 && (
+        <div className="mb-6 rounded-lg border border-success-edge bg-success-soft/40 px-4 py-3 flex items-center gap-3">
+          <HugeiconsIcon
+            icon={Wallet01Icon}
+            size={18}
+            strokeWidth={1.5}
+            className="text-success shrink-0"
+          />
+          <p className="text-sm text-success">
+            {dict.client.dashboard.creditAvailable.replace(
+              "{amount}",
+              formatEUR(creditBalanceCents / 100, lang),
+            )}
+          </p>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <KpiCard
@@ -224,7 +244,7 @@ export default async function ClientDashboardPage({
                       <span className="font-mono">{q.request.reference}</span>
                     </p>
                   </div>
-                  <div className="text-end flex-shrink-0">
+                  <div className="text-end shrink-0">
                     <p className="text-sm font-semibold text-headline">
                       {formatEUR(q.totalCentsClient / 100, lang)}
                     </p>
@@ -301,7 +321,7 @@ export default async function ClientDashboardPage({
                       {o.factoryOrg.displayName}
                     </p>
                   </div>
-                  <div className="text-end flex-shrink-0">
+                  <div className="text-end shrink-0">
                     <p className="text-xs text-fg">
                       {dict.orders.statuses[o.status]}
                     </p>
@@ -345,7 +365,7 @@ export default async function ClientDashboardPage({
                       {r.reference}
                     </p>
                   </div>
-                  <div className="text-end flex-shrink-0">
+                  <div className="text-end shrink-0">
                     <p className="text-xs text-fg">
                       {dict.client.requests.statuses[r.status]}
                     </p>

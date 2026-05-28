@@ -4,8 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Category, MarketplaceCondition } from "@prisma/client";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { useDictionary } from "@/lib/i18n/client-provider";
-import { cn } from "@/lib/utils";
 
 const CATEGORIES = Object.values(Category);
 const CONDITIONS = Object.values(MarketplaceCondition);
@@ -66,79 +66,100 @@ export function MarketplaceFilters({
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <form onSubmit={onSearch}>
-        <Input
-          value={draftQuery}
-          onChange={(e) => setDraftQuery(e.target.value)}
-          placeholder={dict.client.marketplace.searchPlaceholder}
-        />
-      </form>
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-        <Chip
-          label={dict.client.marketplace.allCategories}
-          active={!category}
-          href={buildHref({ category: "" })}
-        />
-        {CATEGORIES.map((c) => (
-          <Chip
-            key={c}
-            label={dict.categories[c]}
-            active={category === c}
-            href={buildHref({ category: c })}
-          />
-        ))}
-      </div>
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-        <Chip
-          label={dict.client.marketplace.allConditions}
-          active={!condition}
-          href={buildHref({ condition: "" })}
-        />
-        {CONDITIONS.map((c) => (
-          <Chip
-            key={c}
-            label={dict.factory.catalogue.conditions[c]}
-            active={condition === c}
-            href={buildHref({ condition: c })}
-          />
-        ))}
-        <span className="w-px h-5 bg-line mx-1.5" aria-hidden />
-        <Chip
-          label={dict.client.marketplace.dealsOnly}
-          active={Boolean(deals)}
-          href={buildHref({ deals: !deals })}
-          tone="accent"
-        />
-      </div>
-    </div>
+    <MarketplaceFilterBar
+      dict={dict}
+      categories={CATEGORIES}
+      conditions={CONDITIONS}
+      category={category}
+      condition={condition}
+      deals={deals}
+      draftQuery={draftQuery}
+      onDraftQueryChange={setDraftQuery}
+      onSearch={onSearch}
+      onCategoryChange={(v) => router.push(buildHref({ category: v }))}
+      onConditionChange={(v) => router.push(buildHref({ condition: v }))}
+      onDealsChange={(v) => router.push(buildHref({ deals: v }))}
+    />
   );
 }
 
-function Chip({
-  label,
-  active,
-  href,
-  tone = "default",
+/**
+ * Shared dropdown filter bar — search input + Category / Condition / Deals
+ * selects. The public and client filter wrappers differ only in their URL
+ * prefix, so the visual + interaction layer lives here.
+ */
+export function MarketplaceFilterBar({
+  dict,
+  categories,
+  conditions,
+  category,
+  condition,
+  deals,
+  draftQuery,
+  onDraftQueryChange,
+  onSearch,
+  onCategoryChange,
+  onConditionChange,
+  onDealsChange,
 }: {
-  label: string;
-  active: boolean;
-  href: string;
-  tone?: "default" | "accent";
+  dict: ReturnType<typeof useDictionary>;
+  categories: Category[];
+  conditions: MarketplaceCondition[];
+  category?: Category;
+  condition?: MarketplaceCondition;
+  deals?: boolean;
+  draftQuery: string;
+  onDraftQueryChange: (v: string) => void;
+  onSearch: (e: React.FormEvent) => void;
+  onCategoryChange: (v: string) => void;
+  onConditionChange: (v: string) => void;
+  onDealsChange: (v: boolean) => void;
 }) {
   return (
-    <a
-      href={href}
-      className={cn(
-        "inline-flex items-center h-7 px-3 rounded-full border text-[11px] font-medium uppercase tracking-wide whitespace-nowrap transition-colors duration-fast",
-        active
-          ? tone === "accent"
-            ? "bg-danger text-on-action border-danger-edge"
-            : "bg-action text-on-action border-action"
-          : "bg-surface text-fg border-line hover:bg-subtle",
-      )}
-    >
-      {label}
-    </a>
+    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+      <form onSubmit={onSearch} className="flex-1 min-w-0">
+        <Input
+          value={draftQuery}
+          onChange={(e) => onDraftQueryChange(e.target.value)}
+          placeholder={dict.client.marketplace.searchPlaceholder}
+        />
+      </form>
+
+      <div className="flex items-center gap-2">
+        <Select
+          size="sm"
+          className="min-w-36"
+          value={category ?? ""}
+          onChange={onCategoryChange}
+          options={[
+            { value: "", label: dict.client.marketplace.allCategories },
+            ...categories.map((c) => ({ value: c, label: dict.categories[c] })),
+          ]}
+        />
+        <Select
+          size="sm"
+          className="min-w-36"
+          value={condition ?? ""}
+          onChange={onConditionChange}
+          options={[
+            { value: "", label: dict.client.marketplace.allConditions },
+            ...conditions.map((c) => ({
+              value: c,
+              label: dict.factory.catalogue.conditions[c],
+            })),
+          ]}
+        />
+        <Select
+          size="sm"
+          className="min-w-36"
+          value={deals ? "1" : ""}
+          onChange={(v) => onDealsChange(v === "1")}
+          options={[
+            { value: "", label: dict.client.marketplace.allDeals },
+            { value: "1", label: dict.client.marketplace.dealsOnly },
+          ]}
+        />
+      </div>
+    </div>
   );
 }

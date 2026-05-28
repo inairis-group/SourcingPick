@@ -3,9 +3,8 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Category, MarketplaceCondition } from "@prisma/client";
-import { Input } from "@/components/ui/input";
 import { useDictionary } from "@/lib/i18n/client-provider";
-import { cn } from "@/lib/utils";
+import { MarketplaceFilterBar } from "@/app/[lang]/(marketing)/marketplace/_components/filters";
 
 const CATEGORIES = Object.values(Category);
 const CONDITIONS = Object.values(MarketplaceCondition);
@@ -61,79 +60,19 @@ export function MarketplaceFilters({
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <form onSubmit={onSearch}>
-        <Input
-          value={draftQuery}
-          onChange={(e) => setDraftQuery(e.target.value)}
-          placeholder={dict.client.marketplace.searchPlaceholder}
-        />
-      </form>
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-        <Chip
-          label={dict.client.marketplace.allCategories}
-          active={!category}
-          href={buildHref({ category: "" })}
-        />
-        {CATEGORIES.map((c) => (
-          <Chip
-            key={c}
-            label={dict.categories[c]}
-            active={category === c}
-            href={buildHref({ category: c })}
-          />
-        ))}
-      </div>
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-        <Chip
-          label={dict.client.marketplace.allConditions}
-          active={!condition}
-          href={buildHref({ condition: "" })}
-        />
-        {CONDITIONS.map((c) => (
-          <Chip
-            key={c}
-            label={dict.factory.catalogue.conditions[c]}
-            active={condition === c}
-            href={buildHref({ condition: c })}
-          />
-        ))}
-        <span className="w-px h-5 bg-line mx-1.5" aria-hidden />
-        <Chip
-          label={dict.client.marketplace.dealsOnly}
-          active={Boolean(deals)}
-          href={buildHref({ deals: !deals })}
-          tone="accent"
-        />
-      </div>
-    </div>
-  );
-}
-
-function Chip({
-  label,
-  active,
-  href,
-  tone = "default",
-}: {
-  label: string;
-  active: boolean;
-  href: string;
-  tone?: "default" | "accent";
-}) {
-  return (
-    <a
-      href={href}
-      className={cn(
-        "inline-flex items-center h-7 px-3 rounded-full border text-[11px] font-medium uppercase tracking-wide whitespace-nowrap transition-colors duration-fast",
-        active
-          ? tone === "accent"
-            ? "bg-danger text-on-action border-danger-edge"
-            : "bg-action text-on-action border-action"
-          : "bg-surface text-fg border-line hover:bg-subtle",
-      )}
-    >
-      {label}
-    </a>
+    <MarketplaceFilterBar
+      dict={dict}
+      categories={CATEGORIES}
+      conditions={CONDITIONS}
+      category={category}
+      condition={condition}
+      deals={deals}
+      draftQuery={draftQuery}
+      onDraftQueryChange={setDraftQuery}
+      onSearch={onSearch}
+      onCategoryChange={(v) => router.push(buildHref({ category: v }))}
+      onConditionChange={(v) => router.push(buildHref({ condition: v }))}
+      onDealsChange={(v) => router.push(buildHref({ deals: v }))}
+    />
   );
 }

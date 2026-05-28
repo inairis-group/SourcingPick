@@ -28,6 +28,8 @@ export type NotificationVars = {
     | "agent_assigned"
     | "order_cancelled"
     | "order_completed"
+    | "order_disputed"
+    | "order_dispute_resolved"
     | "request_received";
 };
 
@@ -64,6 +66,18 @@ const SYSTEM_TITLES: Record<
     en: "Order completed",
     zh: "订单已完成",
     ar: "اكتمل الطلب",
+  },
+  order_disputed: {
+    fr: "Commande en litige",
+    en: "Order under dispute",
+    zh: "订单进入争议",
+    ar: "الطلب قيد النزاع",
+  },
+  order_dispute_resolved: {
+    fr: "Litige résolu",
+    en: "Dispute resolved",
+    zh: "争议已解决",
+    ar: "تم حل النزاع",
   },
   request_received: {
     fr: "Nouvelle demande de sourcing reçue",

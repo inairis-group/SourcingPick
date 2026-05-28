@@ -1,13 +1,23 @@
 "use server";
 
 import { headers } from "next/headers";
-import { InvoiceType, OrderStatus, Role } from "@prisma/client";
+import {
+  InvoiceType,
+  OrderStatus,
+  ResearchFeeStatus,
+  Role,
+} from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { writeAuditLog } from "@/lib/audit/log";
 import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
+import {
+  computeCreditApplication,
+  getOrgCreditBalanceCents,
+} from "@/lib/credit/balance";
 import { getSiteUrl, getStripe } from "./client";
 import { getOrCreateStripeCustomerId } from "./customer";
+import { finalizeDepositByCredit } from "./finalize";
 
 export type CreateCheckoutResult =
   | { ok: true; url: string }
@@ -23,6 +33,7 @@ async function createOrderCheckoutSession(
   amountCents: number,
   invoiceType: typeof InvoiceType.DEPOSIT | typeof InvoiceType.BALANCE,
   locale: Locale,
+  appliedCreditCents = 0,
 ): Promise<CreateCheckoutResult> {
   let customerId: string;
   try {
@@ -65,12 +76,14 @@ async function createOrderCheckoutSession(
           orderId: order.id,
           orderReference: order.reference,
           invoiceType,
+          appliedCreditCents: String(appliedCreditCents),
         },
       },
       metadata: {
         orderId: order.id,
         orderReference: order.reference,
         invoiceType,
+        appliedCreditCents: String(appliedCreditCents),
       },
       locale: STRIPE_LOCALE[locale] ?? "auto",
       success_url: `${siteUrl}/${locale}/client/orders/${order.id}?payment=success`,
@@ -124,11 +137,46 @@ export async function createDepositCheckoutAction(
   }
 
   const locale = await currentLocale();
+
+  // Apply any platform credit (e.g. a credited-back research fee) to the
+  // deposit. `computeCreditApplication` refuses to leave an un-chargeable
+  // sub-minimum remainder.
+  const balanceCents = await getOrgCreditBalanceCents(order.clientOrgId);
+  const { appliedCents, remainderCents } = computeCreditApplication({
+    chargeCents: order.depositCents,
+    balanceCents,
+  });
+
+  // Full coverage by credit → no Stripe charge. Settle the deposit
+  // directly: debit the credit, write invoice + escrow, advance the order.
+  if (appliedCents > 0 && remainderCents === 0) {
+    const settled = await finalizeDepositByCredit({
+      orderId: order.id,
+      appliedCreditCents: appliedCents,
+    });
+    await writeAuditLog({
+      actorUserId: user.id,
+      action: "payment.deposit_settled_by_credit",
+      targetType: "Order",
+      targetId: order.id,
+      payload: { appliedCreditCents: appliedCents },
+    });
+    if (!settled.ok) return { ok: false, error: settled.error };
+    // No Stripe redirect needed — send the buyer to the order with the
+    // same success marker the webhook path uses.
+    const siteUrl = getSiteUrl();
+    return {
+      ok: true,
+      url: `${siteUrl}/${locale}/client/orders/${order.id}?payment=success`,
+    };
+  }
+
   const result = await createOrderCheckoutSession(
     order,
-    order.depositCents,
+    remainderCents,
     InvoiceType.DEPOSIT,
     locale,
+    appliedCents,
   );
 
   await writeAuditLog({
@@ -138,6 +186,8 @@ export async function createDepositCheckoutAction(
     targetId: order.id,
     payload: {
       amountCents: order.depositCents,
+      chargedCents: remainderCents,
+      appliedCreditCents: appliedCents,
       type: "DEPOSIT",
       ok: result.ok,
     },
@@ -217,6 +267,98 @@ export async function createBalanceCheckoutAction(
   });
 
   return result;
+}
+
+/**
+ * Create a Stripe Checkout Session for a request's research fee.
+ *
+ * The agent quotes the fee (status QUOTED → an ISSUED invoice). This lets
+ * the buyer pay it. The webhook marks the invoice PAID and stamps
+ * researchFeeStatus=PAID + researchFeePaidAt (which anchors the 30-day
+ * credit-back window).
+ */
+export async function createResearchFeeCheckoutAction(
+  requestId: string,
+): Promise<CreateCheckoutResult> {
+  const user = await requireRole(Role.CLIENT);
+
+  const request = await prisma.sourcingRequest.findFirst({
+    where: { id: requestId, clientOrgId: user.organizationId },
+    select: {
+      id: true,
+      reference: true,
+      title: true,
+      clientOrgId: true,
+      researchFeeStatus: true,
+      researchFeeCents: true,
+      researchFeeInvoiceId: true,
+    },
+  });
+  if (!request) return { ok: false, error: "Request not found." };
+  if (request.researchFeeStatus !== ResearchFeeStatus.QUOTED) {
+    return { ok: false, error: "There's no research fee awaiting payment." };
+  }
+  if (!request.researchFeeCents || request.researchFeeCents <= 0) {
+    return { ok: false, error: "The research fee amount is invalid." };
+  }
+
+  let customerId: string;
+  try {
+    customerId = await getOrCreateStripeCustomerId(request.clientOrgId);
+  } catch (e) {
+    return { ok: false, error: `Couldn't reach Stripe: ${(e as Error).message}` };
+  }
+
+  const locale = await currentLocale();
+  const siteUrl = getSiteUrl();
+  const stripe = getStripe();
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      customer: customerId,
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          quantity: 1,
+          price_data: {
+            currency: "eur",
+            unit_amount: request.researchFeeCents,
+            product_data: {
+              name: `${request.reference} · ${request.title}`,
+              description: "Frais de recherche · SourcingPick",
+            },
+          },
+        },
+      ],
+      payment_intent_data: {
+        metadata: {
+          researchFeeRequestId: request.id,
+          researchFeeInvoiceId: request.researchFeeInvoiceId ?? "",
+        },
+      },
+      metadata: {
+        researchFeeRequestId: request.id,
+        researchFeeInvoiceId: request.researchFeeInvoiceId ?? "",
+      },
+      locale: STRIPE_LOCALE[locale] ?? "auto",
+      success_url: `${siteUrl}/${locale}/client/requests/${request.id}?research=success`,
+      cancel_url: `${siteUrl}/${locale}/client/requests/${request.id}?research=cancelled`,
+    });
+    if (!session.url) {
+      return { ok: false, error: "Stripe didn't return a checkout URL." };
+    }
+    await writeAuditLog({
+      actorUserId: user.id,
+      action: "research_fee.checkout_created",
+      targetType: "SourcingRequest",
+      targetId: request.id,
+      payload: { amountCents: request.researchFeeCents },
+    });
+    return { ok: true, url: session.url };
+  } catch (e) {
+    return { ok: false, error: `Stripe error: ${(e as Error).message}` };
+  }
 }
 
 // Stripe Checkout doesn't support Arabic as of writing — fall back to

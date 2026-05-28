@@ -13,6 +13,7 @@
       "kpiAwaitingPayment": "Awaiting payment",
       "kpiTotalSpent": "Spent (completed)",
       "kpiTotalSpentHint": "{n} closed order(s)",
+      "creditAvailable": "You have {amount} in platform credit — it will be applied to your next order deposit.",
       "quotesAwaitingTitle": "Quotes to decide",
       "quotesAwaitingDesc": "Quotes your agent has forwarded.",
       "quotesEmpty": "No quotes awaiting decision. Your agent will notify you.",
@@ -161,8 +162,17 @@
       "flashSaleBadge": "Flash",
       "allConditions": "Any condition",
       "dealsOnly": "Deals only",
+      "allDeals": "All items",
       "deliveryEtasTitle": "Estimated delivery windows",
       "deliveryEtasDisclaimer": "Delivery times are estimates and may vary based on supplier, volume, destination, and logistics."
+    },
+    "researchFee": {
+      "title": "Research fee",
+      "quotedBody": "Your agent has scoped this request. Pay the {amount} research fee to start sourcing — it's credited back as platform credit if you place an order within 30 days.",
+      "payCta": "Pay {amount}",
+      "paidBody": "Research fee of {amount} paid. Place an order within 30 days and it's returned as platform credit.",
+      "creditedBody": "Your {amount} research fee was credited back — it'll be applied to your order's deposit.",
+      "waivedBody": "Your agent waived the research fee for this request."
     },
     "quotes": {
       "sectionTitle": "Quotes received",
@@ -359,6 +369,25 @@
     }
   },
   "agent": {
+    "researchFee": {
+      "title": "Research fee",
+      "description": "Bill the buyer for the qualification work before sourcing begins. €125/day or €500/week.",
+      "unitLabel": "Bill by",
+      "quantityLabel": "Quantity",
+      "amountLabel": "Fee",
+      "units": { "DAY": "Day", "WEEK": "Week" },
+      "quoteCta": "Quote fee",
+      "requoteCta": "Update fee",
+      "waiveCta": "Waive",
+      "paidNote": "Research fee of {amount} paid by the buyer.",
+      "statuses": {
+        "NONE": "Not set",
+        "QUOTED": "Awaiting payment",
+        "PAID": "Paid",
+        "CREDITED": "Credited back",
+        "WAIVED": "Waived"
+      }
+    },
     "dashboard": {
       "eyebrow": "Dashboard",
       "title": "My desk",
@@ -849,6 +878,7 @@
       "colStatus": "Status",
       "colProvider": "Provider",
       "colReleased": "Released",
+      "colActions": "Actions",
       "statuses": {
         "INITIATED": "Initiated",
         "FUNDED": "Funded",
@@ -856,6 +886,18 @@
         "RELEASED": "Released",
         "REFUNDED": "Refunded",
         "DISPUTED": "Disputed"
+      },
+      "dispute": {
+        "openCta": "Dispute",
+        "reasonPlaceholder": "Reason (e.g. off-spec, late)…",
+        "confirmOpen": "Open dispute",
+        "resolveLabel": "Resolve dispute",
+        "standard": "Partial refund",
+        "standardHint": "Standard product issue: buyer refunded 80%, platform retains 20% split 50/50 with the supplier.",
+        "custom": "Full refund",
+        "customHint": "Custom/personalised goods: buyer fully refunded.",
+        "reject": "Reject",
+        "rejectHint": "Dispute not upheld — escrow returns to held and payout can proceed."
       }
     },
     "payouts": {
@@ -1121,6 +1163,65 @@
       "save": "Save estimates",
       "saved": "Estimates saved."
     },
+    "banners": {
+      "eyebrow": "Marketplace",
+      "title": "Campaign banners",
+      "description": "Editorial banners shown at the top of the marketplace. Use these for promotions and announcements — individual factory flash sales surface automatically from their listings.",
+      "manageCta": "Banners",
+      "backToMarketplace": "Back to marketplace",
+      "createTitle": "New banner",
+      "listTitle": "All banners",
+      "empty": "No banners yet. Create one above.",
+      "titleLabel": "Headline",
+      "titlePlaceholder": "Summer flash sale — up to 30% off",
+      "subtitlePlaceholder": "On selected textiles, this week only.",
+      "subtitleLabel": "Subtitle",
+      "ctaLabelLabel": "Button label",
+      "ctaLabelPlaceholder": "Shop deals",
+      "ctaHrefLabel": "Button link",
+      "ctaHint": "Optional — leave both empty for a text-only banner.",
+      "ctaHrefHint": "Relative (/marketplace?deals=1) or absolute URL.",
+      "toneLabel": "Style",
+      "orderLabel": "Sort order",
+      "orderHint": "Lower shows first.",
+      "startsLabel": "Show from",
+      "endsLabel": "Show until",
+      "scheduleHint": "Optional. Empty = show immediately / forever.",
+      "fromLabel": "from",
+      "toLabel": "to",
+      "createCta": "Create banner",
+      "created": "Banner created.",
+      "statusActive": "Live",
+      "statusHidden": "Hidden",
+      "delete": "Delete",
+      "confirmDelete": "Confirm delete",
+      "backgroundLabel": "Background",
+      "backgrounds": {
+        "PRESET": "Preset colour",
+        "GRADIENT": "Custom gradient",
+        "IMAGE": "Image",
+        "VIDEO": "Video"
+      },
+      "gradientFromLabel": "Start colour",
+      "gradientToLabel": "End colour",
+      "gradientViaLabel": "Middle colour",
+      "gradientViaToggle": "Add a middle colour",
+      "gradientAngleLabel": "Angle",
+      "mediaImageLabel": "Background image",
+      "mediaImageHint": "JPG, PNG, WebP or GIF — 10 MB max.",
+      "mediaVideoLabel": "Background video",
+      "mediaVideoHint": "MP4, WebM or MOV — 50 MB max. Loops, muted.",
+      "overlayLabel": "Background darkening",
+      "overlayHint": "Improves text legibility over media.",
+      "previewLabel": "Preview",
+      "previewHint": "Updates live as you change settings.",
+      "previewTitleFallback": "Banner title",
+      "tones": {
+        "BRAND": "Brand blue",
+        "DARK": "Dark",
+        "SALE": "Sale red"
+      }
+    },
     "adminListing": {
       "eyebrow": "Admin tools",
       "title": "Create listing on behalf of factory",
@@ -1148,6 +1249,9 @@
       "saveCta": "Save allowlist",
       "saved": "Allowlist saved."
     }
+  },
+  "attachments": {
+    "confirmDelete": "Delete?"
   },
   "common": {
     "actions": {
@@ -1280,6 +1384,100 @@
       "subtitle": "Create your account in two minutes. First request is free, no commitment.",
       "primaryButton": "Create an account",
       "secondaryButton": "See pricing"
+    }
+  },
+  "factories": {
+    "metaTitle": "For factories & suppliers",
+    "eyebrow": "For factories & suppliers",
+    "title": "Qualified demand. Guaranteed payment.",
+    "subtitle": "SourcingPick brings you pre-vetted buyers whose requests are scoped by a real agent before they reach you — and the money is locked in escrow before you start production. You make what you're good at; we handle demand, payment security, and logistics.",
+    "ctaPrimary": "Become a partner factory",
+    "ctaSecondary": "See pricing",
+    "benefits": [
+      {
+        "title": "Qualified demand, no tyre-kickers",
+        "body": "Every request is qualified by an agent and scored on the same grid before you're invited to quote. You spend time on serious orders, not vague enquiries."
+      },
+      {
+        "title": "You get paid — guaranteed",
+        "body": "The buyer's funds are blocked in escrow before production begins. On conforming delivery, your share is released automatically. No chasing payment, no bad debt."
+      },
+      {
+        "title": "Two ways to win business",
+        "body": "Respond to tenders for custom orders, or list ready-to-ship products on the marketplace for one-click purchase. Both run through the same escrow + logistics rails."
+      },
+      {
+        "title": "Get paid in your region",
+        "body": "Onboard with Stripe, LianLian, or Alipay depending on where you are. Payouts land in your local bank account or wallet — China, SE Asia, the Gulf, Europe, and beyond."
+      },
+      {
+        "title": "Logistics & insurance built in",
+        "body": "Shipment tracking to the buyer's premises and category-specific insurance are part of every transaction. You ship; we cover the rest."
+      },
+      {
+        "title": "A dedicated agent, not a hotline",
+        "body": "An agent who knows your capabilities carries each request. Questions, specs, and negotiation happen through one person — in your language."
+      }
+    ],
+    "steps": {
+      "eyebrow": "How it works",
+      "title": "From signup to payout in five steps.",
+      "items": [
+        {
+          "title": "Sign up & verify",
+          "body": "Create your factory account and complete KYC — business registration, tax, and a couple of facility documents. One-time."
+        },
+        {
+          "title": "Get matched",
+          "body": "Receive tender invitations for requests that fit your capabilities, or publish products to the marketplace."
+        },
+        {
+          "title": "Quote or list",
+          "body": "Submit a quote with your factory price and lead time, or set your marketplace listing live after a quick review."
+        },
+        {
+          "title": "Produce on confirmed orders",
+          "body": "Once the buyer accepts and pays the escrow-backed deposit, you start production with certainty."
+        }
+      ]
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Questions factories ask us.",
+      "items": [
+        {
+          "question": "How much does it cost to sell on SourcingPick?",
+          "answer": "There's no subscription and no listing fee. We deduct a 3% commission from your payout only when an order completes. Nothing upfront, nothing if you don't sell."
+        },
+        {
+          "question": "When and how do I get paid?",
+          "answer": "Buyer funds sit in escrow from the moment they pay. On confirmed, conforming delivery, your net amount (order value minus the 3%) is released to the payout account you onboarded with — Stripe, LianLian, or Alipay depending on your region."
+        },
+        {
+          "question": "Which payout methods can I use?",
+          "answer": "Stripe Connect for the EU, UK, US, UAE, Singapore, Hong Kong and parts of Africa; LianLian Global or Alipay for mainland China and South-East Asia. You pick one during onboarding."
+        },
+        {
+          "question": "Do I need certifications to sell?",
+          "answer": "They're not mandatory, but buyers can filter and qualify on them — listing your real certifications (GOTS, OEKO-TEX, FSC, CE, etc.) gets you in front of more serious orders."
+        },
+        {
+          "question": "How are buyers vetted?",
+          "answer": "Every sourcing request is reviewed and qualified by a SourcingPick agent before any factory is invited. Marketplace buyers pay through escrow like everyone else, so you're never exposed to non-payment."
+        },
+        {
+          "question": "What happens if there's a dispute?",
+          "answer": "Funds stay in escrow until delivery is confirmed. For a standard product issue we mediate a partial refund and the platform absorbs part of the cost alongside you; for custom goods the policy differs. The full dispute policy is shared during onboarding."
+        },
+        {
+          "question": "What can I sell — custom or ready-made?",
+          "answer": "Both. Tenders are for custom, made-to-spec orders negotiated with an agent. The marketplace is for pre-negotiated, ready-to-ship products buyers can purchase in one click."
+        },
+        {
+          "question": "What do I need to get verified (KYC)?",
+          "answer": "Your business registration, a tax document, and one or two facility photos or reference documents. Verification is one-time and usually quick."
+        }
+      ]
     }
   },
   "about": {
@@ -1700,6 +1898,7 @@
     "about": "About",
     "howItWorks": "How it works",
     "becomePartner": "Become a partner factory",
+    "forFactories": "For factories",
     "terms": "Terms of service",
     "privacy": "Privacy policy",
     "cookies": "Cookie policy",

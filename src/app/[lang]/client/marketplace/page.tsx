@@ -18,6 +18,7 @@ import {
   ListingPrice,
 } from "@/components/marketplace/listing-price";
 import { DeliveryEtaNotice } from "@/components/marketplace/delivery-eta-notice";
+import { MarketplaceBannerRail } from "@/components/marketplace/banner-rail";
 import { MarketplaceFilters } from "./_components/filters";
 
 export async function generateMetadata({
@@ -122,6 +123,8 @@ export default async function ClientMarketplacePage({
           {dict.client.marketplace.description}
         </p>
       </header>
+
+      <MarketplaceBannerRail locale={lang} />
 
       <MarketplaceFilters
         lang={lang}

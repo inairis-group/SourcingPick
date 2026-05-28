@@ -3,9 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
+  CreditReason,
   NotificationType,
   OrderStatus,
   QuoteStatus,
+  ResearchFeeStatus,
   Role,
   SourcingStatus,
 } from "@prisma/client";
@@ -18,6 +20,12 @@ import {
 } from "@/lib/notifications/emit";
 import { generateUniqueReference } from "@/lib/sourcing/reference";
 import { canTransition, isTerminal } from "./transitions";
+
+/**
+ * Research fee is credited back if the buyer places an order within this
+ * window of paying it (docs/pricing-v2.md). Anchored on researchFeePaidAt.
+ */
+const CREDIT_BACK_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
 
 // =============================================================
 // Quote acceptance (client → creates Order, rejects siblings)
@@ -55,6 +63,9 @@ export async function acceptQuoteAction(
           id: true,
           clientOrgId: true,
           status: true,
+          researchFeeStatus: true,
+          researchFeeCents: true,
+          researchFeePaidAt: true,
         },
       },
     },
@@ -119,10 +130,42 @@ export async function acceptQuoteAction(
         data: { status: QuoteStatus.REJECTED },
       });
 
-      await tx.sourcingRequest.update({
-        where: { id: quote.requestId },
-        data: { status: SourcingStatus.QUOTE_ACCEPTED },
-      });
+      // Credit-back: if the buyer paid a research fee on this request and
+      // is ordering within the 30-day window, return the fee as platform
+      // credit and mark it CREDITED. Idempotent via the PAID→CREDITED flip.
+      const rf = quote.request;
+      const withinWindow =
+        rf.researchFeePaidAt !== null &&
+        Date.now() - rf.researchFeePaidAt.getTime() <= CREDIT_BACK_WINDOW_MS;
+      if (
+        rf.researchFeeStatus === ResearchFeeStatus.PAID &&
+        rf.researchFeeCents &&
+        rf.researchFeeCents > 0 &&
+        withinWindow
+      ) {
+        await tx.creditTransaction.create({
+          data: {
+            organizationId: quote.request.clientOrgId,
+            amountCents: rf.researchFeeCents,
+            reason: CreditReason.RESEARCH_FEE_CREDIT,
+            refType: "SourcingRequest",
+            refId: quote.requestId,
+            note: `Research fee credited back on order ${reference}`,
+          },
+        });
+        await tx.sourcingRequest.update({
+          where: { id: quote.requestId },
+          data: {
+            status: SourcingStatus.QUOTE_ACCEPTED,
+            researchFeeStatus: ResearchFeeStatus.CREDITED,
+          },
+        });
+      } else {
+        await tx.sourcingRequest.update({
+          where: { id: quote.requestId },
+          data: { status: SourcingStatus.QUOTE_ACCEPTED },
+        });
+      }
 
       return order;
     });

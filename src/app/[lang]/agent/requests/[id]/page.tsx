@@ -4,6 +4,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight01Icon, Mail01Icon } from "@hugeicons/core-free-icons";
 import { Link } from "@/components/ui/link";
 import { buttonClass } from "@/components/ui/button";
+import { ResearchFeeControl } from "./_components/research-fee-control";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -197,6 +198,17 @@ export default async function AgentRequestDetailPage({
         </Section>
       </div>
 
+      <ResearchFeeControl
+        requestId={req.id}
+        lang={lang}
+        current={{
+          status: req.researchFeeStatus,
+          unit: req.researchFeeUnit,
+          quantity: req.researchFeeQuantity,
+          cents: req.researchFeeCents,
+        }}
+      />
+
       <Section title={dict.agent.requests.sectionTenders} className="mb-6">
         <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
           <p className="text-sm text-muted">
@@ -348,7 +360,7 @@ function Detail({
       <dt className="text-xs font-medium uppercase tracking-wide text-faint">
         {label}
       </dt>
-      <dd className="text-sm text-fg sm:col-span-2 break-words">{children}</dd>
+      <dd className="text-sm text-fg sm:col-span-2 wrap-break-word">{children}</dd>
     </div>
   );
 }

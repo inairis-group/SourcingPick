@@ -13,6 +13,7 @@
       "kpiAwaitingPayment": "Paiements en attente",
       "kpiTotalSpent": "Dépensé (commandes livrées)",
       "kpiTotalSpentHint": "{n} commande(s) clôturée(s)",
+      "creditAvailable": "Vous avez {amount} de crédit plateforme — il sera appliqué à l'acompte de votre prochaine commande.",
       "quotesAwaitingTitle": "Devis à décider",
       "quotesAwaitingDesc": "Devis que votre agent vous a transmis.",
       "quotesEmpty": "Pas de devis en attente. Votre agent vous notifiera.",
@@ -161,8 +162,17 @@
       "flashSaleBadge": "Flash",
       "allConditions": "Tous états",
       "dealsOnly": "Promos seulement",
+      "allDeals": "Tous les articles",
       "deliveryEtasTitle": "Délais de livraison estimés",
       "deliveryEtasDisclaimer": "Les délais sont des estimations et peuvent varier selon le fournisseur, le volume, la destination et les modalités logistiques."
+    },
+    "researchFee": {
+      "title": "Frais de recherche",
+      "quotedBody": "Votre agent a cadré cette demande. Réglez les frais de recherche de {amount} pour lancer le sourcing — ils sont remboursés en crédit plateforme si vous passez commande sous 30 jours.",
+      "payCta": "Payer {amount}",
+      "paidBody": "Frais de recherche de {amount} payés. Passez commande sous 30 jours et ils vous sont rendus en crédit plateforme.",
+      "creditedBody": "Vos frais de recherche de {amount} ont été remboursés en crédit — ils seront appliqués à l'acompte de votre commande.",
+      "waivedBody": "Votre agent a offert les frais de recherche pour cette demande."
     },
     "quotes": {
       "sectionTitle": "Devis reçus",
@@ -359,6 +369,25 @@
     }
   },
   "agent": {
+    "researchFee": {
+      "title": "Frais de recherche",
+      "description": "Facturez à l'acheteur le travail de qualification avant le sourcing. 125 €/jour ou 500 €/semaine.",
+      "unitLabel": "Facturer par",
+      "quantityLabel": "Quantité",
+      "amountLabel": "Frais",
+      "units": { "DAY": "Jour", "WEEK": "Semaine" },
+      "quoteCta": "Facturer",
+      "requoteCta": "Mettre à jour",
+      "waiveCta": "Offrir",
+      "paidNote": "Frais de recherche de {amount} payés par l'acheteur.",
+      "statuses": {
+        "NONE": "Non défini",
+        "QUOTED": "En attente de paiement",
+        "PAID": "Payé",
+        "CREDITED": "Remboursé en crédit",
+        "WAIVED": "Offert"
+      }
+    },
     "dashboard": {
       "eyebrow": "Tableau de bord",
       "title": "Mon poste",
@@ -849,6 +878,7 @@
       "colStatus": "Statut",
       "colProvider": "Fournisseur",
       "colReleased": "Libéré le",
+      "colActions": "Actions",
       "statuses": {
         "INITIATED": "Initié",
         "FUNDED": "Approvisionné",
@@ -856,6 +886,18 @@
         "RELEASED": "Libéré",
         "REFUNDED": "Remboursé",
         "DISPUTED": "En litige"
+      },
+      "dispute": {
+        "openCta": "Litige",
+        "reasonPlaceholder": "Motif (ex. non conforme, retard)…",
+        "confirmOpen": "Ouvrir le litige",
+        "resolveLabel": "Résoudre le litige",
+        "standard": "Remboursement partiel",
+        "standardHint": "Problème produit standard : 80 % remboursé à l'acheteur, la plateforme retient 20 % partagé 50/50 avec le fournisseur.",
+        "custom": "Remboursement total",
+        "customHint": "Produit sur mesure : acheteur remboursé intégralement.",
+        "reject": "Rejeter",
+        "rejectHint": "Litige non retenu — le séquestre repasse en détenu et le versement peut se faire."
       }
     },
     "payouts": {
@@ -1121,6 +1163,65 @@
       "save": "Enregistrer les délais",
       "saved": "Délais enregistrés."
     },
+    "banners": {
+      "eyebrow": "Marketplace",
+      "title": "Bannières de campagne",
+      "description": "Bannières éditoriales affichées en haut de la marketplace. Utilisez-les pour les promotions et annonces — les ventes flash des usines remontent automatiquement depuis leurs annonces.",
+      "manageCta": "Bannières",
+      "backToMarketplace": "Retour à la marketplace",
+      "createTitle": "Nouvelle bannière",
+      "listTitle": "Toutes les bannières",
+      "empty": "Aucune bannière. Créez-en une ci-dessus.",
+      "titleLabel": "Titre",
+      "titlePlaceholder": "Vente flash d'été — jusqu'à -30 %",
+      "subtitlePlaceholder": "Sur une sélection de textiles, cette semaine seulement.",
+      "subtitleLabel": "Sous-titre",
+      "ctaLabelLabel": "Libellé du bouton",
+      "ctaLabelPlaceholder": "Voir les offres",
+      "ctaHrefLabel": "Lien du bouton",
+      "ctaHint": "Optionnel — laissez les deux vides pour une bannière sans bouton.",
+      "ctaHrefHint": "Relatif (/marketplace?deals=1) ou URL absolue.",
+      "toneLabel": "Style",
+      "orderLabel": "Ordre d'affichage",
+      "orderHint": "Le plus petit s'affiche en premier.",
+      "startsLabel": "Afficher à partir du",
+      "endsLabel": "Afficher jusqu'au",
+      "scheduleHint": "Optionnel. Vide = affichage immédiat / permanent.",
+      "fromLabel": "du",
+      "toLabel": "au",
+      "createCta": "Créer la bannière",
+      "created": "Bannière créée.",
+      "statusActive": "En ligne",
+      "statusHidden": "Masquée",
+      "delete": "Supprimer",
+      "confirmDelete": "Confirmer la suppression",
+      "backgroundLabel": "Arrière-plan",
+      "backgrounds": {
+        "PRESET": "Couleur prédéfinie",
+        "GRADIENT": "Dégradé personnalisé",
+        "IMAGE": "Image",
+        "VIDEO": "Vidéo"
+      },
+      "gradientFromLabel": "Couleur de début",
+      "gradientToLabel": "Couleur de fin",
+      "gradientViaLabel": "Couleur intermédiaire",
+      "gradientViaToggle": "Ajouter une couleur intermédiaire",
+      "gradientAngleLabel": "Angle",
+      "mediaImageLabel": "Image de fond",
+      "mediaImageHint": "JPG, PNG, WebP ou GIF — 10 Mo max.",
+      "mediaVideoLabel": "Vidéo de fond",
+      "mediaVideoHint": "MP4, WebM ou MOV — 50 Mo max. Lecture en boucle, muette.",
+      "overlayLabel": "Assombrissement du fond",
+      "overlayHint": "Améliore la lisibilité du texte par-dessus le média.",
+      "previewLabel": "Aperçu",
+      "previewHint": "Mise à jour en direct selon vos réglages.",
+      "previewTitleFallback": "Titre de la bannière",
+      "tones": {
+        "BRAND": "Bleu de marque",
+        "DARK": "Sombre",
+        "SALE": "Rouge promo"
+      }
+    },
     "adminListing": {
       "eyebrow": "Outils admin",
       "title": "Publier une annonce pour le compte d'une usine",
@@ -1148,6 +1249,9 @@
       "saveCta": "Enregistrer",
       "saved": "Liste enregistrée."
     }
+  },
+  "attachments": {
+    "confirmDelete": "Supprimer ?"
   },
   "common": {
     "actions": {
@@ -1280,6 +1384,100 @@
       "subtitle": "Créez votre compte en deux minutes. Première demande gratuite, sans engagement.",
       "primaryButton": "Créer un compte",
       "secondaryButton": "Voir les tarifs"
+    }
+  },
+  "factories": {
+    "metaTitle": "Pour les usines et fournisseurs",
+    "eyebrow": "Pour les usines et fournisseurs",
+    "title": "Une demande qualifiée. Un paiement garanti.",
+    "subtitle": "SourcingPick vous apporte des acheteurs pré-vérifiés dont les demandes sont cadrées par un véritable agent avant de vous parvenir — et les fonds sont bloqués en séquestre avant le début de la production. Vous fabriquez ce que vous savez faire ; nous gérons la demande, la sécurité des paiements et la logistique.",
+    "ctaPrimary": "Devenir usine partenaire",
+    "ctaSecondary": "Voir les tarifs",
+    "benefits": [
+      {
+        "title": "Une demande qualifiée, sans curieux",
+        "body": "Chaque demande est qualifiée par un agent et notée sur la même grille avant que vous soyez invité à chiffrer. Vous consacrez votre temps à de vraies commandes, pas à des requêtes vagues."
+      },
+      {
+        "title": "Vous êtes payé — c'est garanti",
+        "body": "Les fonds de l'acheteur sont bloqués en séquestre avant le début de la production. À la livraison conforme, votre part est libérée automatiquement. Plus de relances, plus d'impayés."
+      },
+      {
+        "title": "Deux façons de gagner des commandes",
+        "body": "Répondez à des appels d'offres pour des commandes sur mesure, ou listez des produits prêts à expédier sur la marketplace pour un achat en un clic. Les deux passent par le même séquestre et la même logistique."
+      },
+      {
+        "title": "Payé dans votre région",
+        "body": "Inscrivez-vous via Stripe, LianLian ou Alipay selon votre localisation. Les versements arrivent sur votre compte ou portefeuille local — Chine, Asie du Sud-Est, Golfe, Europe et au-delà."
+      },
+      {
+        "title": "Logistique et assurance incluses",
+        "body": "Le suivi du colis jusqu'aux locaux de l'acheteur et l'assurance par catégorie font partie de chaque transaction. Vous expédiez ; nous couvrons le reste."
+      },
+      {
+        "title": "Un agent dédié, pas un standard",
+        "body": "Un agent qui connaît vos capacités porte chaque demande. Questions, spécifications et négociation passent par une seule personne — dans votre langue."
+      }
+    ],
+    "steps": {
+      "eyebrow": "Comment ça marche",
+      "title": "De l'inscription au versement en cinq étapes.",
+      "items": [
+        {
+          "title": "Inscription et vérification",
+          "body": "Créez votre compte usine et complétez le KYC — registre du commerce, fiscalité et quelques documents d'installation. Une seule fois."
+        },
+        {
+          "title": "Soyez mis en relation",
+          "body": "Recevez des appels d'offres correspondant à vos capacités, ou publiez des produits sur la marketplace."
+        },
+        {
+          "title": "Chiffrez ou listez",
+          "body": "Soumettez un devis avec votre prix usine et votre délai, ou mettez votre annonce en ligne après une rapide validation."
+        },
+        {
+          "title": "Produisez sur commandes confirmées",
+          "body": "Une fois que l'acheteur accepte et règle l'acompte sécurisé par séquestre, vous démarrez la production en toute certitude."
+        }
+      ]
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Les questions que les usines nous posent.",
+      "items": [
+        {
+          "question": "Combien coûte la vente sur SourcingPick ?",
+          "answer": "Pas d'abonnement ni de frais de mise en ligne. Nous prélevons une commission de 3 % sur votre versement uniquement lorsqu'une commande aboutit. Rien d'avance, rien si vous ne vendez pas."
+        },
+        {
+          "question": "Quand et comment suis-je payé ?",
+          "answer": "Les fonds de l'acheteur sont en séquestre dès le paiement. À la livraison conforme confirmée, votre montant net (valeur de la commande moins les 3 %) est libéré sur le compte de versement choisi — Stripe, LianLian ou Alipay selon votre région."
+        },
+        {
+          "question": "Quels moyens de versement puis-je utiliser ?",
+          "answer": "Stripe Connect pour l'UE, le Royaume-Uni, les États-Unis, les Émirats, Singapour, Hong Kong et une partie de l'Afrique ; LianLian Global ou Alipay pour la Chine continentale et l'Asie du Sud-Est. Vous en choisissez un lors de l'inscription."
+        },
+        {
+          "question": "Ai-je besoin de certifications pour vendre ?",
+          "answer": "Elles ne sont pas obligatoires, mais les acheteurs peuvent filtrer et qualifier dessus — afficher vos vraies certifications (GOTS, OEKO-TEX, FSC, CE, etc.) vous expose à des commandes plus sérieuses."
+        },
+        {
+          "question": "Comment les acheteurs sont-ils vérifiés ?",
+          "answer": "Chaque demande de sourcing est examinée et qualifiée par un agent SourcingPick avant qu'une usine ne soit invitée. Les acheteurs de la marketplace paient via séquestre comme tout le monde, vous n'êtes jamais exposé à l'impayé."
+        },
+        {
+          "question": "Que se passe-t-il en cas de litige ?",
+          "answer": "Les fonds restent en séquestre jusqu'à la confirmation de livraison. Pour un problème produit standard, nous médiatisons un remboursement partiel et la plateforme absorbe une partie du coût avec vous ; pour le sur-mesure, la politique diffère. La politique complète est partagée lors de l'inscription."
+        },
+        {
+          "question": "Que puis-je vendre — sur mesure ou prêt à l'emploi ?",
+          "answer": "Les deux. Les appels d'offres concernent les commandes sur mesure négociées avec un agent. La marketplace concerne les produits pré-négociés, prêts à expédier, achetables en un clic."
+        },
+        {
+          "question": "Que faut-il pour être vérifié (KYC) ?",
+          "answer": "Votre registre du commerce, un document fiscal et une ou deux photos d'installation ou documents de référence. La vérification est unique et généralement rapide."
+        }
+      ]
     }
   },
   "about": {
@@ -1700,6 +1898,7 @@
     "about": "À propos",
     "howItWorks": "Comment ça marche",
     "becomePartner": "Devenir usine partenaire",
+    "forFactories": "Pour les usines",
     "terms": "Conditions générales",
     "privacy": "Politique de confidentialité",
     "cookies": "Politique cookies",

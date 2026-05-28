@@ -15,6 +15,7 @@ import { ContextThread } from "@/components/messaging/context-thread";
 import { MediaGrid } from "@/components/attachments/media-grid";
 import { cn } from "@/lib/utils";
 import { ClientQuotesPanel } from "./_components/client-quotes-panel";
+import { ResearchFeePanel } from "./_components/research-fee-panel";
 
 export async function generateMetadata({
   params,
@@ -214,11 +215,19 @@ export default async function RequestDetailPage({
         </div>
       </Section>
 
+      <ResearchFeePanel
+        requestId={req.id}
+        lang={lang}
+        status={req.researchFeeStatus}
+        amountCents={req.researchFeeCents}
+      />
+
       <MediaGrid
         contextType={AttachmentContext.SOURCING_REQUEST}
         contextId={req.id}
         title={dict.client.requests.mediaTitle}
         className="mt-6"
+        canManage
       />
 
       <div className="mt-6">

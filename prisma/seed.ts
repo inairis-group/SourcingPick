@@ -478,7 +478,7 @@ async function main() {
 
   // ---- Sourcing requests ----
   const clientFROwner = await prisma.user.findUniqueOrThrow({
-    where: { email: "owner@maison-lumiere.example" },
+    where: { email: "inairiscore@gmail.com" },
   });
   const seniorAgent = await prisma.user.findUniqueOrThrow({
     where: { email: "senior-agent@sourcingpick.dev" },
@@ -552,9 +552,9 @@ async function main() {
   console.log("  ops@sourcingpick.dev            (Admin Member)");
   console.log("  senior-agent@sourcingpick.dev   (Agent Senior)");
   console.log("  agent@sourcingpick.dev          (Agent)");
-  console.log("  emmanuelcaleb546@gmail.com    (Client FR — Growth plan)");
-  console.log("  owner@casabossa.example         (Client BR — Starter plan)");
-  console.log("  owner@tokyokura.example         (Client JP — Pro plan)");
+  console.log("  inairiscore@gmail.com           (Client FR — verified)");
+  console.log("  emmanuelcaleb546@gmail.com      (Client BJ — verified)");
+  console.log("  owner@tokyokura.example         (Client JP — verified)");
   console.log("  owner@textil-norte.example      (Factory PT — verified)");
   console.log("  owner@atlas-cuir.example        (Factory MA — verified)");
   console.log("  owner@saigon-stationery.example (Factory VN — verified)");

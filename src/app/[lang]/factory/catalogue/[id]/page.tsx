@@ -1,5 +1,9 @@
 import { notFound } from "next/navigation";
-import { MarketplaceProductStatus, Role } from "@prisma/client";
+import {
+  AttachmentContext,
+  MarketplaceProductStatus,
+  Role,
+} from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
@@ -7,6 +11,7 @@ import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import type { Locale } from "@/lib/i18n/config";
+import { MediaGrid } from "@/components/attachments/media-grid";
 import { ProductForm } from "../_components/product-form";
 import { ProductActions } from "./_components/product-actions";
 import { PromotionForm } from "./_components/promotion-form";
@@ -168,6 +173,17 @@ export default async function FactoryProductDetailPage({
           )}
         </>
       )}
+
+      {/* Factory curates this listing's video/file attachments. Renders
+          nothing when there are none. canManage → delete controls; the
+          delete action re-checks factory ownership server-side. */}
+      <MediaGrid
+        contextType={AttachmentContext.MARKETPLACE_PRODUCT}
+        contextId={product.id}
+        title={dict.factory.catalogue.mediaSectionTitle}
+        className="mt-6"
+        canManage
+      />
     </div>
   );
 }

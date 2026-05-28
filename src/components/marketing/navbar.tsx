@@ -44,6 +44,7 @@ export function MarketingNavbar({
 
   const navItems = [
     { href: `/${locale}/marketplace`, label: dict.nav.marketplace },
+    { href: `/${locale}/factories`, label: dict.footer.forFactories },
     { href: `/${locale}/pricing`, label: dict.footer.pricing },
     { href: `/${locale}/about`, label: dict.footer.about },
   ];

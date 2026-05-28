@@ -10,6 +10,7 @@ import {
   DashboardSection,
   KpiCard,
 } from "@/components/dashboard/primitives";
+import { DisputeControl } from "./_components/dispute-control";
 import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
@@ -132,12 +133,15 @@ export default async function AdminEscrowPage({
                 <th className="px-5 py-2.5 font-medium">
                   {dict.admin.escrow.colReleased}
                 </th>
+                <th className="px-5 py-2.5 font-medium">
+                  {dict.admin.escrow.colActions}
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-line-subtle">
               {recent.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-5 py-12 text-center text-faint">
+                  <td colSpan={8} className="px-5 py-12 text-center text-faint">
                     {dict.admin.escrow.empty}
                   </td>
                 </tr>
@@ -180,6 +184,9 @@ export default async function AdminEscrowPage({
                         : e.fundedAt
                           ? formatDate(e.fundedAt, lang, "short")
                           : "—"}
+                    </td>
+                    <td className="px-5 py-2">
+                      <DisputeControl escrowId={e.id} status={e.status} />
                     </td>
                   </tr>
                 ))

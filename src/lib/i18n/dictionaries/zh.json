@@ -13,6 +13,7 @@
       "kpiAwaitingPayment": "待付款",
       "kpiTotalSpent": "已完成订单支出",
       "kpiTotalSpentHint": "共 {n} 笔完成订单",
+      "creditAvailable": "您有 {amount} 平台积分 —— 将在下一笔订单定金中抵扣。",
       "quotesAwaitingTitle": "待决定报价",
       "quotesAwaitingDesc": "代理转发给您的报价。",
       "quotesEmpty": "暂无待决定报价。代理会通知您。",
@@ -161,8 +162,17 @@
       "flashSaleBadge": "限时",
       "allConditions": "全部成色",
       "dealsOnly": "仅看促销",
+      "allDeals": "全部商品",
       "deliveryEtasTitle": "预计配送时效",
       "deliveryEtasDisclaimer": "配送时间为估算,可能因供应商、数量、目的地与物流条件而异。"
+    },
+    "researchFee": {
+      "title": "研究服务费",
+      "quotedBody": "您的代理已评估此需求。支付 {amount} 研究服务费即可开始采购 —— 若您在 30 天内下单,将以平台积分形式返还。",
+      "payCta": "支付 {amount}",
+      "paidBody": "已支付 {amount} 研究服务费。在 30 天内下单,即可以平台积分形式返还。",
+      "creditedBody": "您的 {amount} 研究服务费已返还为积分 —— 将抵扣订单定金。",
+      "waivedBody": "您的代理已免除此需求的研究服务费。"
     },
     "quotes": {
       "sectionTitle": "已收报价",
@@ -359,6 +369,25 @@
     }
   },
   "agent": {
+    "researchFee": {
+      "title": "研究服务费",
+      "description": "在开始采购前向买家收取资质核查工作的费用。125 €/天 或 500 €/周。",
+      "unitLabel": "计费单位",
+      "quantityLabel": "数量",
+      "amountLabel": "费用",
+      "units": { "DAY": "天", "WEEK": "周" },
+      "quoteCta": "报价",
+      "requoteCta": "更新费用",
+      "waiveCta": "免除",
+      "paidNote": "买家已支付 {amount} 的研究服务费。",
+      "statuses": {
+        "NONE": "未设置",
+        "QUOTED": "等待支付",
+        "PAID": "已支付",
+        "CREDITED": "已返还积分",
+        "WAIVED": "已免除"
+      }
+    },
     "dashboard": {
       "eyebrow": "仪表盘",
       "title": "我的工作台",
@@ -849,6 +878,7 @@
       "colStatus": "状态",
       "colProvider": "提供方",
       "colReleased": "释放时间",
+      "colActions": "操作",
       "statuses": {
         "INITIATED": "已发起",
         "FUNDED": "已注资",
@@ -856,6 +886,18 @@
         "RELEASED": "已释放",
         "REFUNDED": "已退款",
         "DISPUTED": "有争议"
+      },
+      "dispute": {
+        "openCta": "争议",
+        "reasonPlaceholder": "原因(如不符规格、延迟)…",
+        "confirmOpen": "发起争议",
+        "resolveLabel": "处理争议",
+        "standard": "部分退款",
+        "standardHint": "标准产品问题:买家退还 80%,平台保留 20% 并与供应商五五分。",
+        "custom": "全额退款",
+        "customHint": "定制商品:买家全额退款。",
+        "reject": "驳回",
+        "rejectHint": "争议不成立 —— 托管恢复为持有,可继续打款。"
       }
     },
     "payouts": {
@@ -1121,6 +1163,65 @@
       "save": "保存时效",
       "saved": "已保存。"
     },
+    "banners": {
+      "eyebrow": "市场",
+      "title": "活动横幅",
+      "description": "展示在市场顶部的编辑横幅。用于促销与公告 —— 工厂的限时促销会自动从其商品中呈现。",
+      "manageCta": "横幅",
+      "backToMarketplace": "返回市场",
+      "createTitle": "新建横幅",
+      "listTitle": "全部横幅",
+      "empty": "暂无横幅。请在上方创建。",
+      "titleLabel": "标题",
+      "titlePlaceholder": "夏季限时促销 —— 最高 30% 折扣",
+      "subtitlePlaceholder": "仅限本周,部分纺织品。",
+      "subtitleLabel": "副标题",
+      "ctaLabelLabel": "按钮文字",
+      "ctaLabelPlaceholder": "查看优惠",
+      "ctaHrefLabel": "按钮链接",
+      "ctaHint": "可选 —— 两者留空则为纯文字横幅。",
+      "ctaHrefHint": "相对路径(/marketplace?deals=1)或完整网址。",
+      "toneLabel": "样式",
+      "orderLabel": "排序",
+      "orderHint": "数值越小越靠前。",
+      "startsLabel": "开始展示",
+      "endsLabel": "结束展示",
+      "scheduleHint": "可选。留空 = 立即/永久展示。",
+      "fromLabel": "自",
+      "toLabel": "至",
+      "createCta": "创建横幅",
+      "created": "横幅已创建。",
+      "statusActive": "展示中",
+      "statusHidden": "已隐藏",
+      "delete": "删除",
+      "confirmDelete": "确认删除",
+      "backgroundLabel": "背景",
+      "backgrounds": {
+        "PRESET": "预设颜色",
+        "GRADIENT": "自定义渐变",
+        "IMAGE": "图片",
+        "VIDEO": "视频"
+      },
+      "gradientFromLabel": "起始颜色",
+      "gradientToLabel": "结束颜色",
+      "gradientViaLabel": "中间颜色",
+      "gradientViaToggle": "添加中间颜色",
+      "gradientAngleLabel": "角度",
+      "mediaImageLabel": "背景图片",
+      "mediaImageHint": "JPG、PNG、WebP 或 GIF — 最大 10 MB。",
+      "mediaVideoLabel": "背景视频",
+      "mediaVideoHint": "MP4、WebM 或 MOV — 最大 50 MB。循环播放，静音。",
+      "overlayLabel": "背景变暗",
+      "overlayHint": "提升媒体之上文字的可读性。",
+      "previewLabel": "预览",
+      "previewHint": "随设置实时更新。",
+      "previewTitleFallback": "横幅标题",
+      "tones": {
+        "BRAND": "品牌蓝",
+        "DARK": "深色",
+        "SALE": "促销红"
+      }
+    },
     "adminListing": {
       "eyebrow": "管理员工具",
       "title": "代工厂创建商品",
@@ -1148,6 +1249,9 @@
       "saveCta": "保存清单",
       "saved": "已保存。"
     }
+  },
+  "attachments": {
+    "confirmDelete": "删除?"
   },
   "common": {
     "actions": {
@@ -1280,6 +1384,100 @@
       "subtitle": "两分钟创建账户。首次需求免费,无任何承诺。",
       "primaryButton": "创建账户",
       "secondaryButton": "查看价格"
+    }
+  },
+  "factories": {
+    "metaTitle": "面向工厂与供应商",
+    "eyebrow": "面向工厂与供应商",
+    "title": "经过筛选的需求,有保障的回款。",
+    "subtitle": "SourcingPick 为您带来经过预先核验的买家,其需求在到达您之前已由专属代理梳理 —— 且款项在生产开始前已锁定于资金托管中。您专注于擅长的制造,我们负责需求、回款安全与物流。",
+    "ctaPrimary": "成为合作工厂",
+    "ctaSecondary": "查看价格",
+    "benefits": [
+      {
+        "title": "高质量需求,杜绝无效询盘",
+        "body": "每个需求都由代理审核并以同一评分标准评估后,才会邀请您报价。您把时间花在真正的订单上,而非含糊的咨询。"
+      },
+      {
+        "title": "回款有保障",
+        "body": "买家资金在生产开始前已锁定于托管。确认合规交付后,您的份额自动释放。无需催款,杜绝坏账。"
+      },
+      {
+        "title": "两种赢得订单的方式",
+        "body": "回应招标承接定制订单,或在市场上架可即时发货的产品供一键购买。两者都走同一套托管与物流体系。"
+      },
+      {
+        "title": "在您所在地区收款",
+        "body": "根据所在地通过 Stripe、LianLian 或 Alipay 入驻。款项打入您的本地银行账户或钱包 —— 中国、东南亚、海湾、欧洲及更多地区。"
+      },
+      {
+        "title": "内置物流与保险",
+        "body": "送达买家所在地的物流跟踪与按品类的保险包含在每笔交易中。您负责发货,其余由我们承担。"
+      },
+      {
+        "title": "专属代理,而非客服热线",
+        "body": "由了解您能力的代理负责每个需求。问题、规格与谈判都通过同一个人 —— 用您的语言沟通。"
+      }
+    ],
+    "steps": {
+      "eyebrow": "运作方式",
+      "title": "从注册到回款,五个步骤。",
+      "items": [
+        {
+          "title": "注册与验证",
+          "body": "创建工厂账户并完成 KYC —— 工商注册、税务及若干设施文件。一次性完成。"
+        },
+        {
+          "title": "获得匹配",
+          "body": "接收与您能力匹配的招标邀请,或将产品发布到市场。"
+        },
+        {
+          "title": "报价或上架",
+          "body": "提交含工厂价与交期的报价,或在快速审核后将市场商品上线。"
+        },
+        {
+          "title": "在确认订单上生产",
+          "body": "买家接受并支付托管担保的定金后,您即可放心开始生产。"
+        }
+      ]
+    },
+    "faq": {
+      "eyebrow": "常见问题",
+      "title": "工厂常问的问题。",
+      "items": [
+        {
+          "question": "在 SourcingPick 销售要花多少钱?",
+          "answer": "没有订阅费,也没有上架费。仅在订单完成时从您的回款中扣除 3% 佣金。无需预付,不成交则不收费。"
+        },
+        {
+          "question": "我何时、以何种方式收款?",
+          "answer": "买家付款后资金即进入托管。确认合规交付后,您的净额(订单金额减去 3%)将释放到您入驻的收款账户 —— 视地区为 Stripe、LianLian 或 Alipay。"
+        },
+        {
+          "question": "我可以使用哪些收款方式?",
+          "answer": "欧盟、英国、美国、阿联酋、新加坡、香港及部分非洲地区可用 Stripe Connect;中国大陆与东南亚可用 LianLian Global 或 Alipay。入驻时选择其一。"
+        },
+        {
+          "question": "销售是否需要认证?",
+          "answer": "并非强制,但买家可据此筛选与评估 —— 展示您的真实认证(GOTS、OEKO-TEX、FSC、CE 等)能让您接触到更多正式订单。"
+        },
+        {
+          "question": "买家如何被核验?",
+          "answer": "每个采购需求在邀请任何工厂之前,都会由 SourcingPick 代理审核与筛选。市场买家同样通过托管付款,您绝不会面临不付款风险。"
+        },
+        {
+          "question": "出现争议怎么办?",
+          "answer": "在确认交付前,资金始终留在托管中。对于标准产品问题,我们会调解部分退款,平台与您共同承担部分成本;定制商品的政策有所不同。完整争议政策将在入驻时提供。"
+        },
+        {
+          "question": "我可以销售什么 —— 定制还是现货?",
+          "answer": "两者皆可。招标用于与代理协商的定制订单;市场用于预先谈好、可即时发货、买家一键购买的产品。"
+        },
+        {
+          "question": "通过验证(KYC)需要哪些材料?",
+          "answer": "您的工商注册、一份税务文件,以及一两张设施照片或参考文件。验证为一次性,通常很快。"
+        }
+      ]
     }
   },
   "about": {
@@ -1700,6 +1898,7 @@
     "about": "关于",
     "howItWorks": "工作流程",
     "becomePartner": "成为合作工厂",
+    "forFactories": "面向工厂",
     "terms": "服务条款",
     "privacy": "隐私政策",
     "cookies": "Cookie 政策",

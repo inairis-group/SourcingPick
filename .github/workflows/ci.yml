@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+
+# Cancel superseded runs on the same ref to save CI minutes.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # `npm ci` runs the `postinstall` → `prisma generate`, which only
+      # needs the schema (no DB connection), so the @prisma/client types
+      # are available for the typecheck below.
+      - name: Install dependencies
+        run: npm ci
+
+      # Belt-and-braces: ensure the client is generated even if postinstall
+      # is skipped in some runner configs.
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Typecheck
+        run: npm run typecheck:fast
+
+      - name: Unit tests
+        run: npm test
+
+      # Blocking: errors fail the build. The React Compiler advisory rules
+      # are set to "warn" in eslint.config.mjs (compiler isn't enabled yet),
+      # so they're surfaced without gating. Real lint errors block.
+      - name: Lint
+        run: npm run lint

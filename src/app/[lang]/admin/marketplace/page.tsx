@@ -87,12 +87,20 @@ export default async function AdminMarketplacePage({
             {dict.admin.marketplace.description}
           </p>
         </div>
-        <Link
-          href={`/${lang}/admin/marketplace/new`}
-          className={cn(buttonClass({ variant: "primary", size: "md" }))}
-        >
-          {dict.admin.adminListing.newCta}
-        </Link>
+        <div className="flex items-center gap-2 flex-wrap">
+          <Link
+            href={`/${lang}/admin/marketplace/banners`}
+            className={cn(buttonClass({ variant: "secondary", size: "md" }))}
+          >
+            {dict.admin.banners.manageCta}
+          </Link>
+          <Link
+            href={`/${lang}/admin/marketplace/new`}
+            className={cn(buttonClass({ variant: "primary", size: "md" }))}
+          >
+            {dict.admin.adminListing.newCta}
+          </Link>
+        </div>
       </header>
 
       <ModerationQueue items={rows} />

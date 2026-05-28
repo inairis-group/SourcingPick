@@ -2,6 +2,7 @@ import { AttachmentKind, type AttachmentContext } from "@prisma/client";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { File01Icon, Download02Icon } from "@hugeicons/core-free-icons";
 import { prisma } from "@/lib/db/client";
+import { AttachmentDeleteButton } from "./attachment-delete-button";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,12 +22,16 @@ export async function MediaGrid({
   contextId,
   title,
   className,
+  canManage = false,
 }: {
   contextType: AttachmentContext;
   contextId: string;
   /** Optional section heading; omitted on inline uses (e.g. messages). */
   title?: string;
   className?: string;
+  /** When true, render per-item delete controls (caller asserts the
+      viewer owns this context; the delete action re-checks server-side). */
+  canManage?: boolean;
 }) {
   const attachments = await prisma.attachment.findMany({
     where: { contextType, contextId },
@@ -63,7 +68,7 @@ export async function MediaGrid({
           {images.map((a) => (
             <li
               key={a.id}
-              className="aspect-square rounded-md border border-line bg-subtle overflow-hidden relative"
+              className="aspect-square rounded-md border border-line bg-subtle overflow-hidden relative group"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -72,6 +77,11 @@ export async function MediaGrid({
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"
               />
+              {canManage && (
+                <div className="absolute top-1.5 inset-e-1.5">
+                  <AttachmentDeleteButton id={a.id} />
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -82,8 +92,13 @@ export async function MediaGrid({
           {videos.map((a) => (
             <li
               key={a.id}
-              className="rounded-md border border-line bg-subtle overflow-hidden"
+              className="rounded-md border border-line bg-subtle overflow-hidden relative"
             >
+              {canManage && (
+                <div className="absolute top-1.5 inset-e-1.5 z-10">
+                  <AttachmentDeleteButton id={a.id} />
+                </div>
+              )}
               <video
                 src={`/api/attachments/${a.id}`}
                 controls
@@ -101,12 +116,12 @@ export async function MediaGrid({
       {files.length > 0 && (
         <ul className="flex flex-col gap-1.5">
           {files.map((a) => (
-            <li key={a.id}>
+            <li key={a.id} className="flex items-center gap-2">
               <a
                 href={`/api/attachments/${a.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-sm border border-line-subtle bg-subtle px-3 py-2 hover:bg-surface transition-colors duration-fast"
+                className="flex flex-1 min-w-0 items-center gap-2 rounded-sm border border-line-subtle bg-subtle px-3 py-2 hover:bg-surface transition-colors duration-fast"
               >
                 <HugeiconsIcon
                   icon={File01Icon}
@@ -129,6 +144,7 @@ export async function MediaGrid({
                   className="text-faint shrink-0"
                 />
               </a>
+              {canManage && <AttachmentDeleteButton id={a.id} />}
             </li>
           ))}
         </ul>

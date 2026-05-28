@@ -72,12 +72,44 @@ class StripeAdapter implements PayoutAdapter {
     return PENDING;
   }
 
-  async dispatch(_input: PayoutInput): Promise<PayoutDispatchResult> {
-    return {
-      ok: false,
-      error: "Stripe dispatch not yet wired into the adapter.",
-      retryable: false,
-    };
+  async dispatch(input: PayoutInput): Promise<PayoutDispatchResult> {
+    if (!this.isConfigured()) {
+      return {
+        ok: false,
+        error: "Stripe is not configured.",
+        retryable: true,
+      };
+    }
+    try {
+      const { getStripe } = await import("@/lib/stripe/client");
+      const stripe = getStripe();
+      const transfer = await stripe.transfers.create(
+        {
+          amount: input.amountCents,
+          currency: input.currency.toLowerCase(),
+          destination: input.accountId,
+          description: input.description,
+          metadata: { orgId: input.orgId },
+        },
+        { idempotencyKey: input.idempotencyKey },
+      );
+      return { ok: true, providerRef: transfer.id };
+    } catch (e) {
+      // Stripe errors carry a `type`; balance/availability issues are
+      // retryable, account/validation issues are terminal. We keep it
+      // simple: network + rate-limit + insufficient-funds → retryable.
+      const err = e as { type?: string; code?: string; message?: string };
+      const retryable =
+        err.type === "StripeConnectionError" ||
+        err.type === "StripeAPIError" ||
+        err.type === "StripeRateLimitError" ||
+        err.code === "balance_insufficient";
+      return {
+        ok: false,
+        error: (err.message ?? "Stripe transfer failed.").slice(0, 500),
+        retryable,
+      };
+    }
   }
 }
 

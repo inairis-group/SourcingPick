@@ -3,6 +3,11 @@
 -- ("get all media for context X") and avoids 4 parallel tables that
 -- would each need their own audit + storage plumbing.
 
+-- The original schema (init migration) shipped a message-only Attachment
+-- table. Replace it: drop it first so this migration replays cleanly from
+-- scratch. It held no data at this point in history.
+DROP TABLE IF EXISTS "Attachment";
+
 CREATE TYPE "AttachmentContext" AS ENUM (
   'MESSAGE',
   'SOURCING_REQUEST',

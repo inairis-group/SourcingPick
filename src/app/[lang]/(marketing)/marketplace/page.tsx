@@ -16,6 +16,7 @@ import {
   ListingPrice,
 } from "@/components/marketplace/listing-price";
 import { DeliveryEtaNotice } from "@/components/marketplace/delivery-eta-notice";
+import { MarketplaceBannerRail } from "@/components/marketplace/banner-rail";
 import { LoadMoreNudge } from "./_components/load-more-nudge";
 import { MarketplaceFilters } from "./_components/filters";
 
@@ -128,6 +129,8 @@ export default async function PublicMarketplacePage({
           {dict.client.marketplace.description}
         </p>
       </header>
+
+      <MarketplaceBannerRail locale={lang} />
 
       <MarketplaceFilters
         lang={lang}

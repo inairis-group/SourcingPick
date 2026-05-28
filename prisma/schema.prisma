@@ -166,6 +166,28 @@ enum AttachmentContext {
   SOURCING_REQUEST
   ORDER
   MARKETPLACE_PRODUCT
+  MARKETPLACE_BANNER
+}
+
+/** Preset visual treatment for an admin-managed marketplace campaign banner. */
+enum BannerTone {
+  BRAND // brand-blue gradient
+  DARK // ink-deep, matches the CTA banner
+  SALE // danger/red accent for flash-sale campaigns
+}
+
+/**
+ * How a banner's background is rendered.
+ *   PRESET   — one of the BannerTone gradients (default, no config)
+ *   GRADIENT — admin-defined linear gradient (from/via?/to + angle)
+ *   IMAGE    — uploaded image, with a dark overlay for text legibility
+ *   VIDEO    — uploaded muted-autoplay-loop video, with overlay
+ */
+enum BannerBackground {
+  PRESET
+  GRADIENT
+  IMAGE
+  VIDEO
 }
 
 enum AttachmentKind {
@@ -245,6 +267,44 @@ enum PayoutMethod {
   SEPA
   SWIFT
   STRIPE_CONNECT
+  LIANLIAN
+  ALIPAY
+}
+
+/** Billing unit for the sourcing research fee (€125/day or €500/week). */
+enum ResearchFeeUnit {
+  DAY
+  WEEK
+}
+
+/**
+ * Why a CreditTransaction was written.
+ *   RESEARCH_FEE_CREDIT — buyer ordered within the credit-back window; the
+ *                         research fee they paid is returned as credit (+).
+ *   ORDER_APPLIED       — credit spent against an order payment (−).
+ *   ADMIN_ADJUSTMENT    — manual ops correction (±).
+ */
+enum CreditReason {
+  RESEARCH_FEE_CREDIT
+  ORDER_APPLIED
+  ADMIN_ADJUSTMENT
+}
+
+/**
+ * Lifecycle of a request's research fee.
+ *   NONE     — no fee quoted yet
+ *   QUOTED   — agent set the fee; an ISSUED invoice awaits payment
+ *   PAID     — buyer paid the research fee
+ *   CREDITED — buyer placed an order within the credit-back window; the fee
+ *              was returned as platform credit (credit-back phase — TBD)
+ *   WAIVED   — agent/admin waived the fee
+ */
+enum ResearchFeeStatus {
+  NONE
+  QUOTED
+  PAID
+  CREDITED
+  WAIVED
 }
 
 enum PayoutStatus {
@@ -495,8 +555,33 @@ model Organization {
 
   kycDocuments KycDocument[]
 
+  creditTransactions CreditTransaction[]
+
   @@index([type, kycStatus, deletedAt])
   @@index([type, country])
+}
+
+/**
+ * Platform-credit ledger. An org's balance is the SUM of amountCents across
+ * its rows (positive = credit granted, negative = credit spent). No
+ * denormalised balance column — the ledger is the source of truth, summed
+ * on read. Today's only credit source is the research-fee credit-back;
+ * the only sink is applying credit to an order's deposit.
+ */
+model CreditTransaction {
+  id             String       @id @default(cuid(2))
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  amountCents    Int // signed: + granted, − spent
+  reason         CreditReason
+  /// Optional pointer to what triggered it (e.g. "Order:ord_..", "SourcingRequest:req_..").
+  refType        String?
+  refId          String?
+  note           String?
+  createdByUserId String?
+  createdAt      DateTime     @default(now())
+
+  @@index([organizationId, createdAt])
 }
 
 model KycDocument {
@@ -561,6 +646,18 @@ model SourcingRequest {
   origin               SourcingRequestOrigin @default(SOURCING_FLOW)
   status               SourcingStatus        @default(DRAFT)
   assignedAt           DateTime?
+
+  // Research fee — agent quotes a per-day/week fee on a qualified request.
+  // researchFeeInvoiceId links the issued RESEARCH_FEE invoice. Credit-back
+  // (returning the fee as platform credit on order within 30 days) is a
+  // later phase and not yet wired.
+  researchFeeUnit      ResearchFeeUnit?
+  researchFeeQuantity  Int?
+  researchFeeCents     Int?
+  researchFeeStatus    ResearchFeeStatus     @default(NONE)
+  researchFeeInvoiceId String?
+  researchFeePaidAt    DateTime? // anchors the 30-day credit-back window
+
   createdAt            DateTime       @default(now())
   updatedAt            DateTime       @updatedAt
 
@@ -952,6 +1049,45 @@ model Attachment {
   createdAt    DateTime          @default(now())
 
   @@index([contextType, contextId])
+}
+
+/**
+ * Admin-managed editorial banner shown on the marketplace storefront —
+ * "Summer flash sale", "New African suppliers", etc. This is the
+ * curation surface; individual factory flash-sales surface separately
+ * via the listing-level compareAt/flashSaleEndsAt fields.
+ *
+ * A banner is shown when `active` AND now is within the optional
+ * [startsAt, endsAt] window. Ordered by `sortOrder` then `createdAt`.
+ * Text + CTA + tone only (no image upload in v1) — keeps it dependency
+ * free and lets the storefront render a styled gradient card.
+ */
+model MarketplaceBanner {
+  id              String           @id @default(cuid(2))
+  title           String
+  subtitle        String?
+  ctaLabel        String?
+  ctaHref         String?
+  tone            BannerTone       @default(BRAND)
+  background      BannerBackground @default(PRESET)
+  // GRADIENT config — hex colours + angle (degrees). `via` is optional.
+  gradientFrom    String?
+  gradientVia     String?
+  gradientTo      String?
+  gradientAngle   Int? // 0–360
+  // IMAGE / VIDEO config — served path (via /api/attachments/<id>) + a
+  // 0–100 dark overlay for text legibility.
+  mediaUrl        String?
+  overlayOpacity  Int              @default(40)
+  active          Boolean          @default(true)
+  sortOrder       Int              @default(0)
+  startsAt        DateTime?
+  endsAt          DateTime?
+  createdByUserId String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([active, sortOrder])
 }
 
 model WebhookEvent {

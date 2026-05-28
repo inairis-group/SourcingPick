@@ -8,7 +8,10 @@ import {
 import type Stripe from "stripe";
 import { prisma } from "@/lib/db/client";
 import { getStripe, getStripeWebhookSecret } from "@/lib/stripe/client";
-import { finalizeStripePayment } from "@/lib/stripe/finalize";
+import {
+  finalizeResearchFeePayment,
+  finalizeStripePayment,
+} from "@/lib/stripe/finalize";
 import { writeAuditLog } from "@/lib/audit/log";
 
 export const dynamic = "force-dynamic";
@@ -66,6 +69,18 @@ export async function POST(req: Request) {
     switch (event.type) {
       case "payment_intent.succeeded": {
         const pi = event.data.object as Stripe.PaymentIntent;
+
+        // Research-fee payments carry their own metadata.
+        const researchFeeRequestId = pi.metadata?.researchFeeRequestId;
+        if (researchFeeRequestId) {
+          await finalizeResearchFeePayment({
+            requestId: researchFeeRequestId,
+            invoiceId: pi.metadata?.researchFeeInvoiceId ?? "",
+            stripePaymentIntentId: pi.id,
+          });
+          break;
+        }
+
         const orderId = pi.metadata?.orderId;
         const invoiceType = pi.metadata?.invoiceType as
           | "DEPOSIT"
@@ -79,6 +94,10 @@ export async function POST(req: Request) {
           });
           break;
         }
+        const appliedCreditCents = Number.parseInt(
+          pi.metadata?.appliedCreditCents ?? "0",
+          10,
+        );
         await finalizeStripePayment({
           orderId,
           type:
@@ -86,6 +105,9 @@ export async function POST(req: Request) {
               ? InvoiceType.DEPOSIT
               : InvoiceType.BALANCE,
           amountCents: pi.amount_received ?? pi.amount,
+          appliedCreditCents: Number.isFinite(appliedCreditCents)
+            ? appliedCreditCents
+            : 0,
           stripePaymentIntentId: pi.id,
         });
         break;
