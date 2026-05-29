@@ -125,10 +125,10 @@ export function MarketplaceFilterBar({
         />
       </form>
 
-      <div className="flex items-center gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
         <Select
           size="sm"
-          className="min-w-36"
+          className="min-w-36 col-span-2 sm:col-span-1"
           value={category ?? ""}
           onChange={onCategoryChange}
           options={[
