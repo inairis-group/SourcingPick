@@ -94,7 +94,7 @@ export default async function PublicMarketplaceProductPage({
               <img
                 src={imageUrls[0]}
                 alt={product.name}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="z-5 absolute inset-0 w-full h-full object-cover"
               />
             )}
           </div>
@@ -109,7 +109,7 @@ export default async function PublicMarketplaceProductPage({
                   <img
                     src={url}
                     alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="z-5 absolute inset-0 w-full h-full object-cover"
                   />
                 </div>
               ))}
