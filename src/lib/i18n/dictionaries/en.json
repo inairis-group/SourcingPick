@@ -652,6 +652,7 @@
       "imagesDropHint": "Click to upload up to {n} image(s).",
       "imagesMaxReached": "Maximum images reached.",
       "imagesTooMany": "You exceeded the 6-image limit — only the first six will be kept.",
+      "uploadTooLarge": "These files total {total}, over the {max} limit. Remove or compress some files and try again.",
       "mediaLabel": "Videos & files (optional)",
       "mediaHint": "Demo videos, spec sheets, certificates · up to 10 files",
       "mediaSectionTitle": "Videos & documents",

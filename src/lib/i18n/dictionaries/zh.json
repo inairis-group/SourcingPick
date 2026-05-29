@@ -652,6 +652,7 @@
       "imagesDropHint": "点击上传最多 {n} 张图片。",
       "imagesMaxReached": "已达图片上限。",
       "imagesTooMany": "超过 6 张图片限制 — 只保留前 6 张。",
+      "uploadTooLarge": "这些文件共 {total}，超过 {max} 上限。请删除或压缩部分文件后重试。",
       "mediaLabel": "视频与文件(可选)",
       "mediaHint": "演示视频、规格表、证书 · 最多 10 个文件",
       "mediaSectionTitle": "视频与文档",

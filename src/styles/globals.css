@@ -165,6 +165,26 @@
   --color-ghost-hover: var(--color-ghost-hover);
 }
 
+/* ---------- z-index scale (named layers) ----------
+ * Tailwind v4 has no z-index theme namespace, so these named layers must be
+ * declared as explicit utilities — otherwise `z-sticky` / `z-modal` etc. emit
+ * nothing and the elements fall back to `z-index: auto`. Ascending order:
+ * page content (≤ z-10) scrolls UNDER the sticky chrome, which sits under
+ * popovers, then modals, then toasts. The routing progress bar (z-100) stays
+ * above everything. */
+@utility z-sticky {
+  z-index: 30;
+}
+@utility z-popover {
+  z-index: 40;
+}
+@utility z-modal {
+  z-index: 50;
+}
+@utility z-toast {
+  z-index: 60;
+}
+
 :root {
   /* Surfaces */
   --color-page: var(--color-neutral-0);

@@ -24,6 +24,7 @@ import {
 } from "@/lib/marketplace/actions";
 import { AttachmentPicker } from "@/components/attachments/attachment-picker";
 import { useDictionary } from "@/lib/i18n/client-provider";
+import { MAX_UPLOAD_BYTES, formatBytes, sumFileSizes } from "@/lib/storage/limits";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = Object.values(Category);
@@ -68,6 +69,9 @@ export function ProductForm({
 
   const [newImagePreviews, setNewImagePreviews] = useState<string[]>([]);
   const [extraMedia, setExtraMedia] = useState<File[]>([]);
+  // Surfaced for failures we catch before posting (e.g. total upload over the
+  // limit) — the Server Action never runs in that case, so it can't return one.
+  const [clientError, setClientError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -94,8 +98,23 @@ export function ProductForm({
   // calling the server action.
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setClientError(null);
     const fd = new FormData(e.currentTarget);
     for (const f of extraMedia) fd.append("attachments", f);
+
+    // Catch oversized submissions here: a too-large body is rejected by the
+    // reverse proxy with a raw 413 before the Server Action can respond, so
+    // we check the total ourselves and explain exactly what to do.
+    const total = sumFileSizes([...fd.getAll("images"), ...fd.getAll("attachments")]);
+    if (total > MAX_UPLOAD_BYTES) {
+      setClientError(
+        dict.factory.catalogue.uploadTooLarge
+          .replace("{total}", formatBytes(total))
+          .replace("{max}", formatBytes(MAX_UPLOAD_BYTES)),
+      );
+      return;
+    }
+
     startTransition(() => formAction(fd));
   };
 
@@ -105,7 +124,9 @@ export function ProductForm({
       className="flex flex-col gap-5"
       encType="multipart/form-data"
     >
-      {state.error && <FormError>{state.error}</FormError>}
+      {(clientError ?? state.error) && (
+        <FormError>{clientError ?? state.error}</FormError>
+      )}
 
       <Field label={dict.factory.catalogue.nameLabel} required>
         <Input

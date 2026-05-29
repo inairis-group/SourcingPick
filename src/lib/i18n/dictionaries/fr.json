@@ -652,6 +652,7 @@
       "imagesDropHint": "Cliquez pour téléverser jusqu'à {n} image(s).",
       "imagesMaxReached": "Maximum d'images atteint.",
       "imagesTooMany": "Vous dépassez la limite de 6 images — les premières seront conservées.",
+      "uploadTooLarge": "Ces fichiers totalisent {total}, au-delà de la limite de {max}. Supprimez ou compressez des fichiers, puis réessayez.",
       "mediaLabel": "Vidéos et documents (optionnel)",
       "mediaHint": "Vidéos de démo, fiches techniques, certificats · jusqu'à 10 fichiers",
       "mediaSectionTitle": "Vidéos et documents",

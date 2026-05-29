@@ -125,10 +125,10 @@ export function MarketplaceFilterBar({
         />
       </form>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
         <Select
-          size="sm"
-          className="w-full sm:min-w-36 col-span-2 sm:col-span-1"
+          size="md"
+          className="min-w-36"
           value={category ?? ""}
           onChange={onCategoryChange}
           options={[
@@ -136,8 +136,9 @@ export function MarketplaceFilterBar({
             ...categories.map((c) => ({ value: c, label: dict.categories[c] })),
           ]}
         />
+
         <Select
-          size="sm"
+          size="md"
           className="min-w-36"
           value={condition ?? ""}
           onChange={onConditionChange}
@@ -150,7 +151,7 @@ export function MarketplaceFilterBar({
           ]}
         />
         <Select
-          size="sm"
+          size="md"
           className="min-w-36"
           value={deals ? "1" : ""}
           onChange={(v) => onDealsChange(v === "1")}
