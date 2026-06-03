@@ -631,8 +631,15 @@
     },
     "voice": {
       "start": "Enregistrer un message vocal",
-      "stop": "Arrêter et envoyer",
+      "stop": "Arrêter",
       "cancel": "Annuler",
+      "discard": "Supprimer l'enregistrement",
+      "sendPreview": "Envoyer le message vocal",
+      "play": "Lire",
+      "pause": "Pause",
+      "speedLabel": "Vitesse de lecture",
+      "scrubLabel": "Position de lecture",
+      "elapsedLabel": "Durée écoulée",
       "permissionDenied": "Microphone refusé. Autorisez l'accès puis réessayez.",
       "unsupported": "Votre navigateur ne permet pas l'enregistrement vocal."
     },

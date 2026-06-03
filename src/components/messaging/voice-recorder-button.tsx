@@ -6,14 +6,19 @@ import {
   Mic01Icon,
   StopCircleIcon,
   Cancel01Icon,
+  Sent02Icon,
 } from "@hugeicons/core-free-icons";
 import { useDictionary } from "@/lib/i18n/client-provider";
 import { cn } from "@/lib/utils";
+import { VoicePlayer } from "./voice-player";
 
 /**
- * Voice-note recorder for the messaging composer. Press to start, press
- * again to stop and queue the recording into the pendingFiles state of
- * the parent thread component.
+ * Voice-note recorder for the messaging composer. Three states:
+ *   - Idle:    a single mic button.
+ *   - Recording: live timer with stop / cancel pill.
+ *   - Preview:  the freshly recorded clip rendered through `VoicePlayer`
+ *               with send + discard buttons. The user can play back the
+ *               clip at any of the supported speeds before committing.
  *
  * Mime hand-off: the browser produces audio/webm (Chrome/Firefox) or
  * audio/mp4 (Safari) depending on what `MediaRecorder` negotiates. We
@@ -33,6 +38,13 @@ export function VoiceRecorderButton({
   const [recording, setRecording] = useState(false);
   const [elapsedMs, setElapsedMs] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  // Preview state: the recorded blob is held here as a temporary
+  // object-URL until the user decides to send or discard.
+  const [preview, setPreview] = useState<{
+    file: File;
+    url: string;
+  } | null>(null);
+
   const recorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
@@ -57,6 +69,14 @@ export function VoiceRecorderButton({
     setRecording(false);
     setElapsedMs(0);
   };
+
+  // Free the preview object-URL when it changes or the component unmounts.
+  useEffect(() => {
+    if (!preview) return;
+    return () => {
+      URL.revokeObjectURL(preview.url);
+    };
+  }, [preview]);
 
   useEffect(() => () => teardown(), []);
 
@@ -89,7 +109,7 @@ export function VoiceRecorderButton({
           type: blob.type,
           lastModified: Date.now(),
         });
-        onRecorded(file);
+        setPreview({ file, url: URL.createObjectURL(blob) });
       });
       recorderRef.current = rec;
       rec.start();
@@ -121,6 +141,52 @@ export function VoiceRecorderButton({
       teardown();
     }
   };
+
+  const discardPreview = () => {
+    setPreview(null);
+  };
+
+  const sendPreview = () => {
+    if (!preview) return;
+    const file = preview.file;
+    setPreview(null);
+    onRecorded(file);
+  };
+
+  // ---- preview pill — overrides both idle and recording UI ---------------
+  if (preview) {
+    return (
+      <div className="flex items-center gap-2 w-full max-w-sm">
+        <div className="flex-1 min-w-0">
+          <VoicePlayer src={preview.url} variant="preview" />
+        </div>
+        <button
+          type="button"
+          onClick={discardPreview}
+          aria-label={t.discard}
+          className={cn(
+            "inline-flex items-center justify-center h-7 w-7 shrink-0 rounded-full",
+            "text-muted hover:text-danger hover:bg-danger-soft/50",
+            "transition-colors duration-fast",
+          )}
+        >
+          <HugeiconsIcon icon={Cancel01Icon} size={14} strokeWidth={1.5} />
+        </button>
+        <button
+          type="button"
+          onClick={sendPreview}
+          aria-label={t.sendPreview}
+          className={cn(
+            "inline-flex items-center justify-center h-7 w-7 shrink-0 rounded-full",
+            "bg-action text-on-action hover:bg-action/90",
+            "transition-colors duration-fast",
+          )}
+        >
+          <HugeiconsIcon icon={Sent02Icon} size={14} strokeWidth={1.5} />
+        </button>
+      </div>
+    );
+  }
 
   if (recording) {
     return (

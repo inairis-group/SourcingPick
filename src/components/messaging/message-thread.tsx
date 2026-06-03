@@ -23,6 +23,7 @@ import {
 } from "@/lib/messaging/actions";
 import { AttachmentPicker } from "@/components/attachments/attachment-picker";
 import { VoiceRecorderButton } from "@/components/messaging/voice-recorder-button";
+import { VoicePlayer } from "@/components/messaging/voice-player";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { formatDate } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
@@ -431,15 +432,10 @@ function MessageAttachments({
       ))}
 
       {audios.map((a) => (
-        <audio
+        <VoicePlayer
           key={a.id}
           src={`/api/attachments/${a.id}`}
-          controls
-          preload="metadata"
-          className={cn(
-            "w-full rounded-full",
-            mine ? "bg-on-action/10" : "bg-surface",
-          )}
+          variant={mine ? "outgoing" : "incoming"}
         />
       ))}
 

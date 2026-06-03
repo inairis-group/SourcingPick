@@ -631,8 +631,15 @@
     },
     "voice": {
       "start": "录制语音消息",
-      "stop": "停止并发送",
+      "stop": "停止",
       "cancel": "取消",
+      "discard": "放弃录音",
+      "sendPreview": "发送语音",
+      "play": "播放",
+      "pause": "暂停",
+      "speedLabel": "播放速度",
+      "scrubLabel": "播放位置",
+      "elapsedLabel": "已播放时长",
       "permissionDenied": "麦克风权限被拒。请允许后重试。",
       "unsupported": "您的浏览器不支持语音录制。"
     },

@@ -631,8 +631,15 @@
     },
     "voice": {
       "start": "Record a voice note",
-      "stop": "Stop and send",
-      "cancel": "Discard",
+      "stop": "Stop",
+      "cancel": "Cancel",
+      "discard": "Discard recording",
+      "sendPreview": "Send voice note",
+      "play": "Play",
+      "pause": "Pause",
+      "speedLabel": "Playback speed",
+      "scrubLabel": "Playback position",
+      "elapsedLabel": "Elapsed time",
       "permissionDenied": "Microphone access blocked. Allow it and try again.",
       "unsupported": "Your browser can't record audio."
     },
