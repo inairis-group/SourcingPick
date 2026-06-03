@@ -19,6 +19,7 @@ import {
 } from "@/components/marketplace/listing-price";
 import { DeliveryEtaNotice } from "@/components/marketplace/delivery-eta-notice";
 import { MarketplaceBannerRail } from "@/components/marketplace/banner-rail";
+import { AuctionTeaserRail } from "@/components/auctions/teaser-rail";
 import { MarketplaceFilters } from "./_components/filters";
 
 export async function generateMetadata({
@@ -211,6 +212,12 @@ export default async function ClientMarketplacePage({
           ))}
         </ul>
       )}
+
+      <AuctionTeaserRail
+        lang={lang}
+        dict={dict}
+        linkBase={`/${lang}/client/auctions`}
+      />
     </div>
   );
 }

@@ -1,5 +1,10 @@
 import { notFound } from "next/navigation";
-import { Role, ThreadContextType } from "@prisma/client";
+import {
+  AttachmentContext,
+  OrderStatus,
+  Role,
+  ThreadContextType,
+} from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
@@ -8,8 +13,12 @@ import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { OrderTimeline } from "@/components/orders/timeline";
 import { ContextThread } from "@/components/messaging/context-thread";
+import { MediaGrid } from "@/components/attachments/media-grid";
 import { computeFactoryPayout } from "@/lib/orders/pricing";
+import { formatLeadTime } from "@/lib/marketplace/lead-time";
 import { FactoryOrderActions } from "./_components/factory-order-actions";
+import { PhaseProofUploader } from "./_components/phase-proof-uploader";
+import { ForwarderLinkPanel } from "./_components/forwarder-link-panel";
 
 export async function generateMetadata({
   params,
@@ -54,13 +63,34 @@ export default async function FactoryOrderDetailPage({
         select: {
           unitPriceCentsFactory: true,
           leadTimeDays: true,
+          leadTimeUnit: true,
           moq: true,
           notes: true,
+        },
+      },
+      forwarderTokens: {
+        where: { revokedAt: null, expiresAt: { gt: new Date() } },
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          token: true,
+          label: true,
+          expiresAt: true,
+          lastUsedAt: true,
+          uploadCount: true,
+          createdAt: true,
         },
       },
     },
   });
   if (!order) notFound();
+
+  const forwarderEligible =
+    order.status === OrderStatus.PREPARATION ||
+    order.status === OrderStatus.QC ||
+    order.status === OrderStatus.SHIPPED ||
+    order.status === OrderStatus.IN_TRANSIT;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "";
 
   const {
     grossCents: factoryRevenueCents,
@@ -134,7 +164,11 @@ export default async function FactoryOrderDetailPage({
             {formatDate(order.request.deadline, lang, "medium")}
           </Detail>
           <Detail label={dict.factory.tenders.leadTimeLabel}>
-            {order.quote.leadTimeDays} {dict.factory.tenders.daysSuffix}
+            {formatLeadTime(
+              order.quote.leadTimeDays,
+              order.quote.leadTimeUnit,
+              dict,
+            )}
           </Detail>
           {order.request.requiredCerts.length > 0 && (
             <Detail label={dict.client.requests.certsLabel}>
@@ -179,6 +213,58 @@ export default async function FactoryOrderDetailPage({
       <FactoryOrderActions
         orderId={order.id}
         status={order.status}
+      />
+
+      {/* QC proof photos — uploader visible during PREPARATION/QC,
+          gallery always visible once any have been uploaded. */}
+      {(order.status === OrderStatus.PREPARATION ||
+        order.status === OrderStatus.QC) && (
+        <section className="mt-6 rounded-lg border border-line bg-surface p-5">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">
+            {dict.factory.orders.proofs.qcSectionTitle}
+          </h2>
+          <p className="text-xs text-muted mb-4 leading-snug max-w-prose">
+            {dict.factory.orders.proofs.qcSectionBody}
+          </p>
+          <PhaseProofUploader orderId={order.id} kind="QC" />
+        </section>
+      )}
+      <MediaGrid
+        contextType={AttachmentContext.ORDER_QC_PROOF}
+        contextId={order.id}
+        title={dict.factory.orders.proofs.qcGalleryTitle}
+        className="mt-6"
+        canManage
+      />
+
+      {/* Shipment proof photos — uploader visible from QC through
+          IN_TRANSIT, gallery always visible if any exist. */}
+      {(order.status === OrderStatus.QC ||
+        order.status === OrderStatus.SHIPPED ||
+        order.status === OrderStatus.IN_TRANSIT) && (
+        <section className="mt-6 rounded-lg border border-line bg-surface p-5">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">
+            {dict.factory.orders.proofs.shipmentSectionTitle}
+          </h2>
+          <p className="text-xs text-muted mb-4 leading-snug max-w-prose">
+            {dict.factory.orders.proofs.shipmentSectionBody}
+          </p>
+          <PhaseProofUploader orderId={order.id} kind="SHIPMENT" />
+        </section>
+      )}
+      <MediaGrid
+        contextType={AttachmentContext.ORDER_SHIPMENT_PROOF}
+        contextId={order.id}
+        title={dict.factory.orders.proofs.shipmentGalleryTitle}
+        className="mt-6"
+        canManage
+      />
+
+      <ForwarderLinkPanel
+        orderId={order.id}
+        tokens={order.forwarderTokens}
+        baseUrl={appUrl}
+        canCreate={forwarderEligible}
       />
 
       <div className="mt-6">
@@ -245,7 +331,7 @@ function Detail({
       <dt className="text-xs font-medium uppercase tracking-wide text-faint">
         {label}
       </dt>
-      <dd className="text-sm text-fg sm:col-span-2 break-words">{children}</dd>
+      <dd className="text-sm text-fg sm:col-span-2 wrap-break-word">{children}</dd>
     </div>
   );
 }

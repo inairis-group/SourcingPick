@@ -40,12 +40,16 @@ export type BuyResult = {
  *
  * The marketplace bypasses the agent-led sourcing flow but reuses the
  * Order + escrow + payment infrastructure. We materialise a synthetic
- * SourcingRequest + Quote so downstream code (`finalizeStripePayment`,
- * the order detail UI, messaging threads, etc.) can stay role-agnostic.
+ * SourcingRequest + Quote so downstream code (the Wise webhook
+ * reconciler, the order detail UI, messaging threads, etc.) can stay
+ * role-agnostic.
  *
  *   SourcingRequest.status = QUOTE_ACCEPTED (skips DRAFT/RECEIVED/ASSIGNED)
  *   Quote.status           = ACCEPTED
- *   Order.status           = PAYMENT_PENDING (client redirected to Stripe)
+ *   Order.status           = PAYMENT_PENDING (client lands on the order
+ *                           detail page where the WiseWirePanel shows
+ *                           the deposit wire details — buyer wires from
+ *                           their own bank, webhook reconciler advances)
  *
  * Stock decrement is best-effort: we use a conditional updateMany so two
  * simultaneous buyers can't race past stock=0. If the decrement fails the

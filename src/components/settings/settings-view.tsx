@@ -4,6 +4,7 @@ import { PasswordForm } from "./password-form";
 import { TwoFactorToggle } from "./two-factor-toggle";
 import { MembersList } from "./members-list";
 import { PayoutSection } from "./payout-section";
+import { LogoSection } from "./logo-section";
 import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -24,12 +25,24 @@ export async function SettingsView({ locale }: { locale: Locale }) {
   const isAdmin = user.role === Role.ADMIN;
   const needsPayouts =
     user.role === Role.FACTORY || user.role === Role.AGENT;
-  const payouts = needsPayouts
-    ? await prisma.organization.findUnique({
-        where: { id: user.organizationId },
-        select: { payoutProvider: true, payoutStatus: true },
-      })
-    : null;
+
+  // Single org read used by both the payout section (when relevant) and
+  // the logo section.
+  const org = await prisma.organization.findUnique({
+    where: { id: user.organizationId },
+    select: {
+      payoutProvider: true,
+      payoutStatus: true,
+      logoUrl: true,
+      updatedAt: true,
+    },
+  });
+  const payouts = needsPayouts ? org : null;
+
+  // Public-facing brand (logo) makes sense for factories + agents. Clients
+  // get one too — invoices we issue them carry the logo; harmless to allow.
+  // Only owners can change it (action also enforces this).
+  const canEditLogo = isOwner;
 
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8">
@@ -77,6 +90,20 @@ export async function SettingsView({ locale }: { locale: Locale }) {
             isAdmin={isAdmin}
           />
         </Section>
+
+        {canEditLogo && org && (
+          <Section
+            title={dict.settings.logo.title}
+            description={dict.settings.logo.description}
+          >
+            <LogoSection
+              orgId={user.organizationId}
+              orgName={user.organization.displayName}
+              hasLogo={Boolean(org.logoUrl)}
+              cacheBust={org.updatedAt.getTime()}
+            />
+          </Section>
+        )}
 
         {needsPayouts && payouts && (
           <Section

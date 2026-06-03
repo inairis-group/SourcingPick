@@ -55,7 +55,7 @@ export function RoleNavPill({ items }: { items: NavItem[] }) {
                   size={16}
                   strokeWidth={1.5}
                   className={cn(
-                    "flex-shrink-0",
+                    "shrink-0",
                     isActive ? "text-on-action" : "text-faint group-hover:text-fg",
                   )}
                 />

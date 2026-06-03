@@ -119,6 +119,34 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
         </div>
       </section>
 
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+        <div className="max-w-2xl mb-10">
+          <p className="text-xs font-medium tracking-wide uppercase text-brand-700 mb-3">
+            {dict.about.founders.eyebrow}
+          </p>
+          <h2 className="text-3xl lg:text-4xl font-bold text-headline tracking-tight">
+            {dict.about.founders.title}
+          </h2>
+        </div>
+
+        {/* Founder cards. Swap the photoUrl on each FounderCard to a real
+            asset once the photo files land — until then the initials are the
+            fallback. Names below are placeholders that the team can edit in
+            this file (one place, no i18n round-trip needed). */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl">
+          <FounderCard
+            name="Caleb-Livingstone Emmanuel"
+            role={dict.about.founders.coFounderRole}
+            photoUrl={null}
+          />
+          <FounderCard
+            name="Adam Inairis"
+            role={dict.about.founders.coFounderRole}
+            photoUrl={null}
+          />
+        </div>
+      </section>
+
       <CtaSection dict={dict} locale={lang} />
     </>
   );
@@ -134,6 +162,50 @@ const TONE_CLASSES: Record<
   muted: "bg-surface border-line text-muted",
   warning: "bg-warning-soft/60 border-warning-edge text-warning",
 };
+
+/**
+ * Founder card with photo or initials-avatar fallback. The initials variant
+ * is intentional — the alternative would be a stock silhouette which looks
+ * worse than two clean letters in the brand palette. To swap in a real
+ * photo later, pass `photoUrl` and the component renders an `<img>` cover.
+ */
+function FounderCard({
+  name,
+  role,
+  photoUrl,
+}: {
+  name: string;
+  role: string;
+  photoUrl: string | null;
+}) {
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
+
+  return (
+    <div className="flex items-center gap-4 rounded-xl border border-line bg-surface p-4">
+      <div className="shrink-0 h-16 w-16 rounded-full overflow-hidden bg-brand-50 text-brand-700 flex items-center justify-center font-semibold text-lg">
+        {photoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={photoUrl}
+            alt={name}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <span aria-hidden>{initials}</span>
+        )}
+      </div>
+      <div className="min-w-0">
+        <p className="font-semibold text-headline">{name}</p>
+        <p className="text-sm text-muted">{role}</p>
+      </div>
+    </div>
+  );
+}
 
 function PillTile({
   icon,

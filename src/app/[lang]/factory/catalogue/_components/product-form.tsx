@@ -9,7 +9,11 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Category, MarketplaceCondition } from "@prisma/client";
+import {
+  Category,
+  LeadTimeUnit,
+  MarketplaceCondition,
+} from "@prisma/client";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ImageUpload01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
@@ -23,7 +27,9 @@ import {
   type ProductActionState,
 } from "@/lib/marketplace/actions";
 import { AttachmentPicker } from "@/components/attachments/attachment-picker";
+import { MarkdownEditor } from "@/components/ui/markdown-editor";
 import { useDictionary } from "@/lib/i18n/client-provider";
+import { leadTimeDisplayValue } from "@/lib/marketplace/lead-time";
 import { MAX_UPLOAD_BYTES, formatBytes, sumFileSizes } from "@/lib/storage/limits";
 import { cn } from "@/lib/utils";
 
@@ -47,6 +53,7 @@ export type ProductDefaults = {
   stockAvailable: number;
   stockLowThreshold: number | null;
   leadTimeDays: number;
+  leadTimeUnit: LeadTimeUnit;
   certifications: string[];
   existingImages: string[]; // URLs (built from product id + index)
 };
@@ -156,17 +163,12 @@ export function ProductForm({
         required
         hint={dict.factory.catalogue.descriptionHint}
       >
-        <textarea
+        <MarkdownEditor
           name="description"
           required
-          rows={5}
           minLength={20}
           maxLength={4000}
-          defaultValue={defaults?.description}
-          className={cn(
-            "w-full rounded-sm border bg-surface text-fg placeholder:text-faint p-3 text-base resize-y",
-            "border-line-strong focus:border-focus focus:outline-2 focus:outline-focus focus:outline-offset-2",
-          )}
+          defaultValue={defaults?.description ?? ""}
           placeholder={dict.factory.catalogue.descriptionPlaceholder}
         />
       </Field>
@@ -190,14 +192,33 @@ export function ProductForm({
           />
         </Field>
         <Field label={dict.factory.catalogue.leadTimeLabel} required>
-          <Input
-            name="leadTimeDays"
-            type="number"
-            inputMode="numeric"
-            min="1"
-            required
-            defaultValue={defaults?.leadTimeDays ?? ""}
-          />
+          <div className="flex items-center gap-2">
+            <Input
+              name="leadTimeDays"
+              type="number"
+              inputMode="numeric"
+              min="1"
+              required
+              defaultValue={
+                defaults
+                  ? leadTimeDisplayValue(
+                      defaults.leadTimeDays,
+                      defaults.leadTimeUnit,
+                    )
+                  : ""
+              }
+              className="flex-1"
+            />
+            <Select
+              name="leadTimeUnit"
+              defaultValue={defaults?.leadTimeUnit ?? LeadTimeUnit.DAY}
+              options={[
+                { value: LeadTimeUnit.DAY, label: dict.factory.catalogue.leadTimeUnits.DAY },
+                { value: LeadTimeUnit.MONTH, label: dict.factory.catalogue.leadTimeUnits.MONTH },
+              ]}
+              className="w-28 shrink-0"
+            />
+          </div>
         </Field>
       </div>
 

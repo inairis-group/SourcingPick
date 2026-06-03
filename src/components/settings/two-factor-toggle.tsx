@@ -60,7 +60,7 @@ export function TwoFactorToggle({ initialEnabled, isAdmin }: Props) {
           onChange={isAdmin ? () => {} : setEnabled}
           disabled={isAdmin || pending}
           className={cn(
-            "relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors duration-fast",
+            "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-fast",
             "data-focus:outline-2 data-focus:outline-focus data-focus:outline-offset-2",
             enabled ? "bg-action" : "bg-neutral-300",
             (isAdmin || pending) && "opacity-60 cursor-not-allowed",

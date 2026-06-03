@@ -84,7 +84,7 @@ export function FactoryOnboarding({ firstName, orgName, kycStatus }: Props) {
           <ol className="flex flex-col gap-3 mt-4">
             {[1, 2, 3].map((n) => (
               <li key={n} className="flex items-start gap-3">
-                <span className="flex-shrink-0 inline-flex items-center justify-center h-7 w-7 rounded-full bg-headline text-on-action font-mono font-semibold text-xs">
+                <span className="shrink-0 inline-flex items-center justify-center h-7 w-7 rounded-full bg-headline text-on-action font-mono font-semibold text-xs">
                   {n}
                 </span>
                 <p className="text-sm text-fg leading-snug pt-1">
@@ -172,7 +172,7 @@ function KycStatusCard({
         toneClasses[item.tone],
       )}
     >
-      <span className="flex-shrink-0 mt-0.5">
+      <span className="shrink-0 mt-0.5">
         <HugeiconsIcon icon={item.icon} size={20} strokeWidth={1.5} />
       </span>
       <div className="flex-1 min-w-0">

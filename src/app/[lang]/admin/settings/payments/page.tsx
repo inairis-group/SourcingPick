@@ -27,6 +27,7 @@ const PROVIDER_LABELS: Record<PayoutProvider, string> = {
   STRIPE_CONNECT: "Stripe Connect",
   LIANLIAN: "LianLian Global",
   ALIPAY: "Alipay",
+  WISE: "Wise Business",
 };
 
 const PROVIDER_DESCRIPTIONS: Record<PayoutProvider, string> = {
@@ -36,6 +37,8 @@ const PROVIDER_DESCRIPTIONS: Record<PayoutProvider, string> = {
     "Cross-border payouts to mainland China and SE Asia (Vietnam, Indonesia, Thailand, Philippines). Lower fees than Stripe for CN-bound transfers.",
   ALIPAY:
     "Alipay Cross-border (Ant International) — for Chinese factories who prefer Alipay over LianLian's bank-account flow. Same target market as LianLian.",
+  WISE:
+    "Wise Business — single rail covering 80+ countries including all current supplier corridors. Sole live provider going forward; Stripe / Alipay / LianLian above will be retired once the Wise migration completes.",
 };
 
 /**
@@ -52,7 +55,23 @@ export default async function AdminPaymentsPage({
   await requireRole(Role.ADMIN);
   const dict = await getDictionary(lang);
 
-  const statuses = await listProviderStatuses();
+  // Pass 3b made WISE the live rail. The other three providers are
+  // intentionally retired but their adapters still register in the
+  // dispatcher (the schema enums + lib files stay until a final cleanup
+  // pass for rollback safety). Sort them after Wise and dim them so the
+  // operator sees at a glance which one is "the" rail.
+  const allStatuses = await listProviderStatuses();
+  const RETIRED: ReadonlyArray<typeof allStatuses[number]["provider"]> = [
+    "STRIPE_CONNECT",
+    "LIANLIAN",
+    "ALIPAY",
+  ];
+  const statuses = [
+    ...allStatuses.filter((s) => !RETIRED.includes(s.provider)),
+    ...allStatuses.filter((s) => RETIRED.includes(s.provider)),
+  ];
+  const isRetired = (p: (typeof allStatuses)[number]["provider"]) =>
+    RETIRED.includes(p);
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8">
@@ -84,11 +103,14 @@ export default async function AdminPaymentsPage({
           return (
             <li
               key={s.provider}
-              className="rounded-lg border border-line bg-surface p-5"
+              className={cn(
+                "rounded-lg border border-line bg-surface p-5",
+                isRetired(s.provider) && "opacity-60",
+              )}
             >
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span
                       aria-hidden
                       className={cn(
@@ -106,6 +128,11 @@ export default async function AdminPaymentsPage({
                       reachable={s.reachable}
                       labels={dict.admin.payments.statuses}
                     />
+                    {isRetired(s.provider) && (
+                      <span className="inline-flex items-center h-5 px-2 rounded-full border border-line text-[10px] font-medium uppercase tracking-wide text-muted">
+                        {dict.admin.payments.retiredBadge}
+                      </span>
+                    )}
                   </div>
                   <p className="text-xs text-muted mt-1.5 leading-snug max-w-prose">
                     {PROVIDER_DESCRIPTIONS[s.provider]}

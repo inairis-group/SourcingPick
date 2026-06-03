@@ -182,7 +182,7 @@ export default async function ClientInvoicesPage({
                         )}
                       </p>
                     </div>
-                    <div className="text-end flex-shrink-0">
+                    <div className="text-end shrink-0">
                       <p className="text-sm font-semibold text-headline">
                         {formatEUR(inv.amountCents / 100, lang)}
                       </p>

@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation";
 import { Role, ThreadContextType } from "@prisma/client";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowRight01Icon, Mail01Icon } from "@hugeicons/core-free-icons";
+import {
+  ArrowRight01Icon,
+  Mail01Icon,
+  AlertCircleIcon,
+  CheckmarkCircle02Icon,
+} from "@hugeicons/core-free-icons";
 import { Link } from "@/components/ui/link";
 import { buttonClass } from "@/components/ui/button";
 import { ResearchFeeControl } from "./_components/research-fee-control";
@@ -40,7 +45,9 @@ export default async function AgentRequestDetailPage({
     include: {
       products: true,
       clientOrg: { select: { displayName: true, country: true, city: true } },
-      createdBy: { select: { firstName: true, lastName: true, email: true } },
+      createdBy: {
+        select: { firstName: true, lastName: true, email: true, phone: true },
+      },
       tenderInvitations: {
         select: {
           id: true,
@@ -210,6 +217,13 @@ export default async function AgentRequestDetailPage({
       />
 
       <Section title={dict.agent.requests.sectionTenders} className="mb-6">
+        <PreTenderGate
+          approvedAt={req.preTenderApprovedAt}
+          rejectedAt={req.preTenderRejectedAt}
+          rejectionReason={req.preTenderRejectionReason}
+          dict={dict}
+          lang={lang}
+        />
         <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
           <p className="text-sm text-muted">
             {dict.tender.invitedCount.replace(
@@ -217,13 +231,26 @@ export default async function AgentRequestDetailPage({
               String(req.tenderInvitations.length),
             )}
           </p>
-          <Link
-            href={`/${lang}/agent/requests/${req.id}/tender`}
-            className={cn(buttonClass({ variant: "primary", size: "sm" }))}
-          >
-            <HugeiconsIcon icon={Mail01Icon} size={14} strokeWidth={1.5} />
-            <span className="ms-1.5">{dict.tender.sendCta}</span>
-          </Link>
+          {req.preTenderApprovedAt ? (
+            <Link
+              href={`/${lang}/agent/requests/${req.id}/tender`}
+              className={cn(buttonClass({ variant: "primary", size: "sm" }))}
+            >
+              <HugeiconsIcon icon={Mail01Icon} size={14} strokeWidth={1.5} />
+              <span className="ms-1.5">{dict.tender.sendCta}</span>
+            </Link>
+          ) : (
+            <span
+              className={cn(
+                buttonClass({ variant: "primary", size: "sm" }),
+                "opacity-50 cursor-not-allowed pointer-events-none",
+              )}
+              aria-disabled="true"
+            >
+              <HugeiconsIcon icon={Mail01Icon} size={14} strokeWidth={1.5} />
+              <span className="ms-1.5">{dict.tender.sendCta}</span>
+            </span>
+          )}
         </div>
 
         {req.tenderInvitations.length > 0 && (
@@ -300,6 +327,11 @@ export default async function AgentRequestDetailPage({
           {req.createdBy.firstName} {req.createdBy.lastName}
         </Detail>
         <Detail label={dict.admin.kyc.contactEmail}>{req.createdBy.email}</Detail>
+        {req.createdBy.phone && (
+          <Detail label={dict.settings.profile.phoneLabel}>
+            {req.createdBy.phone}
+          </Detail>
+        )}
       </Section>
 
       <div className="mt-6">
@@ -345,6 +377,74 @@ function Section({
       </h2>
       <dl className="flex flex-col gap-2">{children}</dl>
     </section>
+  );
+}
+
+function PreTenderGate({
+  approvedAt,
+  rejectedAt,
+  rejectionReason,
+  dict,
+  lang,
+}: {
+  approvedAt: Date | null;
+  rejectedAt: Date | null;
+  rejectionReason: string | null;
+  dict: Awaited<ReturnType<typeof getDictionary>>;
+  lang: "fr" | "en" | "zh" | "ar";
+}) {
+  const t = dict.agent.requests.preTender;
+  if (approvedAt) {
+    return (
+      <div className="flex items-start gap-2 rounded-md border border-success-edge bg-success-soft px-3 py-2 mb-3">
+        <HugeiconsIcon
+          icon={CheckmarkCircle02Icon}
+          size={14}
+          strokeWidth={2}
+          className="text-success mt-0.5 shrink-0"
+        />
+        <p className="text-xs text-success font-medium">
+          {t.approvedBanner.replace(
+            "{date}",
+            formatDate(approvedAt, lang, "short"),
+          )}
+        </p>
+      </div>
+    );
+  }
+  if (rejectedAt && rejectionReason) {
+    return (
+      <div className="flex items-start gap-2 rounded-md border border-danger-edge bg-danger-soft px-3 py-2 mb-3">
+        <HugeiconsIcon
+          icon={AlertCircleIcon}
+          size={14}
+          strokeWidth={2}
+          className="text-danger mt-0.5 shrink-0"
+        />
+        <div className="min-w-0 flex-1">
+          <p className="text-xs font-semibold text-danger">
+            {t.rejectedBanner.replace(
+              "{date}",
+              formatDate(rejectedAt, lang, "short"),
+            )}
+          </p>
+          <p className="text-xs text-muted mt-0.5 leading-relaxed wrap-break-word">
+            {rejectionReason}
+          </p>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="flex items-start gap-2 rounded-md border border-warning-line bg-warning-subtle px-3 py-2 mb-3">
+      <HugeiconsIcon
+        icon={AlertCircleIcon}
+        size={14}
+        strokeWidth={2}
+        className="text-warning mt-0.5 shrink-0"
+      />
+      <p className="text-xs text-warning font-medium">{t.pendingBanner}</p>
+    </div>
   );
 }
 

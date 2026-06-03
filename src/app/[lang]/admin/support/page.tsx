@@ -103,7 +103,7 @@ export default async function AdminSupportPage({
                         {order.factoryOrg.displayName}
                       </p>
                     </div>
-                    <div className="text-end flex-shrink-0">
+                    <div className="text-end shrink-0">
                       <p className="text-[11px] text-fg">
                         {dict.orders.statuses[order.status]}
                       </p>

@@ -4,6 +4,7 @@ import {
   DashboardSquare01Icon,
   InvoiceIcon,
   Mail01Icon,
+  Message01Icon,
   PackageIcon,
   SecurityCheckIcon,
   Settings01Icon,
@@ -75,6 +76,16 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               primary: true,
             },
             {
+              href: `${base}/client/auctions`,
+              label: dict.nav.auctions,
+              icon: ChartLineData01Icon,
+            },
+            {
+              href: `${base}/messages`,
+              label: dict.nav.messages,
+              icon: Message01Icon,
+            },
+            {
               href: `${base}/client/certifications`,
               label: dict.nav.certification,
               icon: SecurityCheckIcon,
@@ -122,6 +133,16 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               primary: true,
             },
             {
+              href: `${base}/factory/auctions`,
+              label: dict.nav.auctions,
+              icon: ChartLineData01Icon,
+            },
+            {
+              href: `${base}/messages`,
+              label: dict.nav.messages,
+              icon: Message01Icon,
+            },
+            {
               href: `${base}/factory/payouts`,
               label: dict.nav.payouts,
               icon: Wallet01Icon,
@@ -163,10 +184,20 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               primary: true,
             },
             {
+              href: `${base}/agent/orders`,
+              label: dict.nav.orders,
+              icon: PackageIcon,
+            },
+            {
               href: `${base}/agent/tasks`,
               label: dict.nav.tasks,
               icon: TaskDone01Icon,
               primary: true,
+            },
+            {
+              href: `${base}/messages`,
+              label: dict.nav.messages,
+              icon: Message01Icon,
             },
             {
               href: `${base}/agent/settings`,
@@ -204,6 +235,16 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               label: dict.admin.marketplace.title,
               icon: Store01Icon,
               primary: true,
+            },
+            {
+              href: `${base}/admin/auctions`,
+              label: dict.admin.auctions.title,
+              icon: ChartLineData01Icon,
+            },
+            {
+              href: `${base}/messages`,
+              label: dict.nav.messages,
+              icon: Message01Icon,
             },
             {
               href: `${base}/admin/certifications`,

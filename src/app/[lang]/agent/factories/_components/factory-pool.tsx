@@ -134,7 +134,7 @@ export function FactoryPool({
             >
               <header className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-2.5 min-w-0">
-                  <span className="flex-shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-700">
+                  <span className="shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-700">
                     <HugeiconsIcon icon={FactoryIcon} size={18} strokeWidth={1.5} />
                   </span>
                   <div className="min-w-0">
@@ -147,7 +147,7 @@ export function FactoryPool({
                   </div>
                 </div>
                 {f.profile.rating > 0 && (
-                  <span className="flex items-center gap-0.5 text-xs font-medium text-fg flex-shrink-0">
+                  <span className="flex items-center gap-0.5 text-xs font-medium text-fg shrink-0">
                     <HugeiconsIcon
                       icon={StarIcon}
                       size={12}

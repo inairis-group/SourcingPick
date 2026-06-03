@@ -64,6 +64,7 @@ export default async function AdminUsersPage({
     select: {
       id: true,
       email: true,
+      phone: true,
       firstName: true,
       lastName: true,
       role: true,
@@ -92,7 +93,7 @@ export default async function AdminUsersPage({
           className={cn(
             "h-9 px-3 text-sm rounded-sm border bg-surface text-fg placeholder:text-faint",
             "border-line-strong focus:border-focus focus:outline-2 focus:outline-focus focus:outline-offset-2",
-            "min-w-[260px]",
+            "min-w-65", 
           )}
         />
         {(Object.values(Role) as Role[]).map((r) => {
@@ -161,7 +162,10 @@ export default async function AdminUsersPage({
                       <p className="text-[11px] text-faint">{u.subRole}</p>
                     </td>
                     <td className="px-5 py-2 text-xs font-mono text-muted">
-                      {u.email}
+                      <p>{u.email}</p>
+                      {u.phone && (
+                        <p className="text-faint">{u.phone}</p>
+                      )}
                     </td>
                     <td className="px-5 py-2">
                       <span

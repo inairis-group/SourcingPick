@@ -32,7 +32,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           className,
         )}
       >
-        {leftSlot && <span className="text-faint flex-shrink-0">{leftSlot}</span>}
+        {leftSlot && <span className="text-faint shrink-0">{leftSlot}</span>}
         <input
           ref={ref}
           disabled={disabled}
@@ -40,7 +40,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           className="flex-1 bg-transparent text-fg placeholder:text-faint outline-none min-w-0"
           {...rest}
         />
-        {rightSlot && <span className="text-faint flex-shrink-0">{rightSlot}</span>}
+        {rightSlot && <span className="text-faint shrink-0">{rightSlot}</span>}
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { AttachmentContext, Role, ThreadContextType } from "@prisma/client";
+import { AttachmentContext, OrderStatus, Role, ThreadContextType } from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
@@ -10,6 +10,13 @@ import { OrderTimeline } from "@/components/orders/timeline";
 import { ContextThread } from "@/components/messaging/context-thread";
 import { MediaGrid } from "@/components/attachments/media-grid";
 import { OrderActions } from "./_components/order-actions";
+import { OrgAvatar } from "@/components/org/org-avatar";
+import { TrackingDisplay } from "./_components/tracking-display";
+import { WiseWirePanel } from "./_components/wise-wire-panel";
+import {
+  buildWireReference,
+  platformWireAccount,
+} from "@/lib/wise/platform-account";
 
 export async function generateMetadata({
   params,
@@ -39,7 +46,13 @@ export default async function ClientOrderDetailPage({
     where: { id, clientOrgId: user.organizationId, deletedAt: null },
     include: {
       factoryOrg: {
-        select: { displayName: true, country: true, city: true },
+        select: {
+          id: true,
+          displayName: true,
+          country: true,
+          city: true,
+          logoUrl: true,
+        },
       },
       agent: { select: { firstName: true, lastName: true, email: true } },
       request: {
@@ -93,10 +106,18 @@ export default async function ClientOrderDetailPage({
         <h1 className="text-2xl font-bold text-headline tracking-tight">
           {order.request.title}
         </h1>
-        <p className="text-sm text-muted mt-1">
-          {dict.client.orders.factoryLabel} · {order.factoryOrg.displayName} (
-          {order.factoryOrg.city}, {order.factoryOrg.country})
-        </p>
+        <div className="flex items-center gap-2 mt-2 text-sm text-muted">
+          <OrgAvatar
+            orgId={order.factoryOrg.id}
+            name={order.factoryOrg.displayName}
+            hasLogo={Boolean(order.factoryOrg.logoUrl)}
+            size="sm"
+          />
+          <span>
+            {dict.client.orders.factoryLabel} · {order.factoryOrg.displayName} (
+            {order.factoryOrg.city}, {order.factoryOrg.country})
+          </span>
+        </div>
       </header>
 
       {paymentStatus === "success" && (
@@ -172,30 +193,18 @@ export default async function ClientOrderDetailPage({
 
         <Section title={dict.client.orders.sectionTracking}>
           {order.trackingNumber ? (
-            <>
-              <Detail label={dict.client.orders.carrierLabel}>
-                {order.trackingCarrier}
-              </Detail>
-              <Detail label={dict.client.orders.trackingNumberLabel}>
-                {order.trackingUrl ? (
-                  <a
-                    href={order.trackingUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline underline-offset-2 hover:text-brand-700"
-                  >
-                    {order.trackingNumber}
-                  </a>
-                ) : (
-                  order.trackingNumber
-                )}
-              </Detail>
+            <div className="flex flex-col gap-3">
+              <TrackingDisplay
+                carrier={order.trackingCarrier}
+                trackingNumber={order.trackingNumber}
+                trackingUrl={order.trackingUrl}
+              />
               {order.shippedAt && (
                 <Detail label={dict.client.orders.shippedAtLabel}>
                   {formatDate(order.shippedAt, lang, "medium")}
                 </Detail>
               )}
-            </>
+            </div>
           ) : (
             <p className="text-sm text-muted">
               {dict.client.orders.trackingPending}
@@ -215,6 +224,42 @@ export default async function ClientOrderDetailPage({
           </Detail>
         </Section>
       )}
+
+      {(() => {
+        // Wise bank-wire path. Visible above the legacy Stripe pay button
+        // whenever (a) the platform's Wise IBAN env vars are set and
+        // (b) the order is in a state that expects a payment. The buyer
+        // can use either rail; the webhook handler matches incoming Wise
+        // wires by the per-payment reference shown in the panel.
+        const platform = platformWireAccount();
+        if (!platform) return null;
+        if (order.status === OrderStatus.PAYMENT_PENDING) {
+          return (
+            <WiseWirePanel
+              {...platform}
+              reference={buildWireReference(order.reference, "DEP")}
+              amountCents={order.depositCents}
+              currency="EUR"
+              lang={lang}
+            />
+          );
+        }
+        if (
+          order.status === OrderStatus.SHIPPED ||
+          order.status === OrderStatus.IN_TRANSIT
+        ) {
+          return (
+            <WiseWirePanel
+              {...platform}
+              reference={buildWireReference(order.reference, "BAL")}
+              amountCents={order.balanceCents}
+              currency="EUR"
+              lang={lang}
+            />
+          );
+        }
+        return null;
+      })()}
 
       <OrderActions
         orderId={order.id}
@@ -269,6 +314,22 @@ export default async function ClientOrderDetailPage({
         contextType={AttachmentContext.ORDER}
         contextId={order.id}
         title={dict.client.requests.mediaTitle}
+        className="mt-6"
+      />
+
+      {/* QC + shipment photo proofs uploaded by the factory. Read-only on
+          the buyer side — galleries render only when at least one photo
+          exists, the MediaGrid component already short-circuits on empty. */}
+      <MediaGrid
+        contextType={AttachmentContext.ORDER_QC_PROOF}
+        contextId={order.id}
+        title={dict.client.orders.qcProofTitle}
+        className="mt-6"
+      />
+      <MediaGrid
+        contextType={AttachmentContext.ORDER_SHIPMENT_PROOF}
+        contextId={order.id}
+        title={dict.client.orders.shipmentProofTitle}
         className="mt-6"
       />
 

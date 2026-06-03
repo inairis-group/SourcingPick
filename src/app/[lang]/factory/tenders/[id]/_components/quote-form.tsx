@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { Incoterm } from "@prisma/client";
+import { Incoterm, LeadTimeUnit } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/ui/field";
@@ -64,15 +64,32 @@ export function QuoteForm({
         <Field
           label={dict.factory.tenders.leadTimeLabel}
           required
-          hint={dict.factory.tenders.daysSuffix}
         >
-          <Input
-            type="number"
-            name="leadTimeDays"
-            inputMode="numeric"
-            min="1"
-            required
-          />
+          <div className="flex items-center gap-2">
+            <Input
+              type="number"
+              name="leadTimeDays"
+              inputMode="numeric"
+              min="1"
+              required
+              className="flex-1"
+            />
+            <Select
+              name="leadTimeUnit"
+              defaultValue={LeadTimeUnit.DAY}
+              options={[
+                {
+                  value: LeadTimeUnit.DAY,
+                  label: dict.factory.catalogue.leadTimeUnits.DAY,
+                },
+                {
+                  value: LeadTimeUnit.MONTH,
+                  label: dict.factory.catalogue.leadTimeUnits.MONTH,
+                },
+              ]}
+              className="w-28 shrink-0"
+            />
+          </div>
         </Field>
         <Field label={dict.factory.tenders.moqLabel} required>
           <Input
@@ -112,6 +129,23 @@ export function QuoteForm({
           />
         </Field>
       </div>
+
+      <Field
+        label={dict.factory.tenders.depositPercentageLabel}
+        required
+        hint={dict.factory.tenders.depositPercentageHint}
+      >
+        <Input
+          type="number"
+          name="depositPercentage"
+          inputMode="numeric"
+          min="30"
+          max="50"
+          step="5"
+          defaultValue="30"
+          required
+        />
+      </Field>
 
       <Field
         label={dict.factory.tenders.notesLabel}

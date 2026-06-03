@@ -26,6 +26,15 @@ const ClientSignupSchema = z.object({
   orgName: z.string().trim().min(2, "Organisation name is required.").max(200),
   country: z.string().trim().min(2, "Country is required.").max(80),
   email: z.email("Please enter a valid email."),
+  // Loose format: only enforce something that looks like a phone (digits +
+  // optional +, spaces, dashes, parens). Real validation happens server-side
+  // if we ever need to dial it; we collect it so agents/admin can follow up.
+  phone: z
+    .string()
+    .trim()
+    .min(5, "Phone number is required.")
+    .max(32, "Phone number is too long.")
+    .regex(/^[0-9+\s()\-.]+$/, "Use digits, spaces, +, ( ), - or . only."),
   password: z
     .string()
     .min(12, "Password must be at least 12 characters.")
@@ -57,6 +66,7 @@ export async function signupClientAction(
     orgName: formData.get("orgName"),
     country: formData.get("country"),
     email: formData.get("email"),
+    phone: formData.get("phone"),
     password: formData.get("password"),
     terms: formData.get("terms"),
   });
@@ -100,6 +110,7 @@ export async function signupClientAction(
           firstName: parsed.data.firstName,
           lastName: parsed.data.lastName,
           name: `${parsed.data.firstName} ${parsed.data.lastName}`,
+          phone: parsed.data.phone,
           passwordHash,
           role: Role.CLIENT,
           subRole: SubRole.OWNER,
@@ -155,6 +166,12 @@ const FactorySignupSchema = z.object({
   firstName: z.string().trim().min(1, "First name is required.").max(80),
   lastName: z.string().trim().min(1, "Last name is required.").max(80),
   email: z.email("Please enter a valid email."),
+  phone: z
+    .string()
+    .trim()
+    .min(5, "Phone number is required.")
+    .max(32, "Phone number is too long.")
+    .regex(/^[0-9+\s()\-.]+$/, "Use digits, spaces, +, ( ), - or . only."),
   password: z
     .string()
     .min(12, "Password must be at least 12 characters.")
@@ -202,6 +219,7 @@ export async function signupFactoryAction(
     firstName: formData.get("firstName"),
     lastName: formData.get("lastName"),
     email: formData.get("email"),
+    phone: formData.get("phone"),
     password: formData.get("password"),
     legalName: formData.get("legalName"),
     displayName: formData.get("displayName"),
@@ -286,6 +304,7 @@ export async function signupFactoryAction(
           firstName: parsed.data.firstName,
           lastName: parsed.data.lastName,
           name: `${parsed.data.firstName} ${parsed.data.lastName}`,
+          phone: parsed.data.phone,
           passwordHash,
           role: Role.FACTORY,
           subRole: SubRole.OWNER,

@@ -89,6 +89,21 @@ export function ClientSignupForm() {
         </Field>
 
         <Field
+          label={dict.auth.signup.phoneLabel}
+          required
+          hint={dict.auth.signup.phoneHint}
+        >
+          <Input
+            type="tel"
+            name="phone"
+            autoComplete="tel"
+            required
+            maxLength={32}
+            placeholder="+33 6 12 34 56 78"
+          />
+        </Field>
+
+        <Field
           label={dict.auth.login.passwordLabel}
           required
           hint={dict.auth.signup.passwordHint}

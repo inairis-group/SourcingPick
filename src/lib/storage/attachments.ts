@@ -23,6 +23,20 @@ const UPLOADS_ROOT = join(process.cwd(), "uploads");
 
 const IMAGE_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif", ".gif"]);
 const VIDEO_EXT = new Set([".mp4", ".webm", ".mov", ".m4v"]);
+// Voice notes recorded by MediaRecorder land as webm/ogg on Chrome+Firefox
+// and m4a on Safari; mp3/wav/aac are accepted for forwarded files. The
+// `.webm` extension classifies as VIDEO above — for audio-only blobs the
+// recorder names them `.webm-audio` so we can tell them apart.
+const AUDIO_EXT = new Set([
+  ".mp3",
+  ".m4a",
+  ".aac",
+  ".ogg",
+  ".oga",
+  ".opus",
+  ".wav",
+  ".webm-audio",
+]);
 const FILE_EXT = new Set([
   ".pdf",
   ".doc",
@@ -37,6 +51,7 @@ const FILE_EXT = new Set([
 const SIZE_LIMITS_BYTES: Record<AttachmentKind, number> = {
   IMAGE: 10 * 1024 * 1024,
   VIDEO: 50 * 1024 * 1024,
+  AUDIO: 15 * 1024 * 1024,
   FILE: 25 * 1024 * 1024,
 };
 
@@ -65,6 +80,7 @@ export function classifyByExtension(filename: string): AttachmentKind | null {
   const ext = extname(filename).toLowerCase();
   if (IMAGE_EXT.has(ext)) return AttachmentKind.IMAGE;
   if (VIDEO_EXT.has(ext)) return AttachmentKind.VIDEO;
+  if (AUDIO_EXT.has(ext)) return AttachmentKind.AUDIO;
   if (FILE_EXT.has(ext)) return AttachmentKind.FILE;
   return null;
 }

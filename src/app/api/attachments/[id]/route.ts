@@ -141,7 +141,9 @@ async function canRead(att: {
       return req.clientOrgId === session.user.organizationId;
     }
 
-    case AttachmentContext.ORDER: {
+    case AttachmentContext.ORDER:
+    case AttachmentContext.ORDER_QC_PROOF:
+    case AttachmentContext.ORDER_SHIPMENT_PROOF: {
       const session = await auth();
       if (!session?.user) return false;
       if (session.user.role === Role.ADMIN) return true;

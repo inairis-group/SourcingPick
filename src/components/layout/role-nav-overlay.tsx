@@ -123,7 +123,7 @@ export function RoleNavOverlay({ groups }: { groups: NavGroup[] }) {
                                     size={20}
                                     strokeWidth={1.5}
                                     className={cn(
-                                      "flex-shrink-0",
+                                      "shrink-0",
                                       isActive
                                         ? "text-action"
                                         : "text-faint group-hover:text-action",
@@ -136,7 +136,7 @@ export function RoleNavOverlay({ groups }: { groups: NavGroup[] }) {
                                   size={16}
                                   strokeWidth={1.5}
                                   className={cn(
-                                    "flex-shrink-0",
+                                    "shrink-0",
                                     isActive
                                       ? "text-action"
                                       : "text-faint group-hover:text-action",

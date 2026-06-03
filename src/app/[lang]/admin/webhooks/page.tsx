@@ -11,6 +11,7 @@ import {
   KpiCard,
 } from "@/components/dashboard/primitives";
 import { cn } from "@/lib/utils";
+import { ReplayButton } from "./_components/replay-button";
 
 export async function generateMetadata({
   params,
@@ -30,6 +31,7 @@ const STATUS_TONE: Record<WebhookStatus, string> = {
 
 const SOURCE_TONE: Record<WebhookSource, string> = {
   STRIPE: "bg-info-soft text-info border-info-edge",
+  WISE: "bg-brand-50 text-brand-700 border-brand-200",
   CARRIER: "bg-warning-soft text-warning border-warning-edge",
   OTHER: "bg-subtle text-muted border-line",
 };
@@ -50,7 +52,7 @@ export default async function AdminWebhooksPage({
       ? (search.status as WebhookStatus)
       : undefined;
 
-  const [counts, recent] = await Promise.all([
+  const [counts, recent, wiseFailedCount] = await Promise.all([
     prisma.webhookEvent.groupBy({
       by: ["status"],
       _count: true,
@@ -70,6 +72,12 @@ export default async function AdminWebhooksPage({
         processedAt: true,
       },
     }),
+    prisma.webhookEvent.count({
+      where: {
+        source: WebhookSource.WISE,
+        status: { in: [WebhookStatus.FAILED, WebhookStatus.RETRYING] },
+      },
+    }),
   ]);
 
   const received =
@@ -87,7 +95,7 @@ export default async function AdminWebhooksPage({
         description={dict.admin.webhooks.description}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-6">
         <KpiCard
           label={dict.admin.webhooks.kpiReceived}
           value={String(received)}
@@ -101,6 +109,12 @@ export default async function AdminWebhooksPage({
           label={dict.admin.webhooks.kpiFailed}
           value={String(failed)}
           tone={failed > 0 ? "danger" : "neutral"}
+        />
+        <KpiCard
+          label={dict.admin.webhooks.kpiWiseStuck}
+          value={String(wiseFailedCount)}
+          tone={wiseFailedCount > 0 ? "danger" : "neutral"}
+          hint={dict.admin.webhooks.kpiWiseStuckHint}
         />
       </div>
 
@@ -147,52 +161,64 @@ export default async function AdminWebhooksPage({
                 <th className="px-5 py-2.5 font-medium">
                   {dict.admin.webhooks.colError}
                 </th>
+                <th className="px-5 py-2.5 font-medium text-end">
+                  {dict.admin.webhooks.colAction}
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-line-subtle">
               {recent.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-5 py-12 text-center text-faint">
+                  <td colSpan={7} className="px-5 py-12 text-center text-faint">
                     {dict.admin.webhooks.empty}
                   </td>
                 </tr>
               ) : (
-                recent.map((e) => (
-                  <tr key={e.id} className="hover:bg-subtle/40">
-                    <td className="px-5 py-2 text-[11px] font-mono text-faint whitespace-nowrap">
-                      {formatDate(e.receivedAt, lang, "short")}
-                    </td>
-                    <td className="px-5 py-2">
-                      <span
-                        className={cn(
-                          "inline-flex items-center h-5 px-2 rounded-full border text-[10px] font-medium uppercase",
-                          SOURCE_TONE[e.source],
-                        )}
-                      >
-                        {e.source}
-                      </span>
-                    </td>
-                    <td className="px-5 py-2 text-xs font-mono text-fg">
-                      {e.eventType}
-                    </td>
-                    <td className="px-5 py-2">
-                      <span
-                        className={cn(
-                          "inline-flex items-center h-5 px-2 rounded-full border text-[10px] font-medium uppercase",
-                          STATUS_TONE[e.status],
-                        )}
-                      >
-                        {e.status}
-                      </span>
-                    </td>
-                    <td className="px-5 py-2 text-xs text-fg text-end">
-                      {e.attempts}
-                    </td>
-                    <td className="px-5 py-2 text-[11px] text-warning max-w-[260px] truncate">
-                      {e.lastError ?? "—"}
-                    </td>
-                  </tr>
-                ))
+                recent.map((e) => {
+                  const canReplay =
+                    e.source === WebhookSource.WISE &&
+                    e.eventType === "balances#credit" &&
+                    e.status !== WebhookStatus.PROCESSED;
+                  return (
+                    <tr key={e.id} className="hover:bg-subtle/40">
+                      <td className="px-5 py-2 text-[11px] font-mono text-faint whitespace-nowrap">
+                        {formatDate(e.receivedAt, lang, "short")}
+                      </td>
+                      <td className="px-5 py-2">
+                        <span
+                          className={cn(
+                            "inline-flex items-center h-5 px-2 rounded-full border text-[10px] font-medium uppercase",
+                            SOURCE_TONE[e.source],
+                          )}
+                        >
+                          {e.source}
+                        </span>
+                      </td>
+                      <td className="px-5 py-2 text-xs font-mono text-fg">
+                        {e.eventType}
+                      </td>
+                      <td className="px-5 py-2">
+                        <span
+                          className={cn(
+                            "inline-flex items-center h-5 px-2 rounded-full border text-[10px] font-medium uppercase",
+                            STATUS_TONE[e.status],
+                          )}
+                        >
+                          {e.status}
+                        </span>
+                      </td>
+                      <td className="px-5 py-2 text-xs text-fg text-end">
+                        {e.attempts}
+                      </td>
+                      <td className="px-5 py-2 text-[11px] text-warning max-w-65 truncate">
+                        {e.lastError ?? "—"}
+                      </td>
+                      <td className="px-5 py-2 text-end">
+                        {canReplay && <ReplayButton eventId={e.id} />}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

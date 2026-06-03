@@ -95,7 +95,7 @@ export default async function AdminOrganizationsPage({
           className={cn(
             "h-9 px-3 text-sm rounded-sm border bg-surface text-fg placeholder:text-faint",
             "border-line-strong focus:border-focus focus:outline-2 focus:outline-focus focus:outline-offset-2",
-            "min-w-[260px]",
+            "min-w-65",
           )}
         />
         {(["CLIENT", "FACTORY", "AGENT", "PLATFORM"] as OrgType[]).map((t) => {

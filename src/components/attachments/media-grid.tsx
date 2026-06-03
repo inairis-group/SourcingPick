@@ -3,6 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { File01Icon, Download02Icon } from "@hugeicons/core-free-icons";
 import { prisma } from "@/lib/db/client";
 import { AttachmentDeleteButton } from "./attachment-delete-button";
+import { LightboxGallery } from "./lightbox-gallery";
 import { cn } from "@/lib/utils";
 
 /**
@@ -64,27 +65,13 @@ export async function MediaGrid({
       )}
 
       {images.length > 0 && (
-        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
-          {images.map((a) => (
-            <li
-              key={a.id}
-              className="aspect-square rounded-md border border-line bg-subtle overflow-hidden relative group"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`/api/attachments/${a.id}`}
-                alt={a.originalName}
-                className="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-              />
-              {canManage && (
-                <div className="absolute top-1.5 inset-e-1.5">
-                  <AttachmentDeleteButton id={a.id} />
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+        <LightboxGallery
+          images={images.map((a) => ({
+            id: a.id,
+            originalName: a.originalName,
+          }))}
+          canManage={canManage}
+        />
       )}
 
       {videos.length > 0 && (

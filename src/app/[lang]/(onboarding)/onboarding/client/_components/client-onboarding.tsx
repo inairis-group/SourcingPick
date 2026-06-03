@@ -98,7 +98,7 @@ export function ClientOnboarding({ firstName, orgName }: Props) {
           <ol className="flex flex-col gap-3 mt-4">
             {[1, 2, 3, 4].map((n) => (
               <li key={n} className="flex items-start gap-3">
-                <span className="flex-shrink-0 inline-flex items-center justify-center h-7 w-7 rounded-full bg-headline text-on-action font-mono font-semibold text-xs">
+                <span className="shrink-0 inline-flex items-center justify-center h-7 w-7 rounded-full bg-headline text-on-action font-mono font-semibold text-xs">
                   {n}
                 </span>
                 <p className="text-sm text-fg leading-snug pt-1">
@@ -163,7 +163,7 @@ function Pillar({
 }) {
   return (
     <li className="flex items-start gap-3 rounded-md border border-line bg-subtle p-4">
-      <span className="flex-shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-700">
+      <span className="shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-700">
         {icon}
       </span>
       <div className="flex-1 min-w-0">

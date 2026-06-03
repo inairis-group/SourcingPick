@@ -45,6 +45,7 @@ type State = {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   password: string;
   // Step 2
   legalName: string;
@@ -68,6 +69,7 @@ const INITIAL_STATE: State = {
   firstName: "",
   lastName: "",
   email: "",
+  phone: "",
   password: "",
   legalName: "",
   displayName: "",
@@ -162,6 +164,7 @@ export function FactorySignupForm() {
     fd.append("firstName", state.firstName);
     fd.append("lastName", state.lastName);
     fd.append("email", state.email);
+    fd.append("phone", state.phone);
     fd.append("password", state.password);
     fd.append("legalName", state.legalName);
     fd.append("displayName", state.displayName);
@@ -196,7 +199,7 @@ export function FactorySignupForm() {
 
       <Stepper current={step} labels={stepLabels} />
 
-      <div className="min-h-[280px]">
+      <div className="min-h-70">
         {error && <FormError className="mb-4">{error}</FormError>}
 
         {step === 1 && (
@@ -280,7 +283,7 @@ function Stepper({ current, labels }: { current: Step; labels: string[] }) {
           >
             <span
               className={cn(
-                "flex-shrink-0 inline-flex items-center justify-center h-7 w-7 rounded-full text-xs font-semibold",
+                "shrink-0 inline-flex items-center justify-center h-7 w-7 rounded-full text-xs font-semibold",
                 "transition-colors duration-fast",
                 isDone && "bg-action text-on-action",
                 isCurrent && "bg-action text-on-action ring-2 ring-action/30",
@@ -352,6 +355,20 @@ function StepAccount({ dict, state, set }: StepProps) {
           value={state.email}
           onChange={(e) => set("email", e.target.value)}
           invalidMessage={dict.auth.signup.errorEmail}
+        />
+      </Field>
+      <Field
+        label={dict.auth.signup.phoneLabel}
+        required
+        hint={dict.auth.signup.phoneHint}
+      >
+        <Input
+          type="tel"
+          autoComplete="tel"
+          maxLength={32}
+          placeholder="+33 6 12 34 56 78"
+          value={state.phone}
+          onChange={(e) => set("phone", e.target.value)}
         />
       </Field>
       <Field
@@ -563,7 +580,7 @@ function StepReview({
             <dt className="text-xs font-medium uppercase tracking-wide text-faint sm:pt-0.5">
               {row.label}
             </dt>
-            <dd className="text-sm text-fg sm:col-span-2 break-words">
+            <dd className="text-sm text-fg sm:col-span-2 wrap-break-word"> 
               {row.value}
             </dd>
           </div>

@@ -95,7 +95,7 @@ export function DashboardSection({
             <p className="text-xs text-muted mt-0.5">{description}</p>
           )}
         </div>
-        {action && <div className="flex-shrink-0">{action}</div>}
+        {action && <div className="shrink-0">{action}</div>}
       </header>
       <div className="p-5">{children}</div>
     </section>
@@ -160,7 +160,7 @@ export function DashboardHeader({
           <p className="text-sm text-muted max-w-2xl">{description}</p>
         )}
       </div>
-      {actions && <div className="w-full md:w-auto flex-shrink-0">{actions}</div>}
+      {actions && <div className="w-full md:w-auto shrink-0">{actions}</div>}
     </header>
   );
 }

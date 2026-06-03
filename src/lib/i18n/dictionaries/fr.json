@@ -64,6 +64,7 @@
       "budgetLabel": "Budget total",
       "priceHintEur": "En euros, hors taxes.",
       "deadlineLabel": "Date de livraison souhaitée",
+      "deadlineWarningShort": "Délai inférieur à 31 jours. Une commande entièrement sécurisée (fret aérien compris) demande au minimum 31 jours — votre demande sera traitée, mais en dehors du parcours standard.",
       "addressLabel": "Adresse de livraison",
       "addressPlaceholder": "12 rue de la République, 69001 Lyon",
       "incotermLabel": "Incoterm",
@@ -166,6 +167,18 @@
       "deliveryEtasTitle": "Délais de livraison estimés",
       "deliveryEtasDisclaimer": "Les délais sont des estimations et peuvent varier selon le fournisseur, le volume, la destination et les modalités logistiques."
     },
+    "auctions": {
+      "bidAmountLabel": "Votre enchère (€)",
+      "bidMinHint": "Minimum {min} €.",
+      "placeBidCta": "Enchérir",
+      "buyNowBody": "Remportez l'enchère immédiatement à {amount} €.",
+      "buyNowCta": "Achat immédiat",
+      "errorInvalidAmount": "Indiquez un montant en euros valide.",
+      "cannotBidOnOwn": "Vous ne pouvez pas enchérir sur l'enchère de votre propre usine.",
+      "notStartedYet": "Cette enchère démarre le {date}. Revenez plus tard.",
+      "notLiveAnymore": "Cette enchère n'accepte plus d'enchères.",
+      "youAreWinning": "Vous êtes actuellement en tête."
+    },
     "researchFee": {
       "title": "Frais de recherche",
       "quotedBody": "Votre agent a cadré cette demande. Réglez les frais de recherche de {amount} pour lancer le sourcing — ils sont remboursés en crédit plateforme si vous passez commande sous 30 jours.",
@@ -184,6 +197,8 @@
       "incoterm": "Incoterm",
       "validUntil": "Valide jusqu'au",
       "expired": "Expiré",
+      "depositLabel": "Acompte ({pct} %)",
+      "balanceLabel": "Solde à l'expédition ({pct} %)",
       "statusAwaitingDecision": "À décider",
       "statusAccepted": "Accepté",
       "statusRejected": "Refusé",
@@ -238,13 +253,34 @@
       "trackingNumberLabel": "Numéro de suivi",
       "shippedAtLabel": "Expédiée le",
       "trackingPending": "Le numéro de suivi sera ajouté par l'usine au moment de l'expédition.",
+      "tracking": {
+        "carrierLabel": "Transporteur",
+        "numberLabel": "Numéro de suivi",
+        "copyCta": "Copier",
+        "openTrackingCta": "Ouvrir le suivi"
+      },
+      "qcProofTitle": "Photos contrôle qualité (usine)",
+      "shipmentProofTitle": "Preuve d'expédition",
       "paymentPendingTitle": "Paiement requis",
-      "paymentPendingBody": "Réglez l'acompte de 30% par carte. Vos fonds sont gardés en séquestre jusqu'à la livraison conforme.",
+      "paymentPendingBody": "Virez l'acompte de 30% via les coordonnées bancaires ci-dessus. Vos fonds passent en séquestre dès leur réception.",
       "payDepositCta": "Payer l'acompte",
       "paymentSuccessTitle": "Paiement reçu",
       "paymentSuccessBody": "Votre acompte est en séquestre. L'usine est notifiée et la production peut démarrer.",
       "paymentCancelledTitle": "Paiement annulé",
       "paymentCancelledBody": "Le paiement n'a pas abouti. Vous pouvez relancer la transaction à tout moment.",
+      "wisePay": {
+        "title": "Payer par virement bancaire (Wise)",
+        "body": "Virez le montant depuis votre banque vers le compte ci-dessous. Votre commande passe automatiquement en séquestre dès réception.",
+        "amountLabel": "Montant",
+        "holderLabel": "Titulaire",
+        "ibanLabel": "IBAN",
+        "bicLabel": "BIC / SWIFT",
+        "referenceLabel": "Référence",
+        "referenceHint": "Important : copiez cette référence exactement dans le libellé du virement pour que nous puissions associer le paiement à votre commande.",
+        "copyCta": "Copier",
+        "copiedCta": "Copié",
+        "footnote": "Les virements SEPA arrivent en quelques heures, les virements internationaux en 1 à 3 jours. Le statut de votre commande se met à jour automatiquement."
+      },
       "sectionInvoices": "Factures",
       "invoiceTypeDeposit": "Acompte",
       "invoiceTypeBalance": "Solde",
@@ -266,7 +302,7 @@
       "confirmReceiptBody": "Confirmez la livraison pour libérer le solde à l'usine.",
       "confirmReceiptCta": "Confirmer la réception",
       "payBalanceCta": "Régler le solde et confirmer la réception",
-      "payBalanceBody": "Le règlement du solde 70% libère automatiquement le paiement vers l'usine.",
+      "payBalanceBody": "Virez le solde de 70% via les coordonnées bancaires ci-dessus. Le paiement de l'usine est libéré automatiquement à la réception.",
       "waitingForFactory": "En attente d'une action de l'usine."
     }
   },
@@ -323,6 +359,14 @@
       "localeLabel": "Langue préférée",
       "localeHint": "La langue de l'interface et des notifications.",
       "saved": "Profil mis à jour."
+    },
+    "logo": {
+      "title": "Logo de l'organisation",
+      "description": "Affiché sur la marketplace, dans les fils de discussion et en en-tête de vos factures.",
+      "fileLabel": "Nouveau logo",
+      "fileHint": "JPG, PNG ou WebP — 10 Mo max.",
+      "submitCta": "Mettre à jour",
+      "saved": "Logo mis à jour."
     },
     "security": {
       "title": "Sécurité",
@@ -426,7 +470,12 @@
       "slaApproaching": "{h} h — SLA proche",
       "slaOverdue": "{h} h — SLA dépassé",
       "tenderInvitationsCount": "{n} appels d'offres",
-      "quotesCount": "{n} devis"
+      "quotesCount": "{n} devis",
+      "preTender": {
+        "pendingBanner": "En attente de validation par un Admin avant l'envoi de l'appel d'offres.",
+        "approvedBanner": "Demande validée par l'Admin le {date} — l'appel d'offres peut être lancé.",
+        "rejectedBanner": "Demande refusée par l'Admin le {date}"
+      }
     },
     "quotes": {
       "empty": "Aucun devis reçu pour cette demande.",
@@ -457,6 +506,14 @@
       "searchPlaceholder": "Rechercher usine, pays, capacité…",
       "empty": "Aucune usine ne correspond à ce filtre.",
       "ordersSuffix": "commandes"
+    },
+    "orders": {
+      "eyebrow": "Suivi des commandes",
+      "title": "Commandes sur mes demandes",
+      "description": "Toutes les commandes générées sur les demandes que vous suivez. Cliquez pour ouvrir la demande et son fil.",
+      "emptyTitle": "Aucune commande pour l'instant",
+      "emptyBody": "Dès qu'un devis est accepté sur une de vos demandes, la commande apparaîtra ici.",
+      "createdAt": "Créée le"
     },
     "tasks": {
       "eyebrow": "Mes tâches",
@@ -557,6 +614,28 @@
     "systemAuthor": "SourcingPick",
     "errorLoad": "Impossible de charger les messages. Réessayez.",
     "errorStream": "Connexion temps réel interrompue. Rechargez la page pour rétablir.",
+    "globalEyebrow": "Messagerie",
+    "globalTitle": "Toutes mes conversations",
+    "globalDescription": "Tous vos fils de discussion — demandes, appels d'offres, devis, commandes — regroupés en un seul endroit.",
+    "globalEmpty": "Aucune conversation pour le moment.",
+    "globalEmptyHint": "Quand vous ou un partenaire ouvrirez un fil sur une demande, un devis ou une commande, il apparaîtra ici.",
+    "globalEmptyUnread": "Tout est lu.",
+    "globalEmptyUnreadHint": "Vous êtes à jour. Repassez ici quand un message arrive.",
+    "filterAll": "Toutes",
+    "filterUnread": "Non lues",
+    "contextLabels": {
+      "REQUEST": "Demande",
+      "ORDER": "Commande",
+      "QUOTE": "Devis",
+      "TENDER": "Appel d'offres"
+    },
+    "voice": {
+      "start": "Enregistrer un message vocal",
+      "stop": "Arrêter et envoyer",
+      "cancel": "Annuler",
+      "permissionDenied": "Microphone refusé. Autorisez l'accès puis réessayez.",
+      "unsupported": "Votre navigateur ne permet pas l'enregistrement vocal."
+    },
     "contextHints": {
       "REQUEST": "Discussion liée à cette demande de sourcing. Les participants : client, agent.",
       "TENDER": "Discussion privée entre l'agent et cette usine pour l'appel d'offres. Les autres usines ne voient pas ces échanges.",
@@ -564,7 +643,8 @@
       "ORDER": "Discussion liée à cette commande. Tous les acteurs sont inclus.",
       "KYC": "Discussion liée à votre dossier KYC avec notre équipe.",
       "CERT": "Discussion liée à votre programme de certification.",
-      "DISPUTE": "Discussion liée à un litige. Modérée par l'équipe SourcingPick."
+      "DISPUTE": "Discussion liée à un litige. Modérée par l'équipe SourcingPick.",
+      "DIRECT": "Discussion directe — pas rattachée à une commande, une demande ou un produit spécifique."
     }
   },
   "tender": {
@@ -641,6 +721,10 @@
       "promotionClear": "Retirer",
       "promotionSaved": "Promotion enregistrée.",
       "leadTimeLabel": "Délai de production",
+      "leadTimeUnits": {
+        "DAY": "Jours",
+        "MONTH": "Mois"
+      },
       "moqLabel": "MOQ",
       "stockLabel": "Stock",
       "stockLowLabel": "Seuil d'alerte",
@@ -706,6 +790,57 @@
         "REFUSE": "Refusé"
       }
     },
+    "auctions": {
+      "eyebrow": "Enchères",
+      "title": "Mes enchères",
+      "description": "Vendez de gros lots ou du déstockage aux enchères — les acheteurs surenchérissent sur une période que vous fixez.",
+      "newCta": "Nouvelle enchère",
+      "newTitle": "Créer une enchère",
+      "newBody": "Renseignez les détails du lot puis envoyez pour validation par notre équipe avant publication.",
+      "backToList": "Retour aux enchères",
+      "emptyTitle": "Aucune enchère pour l'instant",
+      "emptyBody": "Créez votre première enchère pour proposer un lot à la communauté d'acheteurs.",
+      "kycRequiredTitle": "KYC requis",
+      "kycRequiredBody": "Votre dossier KYC doit être validé avant de pouvoir publier des enchères.",
+      "titleLabel": "Titre",
+      "titlePlaceholder": "Lot 5 000 t-shirts coton bio — déstockage",
+      "categoryLabel": "Catégorie",
+      "descriptionLabel": "Description",
+      "descriptionHint": "Markdown autorisé — décrivez clairement la composition, l'état, l'emballage et les conditions.",
+      "descriptionPlaceholder": "Détaillez le contenu du lot : quantité par taille / coloris, état des produits, emballage, conditions particulières.",
+      "startingBidLabel": "Mise de départ (€)",
+      "reserveLabel": "Prix de réserve (€)",
+      "reserveHint": "Optionnel — sous ce prix, l'enchère ne sera pas adjugée.",
+      "buyNowLabel": "Achat immédiat (€)",
+      "buyNowHint": "Optionnel — un acheteur peut clore l'enchère immédiatement à ce prix.",
+      "eurHint": "En euros, hors taxes.",
+      "quantityLabel": "Quantité totale",
+      "moqLabel": "MOQ partiel",
+      "moqHint": "Si vous acceptez les lots partagés, sinon laissez à la quantité totale.",
+      "startsAtLabel": "Début de l'enchère",
+      "startsAtHint": "Date + heure de mise en ligne après validation.",
+      "endsAtLabel": "Fin de l'enchère",
+      "endsAtHint": "Le plus offrant à cette date remporte le lot.",
+      "saveDraft": "Enregistrer en brouillon",
+      "saveChanges": "Enregistrer les modifications",
+      "submitForReviewCta": "Soumettre pour validation",
+      "needsImageHint": "Ajoutez au moins une photo avant soumission.",
+      "cancelCta": "Annuler le brouillon",
+      "confirmCancel": "Annuler cette enchère ? Cette action est irréversible.",
+      "estimatedCommissionLabel": "Commission estimée",
+      "estimatedCommissionHint": "Estimation sur la mise de départ — le taux final dépend du montant adjugé.",
+      "bidsSuffix": "enchères",
+      "rejectedTitle": "Enchère refusée",
+      "statuses": {
+        "DRAFT": "Brouillon",
+        "PENDING_REVIEW": "En validation",
+        "REJECTED": "Refusée",
+        "ACTIVE": "En cours",
+        "ENDED": "Terminée",
+        "SOLD": "Vendue",
+        "CANCELLED": "Annulée"
+      }
+    },
     "payouts": {
       "eyebrow": "Paiements",
       "title": "Mes versements",
@@ -731,7 +866,32 @@
       "statusScheduled": "Programmé",
       "statusSent": "Versé",
       "statusReceived": "Reçu",
-      "statusFailed": "Échec"
+      "statusFailed": "Échec",
+      "wise": {
+        "notConfiguredTitle": "Versements via Wise — configuration en attente",
+        "notConfiguredBody": "L'équipe SourcingPick finalise la connexion Wise. Vous pourrez renseigner vos coordonnées bancaires ici dès l'activation.",
+        "connectedTitle": "Compte Wise lié",
+        "connectedBody": "Vos versements arrivent automatiquement sur ce compte. Référence Wise : {ref}.",
+        "setupTitle": "Renseignez vos coordonnées bancaires",
+        "setupBody": "Wise vous verse en 1 à 3 jours au taux interbancaire. Sélectionnez le type de compte adapté à votre banque.",
+        "typeLabel": "Type de compte",
+        "types": {
+          "IBAN": "IBAN (UE / SEPA)",
+          "SWIFT": "SWIFT (international)",
+          "CHINESE_LOCAL": "Compte bancaire chinois (CNY)"
+        },
+        "holderNameLabel": "Titulaire du compte",
+        "holderNameHint": "Exactement comme indiqué sur votre relevé bancaire.",
+        "currencyLabel": "Devise (ISO 3 lettres)",
+        "ibanLabel": "IBAN",
+        "ibanHint": "Sans espaces ni tirets — Wise normalise pour vous.",
+        "swiftCodeLabel": "Code SWIFT / BIC",
+        "swiftCodeHint": "8 ou 11 caractères, majuscules.",
+        "bankCodeLabel": "Code de la banque",
+        "bankCodeHint": "Code court de la banque, p. ex. ICBC, BOC, CCB.",
+        "accountNumberLabel": "Numéro de compte",
+        "submitCta": "Enregistrer"
+      }
     },
     "orders": {
       "eyebrow": "Mes commandes",
@@ -757,13 +917,46 @@
       "qcCtaBody": "Une fois le contrôle qualité validé, ajoutez les informations de suivi pour expédier.",
       "markShippedCta": "Marquer comme expédiée",
       "shipFormTitle": "Informations d'expédition",
+      "shipFormBody": "Renseignez le transporteur et le numéro de suivi pour que l'acheteur puisse suivre le colis. L'URL de suivi est optionnelle mais recommandée — elle permet d'ouvrir la page du transporteur en un clic.",
+      "shipFormReminder": "Vérifiez deux fois le numéro de suivi avant validation — l'acheteur est notifié dès l'expédition et le numéro ne peut être modifié qu'en contactant le support.",
+      "carrierHint": "Le nom du transporteur tel qu'il apparaît sur votre étiquette.",
+      "trackingNumberHint": "Copiez depuis l'étiquette ; pas d'espace ni de tiret.",
       "trackingUrlLabel": "URL de suivi",
-      "trackingUrlHint": "Optionnel — le lien du transporteur pour suivre le colis.",
+      "trackingUrlHint": "Optionnel — collez le lien du transporteur pour que l'acheteur ouvre directement la page de statut.",
       "confirmShipCta": "Confirmer l'expédition",
       "shippedCtaTitle": "Colis expédié",
       "shippedCtaBody": "Marquez comme en transit dès que le colis est confirmé en mouvement par le transporteur.",
       "markInTransitCta": "Marquer en transit",
-      "errorTrackingRequired": "Le transporteur et le numéro de suivi sont obligatoires."
+      "errorTrackingRequired": "Le transporteur et le numéro de suivi sont obligatoires.",
+      "proofs": {
+        "qcSectionTitle": "Photos de contrôle qualité",
+        "qcSectionBody": "Téléversez des photos du produit fini, des cartons emballés, des étiquettes — tout ce qui permet à l'acheteur de voir que la commande est prête avant l'expédition. Visibles uniquement par l'acheteur et l'admin.",
+        "qcGalleryTitle": "Photos de contrôle qualité",
+        "qcLabel": "Photos de contrôle qualité",
+        "qcHint": "JPG / PNG / WebP · plusieurs photos bienvenues.",
+        "shipmentSectionTitle": "Photos d'expédition",
+        "shipmentSectionBody": "Téléversez une photo du colis remis au transporteur avec l'étiquette de suivi visible. Clôt la question « a-t-il bien été expédié ? » en cas de litige.",
+        "shipmentGalleryTitle": "Photos d'expédition",
+        "shipmentLabel": "Photos d'expédition",
+        "shipmentHint": "JPG / PNG / WebP · 1 à 3 photos suffisent.",
+        "submitCta": "Téléverser",
+        "saved": "Photos téléversées."
+      },
+      "forwarder": {
+        "title": "Lien transitaire",
+        "body": "Générez un lien à partager avec votre transitaire pour qu'il dépose lui-même les photos de remise au transporteur. Aucun compte requis ; le lien expire au bout de 14 jours.",
+        "labelLabel": "Étiquette (optionnelle)",
+        "labelPlaceholder": "ex. Ramassage DHL, conteneur Maersk…",
+        "createCta": "Générer un lien",
+        "copy": "Copier",
+        "copied": "Copié",
+        "copyError": "Le presse-papiers n'a pas répondu. Sélectionnez et copiez manuellement.",
+        "revoke": "Révoquer",
+        "expiresOn": "Expire le {date}",
+        "lastUsedOn": "Dernier dépôt le {date}",
+        "uploadCount": "{n} fichier(s)",
+        "notYetAvailable": "Le lien transitaire sera disponible dès le passage en préparation."
+      }
     },
     "tenders": {
       "eyebrow": "Appels d'offres",
@@ -790,7 +983,10 @@
       "moqLabel": "MOQ",
       "validityLabel": "Validité du devis",
       "validityHint": "Nombre de jours pendant lesquels votre devis reste valide (max 60).",
+      "depositPercentageLabel": "Acompte demandé (%)",
+      "depositPercentageHint": "Entre 30 et 50%. Le client règle cette part à l'acceptation ; le solde à la livraison.",
       "daysSuffix": "jours",
+      "monthsSuffix": "mois",
       "daysShort": "j",
       "validUntilLabel": "Valide jusqu'au",
       "notesLabel": "Notes",
@@ -970,10 +1166,12 @@
     "webhooks": {
       "eyebrow": "Webhooks",
       "title": "Événements webhook",
-      "description": "Trace des événements entrants Stripe et autres fournisseurs.",
+      "description": "Trace des événements entrants Wise, Stripe et autres fournisseurs.",
       "kpiReceived": "Reçus",
       "kpiProcessed": "Traités",
       "kpiFailed": "Échoués",
+      "kpiWiseStuck": "Wise · bloqués",
+      "kpiWiseStuckHint": "Virements Wise sans rapprochement automatique. Rejouez après correction.",
       "tableTitle": "Événements récents",
       "empty": "Aucun événement.",
       "colReceived": "Reçu",
@@ -981,7 +1179,13 @@
       "colType": "Type",
       "colStatus": "Statut",
       "colAttempts": "Tentatives",
-      "colError": "Erreur"
+      "colError": "Erreur",
+      "colAction": "Action",
+      "replay": {
+        "cta": "Rejouer",
+        "pending": "En cours…",
+        "tooltip": "Relancer la réconciliation avec le payload stocké."
+      }
     },
     "logins": {
       "eyebrow": "Sécurité",
@@ -1041,6 +1245,19 @@
       "confirmReject": "Confirmer le refus",
       "back": "Retour"
     },
+    "auctions": {
+      "eyebrow": "Modération",
+      "title": "Enchères à valider",
+      "description": "Validez ou refusez les enchères soumises par les usines avant publication.",
+      "emptyTitle": "Aucune enchère en attente",
+      "emptyBody": "Toutes les enchères soumises ont été traitées.",
+      "openCta": "Ouvrir",
+      "approveCta": "Valider et publier",
+      "rejectCta": "Refuser",
+      "rejectReasonPlaceholder": "Décrivez à l'usine ce qu'il faut corriger…",
+      "confirmRejectCta": "Confirmer le refus",
+      "back": "Retour"
+    },
     "dispatch": {
       "eyebrow": "Dispatch",
       "title": "Demandes à assigner",
@@ -1056,7 +1273,19 @@
       "assign": "Assigner",
       "reassign": "Réassigner",
       "loadSuffix": "demandes actives",
-      "errorPickAgent": "Sélectionnez un agent avant d'assigner."
+      "errorPickAgent": "Sélectionnez un agent avant d'assigner.",
+      "preTender": {
+        "helperUnassigned": "Validation pré-appel d'offres requise avant l'envoi de l'AO.",
+        "helperAssigned": "Validez la demande pour que l'agent puisse lancer l'appel d'offres.",
+        "approveCta": "Valider",
+        "rejectCta": "Refuser",
+        "flipReject": "Annuler la validation",
+        "rejectReasonPlaceholder": "Motif transmis à l'agent (≥ 5 caractères)…",
+        "cancel": "Annuler",
+        "confirmRejectCta": "Confirmer le refus",
+        "approvedOn": "Validée le {date}",
+        "rejectedOn": "Refusée le {date}"
+      }
     },
     "requestDetail": {
       "backToDispatch": "Retour au dispatch",
@@ -1152,7 +1381,8 @@
         "active": "Actif",
         "configured": "Configuré",
         "missing": "Non configuré"
-      }
+      },
+      "retiredBadge": "Retiré"
     },
     "deliveryEtas": {
       "title": "Délais de livraison estimés (marketplace)",
@@ -1306,9 +1536,11 @@
     "invoices": "Factures",
     "tenders": "Appels d'offres",
     "catalogue": "Catalogue",
+    "auctions": "Enchères",
     "payouts": "Versements",
     "certification": "Certification",
     "tasks": "Tâches",
+    "messages": "Messages",
     "settings": "Paramètres",
     "logout": "Se déconnecter"
   },
@@ -1451,34 +1683,69 @@
           "answer": "Pas d'abonnement ni de frais de mise en ligne. Nous prélevons une commission de 3 % sur votre versement uniquement lorsqu'une commande aboutit. Rien d'avance, rien si vous ne vendez pas."
         },
         {
-          "question": "Quand et comment suis-je payé ?",
-          "answer": "Les fonds de l'acheteur sont en séquestre dès le paiement. À la livraison conforme confirmée, votre montant net (valeur de la commande moins les 3 %) est libéré sur le compte de versement choisi — Stripe, LianLian ou Alipay selon votre région."
+          "question": "Comment et quand suis-je payé ?",
+          "answer": "Les fonds de l'acheteur sont en séquestre Wise dès leur réception. À la livraison conforme confirmée, votre montant net (valeur de la commande moins les 3 %) est viré sur votre compte bancaire en 1 à 3 jours."
         },
         {
-          "question": "Quels moyens de versement puis-je utiliser ?",
-          "answer": "Stripe Connect pour l'UE, le Royaume-Uni, les États-Unis, les Émirats, Singapour, Hong Kong et une partie de l'Afrique ; LianLian Global ou Alipay pour la Chine continentale et l'Asie du Sud-Est. Vous en choisissez un lors de l'inscription."
+          "question": "Quel est le rôle de Wise dans tout ça ?",
+          "answer": "Wise héberge le séquestre côté plateforme et exécute les virements vers votre banque. Vous renseignez vos coordonnées une fois (IBAN, SWIFT ou compte bancaire chinois), et tous vos versements arrivent automatiquement au taux interbancaire."
         },
         {
-          "question": "Ai-je besoin de certifications pour vendre ?",
-          "answer": "Elles ne sont pas obligatoires, mais les acheteurs peuvent filtrer et qualifier dessus — afficher vos vraies certifications (GOTS, OEKO-TEX, FSC, CE, etc.) vous expose à des commandes plus sérieuses."
+          "question": "Quelle est la différence entre marketplace, sur mesure, sourcing et enchères ?",
+          "answer": "Marketplace : vos produits prêts à expédier, achetables en un clic par un acheteur. Sur mesure : commandes négociées via un agent à partir d'un cahier des charges. Sourcing : un agent dédié cherche des fournisseurs pour le client, facturé en frais de recherche. Enchères (à venir) : vente de gros lots ou déstockage au plus offrant."
         },
         {
-          "question": "Comment les acheteurs sont-ils vérifiés ?",
-          "answer": "Chaque demande de sourcing est examinée et qualifiée par un agent SourcingPick avant qu'une usine ne soit invitée. Les acheteurs de la marketplace paient via séquestre comme tout le monde, vous n'êtes jamais exposé à l'impayé."
+          "question": "Quel cycle pour une commande marketplace ?",
+          "answer": "L'acheteur choisit votre produit, vire son acompte sur le compte Wise SourcingPick (séquestre). Vous recevez la commande, contrôlez la qualité, ajoutez des photos QC, expédiez avec numéro de suivi. À confirmation de livraison, votre versement net est libéré."
+        },
+        {
+          "question": "Quel cycle pour une commande sur mesure ?",
+          "answer": "Un agent vous invite à devis sur un cahier des charges. Si le client accepte, la commande est créée avec un acompte de 30 à 50 % selon ce que vous proposez dans le devis, puis le solde à livraison. Le séquestre fonctionne à l'identique."
         },
         {
           "question": "Que se passe-t-il en cas de litige ?",
-          "answer": "Les fonds restent en séquestre jusqu'à la confirmation de livraison. Pour un problème produit standard, nous médiatisons un remboursement partiel et la plateforme absorbe une partie du coût avec vous ; pour le sur-mesure, la politique diffère. La politique complète est partagée lors de l'inscription."
+          "answer": "Les fonds restent en séquestre Wise. SourcingPick joue un rôle de médiateur — nous examinons vos photos QC, vos preuves d'expédition, et tous les échanges dans le fil de discussion. Pour un défaut produit avéré, un remboursement partiel est négocié et la plateforme couvre une partie du coût avec vous. Pour un non-conforme sur mesure, un remboursement plus large est possible. Vous n'êtes pas livré à vous-même."
         },
         {
-          "question": "Que puis-je vendre — sur mesure ou prêt à l'emploi ?",
-          "answer": "Les deux. Les appels d'offres concernent les commandes sur mesure négociées avec un agent. La marketplace concerne les produits pré-négociés, prêts à expédier, achetables en un clic."
+          "question": "Comment les acheteurs sont-ils vérifiés ?",
+          "answer": "Chaque demande de sourcing est examinée et qualifiée par un agent SourcingPick avant qu'une usine ne soit invitée. Les acheteurs de la marketplace paient via séquestre Wise — vous n'êtes jamais exposé à l'impayé."
+        },
+        {
+          "question": "Ai-je besoin de certifications pour vendre ?",
+          "answer": "Pas obligatoire, mais les acheteurs filtrent dessus — afficher vos vraies certifications (GOTS, OEKO-TEX, FSC, CE…) vous expose à des commandes plus sérieuses."
         },
         {
           "question": "Que faut-il pour être vérifié (KYC) ?",
-          "answer": "Votre registre du commerce, un document fiscal et une ou deux photos d'installation ou documents de référence. La vérification est unique et généralement rapide."
+          "answer": "Votre registre du commerce, un document fiscal et une ou deux photos d'installation. La vérification est unique et généralement rapide."
         }
       ]
+    }
+  },
+  "auctions": {
+    "eyebrow": "Enchères",
+    "browseTitle": "Enchères en cours",
+    "browseDescription": "Achetez de gros lots ou des stocks à liquider en surenchère. Le plus offrant à la fin remporte le lot ; le règlement passe par notre séquestre Wise.",
+    "emptyTitle": "Aucune enchère active",
+    "emptyBody": "Revenez bientôt — les usines publient régulièrement de nouveaux lots.",
+    "backToBrowse": "Retour aux enchères",
+    "startingBidLabel": "Mise de départ",
+    "currentBidLabel": "Enchère actuelle",
+    "endsInLabel": "Se termine dans",
+    "buyNowAvailable": "Achat immédiat disponible à {amount}.",
+    "signInToBidBody": "Connectez-vous avec un compte acheteur pour enchérir.",
+    "signInToBidCta": "Se connecter",
+    "descriptionTitle": "Détails du lot",
+    "recentBidsTitle": "Dernières enchères",
+    "recentBidsEmpty": "Aucune enchère pour le moment — soyez le premier.",
+    "teaserTitle": "Enchères qui se terminent bientôt",
+    "teaserSubtitle": "Lots disponibles à la surenchère — règlement via séquestre Wise.",
+    "teaserCta": "Voir toutes les enchères",
+    "countdown": {
+      "days": "j",
+      "hours": "h",
+      "minutes": "min",
+      "seconds": "s",
+      "ended": "Terminée"
     }
   },
   "about": {
@@ -1513,6 +1780,11 @@
         "title": "Un réseau réellement global",
         "body": "Nos usines partenaires sont sur cinq continents. Nous parlons la langue de votre fournisseur et de votre service achats."
       }
+    },
+    "founders": {
+      "eyebrow": "L'équipe",
+      "title": "Les visages derrière la plateforme.",
+      "coFounderRole": "Co-fondateur"
     }
   },
   "pricing": {
@@ -1606,6 +1878,8 @@
       "orgNameHint": "Le nom commercial sous lequel vous opérez.",
       "countryLabel": "Pays",
       "countryPlaceholder": "France, Brésil, Japon…",
+      "phoneLabel": "Téléphone",
+      "phoneHint": "Pour que votre agent puisse vous joindre rapidement en cas de besoin.",
       "passwordHint": "Au moins 12 caractères.",
       "termsAccept": "J'accepte les",
       "termsLink": "conditions générales",
@@ -1891,6 +2165,173 @@
       ]
     }
   },
+  "faq": {
+    "eyebrow": "Foire aux questions",
+    "title": "Tout ce qu'il faut savoir avant de sourcer chez nous.",
+    "intro": "Quatre produits, une seule plateforme. Choisissez la section qui vous concerne pour comprendre comment ça marche, qui paie quoi, et ce qui se passe en cas de problème.",
+    "tocLabel": "Sur cette page",
+    "contactPrompt": "Vous ne trouvez pas votre réponse ? Écrivez-nous à",
+    "contactEmail": "support@sourcingpick.com",
+    "sections": {
+      "sourcing": {
+        "heading": "Sourcing avec un agent",
+        "intro": "Le parcours classique : vous décrivez le besoin, un agent qualifie et négocie auprès d'usines pré-vérifiées, vous recevez plusieurs devis comparables sur la même grille.",
+        "items": [
+          {
+            "q": "Comment l'agent choisit-il les usines à consulter ?",
+            "a": "Par catégorie, région et certifications requises. Toutes les usines en base ont été KYC-vérifiées (KBIS ou équivalent, licence d'export, échantillon de produit). L'agent privilégie celles dont l'historique sur la plateforme correspond à votre cahier des charges."
+          },
+          {
+            "q": "Quel est le délai pour recevoir les devis ?",
+            "a": "Cible 24 h ouvrées pour la qualification, puis 5 à 7 jours pour rassembler les devis (selon la complexité du brief et le fuseau horaire de l'usine)."
+          },
+          {
+            "q": "Y a-t-il des frais d'étude facturés à l'avance ?",
+            "a": "Sur les demandes très spécifiques, l'agent peut facturer des frais de recherche (125 €/jour ou 500 €/semaine). Ces frais sont entièrement crédités sur la commande si vous validez un devis dans les 30 jours suivant le paiement."
+          },
+          {
+            "q": "Puis-je modifier ma demande après l'avoir envoyée ?",
+            "a": "Tant qu'aucun appel d'offres n'a été lancé, oui — contactez votre agent. Une fois les usines invitées, toute modification matérielle relance le tour de devis."
+          },
+          {
+            "q": "Que se passe-t-il si aucun devis ne me convient ?",
+            "a": "Vous pouvez tous les refuser sans frais (hors frais d'étude éventuels déjà payés). L'agent peut relancer un nouveau tour avec un brief affiné si vous le souhaitez."
+          }
+        ]
+      },
+      "marketplace": {
+        "heading": "Marketplace — stock prêt à expédier",
+        "intro": "Catalogue de produits déjà disponibles chez nos usines partenaires. Vous commandez en direct, sans passer par un agent, avec un paiement échelonné en deux temps.",
+        "items": [
+          {
+            "q": "Quelle différence avec un site B2C classique ?",
+            "a": "Les prix sont nets HT, les MOQ et délais d'expédition sont indiqués sur chaque fiche, et le paiement reste en séquestre Wise jusqu'à confirmation de réception conforme."
+          },
+          {
+            "q": "Quand suis-je débité ?",
+            "a": "Un acompte de 30 % au passage de commande, puis le solde de 70 % à l'expédition. Les deux paiements transitent par notre IBAN de séquestre."
+          },
+          {
+            "q": "L'usine peut-elle modifier le prix ou le stock après ma commande ?",
+            "a": "Non. Une fois la commande validée, le prix et les conditions sont gelés. Si l'usine ne peut plus honorer, la commande est annulée et l'acompte intégralement remboursé."
+          },
+          {
+            "q": "Puis-je commander en dessous du MOQ ?",
+            "a": "Non sur la marketplace. Si vous avez besoin de quantités plus faibles ou d'une variante, lancez plutôt une demande de sourcing classique."
+          }
+        ]
+      },
+      "auctions": {
+        "heading": "Enchères — lots et stock à liquider",
+        "intro": "Les usines publient des lots à vendre par surenchère. Le plus offrant à la clôture remporte le lot ; certains lots ont un prix d'achat immédiat (buy-now).",
+        "items": [
+          {
+            "q": "Comment fonctionne la commission sur les enchères ?",
+            "a": "Une grille progressive de 10 % à 15 % selon le montant final. Elle est prélevée sur le règlement de l'usine, jamais ajoutée à votre enchère."
+          },
+          {
+            "q": "Que se passe-t-il si je remporte une enchère ?",
+            "a": "Une commande est créée automatiquement sur votre tableau de bord avec un échéancier 30 % acompte / 70 % à l'expédition, payable par virement Wise."
+          },
+          {
+            "q": "Et si je suis dépassé in extremis ?",
+            "a": "Vous recevez une notification immédiate avec un lien pour ré-enchérir. L'incrément minimum est de 1 € entre deux mises."
+          },
+          {
+            "q": "Et si personne n'atteint le prix de réserve ?",
+            "a": "Le lot reste invendu — aucune commande n'est créée et personne n'est débité. L'usine peut le republier."
+          },
+          {
+            "q": "Puis-je annuler une enchère gagnée ?",
+            "a": "Non, une enchère remportée engage légalement à payer. Annuler entraîne la perte de l'acompte et un signalement sur votre profil."
+          }
+        ]
+      },
+      "custom": {
+        "heading": "Production sur mesure",
+        "intro": "Pour les produits qui ne sont ni sur le marketplace ni en enchère : moules dédiés, packaging personnalisé, échantillons de validation. Toujours via le parcours sourcing avec agent.",
+        "items": [
+          {
+            "q": "Quel est le délai minimum de livraison pour une production custom ?",
+            "a": "31 jours calendaires côté usine + transit. En dessous, nous ne pouvons pas garantir la qualité ni la chaîne de validation. La plateforme vous avertit dans l'assistant de demande."
+          },
+          {
+            "q": "Quel acompte demande-t-on pour la custom ?",
+            "a": "L'usine choisit entre 30 % et 50 % au moment du devis. C'est plus que la marketplace parce que l'usine engage matières et outillage avant d'expédier quoi que ce soit."
+          },
+          {
+            "q": "Puis-je valider un échantillon avant la production en série ?",
+            "a": "Oui, et nous le recommandons. Le devis peut inclure un échantillon facturé séparément ; la production en série démarre après votre validation écrite."
+          },
+          {
+            "q": "Qui détient la propriété intellectuelle des designs envoyés ?",
+            "a": "Vous, pleinement. Les usines partenaires signent une clause de non-réutilisation des designs clients via les CGU de la plateforme."
+          }
+        ]
+      },
+      "disputes": {
+        "heading": "Litiges, retours et responsabilités",
+        "intro": "Le séquestre Wise nous permet de geler le règlement final tant qu'un litige est ouvert. Voici qui paie quoi en cas de problème.",
+        "items": [
+          {
+            "q": "Quel est le délai pour ouvrir un litige ?",
+            "a": "7 jours calendaires à compter de la livraison conforme déclarée. Au-delà, le solde est libéré automatiquement vers l'usine."
+          },
+          {
+            "q": "Qui décide en cas de désaccord ?",
+            "a": "Notre équipe support arbitre sur la base des photos, certificats et messages échangés dans le fil de la commande. La décision est notifiée à l'écrit aux deux parties."
+          },
+          {
+            "q": "Sourcing/Custom : qui paie en cas de non-conformité ?",
+            "a": "L'usine prend en charge le remplacement ou le remboursement total si la non-conformité est avérée vs. le devis signé. Les frais d'agent et de plateforme sont remboursés au prorata."
+          },
+          {
+            "q": "Marketplace : et si le produit reçu ne correspond pas à la fiche ?",
+            "a": "Vous bénéficiez d'un remboursement total (acompte + frais de livraison déjà payés). L'usine perd l'accès à la publication tant que le différend n'est pas résolu."
+          },
+          {
+            "q": "Enchères : la garantie est-elle identique ?",
+            "a": "Sur les lots décrits comme \"neufs\", oui. Sur les lots de déstockage / occasion, la garantie est limitée au non-conforme grave (lot mort, contrefaçon, déclaration mensongère). Lisez bien la fiche du lot avant d'enchérir."
+          },
+          {
+            "q": "Y a-t-il une responsabilité de la plateforme ?",
+            "a": "Oui sur l'intermédiation et la sécurité du paiement. Non sur les vices cachés ne relevant pas de la qualification : l'usine reste seule responsable de la fabrication."
+          }
+        ]
+      }
+    }
+  },
+  "forwarder": {
+    "metaTitle": "Dépôt de preuves d'expédition",
+    "brandSr": "SourcingPick",
+    "eyebrow": "Lien transitaire SourcingPick",
+    "title": "Déposez les preuves d'expédition de cette commande.",
+    "body": "Le fabricant vous a partagé ce lien pour que vous déposiez les photos du colis remis au transporteur — étiquette de suivi visible, état du colis, scellés conteneurs. Aucun compte n'est requis.",
+    "factory": "Fabricant",
+    "client": "Acheteur",
+    "quantity": "Quantité",
+    "incoterm": "Incoterm",
+    "deliveryAddress": "Adresse de livraison",
+    "eta": "Livraison estimée",
+    "uploadTitle": "Déposer les fichiers",
+    "uploadBody": "Photos ou PDF. Glissez-déposez ou cliquez pour sélectionner. Plusieurs fichiers acceptés.",
+    "pickerLabel": "Sélectionner les fichiers",
+    "pickerHint": "JPG / PNG / WebP / PDF · jusqu'à 10 fichiers.",
+    "submitWithCount": "Téléverser {n} fichier(s)",
+    "submitEmpty": "Téléverser",
+    "successTitle": "{n} fichier(s) bien reçu(s).",
+    "successBody": "Le fabricant a été notifié. Vous pouvez fermer cette page ou en ajouter d'autres.",
+    "expiresOn": "Lien valable jusqu'au {date}.",
+    "alreadyUploaded": "{n} déjà déposé(s)",
+    "galleryTitle": "Photos déjà déposées",
+    "invalidTitle": "Lien introuvable",
+    "invalidBody": "Ce lien n'existe pas ou la commande a été supprimée. Demandez un nouveau lien au fabricant.",
+    "revokedTitle": "Lien révoqué",
+    "revokedBody": "Le fabricant a révoqué ce lien. Demandez-lui d'en générer un nouveau si nécessaire.",
+    "expiredTitle": "Lien expiré",
+    "expiredBody": "Ce lien a dépassé sa durée de validité. Demandez-en un nouveau au fabricant.",
+    "footerNote": "Plateforme SourcingPick · les fichiers sont chiffrés en transit et conservés au sein de la commande."
+  },
   "footer": {
     "product": "Produit",
     "company": "Entreprise",
@@ -1903,6 +2344,7 @@
     "terms": "Conditions générales",
     "privacy": "Politique de confidentialité",
     "cookies": "Politique cookies",
+    "faq": "FAQ",
     "allRights": "Tous droits réservés.",
     "madeIn": "Fait avec ❤️ par INAIRIS"
   },

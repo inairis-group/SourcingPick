@@ -64,6 +64,7 @@
       "budgetLabel": "Total budget",
       "priceHintEur": "In euros, excluding tax.",
       "deadlineLabel": "Desired delivery date",
+      "deadlineWarningShort": "Less than 31 days to delivery. A fully secured order (including air freight) needs at least 31 days — we can still take it on, but it falls outside the standard timeline.",
       "addressLabel": "Delivery address",
       "addressPlaceholder": "12 rue de la République, 69001 Lyon",
       "incotermLabel": "Incoterm",
@@ -166,6 +167,18 @@
       "deliveryEtasTitle": "Estimated delivery windows",
       "deliveryEtasDisclaimer": "Delivery times are estimates and may vary based on supplier, volume, destination, and logistics."
     },
+    "auctions": {
+      "bidAmountLabel": "Your bid (€)",
+      "bidMinHint": "Minimum {min} €.",
+      "placeBidCta": "Place bid",
+      "buyNowBody": "Win the auction immediately at {amount} €.",
+      "buyNowCta": "Buy now",
+      "errorInvalidAmount": "Enter a valid euro amount.",
+      "cannotBidOnOwn": "You can't bid on your own factory's auction.",
+      "notStartedYet": "This auction starts on {date}. Come back later.",
+      "notLiveAnymore": "This auction is no longer accepting bids.",
+      "youAreWinning": "You're currently the top bidder."
+    },
     "researchFee": {
       "title": "Research fee",
       "quotedBody": "Your agent has scoped this request. Pay the {amount} research fee to start sourcing — it's credited back as platform credit if you place an order within 30 days.",
@@ -184,6 +197,8 @@
       "incoterm": "Incoterm",
       "validUntil": "Valid until",
       "expired": "Expired",
+      "depositLabel": "Deposit ({pct}%)",
+      "balanceLabel": "Balance on shipment ({pct}%)",
       "statusAwaitingDecision": "Awaiting decision",
       "statusAccepted": "Accepted",
       "statusRejected": "Rejected",
@@ -238,13 +253,34 @@
       "trackingNumberLabel": "Tracking number",
       "shippedAtLabel": "Shipped on",
       "trackingPending": "The factory will add tracking when the order ships.",
+      "tracking": {
+        "carrierLabel": "Carrier",
+        "numberLabel": "Tracking number",
+        "copyCta": "Copy",
+        "openTrackingCta": "Open tracking"
+      },
+      "qcProofTitle": "QC photos from the factory",
+      "shipmentProofTitle": "Proof of shipment",
       "paymentPendingTitle": "Payment required",
-      "paymentPendingBody": "Pay the 30% deposit by card. Funds are held in escrow until you confirm delivery.",
+      "paymentPendingBody": "Wire the 30% deposit using the bank details above. Funds are held in escrow as soon as we see them arrive.",
       "payDepositCta": "Pay deposit",
       "paymentSuccessTitle": "Payment received",
       "paymentSuccessBody": "Your deposit is in escrow. The factory has been notified and production can start.",
       "paymentCancelledTitle": "Payment cancelled",
       "paymentCancelledBody": "The payment did not go through. You can retry at any time.",
+      "wisePay": {
+        "title": "Pay by bank transfer (Wise)",
+        "body": "Wire the amount from your bank to the account below. Your order moves to escrow automatically the moment funds arrive.",
+        "amountLabel": "Amount",
+        "holderLabel": "Account holder",
+        "ibanLabel": "IBAN",
+        "bicLabel": "BIC / SWIFT",
+        "referenceLabel": "Reference",
+        "referenceHint": "Important: copy this reference exactly into your wire memo so we can match the payment to your order.",
+        "copyCta": "Copy",
+        "copiedCta": "Copied",
+        "footnote": "SEPA wires arrive within hours; international wires in 1–3 business days. Your order status updates automatically when funds land."
+      },
       "sectionInvoices": "Invoices",
       "invoiceTypeDeposit": "Deposit",
       "invoiceTypeBalance": "Balance",
@@ -266,7 +302,7 @@
       "confirmReceiptBody": "Confirming delivery releases the balance to the factory.",
       "confirmReceiptCta": "Confirm receipt",
       "payBalanceCta": "Pay balance and confirm receipt",
-      "payBalanceBody": "Paying the 70% balance automatically releases the payout to the factory.",
+      "payBalanceBody": "Wire the 70% balance using the bank details above. The factory's payout releases automatically when we see it arrive.",
       "waitingForFactory": "Waiting on the factory's next action."
     }
   },
@@ -323,6 +359,14 @@
       "localeLabel": "Preferred language",
       "localeHint": "Sets the interface and notification language.",
       "saved": "Profile updated."
+    },
+    "logo": {
+      "title": "Organisation logo",
+      "description": "Shown on the marketplace, in messaging threads, and at the top of invoices.",
+      "fileLabel": "New logo",
+      "fileHint": "JPG, PNG or WebP — 10 MB max.",
+      "submitCta": "Update",
+      "saved": "Logo updated."
     },
     "security": {
       "title": "Security",
@@ -426,7 +470,12 @@
       "slaApproaching": "{h}h — SLA approaching",
       "slaOverdue": "{h}h — SLA missed",
       "tenderInvitationsCount": "{n} tenders",
-      "quotesCount": "{n} quotes"
+      "quotesCount": "{n} quotes",
+      "preTender": {
+        "pendingBanner": "Waiting for admin approval before the tender can be dispatched.",
+        "approvedBanner": "Approved by admin on {date} — the tender can be dispatched.",
+        "rejectedBanner": "Rejected by admin on {date}"
+      }
     },
     "quotes": {
       "empty": "No quotes received for this request yet.",
@@ -457,6 +506,14 @@
       "searchPlaceholder": "Search factory, country, capability…",
       "empty": "No factory matches this filter.",
       "ordersSuffix": "orders"
+    },
+    "orders": {
+      "eyebrow": "Order tracking",
+      "title": "Orders on my requests",
+      "description": "Every order generated from a request you handle. Click a row to open the request and its thread.",
+      "emptyTitle": "No orders yet",
+      "emptyBody": "As soon as a quote is accepted on one of your requests, the order shows up here.",
+      "createdAt": "Created"
     },
     "tasks": {
       "eyebrow": "My tasks",
@@ -557,6 +614,28 @@
     "systemAuthor": "SourcingPick",
     "errorLoad": "Couldn't load messages. Try again.",
     "errorStream": "Live updates disconnected. Reload the page to reconnect.",
+    "globalEyebrow": "Messages",
+    "globalTitle": "All my conversations",
+    "globalDescription": "Every thread — requests, tenders, quotes, orders — in one place.",
+    "globalEmpty": "No conversations yet.",
+    "globalEmptyHint": "When you or a counterpart opens a thread on a request, quote, or order, it lands here.",
+    "globalEmptyUnread": "Inbox zero.",
+    "globalEmptyUnreadHint": "You're caught up. Check back when a new message lands.",
+    "filterAll": "All",
+    "filterUnread": "Unread",
+    "contextLabels": {
+      "REQUEST": "Request",
+      "ORDER": "Order",
+      "QUOTE": "Quote",
+      "TENDER": "Tender"
+    },
+    "voice": {
+      "start": "Record a voice note",
+      "stop": "Stop and send",
+      "cancel": "Discard",
+      "permissionDenied": "Microphone access blocked. Allow it and try again.",
+      "unsupported": "Your browser can't record audio."
+    },
     "contextHints": {
       "REQUEST": "Conversation for this sourcing request — between the client and the agent.",
       "TENDER": "Private conversation between the agent and this factory for the tender. Other invited factories don't see these messages.",
@@ -564,7 +643,8 @@
       "ORDER": "Conversation for this order — all parties included.",
       "KYC": "Conversation with our team about your KYC file.",
       "CERT": "Conversation about your certification programme.",
-      "DISPUTE": "Dispute thread, moderated by the SourcingPick team."
+      "DISPUTE": "Dispute thread, moderated by the SourcingPick team.",
+      "DIRECT": "Direct conversation — not attached to a specific order, request, or product."
     }
   },
   "tender": {
@@ -641,6 +721,10 @@
       "promotionClear": "Clear",
       "promotionSaved": "Promotion saved.",
       "leadTimeLabel": "Lead time",
+      "leadTimeUnits": {
+        "DAY": "Days",
+        "MONTH": "Months"
+      },
       "moqLabel": "MOQ",
       "stockLabel": "Stock",
       "stockLowLabel": "Low-stock alert",
@@ -706,6 +790,57 @@
         "REFUSE": "Rejected"
       }
     },
+    "auctions": {
+      "eyebrow": "Auctions",
+      "title": "My auctions",
+      "description": "Sell large batches or clearance stock by auction — buyers bid over a window you set.",
+      "newCta": "New auction",
+      "newTitle": "Create an auction",
+      "newBody": "Fill in the lot details, then submit for our team to review before publishing.",
+      "backToList": "Back to auctions",
+      "emptyTitle": "No auctions yet",
+      "emptyBody": "Create your first auction to put a lot in front of buyers.",
+      "kycRequiredTitle": "KYC required",
+      "kycRequiredBody": "Your factory KYC must be verified before you can publish auctions.",
+      "titleLabel": "Title",
+      "titlePlaceholder": "Lot 5,000 organic cotton t-shirts — clearance",
+      "categoryLabel": "Category",
+      "descriptionLabel": "Description",
+      "descriptionHint": "Markdown supported — describe composition, condition, packing, and any special terms.",
+      "descriptionPlaceholder": "Detail what's in the lot: quantity per size / colour, product condition, packing, special terms.",
+      "startingBidLabel": "Starting bid (€)",
+      "reserveLabel": "Reserve price (€)",
+      "reserveHint": "Optional — under this price, the auction does not sell.",
+      "buyNowLabel": "Buy-now price (€)",
+      "buyNowHint": "Optional — a buyer can close the auction instantly at this price.",
+      "eurHint": "In euros, excluding tax.",
+      "quantityLabel": "Total quantity",
+      "moqLabel": "Partial MOQ",
+      "moqHint": "If you accept split lots, otherwise leave at the total quantity.",
+      "startsAtLabel": "Auction start",
+      "startsAtHint": "Date + time it goes live after approval.",
+      "endsAtLabel": "Auction end",
+      "endsAtHint": "Highest bid at this time wins the lot.",
+      "saveDraft": "Save draft",
+      "saveChanges": "Save changes",
+      "submitForReviewCta": "Submit for review",
+      "needsImageHint": "Add at least one photo before submitting.",
+      "cancelCta": "Cancel draft",
+      "confirmCancel": "Cancel this auction? This can't be undone.",
+      "estimatedCommissionLabel": "Estimated commission",
+      "estimatedCommissionHint": "Estimate on the starting bid — the actual rate depends on the winning amount.",
+      "bidsSuffix": "bids",
+      "rejectedTitle": "Auction rejected",
+      "statuses": {
+        "DRAFT": "Draft",
+        "PENDING_REVIEW": "In review",
+        "REJECTED": "Rejected",
+        "ACTIVE": "Active",
+        "ENDED": "Ended",
+        "SOLD": "Sold",
+        "CANCELLED": "Cancelled"
+      }
+    },
     "payouts": {
       "eyebrow": "Payouts",
       "title": "My payouts",
@@ -731,7 +866,32 @@
       "statusScheduled": "Scheduled",
       "statusSent": "Sent",
       "statusReceived": "Received",
-      "statusFailed": "Failed"
+      "statusFailed": "Failed",
+      "wise": {
+        "notConfiguredTitle": "Wise payouts — pending admin setup",
+        "notConfiguredBody": "The SourcingPick team is finishing the Wise integration. You'll be able to enter your bank details here once it's live.",
+        "connectedTitle": "Wise account linked",
+        "connectedBody": "Earnings route here automatically. Wise recipient ref: {ref}.",
+        "setupTitle": "Add your bank details",
+        "setupBody": "Wise sends your earnings to your bank in 1–3 days at the mid-market rate. Pick the account type that matches your bank.",
+        "typeLabel": "Account type",
+        "types": {
+          "IBAN": "IBAN (EU / SEPA)",
+          "SWIFT": "SWIFT (international)",
+          "CHINESE_LOCAL": "Chinese bank account (CNY)"
+        },
+        "holderNameLabel": "Account holder",
+        "holderNameHint": "Exactly as it appears on your bank statement.",
+        "currencyLabel": "Currency (ISO 3-letter)",
+        "ibanLabel": "IBAN",
+        "ibanHint": "No spaces or dashes — Wise normalises for you.",
+        "swiftCodeLabel": "SWIFT / BIC",
+        "swiftCodeHint": "8 or 11 characters, uppercase.",
+        "bankCodeLabel": "Bank code",
+        "bankCodeHint": "Short code for the bank, e.g. ICBC, BOC, CCB.",
+        "accountNumberLabel": "Account number",
+        "submitCta": "Save"
+      }
     },
     "orders": {
       "eyebrow": "My orders",
@@ -757,13 +917,46 @@
       "qcCtaBody": "Once QC passes, add tracking info to ship.",
       "markShippedCta": "Mark as shipped",
       "shipFormTitle": "Shipping details",
+      "shipFormBody": "Add the carrier and tracking number so the buyer can follow the package. A tracking URL is optional but recommended — it lets the buyer open the carrier's status page in one click.",
+      "shipFormReminder": "Double-check the tracking number before submitting — once the order is marked as shipped, the buyer is notified and the number can't be changed without contacting support.",
+      "carrierHint": "The carrier name as it appears on your shipping label.",
+      "trackingNumberHint": "Copy from your label; no spaces or dashes.",
       "trackingUrlLabel": "Tracking URL",
-      "trackingUrlHint": "Optional — the carrier link to track the package.",
+      "trackingUrlHint": "Optional — paste the carrier link so the buyer can open the status page directly.",
       "confirmShipCta": "Confirm shipment",
       "shippedCtaTitle": "Package shipped",
       "shippedCtaBody": "Mark as in transit once the carrier confirms the package is moving.",
       "markInTransitCta": "Mark as in transit",
-      "errorTrackingRequired": "Carrier and tracking number are required."
+      "errorTrackingRequired": "Carrier and tracking number are required.",
+      "proofs": {
+        "qcSectionTitle": "QC photos",
+        "qcSectionBody": "Upload photos of the finished product, packed cartons, labels — anything that lets the buyer see the order is ready before you ship. These photos are visible to the buyer and admin only.",
+        "qcGalleryTitle": "QC photos uploaded",
+        "qcLabel": "QC photos",
+        "qcHint": "JPG / PNG / WebP · multiple photos welcome.",
+        "shipmentSectionTitle": "Shipment photos",
+        "shipmentSectionBody": "Upload a photo of the package handed to the carrier with a visible tracking label. Closes the \"did it ship?\" question on disputes.",
+        "shipmentGalleryTitle": "Shipment photos uploaded",
+        "shipmentLabel": "Shipment photos",
+        "shipmentHint": "JPG / PNG / WebP · 1–3 photos is plenty.",
+        "submitCta": "Upload",
+        "saved": "Photos uploaded."
+      },
+      "forwarder": {
+        "title": "Forwarder link",
+        "body": "Generate a link to share with your forwarder so they upload the carrier-handoff photos themselves. No account required — link expires in 14 days.",
+        "labelLabel": "Label (optional)",
+        "labelPlaceholder": "e.g. DHL pickup, Maersk container…",
+        "createCta": "Generate link",
+        "copy": "Copy",
+        "copied": "Copied",
+        "copyError": "Clipboard refused — select and copy the link manually.",
+        "revoke": "Revoke",
+        "expiresOn": "Expires {date}",
+        "lastUsedOn": "Last upload {date}",
+        "uploadCount": "{n} file(s)",
+        "notYetAvailable": "Forwarder links open up once the order moves into preparation."
+      }
     },
     "tenders": {
       "eyebrow": "Tender invitations",
@@ -790,7 +983,10 @@
       "moqLabel": "MOQ",
       "validityLabel": "Quote validity",
       "validityHint": "Number of days your quote remains valid (max 60).",
+      "depositPercentageLabel": "Deposit requested (%)",
+      "depositPercentageHint": "Between 30 and 50%. The buyer pays this share on acceptance; the balance settles at delivery.",
       "daysSuffix": "days",
+      "monthsSuffix": "months",
       "daysShort": "d",
       "validUntilLabel": "Valid until",
       "notesLabel": "Notes",
@@ -970,10 +1166,12 @@
     "webhooks": {
       "eyebrow": "Webhooks",
       "title": "Webhook events",
-      "description": "Incoming events from Stripe and other providers.",
+      "description": "Incoming events from Wise, Stripe and other providers.",
       "kpiReceived": "Received",
       "kpiProcessed": "Processed",
       "kpiFailed": "Failed",
+      "kpiWiseStuck": "Wise · stuck",
+      "kpiWiseStuckHint": "Wise wires that didn't auto-reconcile. Replay after fixing the order.",
       "tableTitle": "Recent events",
       "empty": "No events.",
       "colReceived": "Received",
@@ -981,7 +1179,13 @@
       "colType": "Type",
       "colStatus": "Status",
       "colAttempts": "Attempts",
-      "colError": "Error"
+      "colError": "Error",
+      "colAction": "Action",
+      "replay": {
+        "cta": "Replay",
+        "pending": "Replaying…",
+        "tooltip": "Re-run reconciliation against the stored payload."
+      }
     },
     "logins": {
       "eyebrow": "Security",
@@ -1041,6 +1245,19 @@
       "confirmReject": "Confirm rejection",
       "back": "Back"
     },
+    "auctions": {
+      "eyebrow": "Moderation",
+      "title": "Auctions to review",
+      "description": "Approve or reject auctions submitted by factories before they go live.",
+      "emptyTitle": "No auctions waiting",
+      "emptyBody": "All submitted auctions have been processed.",
+      "openCta": "Open",
+      "approveCta": "Approve & publish",
+      "rejectCta": "Reject",
+      "rejectReasonPlaceholder": "Tell the factory what needs fixing…",
+      "confirmRejectCta": "Confirm rejection",
+      "back": "Back"
+    },
     "dispatch": {
       "eyebrow": "Dispatch",
       "title": "Requests to assign",
@@ -1056,7 +1273,19 @@
       "assign": "Assign",
       "reassign": "Reassign",
       "loadSuffix": "active requests",
-      "errorPickAgent": "Pick an agent before assigning."
+      "errorPickAgent": "Pick an agent before assigning.",
+      "preTender": {
+        "helperUnassigned": "Pre-tender approval required before the tender can go out.",
+        "helperAssigned": "Approve so the agent can dispatch the tender.",
+        "approveCta": "Approve",
+        "rejectCta": "Reject",
+        "flipReject": "Revoke approval",
+        "rejectReasonPlaceholder": "Reason shown to the agent (≥ 5 characters)…",
+        "cancel": "Cancel",
+        "confirmRejectCta": "Confirm rejection",
+        "approvedOn": "Approved on {date}",
+        "rejectedOn": "Rejected on {date}"
+      }
     },
     "requestDetail": {
       "backToDispatch": "Back to dispatch",
@@ -1152,7 +1381,8 @@
         "active": "Active",
         "configured": "Configured",
         "missing": "Not configured"
-      }
+      },
+      "retiredBadge": "Retired"
     },
     "deliveryEtas": {
       "title": "Marketplace delivery estimates",
@@ -1306,9 +1536,11 @@
     "invoices": "Invoices",
     "tenders": "Tenders",
     "catalogue": "Catalogue",
+    "auctions": "Auctions",
     "payouts": "Payouts",
     "certification": "Certification",
     "tasks": "Tasks",
+    "messages": "Messages",
     "settings": "Settings",
     "logout": "Log out"
   },
@@ -1452,33 +1684,68 @@
         },
         {
           "question": "When and how do I get paid?",
-          "answer": "Buyer funds sit in escrow from the moment they pay. On confirmed, conforming delivery, your net amount (order value minus the 3%) is released to the payout account you onboarded with — Stripe, LianLian, or Alipay depending on your region."
+          "answer": "Buyer funds sit in the SourcingPick Wise escrow account from the moment they wire. On confirmed, conforming delivery, your net amount (order value minus the 3%) is sent to your bank account in 1–3 business days."
         },
         {
-          "question": "Which payout methods can I use?",
-          "answer": "Stripe Connect for the EU, UK, US, UAE, Singapore, Hong Kong and parts of Africa; LianLian Global or Alipay for mainland China and South-East Asia. You pick one during onboarding."
+          "question": "What role does Wise play in this?",
+          "answer": "Wise hosts the platform-side escrow account and executes payouts to your bank. You enter your bank details once (IBAN, SWIFT, or Chinese local account) and every payout arrives there automatically at the mid-market rate."
         },
         {
-          "question": "Do I need certifications to sell?",
-          "answer": "They're not mandatory, but buyers can filter and qualify on them — listing your real certifications (GOTS, OEKO-TEX, FSC, CE, etc.) gets you in front of more serious orders."
+          "question": "What's the difference between marketplace, custom, sourcing, and auctions?",
+          "answer": "Marketplace: your ready-to-ship products, bought in one click. Custom orders: tender-and-quote work negotiated by an agent against a buyer spec. Sourcing: a dedicated agent searches suppliers for the buyer, paid via a research fee. Auctions (coming soon): sell large batches or clearance stock to the highest bidder."
         },
         {
-          "question": "How are buyers vetted?",
-          "answer": "Every sourcing request is reviewed and qualified by a SourcingPick agent before any factory is invited. Marketplace buyers pay through escrow like everyone else, so you're never exposed to non-payment."
+          "question": "How does a marketplace order play out?",
+          "answer": "Buyer picks your product → wires the deposit to the SourcingPick Wise account (escrow) → you receive the order, run QC, upload QC photos, ship with a tracking number → on confirmed delivery your net payout is released."
+        },
+        {
+          "question": "How does a custom order play out?",
+          "answer": "An agent invites you to quote against a brief. If the buyer accepts your quote, an order is created with a 30–50% deposit (matching what you proposed in the quote), then the balance on delivery. The escrow flow is identical."
         },
         {
           "question": "What happens if there's a dispute?",
-          "answer": "Funds stay in escrow until delivery is confirmed. For a standard product issue we mediate a partial refund and the platform absorbs part of the cost alongside you; for custom goods the policy differs. The full dispute policy is shared during onboarding."
+          "answer": "Funds stay in the Wise escrow. SourcingPick acts as the mediator — we review your QC photos, shipment proofs, and the full messaging thread. For a confirmed product defect, we negotiate a partial refund and the platform absorbs part of the cost alongside you. For custom orders that don't meet spec, a larger refund may apply. You're not on your own."
         },
         {
-          "question": "What can I sell — custom or ready-made?",
-          "answer": "Both. Tenders are for custom, made-to-spec orders negotiated with an agent. The marketplace is for pre-negotiated, ready-to-ship products buyers can purchase in one click."
+          "question": "How are buyers vetted?",
+          "answer": "Every sourcing request is reviewed and qualified by a SourcingPick agent before any factory is invited. Marketplace buyers wire through Wise escrow like everyone else — you're never exposed to non-payment."
+        },
+        {
+          "question": "Do I need certifications to sell?",
+          "answer": "Not mandatory, but buyers can filter on them — listing your real certifications (GOTS, OEKO-TEX, FSC, CE…) gets you in front of more serious orders."
         },
         {
           "question": "What do I need to get verified (KYC)?",
-          "answer": "Your business registration, a tax document, and one or two facility photos or reference documents. Verification is one-time and usually quick."
+          "answer": "Your business registration, a tax document, and one or two facility photos. Verification is one-time and usually quick."
         }
       ]
+    }
+  },
+  "auctions": {
+    "eyebrow": "Auctions",
+    "browseTitle": "Live auctions",
+    "browseDescription": "Bid on large batches or clearance stock. Highest bid at close wins; settlement runs through our Wise escrow.",
+    "emptyTitle": "No active auctions",
+    "emptyBody": "Check back soon — factories list new lots regularly.",
+    "backToBrowse": "Back to auctions",
+    "startingBidLabel": "Starting bid",
+    "currentBidLabel": "Current bid",
+    "endsInLabel": "Ends in",
+    "buyNowAvailable": "Buy now available at {amount}.",
+    "signInToBidBody": "Sign in with a buyer account to place a bid.",
+    "signInToBidCta": "Sign in",
+    "descriptionTitle": "Lot details",
+    "recentBidsTitle": "Recent bids",
+    "recentBidsEmpty": "No bids yet — be the first.",
+    "teaserTitle": "Auctions ending soon",
+    "teaserSubtitle": "Open lots available to bid on — settlement through Wise escrow.",
+    "teaserCta": "See all auctions",
+    "countdown": {
+      "days": "d",
+      "hours": "h",
+      "minutes": "m",
+      "seconds": "s",
+      "ended": "Ended"
     }
   },
   "about": {
@@ -1513,6 +1780,11 @@
         "title": "Genuinely global",
         "body": "Our partner factories span five continents. We speak both your supplier's language and your procurement team's."
       }
+    },
+    "founders": {
+      "eyebrow": "The team",
+      "title": "The faces behind the platform.",
+      "coFounderRole": "Co-founder"
     }
   },
   "pricing": {
@@ -1606,6 +1878,8 @@
       "orgNameHint": "The trading name your business operates under.",
       "countryLabel": "Country",
       "countryPlaceholder": "France, Brazil, Japan…",
+      "phoneLabel": "Phone",
+      "phoneHint": "So your agent can reach you quickly when something time-sensitive comes up.",
       "passwordHint": "At least 12 characters.",
       "termsAccept": "I accept the",
       "termsLink": "terms of service",
@@ -1891,6 +2165,37 @@
       ]
     }
   },
+  "forwarder": {
+    "metaTitle": "Upload shipment proofs",
+    "brandSr": "SourcingPick",
+    "eyebrow": "SourcingPick forwarder link",
+    "title": "Upload shipment proofs for this order.",
+    "body": "The factory shared this link with you so you can upload photos of the parcel handed off to the carrier — tracking label visible, parcel condition, container seals. No account needed.",
+    "factory": "Factory",
+    "client": "Buyer",
+    "quantity": "Quantity",
+    "incoterm": "Incoterm",
+    "deliveryAddress": "Delivery address",
+    "eta": "Estimated delivery",
+    "uploadTitle": "Drop files",
+    "uploadBody": "Photos or PDFs. Drag and drop or click to pick. Multiple files OK.",
+    "pickerLabel": "Pick files",
+    "pickerHint": "JPG / PNG / WebP / PDF · up to 10 files.",
+    "submitWithCount": "Upload {n} file(s)",
+    "submitEmpty": "Upload",
+    "successTitle": "{n} file(s) uploaded.",
+    "successBody": "The factory has been notified. You can close this page or add more.",
+    "expiresOn": "Link valid until {date}.",
+    "alreadyUploaded": "{n} already uploaded",
+    "galleryTitle": "Already uploaded",
+    "invalidTitle": "Link not found",
+    "invalidBody": "This link doesn't exist or the order has been removed. Ask the factory for a fresh link.",
+    "revokedTitle": "Link revoked",
+    "revokedBody": "The factory revoked this link. Ask them to generate a new one if needed.",
+    "expiredTitle": "Link expired",
+    "expiredBody": "This link is past its expiration. Ask the factory for a fresh one.",
+    "footerNote": "SourcingPick platform · files are encrypted in transit and stored under this order only."
+  },
   "footer": {
     "product": "Product",
     "company": "Company",
@@ -1903,8 +2208,145 @@
     "terms": "Terms of service",
     "privacy": "Privacy policy",
     "cookies": "Cookie policy",
+    "faq": "FAQ",
     "allRights": "All rights reserved.",
     "madeIn": "Made with ❤️ by INAIRIS"
+  },
+  "faq": {
+    "eyebrow": "Frequently asked questions",
+    "title": "What to know before you source through us.",
+    "intro": "Four products, one platform. Pick the section that fits your situation to understand how it works, who pays what, and what happens when something goes wrong.",
+    "tocLabel": "On this page",
+    "contactPrompt": "Can't find your answer? Write to",
+    "contactEmail": "support@sourcingpick.com",
+    "sections": {
+      "sourcing": {
+        "heading": "Agent-led sourcing",
+        "intro": "The flagship flow: you describe the need, an agent qualifies it and runs a tender across pre-vetted factories, you get comparable quotes scored on the same grid.",
+        "items": [
+          {
+            "q": "How does the agent pick which factories to invite?",
+            "a": "By category, region and required certifications. Every factory in the pool is KYC-verified (registration, export licence, sample product). The agent prioritises those whose track record matches your brief."
+          },
+          {
+            "q": "How long until I see the quotes?",
+            "a": "Target 24 business hours for qualification, then 5 to 7 days to gather quotes (depending on brief complexity and the factory's time zone)."
+          },
+          {
+            "q": "Is there an upfront research fee?",
+            "a": "On highly specific requests the agent may charge a research fee (€125/day or €500/week). It's credited back in full toward your order if you accept a quote within 30 days of paying it."
+          },
+          {
+            "q": "Can I edit my request after sending it?",
+            "a": "Yes until the tender goes out — ping your agent. Once factories have been invited, any material change resets the quote round."
+          },
+          {
+            "q": "What if none of the quotes work for me?",
+            "a": "Reject them all at no cost (excluding any research fee already paid). The agent can re-tender with a refined brief if you'd like."
+          }
+        ]
+      },
+      "marketplace": {
+        "heading": "Marketplace — ready-to-ship stock",
+        "intro": "Catalogue of products already in stock at our partner factories. You buy directly, no agent in the loop, with payment split into two stages.",
+        "items": [
+          {
+            "q": "How is this different from a B2C site?",
+            "a": "Prices are net of VAT, MOQ and lead times are shown on every listing, and payment sits in our Wise escrow until you confirm conforming delivery."
+          },
+          {
+            "q": "When am I charged?",
+            "a": "30% deposit at checkout, 70% balance on shipment. Both payments land in our escrow IBAN."
+          },
+          {
+            "q": "Can the factory change price or stock after I order?",
+            "a": "No. Once your order is in, the price and terms are locked. If the factory can't honour it, the order is cancelled and the deposit refunded in full."
+          },
+          {
+            "q": "Can I order below MOQ?",
+            "a": "Not on the marketplace. For smaller quantities or a variant, start a sourcing request instead."
+          }
+        ]
+      },
+      "auctions": {
+        "heading": "Auctions — batches and clearance lots",
+        "intro": "Factories list lots for sale by bidding. Highest bid at close wins; some lots include a buy-now price for instant purchase.",
+        "items": [
+          {
+            "q": "How does the commission work on auctions?",
+            "a": "A progressive 10%–15% curve depending on the final amount. It comes out of the factory's settlement, never added to your bid."
+          },
+          {
+            "q": "What happens if I win?",
+            "a": "An order is created on your dashboard with a 30% deposit / 70% balance schedule, payable by Wise wire."
+          },
+          {
+            "q": "What if I'm outbid at the last second?",
+            "a": "You get an instant notification with a link to bid again. Minimum increment between bids is €1."
+          },
+          {
+            "q": "What if no one meets the reserve?",
+            "a": "The lot goes unsold — no order is created and no one is charged. The factory can relist it."
+          },
+          {
+            "q": "Can I cancel an auction I've won?",
+            "a": "No. A winning bid is legally binding. Cancelling means losing the deposit and a flag on your profile."
+          }
+        ]
+      },
+      "custom": {
+        "heading": "Custom production",
+        "intro": "For products that aren't on the marketplace or in auctions: bespoke tooling, custom packaging, validation samples. Always via the agent-led sourcing path.",
+        "items": [
+          {
+            "q": "What's the minimum lead time for a custom run?",
+            "a": "31 calendar days at the factory + transit. Below that we can't guarantee quality or the validation chain. The platform warns you in the request wizard."
+          },
+          {
+            "q": "What deposit is required for custom?",
+            "a": "The factory chooses 30%–50% at quote time. It's higher than the marketplace because the factory commits raw materials and tooling before anything ships."
+          },
+          {
+            "q": "Can I validate a sample before the full run?",
+            "a": "Yes, and we recommend it. The quote can include a separately-priced sample; full production starts after your written sign-off."
+          },
+          {
+            "q": "Who owns the IP of designs I share?",
+            "a": "You do, fully. Partner factories agree to a no-reuse clause on customer designs via the platform's terms."
+          }
+        ]
+      },
+      "disputes": {
+        "heading": "Disputes, returns and responsibilities",
+        "intro": "Our Wise escrow lets us freeze final settlement while a dispute is open. Here's who pays what when things go wrong.",
+        "items": [
+          {
+            "q": "How long do I have to open a dispute?",
+            "a": "7 calendar days from declared conforming delivery. After that, the balance is released to the factory automatically."
+          },
+          {
+            "q": "Who decides if there's a disagreement?",
+            "a": "Our support team arbitrates based on photos, certificates and messages from the order thread. The decision is communicated in writing to both sides."
+          },
+          {
+            "q": "Sourcing/custom: who pays for non-conformity?",
+            "a": "The factory covers replacement or full refund if non-conformity vs. the signed quote is proven. Agent and platform fees are refunded pro-rata."
+          },
+          {
+            "q": "Marketplace: what if the product doesn't match the listing?",
+            "a": "You get a full refund (deposit + shipping already paid). The factory loses access to publishing until the dispute is closed."
+          },
+          {
+            "q": "Auctions: is the guarantee the same?",
+            "a": "For lots described as \"new\", yes. For clearance / used lots, the guarantee is limited to material non-conformity (dead stock, counterfeit, false claims). Read the lot description carefully before bidding."
+          },
+          {
+            "q": "Is the platform liable in any way?",
+            "a": "Yes for intermediation and payment security. No for hidden manufacturing defects outside the qualification scope — the factory remains responsible for production."
+          }
+        ]
+      }
+    }
   },
   "errors": {
     "404": {

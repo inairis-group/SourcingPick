@@ -20,6 +20,7 @@ export function MarketingFooter({ dict, locale }: { dict: Dictionary; locale: Lo
       heading: dict.footer.company,
       links: [
         { href: `/${locale}/about`, label: dict.footer.about },
+        { href: `/${locale}/faq`, label: dict.footer.faq },
         { href: `/${locale}/signup`, label: dict.footer.becomePartner },
       ],
     },

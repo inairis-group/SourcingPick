@@ -55,11 +55,24 @@ export async function sendTenderInvitationsAction(
 
   const request = await prisma.sourcingRequest.findUnique({
     where: { id: parsed.data.requestId },
-    select: { id: true, agentId: true, status: true, category: true },
+    select: {
+      id: true,
+      agentId: true,
+      status: true,
+      category: true,
+      preTenderApprovedAt: true,
+    },
   });
   if (!request) return { ok: false, error: "Request not found." };
   if (request.agentId !== agent.id) {
     return { ok: false, error: "You are not assigned to this request." };
+  }
+  // Partner #14: admin must validate the brief before tenders go out.
+  if (!request.preTenderApprovedAt) {
+    return {
+      ok: false,
+      error: "This request still needs admin pre-tender approval.",
+    };
   }
 
   // Validate the factories exist + are verified
@@ -93,16 +106,24 @@ export async function sendTenderInvitationsAction(
 
   const expiresAt = new Date(Date.now() + TENDER_TTL_DAYS * 24 * 60 * 60 * 1000);
 
-  await prisma.tenderInvitation.createMany({
-    data: toCreate.map((f) => ({
-      requestId: request.id,
-      factoryOrgId: f.id,
-      // Simple category-match score for v1. Full §4.3 matching scoring is Phase 6.
-      matchingScore: f.factoryProfile?.category === request.category ? 90 : 60,
-      status: TenderInvitationStatus.INVITED,
-      expiresAt,
-    })),
-  });
+  // create() per item so we get IDs back — needed to wire each
+  // notification to its specific TenderInvitation (partner #11). The
+  // previous createMany + grouped notify lost the per-factory link.
+  const created = await Promise.all(
+    toCreate.map((f) =>
+      prisma.tenderInvitation.create({
+        data: {
+          requestId: request.id,
+          factoryOrgId: f.id,
+          matchingScore:
+            f.factoryProfile?.category === request.category ? 90 : 60,
+          status: TenderInvitationStatus.INVITED,
+          expiresAt,
+        },
+        select: { id: true, factoryOrgId: true },
+      }),
+    ),
+  );
 
   await writeAuditLog({
     actorUserId: agent.id,
@@ -118,7 +139,12 @@ export async function sendTenderInvitationsAction(
   revalidatePath("/[lang]/agent/requests", "page");
   revalidatePath("/[lang]/factory/tenders", "page");
 
-  // Notify the owners of each invited factory.
+  // Notify the owners of each invited factory with their specific
+  // invitation id, so clicking the notification opens the tender record
+  // (partner item #11) instead of dumping them on the list.
+  const invitationByOrg = new Map(
+    created.map((c) => [c.factoryOrgId, c.id]),
+  );
   const factoryOwnerRows = await prisma.user.findMany({
     where: {
       organizationId: { in: toCreate.map((f) => f.id) },
@@ -128,15 +154,17 @@ export async function sendTenderInvitationsAction(
     select: { id: true, organizationId: true },
   });
   await Promise.all(
-    factoryOwnerRows.map((u) =>
-      emitNotification({
+    factoryOwnerRows.map((u) => {
+      const invitationId = invitationByOrg.get(u.organizationId);
+      if (!invitationId) return Promise.resolve();
+      return emitNotification({
         recipientUserId: u.id,
         type: NotificationType.SYSTEM,
         vars: { systemKey: "tender_invited" },
         contextType: "TenderInvitation",
-        contextId: u.organizationId,
-      }),
-    ),
+        contextId: invitationId,
+      });
+    }),
   );
 
   return { ok: true, created: toCreate.length, skipped: alreadyInvited.size };
@@ -151,9 +179,20 @@ const QuoteSchema = z.object({
   unitPriceEur: z.coerce.number().positive("Unit price must be positive."),
   quantity: z.coerce.number().int().positive("Quantity must be positive."),
   leadTimeDays: z.coerce.number().int().positive("Lead time must be positive."),
+  // Lead time unit — the entered value is converted to canonical days
+  // below before persisting. Same pattern as the marketplace product form.
+  leadTimeUnit: z.enum(["DAY", "MONTH"]).default("DAY"),
   moq: z.coerce.number().int().nonnegative("MOQ cannot be negative."),
   incoterm: z.enum(Incoterm),
   validityDays: z.coerce.number().int().min(1).max(60).default(14),
+  // Deposit as a whole-number percentage 30–50. Stored as basis points
+  // (`pct * 100`) so the math + DB column stays integer.
+  depositPercentage: z.coerce
+    .number()
+    .int()
+    .min(30, "Deposit must be at least 30%.")
+    .max(50, "Deposit cannot exceed 50%.")
+    .default(30),
   notes: z.string().trim().max(2000).optional().or(z.literal("")),
 });
 
@@ -189,6 +228,8 @@ export async function submitQuoteAction(
     moq: formData.get("moq"),
     incoterm: formData.get("incoterm"),
     validityDays: formData.get("validityDays") ?? "14",
+    depositPercentage: formData.get("depositPercentage") ?? "30",
+    leadTimeUnit: formData.get("leadTimeUnit") ?? "DAY",
     notes: formData.get("notes") ?? "",
   });
   if (!parsed.success) {
@@ -238,11 +279,19 @@ export async function submitQuoteAction(
           unitPriceCentsClient,
           totalCentsClient,
           quantity: parsed.data.quantity,
-          leadTimeDays: parsed.data.leadTimeDays,
+          // Quote stores canonical days regardless of how the factory
+          // entered it. leadTimeUnit lets us render back in the original
+          // unit and pre-fill the form on edit.
+          leadTimeDays:
+            parsed.data.leadTimeUnit === "MONTH"
+              ? Math.round(parsed.data.leadTimeDays * 30)
+              : parsed.data.leadTimeDays,
+          leadTimeUnit: parsed.data.leadTimeUnit,
           moq: parsed.data.moq,
           incoterm: parsed.data.incoterm,
           validUntil,
           qualificationScore: 80, // v1 default — full §4.4 scoring in Phase 6
+          depositPercentageBps: parsed.data.depositPercentage * 100,
           status: QuoteStatus.SENT_TO_AGENT,
           notes: parsed.data.notes || null,
         },
@@ -303,7 +352,10 @@ export async function submitQuoteAction(
   const locale = await currentLocale();
   revalidatePath("/[lang]/factory/tenders", "page");
   revalidatePath("/[lang]/agent/requests", "page");
-  redirect(`/${locale}/factory/tenders`);
+  // Stay on the tender we just acted on so the factory sees the "quote
+  // submitted" success state in place. Going back to the list buried the
+  // outcome and forced the factory to find the record again.
+  redirect(`/${locale}/factory/tenders/${parsed.data.invitationId}`);
 }
 
 // =============================================================

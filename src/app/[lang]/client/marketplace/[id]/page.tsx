@@ -10,11 +10,15 @@ import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatNumber } from "@/lib/i18n/formatters";
+import { formatLeadTime } from "@/lib/marketplace/lead-time";
 import {
   ListingBadges,
   ListingPrice,
 } from "@/components/marketplace/listing-price";
 import { MediaGrid } from "@/components/attachments/media-grid";
+import { ProductImageGallery } from "@/components/marketplace/product-image-gallery";
+import { OrgAvatar } from "@/components/org/org-avatar";
+import { MarkdownDisplay } from "@/components/ui/markdown-display";
 import { BuyForm } from "./_components/buy-form";
 
 export async function generateMetadata({
@@ -56,10 +60,17 @@ export default async function ClientMarketplaceProductPage({
       moq: true,
       stockAvailable: true,
       leadTimeDays: true,
+      leadTimeUnit: true,
       certifications: true,
       images: true,
       factoryOrg: {
-        select: { displayName: true, country: true, city: true },
+        select: {
+          id: true,
+          displayName: true,
+          country: true,
+          city: true,
+          logoUrl: true,
+        },
       },
     },
   });
@@ -88,35 +99,10 @@ export default async function ClientMarketplaceProductPage({
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="flex flex-col gap-3">
-          <div className="aspect-4/3 bg-subtle rounded-lg border border-line overflow-hidden relative">
-            {imageUrls[0] && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={imageUrls[0]}
-                alt={product.name}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            )}
-          </div>
-          {imageUrls.length > 1 && (
-            <div className="grid grid-cols-5 gap-2">
-              {imageUrls.slice(1, 6).map((url, i) => (
-                <div
-                  key={i}
-                  className="aspect-square rounded-md border border-line bg-subtle overflow-hidden relative"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={url}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <ProductImageGallery
+          imageUrls={imageUrls}
+          productName={product.name}
+        />
 
         <div className="flex flex-col gap-4">
           <div>
@@ -126,11 +112,19 @@ export default async function ClientMarketplaceProductPage({
             <h1 className="text-2xl font-bold text-headline tracking-tight">
               {product.name}
             </h1>
-            <p className="text-sm text-muted mt-1">
-              {product.factoryOrg.displayName} · {product.factoryOrg.city},{" "}
-              {product.factoryOrg.country} ·{" "}
-              {dict.categories[product.category]}
-            </p>
+            <div className="flex items-center gap-2 mt-2 text-sm text-muted">
+              <OrgAvatar
+                orgId={product.factoryOrg.id}
+                name={product.factoryOrg.displayName}
+                hasLogo={Boolean(product.factoryOrg.logoUrl)}
+                size="sm"
+              />
+              <span>
+                {product.factoryOrg.displayName} · {product.factoryOrg.city},{" "}
+                {product.factoryOrg.country} ·{" "}
+                {dict.categories[product.category]}
+              </span>
+            </div>
           </div>
 
           <ListingBadges
@@ -165,7 +159,11 @@ export default async function ClientMarketplaceProductPage({
             />
             <Metric
               label={dict.factory.catalogue.leadTimeLabel}
-              value={`${product.leadTimeDays} ${dict.factory.tenders.daysSuffix}`}
+              value={formatLeadTime(
+                product.leadTimeDays,
+                product.leadTimeUnit,
+                dict,
+              )}
             />
           </div>
 
@@ -178,9 +176,7 @@ export default async function ClientMarketplaceProductPage({
             </p>
           )}
 
-          <p className="text-sm text-fg leading-snug whitespace-pre-wrap">
-            {product.description}
-          </p>
+          <MarkdownDisplay source={product.description} />
 
           <div className="mt-2 rounded-lg border border-line bg-surface p-5">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">

@@ -227,7 +227,7 @@ export default async function AgentDashboardPage({
                         {r.clientOrg.displayName}
                       </p>
                     </div>
-                    <div className="text-end flex-shrink-0">
+                    <div className="text-end shrink-0">
                       <p className={`text-xs font-medium ${toneClass}`}>
                         {Math.round(hoursElapsed)} h
                       </p>
@@ -266,7 +266,7 @@ export default async function AgentDashboardPage({
                       <span className="font-mono">{q.request.reference}</span>
                     </p>
                   </div>
-                  <div className="text-end flex-shrink-0">
+                  <div className="text-end shrink-0">
                     <p className="text-sm font-semibold text-headline">
                       {formatEUR(q.totalCentsClient / 100, lang)}
                     </p>
@@ -301,7 +301,7 @@ export default async function AgentDashboardPage({
                     {o.clientOrg.displayName}
                   </p>
                 </div>
-                <div className="text-end flex-shrink-0">
+                <div className="text-end shrink-0">
                   <p className="text-xs text-fg">
                     {dict.orders.statuses[o.status]}
                   </p>

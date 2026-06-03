@@ -17,6 +17,7 @@ import {
 } from "@/components/marketplace/listing-price";
 import { DeliveryEtaNotice } from "@/components/marketplace/delivery-eta-notice";
 import { MarketplaceBannerRail } from "@/components/marketplace/banner-rail";
+import { AuctionTeaserRail } from "@/components/auctions/teaser-rail";
 import { LoadMoreNudge } from "./_components/load-more-nudge";
 import { MarketplaceFilters } from "./_components/filters";
 
@@ -217,6 +218,12 @@ export default async function PublicMarketplacePage({
       )}
 
       <LoadMoreNudge lang={lang} hasMore={hasMore} totalShown={visible.length} />
+
+      <AuctionTeaserRail
+        lang={lang}
+        dict={dict}
+        linkBase={`/${lang}/auctions`}
+      />
     </div>
   );
 }

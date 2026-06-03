@@ -57,7 +57,7 @@ export default async function SignupPickerPage({
             variant="muted"
             className="group flex items-start gap-4 rounded-lg border border-line bg-surface p-5 hover:border-action transition-colors duration-fast"
           >
-            <span className="flex-shrink-0 inline-flex h-11 w-11 items-center justify-center rounded-md bg-brand-50 text-brand-700">
+            <span className="shrink-0 inline-flex h-11 w-11 items-center justify-center rounded-md bg-brand-50 text-brand-700">
               <HugeiconsIcon icon={icon} size={22} strokeWidth={1.5} />
             </span>
             <div className="flex-1 min-w-0">
@@ -68,7 +68,7 @@ export default async function SignupPickerPage({
               icon={ArrowRight01Icon}
               size={18}
               strokeWidth={1.5}
-              className="flex-shrink-0 mt-1 text-faint group-hover:text-action transition-colors duration-fast"
+              className="shrink-0 mt-1 text-faint group-hover:text-action transition-colors duration-fast"
             />
           </Link>
         ))}

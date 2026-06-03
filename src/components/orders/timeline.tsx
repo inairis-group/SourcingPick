@@ -95,7 +95,7 @@ export function OrderTimeline({
             >
               <span
                 className={cn(
-                  "inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors flex-shrink-0",
+                  "inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors shrink-0",
                   done
                     ? "bg-success-soft border-success-edge text-success"
                     : active
@@ -142,7 +142,7 @@ export function OrderTimeline({
               <li key={step} className="flex items-center gap-2 flex-1 min-w-0">
                 <span
                   className={cn(
-                    "inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors flex-shrink-0",
+                    "inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors shrink-0",
                     done
                       ? "bg-success-soft border-success-edge text-success"
                       : active

@@ -22,6 +22,7 @@ import {
   sendMessageWithAttachmentsAction,
 } from "@/lib/messaging/actions";
 import { AttachmentPicker } from "@/components/attachments/attachment-picker";
+import { VoiceRecorderButton } from "@/components/messaging/voice-recorder-button";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { formatDate } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
@@ -117,8 +118,12 @@ export function MessageThread({ threadId }: { threadId: string }) {
     [threadId],
   );
 
-  // Initial load.
+  // Initial load — primes the message list before SSE takes over for
+  // incremental updates. The lint rule prefers data fetching outside
+  // effects, but pulling this above the SSE subscription would break the
+  // ordering guarantee.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadInitial();
   }, [loadInitial]);
 
@@ -226,7 +231,7 @@ export function MessageThread({ threadId }: { threadId: string }) {
       <ol
         ref={listRef}
         onScroll={onScroll}
-        className="flex flex-col gap-2 px-4 py-3 max-h-[420px] overflow-y-auto"
+        className="flex flex-col gap-2 px-4 py-3 max-h-105 overflow-y-auto"
       >
         {loading ? (
           <li className="text-xs text-faint text-center py-6">
@@ -343,6 +348,12 @@ export function MessageThread({ threadId }: { threadId: string }) {
                 strokeWidth={1.5}
               />
             </button>
+            <VoiceRecorderButton
+              onRecorded={(file) =>
+                setPendingFiles((prev) => [...prev, file])
+              }
+              disabled={sending}
+            />
             <span className="text-[10px] text-faint">
               {dict.messaging.shortcutHint}
             </span>
@@ -377,6 +388,7 @@ function MessageAttachments({
 }) {
   const images = attachments.filter((a) => a.kind === AttachmentKind.IMAGE);
   const videos = attachments.filter((a) => a.kind === AttachmentKind.VIDEO);
+  const audios = attachments.filter((a) => a.kind === AttachmentKind.AUDIO);
   const files = attachments.filter((a) => a.kind === AttachmentKind.FILE);
 
   return (
@@ -415,6 +427,19 @@ function MessageAttachments({
           controls
           preload="metadata"
           className="w-full max-h-64 rounded-sm bg-black"
+        />
+      ))}
+
+      {audios.map((a) => (
+        <audio
+          key={a.id}
+          src={`/api/attachments/${a.id}`}
+          controls
+          preload="metadata"
+          className={cn(
+            "w-full rounded-full",
+            mine ? "bg-on-action/10" : "bg-surface",
+          )}
         />
       ))}
 

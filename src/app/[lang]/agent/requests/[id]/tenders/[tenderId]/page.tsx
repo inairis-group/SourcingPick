@@ -6,6 +6,7 @@ import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR } from "@/lib/i18n/formatters";
+import { formatLeadTime } from "@/lib/marketplace/lead-time";
 import { ContextThread } from "@/components/messaging/context-thread";
 import { cn } from "@/lib/utils";
 
@@ -77,6 +78,7 @@ export default async function AgentTenderDetailPage({
       totalCentsClient: true,
       quantity: true,
       leadTimeDays: true,
+      leadTimeUnit: true,
       validUntil: true,
       status: true,
     },
@@ -168,7 +170,7 @@ export default async function AgentTenderDetailPage({
             {formatEUR(quote.totalCentsClient / 100, lang)}
           </Detail>
           <Detail label={dict.factory.tenders.leadTimeLabel}>
-            {quote.leadTimeDays} {dict.factory.tenders.daysSuffix}
+            {formatLeadTime(quote.leadTimeDays, quote.leadTimeUnit, dict)}
           </Detail>
           <Detail label={dict.agent.quotes.validUntil}>
             {formatDate(quote.validUntil, lang, "medium")}
@@ -260,7 +262,7 @@ function Detail({
       <dt className="text-xs font-medium uppercase tracking-wide text-faint">
         {label}
       </dt>
-      <dd className="text-sm text-fg sm:col-span-2 break-words">{children}</dd>
+      <dd className="text-sm text-fg sm:col-span-2 wrap-break-word">{children}</dd>
     </div>
   );
 }

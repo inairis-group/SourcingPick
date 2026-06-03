@@ -13,6 +13,7 @@ import { assignAgentAction } from "@/lib/admin/dispatch-actions";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
+import { PreTenderActions } from "./pre-tender-actions";
 
 export type DispatchRequest = {
   id: string;
@@ -27,6 +28,9 @@ export type DispatchRequest = {
   sourcingRegion: SourcingRegion;
   status: SourcingStatus;
   agentId: string | null;
+  preTenderApprovedAt: Date | null;
+  preTenderRejectedAt: Date | null;
+  preTenderRejectionReason: string | null;
   clientOrg: { displayName: string; country: string };
   agent: { id: string; firstName: string; lastName: string } | null;
 };
@@ -230,6 +234,14 @@ export function DispatchTable({
                     : dict.admin.dispatch.assign}
                 </Button>
               </div>
+
+              <PreTenderActions
+                requestId={r.id}
+                approvedAt={r.preTenderApprovedAt}
+                rejectedAt={r.preTenderRejectedAt}
+                rejectionReason={r.preTenderRejectionReason}
+                hasAgent={Boolean(r.agent)}
+              />
             </li>
           ))}
         </ul>

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import {
   AttachmentContext,
+  LeadTimeUnit,
   MarketplaceProductStatus,
   Role,
 } from "@prisma/client";
@@ -10,6 +11,9 @@ import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatEUR, formatNumber } from "@/lib/i18n/formatters";
+import { formatLeadTime } from "@/lib/marketplace/lead-time";
+import { ProductImageGallery } from "@/components/marketplace/product-image-gallery";
+import { MarkdownDisplay } from "@/components/ui/markdown-display";
 import type { Locale } from "@/lib/i18n/config";
 import { MediaGrid } from "@/components/attachments/media-grid";
 import { ProductForm } from "../_components/product-form";
@@ -53,6 +57,7 @@ export default async function FactoryProductDetailPage({
       stockAvailable: true,
       stockLowThreshold: true,
       leadTimeDays: true,
+      leadTimeUnit: true,
       certifications: true,
       images: true,
       status: true,
@@ -138,6 +143,7 @@ export default async function FactoryProductDetailPage({
               stockAvailable: product.stockAvailable,
               stockLowThreshold: product.stockLowThreshold,
               leadTimeDays: product.leadTimeDays,
+              leadTimeUnit: product.leadTimeUnit,
               certifications: product.certifications,
               existingImages: imageUrls,
             }}
@@ -219,6 +225,7 @@ function ReadOnlyDetail({
     moq: number;
     stockAvailable: number;
     leadTimeDays: number;
+    leadTimeUnit: LeadTimeUnit;
     certifications: string[];
   };
   imageUrls: string[];
@@ -231,25 +238,9 @@ function ReadOnlyDetail({
         {dict.factory.catalogue.detailsTitle}
       </h2>
       {imageUrls.length > 0 && (
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-          {imageUrls.map((url, i) => (
-            <div
-              key={i}
-              className="aspect-square rounded-md border border-line bg-subtle relative overflow-hidden"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={url}
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
+        <ProductImageGallery imageUrls={imageUrls} productName="" />
       )}
-      <p className="text-sm text-fg whitespace-pre-wrap leading-snug">
-        {product.description}
-      </p>
+      <MarkdownDisplay source={product.description} />
       <div className="grid grid-cols-3 gap-3 text-xs pt-3 border-t border-line-subtle">
         <Metric
           label={dict.factory.catalogue.moqLabel}
@@ -261,7 +252,11 @@ function ReadOnlyDetail({
         />
         <Metric
           label={dict.factory.catalogue.leadTimeLabel}
-          value={`${product.leadTimeDays} ${dict.factory.tenders.daysSuffix}`}
+          value={formatLeadTime(
+            product.leadTimeDays,
+            product.leadTimeUnit,
+            dict,
+          )}
         />
       </div>
       {product.certifications.length > 0 && (

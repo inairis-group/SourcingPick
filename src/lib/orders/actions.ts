@@ -39,7 +39,12 @@ export type AcceptQuoteResult =
  * v1 split: 30% deposit, 70% balance — held in escrow per spec §3.3.
  * Provider-side capture lands in Phase 3.
  */
-const DEPOSIT_RATIO = 0.3;
+/**
+ * Default deposit share when none is set on the quote (legacy quotes
+ * pre-#7b migration). New quotes carry their own depositPercentageBps
+ * (3000–5000) — see tender-actions.ts.
+ */
+const DEFAULT_DEPOSIT_BPS = 3000;
 
 export async function acceptQuoteAction(
   quoteId: string,
@@ -58,6 +63,7 @@ export async function acceptQuoteAction(
       factoryOrgId: true,
       agentId: true,
       leadTimeDays: true,
+      depositPercentageBps: true,
       request: {
         select: {
           id: true,
@@ -82,7 +88,8 @@ export async function acceptQuoteAction(
   }
 
   const reference = await generateUniqueReference("ORD");
-  const depositCents = Math.round(quote.totalCentsClient * DEPOSIT_RATIO);
+  const bps = quote.depositPercentageBps ?? DEFAULT_DEPOSIT_BPS;
+  const depositCents = Math.round((quote.totalCentsClient * bps) / 10000);
   const balanceCents = quote.totalCentsClient - depositCents;
   const estimatedEta = new Date(
     Date.now() + quote.leadTimeDays * 24 * 60 * 60 * 1000,

@@ -26,6 +26,7 @@ const PROVIDER_TO_METHOD: Record<PayoutProvider, PayoutMethod> = {
   STRIPE_CONNECT: PayoutMethod.STRIPE_CONNECT,
   LIANLIAN: PayoutMethod.LIANLIAN,
   ALIPAY: PayoutMethod.ALIPAY,
+  WISE: PayoutMethod.WISE,
 };
 
 /**
@@ -57,9 +58,33 @@ export async function finalizeStripePayment(input: {
    */
   appliedCreditCents?: number;
 }): Promise<{ applied: boolean }> {
-  // Idempotency: bail if an escrow already exists for this payment intent.
+  return finalizeBuyerOrderPayment({
+    orderId: input.orderId,
+    type: input.type,
+    amountCents: input.amountCents,
+    provider: "stripe",
+    providerRef: input.stripePaymentIntentId,
+    appliedCreditCents: input.appliedCreditCents,
+  });
+}
+
+/**
+ * Provider-agnostic core finalize. The Stripe and Wise entry points are
+ * thin wrappers — both write an invoice + escrow row + advance the order
+ * status, differing only in the `provider` / `providerRef` columns we
+ * record for downstream reconciliation. Idempotency is by `providerRef`.
+ */
+export async function finalizeBuyerOrderPayment(input: {
+  orderId: string;
+  type: typeof InvoiceType.DEPOSIT | typeof InvoiceType.BALANCE;
+  amountCents: number;
+  provider: "stripe" | "wise";
+  providerRef: string;
+  appliedCreditCents?: number;
+}): Promise<{ applied: boolean }> {
+  // Idempotency: bail if an escrow already exists for this provider ref.
   const existing = await prisma.escrowTransaction.findFirst({
-    where: { providerRef: input.stripePaymentIntentId },
+    where: { providerRef: input.providerRef },
     select: { id: true },
   });
   if (existing) return { applied: false };
@@ -122,8 +147,8 @@ export async function finalizeStripePayment(input: {
         amountCents: recordedCents,
         status: EscrowStatus.HELD,
         fundedAt: now,
-        provider: "stripe",
-        providerRef: input.stripePaymentIntentId,
+        provider: input.provider,
+        providerRef: input.providerRef,
       },
     });
 
@@ -162,7 +187,8 @@ export async function finalizeStripePayment(input: {
     payload: {
       type: input.type,
       amountCents: input.amountCents,
-      stripePaymentIntentId: input.stripePaymentIntentId,
+      provider: input.provider,
+      providerRef: input.providerRef,
       invoiceReference,
       escrowReference,
     },
@@ -536,6 +562,24 @@ export async function finalizeResearchFeePayment(input: {
   invoiceId: string;
   stripePaymentIntentId: string;
 }): Promise<{ applied: boolean }> {
+  return finalizeResearchFeeReceived({
+    requestId: input.requestId,
+    invoiceId: input.invoiceId,
+    provider: "stripe",
+    providerRef: input.stripePaymentIntentId,
+  });
+}
+
+/**
+ * Provider-agnostic research-fee finalize — same body, parameterised
+ * provider/providerRef for the audit log. Used by the Wise reconciler.
+ */
+export async function finalizeResearchFeeReceived(input: {
+  requestId: string;
+  invoiceId: string;
+  provider: "stripe" | "wise";
+  providerRef: string;
+}): Promise<{ applied: boolean }> {
   const request = await prisma.sourcingRequest.findUnique({
     where: { id: input.requestId },
     select: {
@@ -571,7 +615,7 @@ export async function finalizeResearchFeePayment(input: {
     action: "research_fee.paid",
     targetType: "SourcingRequest",
     targetId: request.id,
-    payload: { stripePaymentIntentId: input.stripePaymentIntentId },
+    payload: { provider: input.provider, providerRef: input.providerRef },
   });
 
   // Notify the agent the buyer has paid — they can start sourcing.

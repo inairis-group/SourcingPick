@@ -20,6 +20,7 @@ import {
 } from "@/lib/admin/kyc-actions";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { formatDate } from "@/lib/i18n/formatters";
+import { useLightbox } from "@/components/ui/image-lightbox";
 import { cn } from "@/lib/utils";
 import type { QueueOrg } from "./kyc-queue";
 
@@ -341,7 +342,7 @@ function DetailRow({ label, value }: { label: string; value: React.ReactNode }) 
       <dt className="text-xs font-medium uppercase tracking-wide text-faint sm:pt-0.5">
         {label}
       </dt>
-      <dd className="text-sm text-fg sm:col-span-2 break-words">{value}</dd>
+      <dd className="text-sm text-fg sm:col-span-2 wrap-break-word">{value}</dd>
     </div>
   );
 }
@@ -357,16 +358,37 @@ function DocumentRow({
   const isPdf = doc.mimeType === "application/pdf";
   const kindLabel = dict.admin.kyc.docKinds[doc.kind as KycDocumentKind];
   const href = `/api/admin/kyc-document/${doc.id}`;
+  // Single-image lightbox per row — admins inspect docs one at a time, no
+  // multi-step navigation across siblings expected here.
+  const lb = useLightbox(isImage ? [href] : []);
+
+  const iconElement = (
+    <HugeiconsIcon
+      icon={isImage ? Image01Icon : isPdf ? PdfIcon : FileVerifiedIcon}
+      size={16}
+      strokeWidth={1.5}
+    />
+  );
 
   return (
     <li className="flex items-center gap-3 rounded-sm border border-line bg-surface px-3 py-2">
-      <span className="flex-shrink-0 inline-flex items-center justify-center h-8 w-8 rounded-md bg-brand-50 text-brand-700">
-        <HugeiconsIcon
-          icon={isImage ? Image01Icon : isPdf ? PdfIcon : FileVerifiedIcon}
-          size={16}
-          strokeWidth={1.5}
-        />
-      </span>
+      {isImage ? (
+        <button
+          type="button"
+          onClick={() => lb.open(0)}
+          aria-label={dict.admin.kyc.openDocument}
+          className={cn(
+            "shrink-0 inline-flex items-center justify-center h-8 w-8 rounded-md bg-brand-50 text-brand-700",
+            "hover:bg-brand-100 transition-colors duration-fast cursor-zoom-in",
+          )}
+        >
+          {iconElement}
+        </button>
+      ) : (
+        <span className="shrink-0 inline-flex items-center justify-center h-8 w-8 rounded-md bg-brand-50 text-brand-700">
+          {iconElement}
+        </span>
+      )}
       <div className="flex-1 min-w-0">
         <p className="text-xs font-medium uppercase tracking-wide text-faint">
           {kindLabel}
@@ -385,6 +407,7 @@ function DocumentRow({
       >
         <HugeiconsIcon icon={Download01Icon} size={16} strokeWidth={1.5} />
       </a>
+      {isImage && lb.element}
     </li>
   );
 }

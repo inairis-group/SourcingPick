@@ -64,6 +64,7 @@
       "budgetLabel": "总预算",
       "priceHintEur": "以欧元计,不含税。",
       "deadlineLabel": "期望交货日期",
+      "deadlineWarningShort": "交付期不足 31 天。完全保障的订单（含空运）至少需要 31 天 — 我们仍可处理，但将脱离标准流程。",
       "addressLabel": "交货地址",
       "addressPlaceholder": "12 rue de la République, 69001 Lyon",
       "incotermLabel": "贸易术语",
@@ -166,6 +167,18 @@
       "deliveryEtasTitle": "预计配送时效",
       "deliveryEtasDisclaimer": "配送时间为估算,可能因供应商、数量、目的地与物流条件而异。"
     },
+    "auctions": {
+      "bidAmountLabel": "您的出价 (€)",
+      "bidMinHint": "最低 {min} €。",
+      "placeBidCta": "出价",
+      "buyNowBody": "以 {amount} € 一口价立即赢得拍卖。",
+      "buyNowCta": "立即购买",
+      "errorInvalidAmount": "请输入有效的欧元金额。",
+      "cannotBidOnOwn": "不能对自己工厂的拍卖出价。",
+      "notStartedYet": "本拍卖将于 {date} 开始，请稍后再来。",
+      "notLiveAnymore": "本拍卖不再接受出价。",
+      "youAreWinning": "您目前是最高出价者。"
+    },
     "researchFee": {
       "title": "研究服务费",
       "quotedBody": "您的代理已评估此需求。支付 {amount} 研究服务费即可开始采购 —— 若您在 30 天内下单,将以平台积分形式返还。",
@@ -184,6 +197,8 @@
       "incoterm": "贸易术语",
       "validUntil": "有效期至",
       "expired": "已过期",
+      "depositLabel": "定金 ({pct}%)",
+      "balanceLabel": "发货时尾款 ({pct}%)",
       "statusAwaitingDecision": "待决定",
       "statusAccepted": "已接受",
       "statusRejected": "已拒绝",
@@ -238,13 +253,34 @@
       "trackingNumberLabel": "追踪号",
       "shippedAtLabel": "发货时间",
       "trackingPending": "工厂会在发货时添加追踪号。",
+      "tracking": {
+        "carrierLabel": "承运商",
+        "numberLabel": "追踪号",
+        "copyCta": "复制",
+        "openTrackingCta": "打开追踪"
+      },
+      "qcProofTitle": "工厂质检照片",
+      "shipmentProofTitle": "发货证明",
       "paymentPendingTitle": "需要付款",
-      "paymentPendingBody": "请通过信用卡支付 30% 定金。资金将托管直至您确认收货。",
+      "paymentPendingBody": "请使用上方银行信息电汇 30% 定金。资金到账后自动进入托管。",
       "payDepositCta": "支付定金",
       "paymentSuccessTitle": "已收到付款",
       "paymentSuccessBody": "您的定金已托管。工厂已收到通知,可以开始生产。",
       "paymentCancelledTitle": "付款已取消",
       "paymentCancelledBody": "付款未完成。您可以随时重试。",
+      "wisePay": {
+        "title": "通过银行电汇付款（Wise）",
+        "body": "请将款项从您的银行汇至下方账户。资金到账后，您的订单将自动进入托管状态。",
+        "amountLabel": "金额",
+        "holderLabel": "收款人",
+        "ibanLabel": "IBAN",
+        "bicLabel": "BIC / SWIFT",
+        "referenceLabel": "汇款备注",
+        "referenceHint": "重要：请将此备注完整复制到您的汇款留言中，以便我们将付款与您的订单匹配。",
+        "copyCta": "复制",
+        "copiedCta": "已复制",
+        "footnote": "SEPA 汇款数小时内到账；国际汇款 1–3 个工作日。资金到账后订单状态会自动更新。"
+      },
       "sectionInvoices": "发票",
       "invoiceTypeDeposit": "定金",
       "invoiceTypeBalance": "尾款",
@@ -266,7 +302,7 @@
       "confirmReceiptBody": "确认交付即可向工厂释放尾款。",
       "confirmReceiptCta": "确认收货",
       "payBalanceCta": "支付尾款并确认收货",
-      "payBalanceBody": "支付 70% 尾款后将自动向工厂释放付款。",
+      "payBalanceBody": "请使用上方银行信息电汇 70% 尾款。资金到账后自动向工厂释放付款。",
       "waitingForFactory": "等待工厂的下一步操作。"
     }
   },
@@ -323,6 +359,14 @@
       "localeLabel": "首选语言",
       "localeHint": "设置界面和通知的语言。",
       "saved": "个人资料已更新。"
+    },
+    "logo": {
+      "title": "组织 Logo",
+      "description": "显示在市场列表、消息会话以及发票顶部。",
+      "fileLabel": "新 Logo",
+      "fileHint": "JPG、PNG 或 WebP — 最大 10 MB。",
+      "submitCta": "更新",
+      "saved": "Logo 已更新。"
     },
     "security": {
       "title": "安全",
@@ -426,7 +470,12 @@
       "slaApproaching": "{h} 小时 — SLA 临近",
       "slaOverdue": "{h} 小时 — SLA 已超时",
       "tenderInvitationsCount": "{n} 个招标",
-      "quotesCount": "{n} 个报价"
+      "quotesCount": "{n} 个报价",
+      "preTender": {
+        "pendingBanner": "需等待管理员审核后才能发出招标。",
+        "approvedBanner": "管理员已于 {date} 审核通过 — 可以发起招标。",
+        "rejectedBanner": "管理员于 {date} 拒绝"
+      }
     },
     "quotes": {
       "empty": "此需求尚未收到报价。",
@@ -457,6 +506,14 @@
       "searchPlaceholder": "搜索工厂、国家、能力…",
       "empty": "没有工厂符合此筛选。",
       "ordersSuffix": "订单"
+    },
+    "orders": {
+      "eyebrow": "订单跟踪",
+      "title": "我负责需求的订单",
+      "description": "您负责需求所产生的全部订单。点击可打开需求详情与对话。",
+      "emptyTitle": "暂无订单",
+      "emptyBody": "您负责的需求一旦有报价被接受,订单将出现在这里。",
+      "createdAt": "创建于"
     },
     "tasks": {
       "eyebrow": "我的任务",
@@ -557,6 +614,28 @@
     "systemAuthor": "SourcingPick",
     "errorLoad": "无法加载消息。请重试。",
     "errorStream": "实时更新已断开。请刷新页面重新连接。",
+    "globalEyebrow": "消息",
+    "globalTitle": "全部会话",
+    "globalDescription": "所有线索——需求、招标、报价、订单——集中在一处。",
+    "globalEmpty": "暂无会话。",
+    "globalEmptyHint": "当您或合作方就需求、报价或订单发起对话时,会出现在这里。",
+    "globalEmptyUnread": "已全部阅读。",
+    "globalEmptyUnreadHint": "您已跟进完毕。有新消息时再回来查看。",
+    "filterAll": "全部",
+    "filterUnread": "未读",
+    "contextLabels": {
+      "REQUEST": "需求",
+      "ORDER": "订单",
+      "QUOTE": "报价",
+      "TENDER": "招标"
+    },
+    "voice": {
+      "start": "录制语音消息",
+      "stop": "停止并发送",
+      "cancel": "取消",
+      "permissionDenied": "麦克风权限被拒。请允许后重试。",
+      "unsupported": "您的浏览器不支持语音录制。"
+    },
     "contextHints": {
       "REQUEST": "与此采购需求相关的对话 — 客户与代理之间。",
       "TENDER": "代理与此工厂之间的私密对话。其他被邀请的工厂看不到这些消息。",
@@ -564,7 +643,8 @@
       "ORDER": "与此订单相关的对话 — 所有相关方均参与。",
       "KYC": "与我们团队就您的 KYC 文件进行的对话。",
       "CERT": "关于您的认证项目的对话。",
-      "DISPUTE": "争议讨论 — 由 SourcingPick 团队调解。"
+      "DISPUTE": "争议讨论 — 由 SourcingPick 团队调解。",
+      "DIRECT": "直接对话 — 不绑定任何具体的订单、需求或产品。"
     }
   },
   "tender": {
@@ -641,6 +721,10 @@
       "promotionClear": "清除",
       "promotionSaved": "促销已保存。",
       "leadTimeLabel": "交期",
+      "leadTimeUnits": {
+        "DAY": "天",
+        "MONTH": "月"
+      },
       "moqLabel": "MOQ",
       "stockLabel": "库存",
       "stockLowLabel": "低库存提醒",
@@ -706,6 +790,57 @@
         "REFUSE": "已拒绝"
       }
     },
+    "auctions": {
+      "eyebrow": "拍卖",
+      "title": "我的拍卖",
+      "description": "通过拍卖出售大批量或清仓商品 — 买家在您设定的时间窗内竞价。",
+      "newCta": "新建拍卖",
+      "newTitle": "创建拍卖",
+      "newBody": "填写商品详情，提交后由我们的团队审核再行发布。",
+      "backToList": "返回拍卖列表",
+      "emptyTitle": "暂无拍卖",
+      "emptyBody": "创建您的首个拍卖，向买家展示一批商品。",
+      "kycRequiredTitle": "需要 KYC",
+      "kycRequiredBody": "您的工厂 KYC 验证完成后才能发布拍卖。",
+      "titleLabel": "标题",
+      "titlePlaceholder": "5,000 件有机棉 T 恤清仓批次",
+      "categoryLabel": "类别",
+      "descriptionLabel": "描述",
+      "descriptionHint": "支持 Markdown — 请清晰描述成分、状态、包装与特殊条款。",
+      "descriptionPlaceholder": "详细说明批次内容：按尺码/颜色的数量、商品状态、包装、特殊条款。",
+      "startingBidLabel": "起拍价 (€)",
+      "reserveLabel": "保留价 (€)",
+      "reserveHint": "可选 — 低于此价格拍卖不会成交。",
+      "buyNowLabel": "一口价 (€)",
+      "buyNowHint": "可选 — 买家可按此价格立即结束拍卖。",
+      "eurHint": "欧元，不含税。",
+      "quantityLabel": "总数量",
+      "moqLabel": "拆分起订量",
+      "moqHint": "若接受拆分批次，否则保持等于总数量。",
+      "startsAtLabel": "拍卖开始时间",
+      "startsAtHint": "审核通过后的上线日期与时间。",
+      "endsAtLabel": "拍卖结束时间",
+      "endsAtHint": "该时间最高出价者获得该批次。",
+      "saveDraft": "保存草稿",
+      "saveChanges": "保存修改",
+      "submitForReviewCta": "提交审核",
+      "needsImageHint": "提交前至少添加一张照片。",
+      "cancelCta": "取消草稿",
+      "confirmCancel": "取消此拍卖？此操作不可撤销。",
+      "estimatedCommissionLabel": "预估佣金",
+      "estimatedCommissionHint": "基于起拍价的预估 — 实际费率取决于最终成交金额。",
+      "bidsSuffix": "次出价",
+      "rejectedTitle": "拍卖被拒",
+      "statuses": {
+        "DRAFT": "草稿",
+        "PENDING_REVIEW": "审核中",
+        "REJECTED": "已拒绝",
+        "ACTIVE": "进行中",
+        "ENDED": "已结束",
+        "SOLD": "已成交",
+        "CANCELLED": "已取消"
+      }
+    },
     "payouts": {
       "eyebrow": "收款",
       "title": "我的收款",
@@ -731,7 +866,32 @@
       "statusScheduled": "已安排",
       "statusSent": "已发送",
       "statusReceived": "已收到",
-      "statusFailed": "失败"
+      "statusFailed": "失败",
+      "wise": {
+        "notConfiguredTitle": "Wise 收款 — 等待管理员配置",
+        "notConfiguredBody": "SourcingPick 团队正在完成 Wise 接入。启用后您即可在此填写银行账户信息。",
+        "connectedTitle": "已绑定 Wise 账户",
+        "connectedBody": "您的收款将自动到此账户。Wise 收款人编号：{ref}。",
+        "setupTitle": "添加银行账户信息",
+        "setupBody": "Wise 以中间汇率在 1–3 天内将您的收入转入银行账户。请选择与您银行匹配的账户类型。",
+        "typeLabel": "账户类型",
+        "types": {
+          "IBAN": "IBAN（欧盟 / SEPA）",
+          "SWIFT": "SWIFT（国际）",
+          "CHINESE_LOCAL": "中国境内银行账户（人民币）"
+        },
+        "holderNameLabel": "账户持有人",
+        "holderNameHint": "请与银行对账单上的名称完全一致。",
+        "currencyLabel": "币种（ISO 三字母）",
+        "ibanLabel": "IBAN",
+        "ibanHint": "无需空格或破折号 — Wise 会自动规范化。",
+        "swiftCodeLabel": "SWIFT / BIC",
+        "swiftCodeHint": "8 或 11 个字符，大写。",
+        "bankCodeLabel": "银行代码",
+        "bankCodeHint": "银行的简称，例如 ICBC、BOC、CCB。",
+        "accountNumberLabel": "账号",
+        "submitCta": "保存"
+      }
     },
     "orders": {
       "eyebrow": "我的订单",
@@ -757,13 +917,46 @@
       "qcCtaBody": "质量控制通过后,添加发货信息以发货。",
       "markShippedCta": "标记为已发货",
       "shipFormTitle": "发货信息",
+      "shipFormBody": "请填写承运商和追踪号，方便买家跟踪包裹。追踪 URL 为可选，但建议填写 — 一键即可打开承运商的状态页。",
+      "shipFormReminder": "提交前请仔细核对追踪号 — 订单标记为已发货后，将通知买家，且追踪号无法在不联系支持团队的情况下修改。",
+      "carrierHint": "请填写运输面单上显示的承运商名称。",
+      "trackingNumberHint": "请从面单复制；不要带空格或破折号。",
       "trackingUrlLabel": "追踪 URL",
-      "trackingUrlHint": "可选 — 承运商追踪链接。",
+      "trackingUrlHint": "可选 — 粘贴承运商链接，方便买家直接查看状态页。",
       "confirmShipCta": "确认发货",
       "shippedCtaTitle": "包裹已发出",
       "shippedCtaBody": "当承运商确认包裹正在运输时,标记为运输中。",
       "markInTransitCta": "标记为运输中",
-      "errorTrackingRequired": "承运商和追踪号为必填项。"
+      "errorTrackingRequired": "承运商和追踪号为必填项。",
+      "proofs": {
+        "qcSectionTitle": "质检照片",
+        "qcSectionBody": "请上传成品、装箱、标签等照片 — 让买家在发货前确认订单已就绪。仅买家和管理员可见。",
+        "qcGalleryTitle": "已上传的质检照片",
+        "qcLabel": "质检照片",
+        "qcHint": "JPG / PNG / WebP · 可上传多张。",
+        "shipmentSectionTitle": "发货照片",
+        "shipmentSectionBody": "请上传交付给承运商时的包裹照片，并清晰显示追踪标签。可在争议时证明已发货。",
+        "shipmentGalleryTitle": "已上传的发货照片",
+        "shipmentLabel": "发货照片",
+        "shipmentHint": "JPG / PNG / WebP · 1–3 张即可。",
+        "submitCta": "上传",
+        "saved": "照片已上传。"
+      },
+      "forwarder": {
+        "title": "货代链接",
+        "body": "生成一个链接发送给您的货代,让他们直接上传交付给承运人的照片。无需账户,链接 14 天后过期。",
+        "labelLabel": "备注(可选)",
+        "labelPlaceholder": "例如 DHL 提货、马士基集装箱…",
+        "createCta": "生成链接",
+        "copy": "复制",
+        "copied": "已复制",
+        "copyError": "无法复制到剪贴板,请手动复制链接。",
+        "revoke": "撤销",
+        "expiresOn": "{date} 过期",
+        "lastUsedOn": "最近一次上传 {date}",
+        "uploadCount": "{n} 个文件",
+        "notYetAvailable": "订单进入备货后货代链接才会开放。"
+      }
     },
     "tenders": {
       "eyebrow": "招标邀请",
@@ -790,7 +983,10 @@
       "moqLabel": "MOQ",
       "validityLabel": "报价有效期",
       "validityHint": "您的报价保持有效的天数(最长 60 天)。",
+      "depositPercentageLabel": "要求的定金比例 (%)",
+      "depositPercentageHint": "30 到 50% 之间。买家在接受报价时支付该比例，余款在交付时结算。",
       "daysSuffix": "天",
+      "monthsSuffix": "个月",
       "daysShort": "天",
       "validUntilLabel": "有效期至",
       "notesLabel": "备注",
@@ -970,10 +1166,12 @@
     "webhooks": {
       "eyebrow": "Webhook",
       "title": "Webhook 事件",
-      "description": "来自 Stripe 等供应方的事件追踪。",
+      "description": "来自 Wise、Stripe 等供应方的事件追踪。",
       "kpiReceived": "已接收",
       "kpiProcessed": "已处理",
       "kpiFailed": "失败",
+      "kpiWiseStuck": "Wise · 卡住",
+      "kpiWiseStuckHint": "未能自动对账的 Wise 汇款。修复订单后可重放。",
       "tableTitle": "近期事件",
       "empty": "暂无事件。",
       "colReceived": "接收时间",
@@ -981,7 +1179,13 @@
       "colType": "类型",
       "colStatus": "状态",
       "colAttempts": "尝试次数",
-      "colError": "错误"
+      "colError": "错误",
+      "colAction": "操作",
+      "replay": {
+        "cta": "重放",
+        "pending": "重放中…",
+        "tooltip": "用已存的 payload 再次执行对账。"
+      }
     },
     "logins": {
       "eyebrow": "安全",
@@ -1041,6 +1245,19 @@
       "confirmReject": "确认拒绝",
       "back": "返回"
     },
+    "auctions": {
+      "eyebrow": "审核",
+      "title": "待审核拍卖",
+      "description": "在拍卖上线前审核或拒绝工厂提交的拍卖。",
+      "emptyTitle": "暂无待审核",
+      "emptyBody": "所有提交的拍卖均已处理。",
+      "openCta": "打开",
+      "approveCta": "通过并发布",
+      "rejectCta": "拒绝",
+      "rejectReasonPlaceholder": "告诉工厂需要修改什么…",
+      "confirmRejectCta": "确认拒绝",
+      "back": "返回"
+    },
     "dispatch": {
       "eyebrow": "派单",
       "title": "待分配的需求",
@@ -1056,7 +1273,19 @@
       "assign": "分配",
       "reassign": "重新分配",
       "loadSuffix": "个活跃需求",
-      "errorPickAgent": "分配前请先选择代理。"
+      "errorPickAgent": "分配前请先选择代理。",
+      "preTender": {
+        "helperUnassigned": "招标发出前需通过预招标审核。",
+        "helperAssigned": "审核通过后代理方可发起招标。",
+        "approveCta": "通过",
+        "rejectCta": "拒绝",
+        "flipReject": "撤回通过",
+        "rejectReasonPlaceholder": "向代理说明的理由(≥ 5 字符)…",
+        "cancel": "取消",
+        "confirmRejectCta": "确认拒绝",
+        "approvedOn": "{date} 已通过",
+        "rejectedOn": "{date} 已拒绝"
+      }
     },
     "requestDetail": {
       "backToDispatch": "返回派单",
@@ -1152,7 +1381,8 @@
         "active": "已启用",
         "configured": "已配置",
         "missing": "未配置"
-      }
+      },
+      "retiredBadge": "已停用"
     },
     "deliveryEtas": {
       "title": "市场配送时效估算",
@@ -1306,9 +1536,11 @@
     "invoices": "发票",
     "tenders": "招标",
     "catalogue": "产品目录",
+    "auctions": "拍卖",
     "payouts": "付款",
     "certification": "认证",
     "tasks": "任务",
+    "messages": "消息",
     "settings": "设置",
     "logout": "退出登录"
   },
@@ -1448,37 +1680,72 @@
       "items": [
         {
           "question": "在 SourcingPick 销售要花多少钱?",
-          "answer": "没有订阅费,也没有上架费。仅在订单完成时从您的回款中扣除 3% 佣金。无需预付,不成交则不收费。"
+          "answer": "没有订阅费，也没有上架费。仅在订单完成时从您的回款中扣除 3% 佣金。无需预付，不成交则不收费。"
         },
         {
           "question": "我何时、以何种方式收款?",
-          "answer": "买家付款后资金即进入托管。确认合规交付后,您的净额(订单金额减去 3%)将释放到您入驻的收款账户 —— 视地区为 Stripe、LianLian 或 Alipay。"
+          "answer": "买家电汇后，资金即进入 SourcingPick 的 Wise 托管账户。确认合规交付后，您的净额（订单金额减去 3%）将在 1–3 个工作日内汇入您的银行账户。"
         },
         {
-          "question": "我可以使用哪些收款方式?",
-          "answer": "欧盟、英国、美国、阿联酋、新加坡、香港及部分非洲地区可用 Stripe Connect;中国大陆与东南亚可用 LianLian Global 或 Alipay。入驻时选择其一。"
+          "question": "Wise 在其中扮演什么角色？",
+          "answer": "Wise 托管平台一侧的资金，并执行向您银行账户的付款。您仅需填写一次银行信息（IBAN、SWIFT 或中国境内账户），后续所有付款都将自动以中间汇率到账。"
         },
         {
-          "question": "销售是否需要认证?",
-          "answer": "并非强制,但买家可据此筛选与评估 —— 展示您的真实认证(GOTS、OEKO-TEX、FSC、CE 等)能让您接触到更多正式订单。"
+          "question": "marketplace、定制、采购和拍卖有何区别？",
+          "answer": "Marketplace：您的现货产品，买家一键下单。定制订单：由代理根据买家规格协商的招标报价。采购：由专属代理为买家寻找供应商，以研究服务费计费。拍卖（即将推出）：以竞价方式销售大批量或清仓产品。"
         },
         {
-          "question": "买家如何被核验?",
-          "answer": "每个采购需求在邀请任何工厂之前,都会由 SourcingPick 代理审核与筛选。市场买家同样通过托管付款,您绝不会面临不付款风险。"
+          "question": "marketplace 订单的流程是怎样的？",
+          "answer": "买家选择您的产品 → 电汇定金至 SourcingPick 的 Wise 托管账户 → 您接收订单、完成质检、上传质检照片、附上追踪号发货 → 确认交付后，您的净额自动释放。"
+        },
+        {
+          "question": "定制订单的流程是怎样的？",
+          "answer": "代理邀请您按规格报价。买家接受后，订单按您报价中的 30–50% 定金创建，余款在交付时支付。托管流程完全一致。"
         },
         {
           "question": "出现争议怎么办?",
-          "answer": "在确认交付前,资金始终留在托管中。对于标准产品问题,我们会调解部分退款,平台与您共同承担部分成本;定制商品的政策有所不同。完整争议政策将在入驻时提供。"
+          "answer": "资金始终留在 Wise 托管中。SourcingPick 充当调解人 —— 我们会审查您的质检照片、发货证明，以及全部对话记录。若产品确有缺陷，我们会协商部分退款，平台与您共同承担一部分成本。定制订单若不符合规格，可能涉及更大幅度退款。您并非孤军奋战。"
         },
         {
-          "question": "我可以销售什么 —— 定制还是现货?",
-          "answer": "两者皆可。招标用于与代理协商的定制订单;市场用于预先谈好、可即时发货、买家一键购买的产品。"
+          "question": "买家如何被核验?",
+          "answer": "每个采购需求在邀请任何工厂之前，都会由 SourcingPick 代理审核与筛选。市场买家同样通过 Wise 托管付款 —— 您绝不会面临不付款风险。"
+        },
+        {
+          "question": "销售是否需要认证?",
+          "answer": "并非强制，但买家可据此筛选 —— 展示您的真实认证（GOTS、OEKO-TEX、FSC、CE…）能让您接触到更多正式订单。"
         },
         {
           "question": "通过验证(KYC)需要哪些材料?",
-          "answer": "您的工商注册、一份税务文件,以及一两张设施照片或参考文件。验证为一次性,通常很快。"
+          "answer": "您的工商注册、一份税务文件，以及一两张设施照片。验证为一次性，通常很快。"
         }
       ]
+    }
+  },
+  "auctions": {
+    "eyebrow": "拍卖",
+    "browseTitle": "正在进行的拍卖",
+    "browseDescription": "对大批量或清仓商品出价竞价。结束时最高出价者获胜；通过 Wise 托管完成结算。",
+    "emptyTitle": "暂无活动拍卖",
+    "emptyBody": "请稍后再来 — 工厂会定期发布新批次。",
+    "backToBrowse": "返回拍卖列表",
+    "startingBidLabel": "起拍价",
+    "currentBidLabel": "当前出价",
+    "endsInLabel": "剩余时间",
+    "buyNowAvailable": "可一口价以 {amount} 立即购买。",
+    "signInToBidBody": "登录买家账户即可出价。",
+    "signInToBidCta": "登录",
+    "descriptionTitle": "批次详情",
+    "recentBidsTitle": "最近出价",
+    "recentBidsEmpty": "暂无出价 — 首位下注吧。",
+    "teaserTitle": "即将结束的拍卖",
+    "teaserSubtitle": "可竞拍的开放批次 — 通过 Wise 托管结算。",
+    "teaserCta": "查看所有拍卖",
+    "countdown": {
+      "days": "天",
+      "hours": "小时",
+      "minutes": "分",
+      "seconds": "秒",
+      "ended": "已结束"
     }
   },
   "about": {
@@ -1513,6 +1780,11 @@
         "title": "真正的全球网络",
         "body": "我们的合作工厂遍布五大洲。我们既能与您的供应商沟通,也能与您的采购团队对接。"
       }
+    },
+    "founders": {
+      "eyebrow": "团队",
+      "title": "平台背后的面孔。",
+      "coFounderRole": "联合创始人"
     }
   },
   "pricing": {
@@ -1606,6 +1878,8 @@
       "orgNameHint": "您企业经营所用的商业名称。",
       "countryLabel": "国家/地区",
       "countryPlaceholder": "法国、巴西、日本…",
+      "phoneLabel": "电话",
+      "phoneHint": "便于您的专属代理在紧急情况下快速联系您。",
       "passwordHint": "至少 12 个字符。",
       "termsAccept": "我接受",
       "termsLink": "服务条款",
@@ -1891,6 +2165,37 @@
       ]
     }
   },
+  "forwarder": {
+    "metaTitle": "上传发运凭证",
+    "brandSr": "SourcingPick",
+    "eyebrow": "SourcingPick 货代链接",
+    "title": "为该订单上传发运凭证。",
+    "body": "工厂向您分享此链接,用于上传交付给承运人的照片 — 跟踪标签清晰、包装状态、集装箱铅封。无需注册。",
+    "factory": "工厂",
+    "client": "买家",
+    "quantity": "数量",
+    "incoterm": "贸易术语",
+    "deliveryAddress": "送货地址",
+    "eta": "预计送达",
+    "uploadTitle": "上传文件",
+    "uploadBody": "图片或 PDF。拖放或点击选择,支持多文件。",
+    "pickerLabel": "选择文件",
+    "pickerHint": "JPG / PNG / WebP / PDF · 最多 10 个文件。",
+    "submitWithCount": "上传 {n} 个文件",
+    "submitEmpty": "上传",
+    "successTitle": "{n} 个文件已上传。",
+    "successBody": "工厂已收到通知。您可关闭此页或继续添加。",
+    "expiresOn": "链接有效期至 {date}。",
+    "alreadyUploaded": "已上传 {n}",
+    "galleryTitle": "已上传文件",
+    "invalidTitle": "链接无效",
+    "invalidBody": "该链接不存在或订单已被删除。请向工厂索取新链接。",
+    "revokedTitle": "链接已撤销",
+    "revokedBody": "工厂已撤销该链接。如需上传请向工厂申请新链接。",
+    "expiredTitle": "链接已过期",
+    "expiredBody": "该链接已超出有效期。请向工厂索取新链接。",
+    "footerNote": "SourcingPick 平台 · 文件传输加密,仅与该订单关联保存。"
+  },
   "footer": {
     "product": "产品",
     "company": "公司",
@@ -1903,8 +2208,145 @@
     "terms": "服务条款",
     "privacy": "隐私政策",
     "cookies": "Cookie 政策",
+    "faq": "常见问题",
     "allRights": "保留所有权利。",
     "madeIn": "由 INAIRIS 用 ❤️ 制作"
+  },
+  "faq": {
+    "eyebrow": "常见问题",
+    "title": "在我们平台采购前,你需要了解这些。",
+    "intro": "四类产品,一个平台。选择最符合您情况的板块,了解流程、费用归属以及出问题时的处理方式。",
+    "tocLabel": "本页内容",
+    "contactPrompt": "找不到答案?写信给我们:",
+    "contactEmail": "support@sourcingpick.com",
+    "sections": {
+      "sourcing": {
+        "heading": "代理协助采购",
+        "intro": "核心流程:您描述需求,代理负责筛选并向预审通过的工厂询价,您将获得按同一标准比较的多份报价。",
+        "items": [
+          {
+            "q": "代理如何挑选要联系的工厂?",
+            "a": "依据品类、地区和所需认证。所有在库工厂都已通过 KYC 审核(营业执照、出口资质、样品)。代理会优先选择历史业绩与您需求最匹配的工厂。"
+          },
+          {
+            "q": "多久能收到报价?",
+            "a": "需求审核目标 24 个工作小时,随后 5 至 7 天汇总报价(视需求复杂度和工厂时区)。"
+          },
+          {
+            "q": "是否需要预付研究费?",
+            "a": "对于高度定制的需求,代理可能收取研究费(125 €/天或 500 €/周)。若您在付款 30 天内确认报价,该费用将全额抵扣订单金额。"
+          },
+          {
+            "q": "提交后还能修改需求吗?",
+            "a": "在招标尚未发出前可以 — 请联系您的代理。一旦邀请工厂后,任何实质性修改都将触发重新询价。"
+          },
+          {
+            "q": "如果没有合适的报价怎么办?",
+            "a": "可以全部拒绝,不收取费用(已支付的研究费除外)。代理可以根据更明确的需求重新发起询价。"
+          }
+        ]
+      },
+      "marketplace": {
+        "heading": "市场 — 现货可发运",
+        "intro": "合作工厂已有库存的产品目录。无需通过代理,直接下单,款项分两期支付。",
+        "items": [
+          {
+            "q": "和传统 B2C 网站有什么区别?",
+            "a": "价格为不含税净价,每个商品页都标明 MOQ 和发货周期,款项在 Wise 托管,直到您确认收货合规后释放。"
+          },
+          {
+            "q": "什么时候扣款?",
+            "a": "下单时支付 30% 定金,发货时支付 70% 尾款。两笔款项均汇入我们的托管 IBAN。"
+          },
+          {
+            "q": "工厂能在我下单后改价或改库存吗?",
+            "a": "不可以。订单确认后,价格和条款已锁定。如工厂无法履约,订单将取消,定金全额退还。"
+          },
+          {
+            "q": "可以低于 MOQ 下单吗?",
+            "a": "市场板块不可以。若需要更小数量或变体,请改走代理协助采购流程。"
+          }
+        ]
+      },
+      "auctions": {
+        "heading": "拍卖 — 大批量与清仓",
+        "intro": "工厂发布拍卖批次,出价最高者结拍获胜;部分批次设有立即购买价。",
+        "items": [
+          {
+            "q": "拍卖佣金如何计算?",
+            "a": "按最终成交额采用 10%–15% 递进曲线。佣金从工厂应收款中扣除,不会加到您的出价上。"
+          },
+          {
+            "q": "中标后会怎样?",
+            "a": "系统会在您的账户中自动创建订单,采用 30% 定金 / 70% 尾款的方式,通过 Wise 电汇支付。"
+          },
+          {
+            "q": "如果我在最后一刻被超过怎么办?",
+            "a": "您会立即收到通知,可点击链接继续出价。每次加价最低 1 €。"
+          },
+          {
+            "q": "如果无人达到保留价?",
+            "a": "拍卖流拍 — 不创建订单,不扣款。工厂可以重新挂拍。"
+          },
+          {
+            "q": "可以取消已中拍的订单吗?",
+            "a": "不可以。中拍即具有法律约束力。取消将损失定金并在账户上留下记录。"
+          }
+        ]
+      },
+      "custom": {
+        "heading": "定制生产",
+        "intro": "适用于市场和拍卖中没有的产品:专用模具、定制包装、验证样品。始终通过代理协助流程。",
+        "items": [
+          {
+            "q": "定制生产最短交期是多久?",
+            "a": "工厂端 31 个自然日加运输时间。低于此期限我们无法保证质量与验证流程。提交需求时系统会提醒。"
+          },
+          {
+            "q": "定制订单需要多少定金?",
+            "a": "工厂在报价时选择 30%–50%。比市场板块高,因为工厂在出货前已投入原材料和模具。"
+          },
+          {
+            "q": "可以先确认样品再量产吗?",
+            "a": "可以,我们也建议这么做。报价可包含单独计费的样品;书面确认后再启动量产。"
+          },
+          {
+            "q": "我提供的设计版权归谁?",
+            "a": "完全归您所有。合作工厂通过平台条款承诺不复用客户设计。"
+          }
+        ]
+      },
+      "disputes": {
+        "heading": "争议、退货与责任",
+        "intro": "Wise 托管让我们在争议期间冻结尾款。出问题时,责任归属如下。",
+        "items": [
+          {
+            "q": "申请争议的期限是多久?",
+            "a": "自合规收货确认起 7 个自然日内。超期后尾款将自动释放给工厂。"
+          },
+          {
+            "q": "出现分歧时谁来裁定?",
+            "a": "我们的支持团队依据订单沟通中的照片、证书和消息记录进行仲裁。决定将以书面形式通知双方。"
+          },
+          {
+            "q": "采购/定制:质量不符由谁承担?",
+            "a": "若与签署的报价存在质量不符,工厂承担更换或全额退款。代理费和平台费按比例退还。"
+          },
+          {
+            "q": "市场:实物与描述不符怎么办?",
+            "a": "您可获得全额退款(包括已支付的定金与运费)。在争议解决前,工厂将被暂停发布。"
+          },
+          {
+            "q": "拍卖的保障一样吗?",
+            "a": "标记为\"全新\"的批次保障相同。清仓 / 二手批次仅保障重大不符(死库存、假货、虚假陈述)。出价前请仔细阅读批次描述。"
+          },
+          {
+            "q": "平台是否承担责任?",
+            "a": "在撮合与支付安全方面承担。生产相关的隐蔽瑕疵超出审核范围,由工厂独立承担。"
+          }
+        ]
+      }
+    }
   },
   "errors": {
     "404": {

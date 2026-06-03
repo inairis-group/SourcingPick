@@ -3,6 +3,8 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { OrderStatus } from "@prisma/client";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { AlertCircleIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/ui/field";
@@ -118,25 +120,70 @@ export function FactoryOrderActions({
       {status === OrderStatus.QC && shipFormOpen && (
         <form
           onSubmit={onShipSubmit}
-          className="rounded-lg border border-line bg-surface p-4 flex flex-col gap-3"
+          className="rounded-lg border border-line bg-surface p-5 flex flex-col gap-4"
         >
-          <p className="text-sm font-semibold text-headline">
-            {dict.factory.orders.shipFormTitle}
-          </p>
+          <header>
+            <p className="text-sm font-semibold text-headline">
+              {dict.factory.orders.shipFormTitle}
+            </p>
+            <p className="text-xs text-muted mt-0.5 leading-snug max-w-prose">
+              {dict.factory.orders.shipFormBody}
+            </p>
+          </header>
+
+          <div
+            className="rounded-md border border-warning-edge bg-warning-soft/30 p-3 flex items-start gap-2 text-xs text-warning leading-snug"
+            role="note"
+          >
+            <HugeiconsIcon
+              icon={AlertCircleIcon}
+              size={14}
+              strokeWidth={1.5}
+              className="shrink-0 mt-0.5"
+            />
+            <p>{dict.factory.orders.shipFormReminder}</p>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Field label={dict.client.orders.carrierLabel} required>
-              <Input name="trackingCarrier" required maxLength={80} />
+            <Field
+              label={dict.client.orders.carrierLabel}
+              required
+              hint={dict.factory.orders.carrierHint}
+            >
+              <Input
+                name="trackingCarrier"
+                required
+                maxLength={80}
+                placeholder="DHL, FedEx, UPS…"
+              />
             </Field>
-            <Field label={dict.client.orders.trackingNumberLabel} required>
-              <Input name="trackingNumber" required maxLength={80} />
+            <Field
+              label={dict.client.orders.trackingNumberLabel}
+              required
+              hint={dict.factory.orders.trackingNumberHint}
+            >
+              <Input
+                name="trackingNumber"
+                required
+                maxLength={80}
+                placeholder="1Z999AA10123456784"
+                className="font-mono"
+              />
             </Field>
           </div>
+
           <Field
             label={dict.factory.orders.trackingUrlLabel}
             hint={dict.factory.orders.trackingUrlHint}
           >
-            <Input name="trackingUrl" type="url" maxLength={500} />
+            <Input
+              name="trackingUrl"
+              type="url"
+              maxLength={500}
+              placeholder="https://www.dhl.com/track?id=…"
+            />
           </Field>
+
           <div className="flex items-center justify-end gap-2">
             <Button
               type="button"

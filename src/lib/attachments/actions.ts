@@ -97,6 +97,21 @@ async function canManage(
       });
       return req?.clientOrgId === user.organizationId;
     }
+    // The factory uploaded the proof and can remove their own (typo,
+    // wrong photo, etc.) until the order completes. After completion the
+    // photos are part of the audit trail — only admins can prune.
+    case AttachmentContext.ORDER_QC_PROOF:
+    case AttachmentContext.ORDER_SHIPMENT_PROOF: {
+      const order = await prisma.order.findUnique({
+        where: { id: att.contextId },
+        select: { factoryOrgId: true, status: true },
+      });
+      if (!order) return false;
+      if (order.status === "COMPLETED" || order.status === "CANCELLED") {
+        return false;
+      }
+      return order.factoryOrgId === user.organizationId;
+    }
     // Messages, orders, and banners aren't deletable via this path.
     // Banner media is admin-managed (handled by deleteBannerAction) and
     // admins already short-circuit to true above.

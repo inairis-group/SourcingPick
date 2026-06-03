@@ -117,6 +117,9 @@ enum SourcingStatus {
 enum SourcingRequestOrigin {
   SOURCING_FLOW
   MARKETPLACE
+  /// Synthetic request materialised from a SOLD auction so the buyer
+  /// can pay via the existing Wise wire flow on /client/orders/<id>.
+  AUCTION
 }
 
 enum TenderInvitationStatus {
@@ -161,12 +164,30 @@ enum MarketplaceCondition {
   REFURBISHED
 }
 
+/// Display preference for production lead time on MarketplaceProduct. The
+/// underlying `leadTimeDays` column always stores canonical DAYS (so order
+/// ETAs, filters, and ranking stay simple) — this only controls how the
+/// factory entered the value and how we render it back (e.g. 60 days → "2
+/// months"). Conversion lives in src/lib/marketplace/lead-time.ts.
+enum LeadTimeUnit {
+  DAY
+  MONTH
+}
+
 enum AttachmentContext {
   MESSAGE
   SOURCING_REQUEST
   ORDER
   MARKETPLACE_PRODUCT
   MARKETPLACE_BANNER
+  /// Factory uploads while order is in QC — photos of the finished
+  /// product, packed cartons, labels. Buyer can review before the
+  /// factory ships.
+  ORDER_QC_PROOF
+  /// Factory uploads at handoff — photos of the package handed to the
+  /// carrier with a visible tracking label. Closes the "did it ship?"
+  /// ambiguity loop on disputes.
+  ORDER_SHIPMENT_PROOF
 }
 
 /** Preset visual treatment for an admin-managed marketplace campaign banner. */
@@ -190,9 +211,34 @@ enum BannerBackground {
   VIDEO
 }
 
+/// Auction lifecycle. Factories can list bulk lots / clearance stock for
+/// buyers to bid on; the highest bid at endsAt wins and an Order is
+/// created at that price. Commission curve for auctions is separate from
+/// the 6%/3% sourcing commission — see docs/pricing-auctions.md.
+enum AuctionStatus {
+  DRAFT
+  PENDING_REVIEW
+  REJECTED
+  ACTIVE
+  ENDED
+  SOLD
+  CANCELLED
+}
+
+enum BidStatus {
+  ACTIVE
+  OUTBID
+  WINNING
+  REJECTED
+}
+
 enum AttachmentKind {
   IMAGE
   VIDEO
+  /// Voice notes recorded in the messaging UI (partner feedback #9). Same
+  /// storage path as other attachments; size cap lives in
+  /// lib/storage/attachments.ts.
+  AUDIO
   FILE
 }
 
@@ -214,6 +260,11 @@ enum PayoutProvider {
   STRIPE_CONNECT
   LIANLIAN
   ALIPAY
+  /// Wise Business — the live rail going forward (decided 2026-06-02).
+  /// STRIPE_CONNECT / LIANLIAN / ALIPAY are kept here until the Wise
+  /// migration finishes, then dropped in a follow-up migration along with
+  /// the corresponding adapter files.
+  WISE
 }
 
 /**
@@ -269,6 +320,7 @@ enum PayoutMethod {
   STRIPE_CONNECT
   LIANLIAN
   ALIPAY
+  WISE
 }
 
 /** Billing unit for the sourcing research fee (€125/day or €500/week). */
@@ -338,6 +390,10 @@ enum ThreadContextType {
   CERT
   KYC
   DISPUTE
+  /// Direct conversation between two parties (e.g. a buyer and an agent)
+  /// not anchored to any specific entity. Powers the standalone /messages
+  /// tab — partner feedback #9. v1 scaffold; UI lands in a follow-up.
+  DIRECT
 }
 
 enum NotificationType {
@@ -373,6 +429,10 @@ enum AgentTaskStatus {
 
 enum WebhookSource {
   STRIPE
+  /// Wise Business webhook deliveries — buyer wire credits + payout state
+  /// transitions. Added 2026-06 (partner item #6) so the admin webhook
+  /// dashboard surfaces unmatched / failed Wise reconciliations.
+  WISE
   CARRIER
   OTHER
 }
@@ -435,6 +495,8 @@ model User {
   // Domain relations
   sourcingRequestsCreated SourcingRequest[]   @relation("RequestCreatedBy")
   agentForRequests        SourcingRequest[]   @relation("RequestAgent")
+  preTenderApprovals      SourcingRequest[]   @relation("PreTenderApprover")
+  forwarderTokensCreated  ForwarderUploadToken[] @relation("ForwarderTokenCreator")
   quotesAsAgent           Quote[]             @relation("QuoteAgent")
   ordersAsAgent           Order[]             @relation("OrderAgent")
   authoredMessages        Message[]           @relation("MessageAuthor")
@@ -442,6 +504,7 @@ model User {
   notifications           Notification[]
   auditLogs               AuditLog[]
   assignedTasks           AgentTask[]         @relation("TaskAgent")
+  placedBids              Bid[]               @relation("BidderUser")
 
   @@index([organizationId])
   @@index([role, deletedAt])
@@ -512,6 +575,10 @@ model Organization {
   address       String
   vatNumber     String?
   siren         String? // FR only
+  /// Stored relative path to the org's logo image (factories surface this
+  /// on storefront/marketplace cards, clients on invoice headers). Null
+  /// until the org uploads one — UI falls back to initials.
+  logoUrl       String?
   kycStatus     KycStatus @default(PENDING)
   kycVerifiedAt DateTime?
   suspended     Boolean   @default(false)
@@ -520,6 +587,13 @@ model Organization {
   // stripeConnectAccountId is used for factories (Connect Express payouts).
   stripeCustomerId       String?
   stripeConnectAccountId String?
+
+  // Wise recipient account ID — the ID Wise issues after the platform
+  // registers a factory's bank details via POST /v1/accounts. Used to
+  // address payouts in `lib/payouts/wise.ts`. Null until the factory has
+  // completed bank-details onboarding. Will replace the Stripe fields
+  // above once the Wise migration retires Stripe.
+  wiseRecipientId        String?
 
   // Payouts — which provider this org has chosen (factories + agents).
   // Locked once `payoutOnboardedAt` is set: changing provider mid-relationship
@@ -544,6 +618,9 @@ model Organization {
 
   clientOrders  Order[] @relation("OrderClientOrg")
   factoryOrders Order[] @relation("OrderFactoryOrg")
+
+  factoryAuctions Auction[] @relation("AuctionFactoryOrg")
+  bids            Bid[]     @relation("BidderOrg")
 
   marketplaceProducts MarketplaceProduct[]
 
@@ -647,6 +724,17 @@ model SourcingRequest {
   status               SourcingStatus        @default(DRAFT)
   assignedAt           DateTime?
 
+  // Pre-tender validation gate (partner item #14). Agents cannot dispatch
+  // TenderInvitations until an admin has approved the request, confirming
+  // the brief is clear, the budget is sane, and the sourcing region is
+  // allowed. A null `preTenderApprovedAt` is the block; rejection clears
+  // approval and records the reason so the agent knows what to fix.
+  preTenderApprovedAt      DateTime?
+  preTenderApprovedById    String?
+  preTenderApprovedBy      User?     @relation("PreTenderApprover", fields: [preTenderApprovedById], references: [id], onDelete: SetNull)
+  preTenderRejectedAt      DateTime?
+  preTenderRejectionReason String?
+
   // Research fee — agent quotes a per-day/week fee on a qualified request.
   // researchFeeInvoiceId links the issued RESEARCH_FEE invoice. Credit-back
   // (returning the fee as platform credit on order within 30 days) is a
@@ -717,10 +805,19 @@ model Quote {
   totalCentsClient      Int
   quantity              Int
   leadTimeDays          Int
+  /// Display unit for the lead time the factory entered. Storage stays
+  /// canonical days; this drives how we render + how the form pre-fills
+  /// on edit. Same shape as MarketplaceProduct.leadTimeUnit.
+  leadTimeUnit          LeadTimeUnit    @default(DAY)
   moq                   Int
   incoterm              Incoterm
   validUntil            DateTime
   qualificationScore    Int // 0-100
+  /// Deposit the factory wants up front, in basis points (3000=30%, 5000=50%).
+  /// Range enforced in tender-actions.ts. Marketplace direct-buy quotes
+  /// default to 3000 (30%) since there's no negotiation. Buyer pays this
+  /// share via Wise on acceptance; balance settles at delivery.
+  depositPercentageBps  Int             @default(3000)
   status                QuoteStatus     @default(DRAFT)
   notes                 String?
   createdAt             DateTime        @default(now())
@@ -761,12 +858,44 @@ model Order {
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
-  invoices Invoice[]
-  escrows  EscrowTransaction[]
+  invoices         Invoice[]
+  escrows          EscrowTransaction[]
+  forwarderTokens  ForwarderUploadToken[]
 
   @@index([status, factoryOrgId])
   @@index([status, clientOrgId])
   @@index([status, createdAt])
+}
+
+/**
+ * Magic-link token (partner item #15) — a factory generates one of these
+ * for an Order and shares the resulting URL with its forwarder/logistics
+ * partner. The forwarder lands on /forwarder/upload/<token>, sees the
+ * order summary (no SourcingPick account required) and uploads handoff
+ * photos that land as ORDER_SHIPMENT_PROOF attachments.
+ *
+ * Tokens are one-use-per-upload but live for `expiresAt`, so the
+ * forwarder can come back to add more photos in the same window. Set
+ * `revokedAt` to kill access early. `lastUsedAt` is bumped on every
+ * successful upload for the operator log.
+ */
+model ForwarderUploadToken {
+  id              String    @id @default(cuid(2))
+  token           String    @unique // 32 hex chars — used in the magic URL
+  orderId         String
+  order           Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  createdByUserId String?
+  createdBy       User?     @relation("ForwarderTokenCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  /// Free-text label the factory chose ("DHL pickup", "Maersk container"). Surfaced to the forwarder.
+  label           String?
+  expiresAt       DateTime
+  lastUsedAt      DateTime?
+  uploadCount     Int       @default(0)
+  revokedAt       DateTime?
+  createdAt       DateTime  @default(now())
+
+  @@index([orderId, revokedAt])
+  @@index([expiresAt])
 }
 
 // =============================================================
@@ -798,7 +927,13 @@ model MarketplaceProduct {
   moq               Int
   stockAvailable    Int                      @default(0)
   stockLowThreshold Int?
+  /// Canonical lead time in DAYS — used by order ETAs, filters, ranking.
+  /// The factory may have entered it in months via the UI; conversion to
+  /// days happens at submit (see lib/marketplace/lead-time.ts).
   leadTimeDays      Int
+  /// Display preference (DAY | MONTH). Drives the input unit on edit and
+  /// the formatted output on product pages.
+  leadTimeUnit      LeadTimeUnit             @default(DAY)
   certifications    String[]
   status            MarketplaceProductStatus @default(DRAFT)
   publishedAt       DateTime?
@@ -1088,6 +1223,78 @@ model MarketplaceBanner {
   updatedAt       DateTime         @updatedAt
 
   @@index([active, sortOrder])
+}
+
+/**
+ * Auction — factory-listed bulk lot or clearance stock that buyers bid
+ * on within a time window. Distinct from MarketplaceProduct (fixed
+ * price, ready stock) and SourcingRequest (custom-spec, agent-negotiated).
+ * On settlement an Order is created at the winning bid price; the auction
+ * commission curve is separate from 6%/3% — see docs/pricing-auctions.md.
+ *
+ * v1 scaffold only — no UI yet. Schema in place so future builds can
+ * reference the relations.
+ */
+model Auction {
+  id                String        @id @default(cuid(2))
+  reference         String        @unique // AUC-XXX
+  factoryOrgId      String
+  factoryOrg        Organization  @relation("AuctionFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  title             String
+  description       String
+  category          Category
+  images            String[]
+  /// Lowest bid we accept — buyers must bid above this.
+  startingBidCents  Int
+  /// Optional reserve — when set, the auction only sells if the winning
+  /// bid is at or above this. Null = no reserve, highest bid wins.
+  reserveCents      Int?
+  /// Optional buy-now price — bidder can skip the auction and buy
+  /// immediately at this price. Null = no buy-now option.
+  buyNowCents       Int?
+  quantity          Int
+  moq               Int           @default(1)
+  leadTimeDays      Int
+  leadTimeUnit      LeadTimeUnit  @default(DAY)
+  incoterm          Incoterm
+  startsAt          DateTime
+  endsAt            DateTime
+  status            AuctionStatus @default(DRAFT)
+  winnerBidId       String?       @unique
+  winnerBid         Bid?          @relation("AuctionWinner", fields: [winnerBidId], references: [id])
+  /// The Order materialised from this auction once it SOLD. Null while
+  /// the auction is still running or ended without a winner. Used for
+  /// idempotency — the settler refuses to materialise twice.
+  materializedOrderId String?     @unique
+  publishedAt       DateTime?
+  rejectionReason   String?
+  rejectedAt        DateTime?
+  deletedAt         DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  bids Bid[] @relation("AuctionBids")
+
+  @@index([status, endsAt])
+  @@index([factoryOrgId, status])
+}
+
+model Bid {
+  id            String       @id @default(cuid(2))
+  auctionId     String
+  auction       Auction      @relation("AuctionBids", fields: [auctionId], references: [id], onDelete: Cascade)
+  bidderOrgId   String
+  bidderOrg     Organization @relation("BidderOrg", fields: [bidderOrgId], references: [id], onDelete: Restrict)
+  bidderUserId  String
+  bidderUser    User         @relation("BidderUser", fields: [bidderUserId], references: [id], onDelete: Restrict)
+  amountCents   Int
+  status        BidStatus    @default(ACTIVE)
+  createdAt     DateTime     @default(now())
+
+  wonAuction Auction? @relation("AuctionWinner")
+
+  @@index([auctionId, amountCents])
+  @@index([bidderOrgId, createdAt])
 }
 
 model WebhookEvent {

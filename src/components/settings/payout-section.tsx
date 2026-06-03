@@ -195,5 +195,7 @@ function providerLabel(p: PayoutProvider): string {
       return "LianLian Global";
     case "ALIPAY":
       return "Alipay";
+    case "WISE":
+      return "Wise Business";
   }
 }

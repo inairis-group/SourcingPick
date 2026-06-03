@@ -277,7 +277,7 @@ export default async function FactoryDashboardPage({
                       {formatNumber(t.request.quantity, lang)}
                     </p>
                   </div>
-                  <div className="text-end flex-shrink-0">
+                  <div className="text-end shrink-0">
                     <p className="text-xs font-medium text-info">
                       {dict.factory.tenders.matchScore} · {t.matchingScore}
                     </p>
@@ -360,7 +360,7 @@ export default async function FactoryDashboardPage({
                       {dict.orders.statuses[o.status]}
                     </p>
                   </div>
-                  <div className="text-end flex-shrink-0">
+                  <div className="text-end shrink-0">
                     <p className="text-sm font-semibold text-headline">
                       {formatEUR(netCents / 100, lang)}
                     </p>

@@ -30,7 +30,13 @@ export type NotificationVars = {
     | "order_completed"
     | "order_disputed"
     | "order_dispute_resolved"
-    | "request_received";
+    | "request_received"
+    | "auction_outbid"
+    | "auction_won"
+    | "auction_sold"
+    | "pre_tender_approved"
+    | "pre_tender_rejected"
+    | "forwarder_proof_uploaded";
 };
 
 const SYSTEM_TITLES: Record<
@@ -84,6 +90,42 @@ const SYSTEM_TITLES: Record<
     en: "New sourcing request received",
     zh: "收到新的采购需求",
     ar: "تم استلام طلب توريد جديد",
+  },
+  auction_outbid: {
+    fr: "Vous avez été surenchéri sur une enchère",
+    en: "You've been outbid on an auction",
+    zh: "您在拍卖中被超过出价",
+    ar: "تم تجاوز عرضك في المزاد",
+  },
+  auction_won: {
+    fr: "Vous avez remporté une enchère",
+    en: "You won an auction",
+    zh: "您赢得了拍卖",
+    ar: "لقد ربحت المزاد",
+  },
+  auction_sold: {
+    fr: "Votre enchère a été remportée",
+    en: "Your auction has sold",
+    zh: "您的拍卖已成交",
+    ar: "تم بيع مزادك",
+  },
+  pre_tender_approved: {
+    fr: "Demande validée — vous pouvez lancer l'appel d'offres",
+    en: "Request approved — you can dispatch the tender",
+    zh: "需求已审核通过 — 可以发起招标",
+    ar: "تمت الموافقة على الطلب — يمكنك إطلاق المناقصة",
+  },
+  pre_tender_rejected: {
+    fr: "Demande renvoyée pour révision avant appel d'offres",
+    en: "Request returned for revision before tendering",
+    zh: "需求需修订后才能招标",
+    ar: "تمت إعادة الطلب للمراجعة قبل المناقصة",
+  },
+  forwarder_proof_uploaded: {
+    fr: "Le transitaire a déposé des preuves d'expédition",
+    en: "Forwarder uploaded shipment proofs",
+    zh: "货运代理已上传发货证明",
+    ar: "حمّل وكيل الشحن إثباتات الشحنة",
   },
 };
 

@@ -3,6 +3,7 @@ import type { PayoutProvider } from "@prisma/client";
 import { stripeAdapter } from "./stripe";
 import { lianlianAdapter } from "./lianlian";
 import { alipayAdapter } from "./alipay";
+import { wiseAdapter } from "./wise";
 import type {
   OnboardingResult,
   PayoutAdapter,
@@ -29,6 +30,10 @@ const ADAPTERS: Record<PayoutProvider, PayoutAdapter> = {
   STRIPE_CONNECT: stripeAdapter,
   LIANLIAN: lianlianAdapter,
   ALIPAY: alipayAdapter,
+  // Wise is the live rail going forward (2026-06-02 decision); the
+  // others stay in the map until the migration arc finishes and a
+  // follow-up drops them from PayoutProvider entirely.
+  WISE: wiseAdapter,
 };
 
 // Static list — derived from the Record above, but avoids the runtime
@@ -38,6 +43,7 @@ const ALL_PROVIDERS = [
   "STRIPE_CONNECT",
   "LIANLIAN",
   "ALIPAY",
+  "WISE",
 ] as const satisfies readonly PayoutProvider[];
 
 export function adapterFor(provider: PayoutProvider): PayoutAdapter {

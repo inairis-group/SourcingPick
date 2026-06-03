@@ -16,6 +16,7 @@ import { MediaGrid } from "@/components/attachments/media-grid";
 import { cn } from "@/lib/utils";
 import { ClientQuotesPanel } from "./_components/client-quotes-panel";
 import { ResearchFeePanel } from "./_components/research-fee-panel";
+import { platformWireAccount } from "@/lib/wise/platform-account";
 
 export async function generateMetadata({
   params,
@@ -65,6 +66,7 @@ export default async function RequestDetailPage({
           qualificationScore: true,
           status: true,
           notes: true,
+          depositPercentageBps: true,
           factoryOrg: { select: { displayName: true } },
         },
         orderBy: [{ status: "asc" }, { qualificationScore: "desc" }],
@@ -83,21 +85,28 @@ export default async function RequestDetailPage({
     .filter((q) => q.status === QuoteStatus.SENT_TO_CLIENT)
     .sort((a, b) => b.qualificationScore - a.qualificationScore)[0]?.id;
 
-  const quoteRows = req.quotes.map((q) => ({
-    id: q.id,
-    factoryName: q.factoryOrg.displayName,
-    unitPriceCentsClient: q.unitPriceCentsClient,
-    totalCentsClient: q.totalCentsClient,
-    quantity: q.quantity,
-    leadTimeDays: q.leadTimeDays,
-    moq: q.moq,
-    incoterm: q.incoterm,
-    validUntil: q.validUntil,
-    qualificationScore: q.qualificationScore,
-    status: q.status,
-    notes: q.notes,
-    agentRecommendation: q.id === recommendedId,
-  }));
+  const quoteRows = req.quotes.map((q) => {
+    const bps = q.depositPercentageBps ?? 3000;
+    const depositCents = Math.round((q.totalCentsClient * bps) / 10000);
+    return {
+      id: q.id,
+      factoryName: q.factoryOrg.displayName,
+      unitPriceCentsClient: q.unitPriceCentsClient,
+      totalCentsClient: q.totalCentsClient,
+      quantity: q.quantity,
+      leadTimeDays: q.leadTimeDays,
+      moq: q.moq,
+      incoterm: q.incoterm,
+      validUntil: q.validUntil,
+      qualificationScore: q.qualificationScore,
+      status: q.status,
+      notes: q.notes,
+      depositPercentageBps: bps,
+      depositCents,
+      balanceCents: q.totalCentsClient - depositCents,
+      agentRecommendation: q.id === recommendedId,
+    };
+  });
 
   const existingOrder = req.orders[0];
 
@@ -217,9 +226,11 @@ export default async function RequestDetailPage({
 
       <ResearchFeePanel
         requestId={req.id}
+        requestReference={req.reference}
         lang={lang}
         status={req.researchFeeStatus}
         amountCents={req.researchFeeCents}
+        platformWire={platformWireAccount()}
       />
 
       <MediaGrid

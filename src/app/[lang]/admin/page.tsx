@@ -272,7 +272,7 @@ export default async function AdminDashboardPage({
                       {r.clientOrg.displayName}
                     </p>
                   </div>
-                  <p className="text-[11px] text-faint flex-shrink-0">
+                  <p className="text-[11px] text-faint shrink-0">
                     {formatDate(r.createdAt, lang, "short")}
                   </p>
                 </div>
@@ -352,7 +352,7 @@ export default async function AdminDashboardPage({
                       : dict.admin.dashboard.systemActor}
                   </p>
                 </div>
-                <p className="text-[11px] text-faint flex-shrink-0">
+                <p className="text-[11px] text-faint shrink-0">
                   {formatDate(a.createdAt, lang, "short")}
                 </p>
               </div>

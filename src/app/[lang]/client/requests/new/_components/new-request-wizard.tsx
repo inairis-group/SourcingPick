@@ -196,7 +196,7 @@ export function NewRequestWizard({
 
       <Stepper current={step} labels={stepLabels} />
 
-      <div className="min-h-[280px]">
+      <div className="min-h-70">
         {error && <FormError className="mb-4">{error}</FormError>}
 
         {step === 1 && (
@@ -288,6 +288,20 @@ export function NewRequestWizard({
       </div>
     </div>
   );
+}
+
+/**
+ * True when the buyer-entered deadline is sooner than the 31-day floor for a
+ * fully-secured air-freight order. We surface a soft warning rather than
+ * blocking the submit — short turnarounds are allowed but fall outside the
+ * standard SLA.
+ */
+function isShortDeadline(deadline: string): boolean {
+  if (!deadline) return false;
+  const target = new Date(deadline).getTime();
+  if (Number.isNaN(target)) return false;
+  const days = (target - Date.now()) / (1000 * 60 * 60 * 24);
+  return days > 0 && days < 31;
 }
 
 function Stepper({ current, labels }: { current: Step; labels: string[] }) {
@@ -463,6 +477,11 @@ function StepLogistics({
           onChange={(e) => set("deadline", e.target.value)}
         />
       </Field>
+      {isShortDeadline(state.deadline) && (
+        <div className="rounded-md border border-warning-edge bg-warning-soft/40 px-3 py-2 text-xs text-warning leading-snug">
+          {dict.client.requests.deadlineWarningShort}
+        </div>
+      )}
       <Field label={dict.client.requests.addressLabel} required>
         <Input
           type="text"

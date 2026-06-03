@@ -6,18 +6,23 @@ import { OrderStatus } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/ui/form-error";
 import { advanceOrderStatusAction } from "@/lib/orders/actions";
-import {
-  createBalanceCheckoutAction,
-  createDepositCheckoutAction,
-} from "@/lib/stripe/checkout-actions";
 import { useDictionary } from "@/lib/i18n/client-provider";
 
 /**
- * Client-side state-machine controls. Spec §3.2 lets the client:
- *  - PAYMENT_PENDING → PREPARATION (Stripe Checkout for the 30% deposit)
- *  - PAYMENT_PENDING → CANCELLED (before factory starts work)
- *  - SHIPPED/IN_TRANSIT → COMPLETED (Stripe Checkout for the 70% balance;
- *    the webhook completes the order + triggers the factory payout)
+ * Buyer-side controls on the order detail page (Wise rail).
+ *
+ * The actual payment happens via the WiseWirePanel rendered ABOVE this
+ * component — the buyer copies the IBAN + reference and wires from their
+ * own bank. The order advances automatically when the Wise webhook
+ * reconciles the incoming credit (see lib/wise/reconcile.ts). So this
+ * component is now mostly informational:
+ *   - PAYMENT_PENDING : "wire the deposit" hint + a cancel button
+ *   - SHIPPED/IN_TRANSIT : "wire the balance" hint, nothing else
+ *   - other            : "waiting for factory" placeholder
+ *
+ * The Stripe Checkout buttons that used to live here were removed when
+ * Wise became the sole rail (Pass 3b.5). Cancel still uses the existing
+ * order state-machine action — no payment provider involved.
  */
 export function OrderActions({
   orderId,
@@ -32,7 +37,7 @@ export function OrderActions({
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [confirming, setConfirming] = useState<"cancel" | null>(null);
-  const [_, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const [pending, setPending] = useState(false);
 
   const runAdvance = (next: OrderStatus) => {
@@ -47,36 +52,6 @@ export function OrderActions({
         return;
       }
       router.refresh();
-    });
-  };
-
-  const onPayDeposit = () => {
-    setError(null);
-    setPending(true);
-    startTransition(async () => {
-      const result = await createDepositCheckoutAction(orderId);
-      setPending(false);
-      if (!result.ok) {
-        setError(result.error);
-        return;
-      }
-      // Full-page navigation to Stripe — `router.push` would try to handle
-      // it as an internal route.
-      window.location.href = result.url;
-    });
-  };
-
-  const onPayBalance = () => {
-    setError(null);
-    setPending(true);
-    startTransition(async () => {
-      const result = await createBalanceCheckoutAction(orderId);
-      setPending(false);
-      if (!result.ok) {
-        setError(result.error);
-        return;
-      }
-      window.location.href = result.url;
     });
   };
 
@@ -111,28 +86,17 @@ export function OrderActions({
               {dict.client.orders.paymentPendingBody}
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            {canCancel && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => setConfirming("cancel")}
-                disabled={pending}
-              >
-                {dict.client.orders.cancelOrder}
-              </Button>
-            )}
+          {canCancel && (
             <Button
               type="button"
-              variant="primary"
+              variant="ghost"
               size="sm"
-              onClick={onPayDeposit}
-              loading={pending && confirming === null}
+              onClick={() => setConfirming("cancel")}
+              disabled={pending}
             >
-              {dict.client.orders.payDepositCta}
+              {dict.client.orders.cancelOrder}
             </Button>
-          </div>
+          )}
         </div>
       )}
 
@@ -150,24 +114,13 @@ export function OrderActions({
       )}
 
       {canReceive && (
-        <div className="rounded-lg border border-success-edge bg-success-soft/40 p-4 flex items-center justify-between gap-3 flex-wrap">
-          <div className="text-sm">
-            <p className="font-semibold text-headline">
-              {dict.client.orders.confirmReceiptTitle}
-            </p>
-            <p className="text-muted text-xs mt-0.5">
-              {dict.client.orders.payBalanceBody}
-            </p>
-          </div>
-          <Button
-            type="button"
-            variant="primary"
-            size="sm"
-            onClick={onPayBalance}
-            loading={pending}
-          >
-            {dict.client.orders.payBalanceCta}
-          </Button>
+        <div className="rounded-lg border border-success-edge bg-success-soft/40 p-4">
+          <p className="font-semibold text-headline text-sm">
+            {dict.client.orders.confirmReceiptTitle}
+          </p>
+          <p className="text-muted text-xs mt-0.5">
+            {dict.client.orders.payBalanceBody}
+          </p>
         </div>
       )}
 

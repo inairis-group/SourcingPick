@@ -14,6 +14,8 @@ import { formatDate, formatEUR } from "@/lib/i18n/formatters";
 import { fetchConnectStatus } from "@/lib/stripe/connect";
 import { cn } from "@/lib/utils";
 import { ConnectOnboardingButton } from "./_components/onboarding-button";
+import { WiseRecipientCard } from "./_components/wise-recipient-card";
+import { wiseIsConfigured } from "@/lib/wise/client";
 
 export async function generateMetadata({
   params,
@@ -47,6 +49,14 @@ export default async function FactoryPayoutsPage({
   } catch {
     stripeReachable = false;
   }
+
+  // Wise recipient state — the Wise card sits ABOVE Stripe during the
+  // migration window. Once Stripe is retired this becomes the only payout
+  // setup surface on the page.
+  const org = await prisma.organization.findUnique({
+    where: { id: user.organizationId },
+    select: { wiseRecipientId: true },
+  });
 
   const payouts = await prisma.payout.findMany({
     where: { factoryOrgId: user.organizationId },
@@ -87,11 +97,22 @@ export default async function FactoryPayoutsPage({
         </p>
       </header>
 
-      <ConnectStatusCard
-        status={status}
-        stripeReachable={stripeReachable}
+      <WiseRecipientCard
+        wiseRecipientId={org?.wiseRecipientId ?? null}
         dict={dict}
       />
+
+      {/* Stripe Connect surface only renders as a fallback when Wise isn't
+          configured yet (transitional). Once the Wise env vars are set the
+          card is hidden — Stripe is the retired rail. The lib files stay
+          for rollback safety; the user-facing path is Wise-only. */}
+      {!wiseIsConfigured() && (
+        <ConnectStatusCard
+          status={status}
+          stripeReachable={stripeReachable}
+          dict={dict}
+        />
+      )}
 
       <section className="mt-8">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">
@@ -166,7 +187,7 @@ function ConnectStatusCard({
           icon={AlertCircleIcon}
           size={20}
           strokeWidth={1.5}
-          className="text-warning flex-shrink-0 mt-0.5"
+          className="text-warning shrink-0 mt-0.5"
         />
         <div>
           <p className="text-sm font-semibold text-headline">
@@ -187,7 +208,7 @@ function ConnectStatusCard({
           icon={CheckmarkCircle02Icon}
           size={20}
           strokeWidth={1.5}
-          className="text-success flex-shrink-0 mt-0.5"
+          className="text-success shrink-0 mt-0.5"
         />
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-headline">
@@ -212,7 +233,7 @@ function ConnectStatusCard({
           icon={AlertCircleIcon}
           size={20}
           strokeWidth={1.5}
-          className="text-warning flex-shrink-0 mt-0.5"
+          className="text-warning shrink-0 mt-0.5"
         />
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-headline">
@@ -247,7 +268,7 @@ function ConnectStatusCard({
         icon={BankIcon}
         size={20}
         strokeWidth={1.5}
-        className="text-brand-700 flex-shrink-0 mt-0.5"
+        className="text-brand-700 shrink-0 mt-0.5"
       />
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold text-headline">

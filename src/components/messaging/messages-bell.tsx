@@ -55,6 +55,9 @@ export function MessagesBell() {
   }, []);
 
   useEffect(() => {
+    // Same poll-plus-visibility pattern as the notification bell. Initial
+    // load primes the dropdown so the first open isn't empty.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
     const id = setInterval(() => {
       if (document.visibilityState === "visible") load();
@@ -86,7 +89,7 @@ export function MessagesBell() {
           <span
             className={cn(
               "absolute -top-0.5 -inset-e-0.5 inline-flex items-center justify-center",
-              "min-w-[16px] h-[16px] px-1 rounded-full text-[10px] font-semibold leading-none",
+              "min-w-4 h-4 px-1 rounded-full text-[10px] font-semibold leading-none",
               "bg-action text-on-action border-2 border-page",
             )}
           >
@@ -97,7 +100,7 @@ export function MessagesBell() {
       <PopoverPanel
         anchor={{ to: "bottom end", gap: 8 }}
         className={cn(
-          "z-popover w-[380px] max-w-[calc(100vw-2rem)]",
+          "z-popover w-95 max-w-[calc(100vw-2rem)]",
           "rounded-lg border border-line bg-surface shadow-lg overflow-hidden",
         )}
       >
@@ -114,7 +117,7 @@ export function MessagesBell() {
             </span>
           )}
         </div>
-        <ul className="max-h-[420px] overflow-y-auto divide-y divide-line-subtle">
+        <ul className="max-h-105 overflow-y-auto divide-y divide-line-subtle">
           {data.items.length === 0 ? (
             <li className="px-4 py-8 text-center text-sm text-faint">
               {dict.messaging.bellEmpty}
@@ -135,7 +138,7 @@ export function MessagesBell() {
                       {t.title}
                     </p>
                     {t.unreadCount > 0 && (
-                      <span className="shrink-0 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-semibold bg-action text-on-action">
+                      <span className="shrink-0 inline-flex items-center justify-center min-w-4.5 h-4.5 px-1 rounded-full text-[10px] font-semibold bg-action text-on-action">
                         {t.unreadCount}
                       </span>
                     )}

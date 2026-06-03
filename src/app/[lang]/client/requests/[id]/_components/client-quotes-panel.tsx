@@ -26,6 +26,10 @@ export type ClientQuoteRow = {
   qualificationScore: number;
   status: QuoteStatus;
   notes: string | null;
+  /** Deposit basis points the factory chose (3000–5000 = 30–50%). */
+  depositPercentageBps: number;
+  depositCents: number;
+  balanceCents: number;
   agentRecommendation?: boolean;
 };
 
@@ -139,6 +143,23 @@ export function ClientQuotesPanel({
               <Metric
                 label={dict.client.quotes.incoterm}
                 value={q.incoterm}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 text-xs mt-3 pt-3 border-t border-line-subtle">
+              <Metric
+                label={dict.client.quotes.depositLabel.replace(
+                  "{pct}",
+                  String(Math.round(q.depositPercentageBps / 100)),
+                )}
+                value={formatEUR(q.depositCents / 100, locale)}
+              />
+              <Metric
+                label={dict.client.quotes.balanceLabel.replace(
+                  "{pct}",
+                  String(100 - Math.round(q.depositPercentageBps / 100)),
+                )}
+                value={formatEUR(q.balanceCents / 100, locale)}
               />
             </div>
 

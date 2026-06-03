@@ -7,6 +7,7 @@ import {
   AttachmentContext,
   Category,
   KycStatus,
+  LeadTimeUnit,
   MarketplaceCondition,
   MarketplaceProductStatus,
   NotificationType,
@@ -20,6 +21,7 @@ import { generateUniqueReference } from "@/lib/sourcing/reference";
 import { storeFile, StorageError } from "@/lib/storage/local";
 import { storeAttachments } from "@/lib/storage/attachments";
 import { applyBuyerMarkup } from "@/lib/orders/pricing";
+import { leadTimeToDays } from "@/lib/marketplace/lead-time";
 import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
 
 // =============================================================
@@ -42,6 +44,7 @@ const ProductInputSchema = z
       .union([z.coerce.number().int().nonnegative(), z.literal("")])
       .optional(),
     leadTimeDays: z.coerce.number().int().positive("Lead time must be positive."),
+    leadTimeUnit: z.enum(LeadTimeUnit).default(LeadTimeUnit.DAY),
     certifications: z.string().trim().max(500).optional().or(z.literal("")),
     condition: z.enum(MarketplaceCondition).default(MarketplaceCondition.NEW),
     /// "Was" price (factory-side) — strikethrough is rendered against the
@@ -118,6 +121,7 @@ export async function createProductAction(
     stockAvailable: formData.get("stockAvailable") ?? "0",
     stockLowThreshold: formData.get("stockLowThreshold") ?? "",
     leadTimeDays: formData.get("leadTimeDays"),
+    leadTimeUnit: formData.get("leadTimeUnit") ?? LeadTimeUnit.DAY,
     certifications: formData.get("certifications") ?? "",
     condition: formData.get("condition") ?? MarketplaceCondition.NEW,
     compareAtEur: formData.get("compareAtEur") ?? "",
@@ -160,7 +164,11 @@ export async function createProductAction(
         typeof parsed.data.stockLowThreshold === "number"
           ? parsed.data.stockLowThreshold
           : null,
-      leadTimeDays: parsed.data.leadTimeDays,
+      leadTimeDays: leadTimeToDays(
+        parsed.data.leadTimeDays,
+        parsed.data.leadTimeUnit,
+      ),
+      leadTimeUnit: parsed.data.leadTimeUnit,
       certifications: parseCerts(parsed.data.certifications),
       status: MarketplaceProductStatus.DRAFT,
     },
@@ -258,6 +266,7 @@ export async function updateProductAction(
     stockAvailable: formData.get("stockAvailable") ?? "0",
     stockLowThreshold: formData.get("stockLowThreshold") ?? "",
     leadTimeDays: formData.get("leadTimeDays"),
+    leadTimeUnit: formData.get("leadTimeUnit") ?? LeadTimeUnit.DAY,
     certifications: formData.get("certifications") ?? "",
     condition: formData.get("condition") ?? MarketplaceCondition.NEW,
     compareAtEur: formData.get("compareAtEur") ?? "",
@@ -315,7 +324,11 @@ export async function updateProductAction(
         typeof parsed.data.stockLowThreshold === "number"
           ? parsed.data.stockLowThreshold
           : null,
-      leadTimeDays: parsed.data.leadTimeDays,
+      leadTimeDays: leadTimeToDays(
+        parsed.data.leadTimeDays,
+        parsed.data.leadTimeUnit,
+      ),
+      leadTimeUnit: parsed.data.leadTimeUnit,
       certifications: parseCerts(parsed.data.certifications),
       images: storedUrls,
       // Editing a REJECTED listing puts it back in DRAFT so the factory
@@ -469,6 +482,7 @@ export async function adminCreateProductAction(
     stockAvailable: formData.get("stockAvailable") ?? "0",
     stockLowThreshold: formData.get("stockLowThreshold") ?? "",
     leadTimeDays: formData.get("leadTimeDays"),
+    leadTimeUnit: formData.get("leadTimeUnit") ?? LeadTimeUnit.DAY,
     certifications: formData.get("certifications") ?? "",
     condition: formData.get("condition") ?? MarketplaceCondition.NEW,
     compareAtEur: formData.get("compareAtEur") ?? "",
@@ -509,7 +523,11 @@ export async function adminCreateProductAction(
         typeof parsed.data.stockLowThreshold === "number"
           ? parsed.data.stockLowThreshold
           : null,
-      leadTimeDays: parsed.data.leadTimeDays,
+      leadTimeDays: leadTimeToDays(
+        parsed.data.leadTimeDays,
+        parsed.data.leadTimeUnit,
+      ),
+      leadTimeUnit: parsed.data.leadTimeUnit,
       certifications: parseCerts(parsed.data.certifications),
       // Admin-created listings skip the factory-side draft step. They
       // still need to be approved, but that's an explicit admin click —

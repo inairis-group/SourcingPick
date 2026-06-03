@@ -143,6 +143,12 @@ export async function resolveParticipantsFor(
     case ThreadContextType.DISPUTE:
       // Disputes are scoped to an order id; reuse the order's set.
       return resolveParticipantsFor(ThreadContextType.ORDER, contextId);
+
+    case ThreadContextType.DIRECT:
+      // Direct threads aren't anchored to an entity — the messaging UI
+      // adds participants explicitly via ThreadParticipant rows. Caller
+      // is expected to seed those before opening the thread.
+      return [];
   }
 }
 
@@ -227,6 +233,16 @@ export async function canAccessThreadContext(
         contextId,
         user,
       );
+    case ThreadContextType.DIRECT: {
+      // Membership-based — anyone listed as a ThreadParticipant on the
+      // thread can read it. The DIRECT contextId IS the thread id (the
+      // messaging UI will lazy-create the thread, then use its id).
+      const participant = await prisma.threadParticipant.findFirst({
+        where: { threadId: contextId, userId: user.id },
+        select: { threadId: true },
+      });
+      return Boolean(participant);
+    }
   }
 }
 

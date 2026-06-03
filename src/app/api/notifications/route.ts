@@ -14,16 +14,25 @@ export async function GET() {
 
   const { items, unreadCount } = await fetchUserNotifications(user.id);
 
+  // notificationHref is async so we can resolve a few contextType
+  // shortcuts (Order/Quote for agents → owning request). Resolve them
+  // all in parallel — usually 20 rows, single indexed lookup each.
+  const hrefs = await Promise.all(
+    items.map((n) =>
+      notificationHref(lang, user.role, n.type, n.contextType, n.contextId),
+    ),
+  );
+
   return NextResponse.json({
     unreadCount,
-    items: items.map((n) => ({
+    items: items.map((n, i) => ({
       id: n.id,
       type: n.type,
       title: n.title,
       description: n.description,
       read: n.read,
       createdAt: n.createdAt.toISOString(),
-      href: notificationHref(lang, user.role, n.contextType, n.contextId),
+      href: hrefs[i],
     })),
   });
 }

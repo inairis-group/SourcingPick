@@ -19,7 +19,7 @@ import { prisma } from "@/lib/db/client";
 const MAX_RETRIES = 10;
 
 export async function generateUniqueReference<
-  T extends "REQ" | "ORD" | "MKT" | "INV" | "ESC" | "PAY" | "CERT",
+  T extends "REQ" | "ORD" | "MKT" | "INV" | "ESC" | "PAY" | "CERT" | "AUC",
 >(prefix: T): Promise<string> {
   // Year-scoped serials for finance + certification: INV-2026-NNNN, etc.
   // Random + retry serial scheme for the rest: REQ-XXXXXX, ORD-XXXXX, MKT-XXX.
@@ -42,7 +42,12 @@ export async function generateUniqueReference<
     throw new Error(`Could not generate a unique ${prefix} reference after ${MAX_RETRIES} attempts`);
   }
 
-  const digits = prefix === "ORD" ? 5 : prefix === "MKT" ? 3 : 6;
+  const digits =
+    prefix === "ORD"
+      ? 5
+      : prefix === "MKT" || prefix === "AUC"
+        ? 3
+        : 6;
   const min = 10 ** (digits - 1);
   const max = 10 ** digits;
 
@@ -103,6 +108,13 @@ async function referenceExists(prefix: string, candidate: string): Promise<boole
     }
     case "CERT": {
       const row = await prisma.certification.findUnique({
+        where: { reference: candidate },
+        select: { id: true },
+      });
+      return row !== null;
+    }
+    case "AUC": {
+      const row = await prisma.auction.findUnique({
         where: { reference: candidate },
         select: { id: true },
       });
