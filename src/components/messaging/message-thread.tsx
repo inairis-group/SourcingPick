@@ -179,14 +179,22 @@ export function MessageThread({ threadId }: { threadId: string }) {
       list.scrollHeight - list.scrollTop - list.clientHeight < threshold;
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const body = draft.trim();
+  /**
+   * Shared send path. Used by the form submit (text + queued attachments)
+   * AND by the voice recorder (single-file, immediate send — partner UX
+   * feedback: voice notes should feel like WhatsApp, not like "attach
+   * then submit").
+   *
+   * `clearDraft` is false for voice-only sends so the user's in-progress
+   * text doesn't get wiped while they tap the mic.
+   */
+  const send = (
+    body: string,
+    files: File[],
+    options: { clearDraft: boolean } = { clearDraft: true },
+  ) => {
     if (sending) return;
-    // Allow attachment-only sends (no body) but require at least one of
-    // body or files. The server enforces the same; this is just to skip
-    // a pointless round-trip when both are empty.
-    if (!body && pendingFiles.length === 0) return;
+    if (!body && files.length === 0) return;
     setError(null);
     setSending(true);
 
@@ -196,19 +204,19 @@ export function MessageThread({ threadId }: { threadId: string }) {
         setError(errMsg ?? null);
         return;
       }
-      // Warnings come from per-file storage errors; surface but don't
-      // block — the message itself sent successfully.
       if (warnings && warnings.length > 0) setError(warnings.join(" · "));
-      setDraft("");
-      setPendingFiles([]);
-      setShowPicker(false);
+      if (options.clearDraft) {
+        setDraft("");
+        setPendingFiles([]);
+        setShowPicker(false);
+      }
       const lastTs =
         messagesRef.current[messagesRef.current.length - 1]?.createdAt ??
         new Date(0).toISOString();
       loadIncremental(lastTs);
     };
 
-    if (pendingFiles.length === 0) {
+    if (files.length === 0) {
       // Fast path: keep the legacy text-only action so existing call
       // patterns don't churn.
       sendMessageAction(threadId, body)
@@ -218,13 +226,18 @@ export function MessageThread({ threadId }: { threadId: string }) {
       const fd = new FormData();
       fd.append("threadId", threadId);
       if (body) fd.append("body", body);
-      for (const f of pendingFiles) fd.append("attachments", f);
+      for (const f of files) fd.append("attachments", f);
       sendMessageWithAttachmentsAction(fd)
         .then((r) =>
           r.ok ? finish(true, undefined, r.warnings) : finish(false, r.error),
         )
         .catch(() => finish(false, dict.messaging.errorLoad));
     }
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    send(draft.trim(), pendingFiles, { clearDraft: true });
   };
 
   return (
@@ -350,9 +363,7 @@ export function MessageThread({ threadId }: { threadId: string }) {
               />
             </button>
             <VoiceRecorderButton
-              onRecorded={(file) =>
-                setPendingFiles((prev) => [...prev, file])
-              }
+              onRecorded={(file) => send("", [file], { clearDraft: false })}
               disabled={sending}
             />
             <span className="text-[10px] text-faint">

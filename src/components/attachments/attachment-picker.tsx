@@ -7,6 +7,7 @@ import {
   Cancel01Icon,
   File01Icon,
   Image01Icon,
+  Mic01Icon,
   Video01Icon,
 } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,8 @@ import { cn } from "@/lib/utils";
 const ACCEPT =
   "image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif," +
   "video/mp4,video/webm,video/quicktime," +
+  "audio/mpeg,audio/mp4,audio/aac,audio/ogg,audio/opus,audio/wav,audio/webm," +
+  ".mp3,.m4a,.aac,.ogg,.oga,.opus,.wav," +
   ".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.zip";
 
 const MAX_DEFAULT = 10;
@@ -184,7 +187,16 @@ function FileIcon({ name, mime }: { name: string; mime: string }) {
     mime.startsWith("image/") || /\.(jpe?g|png|webp|gif|heic|heif)$/.test(lower);
   const isVideo =
     mime.startsWith("video/") || /\.(mp4|webm|mov|m4v)$/.test(lower);
-  const icon = isImage ? Image01Icon : isVideo ? Video01Icon : File01Icon;
+  const isAudio =
+    (mime.startsWith("audio/") && !lower.endsWith(".webm")) ||
+    /\.(mp3|m4a|aac|ogg|oga|opus|wav|webm-audio)$/.test(lower);
+  const icon = isImage
+    ? Image01Icon
+    : isAudio
+      ? Mic01Icon
+      : isVideo
+        ? Video01Icon
+        : File01Icon;
   return (
     <HugeiconsIcon
       icon={icon}

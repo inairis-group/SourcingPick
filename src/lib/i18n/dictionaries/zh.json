@@ -610,7 +610,7 @@
     "send": "发送",
     "shortcutHint": "⌘/Ctrl + Enter 发送",
     "attachLabel": "添加附件",
-    "attachHint": "图片、视频或文档 · 每条消息最多 10 个",
+    "attachHint": "图片、视频、音频或文档 · 每条消息最多 10 个",
     "systemAuthor": "SourcingPick",
     "errorLoad": "无法加载消息。请重试。",
     "errorStream": "实时更新已断开。请刷新页面重新连接。",

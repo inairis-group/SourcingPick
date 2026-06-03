@@ -610,7 +610,7 @@
     "send": "Envoyer",
     "shortcutHint": "⌘/Ctrl + Entrée pour envoyer",
     "attachLabel": "Joindre des fichiers",
-    "attachHint": "Images, vidéos ou documents · jusqu'à 10 par message",
+    "attachHint": "Images, vidéos, audio ou documents · jusqu'à 10 par message",
     "systemAuthor": "SourcingPick",
     "errorLoad": "Impossible de charger les messages. Réessayez.",
     "errorStream": "Connexion temps réel interrompue. Rechargez la page pour rétablir.",

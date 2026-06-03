@@ -610,7 +610,7 @@
     "send": "Send",
     "shortcutHint": "⌘/Ctrl + Enter to send",
     "attachLabel": "Attach files",
-    "attachHint": "Images, videos or documents · up to 10 per message",
+    "attachHint": "Images, videos, audio or documents · up to 10 per message",
     "systemAuthor": "SourcingPick",
     "errorLoad": "Couldn't load messages. Try again.",
     "errorStream": "Live updates disconnected. Reload the page to reconnect.",
