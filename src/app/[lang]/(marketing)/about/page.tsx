@@ -134,14 +134,15 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
             fallback. Names below are placeholders that the team can edit in
             this file (one place, no i18n round-trip needed). */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl">
+          
           <FounderCard
-            name="Caleb-Livingstone Emmanuel"
+            name="Adam Fernandez"
             role={dict.about.founders.coFounderRole}
             photoUrl={null}
           />
           <FounderCard
-            name="Adam Inairis"
-            role={dict.about.founders.coFounderRole}
+            name="Caleb-Livingstone Emmanuel"
+            role={dict.about.founders.eyebrow}
             photoUrl={null}
           />
         </div>
