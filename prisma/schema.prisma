@@ -394,6 +394,38 @@ enum ThreadContextType {
   /// not anchored to any specific entity. Powers the standalone /messages
   /// tab — partner feedback #9. v1 scaffold; UI lands in a follow-up.
   DIRECT
+  /// Support ticket — standalone thread between a requester (client,
+  /// factory or agent) and the admin/support team. Linked to a
+  /// `SupportTicket` row that carries status (PENDING/OPEN/RESOLVED) and
+  /// an optional polymorphic topic (order, product, org, agent).
+  SUPPORT
+}
+
+enum SupportTicketStatus {
+  /// Created by the requester, no admin response yet.
+  PENDING
+  /// An admin has engaged or explicitly opened it.
+  OPEN
+  /// Admin marked it resolved. A new requester message reopens it.
+  RESOLVED
+}
+
+/// Polymorphic anchor for a SupportTicket. The admin picks one of these
+/// after the conversation starts to give the ticket structure (links to
+/// the relevant order, listing, factory profile, etc.). `topicId` is the
+/// id of the row in the corresponding table — left as a plain string so
+/// the SupportTicket survives when an upstream row is soft-deleted.
+enum SupportTopicKind {
+  ORDER
+  SOURCING_REQUEST
+  MARKETPLACE_PRODUCT
+  AUCTION
+  /// Organization with type=CLIENT.
+  CLIENT_ORG
+  /// Organization with type=FACTORY.
+  FACTORY_ORG
+  /// User with role=AGENT.
+  AGENT
 }
 
 enum NotificationType {
@@ -497,6 +529,8 @@ model User {
   agentForRequests        SourcingRequest[]   @relation("RequestAgent")
   preTenderApprovals      SourcingRequest[]   @relation("PreTenderApprover")
   forwarderTokensCreated  ForwarderUploadToken[] @relation("ForwarderTokenCreator")
+  supportTicketsOpened    SupportTicket[]     @relation("SupportTicketRequester")
+  supportTicketsResolved  SupportTicket[]     @relation("SupportTicketResolver")
   quotesAsAgent           Quote[]             @relation("QuoteAgent")
   ordersAsAgent           Order[]             @relation("OrderAgent")
   authoredMessages        Message[]           @relation("MessageAuthor")
@@ -626,6 +660,8 @@ model Organization {
 
   invoices Invoice[]
   payouts  Payout[]
+
+  supportTicketsOpened SupportTicket[] @relation("SupportTicketRequesterOrg")
 
   factoryCertifications     Certification[] @relation("CertFactoryOrg")
   sponsorshipCertifications Certification[] @relation("CertSponsorOrg")
@@ -1096,6 +1132,48 @@ model Message {
   // (contextType=MESSAGE, contextId=this.id) — no FK relation here.
 
   @@index([threadId, createdAt])
+}
+
+/**
+ * Standalone support ticket — a thread between one requester (client /
+ * factory / agent) and the admin/support team. The corresponding Thread
+ * uses contextType=SUPPORT, contextId=this.id so every messaging feature
+ * (attachments, voice notes, SSE, unread counts) works without forking
+ * code.
+ *
+ * Lifecycle:
+ *   - PENDING: created by the requester, no admin reply yet.
+ *   - OPEN: an admin has engaged, ticket is active.
+ *   - RESOLVED: admin closed it. A new requester message reopens it.
+ *
+ * `topicKind` + `topicId` are polymorphic. Admin attaches one of the
+ * supported entity types (order, marketplace product, organization,
+ * agent, etc.) to give the conversation structure. The pair is plain
+ * (no FK) so the topic survives when the upstream row is soft-deleted —
+ * stale links are resolved + flagged in the UI.
+ */
+model SupportTicket {
+  id               String              @id @default(cuid(2))
+  reference        String              @unique // TKT-XXXXX
+  subject          String
+  status           SupportTicketStatus @default(PENDING)
+  requesterUserId  String
+  requester        User                @relation("SupportTicketRequester", fields: [requesterUserId], references: [id], onDelete: Restrict)
+  requesterOrgId   String?
+  requesterOrg     Organization?       @relation("SupportTicketRequesterOrg", fields: [requesterOrgId], references: [id], onDelete: SetNull)
+  topicKind        SupportTopicKind?
+  topicId          String?
+  openedAt         DateTime?
+  resolvedAt       DateTime?
+  resolvedById     String?
+  resolvedBy       User?               @relation("SupportTicketResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
+  deletedAt        DateTime?
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  @@index([status, createdAt])
+  @@index([requesterUserId, status])
+  @@index([topicKind, topicId])
 }
 
 model Notification {

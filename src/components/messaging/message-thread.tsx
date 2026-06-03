@@ -14,7 +14,6 @@ import {
   File01Icon,
   Sent02Icon,
 } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/ui/form-error";
 import {
   markThreadReadAction,
@@ -66,7 +65,20 @@ type FetchPayload = {
  * single source of truth for message shape + author lookup, and so SSE
  * payloads stay small enough to survive NOTIFY's 8 KB limit at scale.
  */
-export function MessageThread({ threadId }: { threadId: string }) {
+export function MessageThread({
+  threadId,
+  fill = false,
+}: {
+  threadId: string;
+  /**
+   * When true the thread expands to fill its parent's height (message
+   * list grows, composer pinned to the bottom). The parent must be a
+   * height-constrained flex column or this collapses. Default false
+   * keeps the legacy fixed-height widget used inside order / request
+   * detail pages where the thread is one section among many.
+   */
+  fill?: boolean;
+}) {
   const dict = useDictionary();
   const locale = useLocale();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -74,12 +86,24 @@ export function MessageThread({ threadId }: { threadId: string }) {
   const [draft, setDraft] = useState("");
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [showPicker, setShowPicker] = useState(false);
+  const [voiceActive, setVoiceActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [_, startTransition] = useTransition();
   const listRef = useRef<HTMLOListElement>(null);
   const scrollPinnedToBottom = useRef(true);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-grow the textarea up to ~5 rows worth of height, then scroll.
+  // Single-line by default keeps the composer feeling like a chat input.
+  useEffect(() => {
+    const ta = textareaRef.current;
+    if (!ta) return;
+    ta.style.height = "auto";
+    const next = Math.min(ta.scrollHeight, 140);
+    ta.style.height = `${next}px`;
+  }, [draft]);
 
   const loadInitial = useCallback(async () => {
     try {
@@ -241,11 +265,19 @@ export function MessageThread({ threadId }: { threadId: string }) {
   };
 
   return (
-    <div className="flex flex-col rounded-lg border border-line bg-surface">
+    <div
+      className={cn(
+        "flex flex-col rounded-lg border border-line bg-surface",
+        fill && "h-full min-h-0",
+      )}
+    >
       <ol
         ref={listRef}
         onScroll={onScroll}
-        className="flex flex-col gap-2 px-4 py-3 max-h-105 overflow-y-auto"
+        className={cn(
+          "flex flex-col gap-2 px-4 py-3 overflow-y-auto",
+          fill ? "flex-1 min-h-0" : "max-h-105",
+        )}
       >
         {loading ? (
           <li className="text-xs text-faint text-center py-6">
@@ -316,23 +348,6 @@ export function MessageThread({ threadId }: { threadId: string }) {
         className="border-t border-line-subtle p-3 flex flex-col gap-2"
       >
         {error && <FormError>{error}</FormError>}
-        <textarea
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          rows={2}
-          maxLength={5000}
-          placeholder={dict.messaging.placeholder}
-          className={cn(
-            "w-full rounded-sm border bg-surface text-fg placeholder:text-faint p-2 text-sm resize-y",
-            "border-line-strong focus:border-focus focus:outline-2 focus:outline-focus focus:outline-offset-2",
-          )}
-          onKeyDown={(e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
-              e.preventDefault();
-              (e.currentTarget.form as HTMLFormElement | null)?.requestSubmit();
-            }
-          }}
-        />
 
         {(showPicker || pendingFiles.length > 0) && (
           <AttachmentPicker
@@ -343,44 +358,114 @@ export function MessageThread({ threadId }: { threadId: string }) {
           />
         )}
 
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setShowPicker((v) => !v)}
-              aria-label={dict.messaging.attachLabel}
+        {/* Composer pill. The recorder is rendered ONCE, outside any
+            conditional that flips with `voiceActive`, so its
+            MediaRecorder + MediaStream survive the recording-state
+            transition. Everything else is hidden via display:none while
+            recording so the recorder takes the row visually but the rest
+            of the inputs aren't unmounted (preserving draft + textarea
+            scroll). */}
+        {(() => {
+          const hasContent = draft.trim().length > 0 || pendingFiles.length > 0;
+          return (
+            <div
               className={cn(
-                "inline-flex items-center justify-center h-7 w-7 rounded-full",
-                "text-muted hover:text-fg hover:bg-subtle transition-colors duration-fast",
-                (showPicker || pendingFiles.length > 0) &&
-                "bg-subtle text-fg",
+                "flex items-end gap-1.5 rounded-3xl border bg-surface px-1.5 py-1.5",
+                "transition-colors duration-fast",
+                voiceActive
+                  ? "border-line"
+                  : "border-line-strong focus-within:border-focus focus-within:ring-2 focus-within:ring-focus/30",
               )}
             >
-              <HugeiconsIcon
-                icon={Attachment01Icon}
-                size={14}
-                strokeWidth={1.5}
+              <button
+                type="button"
+                onClick={() => setShowPicker((v) => !v)}
+                aria-label={dict.messaging.attachLabel}
+                className={cn(
+                  "inline-flex items-center justify-center h-9 w-9 shrink-0 rounded-full",
+                  "text-muted hover:text-fg hover:bg-subtle transition-colors duration-fast",
+                  (showPicker || pendingFiles.length > 0) &&
+                    "bg-subtle text-fg",
+                  voiceActive && "hidden",
+                )}
+              >
+                <HugeiconsIcon
+                  icon={Attachment01Icon}
+                  size={18}
+                  strokeWidth={1.5}
+                />
+              </button>
+
+              <textarea
+                ref={textareaRef}
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                rows={1}
+                maxLength={5000}
+                placeholder={dict.messaging.placeholder}
+                aria-label={dict.messaging.placeholder}
+                className={cn(
+                  "flex-1 min-w-0 resize-none bg-transparent border-0 outline-none",
+                  "text-sm text-fg placeholder:text-faint leading-6",
+                  "px-1 py-1.5 max-h-35 overflow-y-auto",
+                  voiceActive && "hidden",
+                )}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    (e.currentTarget.form as HTMLFormElement | null)?.requestSubmit();
+                  }
+                }}
               />
-            </button>
-            <VoiceRecorderButton
-              onRecorded={(file) => send("", [file], { clearDraft: false })}
-              disabled={sending}
-            />
-            <span className="text-[10px] text-faint">
-              {dict.messaging.shortcutHint}
-            </span>
-          </div>
-          <Button
-            type="submit"
-            variant="primary"
-            size="sm"
-            loading={sending}
-            disabled={!draft.trim() && pendingFiles.length === 0}
-          >
-            <HugeiconsIcon icon={Sent02Icon} size={14} strokeWidth={1.5} />
-            <span className="ms-1.5">{dict.messaging.send}</span>
-          </Button>
-        </div>
+
+              <button
+                type="submit"
+                disabled={sending}
+                aria-label={dict.messaging.send}
+                className={cn(
+                  "inline-flex items-center justify-center h-9 w-9 shrink-0 rounded-full",
+                  "bg-action text-on-action hover:bg-action/90 shadow-sm",
+                  "transition-colors duration-fast",
+                  "disabled:opacity-60 disabled:cursor-not-allowed",
+                  (voiceActive || !hasContent) && "hidden",
+                )}
+              >
+                <HugeiconsIcon
+                  icon={Sent02Icon}
+                  size={16}
+                  strokeWidth={1.75}
+                />
+              </button>
+
+              {/* Always mounted. Wrapper expands to fill the row while
+                  recording so the recorder's own w-full layout has
+                  room. When idle and the send button is showing, the
+                  wrapper is display:none — recorder state is preserved
+                  but the icon stays out of the user's way. */}
+              <div
+                className={cn(
+                  voiceActive
+                    ? "flex-1 min-w-0"
+                    : hasContent
+                      ? "hidden"
+                      : "shrink-0",
+                )}
+              >
+                <VoiceRecorderButton
+                  onRecorded={(file) =>
+                    send("", [file], { clearDraft: false })
+                  }
+                  onActiveChange={setVoiceActive}
+                  disabled={sending}
+                />
+              </div>
+            </div>
+          );
+        })()}
+
+        <p className="text-[10px] text-faint text-center px-1">
+          {dict.messaging.shortcutHint}
+        </p>
       </form>
     </div>
   );

@@ -12,6 +12,7 @@ import { requireAuth } from "@/lib/permissions/guards";
 import { writeAuditLog } from "@/lib/audit/log";
 import { emitNotificationToMany } from "@/lib/notifications/emit";
 import { storeAttachments } from "@/lib/storage/attachments";
+import { onSupportMessageSent } from "@/lib/support/lifecycle";
 import { canAccessThreadContext } from "./participants";
 import { getOrCreateThread } from "./threads";
 import { notifyThread } from "./pubsub";
@@ -132,6 +133,14 @@ export async function sendMessageWithAttachmentsAction(
     createdAt: message.createdAt.toISOString(),
   }).catch(() => {});
 
+  // Support tickets auto-track conversation: admin → flip PENDING → OPEN,
+  // requester → reopen RESOLVED tickets.
+  await onSupportMessageSent({
+    threadId,
+    authorUserId: user.id,
+    authorRole: user.role,
+  });
+
   await writeAuditLog({
     actorUserId: user.id,
     action: "message.sent",
@@ -235,6 +244,13 @@ export async function sendMessageAction(
     createdAt: message.createdAt.toISOString(),
   }).catch(() => {
     /* SSE consumers will pick up the message on their next poll/refresh */
+  });
+
+  // Support ticket lifecycle hook — same as the attachments variant.
+  await onSupportMessageSent({
+    threadId: parsed.data.threadId,
+    authorUserId: user.id,
+    authorRole: user.role,
   });
 
   await writeAuditLog({

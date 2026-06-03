@@ -67,8 +67,11 @@ export async function GET() {
   const tenderIds = participants
     .filter((p) => p.thread.contextType === ThreadContextType.TENDER)
     .map((p) => p.thread.contextId);
+  const supportIds = participants
+    .filter((p) => p.thread.contextType === ThreadContextType.SUPPORT)
+    .map((p) => p.thread.contextId);
 
-  const [requests, orders, quotes, tenders] = await Promise.all([
+  const [requests, orders, quotes, tenders, supports] = await Promise.all([
     requestIds.length > 0
       ? prisma.sourcingRequest.findMany({
           where: { id: { in: requestIds } },
@@ -105,12 +108,19 @@ export async function GET() {
           },
         })
       : Promise.resolve([]),
+    supportIds.length > 0
+      ? prisma.supportTicket.findMany({
+          where: { id: { in: supportIds }, deletedAt: null },
+          select: { id: true, reference: true, subject: true },
+        })
+      : Promise.resolve([]),
   ]);
 
   const requestMap = new Map(requests.map((r) => [r.id, r]));
   const orderMap = new Map(orders.map((o) => [o.id, o]));
   const quoteMap = new Map(quotes.map((q) => [q.id, q]));
   const tenderMap = new Map(tenders.map((t) => [t.id, t]));
+  const supportMap = new Map(supports.map((s) => [s.id, s]));
 
   const rolePrefix = user.role.toLowerCase();
 
@@ -165,6 +175,13 @@ export async function GET() {
             rolePrefix === "factory"
               ? `/${lang}/factory/tenders/${inv.id}`
               : `/${lang}/agent/requests`;
+          break;
+        }
+        case ThreadContextType.SUPPORT: {
+          const s = supportMap.get(t.contextId);
+          if (!s) return null;
+          title = s.subject;
+          href = `/${lang}/support/${s.id}`;
           break;
         }
         default:

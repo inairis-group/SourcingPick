@@ -640,6 +640,7 @@
       "speedLabel": "Playback speed",
       "scrubLabel": "Playback position",
       "elapsedLabel": "Elapsed time",
+      "recordingHint": "Recording…",
       "permissionDenied": "Microphone access blocked. Allow it and try again.",
       "unsupported": "Your browser can't record audio."
     },
@@ -651,7 +652,8 @@
       "KYC": "Conversation with our team about your KYC file.",
       "CERT": "Conversation about your certification programme.",
       "DISPUTE": "Dispute thread, moderated by the SourcingPick team.",
-      "DIRECT": "Direct conversation — not attached to a specific order, request, or product."
+      "DIRECT": "Direct conversation — not attached to a specific order, request, or product.",
+      "SUPPORT": "Support ticket — you and the SourcingPick support team."
     }
   },
   "tender": {
@@ -1213,12 +1215,19 @@
     },
     "support": {
       "eyebrow": "Support",
-      "title": "Marketplace support queue",
-      "description": "Conversations on marketplace orders (no assigned agent). Support is handled by the platform team.",
-      "tableTitle": "Conversations",
-      "empty": "No active support conversations.",
-      "messagesSuffix": "messages",
-      "note": "Sourcing-flow orders are handled by their assigned agent and don't appear here."
+      "title": "Support tickets",
+      "description": "Tickets opened by clients, factories and agents. Sorted by state — assign a topic, respond, then resolve.",
+      "kpiTotal": "Total",
+      "kpiPending": "Pending",
+      "kpiOpen": "Open",
+      "kpiResolved": "Resolved",
+      "filterAll": "All",
+      "statusPending": "Pending",
+      "statusOpen": "Open",
+      "statusResolved": "Resolved",
+      "tableTitle": "Tickets",
+      "empty": "No support tickets.",
+      "messagesSuffix": "messages"
     },
     "certifications": {
       "eyebrow": "Certifications",
@@ -2170,6 +2179,50 @@
           ]
         }
       ]
+    }
+  },
+  "support": {
+    "eyebrow": "Support",
+    "newCta": "Open a ticket",
+    "newTitle": "Open a support ticket",
+    "newDescription": "Describe what you need to the support team. Replies land here and in your messages.",
+    "backToMessages": "Back to messages",
+    "backToAdminQueue": "Back to support queue",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "e.g. Payment issue on ORD-12345",
+    "bodyLabel": "Message",
+    "bodyPlaceholder": "Describe the problem in detail — steps to reproduce, screenshots, related references.",
+    "bodyHint": "You can reply and attach more files once the ticket is open.",
+    "attachmentsLabel": "Attachments (optional)",
+    "attachmentsHint": "Images, videos, audio or documents · up to 10",
+    "submitCta": "Send to support",
+    "openedBy": "Opened by {name} ({org})",
+    "resolvedOn": "Resolved on {date}",
+    "statusPending": "Pending",
+    "statusOpen": "Open",
+    "statusResolved": "Resolved",
+    "topicSectionLabel": "Ticket topic",
+    "topicKindLabel": "Type",
+    "topicValueLabel": "Reference or ID",
+    "topicKindPlaceholder": "Pick a type…",
+    "topicValuePlaceholder": "ORD-12345, REQ-987654…",
+    "topicHint": "Paste the reference (ORD-…, REQ-…) or the id of the entity.",
+    "topicMissing": "The referenced entity has been deleted.",
+    "topicErrorMissing": "Choose a type and provide a reference.",
+    "setTopic": "Link",
+    "updateTopic": "Update",
+    "clearTopic": "Detach",
+    "adminControlsTitle": "Admin controls",
+    "adminOnly": "Visible to admin only",
+    "statusLabel": "Ticket status",
+    "topicKinds": {
+      "ORDER": "Order",
+      "SOURCING_REQUEST": "Sourcing request",
+      "MARKETPLACE_PRODUCT": "Marketplace product",
+      "AUCTION": "Auction",
+      "CLIENT_ORG": "Buyer",
+      "FACTORY_ORG": "Factory",
+      "AGENT": "Agent"
     }
   },
   "forwarder": {

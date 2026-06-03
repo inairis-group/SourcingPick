@@ -641,6 +641,7 @@
       "speedLabel": "سرعة التشغيل",
       "scrubLabel": "موضع التشغيل",
       "elapsedLabel": "الوقت المنقضي",
+      "recordingHint": "جارٍ التسجيل…",
       "permissionDenied": "تم رفض الوصول إلى الميكروفون. اسمح به ثم حاول مجدداً.",
       "unsupported": "متصفحك لا يدعم التسجيل الصوتي."
     },
@@ -652,7 +653,8 @@
       "KYC": "محادثة مع فريقنا حول ملف KYC الخاص بك.",
       "CERT": "محادثة حول برنامج شهاداتك.",
       "DISPUTE": "خيط نزاع، يتولى الإشراف عليه فريق SourcingPick.",
-      "DIRECT": "محادثة مباشرة — غير مرتبطة بطلب أو طلبية أو منتج محدد."
+      "DIRECT": "محادثة مباشرة — غير مرتبطة بطلب أو طلبية أو منتج محدد.",
+      "SUPPORT": "تذكرة دعم — أنت وفريق دعم SourcingPick."
     }
   },
   "tender": {
@@ -1214,12 +1216,19 @@
     },
     "support": {
       "eyebrow": "الدعم",
-      "title": "طابور دعم السوق",
-      "description": "محادثات حول طلبيات السوق (دون وكيل معيَّن). يتولى فريق المنصة الدعم.",
-      "tableTitle": "المحادثات",
-      "empty": "لا توجد محادثات دعم نشطة.",
-      "messagesSuffix": "رسائل",
-      "note": "طلبيات تدفق التوريد يديرها وكيلها المعيَّن ولا تظهر هنا."
+      "title": "تذاكر الدعم",
+      "description": "تذاكر يفتحها العملاء والمصانع والوكلاء. مرتبة حسب الحالة — اربط الموضوع، ردّ، ثم احسم.",
+      "kpiTotal": "الإجمالي",
+      "kpiPending": "قيد الانتظار",
+      "kpiOpen": "مفتوحة",
+      "kpiResolved": "محلولة",
+      "filterAll": "الكل",
+      "statusPending": "قيد الانتظار",
+      "statusOpen": "مفتوحة",
+      "statusResolved": "محلولة",
+      "tableTitle": "التذاكر",
+      "empty": "لا توجد تذاكر دعم.",
+      "messagesSuffix": "رسائل"
     },
     "certifications": {
       "eyebrow": "الشهادات",
@@ -2171,6 +2180,50 @@
           ]
         }
       ]
+    }
+  },
+  "support": {
+    "eyebrow": "الدعم",
+    "newCta": "فتح تذكرة",
+    "newTitle": "فتح تذكرة دعم",
+    "newDescription": "صف ما تحتاجه لفريق الدعم. تظهر الردود هنا وفي رسائلك.",
+    "backToMessages": "العودة إلى الرسائل",
+    "backToAdminQueue": "العودة إلى طابور الدعم",
+    "subjectLabel": "الموضوع",
+    "subjectPlaceholder": "مثال: مشكلة دفع على ORD-12345",
+    "bodyLabel": "الرسالة",
+    "bodyPlaceholder": "صف المشكلة بالتفصيل — خطوات الاستنساخ، صور الشاشة، المراجع ذات الصلة.",
+    "bodyHint": "يمكنك الرد وإرفاق ملفات إضافية بعد فتح التذكرة.",
+    "attachmentsLabel": "المرفقات (اختياري)",
+    "attachmentsHint": "صور أو فيديو أو صوت أو مستندات · حتى 10",
+    "submitCta": "إرسال إلى الدعم",
+    "openedBy": "فتحها {name} ({org})",
+    "resolvedOn": "حُلَّت بتاريخ {date}",
+    "statusPending": "قيد الانتظار",
+    "statusOpen": "مفتوحة",
+    "statusResolved": "محلولة",
+    "topicSectionLabel": "موضوع التذكرة",
+    "topicKindLabel": "النوع",
+    "topicValueLabel": "المرجع أو المعرف",
+    "topicKindPlaceholder": "اختر النوع…",
+    "topicValuePlaceholder": "ORD-12345، REQ-987654…",
+    "topicHint": "الصق المرجع (ORD-…، REQ-…) أو معرّف الكيان.",
+    "topicMissing": "تم حذف الكيان المرتبط.",
+    "topicErrorMissing": "اختر النوع وأدخل المرجع.",
+    "setTopic": "ربط",
+    "updateTopic": "تحديث",
+    "clearTopic": "فصل",
+    "adminControlsTitle": "أدوات المسؤول",
+    "adminOnly": "مرئية للمسؤول فقط",
+    "statusLabel": "حالة التذكرة",
+    "topicKinds": {
+      "ORDER": "طلبية",
+      "SOURCING_REQUEST": "طلب توريد",
+      "MARKETPLACE_PRODUCT": "منتج السوق",
+      "AUCTION": "مزاد",
+      "CLIENT_ORG": "مشترٍ",
+      "FACTORY_ORG": "مصنع",
+      "AGENT": "وكيل"
     }
   },
   "forwarder": {

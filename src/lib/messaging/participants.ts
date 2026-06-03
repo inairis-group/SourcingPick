@@ -149,6 +149,38 @@ export async function resolveParticipantsFor(
       // adds participants explicitly via ThreadParticipant rows. Caller
       // is expected to seed those before opening the thread.
       return [];
+
+    case ThreadContextType.SUPPORT: {
+      // Support threads: the requester plus every active admin user.
+      // We pre-add all admins so the ticket lands in every admin's
+      // MessagesBell without needing them to discover it through the
+      // queue first. Admin count is tiny — the cost is negligible.
+      const ticket = await prisma.supportTicket.findUnique({
+        where: { id: contextId },
+        select: { requesterUserId: true },
+      });
+      if (!ticket) return [];
+      const requester = await prisma.user.findUnique({
+        where: { id: ticket.requesterUserId, deletedAt: null },
+        select: { id: true, role: true },
+      });
+      const admins = await prisma.user.findMany({
+        where: { role: Role.ADMIN, deletedAt: null },
+        select: { id: true },
+      });
+      const out: ResolvedParticipant[] = [];
+      if (requester) {
+        out.push({
+          userId: requester.id,
+          role: requester.role,
+          isPrimary: true,
+        });
+      }
+      for (const a of admins) {
+        out.push({ userId: a.id, role: Role.ADMIN });
+      }
+      return dedup(out);
+    }
   }
 }
 
@@ -242,6 +274,15 @@ export async function canAccessThreadContext(
         select: { threadId: true },
       });
       return Boolean(participant);
+    }
+    case ThreadContextType.SUPPORT: {
+      // Requester or any admin can access.
+      const ticket = await prisma.supportTicket.findUnique({
+        where: { id: contextId },
+        select: { requesterUserId: true, deletedAt: true },
+      });
+      if (!ticket || ticket.deletedAt) return false;
+      return ticket.requesterUserId === user.id;
     }
   }
 }

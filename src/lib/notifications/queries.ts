@@ -107,6 +107,14 @@ export async function notificationHref(
             : null;
     case "Organization":
       return r === "admin" ? `/${lang}/admin/kyc` : `/${lang}/factory/settings`;
+    case "SupportTicket":
+    case "SUPPORT":
+      // Both forms point at the same place — the support ticket detail.
+      // The two strings exist because `createSupportTicketAction` emits
+      // the model name "SupportTicket" while `emitNotificationToMany`
+      // inside `messaging/actions` reuses the ThreadContextType value
+      // "SUPPORT" verbatim.
+      return contextId ? `/${lang}/support/${contextId}` : null;
     default:
       return null;
   }

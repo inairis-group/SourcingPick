@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { ThreadContextType } from "@prisma/client";
+import { Role, ThreadContextType } from "@prisma/client";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ShoppingBag01Icon,
@@ -7,7 +7,10 @@ import {
   Mail01Icon,
   InvoiceIcon,
   Message01Icon,
+  CustomerService01Icon,
+  Add01Icon,
 } from "@hugeicons/core-free-icons";
+import { buttonClass } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
@@ -30,6 +33,7 @@ const CTX_ICONS: Partial<Record<ThreadContextType, typeof Message01Icon>> = {
   ORDER: PackageIcon,
   QUOTE: InvoiceIcon,
   TENDER: Mail01Icon,
+  SUPPORT: CustomerService01Icon,
 };
 
 export default async function GlobalMessagesPage({
@@ -87,8 +91,11 @@ export default async function GlobalMessagesPage({
   const tenderIds = participants
     .filter((p) => p.thread.contextType === ThreadContextType.TENDER)
     .map((p) => p.thread.contextId);
+  const supportIds = participants
+    .filter((p) => p.thread.contextType === ThreadContextType.SUPPORT)
+    .map((p) => p.thread.contextId);
 
-  const [requests, orders, quotes, tenders] = await Promise.all([
+  const [requests, orders, quotes, tenders, supports] = await Promise.all([
     requestIds.length > 0
       ? prisma.sourcingRequest.findMany({
           where: { id: { in: requestIds } },
@@ -131,12 +138,25 @@ export default async function GlobalMessagesPage({
           },
         })
       : Promise.resolve([]),
+    supportIds.length > 0
+      ? prisma.supportTicket.findMany({
+          where: { id: { in: supportIds }, deletedAt: null },
+          select: {
+            id: true,
+            reference: true,
+            subject: true,
+            status: true,
+            requester: { select: { firstName: true, lastName: true } },
+          },
+        })
+      : Promise.resolve([]),
   ]);
 
   const requestMap = new Map(requests.map((r) => [r.id, r]));
   const orderMap = new Map(orders.map((o) => [o.id, o]));
   const quoteMap = new Map(quotes.map((q) => [q.id, q]));
   const tenderMap = new Map(tenders.map((t) => [t.id, t]));
+  const supportMap = new Map(supports.map((s) => [s.id, s]));
 
   const role = user.role.toLowerCase();
 
@@ -203,6 +223,18 @@ export default async function GlobalMessagesPage({
               : `/${lang}/agent/requests`;
           break;
         }
+        case ThreadContextType.SUPPORT: {
+          const s = supportMap.get(t.contextId);
+          if (!s) return null;
+          title = s.subject;
+          reference = s.reference;
+          subtitle =
+            role === "admin"
+              ? `${s.requester.firstName} ${s.requester.lastName} · ${dict.support[`status${s.status[0]}${s.status.slice(1).toLowerCase()}` as never]}`
+              : dict.support[`status${s.status[0]}${s.status.slice(1).toLowerCase()}` as never];
+          href = `/${lang}/support/${s.id}`;
+          break;
+        }
         default:
           return null;
       }
@@ -241,11 +273,26 @@ export default async function GlobalMessagesPage({
           </h1>
           <p className="text-sm text-muted">{t.globalDescription}</p>
         </div>
-        {totalUnread > 0 && (
-          <span className="inline-flex items-center h-7 px-3 rounded-full bg-action text-on-action text-xs font-semibold whitespace-nowrap">
-            {t.unreadCount.replace("{n}", String(totalUnread))}
-          </span>
-        )}
+        <div className="flex items-center gap-2 flex-wrap">
+          {totalUnread > 0 && (
+            <span className="inline-flex items-center h-7 px-3 rounded-full bg-action text-on-action text-xs font-semibold whitespace-nowrap">
+              {t.unreadCount.replace("{n}", String(totalUnread))}
+            </span>
+          )}
+          {user.role !== Role.ADMIN && (
+            <Link
+              href={`/${lang}/support/new`}
+              className={cn(buttonClass({ variant: "primary", size: "sm" }))}
+            >
+              <HugeiconsIcon
+                icon={Add01Icon}
+                size={14}
+                strokeWidth={1.75}
+              />
+              <span className="ms-1.5">{dict.support.newCta}</span>
+            </Link>
+          )}
+        </div>
       </header>
 
       <div className="flex items-center gap-1 mb-4">

@@ -28,9 +28,17 @@ import { VoicePlayer } from "./voice-player";
  */
 export function VoiceRecorderButton({
   onRecorded,
+  onActiveChange,
   disabled,
 }: {
   onRecorded: (file: File) => void;
+  /**
+   * Fires `true` whenever the recorder is in recording or preview state,
+   * `false` once it returns to idle. The chat composer uses this to swap
+   * the text input out for the recorder's full-width UI — partner
+   * feedback: "make it feel like a chat".
+   */
+  onActiveChange?: (active: boolean) => void;
   disabled?: boolean;
 }) {
   const dict = useDictionary();
@@ -79,6 +87,12 @@ export function VoiceRecorderButton({
   }, [preview]);
 
   useEffect(() => () => teardown(), []);
+
+  // Surface the active state to the parent so it can collapse the rest
+  // of the composer while a recording is in flight.
+  useEffect(() => {
+    onActiveChange?.(recording || preview !== null);
+  }, [recording, preview, onActiveChange]);
 
   const start = async () => {
     setError(null);
@@ -153,10 +167,10 @@ export function VoiceRecorderButton({
     onRecorded(file);
   };
 
-  // ---- preview pill — overrides both idle and recording UI ---------------
+  // ---- preview row — fills the composer when hosted in the chat input ----
   if (preview) {
     return (
-      <div className="flex items-center gap-2 w-full max-w-sm">
+      <div className="flex items-center gap-2 w-full">
         <div className="flex-1 min-w-0">
           <VoicePlayer src={preview.url} variant="preview" />
         </div>
@@ -165,24 +179,24 @@ export function VoiceRecorderButton({
           onClick={discardPreview}
           aria-label={t.discard}
           className={cn(
-            "inline-flex items-center justify-center h-7 w-7 shrink-0 rounded-full",
+            "inline-flex items-center justify-center h-9 w-9 shrink-0 rounded-full",
             "text-muted hover:text-danger hover:bg-danger-soft/50",
             "transition-colors duration-fast",
           )}
         >
-          <HugeiconsIcon icon={Cancel01Icon} size={14} strokeWidth={1.5} />
+          <HugeiconsIcon icon={Cancel01Icon} size={16} strokeWidth={1.75} />
         </button>
         <button
           type="button"
           onClick={sendPreview}
           aria-label={t.sendPreview}
           className={cn(
-            "inline-flex items-center justify-center h-7 w-7 shrink-0 rounded-full",
-            "bg-action text-on-action hover:bg-action/90",
+            "inline-flex items-center justify-center h-9 w-9 shrink-0 rounded-full",
+            "bg-action text-on-action hover:bg-action/90 shadow-sm",
             "transition-colors duration-fast",
           )}
         >
-          <HugeiconsIcon icon={Sent02Icon} size={14} strokeWidth={1.5} />
+          <HugeiconsIcon icon={Sent02Icon} size={16} strokeWidth={1.75} />
         </button>
       </div>
     );
@@ -190,51 +204,67 @@ export function VoiceRecorderButton({
 
   if (recording) {
     return (
-      <div className="inline-flex items-center gap-1.5 rounded-full bg-danger-soft/40 text-danger pl-2 pr-1 py-1">
-        <span
-          aria-hidden
-          className="inline-block h-2 w-2 rounded-full bg-danger animate-pulse"
-        />
-        <span className="text-[11px] font-mono tabular-nums" aria-live="polite">
-          {formatElapsed(elapsedMs)}
-        </span>
-        <button
-          type="button"
-          onClick={stop}
-          aria-label={t.stop}
-          className="inline-flex items-center justify-center h-6 w-6 rounded-full text-danger hover:bg-danger/10 transition-colors duration-fast"
+      <div className="flex items-center gap-2 w-full">
+        <div
+          className={cn(
+            "flex-1 min-w-0 flex items-center gap-2 h-9 px-3 rounded-full",
+            "bg-danger-soft/40 text-danger",
+          )}
         >
-          <HugeiconsIcon icon={StopCircleIcon} size={16} strokeWidth={2} />
-        </button>
+          <span
+            aria-hidden
+            className="inline-block h-2 w-2 rounded-full bg-danger animate-pulse shrink-0"
+          />
+          <span
+            className="text-[11px] font-mono tabular-nums shrink-0"
+            aria-live="polite"
+          >
+            {formatElapsed(elapsedMs)}
+          </span>
+          <span className="text-[11px] text-danger/80 truncate">
+            {t.recordingHint}
+          </span>
+        </div>
         <button
           type="button"
           onClick={cancel}
           aria-label={t.cancel}
-          className="inline-flex items-center justify-center h-6 w-6 rounded-full text-muted hover:bg-subtle transition-colors duration-fast"
+          className="inline-flex items-center justify-center h-9 w-9 shrink-0 rounded-full text-muted hover:bg-subtle transition-colors duration-fast"
         >
-          <HugeiconsIcon icon={Cancel01Icon} size={14} strokeWidth={1.5} />
+          <HugeiconsIcon icon={Cancel01Icon} size={16} strokeWidth={1.75} />
+        </button>
+        <button
+          type="button"
+          onClick={stop}
+          aria-label={t.stop}
+          className={cn(
+            "inline-flex items-center justify-center h-9 w-9 shrink-0 rounded-full",
+            "bg-danger text-white hover:bg-danger/90 shadow-sm",
+            "transition-colors duration-fast",
+          )}
+        >
+          <HugeiconsIcon icon={StopCircleIcon} size={18} strokeWidth={2} />
         </button>
       </div>
     );
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <button
-        type="button"
-        onClick={start}
-        disabled={disabled}
-        aria-label={t.start}
-        className={cn(
-          "inline-flex items-center justify-center h-7 w-7 rounded-full",
-          "text-muted hover:text-fg hover:bg-subtle transition-colors duration-fast",
-          "disabled:opacity-50 disabled:cursor-not-allowed",
-        )}
-      >
-        <HugeiconsIcon icon={Mic01Icon} size={14} strokeWidth={1.5} />
-      </button>
-      {error && <span className="text-[10px] text-danger">{error}</span>}
-    </div>
+    <button
+      type="button"
+      onClick={start}
+      disabled={disabled}
+      aria-label={t.start}
+      className={cn(
+        "inline-flex items-center justify-center h-9 w-9 shrink-0 rounded-full",
+        "text-muted hover:text-fg hover:bg-subtle transition-colors duration-fast",
+        "disabled:opacity-50 disabled:cursor-not-allowed",
+        error && "text-danger",
+      )}
+      title={error ?? undefined}
+    >
+      <HugeiconsIcon icon={Mic01Icon} size={18} strokeWidth={1.5} />
+    </button>
   );
 }
 

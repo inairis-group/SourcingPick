@@ -36,7 +36,9 @@ export type NotificationVars = {
     | "auction_sold"
     | "pre_tender_approved"
     | "pre_tender_rejected"
-    | "forwarder_proof_uploaded";
+    | "forwarder_proof_uploaded"
+    | "support_ticket_created"
+    | "support_ticket_resolved";
 };
 
 const SYSTEM_TITLES: Record<
@@ -126,6 +128,18 @@ const SYSTEM_TITLES: Record<
     en: "Forwarder uploaded shipment proofs",
     zh: "货运代理已上传发货证明",
     ar: "حمّل وكيل الشحن إثباتات الشحنة",
+  },
+  support_ticket_created: {
+    fr: "Nouveau ticket support ouvert",
+    en: "New support ticket opened",
+    zh: "已创建新的支持工单",
+    ar: "تم فتح تذكرة دعم جديدة",
+  },
+  support_ticket_resolved: {
+    fr: "Ticket support marqué comme résolu",
+    en: "Support ticket marked as resolved",
+    zh: "支持工单已标记为已解决",
+    ar: "تم وضع تذكرة الدعم على أنها محلولة",
   },
 };
 

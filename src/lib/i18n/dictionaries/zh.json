@@ -640,6 +640,7 @@
       "speedLabel": "播放速度",
       "scrubLabel": "播放位置",
       "elapsedLabel": "已播放时长",
+      "recordingHint": "正在录音…",
       "permissionDenied": "麦克风权限被拒。请允许后重试。",
       "unsupported": "您的浏览器不支持语音录制。"
     },
@@ -651,7 +652,8 @@
       "KYC": "与我们团队就您的 KYC 文件进行的对话。",
       "CERT": "关于您的认证项目的对话。",
       "DISPUTE": "争议讨论 — 由 SourcingPick 团队调解。",
-      "DIRECT": "直接对话 — 不绑定任何具体的订单、需求或产品。"
+      "DIRECT": "直接对话 — 不绑定任何具体的订单、需求或产品。",
+      "SUPPORT": "支持工单 — 您与 SourcingPick 支持团队。"
     }
   },
   "tender": {
@@ -1213,12 +1215,19 @@
     },
     "support": {
       "eyebrow": "支持",
-      "title": "市场支持队列",
-      "description": "市场订单的对话(无指派代理)。由平台团队处理支持。",
-      "tableTitle": "对话",
-      "empty": "暂无活跃支持对话。",
-      "messagesSuffix": "条消息",
-      "note": "采购流订单由其指派代理处理,不在此显示。"
+      "title": "支持工单",
+      "description": "来自客户、工厂和代理的工单。按状态排序 — 关联主题、回复、解决。",
+      "kpiTotal": "总计",
+      "kpiPending": "待处理",
+      "kpiOpen": "处理中",
+      "kpiResolved": "已解决",
+      "filterAll": "全部",
+      "statusPending": "待处理",
+      "statusOpen": "处理中",
+      "statusResolved": "已解决",
+      "tableTitle": "工单",
+      "empty": "暂无支持工单。",
+      "messagesSuffix": "条消息"
     },
     "certifications": {
       "eyebrow": "认证",
@@ -2170,6 +2179,50 @@
           ]
         }
       ]
+    }
+  },
+  "support": {
+    "eyebrow": "支持",
+    "newCta": "提交工单",
+    "newTitle": "提交支持工单",
+    "newDescription": "向支持团队说明您的问题。回复会出现在此页面和您的消息中。",
+    "backToMessages": "返回消息",
+    "backToAdminQueue": "返回支持队列",
+    "subjectLabel": "主题",
+    "subjectPlaceholder": "例如:ORD-12345 付款问题",
+    "bodyLabel": "消息",
+    "bodyPlaceholder": "详细描述问题 — 复现步骤、截图、相关编号。",
+    "bodyHint": "工单创建后,您可以回复并继续上传文件。",
+    "attachmentsLabel": "附件(可选)",
+    "attachmentsHint": "图片、视频、音频或文档 · 最多 10 个",
+    "submitCta": "发送给支持",
+    "openedBy": "由 {name}({org})创建",
+    "resolvedOn": "{date} 已解决",
+    "statusPending": "待处理",
+    "statusOpen": "处理中",
+    "statusResolved": "已解决",
+    "topicSectionLabel": "工单主题",
+    "topicKindLabel": "类型",
+    "topicValueLabel": "编号或 ID",
+    "topicKindPlaceholder": "选择类型…",
+    "topicValuePlaceholder": "ORD-12345、REQ-987654…",
+    "topicHint": "粘贴相关实体的编号(ORD-…、REQ-…)或 ID。",
+    "topicMissing": "关联实体已被删除。",
+    "topicErrorMissing": "请选择类型并填写编号。",
+    "setTopic": "关联",
+    "updateTopic": "更新",
+    "clearTopic": "取消关联",
+    "adminControlsTitle": "管理员操作",
+    "adminOnly": "仅管理员可见",
+    "statusLabel": "工单状态",
+    "topicKinds": {
+      "ORDER": "订单",
+      "SOURCING_REQUEST": "采购需求",
+      "MARKETPLACE_PRODUCT": "市场商品",
+      "AUCTION": "拍卖",
+      "CLIENT_ORG": "买家",
+      "FACTORY_ORG": "工厂",
+      "AGENT": "代理"
     }
   },
   "forwarder": {

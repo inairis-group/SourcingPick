@@ -640,6 +640,7 @@
       "speedLabel": "Vitesse de lecture",
       "scrubLabel": "Position de lecture",
       "elapsedLabel": "Durée écoulée",
+      "recordingHint": "Enregistrement en cours…",
       "permissionDenied": "Microphone refusé. Autorisez l'accès puis réessayez.",
       "unsupported": "Votre navigateur ne permet pas l'enregistrement vocal."
     },
@@ -651,7 +652,8 @@
       "KYC": "Discussion liée à votre dossier KYC avec notre équipe.",
       "CERT": "Discussion liée à votre programme de certification.",
       "DISPUTE": "Discussion liée à un litige. Modérée par l'équipe SourcingPick.",
-      "DIRECT": "Discussion directe — pas rattachée à une commande, une demande ou un produit spécifique."
+      "DIRECT": "Discussion directe — pas rattachée à une commande, une demande ou un produit spécifique.",
+      "SUPPORT": "Ticket support — vous et l'équipe support SourcingPick."
     }
   },
   "tender": {
@@ -1213,12 +1215,19 @@
     },
     "support": {
       "eyebrow": "Support",
-      "title": "File support marketplace",
-      "description": "Conversations sur les commandes marketplace (sans agent assigné). Le support est géré par l'équipe plateforme.",
-      "tableTitle": "Conversations",
-      "empty": "Aucune conversation support active.",
-      "messagesSuffix": "messages",
-      "note": "Les commandes du flux sourcing sont gérées par leur agent dédié et n'apparaissent pas ici."
+      "title": "Tickets support",
+      "description": "Tickets ouverts par les clients, usines et agents. Triés par état ; assignez le sujet puis résolvez.",
+      "kpiTotal": "Total",
+      "kpiPending": "En attente",
+      "kpiOpen": "Ouverts",
+      "kpiResolved": "Résolus",
+      "filterAll": "Tous",
+      "statusPending": "En attente",
+      "statusOpen": "Ouverts",
+      "statusResolved": "Résolus",
+      "tableTitle": "Tickets",
+      "empty": "Aucun ticket support.",
+      "messagesSuffix": "messages"
     },
     "certifications": {
       "eyebrow": "Certifications",
@@ -2306,6 +2315,50 @@
           }
         ]
       }
+    }
+  },
+  "support": {
+    "eyebrow": "Support",
+    "newCta": "Ouvrir un ticket",
+    "newTitle": "Ouvrir un ticket support",
+    "newDescription": "Décrivez votre demande à l'équipe support. Vous recevrez les réponses ici et dans vos messages.",
+    "backToMessages": "Retour aux messages",
+    "backToAdminQueue": "Retour à la file support",
+    "subjectLabel": "Sujet",
+    "subjectPlaceholder": "Ex : Problème de paiement sur ORD-12345",
+    "bodyLabel": "Message",
+    "bodyPlaceholder": "Décrivez le problème en détail — étapes pour reproduire, captures, références concernées.",
+    "bodyHint": "Vous pourrez répondre et joindre d'autres fichiers une fois le ticket ouvert.",
+    "attachmentsLabel": "Pièces jointes (optionnel)",
+    "attachmentsHint": "Images, vidéos, audio ou documents · jusqu'à 10",
+    "submitCta": "Envoyer au support",
+    "openedBy": "Ouvert par {name} ({org})",
+    "resolvedOn": "Résolu le {date}",
+    "statusPending": "En attente",
+    "statusOpen": "Ouvert",
+    "statusResolved": "Résolu",
+    "topicSectionLabel": "Sujet du ticket",
+    "topicKindLabel": "Type",
+    "topicValueLabel": "Référence ou ID",
+    "topicKindPlaceholder": "Choisir un type…",
+    "topicValuePlaceholder": "ORD-12345, REQ-987654…",
+    "topicHint": "Collez la référence (ORD-…, REQ-…) ou l'identifiant de l'entité concernée.",
+    "topicMissing": "L'entité référencée a été supprimée.",
+    "topicErrorMissing": "Choisissez un type et renseignez la référence.",
+    "setTopic": "Lier",
+    "updateTopic": "Mettre à jour",
+    "clearTopic": "Détacher",
+    "adminControlsTitle": "Outils admin",
+    "adminOnly": "Visible par l'admin uniquement",
+    "statusLabel": "État du ticket",
+    "topicKinds": {
+      "ORDER": "Commande",
+      "SOURCING_REQUEST": "Demande sourcing",
+      "MARKETPLACE_PRODUCT": "Produit marketplace",
+      "AUCTION": "Enchère",
+      "CLIENT_ORG": "Acheteur",
+      "FACTORY_ORG": "Usine",
+      "AGENT": "Agent"
     }
   },
   "forwarder": {
