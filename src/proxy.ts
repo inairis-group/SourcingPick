@@ -1,12 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import {
   defaultLocale,
+  isLocale,
   localeCookieName,
   locales,
 } from "@/lib/i18n/config";
 import { resolveLocale } from "@/lib/i18n/match-locale";
 
 const PROTECTED_PREFIXES = ["/client", "/factory", "/agent", "/admin"] as const;
+const ONE_YEAR_SECONDS = 365 * 24 * 60 * 60;
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -22,7 +24,19 @@ export function proxy(request: NextRequest) {
     );
     const url = request.nextUrl.clone();
     url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
-    return NextResponse.redirect(url);
+    const redirect = NextResponse.redirect(url);
+    // Sticky locale: persist the resolved choice so any subsequent
+    // unprefixed navigation honours it instead of re-running
+    // Accept-Language negotiation (which can disagree between visits
+    // for users whose browser sends multiple high-weight languages).
+    redirect.cookies.set({
+      name: localeCookieName,
+      value: locale,
+      path: "/",
+      maxAge: ONE_YEAR_SECONDS,
+      sameSite: "lax",
+    });
+    return redirect;
   }
 
   // TODO Phase 1: optimistic auth-cookie check on PROTECTED_PREFIXES.
@@ -30,9 +44,28 @@ export function proxy(request: NextRequest) {
   // do NOT trust the proxy for authorization.
   void PROTECTED_PREFIXES;
 
-  const locale = pathname.split("/")[1] ?? defaultLocale;
+  const urlLocale = pathname.split("/")[1] ?? defaultLocale;
   const response = NextResponse.next();
-  response.headers.set("x-locale", locale);
+  response.headers.set("x-locale", urlLocale);
+
+  // Keep the cookie in lockstep with whatever URL the user is actually
+  // on. Two reasons:
+  //   1. They explicitly typed / linked to /<lang>/... — that's a
+  //      stronger signal than the original Accept-Language guess.
+  //   2. A stale cookie pointing at a different locale would flip the
+  //      page back the next time they hit an unprefixed redirect (the
+  //      partner-reported "English keeps flipping to French" bug).
+  const cookieLocale = request.cookies.get(localeCookieName)?.value;
+  if (isLocale(urlLocale) && cookieLocale !== urlLocale) {
+    response.cookies.set({
+      name: localeCookieName,
+      value: urlLocale,
+      path: "/",
+      maxAge: ONE_YEAR_SECONDS,
+      sameSite: "lax",
+    });
+  }
+
   return response;
 }
 

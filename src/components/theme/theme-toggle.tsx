@@ -89,9 +89,23 @@ const ICONS: Record<Theme, typeof Moon02Icon> = {
 
 export function ThemeToggle({
   display = "compact",
+  align = "bottom end",
+  menuClassName,
+  inline = false,
 }: {
   /** "compact" hides the label on small screens, "full" always shows it. */
   display?: "compact" | "full";
+  /** Where the menu opens relative to the trigger. */
+  align?: "bottom end" | "top end" | "bottom start" | "top start";
+  /** Extra classes for the MenuItems wrapper. */
+  menuClassName?: string;
+  /**
+   * Render items inline (absolutely positioned in the Menu wrapper)
+   * rather than via Headless UI's anchored portal. Needed inside a
+   * `<Dialog>` because the dialog inert-ifies sibling portals and the
+   * menu becomes unclickable. See LocaleDropdown for the same prop.
+   */
+  inline?: boolean;
 }) {
   const dict = useDictionary();
   const [theme, setTheme] = useState<Theme>("system");
@@ -132,12 +146,21 @@ export function ThemeToggle({
       </MenuButton>
 
       <MenuItems
-        anchor="bottom end"
+        {...(inline ? {} : { anchor: align })}
         className={cn(
-          "z-popover mt-1 w-40 origin-top-right rounded-lg border border-line bg-page/95 backdrop-blur-md shadow-md p-1",
+          "w-40 rounded-lg border border-line bg-page/95 backdrop-blur-md shadow-md p-1",
           "transition duration-fast ease-default",
           "data-closed:opacity-0 data-closed:scale-95",
           "focus:outline-none",
+          inline
+            ? [
+                "absolute",
+                align.startsWith("top") ? "bottom-full mb-1" : "top-full mt-1",
+                align.endsWith("end") ? "inset-e-0 origin-bottom-right" : "inset-s-0 origin-bottom-left",
+                "z-overlay-popover",
+              ]
+            : ["z-popover mt-1 origin-top-right"],
+          menuClassName,
         )}
       >
         {(["light", "dark", "system"] as Theme[]).map((t) => (

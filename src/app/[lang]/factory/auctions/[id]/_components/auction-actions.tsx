@@ -9,7 +9,7 @@ import {
   cancelAuctionDraftAction,
   submitAuctionForReviewAction,
 } from "@/lib/auctions/actions";
-import { useDictionary } from "@/lib/i18n/client-provider";
+import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 
 /**
  * Factory-side state-machine controls on the auction detail page.
@@ -27,6 +27,7 @@ export function AuctionActions({
   hasImages: boolean;
 }) {
   const dict = useDictionary();
+  const lang = useLocale();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -76,7 +77,7 @@ export function AuctionActions({
         setError(r.error);
         return;
       }
-      router.push("/factory/auctions");
+      router.push(`/${lang}/factory/auctions`);
     });
   };
 

@@ -12,9 +12,27 @@ type Props = {
   /** "compact" hides the locale label on small screens, "full" always shows it. */
   display?: "compact" | "full";
   className?: string;
+  /** Where the menu opens relative to the trigger. Defaults to "bottom end" for the top bar; overlay usage flips to "top end" so it doesn't run off-screen. */
+  align?: "bottom end" | "top end" | "bottom start" | "top start";
+  /** Extra classes appended to the MenuItems wrapper (e.g. higher z-index). */
+  menuClassName?: string;
+  /**
+   * Render the items inside the Menu wrapper (absolutely positioned)
+   * instead of via Headless UI's anchored portal. The portal mode is
+   * great for top-bar usage but breaks inside `<Dialog>` — the Dialog
+   * inert-ifies its siblings, killing pointer events on the portal.
+   * The mobile role-nav overlay sets this to true.
+   */
+  inline?: boolean;
 };
 
-export function LocaleDropdown({ display = "compact", className }: Props) {
+export function LocaleDropdown({
+  display = "compact",
+  className,
+  align = "bottom end",
+  menuClassName,
+  inline = false,
+}: Props) {
   const currentLocale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
@@ -44,12 +62,21 @@ export function LocaleDropdown({ display = "compact", className }: Props) {
       </MenuButton>
 
       <MenuItems
-        anchor="bottom end"
+        {...(inline ? {} : { anchor: align })}
         className={cn(
-          "z-popover mt-1 w-40 origin-top-right rounded-lg border border-line bg-page/95 backdrop-blur-md shadow-md p-1",
+          "w-40 rounded-lg border border-line bg-page/95 backdrop-blur-md shadow-md p-1",
           "transition duration-fast ease-default",
           "data-closed:opacity-0 data-closed:scale-95",
           "focus:outline-none",
+          inline
+            ? [
+                "absolute",
+                align.startsWith("top") ? "bottom-full mb-1" : "top-full mt-1",
+                align.endsWith("end") ? "inset-e-0 origin-bottom-right" : "inset-s-0 origin-bottom-left",
+                "z-overlay-popover",
+              ]
+            : ["z-popover mt-1 origin-top-right"],
+          menuClassName,
         )}
       >
         {locales.map((loc) => (

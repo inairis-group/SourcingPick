@@ -152,14 +152,25 @@ export function RoleNavOverlay({ groups }: { groups: NavGroup[] }) {
                 </div>
               </nav>
 
-              {/* Preferences footer — only relevant on viewports where these
-                  utilities aren't already in the top bar, but harmless to
-                  show everywhere since the menu is a temporary overlay. */}
+              {/* Preferences footer. Headless UI's Dialog inert-ifies
+                  every sibling node when open, which kills pointer
+                  events on the default anchored MenuItems portal (it
+                  renders outside the dialog tree). `inline` swaps the
+                  portal for an absolutely-positioned wrapper inside
+                  the Menu, keeping the items in the dialog's DOM so
+                  taps register. `align="top end"` opens them upward
+                  from the footer trigger. */}
               <div className="md:hidden border-t border-line-subtle px-4 py-4 bg-page">
                 <div className="mx-auto max-w-3xl flex items-center justify-between gap-2 flex-wrap">
-                  <div className="flex items-center gap-1.5">
-                    <LocaleDropdown display="full" />
-                    <ThemeToggle display="full" />
+                  <div className="flex items-center gap-1">
+                    {/* `top start` so the menu's leading edge aligns
+                        with the trigger and extends inward (rightward
+                        in LTR, leftward in RTL). With `top end` the
+                        right edge of the menu was pinned to the
+                        trigger's right edge and the menu spilled off
+                        the left of the screen. */}
+                    <LocaleDropdown display="full" align="top start" inline />
+                    <ThemeToggle display="full" align="top start" inline />
                   </div>
                   <LogoutButton variant="icon" />
                 </div>

@@ -181,6 +181,13 @@
 @utility z-modal {
   z-index: 50;
 }
+/* Popovers that need to render ABOVE an open modal — used by the
+ * locale / theme dropdowns inside the mobile role-nav overlay. The
+ * default z-popover (40) lands underneath z-modal (50), so an open
+ * menu would be invisible in that context. */
+@utility z-overlay-popover {
+  z-index: 55;
+}
 @utility z-toast {
   z-index: 60;
 }
@@ -472,6 +479,122 @@
       black 100%
     );
     animation: cta-dots-drift 40s linear infinite;
+  }
+
+  /* =============================================================
+   * Tiptap WYSIWYG markdown editor — inline-rendered formatting.
+   * Lives in src/components/ui/markdown-editor.tsx.
+   * ============================================================= */
+  .markdown-editor-content {
+    color: var(--color-fg);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  .markdown-editor-content :focus {
+    outline: none;
+  }
+  .markdown-editor-content p {
+    margin: 0 0 0.5em;
+  }
+  .markdown-editor-content p:last-child {
+    margin-bottom: 0;
+  }
+  .markdown-editor-content h1,
+  .markdown-editor-content h2,
+  .markdown-editor-content h3 {
+    color: var(--color-headline);
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 1em 0 0.4em;
+    letter-spacing: -0.01em;
+  }
+  .markdown-editor-content h1:first-child,
+  .markdown-editor-content h2:first-child,
+  .markdown-editor-content h3:first-child {
+    margin-top: 0;
+  }
+  .markdown-editor-content h1 {
+    font-size: 1.5rem;
+  }
+  .markdown-editor-content h2 {
+    font-size: 1.25rem;
+  }
+  .markdown-editor-content h3 {
+    font-size: 1.075rem;
+  }
+  .markdown-editor-content strong {
+    color: var(--color-headline);
+    font-weight: 700;
+  }
+  .markdown-editor-content em {
+    font-style: italic;
+  }
+  .markdown-editor-content s {
+    text-decoration: line-through;
+    text-decoration-color: var(--color-muted);
+  }
+  .markdown-editor-content ul,
+  .markdown-editor-content ol {
+    margin: 0.5em 0;
+    padding-inline-start: 1.5em;
+  }
+  .markdown-editor-content ul {
+    list-style: disc;
+  }
+  .markdown-editor-content ol {
+    list-style: decimal;
+  }
+  .markdown-editor-content li {
+    margin: 0.2em 0;
+  }
+  .markdown-editor-content li > p {
+    margin: 0;
+  }
+  .markdown-editor-content blockquote {
+    border-inline-start: 3px solid var(--color-line-strong);
+    margin: 0.75em 0;
+    padding-inline-start: 1em;
+    color: var(--color-muted);
+    font-style: italic;
+  }
+  .markdown-editor-content code {
+    background-color: var(--color-subtle);
+    border-radius: var(--radius-xs, 3px);
+    padding: 0.1em 0.35em;
+    font-size: 0.9em;
+    color: var(--color-fg);
+  }
+  .markdown-editor-content pre {
+    background-color: var(--color-subtle);
+    border-radius: var(--radius-sm, 4px);
+    padding: 0.75em 1em;
+    overflow-x: auto;
+    font-size: 0.9em;
+  }
+  .markdown-editor-content pre code {
+    background: none;
+    padding: 0;
+  }
+  .markdown-editor-content a {
+    color: var(--color-link, var(--color-brand-700));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .markdown-editor-content hr {
+    border: 0;
+    border-top: 1px solid var(--color-line-subtle);
+    margin: 1.25em 0;
+  }
+  /* Tiptap Placeholder — shows a hint inside the first empty paragraph.
+     The class is set on the root contenteditable when the doc is empty;
+     `data-placeholder` is set per node by the extension. */
+  .markdown-editor-content p.is-editor-empty:first-child::before,
+  .markdown-editor-content.is-empty-editor p:first-child::before {
+    content: attr(data-placeholder);
+    color: var(--color-faint);
+    pointer-events: none;
+    float: inline-start;
+    height: 0;
   }
 
   /* Respect user motion preferences */
