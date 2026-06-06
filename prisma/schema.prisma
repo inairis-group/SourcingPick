@@ -100,6 +100,11 @@ enum SourcingStatus {
   QUOTE_SENT
   QUOTE_ACCEPTED
   QUOTE_REJECTED
+  /// Deprecated (CTO audit F6) — never written by the order→request
+  /// mirror in src/lib/orders/actions.ts and never read elsewhere.
+  /// Kept here only because PostgreSQL doesn't support dropping enum
+  /// values without a full type recreate; a follow-up migration will
+  /// rebuild the enum once we coordinate downtime.
   PAYMENT_PENDING
   PREPARATION
   SHIPPED
@@ -256,14 +261,19 @@ enum AttachmentKind {
  * payout audit references). Each provider has its own credential set
  * in env and its own KYC flow; see lib/payouts/* for adapters.
  */
+/// Live rail = WISE only (decided 2026-06-02). The Stripe / LianLian /
+/// Alipay values are deprecated (CTO audit F8) — no code path resolves
+/// to them after the migration; we keep them in the enum because
+/// PostgreSQL doesn't support `DROP VALUE` without recreating the type.
+/// A follow-up migration will rebuild the enum once we coordinate the
+/// requisite downtime / column rewrite.
 enum PayoutProvider {
+  /// @deprecated — Wise replaced this rail. Never written by current code.
   STRIPE_CONNECT
+  /// @deprecated — Wise replaced this rail. Never written by current code.
   LIANLIAN
+  /// @deprecated — Wise replaced this rail. Never written by current code.
   ALIPAY
-  /// Wise Business — the live rail going forward (decided 2026-06-02).
-  /// STRIPE_CONNECT / LIANLIAN / ALIPAY are kept here until the Wise
-  /// migration finishes, then dropped in a follow-up migration along with
-  /// the corresponding adapter files.
   WISE
 }
 
@@ -314,11 +324,17 @@ enum EscrowReleaseTrigger {
   AUTO_TIMEOUT
 }
 
+/// Same deprecation as PayoutProvider — only WISE is written today.
+/// SEPA / SWIFT remain valid (they're rail-method labels Wise can resolve
+/// to under the hood). STRIPE_CONNECT / LIANLIAN / ALIPAY are dead.
 enum PayoutMethod {
   SEPA
   SWIFT
+  /// @deprecated — see PayoutProvider.
   STRIPE_CONNECT
+  /// @deprecated — see PayoutProvider.
   LIANLIAN
+  /// @deprecated — see PayoutProvider.
   ALIPAY
   WISE
 }
@@ -886,7 +902,17 @@ model Order {
   status          OrderStatus     @default(PAYMENT_PENDING)
   estimatedEta    DateTime?
   shippedAt       DateTime?
+  /// Set when the buyer confirms physical receipt of the goods. Separate
+  /// from `balancePaidAt` — both must be set for COMPLETED to be reached
+  /// (CTO audit F1b). When the buyer confirms before paying the balance,
+  /// this is recorded but the status stays at SHIPPED / IN_TRANSIT until
+  /// the balance settles.
   deliveredAt     DateTime?
+  /// Set by the payment finaliser when the balance wire / charge has
+  /// reconciled. Together with `deliveredAt`, gates the transition into
+  /// COMPLETED + factory payout (CTO audit F1b / F1c). Buyer-initiated
+  /// COMPLETED is blocked while this is null.
+  balancePaidAt   DateTime?
   trackingNumber  String?
   trackingCarrier String?
   trackingUrl     String?
@@ -975,7 +1001,11 @@ model MarketplaceProduct {
   publishedAt       DateTime?
   viewsCount        Int                      @default(0)
   soldCount         Int                      @default(0)
-  deletedAt         DateTime?
+  /// Buyer-side acompte share in basis points (3000 = 30%, 5000 = 50%).
+  /// Mirrors `Quote.depositPercentageBps` so marketplace + sourcing share
+  /// the same 30–50% policy (CTO audit F4). Default 3000 keeps existing
+  /// listings on the 30 % split.
+  depositPercentageBps Int                   @default(3000)
   createdAt         DateTime                 @default(now())
   updatedAt         DateTime                 @updatedAt
 
@@ -1045,8 +1075,13 @@ model Payout {
   factoryOrg      Organization      @relation(fields: [factoryOrgId], references: [id], onDelete: Restrict)
   escrowId        String            @unique
   escrow          EscrowTransaction @relation(fields: [escrowId], references: [id], onDelete: Restrict)
-  amountCents     Int // order total − commission
-  commissionCents Int
+  amountCents     Int // net paid to the factory (gross − supplier fee)
+  /// 3% supplier-side fee retained by the platform on a payout. Renamed
+  /// from `commissionCents` (CTO audit F3) because `Order.commissionCents`
+  /// already means "total buyer-side platform margin" — two columns with
+  /// the same name + different semantics was making finance reporting
+  /// drift.
+  supplierFeeCents Int
   method          PayoutMethod
   status          PayoutStatus      @default(PENDING)
   scheduledAt     DateTime?

@@ -140,23 +140,23 @@ export default async function FactoryDashboardPage({
     }),
     prisma.marketplaceProduct.groupBy({
       by: ["status"],
-      where: { factoryOrgId: user.organizationId, deletedAt: null },
-      _count: true,
+      where: { factoryOrgId: user.organizationId },
+      _count: { _all: true },
     }),
   ]);
 
   const published =
     catalogueBreakdown.find(
       (b) => b.status === MarketplaceProductStatus.PUBLISHED,
-    )?._count ?? 0;
+    )?._count._all ?? 0;
   const pendingReview =
     catalogueBreakdown.find(
       (b) => b.status === MarketplaceProductStatus.PENDING_REVIEW,
-    )?._count ?? 0;
+    )?._count._all ?? 0;
   const draft =
     catalogueBreakdown.find(
       (b) => b.status === MarketplaceProductStatus.DRAFT,
-    )?._count ?? 0;
+    )?._count._all ?? 0;
 
   const kycReady = org?.kycStatus === KycStatus.VERIFIED;
   const connectReady = Boolean(org?.stripeConnectAccountId);

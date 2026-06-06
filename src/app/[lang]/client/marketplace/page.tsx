@@ -60,7 +60,6 @@ export default async function ClientMarketplacePage({
   const products = await prisma.marketplaceProduct.findMany({
     where: {
       status: MarketplaceProductStatus.PUBLISHED,
-      deletedAt: null,
       ...(category ? { category } : {}),
       ...(condition ? { condition } : {}),
       // See marketing/marketplace/page.tsx for the AND-of-ORs rationale.

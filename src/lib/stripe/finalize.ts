@@ -99,6 +99,8 @@ export async function finalizeBuyerOrderPayment(input: {
       factoryOrgId: true,
       agentId: true,
       requestId: true,
+      deliveredAt: true,
+      balancePaidAt: true,
       factoryOrg: { select: { displayName: true } },
     },
   });
@@ -114,14 +116,35 @@ export async function finalizeBuyerOrderPayment(input: {
   // plus any platform credit the buyer applied.
   const recordedCents = input.amountCents + appliedCreditCents;
 
-  const nextOrderStatus =
-    input.type === InvoiceType.DEPOSIT
-      ? OrderStatus.PREPARATION
-      : OrderStatus.COMPLETED;
-  const nextRequestStatus =
-    input.type === InvoiceType.DEPOSIT
-      ? SourcingStatus.PREPARATION
-      : SourcingStatus.COMPLETED;
+  // CTO audit F1c: the finaliser previously forced COMPLETED on every
+  // BALANCE payment regardless of current state — skipping SHIPPED /
+  // IN_TRANSIT and erasing the logistics trail. It now only advances the
+  // status when the move makes sense:
+  //   - DEPOSIT  +  PAYMENT_PENDING        → PREPARATION
+  //   - BALANCE  +  (SHIPPED | IN_TRANSIT) + deliveredAt set → COMPLETED
+  //   - BALANCE  + anything else           → status unchanged; just
+  //                                          stamp balancePaidAt so the
+  //                                          buyer's eventual delivery
+  //                                          confirmation can close it.
+  let nextOrderStatus: OrderStatus | null = null;
+  let nextRequestStatus: SourcingStatus | null = null;
+
+  if (input.type === InvoiceType.DEPOSIT) {
+    if (order.status === OrderStatus.PAYMENT_PENDING) {
+      nextOrderStatus = OrderStatus.PREPARATION;
+      nextRequestStatus = SourcingStatus.PREPARATION;
+    }
+  } else {
+    const inLogistics =
+      order.status === OrderStatus.SHIPPED ||
+      order.status === OrderStatus.IN_TRANSIT;
+    if (inLogistics && order.deliveredAt) {
+      nextOrderStatus = OrderStatus.COMPLETED;
+      nextRequestStatus = SourcingStatus.COMPLETED;
+    }
+  }
+
+  const completing = nextOrderStatus === OrderStatus.COMPLETED;
 
   await prisma.$transaction(async (tx) => {
     const invoice = await tx.invoice.create({
@@ -169,15 +192,19 @@ export async function finalizeBuyerOrderPayment(input: {
     await tx.order.update({
       where: { id: order.id },
       data: {
-        status: nextOrderStatus,
-        ...(input.type === InvoiceType.BALANCE ? { deliveredAt: now } : {}),
+        ...(nextOrderStatus ? { status: nextOrderStatus } : {}),
+        ...(input.type === InvoiceType.BALANCE
+          ? { balancePaidAt: now }
+          : {}),
       },
     });
 
-    await tx.sourcingRequest.update({
-      where: { id: order.requestId },
-      data: { status: nextRequestStatus },
-    });
+    if (nextRequestStatus) {
+      await tx.sourcingRequest.update({
+        where: { id: order.requestId },
+        data: { status: nextRequestStatus },
+      });
+    }
   });
 
   await writeAuditLog({
@@ -224,7 +251,11 @@ export async function finalizeBuyerOrderPayment(input: {
       contextType: "Order",
       contextId: order.id,
     });
-  } else {
+  } else if (completing) {
+    // Closure path — balance just paid AND delivery already confirmed.
+    // Notify everyone, release every HELD escrow on the order (CTO
+    // audit F2 — used to leave the balance escrow HELD for life), and
+    // dispatch the factory payout.
     await emitNotificationToMany(
       [...clientIds, ...factoryIds, ...agentIds],
       {
@@ -234,9 +265,6 @@ export async function finalizeBuyerOrderPayment(input: {
         contextId: order.id,
       },
     );
-    // Balance is paid → time to push the factory's net to their Connect
-    // account. Failures here are recorded as PENDING payouts so an admin
-    // can replay manually; we never rollback the order completion.
     await releaseFactoryPayout(order.id).catch(async (e) => {
       await writeAuditLog({
         action: "payout.release_failed",
@@ -246,9 +274,39 @@ export async function finalizeBuyerOrderPayment(input: {
         level: "ALERT",
       });
     });
+  } else {
+    // Balance landed but the buyer hasn't confirmed delivery yet — let
+    // them know payment is in, but no payout or escrow release fires
+    // until the closure path runs (via advanceOrderStatusAction once
+    // they tap "I received it").
+    await emitNotificationToMany([...clientIds, ...factoryIds, ...agentIds], {
+      type: NotificationType.PAYMENT_RECEIVED,
+      vars: { reference: order.reference },
+      contextType: "Order",
+      contextId: order.id,
+    });
   }
 
   return { applied: true };
+}
+
+/**
+ * Closure path used by both the finaliser and the delivery-confirmation
+ * action: flip the order to COMPLETED, release every HELD escrow on it
+ * (CTO audit F2), and dispatch the factory payout. Safe to call twice —
+ * the `updateMany` only flips rows still in HELD and `releaseFactoryPayout`
+ * is idempotent on the payout reference.
+ */
+export async function closeOrderOnCompletion(orderId: string): Promise<void> {
+  await releaseFactoryPayout(orderId).catch(async (e) => {
+    await writeAuditLog({
+      action: "payout.release_failed",
+      targetType: "Order",
+      targetId: orderId,
+      payload: { message: (e as Error).message },
+      level: "ALERT",
+    });
+  });
 }
 
 /**
@@ -282,7 +340,9 @@ async function releaseFactoryPayout(orderId: string): Promise<void> {
       },
       factoryOrg: {
         select: {
-          stripeConnectAccountId: true,
+          // Wise is the live rail (CTO audit F8). The Stripe column
+          // stays on the schema for historical orders but is no longer
+          // read at payout time.
           payoutProvider: true,
           payoutAccountId: true,
           displayName: true,
@@ -292,11 +352,13 @@ async function releaseFactoryPayout(orderId: string): Promise<void> {
   });
   if (!order) return;
 
-  // Find the *deposit-side* escrow (held since the deposit), which is the
-  // row we mark RELEASED. The balance escrow row created moments ago is
-  // also released — for v1 we release the deposit-escrow as the canonical
-  // marker of "funds out the door"; in Phase 6 we'll split this per leg.
-  const escrow = await prisma.escrowTransaction.findFirst({
+  // Release EVERY HELD escrow on the order — both the deposit row and
+  // the balance row created when finalising the second payment. CTO
+  // audit F2: this used to release the deposit-side only, leaving the
+  // balance escrow HELD for life even though the factory had been paid
+  // in full. The Payout row still anchors to the deposit escrow id so
+  // legacy reports keep working; the new releaseMany covers the rest.
+  const heldEscrows = await prisma.escrowTransaction.findMany({
     where: {
       orderId: order.id,
       status: EscrowStatus.HELD,
@@ -304,27 +366,23 @@ async function releaseFactoryPayout(orderId: string): Promise<void> {
     orderBy: { createdAt: "asc" },
     select: { id: true },
   });
-  if (!escrow) {
+  if (heldEscrows.length === 0) {
     throw new Error("No HELD escrow found for order — nothing to release.");
   }
+  const primaryEscrow = heldEscrows[0]!;
 
   const { grossCents, feeCents, netCents } = computeFactoryPayout(
     order.quote.unitPriceCentsFactory,
     order.quote.quantity,
   );
 
-  // Resolve the payout rail. Prefer the explicit provider/account; fall
-  // back to the legacy Stripe Connect id for orgs onboarded before the
-  // multi-provider migration (the migration backfilled most of these).
-  const provider: PayoutProvider | null =
-    order.factoryOrg.payoutProvider ??
-    (order.factoryOrg.stripeConnectAccountId
-      ? PayoutProvider.STRIPE_CONNECT
-      : null);
-  const accountId =
-    order.factoryOrg.payoutAccountId ??
-    order.factoryOrg.stripeConnectAccountId ??
-    null;
+  // Resolve the payout rail. CTO audit F8: the legacy Stripe-Connect
+  // fallback was retired alongside the Wise migration. Orgs onboarded
+  // before then carry a non-null `payoutProvider` (the migration
+  // backfilled them); anything still missing both fields is treated as
+  // "factory hasn't completed payout onboarding yet".
+  const provider: PayoutProvider | null = order.factoryOrg.payoutProvider;
+  const accountId = order.factoryOrg.payoutAccountId;
 
   const payoutReference = await generateUniqueReference("PAY");
   const now = new Date();
@@ -332,9 +390,9 @@ async function releaseFactoryPayout(orderId: string): Promise<void> {
   let providerRef: string | null = null;
   let status: PayoutStatus = PayoutStatus.PENDING;
   let failureReason: string | null = null;
-  const method = provider
-    ? PROVIDER_TO_METHOD[provider]
-    : PayoutMethod.STRIPE_CONNECT;
+  // Default to WISE — the only live rail. The PROVIDER_TO_METHOD table
+  // still maps each provider for historical orders.
+  const method = provider ? PROVIDER_TO_METHOD[provider] : PayoutMethod.WISE;
 
   if (!provider || !accountId) {
     failureReason = "factory_payout_not_set_up";
@@ -360,9 +418,13 @@ async function releaseFactoryPayout(orderId: string): Promise<void> {
       data: {
         reference: payoutReference,
         factoryOrgId: order.factoryOrgId,
-        escrowId: escrow.id,
+        // Anchor the payout to the primary (deposit) escrow id so
+        // existing reporting joins keep their semantics. The full set
+        // of released rows is reachable via Order → escrows.
+        escrowId: primaryEscrow.id,
         amountCents: netCents,
-        commissionCents: feeCents,
+        // Renamed from `commissionCents` — see Payout schema comment.
+        supplierFeeCents: feeCents,
         method,
         status,
         scheduledAt: status === PayoutStatus.SENT ? null : now,
@@ -371,8 +433,15 @@ async function releaseFactoryPayout(orderId: string): Promise<void> {
         failureReason,
       },
     });
-    await tx.escrowTransaction.update({
-      where: { id: escrow.id },
+    // F2: release ALL HELD escrows in one updateMany so the balance
+    // escrow no longer lingers HELD. releaseTrigger keeps the
+    // DELIVERY_CONFIRMED label — after the F1b lifecycle changes,
+    // closure literally requires the buyer's delivery confirmation.
+    await tx.escrowTransaction.updateMany({
+      where: {
+        id: { in: heldEscrows.map((e) => e.id) },
+        status: EscrowStatus.HELD,
+      },
       data: {
         status: EscrowStatus.RELEASED,
         releasedAt: now,

@@ -39,7 +39,7 @@ export default async function FactoryCataloguePage({
   const dict = await getDictionary(lang);
 
   const products = await prisma.marketplaceProduct.findMany({
-    where: { factoryOrgId: user.organizationId, deletedAt: null },
+    where: { factoryOrgId: user.organizationId },
     orderBy: [{ status: "asc" }, { createdAt: "desc" }],
     select: {
       id: true,

@@ -722,6 +722,8 @@
       },
       "compareAtLabel": "Compare-at price",
       "compareAtHint": "Original factory-net price for a strikethrough. Leave empty for no discount badge.",
+      "depositLabel": "Deposit (%)",
+      "depositHint": "Share paid at checkout, 30–50%. Balance settles at shipment. Aligned with the sourcing flow.",
       "flashSaleLabel": "Flash-sale ends",
       "flashSaleHint": "Optional. While set in the future, the listing shows a flash-sale badge and countdown to buyers.",
       "promotionTitle": "Promotions",

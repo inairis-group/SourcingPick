@@ -3,27 +3,35 @@ import { OrderStatus, Role } from "@prisma/client";
 /**
  * v1 Order state machine — spec §3.2.
  *
- *   PAYMENT_PENDING ──client(sandbox-pay)──▶ PREPARATION
+ *   PAYMENT_PENDING ──payment-finaliser──▶ PREPARATION
  *                  ╲──admin/client(cancel)──▶ CANCELLED
  *   PREPARATION    ──factory──▶ QC
  *                  ╲──admin(cancel)──▶ CANCELLED
  *   QC             ──factory(+tracking)──▶ SHIPPED
  *                  ╲──admin(cancel)──▶ CANCELLED
  *   SHIPPED        ──factory──▶ IN_TRANSIT
- *                  ╲──client(confirm)──▶ COMPLETED
- *   IN_TRANSIT     ──client(confirm)──▶ COMPLETED
+ *                  ╲──client(confirm)──▶ COMPLETED (if balance paid)
+ *   IN_TRANSIT     ──client(confirm)──▶ COMPLETED (if balance paid)
  *   COMPLETED      ─ terminal
  *   CANCELLED      ─ terminal
  *
- * PAYMENT_PENDING → PREPARATION will be driven by the payment-provider
- * webhook in Phase 3; the sandbox button is a stand-in until then.
+ * PAYMENT_PENDING → PREPARATION is reserved for ADMIN (manual override)
+ * and the payment finaliser (Wise webhook + reconciliation). The buyer
+ * cannot move the order out of PAYMENT_PENDING by themselves any more
+ * (CTO audit F1a) — the deposit must actually land first.
+ *
+ * SHIPPED / IN_TRANSIT → COMPLETED is gated by `Order.balancePaidAt`
+ * being set at the action layer (CTO audit F1b). The matrix lets the
+ * role attempt the move; `advanceOrderStatusAction` records the buyer's
+ * delivery confirmation but holds the status flip until the balance has
+ * been reconciled. See src/lib/orders/actions.ts.
  */
 export const ORDER_TRANSITIONS: Record<
   OrderStatus,
   Partial<Record<OrderStatus, Role[]>>
 > = {
   PAYMENT_PENDING: {
-    PREPARATION: [Role.CLIENT, Role.ADMIN],
+    PREPARATION: [Role.ADMIN],
     CANCELLED: [Role.CLIENT, Role.ADMIN],
   },
   PREPARATION: {

@@ -47,6 +47,16 @@ const ProductInputSchema = z
     leadTimeUnit: z.enum(LeadTimeUnit).default(LeadTimeUnit.DAY),
     certifications: z.string().trim().max(500).optional().or(z.literal("")),
     condition: z.enum(MarketplaceCondition).default(MarketplaceCondition.NEW),
+    /// Buyer-side acompte share (whole %, 30–50). Persists in basis
+    /// points (×100). Mirrors the sourcing-flow choice so a factory
+    /// gives the same answer to "how much do you want upfront" on both
+    /// channels (CTO audit F4).
+    depositPercentage: z.coerce
+      .number()
+      .int()
+      .min(30, "Acompte must be at least 30%.")
+      .max(50, "Acompte cannot exceed 50%.")
+      .default(30),
     /// "Was" price (factory-side) — strikethrough is rendered against the
     /// client-side comparison after we apply the buyer markup, so both stay
     /// internally consistent (factory enters factory-net, buyer sees all-in).
@@ -124,6 +134,7 @@ export async function createProductAction(
     leadTimeUnit: formData.get("leadTimeUnit") ?? LeadTimeUnit.DAY,
     certifications: formData.get("certifications") ?? "",
     condition: formData.get("condition") ?? MarketplaceCondition.NEW,
+    depositPercentage: formData.get("depositPercentage") ?? "30",
     compareAtEur: formData.get("compareAtEur") ?? "",
     flashSaleEndsAt: formData.get("flashSaleEndsAt") ?? "",
   });
@@ -158,6 +169,7 @@ export async function createProductAction(
       compareAtCents,
       flashSaleEndsAt,
       condition: parsed.data.condition,
+      depositPercentageBps: parsed.data.depositPercentage * 100,
       moq: parsed.data.moq,
       stockAvailable: parsed.data.stockAvailable,
       stockLowThreshold:
@@ -243,7 +255,7 @@ export async function updateProductAction(
   const factory = await requireRole(Role.FACTORY);
 
   const existing = await prisma.marketplaceProduct.findFirst({
-    where: { id: productId, factoryOrgId: factory.organizationId, deletedAt: null },
+    where: { id: productId, factoryOrgId: factory.organizationId },
     select: { id: true, status: true, images: true },
   });
   if (!existing) return { error: "Product not found." };
@@ -269,6 +281,7 @@ export async function updateProductAction(
     leadTimeUnit: formData.get("leadTimeUnit") ?? LeadTimeUnit.DAY,
     certifications: formData.get("certifications") ?? "",
     condition: formData.get("condition") ?? MarketplaceCondition.NEW,
+    depositPercentage: formData.get("depositPercentage") ?? "30",
     compareAtEur: formData.get("compareAtEur") ?? "",
     flashSaleEndsAt: formData.get("flashSaleEndsAt") ?? "",
   });
@@ -318,6 +331,7 @@ export async function updateProductAction(
       compareAtCents,
       flashSaleEndsAt,
       condition: parsed.data.condition,
+      depositPercentageBps: parsed.data.depositPercentage * 100,
       moq: parsed.data.moq,
       stockAvailable: parsed.data.stockAvailable,
       stockLowThreshold:
@@ -373,7 +387,7 @@ export async function submitProductForReviewAction(
 ): Promise<ProductMutationResult> {
   const factory = await requireRole(Role.FACTORY);
   const existing = await prisma.marketplaceProduct.findFirst({
-    where: { id: productId, factoryOrgId: factory.organizationId, deletedAt: null },
+    where: { id: productId, factoryOrgId: factory.organizationId },
     select: { id: true, status: true, images: true, reference: true },
   });
   if (!existing) return { ok: false, error: "Product not found." };
@@ -423,7 +437,7 @@ export async function archiveProductAction(
 ): Promise<ProductMutationResult> {
   const factory = await requireRole(Role.FACTORY);
   const existing = await prisma.marketplaceProduct.findFirst({
-    where: { id: productId, factoryOrgId: factory.organizationId, deletedAt: null },
+    where: { id: productId, factoryOrgId: factory.organizationId },
     select: { id: true, status: true },
   });
   if (!existing) return { ok: false, error: "Product not found." };
@@ -485,6 +499,7 @@ export async function adminCreateProductAction(
     leadTimeUnit: formData.get("leadTimeUnit") ?? LeadTimeUnit.DAY,
     certifications: formData.get("certifications") ?? "",
     condition: formData.get("condition") ?? MarketplaceCondition.NEW,
+    depositPercentage: formData.get("depositPercentage") ?? "30",
     compareAtEur: formData.get("compareAtEur") ?? "",
     flashSaleEndsAt: formData.get("flashSaleEndsAt") ?? "",
   });
@@ -517,6 +532,7 @@ export async function adminCreateProductAction(
       compareAtCents,
       flashSaleEndsAt,
       condition: parsed.data.condition,
+      depositPercentageBps: parsed.data.depositPercentage * 100,
       moq: parsed.data.moq,
       stockAvailable: parsed.data.stockAvailable,
       stockLowThreshold:
@@ -644,7 +660,6 @@ export async function setPromotionAction(
     where: {
       id: productId,
       factoryOrgId: factory.organizationId,
-      deletedAt: null,
     },
     select: { id: true, status: true, priceCentsClient: true },
   });

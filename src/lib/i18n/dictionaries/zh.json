@@ -722,6 +722,8 @@
       },
       "compareAtLabel": "原价(划线)",
       "compareAtHint": "原工厂净价,用于划线显示。留空则不显示折扣徽章。",
+      "depositLabel": "定金(%)",
+      "depositHint": "下单时支付比例,30–50%。尾款发货时结算。与采购流程保持一致。",
       "flashSaleLabel": "限时促销结束时间",
       "flashSaleHint": "可选。当结束时间在未来时,商品页面会显示限时促销徽章及倒计时。",
       "promotionTitle": "促销活动",

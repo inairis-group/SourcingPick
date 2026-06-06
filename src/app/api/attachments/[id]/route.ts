@@ -97,11 +97,13 @@ async function canRead(att: {
       return true;
 
     case AttachmentContext.MARKETPLACE_PRODUCT: {
+      // CTO audit F7: `deletedAt` removed — ARCHIVED status is the
+      // canonical retirement signal.
       const product = await prisma.marketplaceProduct.findUnique({
         where: { id: att.contextId },
-        select: { status: true, deletedAt: true, factoryOrgId: true },
+        select: { status: true, factoryOrgId: true },
       });
-      if (!product || product.deletedAt) return false;
+      if (!product) return false;
       if (product.status === MarketplaceProductStatus.ARCHIVED) {
         // Archived listings: only the owning factory + admin can still pull.
         const session = await auth();

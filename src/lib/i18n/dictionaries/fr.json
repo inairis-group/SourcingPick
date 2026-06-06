@@ -722,6 +722,8 @@
       },
       "compareAtLabel": "Prix barré (avant)",
       "compareAtHint": "Prix d'origine côté usine, affiché barré. Laissez vide pour ne pas afficher de remise.",
+      "depositLabel": "Acompte (%)",
+      "depositHint": "Part payée à la commande, 30 à 50 %. Le solde est encaissé à l'expédition. Aligné avec le flux sourcing.",
       "flashSaleLabel": "Fin de la vente flash",
       "flashSaleHint": "Optionnel. Tant que la date est à venir, l'annonce affiche un badge \"vente flash\" et un compte à rebours aux acheteurs.",
       "promotionTitle": "Promotions",

@@ -30,9 +30,9 @@ export async function GET(
 
   const product = await prisma.marketplaceProduct.findUnique({
     where: { id: productId },
-    select: { id: true, status: true, images: true, deletedAt: true },
+    select: { id: true, status: true, images: true },
   });
-  if (!product || product.deletedAt) {
+  if (!product) {
     return new NextResponse("Not found", { status: 404 });
   }
   if (product.status === MarketplaceProductStatus.ARCHIVED) {

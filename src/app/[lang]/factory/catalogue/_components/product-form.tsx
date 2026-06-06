@@ -55,6 +55,9 @@ export type ProductDefaults = {
   leadTimeDays: number;
   leadTimeUnit: LeadTimeUnit;
   certifications: string[];
+  /// CTO audit F4 — acompte share (basis points). Default 3000 mirrors
+  /// the legacy 30 % policy; valid range 3000–5000 (30–50 %).
+  depositPercentageBps: number;
   existingImages: string[]; // URLs (built from product id + index)
 };
 
@@ -232,6 +235,26 @@ export function ProductForm({
               value: c,
               label: dict.factory.catalogue.conditions[c],
             }))}
+          />
+        </Field>
+        <Field
+          label={dict.factory.catalogue.depositLabel}
+          required
+          hint={dict.factory.catalogue.depositHint}
+        >
+          <Input
+            name="depositPercentage"
+            type="number"
+            inputMode="numeric"
+            min="30"
+            max="50"
+            step="1"
+            required
+            defaultValue={String(
+              defaults
+                ? Math.round((defaults.depositPercentageBps ?? 3000) / 100)
+                : 30,
+            )}
           />
         </Field>
         <Field

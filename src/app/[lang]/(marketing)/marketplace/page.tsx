@@ -62,7 +62,6 @@ export default async function PublicMarketplacePage({
   const products = await prisma.marketplaceProduct.findMany({
     where: {
       status: MarketplaceProductStatus.PUBLISHED,
-      deletedAt: null,
       ...(category ? { category } : {}),
       ...(condition ? { condition } : {}),
       // Compose "deals only" + free-text search via AND so each can carry

@@ -56,7 +56,10 @@ export default async function AdminPayoutsPage({
         id: true,
         reference: true,
         amountCents: true,
-        commissionCents: true,
+        // Renamed from `commissionCents` (CTO audit F3) — Payout
+        // carries the supplier-side 3% fee, distinct from
+        // Order.commissionCents (full buyer-side platform margin).
+        supplierFeeCents: true,
         status: true,
         method: true,
         sentAt: true,
@@ -150,7 +153,7 @@ export default async function AdminPayoutsPage({
                       {formatEUR(p.amountCents / 100, lang)}
                     </td>
                     <td className="px-5 py-2 text-xs text-muted text-end">
-                      {formatEUR(p.commissionCents / 100, lang)}
+                      {formatEUR(p.supplierFeeCents / 100, lang)}
                     </td>
                     <td className="px-5 py-2">
                       <span

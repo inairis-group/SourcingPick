@@ -312,7 +312,9 @@ const TrackingSchema = z.object({
   trackingUrl: z.url().max(500).optional().or(z.literal("")),
 });
 
-export type AdvanceOrderResult = { ok: true } | { ok: false; error: string };
+export type AdvanceOrderResult =
+  | { ok: true; deferredForBalance?: boolean }
+  | { ok: false; error: string };
 
 /**
  * Apply a status transition to an Order. The role-permitted next states
@@ -339,6 +341,8 @@ export async function advanceOrderStatusAction(
       factoryOrgId: true,
       agentId: true,
       requestId: true,
+      deliveredAt: true,
+      balancePaidAt: true,
     },
   });
   if (!order) return { ok: false, error: "Order not found." };
@@ -361,7 +365,8 @@ export async function advanceOrderStatusAction(
     return { ok: false, error: "This status change isn't allowed." };
   }
 
-  const data: Record<string, unknown> = { status: nextStatus };
+  const now = new Date();
+  const data: Record<string, unknown> = {};
 
   if (nextStatus === OrderStatus.SHIPPED) {
     const parsed = TrackingSchema.safeParse(tracking ?? {});
@@ -374,10 +379,31 @@ export async function advanceOrderStatusAction(
     data.trackingNumber = parsed.data.trackingNumber;
     data.trackingCarrier = parsed.data.trackingCarrier;
     data.trackingUrl = parsed.data.trackingUrl || null;
-    data.shippedAt = new Date();
+    data.shippedAt = now;
   }
+
+  // CTO audit F1b: "confirm delivery" no longer auto-closes the order
+  // when the balance is still due. We always stamp `deliveredAt` so the
+  // buyer's intent is recorded and surfaced in the UI; we only flip
+  // status → COMPLETED when both `deliveredAt` and `balancePaidAt` are
+  // set. Until the balance lands, the order sits at SHIPPED / IN_TRANSIT
+  // with a "balance due before closure" banner.
+  let effectiveNextStatus: OrderStatus = nextStatus;
+  let deferredForBalance = false;
+
   if (nextStatus === OrderStatus.COMPLETED) {
-    data.deliveredAt = new Date();
+    data.deliveredAt = now;
+    if (!order.balancePaidAt && !isAdmin) {
+      // Buyer clicked confirm but the balance isn't reconciled yet —
+      // record the receipt confirmation, keep the order in its current
+      // logistics state, and tell the caller why nothing closed.
+      effectiveNextStatus = order.status;
+      deferredForBalance = true;
+    }
+  }
+
+  if (effectiveNextStatus !== order.status) {
+    data.status = effectiveNextStatus;
   }
 
   const requestStatusForOrder: Partial<Record<OrderStatus, SourcingStatus>> = {
@@ -387,7 +413,10 @@ export async function advanceOrderStatusAction(
     COMPLETED: SourcingStatus.COMPLETED,
     CANCELLED: SourcingStatus.CANCELLED,
   };
-  const mirroredRequestStatus = requestStatusForOrder[nextStatus];
+  const mirroredRequestStatus =
+    effectiveNextStatus !== order.status
+      ? requestStatusForOrder[effectiveNextStatus]
+      : undefined;
 
   try {
     await prisma.$transaction(async (tx) => {
@@ -408,25 +437,40 @@ export async function advanceOrderStatusAction(
 
   await writeAuditLog({
     actorUserId: user.id,
-    action: "order.status_changed",
+    action: deferredForBalance
+      ? "order.delivery_confirmed_pending_balance"
+      : "order.status_changed",
     targetType: "Order",
     targetId: order.id,
     payload: {
       from: order.status,
-      to: nextStatus,
+      to: effectiveNextStatus,
+      requested: nextStatus,
+      deferredForBalance,
       ...(tracking ? { tracking } : {}),
     },
   });
 
+  // Closure side-effects (payout + escrow release) only fire on real
+  // status flips into COMPLETED. The deferred case keeps the status at
+  // SHIPPED / IN_TRANSIT; closure happens in finalize.ts when the
+  // balance lands.
+  if (effectiveNextStatus === OrderStatus.COMPLETED && nextStatus === OrderStatus.COMPLETED) {
+    const { closeOrderOnCompletion } = await import("@/lib/stripe/finalize");
+    await closeOrderOnCompletion(order.id);
+  }
+
   // Pick the right notification for the new status, and the right audience.
-  await notifyOnOrderTransition(order.id, nextStatus);
+  if (!deferredForBalance) {
+    await notifyOnOrderTransition(order.id, effectiveNextStatus);
+  }
 
   revalidatePath("/[lang]/client/orders", "page");
   revalidatePath("/[lang]/factory/orders", "page");
   revalidatePath("/[lang]/agent/requests", "page");
   revalidatePath("/[lang]/admin/requests", "page");
 
-  return { ok: true };
+  return { ok: true, deferredForBalance };
 }
 
 async function notifyOnOrderTransition(

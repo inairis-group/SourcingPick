@@ -40,8 +40,10 @@ export default async function FactoryProductDetailPage({
   const user = await requireRole(Role.FACTORY);
   const dict = await getDictionary(lang);
 
+  // CTO audit F7: dropped `deletedAt: null` — column removed; ARCHIVED
+  // status is the canonical retirement signal.
   const product = await prisma.marketplaceProduct.findFirst({
-    where: { id, factoryOrgId: user.organizationId, deletedAt: null },
+    where: { id, factoryOrgId: user.organizationId },
     select: {
       id: true,
       reference: true,
@@ -59,6 +61,7 @@ export default async function FactoryProductDetailPage({
       leadTimeDays: true,
       leadTimeUnit: true,
       certifications: true,
+      depositPercentageBps: true,
       images: true,
       status: true,
       publishedAt: true,
@@ -145,6 +148,7 @@ export default async function FactoryProductDetailPage({
               leadTimeDays: product.leadTimeDays,
               leadTimeUnit: product.leadTimeUnit,
               certifications: product.certifications,
+              depositPercentageBps: product.depositPercentageBps,
               existingImages: imageUrls,
             }}
           />

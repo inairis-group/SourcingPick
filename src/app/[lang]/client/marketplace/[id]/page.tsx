@@ -45,7 +45,6 @@ export default async function ClientMarketplaceProductPage({
     where: {
       id,
       status: MarketplaceProductStatus.PUBLISHED,
-      deletedAt: null,
     },
     select: {
       id: true,

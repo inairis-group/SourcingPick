@@ -411,7 +411,9 @@ async function main() {
         description:
           "GOTS-certified organic cotton tote bag, natural undyed, with reinforced handles. MOQ-friendly for SMEs.",
         images: [],
-        priceCentsClient: 320, // €3.20
+        // CTO audit F5: client prices recomputed via applyBuyerMarkup
+        // (factory × 1.06) so seeded demos show realistic 6 % margins.
+        priceCentsClient: 254, // round(240 × 1.06)
         priceCentsFactory: 240,
         moq: 500,
         stockAvailable: 12000,
@@ -429,7 +431,7 @@ async function main() {
         description:
           "Hardcover A5 notebook with dotted FSC paper, lay-flat binding, elastic closure. Custom logo embossing available.",
         images: [],
-        priceCentsClient: 480,
+        priceCentsClient: 339, // round(320 × 1.06)
         priceCentsFactory: 320,
         moq: 1000,
         stockAvailable: 8500,
@@ -446,7 +448,7 @@ async function main() {
         description:
           "Vegetable-tanned full-grain leather card holder, 4 slots, hand-stitched. Custom embossing and color options.",
         images: [],
-        priceCentsClient: 1850,
+        priceCentsClient: 1272, // round(1200 × 1.06)
         priceCentsFactory: 1200,
         moq: 100,
         stockAvailable: 240,
@@ -464,7 +466,7 @@ async function main() {
         description:
           "100% European linen tea towel set, stone-washed for softness. Hemmed edges, hanging loop.",
         images: [],
-        priceCentsClient: 1490,
+        priceCentsClient: 1007, // round(950 × 1.06)
         priceCentsFactory: 950,
         moq: 250,
         stockAvailable: 0,

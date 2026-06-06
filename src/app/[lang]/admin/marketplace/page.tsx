@@ -30,7 +30,6 @@ export default async function AdminMarketplacePage({
   const pending = await prisma.marketplaceProduct.findMany({
     where: {
       status: MarketplaceProductStatus.PENDING_REVIEW,
-      deletedAt: null,
     },
     orderBy: { updatedAt: "asc" },
     select: {

@@ -96,7 +96,6 @@ export default async function AdminDashboardPage({
     prisma.marketplaceProduct.count({
       where: {
         status: MarketplaceProductStatus.PENDING_REVIEW,
-        deletedAt: null,
       },
     }),
     prisma.payout.aggregate({

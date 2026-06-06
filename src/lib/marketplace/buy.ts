@@ -71,11 +71,13 @@ export async function buyMarketplaceProductAction(
     return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
 
+  // CTO audit F7: dropped the unused `deletedAt: null` filter — the
+  // column itself was removed in the audit-corrections migration and
+  // marketplace soft-delete has always been driven by status=ARCHIVED.
   const product = await prisma.marketplaceProduct.findFirst({
     where: {
       id: parsed.data.productId,
       status: MarketplaceProductStatus.PUBLISHED,
-      deletedAt: null,
     },
     select: {
       id: true,
@@ -87,6 +89,7 @@ export async function buyMarketplaceProductAction(
       stockAvailable: true,
       leadTimeDays: true,
       factoryOrgId: true,
+      depositPercentageBps: true,
     },
   });
   if (!product) return { error: "Product not found or no longer available." };
@@ -106,7 +109,12 @@ export async function buyMarketplaceProductAction(
   const unitFactory = product.priceCentsFactory;
   const totalClient = unitClient * parsed.data.quantity;
   const marginCents = totalClient - unitFactory * parsed.data.quantity;
-  const depositCents = Math.round(totalClient * 0.3);
+  // CTO audit F4: marketplace + sourcing share the same acompte policy
+  // (30–50 %). The hardcoded 0.3 used to diverge from quote-driven
+  // sourcing. Field is bounded 30–50 % at the form layer; we clamp here
+  // defensively in case a stray DB value slipped in.
+  const depositBps = clampDepositBps(product.depositPercentageBps);
+  const depositCents = Math.round((totalClient * depositBps) / 10000);
   const balanceCents = totalClient - depositCents;
   const deadline = new Date(
     Date.now() + (product.leadTimeDays + 7) * 24 * 60 * 60 * 1000,
@@ -179,6 +187,11 @@ export async function buyMarketplaceProductAction(
           incoterm: parsed.data.incoterm,
           validUntil: deadline,
           qualificationScore: 100,
+          // Mirror the marketplace product's acompte choice onto the
+          // synthetic Quote so the historical record matches and any
+          // downstream code (refunds, dispute computations) reads the
+          // same split (CTO audit F4).
+          depositPercentageBps: depositBps,
           status: QuoteStatus.ACCEPTED,
         },
         select: { id: true },
@@ -234,4 +247,15 @@ async function currentLocale(): Promise<Locale> {
   const h = await headers();
   const fromProxy = h.get("x-locale");
   return fromProxy && isLocale(fromProxy) ? fromProxy : defaultLocale;
+}
+
+/**
+ * Clamp a marketplace product's stored depositPercentageBps to the
+ * shared 30–50 % policy. Defensive only — the form enforces the same
+ * bounds, but a stray import or legacy row should never be allowed to
+ * mint a 0 % or 99 % acompte.
+ */
+function clampDepositBps(value: number): number {
+  if (!Number.isFinite(value)) return 3000;
+  return Math.max(3000, Math.min(5000, Math.round(value)));
 }

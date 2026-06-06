@@ -66,7 +66,8 @@ export default async function FactoryPayoutsPage({
       id: true,
       reference: true,
       amountCents: true,
-      commissionCents: true,
+      // Renamed (CTO audit F3) — see Payout schema doc.
+      supplierFeeCents: true,
       status: true,
       method: true,
       sentAt: true,
