@@ -67,7 +67,19 @@ export async function setResearchFeeAction(
     return { ok: false, error: "The research fee has already been paid." };
   }
 
-  const amountCents = computeResearchFee(parsed.data.unit, parsed.data.quantity);
+  // Look up the agent's negotiated rate overrides. Null = platform
+  // default; positive value = bespoke day/week rate.
+  const agentRates = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: {
+      agentResearchFeeDayCents: true,
+      agentResearchFeeWeekCents: true,
+    },
+  });
+  const amountCents = computeResearchFee(parsed.data.unit, parsed.data.quantity, {
+    dayCents: agentRates?.agentResearchFeeDayCents,
+    weekCents: agentRates?.agentResearchFeeWeekCents,
+  });
   const now = new Date();
   const invoiceReference = await generateUniqueReference("INV");
 

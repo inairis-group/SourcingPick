@@ -15,25 +15,11 @@ const PROVIDERS: Array<{
   recommendedFor: string;
 }> = [
   {
-    value: "STRIPE_CONNECT",
-    label: "Stripe Connect",
+    value: "WISE",
+    label: "Wise Business",
     blurb:
-      "Hosted onboarding. Payouts to your bank account, usually within 2 business days. Best in the EU, UK, US, and major Asian markets.",
-    recommendedFor: "EU · UK · US · UAE · SG · HK · MX · NG · KE · ZA",
-  },
-  {
-    value: "LIANLIAN",
-    label: "LianLian Global",
-    blurb:
-      "Cross-border payouts to a Chinese or SE-Asian bank account. Lower fees than Stripe for CNY-bound transfers; supports VND, IDR, THB, PHP.",
-    recommendedFor: "Mainland China · Vietnam · Indonesia · Thailand · Philippines",
-  },
-  {
-    value: "ALIPAY",
-    label: "Alipay",
-    blurb:
-      "Payouts to an existing Alipay business account. Same target as LianLian, lighter-weight if you already use Alipay for B2B.",
-    recommendedFor: "Mainland China · Alipay business users",
+      "Cross-border payouts covering 80+ countries. Lower fees than the legacy rails on most corridors; receive in your local currency.",
+    recommendedFor: "All factory corridors — EU · UK · CN · VN · IN · TR · MA",
   },
 ];
 
@@ -189,12 +175,6 @@ export function PayoutSection({
 
 function providerLabel(p: PayoutProvider): string {
   switch (p) {
-    case "STRIPE_CONNECT":
-      return "Stripe Connect";
-    case "LIANLIAN":
-      return "LianLian Global";
-    case "ALIPAY":
-      return "Alipay";
     case "WISE":
       return "Wise Business";
   }

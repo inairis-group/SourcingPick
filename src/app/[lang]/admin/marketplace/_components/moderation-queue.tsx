@@ -30,6 +30,10 @@ export type ModerationRow = {
   factoryName: string;
   factoryLocation: string;
   factoryKycVerified: boolean;
+  /** True when the listing was previously PUBLISHED and the factory
+   *  has edited it — surfaces a "Re-review" pill so admin can spot
+   *  these vs. brand-new submissions. */
+  isReReview: boolean;
 };
 
 export function ModerationQueue({ items }: { items: ModerationRow[] }) {
@@ -103,7 +107,7 @@ export function ModerationQueue({ items }: { items: ModerationRow[] }) {
                 </div>
               ))}
               {p.images.length === 0 && (
-                <div className="col-span-2 aspect-[2/1] flex items-center justify-center text-faint text-xs">
+                <div className="col-span-2 aspect-2/1 flex items-center justify-center text-faint text-xs">
                   {dict.admin.marketplace.noImage}
                 </div>
               )}
@@ -122,11 +126,18 @@ export function ModerationQueue({ items }: { items: ModerationRow[] }) {
                     {p.categoryLabel} · {p.factoryName} · {p.factoryLocation}
                   </p>
                 </div>
-                {!p.factoryKycVerified && (
-                  <span className="inline-flex items-center h-5 px-2 rounded-full border text-[10px] font-medium uppercase tracking-wide bg-warning-soft text-warning border-warning-edge">
-                    {dict.admin.marketplace.factoryKycMissing}
-                  </span>
-                )}
+                <div className="flex items-center gap-2 flex-wrap">
+                  {p.isReReview && (
+                    <span className="inline-flex items-center h-5 px-2 rounded-full border text-[10px] font-medium uppercase tracking-wide bg-info-soft text-info border-info-edge">
+                      {dict.admin.marketplace.reReviewBadge}
+                    </span>
+                  )}
+                  {!p.factoryKycVerified && (
+                    <span className="inline-flex items-center h-5 px-2 rounded-full border text-[10px] font-medium uppercase tracking-wide bg-warning-soft text-warning border-warning-edge">
+                      {dict.admin.marketplace.factoryKycMissing}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <p className="text-sm text-fg leading-snug whitespace-pre-wrap">

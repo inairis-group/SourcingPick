@@ -29,6 +29,7 @@ export type NotificationVars = {
     | "order_cancelled"
     | "order_completed"
     | "order_disputed"
+    | "dispute_responded"
     | "order_dispute_resolved"
     | "request_received"
     | "auction_outbid"
@@ -38,7 +39,8 @@ export type NotificationVars = {
     | "pre_tender_rejected"
     | "forwarder_proof_uploaded"
     | "support_ticket_created"
-    | "support_ticket_resolved";
+    | "support_ticket_resolved"
+    | "marketplace_re_review_requested";
 };
 
 const SYSTEM_TITLES: Record<
@@ -80,6 +82,12 @@ const SYSTEM_TITLES: Record<
     en: "Order under dispute",
     zh: "订单进入争议",
     ar: "الطلب قيد النزاع",
+  },
+  dispute_responded: {
+    fr: "Réponse de l'usine au litige",
+    en: "Factory responded to the dispute",
+    zh: "工厂已回复争议",
+    ar: "ردّ المصنع على النزاع",
   },
   order_dispute_resolved: {
     fr: "Litige résolu",
@@ -140,6 +148,12 @@ const SYSTEM_TITLES: Record<
     en: "Support ticket marked as resolved",
     zh: "支持工单已标记为已解决",
     ar: "تم وضع تذكرة الدعم على أنها محلولة",
+  },
+  marketplace_re_review_requested: {
+    fr: "Modification d'annonce — à réexaminer",
+    en: "Listing edited — needs re-review",
+    zh: "商品已修改 — 需要重新审核",
+    ar: "تم تعديل قائمة — يلزم إعادة المراجعة",
   },
 };
 

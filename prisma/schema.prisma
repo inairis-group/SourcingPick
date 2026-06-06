@@ -32,6 +32,49 @@ enum Role {
   ADMIN
 }
 
+/**
+ * Granular admin permissions. Stored as `User.adminScopes AdminScope[]`
+ * (only meaningful when role=ADMIN). The `SUPER` sentinel grants every
+ * scope at once — the platform owner + senior on-call staff get SUPER;
+ * everyone else gets a curated subset (e.g. customer support staff get
+ * SUPPORT + DISPUTES + AGENTS, finance staff get FINANCE + AUDIT, KYC
+ * reviewers get KYC + MARKETPLACE + USERS).
+ *
+ * The `requireAdminScope` middleware short-circuits to `true` when the
+ * caller has SUPER, so adding a new scope doesn't lock SUPER admins
+ * out by default.
+ */
+enum AdminScope {
+  SUPER
+  KYC
+  MARKETPLACE
+  FINANCE
+  SUPPORT
+  DISPUTES
+  REQUESTS
+  USERS
+  WEBHOOKS
+  SETTINGS
+  AGENTS
+  AUDIT
+}
+
+/**
+ * Email delivery cadence for non-critical notifications. Stored on User;
+ * read by `emitNotification` at fan-out time. Critical events
+ * (password reset, OTP, signup confirmation) bypass this and always
+ * send immediately.
+ */
+enum EmailDigestMode {
+  /// Default: one email per notification event.
+  IMMEDIATE
+  /// In-app rows accumulate; a single summary email goes out once a
+  /// day via the digest cron.
+  DAILY
+  /// No notification emails at all — in-app only.
+  OFF
+}
+
 // Union of all sub-roles across all roles. Role/sub-role validity matrix is
 // enforced in src/lib/permissions/, not in the DB.
 enum SubRole {
@@ -100,12 +143,6 @@ enum SourcingStatus {
   QUOTE_SENT
   QUOTE_ACCEPTED
   QUOTE_REJECTED
-  /// Deprecated (CTO audit F6) — never written by the order→request
-  /// mirror in src/lib/orders/actions.ts and never read elsewhere.
-  /// Kept here only because PostgreSQL doesn't support dropping enum
-  /// values without a full type recreate; a follow-up migration will
-  /// rebuild the enum once we coordinate downtime.
-  PAYMENT_PENDING
   PREPARATION
   SHIPPED
   IN_TRANSIT
@@ -193,6 +230,10 @@ enum AttachmentContext {
   /// carrier with a visible tracking label. Closes the "did it ship?"
   /// ambiguity loop on disputes.
   ORDER_SHIPMENT_PROOF
+  /// Buyer- or factory-uploaded evidence on a Dispute (photos of the
+  /// damaged goods, side-by-side comparisons, packing slips, etc.).
+  /// Admin arbitrates with these visible in the dispute detail page.
+  DISPUTE_EVIDENCE
 }
 
 /** Preset visual treatment for an admin-managed marketplace campaign banner. */
@@ -262,18 +303,11 @@ enum AttachmentKind {
  * in env and its own KYC flow; see lib/payouts/* for adapters.
  */
 /// Live rail = WISE only (decided 2026-06-02). The Stripe / LianLian /
-/// Alipay values are deprecated (CTO audit F8) — no code path resolves
-/// to them after the migration; we keep them in the enum because
-/// PostgreSQL doesn't support `DROP VALUE` without recreating the type.
-/// A follow-up migration will rebuild the enum once we coordinate the
-/// requisite downtime / column rewrite.
+/// Alipay values were pruned in the CTO-audit follow-up migration
+/// (20260605100000_drop_deprecated_enum_values). Any orgs still
+/// pointing at the legacy rails were back-migrated to NULL — they need
+/// to onboard Wise before payouts can resume.
 enum PayoutProvider {
-  /// @deprecated — Wise replaced this rail. Never written by current code.
-  STRIPE_CONNECT
-  /// @deprecated — Wise replaced this rail. Never written by current code.
-  LIANLIAN
-  /// @deprecated — Wise replaced this rail. Never written by current code.
-  ALIPAY
   WISE
 }
 
@@ -521,8 +555,39 @@ model User {
   lastName         String
   phone            String?
   locale           Locale       @default(fr)
+  /// Email delivery cadence for non-critical notifications.
+  ///   IMMEDIATE — one email per event (default).
+  ///   DAILY     — events accumulate in-app, one digest email per day.
+  ///   OFF       — no notification emails (in-app only).
+  /// Critical events (password reset, OTP) ignore this setting.
+  emailDigestMode  EmailDigestMode @default(IMMEDIATE)
   role             Role
   subRole          SubRole
+  /// Per-admin permission scopes. Empty / irrelevant for non-admins;
+  /// for admins, an empty array means "no admin powers" (effectively
+  /// read-only). Use the `SUPER` sentinel to grant everything.
+  adminScopes      AdminScope[] @default([])
+
+  // ─── Agent-specific overrides ─────────────────────────────
+  // Only meaningful when role=AGENT. Null = default rates from
+  // pricing.ts apply. Used by research-fee-actions when an agent
+  // negotiates a higher day-rate for complex industrial briefs (the
+  // €125/day floor is the platform's published rate; senior agents
+  // commonly bill €200+/day).
+  agentResearchFeeDayCents  Int?
+  agentResearchFeeWeekCents Int?
+  /// Free-text Markdown bio surfaced on the agent profile (timezone,
+  /// language strengths, category specialisations). Optional.
+  agentBio                  String?
+  /// IANA timezone string, e.g. "Asia/Shanghai". When set, the agent's
+  /// dashboard renders times in this zone instead of the buyer's.
+  agentTimezone             String?
+  /// Categories the agent self-declares expertise in. Used by the
+  /// dispatch loader to break ties when load is equal.
+  agentCategories           Category[]    @default([])
+  /// Marks whether the agent has finished onboarding. Until true, they
+  /// land on /onboarding/agent on every login.
+  agentOnboardedAt          DateTime?
   organizationId   String
   organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
   passwordHash     String? // null when only OAuth
@@ -547,6 +612,8 @@ model User {
   forwarderTokensCreated  ForwarderUploadToken[] @relation("ForwarderTokenCreator")
   supportTicketsOpened    SupportTicket[]     @relation("SupportTicketRequester")
   supportTicketsResolved  SupportTicket[]     @relation("SupportTicketResolver")
+  disputesOpened          Dispute[]           @relation("DisputeOpener")
+  disputesResolved        Dispute[]           @relation("DisputeResolver")
   quotesAsAgent           Quote[]             @relation("QuoteAgent")
   ordersAsAgent           Order[]             @relation("OrderAgent")
   authoredMessages        Message[]           @relation("MessageAuthor")
@@ -923,6 +990,7 @@ model Order {
   invoices         Invoice[]
   escrows          EscrowTransaction[]
   forwarderTokens  ForwarderUploadToken[]
+  disputes         Dispute[]
 
   @@index([status, factoryOrgId])
   @@index([status, clientOrgId])
@@ -958,6 +1026,86 @@ model ForwarderUploadToken {
 
   @@index([orderId, revokedAt])
   @@index([expiresAt])
+}
+
+/**
+ * Buyer-initiated post-delivery dispute. The schema flow:
+ *
+ *   buyer opens (within 7 days of deliveredAt)
+ *     → factory responds (within 5 days, defaults to silence)
+ *       → admin arbitrates, picks an outcome:
+ *           STANDARD — partial refund (buyer gets back the dispute math
+ *                      from `computeDisputeRefund`)
+ *           CUSTOM   — full refund (the product can't be resold)
+ *           REJECT   — dispute not upheld, escrow flips back to HELD
+ *
+ * One open dispute per order. A REJECT-resolved dispute lets the buyer
+ * open another one — closing one but not the escrow status restores
+ * the original release path.
+ *
+ * Evidence attachments live in the polymorphic Attachment table with
+ * `contextType=DISPUTE_EVIDENCE`, `contextId=this.id`.
+ */
+model Dispute {
+  id               String          @id @default(cuid(2))
+  reference        String          @unique // DSP-XXXXX
+  orderId          String
+  order            Order           @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  /// Primary escrow being disputed. Set when the dispute is opened
+  /// against a specific escrow leg (deposit / balance); null when the
+  /// dispute is whole-order (admin re-attributes the escrow at resolve
+  /// time).
+  primaryEscrowId  String?
+  primaryEscrow    EscrowTransaction? @relation(fields: [primaryEscrowId], references: [id], onDelete: SetNull)
+
+  openedByUserId   String
+  openedBy         User            @relation("DisputeOpener", fields: [openedByUserId], references: [id], onDelete: Restrict)
+  /// Free-text buyer claim — what's wrong, what they want.
+  buyerStatement   String
+  /// Optional factory rebuttal. Defaults to null when the factory
+  /// stays silent past the 5-day window; admin can still arbitrate.
+  factoryStatement String?
+  /// Admin's narrative when resolving. Surfaces to both parties.
+  adminDecision    String?
+
+  status           DisputeStatus   @default(OPEN)
+  outcome          DisputeOutcome? // set when status=RESOLVED
+  refundCents      Int?            // computed via computeDisputeRefund
+  retainedCents    Int?
+  platformShareCents Int?
+  supplierShareCents Int?
+
+  openedAt         DateTime        @default(now())
+  respondedAt      DateTime?
+  resolvedAt       DateTime?
+  resolvedById     String?
+  resolvedBy       User?           @relation("DisputeResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
+
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([orderId, status])
+  @@index([status, openedAt])
+}
+
+enum DisputeStatus {
+  /// Buyer just opened it. Factory hasn't responded yet; admin can
+  /// arbitrate without waiting.
+  OPEN
+  /// Factory submitted a rebuttal. Admin needs to decide.
+  RESPONDED
+  /// Admin picked an outcome. Refund (if any) has been computed.
+  RESOLVED
+}
+
+enum DisputeOutcome {
+  /// Off-spec / defective goods that can be resold. Buyer refunded
+  /// 80%; platform retains 20% split 50/50 with the supplier.
+  STANDARD
+  /// Custom/personalised goods that can't be resold. Full buyer refund.
+  CUSTOM
+  /// Dispute not upheld. Escrow returns to HELD; no refund.
+  REJECT
 }
 
 // =============================================================
@@ -1063,6 +1211,7 @@ model EscrowTransaction {
   updatedAt      DateTime              @updatedAt
 
   payout Payout?
+  disputes Dispute[]
 
   @@index([status, orderId])
   @@index([provider, providerRef])
@@ -1225,10 +1374,19 @@ model Notification {
   deliveredInapp  Boolean          @default(true)
   deliveredEmail  Boolean          @default(false)
   deliveredSms    Boolean          @default(false)
+  /// When the daily-digest cron flushed this row in an email.
+  /// Null means: either the recipient is on IMMEDIATE (the email was
+  /// sent at emit time), they're on OFF (no email at all), or the
+  /// digest cron hasn't picked it up yet.
+  digestedAt      DateTime?
   createdAt       DateTime         @default(now())
 
   @@index([recipientUserId, read, createdAt])
   @@index([type, createdAt])
+  // Cron needs a fast lookup for "all non-digested, non-emailed rows
+  // older than X for a given recipient". The composite index covers
+  // both filter halves.
+  @@index([recipientUserId, digestedAt, createdAt])
 }
 
 model AuditLog {

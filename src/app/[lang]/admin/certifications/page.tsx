@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { CertificationBody, CertificationStatus, Role } from "@prisma/client";
+import {AdminScope, CertificationBody, CertificationStatus } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate } from "@/lib/i18n/formatters";
@@ -34,7 +34,7 @@ export default async function AdminCertificationsPage({
 }: PageProps<"/[lang]/admin/certifications">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.MARKETPLACE);
   const dict = await getDictionary(lang);
 
   const certs = await prisma.certification.findMany({

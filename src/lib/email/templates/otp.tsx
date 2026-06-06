@@ -8,7 +8,7 @@ import {
   Section,
   Text,
 } from "react-email";
-import type { Locale } from "@/lib/i18n/config";
+import { directionFor, type Locale } from "@/lib/i18n/config";
 
 type OtpEmailProps = {
   code: string;
@@ -65,7 +65,7 @@ export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailPro
   const t = COPY[locale];
 
   return (
-    <Html lang={locale}>
+    <Html lang={locale} dir={directionFor(locale)}>
       <Head />
       <Preview>{t.preview}</Preview>
       <Body

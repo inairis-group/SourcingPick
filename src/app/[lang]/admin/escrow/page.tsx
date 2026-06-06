@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { EscrowStatus, Role } from "@prisma/client";
+import {AdminScope, EscrowStatus } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR } from "@/lib/i18n/formatters";
@@ -10,7 +10,7 @@ import {
   DashboardSection,
   KpiCard,
 } from "@/components/dashboard/primitives";
-import { DisputeControl } from "./_components/dispute-control";
+import { Link } from "@/components/ui/link";
 import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
@@ -36,7 +36,7 @@ export default async function AdminEscrowPage({
 }: PageProps<"/[lang]/admin/escrow">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.FINANCE);
   const dict = await getDictionary(lang);
 
   const [heldAgg, releasedAgg, disputedAgg, recent] = await Promise.all([
@@ -185,8 +185,18 @@ export default async function AdminEscrowPage({
                           ? formatDate(e.fundedAt, lang, "short")
                           : "—"}
                     </td>
-                    <td className="px-5 py-2">
-                      <DisputeControl escrowId={e.id} status={e.status} />
+                    <td className="px-5 py-2 text-xs">
+                      {e.status === EscrowStatus.DISPUTED ? (
+                        <Link
+                          href={`/${lang}/admin/disputes`}
+                          variant="muted"
+                          className="text-link hover:text-link-hover"
+                        >
+                          {dict.admin.escrow.viewDisputeCta} →
+                        </Link>
+                      ) : (
+                        <span className="text-faint">—</span>
+                      )}
                     </td>
                   </tr>
                 ))

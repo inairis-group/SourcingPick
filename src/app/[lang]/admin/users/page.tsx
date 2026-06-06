@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { Role } from "@prisma/client";
+import { AdminScope, Role } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate } from "@/lib/i18n/formatters";
@@ -34,7 +34,7 @@ export default async function AdminUsersPage({
   const { lang } = await params;
   const search = await searchParams;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.USERS);
   const dict = await getDictionary(lang);
 
   const roleFilter =
@@ -156,9 +156,12 @@ export default async function AdminUsersPage({
                 users.map((u) => (
                   <tr key={u.id} className="hover:bg-subtle/40">
                     <td className="px-5 py-2">
-                      <p className="text-sm font-medium text-fg">
+                      <a
+                        href={`/${lang}/admin/users/${u.id}`}
+                        className="text-sm font-medium text-fg hover:text-link"
+                      >
                         {u.firstName} {u.lastName}
-                      </p>
+                      </a>
                       <p className="text-[11px] text-faint">{u.subRole}</p>
                     </td>
                     <td className="px-5 py-2 text-xs font-mono text-muted">

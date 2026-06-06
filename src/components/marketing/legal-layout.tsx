@@ -68,7 +68,11 @@ export function LegalLayout({
   );
 }
 
-type LegalCopy = Dictionary["legal"]["terms"] | Dictionary["legal"]["privacy"] | Dictionary["legal"]["cookies"];
+type LegalCopy =
+  | Dictionary["legal"]["terms"]
+  | Dictionary["legal"]["privacy"]
+  | Dictionary["legal"]["cookies"]
+  | Dictionary["legal"]["security"];
 
 export function legalProps(dict: Dictionary, copy: LegalCopy) {
   return {

@@ -9,7 +9,7 @@ import {
   Section,
   Text,
 } from "react-email";
-import type { Locale } from "@/lib/i18n/config";
+import { directionFor, type Locale } from "@/lib/i18n/config";
 
 type Props = {
   resetUrl: string;
@@ -73,7 +73,7 @@ export default function PasswordResetEmail({ resetUrl, locale, expiresInMinutes 
   const t = COPY[locale];
 
   return (
-    <Html lang={locale}>
+    <Html lang={locale} dir={directionFor(locale)}>
       <Head />
       <Preview>{t.preview}</Preview>
       <Body

@@ -243,9 +243,22 @@ export async function createProductAction(
 }
 
 /**
- * Update a DRAFT or REJECTED product. Once submitted for review (or
- * published), edits require archiving and re-creating — keeps the audit
- * trail clean and avoids accidentally editing live listings.
+ * Update a listing.
+ *
+ * Editable statuses (partner feedback #4 — confirmed 2026-06-06):
+ *   DRAFT          → stays DRAFT
+ *   REJECTED       → flips back to DRAFT (factory iterates before resubmit)
+ *   PENDING_REVIEW → stays PENDING_REVIEW (factory tweaks before admin opens it)
+ *   PUBLISHED      → flips back to PENDING_REVIEW (re-review request)
+ *   OUT_OF_STOCK   → flips back to PENDING_REVIEW (same)
+ *
+ * ARCHIVED is the only terminal state — those are locked. Editing a
+ * live listing pulls it from the marketplace until admin re-approves;
+ * we surface that interruption to the factory in the form banner.
+ *
+ * Promotion-only changes (flash sale, compare-at) bypass this path via
+ * `setPromotionAction` — those don't trigger re-review since they
+ * never change pricing structure or product description.
  */
 export async function updateProductAction(
   productId: string,
@@ -256,16 +269,12 @@ export async function updateProductAction(
 
   const existing = await prisma.marketplaceProduct.findFirst({
     where: { id: productId, factoryOrgId: factory.organizationId },
-    select: { id: true, status: true, images: true },
+    select: { id: true, status: true, images: true, reference: true, name: true },
   });
   if (!existing) return { error: "Product not found." };
-  if (
-    existing.status !== MarketplaceProductStatus.DRAFT &&
-    existing.status !== MarketplaceProductStatus.REJECTED
-  ) {
+  if (existing.status === MarketplaceProductStatus.ARCHIVED) {
     return {
-      error:
-        "Live or pending listings can't be edited — archive it and create a new one.",
+      error: "Archived listings can't be edited — create a new one.",
     };
   }
 
@@ -345,12 +354,11 @@ export async function updateProductAction(
       leadTimeUnit: parsed.data.leadTimeUnit,
       certifications: parseCerts(parsed.data.certifications),
       images: storedUrls,
-      // Editing a REJECTED listing puts it back in DRAFT so the factory
-      // can review their changes before resubmitting.
-      status:
-        existing.status === MarketplaceProductStatus.REJECTED
-          ? MarketplaceProductStatus.DRAFT
-          : existing.status,
+      // Status flow per partner item #4:
+      //   REJECTED → DRAFT (factory iterates before resubmit)
+      //   PUBLISHED / OUT_OF_STOCK → PENDING_REVIEW (re-review request)
+      //   DRAFT / PENDING_REVIEW → unchanged
+      status: nextStatusAfterEdit(existing.status),
     },
   });
 
@@ -369,15 +377,67 @@ export async function updateProductAction(
     });
   }
 
+  const newStatus = nextStatusAfterEdit(existing.status);
+  const triggeredReReview =
+    (existing.status === MarketplaceProductStatus.PUBLISHED ||
+      existing.status === MarketplaceProductStatus.OUT_OF_STOCK) &&
+    newStatus === MarketplaceProductStatus.PENDING_REVIEW;
+
   await writeAuditLog({
     actorUserId: factory.id,
-    action: "marketplace.product_updated",
+    action: triggeredReReview
+      ? "marketplace.product_re_review_submitted"
+      : "marketplace.product_updated",
     targetType: "MarketplaceProduct",
     targetId: existing.id,
+    payload: triggeredReReview
+      ? { from: existing.status, to: newStatus }
+      : undefined,
+    level: triggeredReReview ? "WARN" : "INFO",
   });
 
+  if (triggeredReReview) {
+    // Notify the admin team — the queue page already lists pending
+    // listings but a notification surfaces the re-review specifically.
+    const admins = await prisma.user.findMany({
+      where: { role: Role.ADMIN, deletedAt: null },
+      select: { id: true },
+    });
+    await emitNotificationToMany(
+      admins.map((u) => u.id),
+      {
+        type: NotificationType.SYSTEM,
+        vars: {
+          systemKey: "marketplace_re_review_requested",
+          reference: existing.reference,
+        },
+        contextType: "MarketplaceProduct",
+        contextId: existing.id,
+      },
+    );
+  }
+
   revalidatePath("/[lang]/factory/catalogue", "page");
+  revalidatePath("/[lang]/admin/marketplace", "page");
   return { productId: existing.id };
+}
+
+function nextStatusAfterEdit(
+  current: MarketplaceProductStatus,
+): MarketplaceProductStatus {
+  switch (current) {
+    case MarketplaceProductStatus.REJECTED:
+      return MarketplaceProductStatus.DRAFT;
+    case MarketplaceProductStatus.PUBLISHED:
+    case MarketplaceProductStatus.OUT_OF_STOCK:
+      return MarketplaceProductStatus.PENDING_REVIEW;
+    case MarketplaceProductStatus.DRAFT:
+    case MarketplaceProductStatus.PENDING_REVIEW:
+      return current;
+    case MarketplaceProductStatus.ARCHIVED:
+      // Should never hit — guard rejects above; defensive identity.
+      return current;
+  }
 }
 
 export type ProductMutationResult = { ok: true } | { ok: false; error: string };

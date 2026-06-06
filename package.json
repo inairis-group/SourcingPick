@@ -14,6 +14,9 @@
     "typecheck:fast": "tsc --noEmit",
     "test": "node --import tsx --test tests/*.test.ts",
     "test:watch": "node --import tsx --test --watch tests/*.test.ts",
+    "test:integration": "node --import tsx --conditions=react-server --test --test-concurrency=1 tests/integration/*.test.ts",
+    "test:all": "node --import tsx --test tests/*.test.ts && node --import tsx --conditions=react-server --test --test-concurrency=1 tests/integration/*.test.ts",
+    "db:test:setup": "node --import tsx prisma/test-setup.ts",
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
     "db:logs": "docker compose logs -f postgres",
@@ -69,6 +72,7 @@
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "prisma": "^7.8.0",
+    "server-only": "^0.0.1",
     "tailwindcss": "^4",
     "tsx": "^4.22.3",
     "typescript": "^5"

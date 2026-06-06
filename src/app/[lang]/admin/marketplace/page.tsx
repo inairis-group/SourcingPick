@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { MarketplaceProductStatus, Role } from "@prisma/client";
+import {AdminScope, MarketplaceProductStatus } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR } from "@/lib/i18n/formatters";
@@ -24,7 +24,7 @@ export default async function AdminMarketplacePage({
 }: PageProps<"/[lang]/admin/marketplace">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.MARKETPLACE);
   const dict = await getDictionary(lang);
 
   const pending = await prisma.marketplaceProduct.findMany({
@@ -45,6 +45,7 @@ export default async function AdminMarketplacePage({
       certifications: true,
       images: true,
       updatedAt: true,
+      publishedAt: true,
       factoryOrg: {
         select: { displayName: true, country: true, city: true, kycStatus: true },
       },
@@ -70,6 +71,11 @@ export default async function AdminMarketplacePage({
     factoryName: p.factoryOrg.displayName,
     factoryLocation: `${p.factoryOrg.city}, ${p.factoryOrg.country}`,
     factoryKycVerified: p.factoryOrg.kycStatus === "VERIFIED",
+    // Partner item #4: PUBLISHED listings that were edited fall back
+    // to PENDING_REVIEW. `publishedAt` survives the round-trip, so a
+    // non-null value here means "this is a re-review, not a brand-new
+    // listing." The queue surfaces a pill so admin can prioritise.
+    isReReview: p.publishedAt !== null,
   }));
 
   return (

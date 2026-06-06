@@ -4,6 +4,24 @@
     "tagline": "Le sourcing international, industrialisé."
   },
   "client": {
+    "analytics": {
+      "eyebrow": "Statistiques",
+      "title": "Mes statistiques d'achat",
+      "description": "Combien vous dépensez, où, et la qualité de service reçue.",
+      "kpiTotalSpend": "Dépensé total",
+      "kpiTotalSpendHint": "Hors commandes annulées",
+      "kpiOrders": "Commandes",
+      "kpiOrdersThisMonth": "ce mois",
+      "kpiAvgOrder": "Panier moyen",
+      "kpiAvgLeadTime": "Délai moyen",
+      "days": "jours",
+      "trendLabel": "vs mois précédent",
+      "topFactoriesTitle": "Vos 5 principales usines",
+      "disputesTitle": "Litiges",
+      "disputesOpened": "Litiges ouverts",
+      "disputesResolvedInFavor": "Résolus en votre faveur",
+      "empty": "Pas encore de données."
+    },
     "dashboard": {
       "eyebrow": "Tableau de bord",
       "title": "Vue d'ensemble",
@@ -282,6 +300,32 @@
         "footnote": "Les virements SEPA arrivent en quelques heures, les virements internationaux en 1 à 3 jours. Le statut de votre commande se met à jour automatiquement."
       },
       "sectionInvoices": "Factures",
+      "dispute": {
+        "openTitle": "Un problème avec votre commande ?",
+        "openBody": "Vous avez 7 jours après la livraison confirmée pour signaler un litige (produit non conforme, défaut majeur, non livré). L'équipe SourcingPick arbitre dans les 5 jours ouvrés.",
+        "openCta": "Signaler un litige",
+        "formTitle": "Description du litige",
+        "formBody": "Soyez factuel et précis : qu'attendiez-vous, qu'avez-vous reçu, et que demandez-vous (remboursement total, partiel, remplacement) ? L'usine et l'équipe SourcingPick verront ce texte.",
+        "statementPlaceholder": "Le produit reçu présente des défauts importants sur les coutures et les couleurs ne correspondent pas à l'échantillon validé…",
+        "errorShort": "Merci de détailler le problème (20 caractères minimum).",
+        "submitCta": "Ouvrir le litige",
+        "cardTitle": "Litige sur cette commande",
+        "buyerLabel": "Votre déclaration",
+        "factoryLabel": "Réponse de l'usine",
+        "adminLabel": "Décision SourcingPick",
+        "outcomeLabel": "Décision",
+        "refundLabel": "Remboursement",
+        "statuses": {
+          "OPEN": "Ouvert",
+          "RESPONDED": "Usine a répondu",
+          "RESOLVED": "Résolu"
+        },
+        "outcomes": {
+          "STANDARD": "Produit défectueux — remboursement partiel 80 %",
+          "CUSTOM": "Produit personnalisé — remboursement intégral",
+          "REJECT": "Litige non retenu"
+        }
+      },
       "invoiceTypeDeposit": "Acompte",
       "invoiceTypeBalance": "Solde",
       "invoicePaidOn": "Payée le",
@@ -383,6 +427,27 @@
       "toggleDescription": "Un code à 6 chiffres vous sera demandé à chaque connexion.",
       "adminLocked": "La 2FA est obligatoire pour les comptes administrateurs et ne peut pas être désactivée."
     },
+    "notifications": {
+      "title": "Préférences de notification",
+      "description": "Choisissez la fréquence à laquelle SourcingPick vous envoie des e-mails. Les notifications in-app restent toujours actives.",
+      "modes": {
+        "IMMEDIATE": {
+          "label": "Au fil de l'eau",
+          "description": "Un e-mail par événement, dès qu'il se produit. Idéal si vous voulez être réactif."
+        },
+        "DAILY": {
+          "label": "Résumé quotidien",
+          "description": "Un seul e-mail par jour, le matin, qui résume toute l'activité de la veille."
+        },
+        "OFF": {
+          "label": "In-app uniquement",
+          "description": "Aucun e-mail. Tout reste consultable dans la cloche de notifications."
+        }
+      },
+      "securityNote": "Les e-mails de sécurité (réinitialisation de mot de passe, code OTP) ne sont jamais affectés par ce réglage.",
+      "saveCta": "Enregistrer",
+      "savedMessage": "Enregistré"
+    },
     "members": {
       "title": "Membres de l'organisation",
       "description": "Les personnes qui ont accès à votre compte SourcingPick.",
@@ -413,6 +478,25 @@
     }
   },
   "agent": {
+    "analytics": {
+      "eyebrow": "Statistiques",
+      "title": "Ma performance",
+      "description": "Demandes traitées, taux d'acceptation des devis transmis, commission générée.",
+      "kpiRequests": "Demandes",
+      "activeNow": "en cours",
+      "completed": "clôturées",
+      "kpiWinRate": "Taux d'acceptation",
+      "quotes": "devis transmis",
+      "kpiCommission": "Commission générée",
+      "kpiAvgLag": "Délai moyen avant 1er appel d'offres",
+      "kpiAvgLagHint": "De l'affectation à l'envoi du premier tender",
+      "funnelTitle": "Entonnoir",
+      "funnelBody": "Du brief reçu à la commande signée — voyez où vous perdez le plus de monde.",
+      "funnelAssigned": "Demandes affectées",
+      "funnelTendered": "Tenders dispatchés",
+      "funnelForwarded": "Devis transmis au client",
+      "funnelAccepted": "Devis acceptés"
+    },
     "researchFee": {
       "title": "Frais de recherche",
       "description": "Facturez à l'acheteur le travail de qualification avant le sourcing. 125 €/jour ou 500 €/semaine.",
@@ -514,6 +598,66 @@
       "emptyTitle": "Aucune commande pour l'instant",
       "emptyBody": "Dès qu'un devis est accepté sur une de vos demandes, la commande apparaîtra ici.",
       "createdAt": "Créée le"
+    },
+    "profile": {
+      "eyebrow": "Mon profil",
+      "title": "Profil agent",
+      "description": "Bio, fuseau horaire, catégories d'expertise et tarifs. Ce que les acheteurs ne voient pas, mais que la plateforme utilise pour vous attribuer les bonnes missions.",
+      "bioLabel": "Bio",
+      "bioHint": "Présentez-vous brièvement : expérience, secteurs traités, langues parlées. Visible par l'équipe SourcingPick (pas par les acheteurs).",
+      "timezoneLabel": "Fuseau horaire (IANA)",
+      "timezoneHint": "Format : Asia/Shanghai, Europe/Paris…",
+      "dayRateLabel": "Tarif journalier (€)",
+      "weekRateLabel": "Tarif hebdomadaire (€)",
+      "rateHint": "Tarif plancher plateforme : {floor} €. Vous pouvez fixer au-dessus, jamais en-dessous.",
+      "categoriesLabel": "Catégories d'expertise",
+      "categoriesHint": "Utilisées pour vous prioriser sur les nouvelles demandes correspondant à vos points forts.",
+      "saveCta": "Enregistrer",
+      "savedMessage": "Enregistré",
+      "errorRateLow": "Vos tarifs ne peuvent pas être inférieurs au plancher plateforme."
+    },
+    "onboarding": {
+      "welcome": "Bienvenue {name} — démarrons !",
+      "intro": "Trois étapes rapides pour configurer votre profil avant de commencer à recevoir des demandes.",
+      "step1Title": "Présentez-vous",
+      "step1Body": "Bio courte + fuseau horaire. La bio reste interne, le fuseau permet à votre dashboard d'afficher les bonnes heures.",
+      "step2Title": "Vos catégories",
+      "step2Body": "Cochez les catégories où vous êtes le plus à l'aise. La répartition automatique des demandes les utilise comme tie-breaker.",
+      "step3Title": "Vos tarifs de recherche",
+      "step3Body": "Vous pouvez bénéficier d'un tarif négocié au-dessus du plancher plateforme. Laissez tel quel si vous appliquez le tarif standard.",
+      "bioLabel": "Bio courte",
+      "bioHint": "2-3 lignes suffisent. Expérience, secteurs, langues parlées.",
+      "timezoneLabel": "Fuseau horaire (IANA)",
+      "timezoneHint": "Format : Asia/Shanghai, Europe/Paris…",
+      "dayRateLabel": "Tarif journalier (€)",
+      "weekRateLabel": "Tarif hebdomadaire (€)",
+      "rateHint": "Plancher plateforme : {floor} €. Au-dessus uniquement.",
+      "categoriesLabel": "Catégories",
+      "categoriesHint": "Sélectionnez au moins une catégorie.",
+      "nextCta": "Suivant",
+      "backCta": "Précédent",
+      "finishCta": "Terminer",
+      "errorRateLow": "Les tarifs ne peuvent pas être inférieurs au plancher plateforme.",
+      "errorCategoriesEmpty": "Sélectionnez au moins une catégorie pour continuer."
+    },
+    "invoices": {
+      "eyebrow": "Facturation",
+      "title": "Frais de recherche émis",
+      "description": "Les factures de frais de recherche que vous avez émises sur vos demandes. Surveillez les statuts pour relancer si nécessaire.",
+      "emptyTitle": "Aucune facture émise",
+      "emptyBody": "Lorsque vous facturez une étude de marché sur une demande, la facture apparaît ici.",
+      "issuedOn": "Émise le",
+      "dueOn": "Échéance",
+      "paidOn": "Payée le",
+      "openRequest": "Ouvrir la demande",
+      "unknownRequest": "Demande non liée",
+      "statuses": {
+        "DRAFT": "Brouillon",
+        "ISSUED": "Émise",
+        "PAID": "Payée",
+        "OVERDUE": "En retard",
+        "VOID": "Annulée"
+      }
     },
     "tasks": {
       "eyebrow": "Mes tâches",
@@ -671,6 +815,25 @@
     "errorMinSelection": "Sélectionnez au moins une usine."
   },
   "factory": {
+    "analytics": {
+      "eyebrow": "Statistiques",
+      "title": "Performance commerciale",
+      "description": "Volume d'affaires, taux de conversion et livraison à l'heure.",
+      "kpiGmv": "Chiffre d'affaires cumulé",
+      "thisMonth": "ce mois",
+      "kpiWinRate": "Taux de gain",
+      "quotes": "devis",
+      "kpiOnTime": "Livraisons à l'heure",
+      "kpiOnTimeHint": "Sur les 100 dernières commandes",
+      "kpiTendersReceived": "Appels d'offres reçus",
+      "trendLabel": "vs mois précédent",
+      "topProductsTitle": "Vos 5 produits les plus vendus",
+      "units": "unités",
+      "disputesTitle": "Litiges",
+      "disputesReceived": "Reçus",
+      "disputesResolvedAgainst": "Résolus contre vous",
+      "empty": "Pas encore de données."
+    },
     "dashboard": {
       "eyebrow": "Tableau de bord",
       "title": "Vue d'ensemble",
@@ -728,6 +891,10 @@
       "flashSaleHint": "Optionnel. Tant que la date est à venir, l'annonce affiche un badge \"vente flash\" et un compte à rebours aux acheteurs.",
       "promotionTitle": "Promotions",
       "promotionDescription": "Ajouter ou retirer un prix barré et une vente flash sur cette annonce en ligne, sans la republier.",
+      "reReviewTitle": "Modifier une annonce en ligne",
+      "reReviewBody": "Sauvegarder vos changements remet l'annonce en file de modération — elle sera masquée de la Marketplace tant qu'un administrateur ne la valide pas (~24 h ouvrées). Les promotions (prix barré, vente flash) ci-dessus restent modifiables sans réexamen.",
+      "pendingEditTitle": "Annonce en cours d'examen",
+      "pendingEditBody": "Vos derniers changements seront pris en compte par l'équipe d'examen. Vous pouvez encore les ajuster tant qu'aucun administrateur n'a ouvert le dossier.",
       "promotionSave": "Enregistrer la promotion",
       "promotionClear": "Retirer",
       "promotionSaved": "Promotion enregistrée.",
@@ -939,6 +1106,38 @@
       "shippedCtaBody": "Marquez comme en transit dès que le colis est confirmé en mouvement par le transporteur.",
       "markInTransitCta": "Marquer en transit",
       "errorTrackingRequired": "Le transporteur et le numéro de suivi sont obligatoires.",
+      "trackingEditor": {
+        "title": "Suivi de l'envoi",
+        "carrierLabel": "Transporteur",
+        "editCta": "Modifier",
+        "editTitle": "Corriger les informations de suivi",
+        "editBody": "Le numéro saisi à l'expédition peut être corrigé tant que la commande est en transit. L'acheteur voit la nouvelle valeur à son prochain rafraîchissement.",
+        "saveCta": "Enregistrer",
+        "errorRequired": "Le transporteur et le numéro de suivi sont obligatoires."
+      },
+      "dispute": {
+        "title": "Litige ouvert par l'acheteur",
+        "body": "L'acheteur a ouvert un litige sur cette commande. Lisez sa déclaration et apportez votre version des faits dans les 5 jours ouvrés — c'est ce que l'équipe SourcingPick utilisera pour arbitrer.",
+        "buyerLabel": "Déclaration de l'acheteur",
+        "yourLabel": "Votre réponse",
+        "adminLabel": "Décision SourcingPick",
+        "outcomeLabel": "Décision",
+        "statementPlaceholder": "Photos d'expédition fournies le… Le produit a été inspecté par notre QC interne sans défaut signalé…",
+        "errorShort": "Merci de détailler votre réponse (20 caractères minimum).",
+        "submitCta": "Envoyer ma réponse",
+        "updateCta": "Mettre à jour ma réponse",
+        "editCta": "Modifier",
+        "statuses": {
+          "OPEN": "Ouvert",
+          "RESPONDED": "Vous avez répondu",
+          "RESOLVED": "Résolu"
+        },
+        "outcomes": {
+          "STANDARD": "Produit défectueux — remboursement partiel 80 %",
+          "CUSTOM": "Produit personnalisé — remboursement intégral",
+          "REJECT": "Litige non retenu"
+        }
+      },
       "proofs": {
         "qcSectionTitle": "Photos de contrôle qualité",
         "qcSectionBody": "Téléversez des photos du produit fini, des cartons emballés, des étiquettes — tout ce qui permet à l'acheteur de voir que la commande est prête avant l'expédition. Visibles uniquement par l'acheteur et l'admin.",
@@ -1087,6 +1286,7 @@
       "colProvider": "Fournisseur",
       "colReleased": "Libéré le",
       "colActions": "Actions",
+      "viewDisputeCta": "Voir le litige",
       "statuses": {
         "INITIATED": "Initié",
         "FUNDED": "Approvisionné",
@@ -1159,7 +1359,32 @@
       "colOrg": "Organisation",
       "col2fa": "2FA",
       "colLastLogin": "Dernière connexion",
-      "neverLoggedIn": "Jamais"
+      "neverLoggedIn": "Jamais",
+      "backToList": "Retour à la liste",
+      "createdOn": "Créé le",
+      "lastSeenOn": "Dernière activité le",
+      "twoFaOn": "2FA activée",
+      "twoFaOff": "2FA désactivée",
+      "scopesTitle": "Permissions administrateur",
+      "scopesBody": "Cochez les domaines que cet administrateur peut gérer. SUPER accorde tout — utilisez-le uniquement pour vous-même et l'équipe d'astreinte. Au moins un super-administrateur doit exister à tout moment.",
+      "scopesSaveCta": "Enregistrer les permissions",
+      "scopesSuperHint": "SUPER est activé — toutes les autres cases sont symboliques. Décochez SUPER pour les ajuster.",
+      "scopesSurfacesLabel": "Accès",
+      "notAdminBody": "Cet utilisateur n'est pas administrateur — la liste de permissions ne s'applique pas.",
+      "scopes": {
+        "SUPER": "Super-administrateur",
+        "KYC": "KYC — vérification des usines",
+        "MARKETPLACE": "Marketplace + enchères + certifications",
+        "FINANCE": "Finance, séquestre, paiements et versements",
+        "SUPPORT": "Tickets support",
+        "DISPUTES": "Litiges",
+        "REQUESTS": "Pré-validation tender et dispatch",
+        "USERS": "Utilisateurs et organisations",
+        "WEBHOOKS": "Webhooks et journaux de connexion",
+        "SETTINGS": "Paramètres plateforme (pays autorisés…)",
+        "AGENTS": "Agents — gestion et performance",
+        "AUDIT": "Journal d'audit"
+      }
     },
     "agents": {
       "eyebrow": "Équipe",
@@ -1215,6 +1440,52 @@
       "colUa": "User-agent",
       "unknownUser": "Utilisateur inconnu"
     },
+    "disputes": {
+      "eyebrow": "Arbitrage",
+      "title": "Litiges",
+      "description": "Files de litiges à arbitrer. Lisez les deux versions, vérifiez les pièces, choisissez l'issue.",
+      "kpiOpen": "Ouverts",
+      "kpiResponded": "Usine a répondu",
+      "kpiResolved": "Résolus",
+      "emptyTitle": "Aucun litige en cours",
+      "emptyBody": "Quand un acheteur signale un problème, il apparaîtra ici.",
+      "openedOn": "Ouvert le",
+      "respondedOn": "Réponse le",
+      "openedBy": "Ouvert par",
+      "resolvedBy": "Arbitré par",
+      "backToList": "Retour à la liste",
+      "detailTitle": "Détail du litige",
+      "summaryTotal": "Total commande",
+      "summaryDeposit": "Acompte",
+      "summaryBalance": "Solde",
+      "buyerLabel": "Déclaration de l'acheteur",
+      "factoryLabel": "Réponse de l'usine",
+      "factoryNoResponse": "L'usine n'a pas encore répondu.",
+      "adminLabel": "Votre décision",
+      "arbitrateTitle": "Arbitrage",
+      "arbitrateBody": "Choisissez une issue. Le bloc affiché indique le montant exact qui sera enregistré.",
+      "decisionLabel": "Narratif de la décision (visible par les deux parties)",
+      "decisionPlaceholder": "Après examen des photos fournies et des échantillons de référence, le produit est considéré non conforme sur les coutures…",
+      "errorShort": "Merci de rédiger une décision (20 caractères minimum).",
+      "resolveCta": "Arbitrer le litige",
+      "resolutionTitle": "Décision rendue",
+      "outcomeLabel": "Issue",
+      "refundCents": "Remboursé à l'acheteur",
+      "retainedCents": "Retenu par la plateforme",
+      "platformCents": "Part SourcingPick",
+      "supplierCents": "Part usine",
+      "escrowReturnsHeld": "Séquestre revient en HELD",
+      "statuses": {
+        "OPEN": "Ouvert",
+        "RESPONDED": "Usine a répondu",
+        "RESOLVED": "Résolu"
+      },
+      "outcomes": {
+        "STANDARD": "Produit défectueux — remboursement partiel 80 %",
+        "CUSTOM": "Produit personnalisé — remboursement intégral",
+        "REJECT": "Litige non retenu"
+      }
+    },
     "support": {
       "eyebrow": "Support",
       "title": "Tickets support",
@@ -1255,6 +1526,7 @@
       "empty": "Aucune fiche en attente de modération.",
       "noImage": "Aucune image fournie",
       "factoryKycMissing": "KYC non validé",
+      "reReviewBadge": "Réexamen",
       "submittedAt": "Soumis le",
       "rejectCta": "Refuser",
       "approveCta": "Valider et publier",
@@ -2181,6 +2453,55 @@
           ]
         }
       ]
+    },
+    "security": {
+      "title": "Aperçu sécurité",
+      "sections": [
+        {
+          "heading": "Notre position en bref",
+          "body": [
+            "SourcingPick traite des données financières et personnelles : KYC d'usine, RIB, factures, identifiants des acheteurs. Nous avons construit la plateforme avec la sécurité comme contrainte de premier ordre, sans pour autant prétendre à une certification ISO 27001 ou SOC 2 que nous n'avons pas encore.",
+            "Cette page est une lecture honnête : ce qui est en place côté technique, ce qui est en place côté gouvernance, et ce qui figure dans notre feuille de route. Elle est mise à jour à chaque changement matériel — la version qui suit reflète l'état au {{lastUpdated}}.",
+            "Si vous représentez un acheteur entreprise ou un département compliance et avez besoin d'un dossier plus profond (DPIA, RIA, questionnaire SIG Lite, etc.), écrivez-nous à security@sourcingpick.com."
+          ]
+        },
+        {
+          "heading": "Contrôles techniques en place",
+          "body": [
+            "Cloisonnement par rôle — tous les chemins protégés transitent par un garde requireRole(), avec contrôle additionnel d'appartenance organisationnelle. Aucun chemin ne se contente du proxy HTTP.",
+            "Journal d'audit — chaque action sensible (KYC, paiement, modification d'enchère, refus pré-tender) écrit une ligne d'auditLog avec utilisateur, payload et niveau (INFO/WARN/ALERT). Conservé indéfiniment côté DB.",
+            "Authentification — Auth.js v5 avec mots de passe bcrypt, OTP TOTP optionnel, magic-link pour les transitaires (#15). Les sessions utilisent des tokens signés HTTP-only, SameSite=Lax.",
+            "Paiements — séquestre Wise Business (rail unique depuis 2026-06). Les webhooks Wise sont signés (RSA), persistés dans WebhookEvent, et rejouables par un admin. Idempotence sur providerRef pour éviter le double encaissement.",
+            "Pièces jointes — bornes par type (image/vidéo/audio/fichier), plafond par contexte, mime sniffé à l'upload. Les liens magiques transitaires sont expirables et révocables.",
+            "Confidentialité des prix usine — la marge plateforme et le prix usine ne sont jamais exposés au client (devis à deux paliers)."
+          ]
+        },
+        {
+          "heading": "Données et hébergement",
+          "body": [
+            "Hébergement Europe (Paris / Francfort selon la stack). Les données chiffrées au repos via la couche disque du fournisseur ; les connexions DB en TLS.",
+            "Données personnelles couvertes par le RGPD : nous sommes responsables de traitement pour les comptes utilisateurs (client, usine, agent, admin) et sous-traitant pour les contenus échangés entre acheteurs et usines.",
+            "Sous-traitants principaux : Wise Business (paiements), notre hébergeur, notre prestataire mail transactionnel. La liste détaillée est disponible sur demande à security@sourcingpick.com."
+          ]
+        },
+        {
+          "heading": "Gouvernance & gestion d'incident",
+          "body": [
+            "Pas encore certifiés ISO 27001 ni SOC 2. Notre objectif est de boucler un audit de type 1 SOC 2 dans les 12 mois à compter de la publication v1.",
+            "Politique de signalement d'incident : sentinelle à security@sourcingpick.com. Engagement de réponse sous 24h ouvrées et notification aux personnes concernées dans les délais légaux RGPD (72h) lorsque applicable.",
+            "Programme bug bounty informel : nous n'avons pas encore de plateforme dédiée ; signalez les vulnérabilités responsablement à security@sourcingpick.com et nous traiterons en bonne foi."
+          ]
+        },
+        {
+          "heading": "Sur quoi nous travaillons",
+          "body": [
+            "Démarrage de la rédaction ISMS et préparation pré-audit SOC 2.",
+            "Tests de pénétration externes annuels — premier passage planifié 2026-Q4.",
+            "Politique de rotation des secrets + extraction des credentials en gestionnaire dédié (HashiCorp Vault ou équivalent).",
+            "Statement of Applicability ISO 27001 — en cours de préparation comme socle pour les questionnaires acheteur entreprise."
+          ]
+        }
+      ]
     }
   },
   "faq": {
@@ -2406,6 +2727,7 @@
     "terms": "Conditions générales",
     "privacy": "Politique de confidentialité",
     "cookies": "Politique cookies",
+    "security": "Sécurité",
     "faq": "FAQ",
     "allRights": "Tous droits réservés.",
     "madeIn": "Fait avec ❤️ par INAIRIS"

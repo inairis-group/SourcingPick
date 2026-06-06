@@ -1,8 +1,5 @@
 import "server-only";
 import type { PayoutProvider } from "@prisma/client";
-import { stripeAdapter } from "./stripe";
-import { lianlianAdapter } from "./lianlian";
-import { alipayAdapter } from "./alipay";
 import { wiseAdapter } from "./wise";
 import type {
   OnboardingResult,
@@ -17,34 +14,15 @@ import type {
  * onboarding", "send a payout", or "check provider health" goes through
  * here so individual adapters stay swappable.
  *
- * The map is intentionally exhaustive on PayoutProvider — adding a new
- * provider means a TS error here until the adapter is added, which is
- * what we want.
- *
- * Keys are string literals (not enum member references) for the same
- * reason as the adapter files: avoids crashing at module load when
- * Turbopack serves a stale @prisma/client. `Record<PayoutProvider, …>`
- * still enforces exhaustiveness at compile time.
+ * Wise is the only live rail since the CTO audit follow-up migration
+ * pruned the deprecated PayoutProvider values. The Stripe / LianLian /
+ * Alipay adapter files were retired in the same pass.
  */
 const ADAPTERS: Record<PayoutProvider, PayoutAdapter> = {
-  STRIPE_CONNECT: stripeAdapter,
-  LIANLIAN: lianlianAdapter,
-  ALIPAY: alipayAdapter,
-  // Wise is the live rail going forward (2026-06-02 decision); the
-  // others stay in the map until the migration arc finishes and a
-  // follow-up drops them from PayoutProvider entirely.
   WISE: wiseAdapter,
 };
 
-// Static list — derived from the Record above, but avoids the runtime
-// `Object.values(PayoutProvider)` call that would dereference a possibly
-// undefined enum import during hot reload.
-const ALL_PROVIDERS = [
-  "STRIPE_CONNECT",
-  "LIANLIAN",
-  "ALIPAY",
-  "WISE",
-] as const satisfies readonly PayoutProvider[];
+const ALL_PROVIDERS = ["WISE"] as const satisfies readonly PayoutProvider[];
 
 export function adapterFor(provider: PayoutProvider): PayoutAdapter {
   return ADAPTERS[provider];

@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
-import { Role } from "@prisma/client";
+import {AdminScope } from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate } from "@/lib/i18n/formatters";
@@ -25,7 +25,7 @@ export default async function AdminBannersPage({
 }: PageProps<"/[lang]/admin/marketplace/banners">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.MARKETPLACE);
   const dict = await getDictionary(lang);
 
   const banners = await prisma.marketplaceBanner.findMany({

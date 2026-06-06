@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
-import { KycStatus, Role } from "@prisma/client";
+import {AdminScope, KycStatus } from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { AdminProductForm } from "./_components/admin-product-form";
@@ -21,7 +21,7 @@ export default async function AdminCreateListingPage({
 }: PageProps<"/[lang]/admin/marketplace/new">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.MARKETPLACE);
   const dict = await getDictionary(lang);
 
   const factories = await prisma.organization.findMany({

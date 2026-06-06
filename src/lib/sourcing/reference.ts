@@ -19,7 +19,17 @@ import { prisma } from "@/lib/db/client";
 const MAX_RETRIES = 10;
 
 export async function generateUniqueReference<
-  T extends "REQ" | "ORD" | "MKT" | "INV" | "ESC" | "PAY" | "CERT" | "AUC" | "TKT",
+  T extends
+    | "REQ"
+    | "ORD"
+    | "MKT"
+    | "INV"
+    | "ESC"
+    | "PAY"
+    | "CERT"
+    | "AUC"
+    | "TKT"
+    | "DSP",
 >(prefix: T): Promise<string> {
   // Year-scoped serials for finance + certification: INV-2026-NNNN, etc.
   // Random + retry serial scheme for the rest: REQ-XXXXXX, ORD-XXXXX, MKT-XXX.
@@ -43,7 +53,7 @@ export async function generateUniqueReference<
   }
 
   const digits =
-    prefix === "ORD" || prefix === "TKT"
+    prefix === "ORD" || prefix === "TKT" || prefix === "DSP"
       ? 5
       : prefix === "MKT" || prefix === "AUC"
         ? 3
@@ -122,6 +132,13 @@ async function referenceExists(prefix: string, candidate: string): Promise<boole
     }
     case "TKT": {
       const row = await prisma.supportTicket.findUnique({
+        where: { reference: candidate },
+        select: { id: true },
+      });
+      return row !== null;
+    }
+    case "DSP": {
+      const row = await prisma.dispute.findUnique({
         where: { reference: candidate },
         select: { id: true },
       });

@@ -19,6 +19,8 @@ import { formatLeadTime } from "@/lib/marketplace/lead-time";
 import { FactoryOrderActions } from "./_components/factory-order-actions";
 import { PhaseProofUploader } from "./_components/phase-proof-uploader";
 import { ForwarderLinkPanel } from "./_components/forwarder-link-panel";
+import { TrackingEditor } from "./_components/tracking-editor";
+import { FactoryDisputeResponse } from "./_components/dispute-response";
 
 export async function generateMetadata({
   params,
@@ -80,6 +82,19 @@ export default async function FactoryOrderDetailPage({
           uploadCount: true,
           createdAt: true,
         },
+      },
+      disputes: {
+        select: {
+          id: true,
+          reference: true,
+          status: true,
+          outcome: true,
+          openedAt: true,
+          buyerStatement: true,
+          factoryStatement: true,
+          adminDecision: true,
+        },
+        orderBy: { openedAt: "desc" },
       },
     },
   });
@@ -214,6 +229,30 @@ export default async function FactoryOrderDetailPage({
         orderId={order.id}
         status={order.status}
       />
+
+      {/* Active dispute panel — the factory sees the buyer's statement
+          and can submit (or update) their response. Most recent dispute
+          surfaces here; resolved ones stay visible for record. */}
+      {order.disputes[0] && (
+        <FactoryDisputeResponse dispute={order.disputes[0]} />
+      )}
+
+      {/* Tracking editor — only renders while shipped/in_transit so the
+          factory can fix typos without rolling the order backwards. */}
+      {(order.status === OrderStatus.SHIPPED ||
+        order.status === OrderStatus.IN_TRANSIT) &&
+        order.trackingNumber && (
+          <div className="mt-4">
+            <TrackingEditor
+              orderId={order.id}
+              initial={{
+                trackingNumber: order.trackingNumber,
+                trackingCarrier: order.trackingCarrier,
+                trackingUrl: order.trackingUrl,
+              }}
+            />
+          </div>
+        )}
 
       {/* QC proof photos — uploader visible during PREPARATION/QC,
           gallery always visible once any have been uploaded. */}

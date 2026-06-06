@@ -9,7 +9,7 @@ import {
   Section,
   Text,
 } from "react-email";
-import type { Locale } from "@/lib/i18n/config";
+import { directionFor, type Locale } from "@/lib/i18n/config";
 
 type NotificationEmailProps = {
   title: string;
@@ -34,7 +34,7 @@ export default function NotificationEmail({
   locale,
 }: NotificationEmailProps) {
   return (
-    <Html lang={locale}>
+    <Html lang={locale} dir={directionFor(locale)}>
       <Head />
       <Preview>{title}</Preview>
       <Body

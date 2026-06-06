@@ -112,6 +112,24 @@ async function canManage(
       }
       return order.factoryOrgId === user.organizationId;
     }
+    // Either party can prune their own dispute-evidence uploads while
+    // the dispute is still pre-resolution. After the admin's decision
+    // the evidence is part of the audit trail — only admins can remove.
+    case AttachmentContext.DISPUTE_EVIDENCE: {
+      const dispute = await prisma.dispute.findUnique({
+        where: { id: att.contextId },
+        select: {
+          status: true,
+          order: { select: { clientOrgId: true, factoryOrgId: true } },
+        },
+      });
+      if (!dispute) return false;
+      if (dispute.status === "RESOLVED") return false;
+      const orgMatch =
+        user.organizationId === dispute.order.clientOrgId ||
+        user.organizationId === dispute.order.factoryOrgId;
+      return orgMatch;
+    }
     // Messages, orders, and banners aren't deletable via this path.
     // Banner media is admin-managed (handled by deleteBannerAction) and
     // admins already short-circuit to true above.

@@ -473,6 +473,99 @@ export async function advanceOrderStatusAction(
   return { ok: true, deferredForBalance };
 }
 
+// =============================================================
+// Tracking edit (factory / admin)
+// =============================================================
+
+const TrackingEditSchema = z.object({
+  trackingNumber: z.string().trim().min(2).max(80),
+  trackingCarrier: z.string().trim().min(2).max(80),
+  trackingUrl: z.url().max(500).optional().or(z.literal("")),
+});
+
+export type UpdateTrackingResult =
+  | { ok: true }
+  | { ok: false; error: string };
+
+/**
+ * Update tracking on an already-shipped order (partner item #8). Factory
+ * may have entered a typo at shipment and needs to correct it without
+ * walking the order back through the state machine. Allowed for the
+ * order's factory + admin while status ∈ {SHIPPED, IN_TRANSIT}; the
+ * client side gets the new copyable value on next refresh.
+ */
+export async function updateOrderTrackingAction(
+  orderId: string,
+  input: {
+    trackingNumber: string;
+    trackingCarrier: string;
+    trackingUrl?: string;
+  },
+): Promise<UpdateTrackingResult> {
+  const user = await requireAuth();
+  const parsed = TrackingEditSchema.safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input." };
+  }
+
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    select: {
+      id: true,
+      status: true,
+      factoryOrgId: true,
+      trackingNumber: true,
+      trackingCarrier: true,
+      trackingUrl: true,
+    },
+  });
+  if (!order) return { ok: false, error: "Order not found." };
+
+  const isFactory =
+    user.role === Role.FACTORY && user.organizationId === order.factoryOrgId;
+  const isAdmin = user.role === Role.ADMIN;
+  if (!isFactory && !isAdmin) {
+    return { ok: false, error: "Only the factory or an admin can edit tracking." };
+  }
+  if (
+    order.status !== OrderStatus.SHIPPED &&
+    order.status !== OrderStatus.IN_TRANSIT
+  ) {
+    return {
+      ok: false,
+      error: "Tracking can only be edited while the order is shipped.",
+    };
+  }
+
+  await prisma.order.update({
+    where: { id: order.id },
+    data: {
+      trackingNumber: parsed.data.trackingNumber,
+      trackingCarrier: parsed.data.trackingCarrier,
+      trackingUrl: parsed.data.trackingUrl || null,
+    },
+  });
+
+  await writeAuditLog({
+    actorUserId: user.id,
+    action: "order.tracking_updated",
+    targetType: "Order",
+    targetId: order.id,
+    payload: {
+      from: {
+        carrier: order.trackingCarrier,
+        number: order.trackingNumber,
+        url: order.trackingUrl,
+      },
+      to: parsed.data,
+    },
+  });
+
+  revalidatePath("/[lang]/client/orders", "page");
+  revalidatePath("/[lang]/factory/orders", "page");
+  return { ok: true };
+}
+
 async function notifyOnOrderTransition(
   orderId: string,
   to: OrderStatus,

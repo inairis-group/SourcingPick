@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   OrderStatus,
   QuoteStatus,
@@ -47,6 +47,12 @@ export default async function AgentDashboardPage({
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const agent = await requireRole(Role.AGENT);
+  // Bounce to the onboarding wizard until the agent has filled in
+  // their bio + timezone + categories. agentOnboardedAt is backfilled
+  // for every agent that existed before this column landed.
+  if (!agent.agentOnboardedAt) {
+    redirect(`/${lang}/onboarding/agent`);
+  }
   const dict = await getDictionary(lang);
 
   const [

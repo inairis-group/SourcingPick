@@ -5,6 +5,7 @@ import { TwoFactorToggle } from "./two-factor-toggle";
 import { MembersList } from "./members-list";
 import { PayoutSection } from "./payout-section";
 import { LogoSection } from "./logo-section";
+import { NotificationPreferences } from "./notification-preferences";
 import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -89,6 +90,13 @@ export async function SettingsView({ locale }: { locale: Locale }) {
             initialEnabled={user.twoFactorEnabled}
             isAdmin={isAdmin}
           />
+        </Section>
+
+        <Section
+          title={dict.settings.notifications.title}
+          description={dict.settings.notifications.description}
+        >
+          <NotificationPreferences initial={user.emailDigestMode} />
         </Section>
 
         {canEditLogo && org && (

@@ -20,6 +20,7 @@ import {
   CloudIcon,
   AlertCircleIcon,
   GlobalIcon,
+  ScrollIcon,
 } from "@hugeicons/core-free-icons";
 import type { Role } from "@prisma/client";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
@@ -96,6 +97,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               icon: InvoiceIcon,
             },
             {
+              href: `${base}/client/analytics`,
+              label: dict.client.analytics.title,
+              icon: ChartLineData01Icon,
+            },
+            {
               href: `${base}/client/settings`,
               label: dict.nav.settings,
               icon: Settings01Icon,
@@ -153,6 +159,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               icon: SecurityCheckIcon,
             },
             {
+              href: `${base}/factory/analytics`,
+              label: dict.factory.analytics.title,
+              icon: ChartLineData01Icon,
+            },
+            {
               href: `${base}/factory/settings`,
               label: dict.nav.settings,
               icon: Settings01Icon,
@@ -189,6 +200,16 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               icon: PackageIcon,
             },
             {
+              href: `${base}/agent/invoices`,
+              label: dict.nav.invoices,
+              icon: InvoiceIcon,
+            },
+            {
+              href: `${base}/agent/profile`,
+              label: dict.agent.profile.title,
+              icon: UserGroup02Icon,
+            },
+            {
               href: `${base}/agent/tasks`,
               label: dict.nav.tasks,
               icon: TaskDone01Icon,
@@ -198,6 +219,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               href: `${base}/messages`,
               label: dict.nav.messages,
               icon: Message01Icon,
+            },
+            {
+              href: `${base}/agent/analytics`,
+              label: dict.agent.analytics.title,
+              icon: ChartLineData01Icon,
             },
             {
               href: `${base}/agent/settings`,
@@ -315,6 +341,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               href: `${base}/admin/support`,
               label: dict.admin.support.title,
               icon: Mail01Icon,
+            },
+            {
+              href: `${base}/admin/disputes`,
+              label: dict.admin.disputes.title,
+              icon: ScrollIcon,
             },
             {
               href: `${base}/admin/settings/sourcing`,

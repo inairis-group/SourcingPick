@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { AuditLevel, Role } from "@prisma/client";
+import {AdminScope, AuditLevel } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate } from "@/lib/i18n/formatters";
@@ -32,7 +32,7 @@ export default async function AdminAuditPage({
   const { lang } = await params;
   const search = await searchParams;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.AUDIT);
   const dict = await getDictionary(lang);
 
   const levelFilter =

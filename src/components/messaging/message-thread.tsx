@@ -162,14 +162,22 @@ export function MessageThread({
     });
   }, [threadId, messages.length]);
 
-  // Subscribe to SSE.
+  // Subscribe to SSE. We read the latest message timestamp via a
+  // functional setState — passing `current → current` is bailout-cheap
+  // (Object.is short-circuits the re-render) but gives the SSE callback
+  // access to the freshest state without a mirror ref. The old ref +
+  // sync-effect pattern tripped React 19's `react-hooks/set-state-in-
+  // effect` rule because mutating a ref used as a dep is forbidden.
   useEffect(() => {
     const source = new EventSource(`/api/messaging/stream/${threadId}`);
     source.addEventListener("message", () => {
-      const lastTs =
-        messagesRef.current[messagesRef.current.length - 1]?.createdAt ??
-        new Date(0).toISOString();
-      loadIncremental(lastTs);
+      setMessages((current) => {
+        const lastTs =
+          current[current.length - 1]?.createdAt ??
+          new Date(0).toISOString();
+        void loadIncremental(lastTs);
+        return current;
+      });
     });
     source.addEventListener("error", () => {
       // EventSource auto-reconnects on transient errors; we surface a
@@ -180,12 +188,6 @@ export function MessageThread({
     });
     return () => source.close();
   }, [threadId, loadIncremental, dict.messaging.errorStream]);
-
-  // Keep ref in sync — needed inside the SSE callback because it captures.
-  const messagesRef = useRef<Message[]>([]);
-  useEffect(() => {
-    messagesRef.current = messages;
-  }, [messages]);
 
   // Auto-scroll to bottom when new messages arrive *if* the user was
   // already at the bottom; otherwise leave their scroll position alone.
@@ -234,10 +236,14 @@ export function MessageThread({
         setPendingFiles([]);
         setShowPicker(false);
       }
-      const lastTs =
-        messagesRef.current[messagesRef.current.length - 1]?.createdAt ??
-        new Date(0).toISOString();
-      loadIncremental(lastTs);
+      // Read freshest messages via functional setState — same pattern
+      // as the SSE callback; avoids a mirror ref.
+      setMessages((current) => {
+        const lastTs =
+          current[current.length - 1]?.createdAt ?? new Date(0).toISOString();
+        void loadIncremental(lastTs);
+        return current;
+      });
     };
 
     if (files.length === 0) {

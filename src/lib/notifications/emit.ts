@@ -1,9 +1,21 @@
 import "server-only";
-import { NotificationType } from "@prisma/client";
+import { EmailDigestMode, NotificationType } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { sendEmail } from "@/lib/email/send";
 import NotificationEmail from "@/lib/email/templates/notification";
 import { EMAIL_TYPES, renderNotification, type NotificationVars } from "./copy";
+
+/**
+ * NotificationTypes that bypass `emailDigestMode` — always emailed
+ * even when the recipient is on DAILY or OFF.
+ *
+ * v1 list is empty: password resets and OTPs don't flow through
+ * `emitNotification` at all (they go via a dedicated auth path), so
+ * the channels managed here are by design all batch-safe. Add
+ * KYC_DECISION / INVOICE_DUE to this set if partner feedback shows
+ * batching them causes harm.
+ */
+const URGENT_TYPES: ReadonlySet<NotificationType> = new Set<NotificationType>();
 
 export type EmitInput = {
   recipientUserId: string;
@@ -30,14 +42,21 @@ export type EmitInput = {
 export async function emitNotification(input: EmitInput): Promise<void> {
   const recipient = await prisma.user.findUnique({
     where: { id: input.recipientUserId },
-    select: { id: true, email: true, locale: true },
+    select: { id: true, email: true, locale: true, emailDigestMode: true },
   });
   if (!recipient) return;
 
   const locale = input.localeOverride ?? recipient.locale;
   const copy = renderNotification(input.type, locale, input.vars ?? {});
 
-  const wantsEmail = EMAIL_TYPES.has(input.type);
+  // Cadence decision:
+  //   - URGENT events always send.
+  //   - Non-URGENT events send when the user is on IMMEDIATE.
+  //   - DAILY / OFF: in-app row only; the digest cron handles DAILY.
+  const isUrgent = URGENT_TYPES.has(input.type);
+  const wantsEmail =
+    EMAIL_TYPES.has(input.type) &&
+    (isUrgent || recipient.emailDigestMode === EmailDigestMode.IMMEDIATE);
 
   await prisma.notification.create({
     data: {
@@ -49,6 +68,11 @@ export async function emitNotification(input: EmitInput): Promise<void> {
       contextId: input.contextId ?? null,
       deliveredInapp: true,
       deliveredEmail: wantsEmail,
+      // OFF users: pretend already-digested so the cron skips them.
+      digestedAt:
+        recipient.emailDigestMode === EmailDigestMode.OFF
+          ? new Date()
+          : null,
     },
   });
 

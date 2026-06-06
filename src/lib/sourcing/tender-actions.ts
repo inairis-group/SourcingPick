@@ -23,6 +23,7 @@ import {
 } from "@/lib/notifications/emit";
 import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
 import { applyBuyerMarkup } from "@/lib/orders/pricing";
+import { computeQualificationScore } from "@/lib/sourcing/qualification-score";
 
 // =============================================================
 // Tender invitations (agent → factories)
@@ -211,8 +212,9 @@ export type SubmitQuoteState = {
  * here is the absolute platform take for the quote, not the per-side
  * split — supplier fee is deducted later at payout time.
  *
- * qualificationScore defaults to 80 — proper scoring per spec §4.4 is a
- * Phase 6 item once we have median-of-received-quotes context.
+ * qualificationScore is computed by `computeQualificationScore` —
+ * weighted blend of KYC trust, on-time history, and price/lead-time
+ * relative to other quotes received for the same request.
  */
 export async function submitQuoteAction(
   _prev: SubmitQuoteState,
@@ -266,9 +268,28 @@ export async function submitQuoteAction(
     Date.now() + parsed.data.validityDays * 24 * 60 * 60 * 1000,
   );
 
+  // Pull the factory's KYC status (one small read outside the
+  // transaction — it's an Organization-level static field).
+  const factoryOrg = await prisma.organization.findUnique({
+    where: { id: factory.organizationId },
+    select: { kycStatus: true },
+  });
+  if (!factoryOrg) return { error: "Factory organisation not found." };
+
   let quoteId: string;
   try {
     const result = await prisma.$transaction(async (tx) => {
+      const score = await computeQualificationScore({
+        tx,
+        requestId: invitation.requestId,
+        factoryOrgId: factory.organizationId,
+        factoryKycStatus: factoryOrg.kycStatus,
+        unitPriceCentsFactory,
+        leadTimeDays:
+          parsed.data.leadTimeUnit === "MONTH"
+            ? Math.round(parsed.data.leadTimeDays * 30)
+            : parsed.data.leadTimeDays,
+      });
       const quote = await tx.quote.create({
         data: {
           requestId: invitation.requestId,
@@ -290,7 +311,7 @@ export async function submitQuoteAction(
           moq: parsed.data.moq,
           incoterm: parsed.data.incoterm,
           validUntil,
-          qualificationScore: 80, // v1 default — full §4.4 scoring in Phase 6
+          qualificationScore: score,
           depositPercentageBps: parsed.data.depositPercentage * 100,
           status: QuoteStatus.SENT_TO_AGENT,
           notes: parsed.data.notes || null,

@@ -4,6 +4,24 @@
     "tagline": "工业化的国际采购平台。"
   },
   "client": {
+    "analytics": {
+      "eyebrow": "数据分析",
+      "title": "我的采购数据",
+      "description": "您的支出、合作工厂分布、收到的服务质量。",
+      "kpiTotalSpend": "总支出",
+      "kpiTotalSpendHint": "不含已取消订单",
+      "kpiOrders": "订单数",
+      "kpiOrdersThisMonth": "本月",
+      "kpiAvgOrder": "平均订单额",
+      "kpiAvgLeadTime": "平均交期",
+      "days": "天",
+      "trendLabel": "环比上月",
+      "topFactoriesTitle": "您的前 5 大工厂",
+      "disputesTitle": "争议",
+      "disputesOpened": "已发起",
+      "disputesResolvedInFavor": "胜诉",
+      "empty": "暂无数据。"
+    },
     "dashboard": {
       "eyebrow": "仪表盘",
       "title": "概览",
@@ -282,6 +300,32 @@
         "footnote": "SEPA 汇款数小时内到账；国际汇款 1–3 个工作日。资金到账后订单状态会自动更新。"
       },
       "sectionInvoices": "发票",
+      "dispute": {
+        "openTitle": "对订单有问题?",
+        "openBody": "确认收货后 7 天内可提交争议(产品不符、严重瑕疵、未收到)。SourcingPick 团队将在 5 个工作日内进行仲裁。",
+        "openCta": "举报问题",
+        "formTitle": "描述问题",
+        "formBody": "请客观陈述:您期望什么、实际收到什么、希望如何处理(全额退款、部分退款、补发)?工厂和 SourcingPick 团队都会看到此内容。",
+        "statementPlaceholder": "产品在车缝处存在明显瑕疵,颜色与确认样品不一致……",
+        "errorShort": "请详细描述问题(至少 20 个字符)。",
+        "submitCta": "提交争议",
+        "cardTitle": "该订单的争议",
+        "buyerLabel": "您的陈述",
+        "factoryLabel": "工厂回应",
+        "adminLabel": "SourcingPick 裁决",
+        "outcomeLabel": "结果",
+        "refundLabel": "退款金额",
+        "statuses": {
+          "OPEN": "未处理",
+          "RESPONDED": "工厂已回应",
+          "RESOLVED": "已解决"
+        },
+        "outcomes": {
+          "STANDARD": "产品不符 — 80% 部分退款",
+          "CUSTOM": "定制产品 — 全额退款",
+          "REJECT": "争议不成立"
+        }
+      },
       "invoiceTypeDeposit": "定金",
       "invoiceTypeBalance": "尾款",
       "invoicePaidOn": "付款时间",
@@ -383,6 +427,27 @@
       "toggleDescription": "每次登录时需要输入 6 位验证码。",
       "adminLocked": "管理员账户必须启用 2FA,不可禁用。"
     },
+    "notifications": {
+      "title": "通知偏好",
+      "description": "选择 SourcingPick 发送邮件的频率。站内通知始终保持开启。",
+      "modes": {
+        "IMMEDIATE": {
+          "label": "实时通知",
+          "description": "每次事件发生时发送一封邮件,适合追求快速响应的用户。"
+        },
+        "DAILY": {
+          "label": "每日摘要",
+          "description": "每天早晨一封邮件,汇总前一天的所有动态。"
+        },
+        "OFF": {
+          "label": "仅站内",
+          "description": "不发送邮件,所有动态均可在站内通知中查看。"
+        }
+      },
+      "securityNote": "安全相关邮件(密码重置、OTP)不受此设置影响,始终发送。",
+      "saveCta": "保存",
+      "savedMessage": "已保存"
+    },
     "members": {
       "title": "组织成员",
       "description": "可以访问您的 SourcingPick 账户的人员。",
@@ -413,6 +478,25 @@
     }
   },
   "agent": {
+    "analytics": {
+      "eyebrow": "数据分析",
+      "title": "我的表现",
+      "description": "处理的需求数量、报价转化率、产生的佣金。",
+      "kpiRequests": "需求数",
+      "activeNow": "进行中",
+      "completed": "已完成",
+      "kpiWinRate": "成交率",
+      "quotes": "份转发",
+      "kpiCommission": "产生佣金",
+      "kpiAvgLag": "首次招标平均耗时",
+      "kpiAvgLagHint": "从分派到首次发出招标",
+      "funnelTitle": "漏斗",
+      "funnelBody": "从接收需求到签单成交 — 看您在哪一步流失最多。",
+      "funnelAssigned": "已分派需求",
+      "funnelTendered": "已发出招标",
+      "funnelForwarded": "已转给客户",
+      "funnelAccepted": "已被接受"
+    },
     "researchFee": {
       "title": "研究服务费",
       "description": "在开始采购前向买家收取资质核查工作的费用。125 €/天 或 500 €/周。",
@@ -514,6 +598,66 @@
       "emptyTitle": "暂无订单",
       "emptyBody": "您负责的需求一旦有报价被接受,订单将出现在这里。",
       "createdAt": "创建于"
+    },
+    "profile": {
+      "eyebrow": "我的资料",
+      "title": "代理资料",
+      "description": "个人简介、时区、擅长品类与费率。买家看不到,但平台据此为您分派最合适的任务。",
+      "bioLabel": "简介",
+      "bioHint": "简要介绍:经验、擅长品类、语言。SourcingPick 团队可见,买家不可见。",
+      "timezoneLabel": "时区(IANA)",
+      "timezoneHint": "格式:Asia/Shanghai、Europe/Paris……",
+      "dayRateLabel": "日费率(€)",
+      "weekRateLabel": "周费率(€)",
+      "rateHint": "平台底价:€{floor}。可以设置更高,不可低于。",
+      "categoriesLabel": "擅长品类",
+      "categoriesHint": "用于在新需求分派时优先匹配您的强项。",
+      "saveCta": "保存",
+      "savedMessage": "已保存",
+      "errorRateLow": "费率不可低于平台底价。"
+    },
+    "onboarding": {
+      "welcome": "欢迎 {name} — 开始吧!",
+      "intro": "三步快速完成资料配置,即可开始接收需求。",
+      "step1Title": "自我介绍",
+      "step1Body": "简短自我介绍 + 时区。简介仅平台内可见;时区让仪表盘以您当地时间展示。",
+      "step2Title": "您的品类",
+      "step2Body": "勾选您擅长的品类。分派系统在新需求平局时据此优先匹配。",
+      "step3Title": "研究费率",
+      "step3Body": "您可以使用高于平台底价的协议费率。若按标准费率执行,可保持不变。",
+      "bioLabel": "简介",
+      "bioHint": "2-3 行即可。经验、品类、语言。",
+      "timezoneLabel": "时区(IANA)",
+      "timezoneHint": "格式:Asia/Shanghai、Europe/Paris……",
+      "dayRateLabel": "日费率(€)",
+      "weekRateLabel": "周费率(€)",
+      "rateHint": "底价:€{floor}。仅可设置更高。",
+      "categoriesLabel": "品类",
+      "categoriesHint": "至少选择一个。",
+      "nextCta": "下一步",
+      "backCta": "上一步",
+      "finishCta": "完成",
+      "errorRateLow": "费率不可低于平台底价。",
+      "errorCategoriesEmpty": "请至少选择一个品类。"
+    },
+    "invoices": {
+      "eyebrow": "对账",
+      "title": "研究费发票",
+      "description": "您在所负责需求上开具的研究费发票。关注状态,必要时及时催收。",
+      "emptyTitle": "暂无发票",
+      "emptyBody": "为需求开具市场研究费用后,发票会出现在这里。",
+      "issuedOn": "开具日",
+      "dueOn": "到期日",
+      "paidOn": "付款日",
+      "openRequest": "打开需求",
+      "unknownRequest": "未关联需求",
+      "statuses": {
+        "DRAFT": "草稿",
+        "ISSUED": "已开具",
+        "PAID": "已付款",
+        "OVERDUE": "逾期",
+        "VOID": "已作废"
+      }
     },
     "tasks": {
       "eyebrow": "我的任务",
@@ -671,6 +815,25 @@
     "errorMinSelection": "至少选择一家工厂。"
   },
   "factory": {
+    "analytics": {
+      "eyebrow": "数据分析",
+      "title": "经营表现",
+      "description": "销售总额、转化率与准时交付率。",
+      "kpiGmv": "累计 GMV",
+      "thisMonth": "本月",
+      "kpiWinRate": "报价中标率",
+      "quotes": "份报价",
+      "kpiOnTime": "准时交付率",
+      "kpiOnTimeHint": "最近 100 笔订单",
+      "kpiTendersReceived": "收到招标",
+      "trendLabel": "环比上月",
+      "topProductsTitle": "前 5 大畅销产品",
+      "units": "件",
+      "disputesTitle": "争议",
+      "disputesReceived": "收到",
+      "disputesResolvedAgainst": "败诉",
+      "empty": "暂无数据。"
+    },
     "dashboard": {
       "eyebrow": "仪表盘",
       "title": "概览",
@@ -728,6 +891,10 @@
       "flashSaleHint": "可选。当结束时间在未来时,商品页面会显示限时促销徽章及倒计时。",
       "promotionTitle": "促销活动",
       "promotionDescription": "为已上架商品设置或清除划线价与限时促销窗口,无需重新发布。",
+      "reReviewTitle": "正在编辑已上架商品",
+      "reReviewBody": "保存修改将把商品重新放入审核队列 — 在管理员重新批准之前,商品将在商城中隐藏(约 24 个工作小时)。上方的促销表单(划线价、限时促销)无需重新审核。",
+      "pendingEditTitle": "商品审核中",
+      "pendingEditBody": "您最近的修改将在审核环节中被采用。只要管理员尚未打开该卷宗,您都可以继续调整。",
       "promotionSave": "保存促销",
       "promotionClear": "清除",
       "promotionSaved": "促销已保存。",
@@ -939,6 +1106,38 @@
       "shippedCtaBody": "当承运商确认包裹正在运输时,标记为运输中。",
       "markInTransitCta": "标记为运输中",
       "errorTrackingRequired": "承运商和追踪号为必填项。",
+      "trackingEditor": {
+        "title": "发货追踪",
+        "carrierLabel": "承运商",
+        "editCta": "修改",
+        "editTitle": "修正追踪信息",
+        "editBody": "订单在运输途中,发货时输入的追踪号可以修改。买家在下次刷新时即可看到新数据。",
+        "saveCta": "保存",
+        "errorRequired": "承运商和追踪号为必填项。"
+      },
+      "dispute": {
+        "title": "买家发起争议",
+        "body": "买家就此订单发起了争议。请阅读买家陈述,并在 5 个工作日内提交您的说明 — SourcingPick 团队将据此进行仲裁。",
+        "buyerLabel": "买家陈述",
+        "yourLabel": "您的回应",
+        "adminLabel": "SourcingPick 裁决",
+        "outcomeLabel": "结果",
+        "statementPlaceholder": "发货当天的照片如附件……内部 QC 验货未发现瑕疵……",
+        "errorShort": "请详细描述(至少 20 个字符)。",
+        "submitCta": "提交回应",
+        "updateCta": "更新回应",
+        "editCta": "修改",
+        "statuses": {
+          "OPEN": "未处理",
+          "RESPONDED": "您已回应",
+          "RESOLVED": "已解决"
+        },
+        "outcomes": {
+          "STANDARD": "产品不符 — 80% 部分退款",
+          "CUSTOM": "定制产品 — 全额退款",
+          "REJECT": "争议不成立"
+        }
+      },
       "proofs": {
         "qcSectionTitle": "质检照片",
         "qcSectionBody": "请上传成品、装箱、标签等照片 — 让买家在发货前确认订单已就绪。仅买家和管理员可见。",
@@ -1087,6 +1286,7 @@
       "colProvider": "提供方",
       "colReleased": "释放时间",
       "colActions": "操作",
+      "viewDisputeCta": "查看争议",
       "statuses": {
         "INITIATED": "已发起",
         "FUNDED": "已注资",
@@ -1159,7 +1359,32 @@
       "colOrg": "组织",
       "col2fa": "2FA",
       "colLastLogin": "最近登录",
-      "neverLoggedIn": "从未"
+      "neverLoggedIn": "从未",
+      "backToList": "返回列表",
+      "createdOn": "创建于",
+      "lastSeenOn": "最近活跃于",
+      "twoFaOn": "已启用 2FA",
+      "twoFaOff": "未启用 2FA",
+      "scopesTitle": "管理员权限",
+      "scopesBody": "勾选此管理员可管理的模块。SUPER 授予全部权限 — 仅授予自己与值班团队。任何时候至少须保留一名超级管理员。",
+      "scopesSaveCta": "保存权限",
+      "scopesSuperHint": "SUPER 已启用 — 其他勾选仅作记号。取消 SUPER 后可微调各项。",
+      "scopesSurfacesLabel": "范围",
+      "notAdminBody": "该用户不是管理员 — 权限列表不适用。",
+      "scopes": {
+        "SUPER": "超级管理员",
+        "KYC": "KYC — 工厂资质审核",
+        "MARKETPLACE": "市场 + 拍卖 + 认证",
+        "FINANCE": "财务、托管、付款与放款",
+        "SUPPORT": "支持工单",
+        "DISPUTES": "争议",
+        "REQUESTS": "招标前审批与分派",
+        "USERS": "用户与组织",
+        "WEBHOOKS": "Webhook 与登录日志",
+        "SETTINGS": "平台设置(允许的国家等)",
+        "AGENTS": "代理 — 管理与绩效",
+        "AUDIT": "审计日志"
+      }
     },
     "agents": {
       "eyebrow": "团队",
@@ -1215,6 +1440,52 @@
       "colUa": "User-agent",
       "unknownUser": "未知用户"
     },
+    "disputes": {
+      "eyebrow": "仲裁",
+      "title": "争议",
+      "description": "待仲裁争议列表。阅读双方说明、查看证据、选择结果。",
+      "kpiOpen": "未处理",
+      "kpiResponded": "工厂已回应",
+      "kpiResolved": "已解决",
+      "emptyTitle": "暂无活跃争议",
+      "emptyBody": "买家提交问题后,会显示在这里。",
+      "openedOn": "发起于",
+      "respondedOn": "回应于",
+      "openedBy": "发起人",
+      "resolvedBy": "仲裁人",
+      "backToList": "返回列表",
+      "detailTitle": "争议详情",
+      "summaryTotal": "订单总额",
+      "summaryDeposit": "定金",
+      "summaryBalance": "尾款",
+      "buyerLabel": "买家陈述",
+      "factoryLabel": "工厂回应",
+      "factoryNoResponse": "工厂尚未回应。",
+      "adminLabel": "您的裁决",
+      "arbitrateTitle": "仲裁",
+      "arbitrateBody": "选择结果。每个方块展示将记录的精确金额。",
+      "decisionLabel": "裁决说明(双方均可见)",
+      "decisionPlaceholder": "经核对所提供的照片与已批准的参考样品后,产品的车缝部分被判定为不符……",
+      "errorShort": "请填写裁决说明(至少 20 字符)。",
+      "resolveCta": "仲裁该争议",
+      "resolutionTitle": "已作出裁决",
+      "outcomeLabel": "结果",
+      "refundCents": "退款给买家",
+      "retainedCents": "平台保留",
+      "platformCents": "SourcingPick 分成",
+      "supplierCents": "工厂分成",
+      "escrowReturnsHeld": "托管金返回 HELD",
+      "statuses": {
+        "OPEN": "未处理",
+        "RESPONDED": "工厂已回应",
+        "RESOLVED": "已解决"
+      },
+      "outcomes": {
+        "STANDARD": "产品不符 — 80% 部分退款",
+        "CUSTOM": "定制产品 — 全额退款",
+        "REJECT": "争议不成立"
+      }
+    },
     "support": {
       "eyebrow": "支持",
       "title": "支持工单",
@@ -1255,6 +1526,7 @@
       "empty": "目前没有需要审核的产品。",
       "noImage": "未提供图片",
       "factoryKycMissing": "KYC 未验证",
+      "reReviewBadge": "重新审核",
       "submittedAt": "提交时间",
       "rejectCta": "拒绝",
       "approveCta": "批准并发布",
@@ -2181,6 +2453,55 @@
           ]
         }
       ]
+    },
+    "security": {
+      "title": "安全概览",
+      "sections": [
+        {
+          "heading": "我们的立场",
+          "body": [
+            "SourcingPick 处理财务与个人数据:工厂 KYC、银行账户、发票、买家凭证。我们以安全为首要约束来构建平台,但并不声称已获得 ISO 27001 或 SOC 2 认证。",
+            "本页面坦诚说明:已落实的技术、治理措施,以及路线图上的事项。每当出现实质变更时,我们都会更新本页;以下版本反映 {{lastUpdated}} 时的状态。",
+            "若您代表企业买家或合规团队、需要更深入的资料(DPIA、RIA、SIG Lite 等),请发邮件至 security@sourcingpick.com。"
+          ]
+        },
+        {
+          "heading": "已落地的技术控制",
+          "body": [
+            "角色隔离 — 所有受保护路径均通过 requireRole() 网关及组织成员校验;不仅依赖代理。",
+            "审计日志 — 对每一项敏感操作(KYC、付款、拍卖编辑、预招标拒绝)写入 AuditLog,记录用户、负载与级别(INFO/WARN/ALERT)。",
+            "身份认证 — Auth.js v5、bcrypt 密码,可选 TOTP OTP,以及货代魔法链接 (#15)。会话使用签名的 HttpOnly Cookie,SameSite=Lax。",
+            "支付 — Wise Business 托管(自 2026-06 起唯一通道)。Wise Webhook 经 RSA 签名,持久化为 WebhookEvent,管理员可重放。基于 providerRef 的幂等性防止重复结算。",
+            "附件 — 按类型(图像/视频/音频/文件)与上下文上限管理,上传时嗅探 MIME。货代魔法链接具备 TTL 与撤销控制。",
+            "工厂价格保密 — 平台抽成与工厂净价从不向买家暴露(双层报价结构)。"
+          ]
+        },
+        {
+          "heading": "数据与托管",
+          "body": [
+            "托管位于欧洲(根据栈层选择巴黎或法兰克福)。数据通过托管商磁盘层加密静态保存;数据库连接使用 TLS。",
+            "GDPR 适用范围内:我们对用户账户(客户、工厂、代理、管理员)承担控制者职责,对买卖双方互通的内容承担处理者职责。",
+            "主要次级处理方:Wise Business(支付)、托管商、事务性邮件服务商。详细清单可通过 security@sourcingpick.com 索取。"
+          ]
+        },
+        {
+          "heading": "治理与事件响应",
+          "body": [
+            "尚未获得 ISO 27001 或 SOC 2 认证。目标是在 v1 正式发布后的 12 个月内完成 SOC 2 Type 1 审计。",
+            "事件上报:security@sourcingpick.com。承诺 24 个工作小时内回应,并在适用情况下于 GDPR 规定的 72 小时窗口内通知相关人。",
+            "非正式漏洞奖励计划:暂无专用平台。请负责任地将漏洞披露至 security@sourcingpick.com,我们会善意处理。"
+          ]
+        },
+        {
+          "heading": "正在推进的事项",
+          "body": [
+            "启动 ISMS 文档编写并准备 SOC 2 预审。",
+            "外部年度渗透测试 — 首轮排期 2026-Q4。",
+            "密钥轮换政策与凭证集中保管(HashiCorp Vault 或同类方案)。",
+            "ISO 27001 适用性声明 — 起草中,作为企业采购问卷的基础。"
+          ]
+        }
+      ]
     }
   },
   "support": {
@@ -2270,6 +2591,7 @@
     "terms": "服务条款",
     "privacy": "隐私政策",
     "cookies": "Cookie 政策",
+    "security": "安全",
     "faq": "常见问题",
     "allRights": "保留所有权利。",
     "madeIn": "由 INAIRIS 用 ❤️ 制作"

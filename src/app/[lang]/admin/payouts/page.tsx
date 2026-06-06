@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { PayoutStatus, Role } from "@prisma/client";
+import {AdminScope, PayoutStatus } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR } from "@/lib/i18n/formatters";
@@ -34,7 +34,7 @@ export default async function AdminPayoutsPage({
 }: PageProps<"/[lang]/admin/payouts">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.FINANCE);
   const dict = await getDictionary(lang);
 
   const [pendingAgg, sentAgg, failedCount, recent] = await Promise.all([
@@ -167,7 +167,7 @@ export default async function AdminPayoutsPage({
                         ] ?? p.status}
                       </span>
                       {p.failureReason && (
-                        <p className="text-[10px] text-warning mt-0.5 max-w-[200px] truncate">
+                        <p className="text-[10px] text-warning mt-0.5 max-w-50 truncate">
                           {p.failureReason}
                         </p>
                       )}

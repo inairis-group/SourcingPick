@@ -28,7 +28,13 @@ export default async function OnboardingDispatcherPage({
     redirect(dashboardPathForRole(user.role, lang));
   }
 
-  if (user.role === Role.ADMIN || user.role === Role.AGENT) {
+  if (user.role === Role.AGENT) {
+    // Agents go through the new agent onboarding wizard — rates, bio,
+    // timezone, categories. The wizard itself flips hasOnboarded +
+    // agentOnboardedAt on submit.
+    redirect(`/${lang}/onboarding/agent`);
+  }
+  if (user.role === Role.ADMIN) {
     await prisma.user.update({
       where: { id: user.id },
       data: { hasOnboarded: true },

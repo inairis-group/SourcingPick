@@ -13,6 +13,7 @@ import { OrderActions } from "./_components/order-actions";
 import { OrgAvatar } from "@/components/org/org-avatar";
 import { TrackingDisplay } from "./_components/tracking-display";
 import { WiseWirePanel } from "./_components/wise-wire-panel";
+import { BuyerDisputePanel } from "./_components/dispute-panel";
 import {
   buildWireReference,
   platformWireAccount,
@@ -84,6 +85,20 @@ export default async function ClientOrderDetailPage({
           paidAt: true,
         },
         orderBy: { issuedAt: "asc" },
+      },
+      disputes: {
+        select: {
+          id: true,
+          reference: true,
+          status: true,
+          outcome: true,
+          openedAt: true,
+          buyerStatement: true,
+          factoryStatement: true,
+          adminDecision: true,
+          refundCents: true,
+        },
+        orderBy: { openedAt: "desc" },
       },
     },
   });
@@ -266,6 +281,28 @@ export default async function ClientOrderDetailPage({
         status={order.status}
         lang={lang}
       />
+
+      {(() => {
+        // Dispute eligibility — must mirror openDisputeAction's gate.
+        const eligibleStatus =
+          order.status === OrderStatus.SHIPPED ||
+          order.status === OrderStatus.IN_TRANSIT ||
+          order.status === OrderStatus.COMPLETED;
+        const windowOpen =
+          !order.deliveredAt ||
+          (Date.now() - order.deliveredAt.getTime()) / (1000 * 60 * 60 * 24) <=
+            7;
+        const activeDispute =
+          order.disputes.find((d) => d.status !== "RESOLVED") ?? null;
+        const mostRecent = order.disputes[0] ?? null;
+        return (
+          <BuyerDisputePanel
+            orderId={order.id}
+            eligibleNow={eligibleStatus && windowOpen && !activeDispute}
+            dispute={activeDispute ?? mostRecent}
+          />
+        );
+      })()}
 
       {order.invoices.length > 0 && (
         <Section title={dict.client.orders.sectionInvoices} className="mt-6">

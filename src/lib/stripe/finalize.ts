@@ -21,11 +21,14 @@ import { getOrgCreditBalanceCents } from "@/lib/credit/balance";
 import { dispatchProviderPayout } from "@/lib/payouts/dispatch";
 import { generateUniqueReference } from "@/lib/sourcing/reference";
 
-/** Map the org's chosen payout provider to the Payout.method record value. */
+/**
+ * Map the org's chosen payout provider to the Payout.method record value.
+ * Wise is the only live rail (the legacy values were pruned from
+ * PayoutProvider in the CTO-audit follow-up migration). PayoutMethod
+ * retains the legacy values because historical Payout rows still
+ * reference them for audit purposes.
+ */
 const PROVIDER_TO_METHOD: Record<PayoutProvider, PayoutMethod> = {
-  STRIPE_CONNECT: PayoutMethod.STRIPE_CONNECT,
-  LIANLIAN: PayoutMethod.LIANLIAN,
-  ALIPAY: PayoutMethod.ALIPAY,
   WISE: PayoutMethod.WISE,
 };
 

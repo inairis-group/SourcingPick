@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { OrderStatus, Role, SourcingStatus } from "@prisma/client";
+import {AdminScope, OrderStatus, Role, SourcingStatus} from "@prisma/client";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR } from "@/lib/i18n/formatters";
@@ -31,7 +31,7 @@ export default async function AdminAgentsPage({
 }: PageProps<"/[lang]/admin/agents">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.AGENTS);
   const dict = await getDictionary(lang);
 
   const agents = await prisma.user.findMany({

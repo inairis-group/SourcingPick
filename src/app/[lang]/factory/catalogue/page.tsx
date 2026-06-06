@@ -120,7 +120,7 @@ export default async function FactoryCataloguePage({
                           variant="muted"
                           className="block rounded-lg border border-line bg-surface overflow-hidden hover:bg-subtle transition-colors duration-fast"
                         >
-                          <div className="aspect-[4/3] bg-subtle relative">
+                          <div className="aspect-4/3 bg-subtle relative">
                             {p.images.length > 0 ? (
                               <Image
                                 src={`/api/marketplace/image/${p.id}/0`}

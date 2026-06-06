@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Role } from "@prisma/client";
+import {AdminScope } from "@prisma/client";
 import type { PayoutProvider } from "@prisma/client";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -7,7 +7,7 @@ import {
   CheckmarkCircle02Icon,
   Cancel01Icon,
 } from "@hugeicons/core-free-icons";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { listProviderStatuses } from "@/lib/payouts/dispatch";
@@ -24,21 +24,12 @@ export async function generateMetadata({
 }
 
 const PROVIDER_LABELS: Record<PayoutProvider, string> = {
-  STRIPE_CONNECT: "Stripe Connect",
-  LIANLIAN: "LianLian Global",
-  ALIPAY: "Alipay",
   WISE: "Wise Business",
 };
 
 const PROVIDER_DESCRIPTIONS: Record<PayoutProvider, string> = {
-  STRIPE_CONNECT:
-    "Default payout rail for EU / UK / US / SG / HK / UAE / MX / NG / KE / ZA factories. Hosted onboarding, instant payouts in most regions.",
-  LIANLIAN:
-    "Cross-border payouts to mainland China and SE Asia (Vietnam, Indonesia, Thailand, Philippines). Lower fees than Stripe for CN-bound transfers.",
-  ALIPAY:
-    "Alipay Cross-border (Ant International) — for Chinese factories who prefer Alipay over LianLian's bank-account flow. Same target market as LianLian.",
   WISE:
-    "Wise Business — single rail covering 80+ countries including all current supplier corridors. Sole live provider going forward; Stripe / Alipay / LianLian above will be retired once the Wise migration completes.",
+    "Wise Business — single rail covering 80+ countries including all current supplier corridors. Sole live provider since the CTO-audit follow-up migration; legacy Stripe / Alipay / LianLian adapters have been retired.",
 };
 
 /**
@@ -52,26 +43,15 @@ export default async function AdminPaymentsPage({
 }: PageProps<"/[lang]/admin/settings/payments">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.FINANCE);
   const dict = await getDictionary(lang);
 
-  // Pass 3b made WISE the live rail. The other three providers are
-  // intentionally retired but their adapters still register in the
-  // dispatcher (the schema enums + lib files stay until a final cleanup
-  // pass for rollback safety). Sort them after Wise and dim them so the
-  // operator sees at a glance which one is "the" rail.
-  const allStatuses = await listProviderStatuses();
-  const RETIRED: ReadonlyArray<typeof allStatuses[number]["provider"]> = [
-    "STRIPE_CONNECT",
-    "LIANLIAN",
-    "ALIPAY",
-  ];
-  const statuses = [
-    ...allStatuses.filter((s) => !RETIRED.includes(s.provider)),
-    ...allStatuses.filter((s) => RETIRED.includes(s.provider)),
-  ];
-  const isRetired = (p: (typeof allStatuses)[number]["provider"]) =>
-    RETIRED.includes(p);
+  // Wise is the only live rail after the CTO-audit follow-up migration
+  // pruned PayoutProvider's deprecated values. We keep `isRetired` here
+  // as a no-op so the JSX below doesn't need a parallel branch — should
+  // the operator add a new provider tomorrow, this is the spot.
+  const statuses = await listProviderStatuses();
+  const isRetired = (_: (typeof statuses)[number]["provider"]) => false;
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8">

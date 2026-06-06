@@ -70,14 +70,23 @@ export const RESEARCH_FEE_WEEK_CENTS = 500_00;
 export type ResearchFeeUnitLite = "DAY" | "WEEK";
 
 /**
- * Compute the research fee for a unit × quantity. Pure — the agent picks a
- * unit (day/week) and a count; this is the only place the rates live.
+ * Compute the research fee for a unit × quantity. Pure — the agent picks
+ * a unit (day/week) and a count.
+ *
+ * `overrides`: optional per-agent day/week rate overrides (see
+ * User.agentResearchFee{Day,Week}Cents). When unset, the platform's
+ * published floor applies; when set, the agent's negotiated rate is
+ * used. Senior agents commonly bill above the floor for complex
+ * industrial briefs.
  */
 export function computeResearchFee(
   unit: ResearchFeeUnitLite,
   quantity: number,
+  overrides?: { dayCents?: number | null; weekCents?: number | null },
 ): number {
-  const rate = unit === "WEEK" ? RESEARCH_FEE_WEEK_CENTS : RESEARCH_FEE_DAY_CENTS;
+  const dayRate = overrides?.dayCents ?? RESEARCH_FEE_DAY_CENTS;
+  const weekRate = overrides?.weekCents ?? RESEARCH_FEE_WEEK_CENTS;
+  const rate = unit === "WEEK" ? weekRate : dayRate;
   return rate * Math.max(0, Math.floor(quantity));
 }
 

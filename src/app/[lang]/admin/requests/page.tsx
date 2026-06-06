@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { Role, SourcingRequestOrigin, SourcingStatus } from "@prisma/client";
+import {AdminScope, Role, SourcingRequestOrigin, SourcingStatus} from "@prisma/client";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { DispatchTable } from "./_components/dispatch-table";
@@ -20,7 +20,7 @@ export default async function AdminRequestsPage({
 }: PageProps<"/[lang]/admin/requests">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.REQUESTS);
 
   const [requests, agents] = await Promise.all([
     prisma.sourcingRequest.findMany({

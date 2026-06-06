@@ -1,13 +1,10 @@
 import { notFound } from "next/navigation";
-import {
-  AttachmentContext,
-  Role,
+import {AdminScope, AttachmentContext,
   SourcingRequestOrigin,
-  ThreadContextType,
-} from "@prisma/client";
+  ThreadContextType,} from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import {
@@ -36,7 +33,7 @@ export default async function AdminRequestDetailPage({
 }: PageProps<"/[lang]/admin/requests/[id]">) {
   const { lang, id } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.REQUESTS);
   const dict = await getDictionary(lang);
 
   const req = await prisma.sourcingRequest.findUnique({

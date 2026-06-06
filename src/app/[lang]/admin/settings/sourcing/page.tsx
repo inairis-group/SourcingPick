@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { Role, SourcingRegion } from "@prisma/client";
-import { requireRole } from "@/lib/permissions/guards";
+import {AdminScope, SourcingRegion} from "@prisma/client";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import {
@@ -26,7 +26,7 @@ export default async function AdminSourcingSettingsPage({
 }: PageProps<"/[lang]/admin/settings/sourcing">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.ADMIN);
+  await requireAdminScope(AdminScope.SETTINGS);
   const dict = await getDictionary(lang);
 
   const [allowlist, countries, etas] = await Promise.all([

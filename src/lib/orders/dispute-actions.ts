@@ -3,219 +3,471 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
+  AdminScope,
+  AttachmentContext,
+  DisputeOutcome,
+  DisputeStatus,
   EscrowStatus,
   NotificationType,
+  OrderStatus,
   Role,
+  ThreadContextType,
 } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
-import { requireRole } from "@/lib/permissions/guards";
+import { requireAuth } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { writeAuditLog } from "@/lib/audit/log";
 import { emitNotificationToMany } from "@/lib/notifications/emit";
 import { computeDisputeRefund } from "@/lib/orders/pricing";
-
-export type DisputeResult = { ok: true } | { ok: false; error: string };
+import { generateUniqueReference } from "@/lib/sourcing/reference";
 
 /**
- * Open a dispute on a HELD escrow. HELD → DISPUTED. Because
- * `releaseFactoryPayout` only releases escrows in HELD, flipping to
- * DISPUTED automatically blocks the factory payout until the dispute is
- * resolved. Admin-only (disputes are mediated by ops, not self-served).
+ * Disputes — three-actor lifecycle.
+ *
+ *   buyer opens (within 7 days of deliveredAt)
+ *     → factory responds (within 5 days — silent past that)
+ *       → admin arbitrates (STANDARD / CUSTOM / REJECT)
+ *
+ * The held escrow(s) flip to DISPUTED on open and stay there until
+ * resolution. Because `releaseFactoryPayout` only releases HELD
+ * escrows, DISPUTED status automatically blocks any pending factory
+ * payout.
+ *
+ * Refunds for STANDARD / CUSTOM outcomes record the cents math but
+ * don't auto-dispatch on Wise — refund execution is a manual ops step
+ * via the admin webhook console for now. The dispute row carries the
+ * computed numbers so finance can reconcile after the fact.
  */
+
+export type OpenDisputeResult =
+  | { ok: true; disputeId: string }
+  | { ok: false; error: string };
+
+export type DisputeSimpleResult = { ok: true } | { ok: false; error: string };
+
+const DISPUTE_WINDOW_DAYS = 7;
+const FACTORY_RESPONSE_WINDOW_DAYS = 5;
+
+export const DISPUTE_EVIDENCE_CONTEXT = AttachmentContext.DISPUTE_EVIDENCE;
+export const DISPUTE_WINDOW = DISPUTE_WINDOW_DAYS;
+export const FACTORY_RESPONSE_WINDOW = FACTORY_RESPONSE_WINDOW_DAYS;
+
+// =============================================================
+// Buyer — open a dispute
+// =============================================================
+
+const OpenDisputeSchema = z.object({
+  statement: z.string().trim().min(20).max(4000),
+});
+
 export async function openDisputeAction(
-  escrowId: string,
-  reason: string,
-): Promise<DisputeResult> {
-  const admin = await requireRole(Role.ADMIN);
-
-  const trimmed = reason.trim();
-  if (trimmed.length < 3) {
-    return { ok: false, error: "Please give a short reason for the dispute." };
-  }
-
-  const escrow = await prisma.escrowTransaction.findUnique({
-    where: { id: escrowId },
-    select: {
-      id: true,
-      status: true,
-      orderId: true,
-      order: { select: { clientOrgId: true, factoryOrgId: true } },
-    },
-  });
-  if (!escrow) return { ok: false, error: "Escrow not found." };
-  if (escrow.status !== EscrowStatus.HELD) {
+  orderId: string,
+  input: { statement: string },
+): Promise<OpenDisputeResult> {
+  const user = await requireAuth();
+  const parsed = OpenDisputeSchema.safeParse(input);
+  if (!parsed.success) {
     return {
       ok: false,
-      error:
-        "Only held escrow can be disputed. Released or refunded funds need manual handling.",
+      error: "Please describe the issue in at least 20 characters.",
     };
   }
 
-  await prisma.escrowTransaction.update({
-    where: { id: escrow.id },
-    data: { status: EscrowStatus.DISPUTED },
-  });
-
-  await writeAuditLog({
-    actorUserId: admin.id,
-    action: "escrow.dispute_opened",
-    targetType: "EscrowTransaction",
-    targetId: escrow.id,
-    payload: { reason: trimmed.slice(0, 500) },
-    level: "WARN",
-  });
-
-  // Notify both parties that the order is under dispute.
-  const parties = await partyUserIds(
-    escrow.order.clientOrgId,
-    escrow.order.factoryOrgId,
-  );
-  await emitNotificationToMany(parties, {
-    type: NotificationType.SYSTEM,
-    vars: { systemKey: "order_disputed" },
-    contextType: "Order",
-    contextId: escrow.orderId,
-  });
-
-  revalidatePath("/[lang]/admin/escrow", "page");
-  return { ok: true };
-}
-
-const ResolveSchema = z.object({
-  // STANDARD = off-spec/defective product: partial refund (policy: buyer
-  //   gets back 80%, platform retains 20% split 50/50 with the supplier).
-  // CUSTOM = personalised goods that can't be resold: full refund.
-  // REJECT = dispute not upheld → escrow returns to HELD, payout can proceed.
-  outcome: z.enum(["STANDARD", "CUSTOM", "REJECT"]),
-});
-
-export async function resolveDisputeAction(
-  escrowId: string,
-  outcome: "STANDARD" | "CUSTOM" | "REJECT",
-): Promise<DisputeResult> {
-  const admin = await requireRole(Role.ADMIN);
-
-  const parsed = ResolveSchema.safeParse({ outcome });
-  if (!parsed.success) {
-    return { ok: false, error: "Invalid resolution." };
-  }
-
-  const escrow = await prisma.escrowTransaction.findUnique({
-    where: { id: escrowId },
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
     select: {
       id: true,
       status: true,
-      amountCents: true,
-      provider: true,
-      providerRef: true,
-      orderId: true,
-      order: { select: { clientOrgId: true, factoryOrgId: true } },
+      clientOrgId: true,
+      factoryOrgId: true,
+      deliveredAt: true,
+      disputes: {
+        where: { status: { not: DisputeStatus.RESOLVED } },
+        select: { id: true },
+      },
+      escrows: {
+        where: { status: EscrowStatus.HELD },
+        orderBy: { createdAt: "asc" },
+        select: { id: true, amountCents: true },
+      },
     },
   });
-  if (!escrow) return { ok: false, error: "Escrow not found." };
-  if (escrow.status !== EscrowStatus.DISPUTED) {
-    return { ok: false, error: "This escrow isn't under dispute." };
+  if (!order) return { ok: false, error: "Order not found." };
+
+  if (user.role !== Role.CLIENT || user.organizationId !== order.clientOrgId) {
+    return {
+      ok: false,
+      error: "Only the buyer on this order can open a dispute.",
+    };
   }
 
-  // REJECT: dispute not upheld → escrow goes back to HELD so the normal
-  // release flow can proceed on the next trigger.
-  if (outcome === "REJECT") {
-    await prisma.escrowTransaction.update({
-      where: { id: escrow.id },
-      data: { status: EscrowStatus.HELD },
+  const eligible =
+    order.status === OrderStatus.SHIPPED ||
+    order.status === OrderStatus.IN_TRANSIT ||
+    order.status === OrderStatus.COMPLETED;
+  if (!eligible) {
+    return {
+      ok: false,
+      error: "Disputes can only be opened on shipped or delivered orders.",
+    };
+  }
+  const anchor = order.deliveredAt;
+  if (anchor) {
+    const elapsedDays =
+      (Date.now() - anchor.getTime()) / (1000 * 60 * 60 * 24);
+    if (elapsedDays > DISPUTE_WINDOW_DAYS) {
+      return {
+        ok: false,
+        error: `The dispute window closed ${Math.floor(elapsedDays - DISPUTE_WINDOW_DAYS)} day(s) ago. Contact support if you need an exception.`,
+      };
+    }
+  }
+
+  if (order.disputes.length > 0) {
+    return {
+      ok: false,
+      error: "An unresolved dispute already exists on this order.",
+    };
+  }
+  if (order.escrows.length === 0) {
+    return {
+      ok: false,
+      error:
+        "No held escrow remains on this order. Contact support to investigate.",
+    };
+  }
+
+  const reference = await generateUniqueReference("DSP");
+  const primaryEscrow = order.escrows[0]!;
+
+  const dispute = await prisma.$transaction(async (tx) => {
+    const created = await tx.dispute.create({
+      data: {
+        reference,
+        orderId: order.id,
+        primaryEscrowId: primaryEscrow.id,
+        openedByUserId: user.id,
+        buyerStatement: parsed.data.statement,
+        status: DisputeStatus.OPEN,
+      },
+      select: { id: true },
     });
+
+    // Flip every HELD escrow on this order to DISPUTED so the next
+    // release attempt (e.g. balance-finaliser closing the order) can't
+    // sneak past us. Mirrors the F2 release pattern.
+    await tx.escrowTransaction.updateMany({
+      where: { orderId: order.id, status: EscrowStatus.HELD },
+      data: { status: EscrowStatus.DISPUTED },
+    });
+
+    // Spin up the dispute thread so both parties + admin have somewhere
+    // to talk. Reuses the polymorphic Thread surface.
+    await tx.thread.create({
+      data: {
+        contextType: ThreadContextType.DISPUTE,
+        contextId: created.id,
+      },
+    });
+
+    return created;
+  });
+
+  await writeAuditLog({
+    actorUserId: user.id,
+    action: "dispute.opened",
+    targetType: "Dispute",
+    targetId: dispute.id,
+    payload: {
+      orderId: order.id,
+      reference,
+      statementLength: parsed.data.statement.length,
+    },
+    level: "WARN",
+  });
+
+  const recipients = await prisma.user.findMany({
+    where: {
+      OR: [
+        { organizationId: order.factoryOrgId, deletedAt: null },
+        { role: Role.ADMIN, deletedAt: null },
+      ],
+    },
+    select: { id: true },
+  });
+  await emitNotificationToMany(
+    recipients.map((r) => r.id),
+    {
+      type: NotificationType.SYSTEM,
+      vars: { systemKey: "order_disputed" },
+      contextType: "Dispute",
+      contextId: dispute.id,
+    },
+  );
+
+  revalidatePath("/[lang]/client/orders/[id]", "page");
+  revalidatePath("/[lang]/factory/orders/[id]", "page");
+  revalidatePath("/[lang]/admin/disputes", "page");
+
+  return { ok: true, disputeId: dispute.id };
+}
+
+// =============================================================
+// Factory — respond
+// =============================================================
+
+const RespondDisputeSchema = z.object({
+  statement: z.string().trim().min(20).max(4000),
+});
+
+export async function respondToDisputeAction(
+  disputeId: string,
+  input: { statement: string },
+): Promise<DisputeSimpleResult> {
+  const user = await requireAuth();
+  const parsed = RespondDisputeSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: "Please give your response in at least 20 characters.",
+    };
+  }
+
+  const dispute = await prisma.dispute.findUnique({
+    where: { id: disputeId },
+    select: {
+      id: true,
+      status: true,
+      respondedAt: true,
+      openedAt: true,
+      order: { select: { factoryOrgId: true, clientOrgId: true } },
+    },
+  });
+  if (!dispute) return { ok: false, error: "Dispute not found." };
+
+  if (
+    user.role !== Role.FACTORY ||
+    user.organizationId !== dispute.order.factoryOrgId
+  ) {
+    return {
+      ok: false,
+      error: "Only the factory on this order can respond to the dispute.",
+    };
+  }
+  if (dispute.status === DisputeStatus.RESOLVED) {
+    return { ok: false, error: "This dispute has already been resolved." };
+  }
+
+  await prisma.dispute.update({
+    where: { id: dispute.id },
+    data: {
+      factoryStatement: parsed.data.statement,
+      status: DisputeStatus.RESPONDED,
+      respondedAt: dispute.respondedAt ?? new Date(),
+    },
+  });
+
+  await writeAuditLog({
+    actorUserId: user.id,
+    action: "dispute.factory_responded",
+    targetType: "Dispute",
+    targetId: dispute.id,
+    payload: { statementLength: parsed.data.statement.length },
+  });
+
+  const recipients = await prisma.user.findMany({
+    where: {
+      OR: [
+        { organizationId: dispute.order.clientOrgId, deletedAt: null },
+        { role: Role.ADMIN, deletedAt: null },
+      ],
+    },
+    select: { id: true },
+  });
+  await emitNotificationToMany(
+    recipients.map((r) => r.id),
+    {
+      type: NotificationType.SYSTEM,
+      vars: { systemKey: "dispute_responded" },
+      contextType: "Dispute",
+      contextId: dispute.id,
+    },
+  );
+
+  revalidatePath("/[lang]/client/orders/[id]", "page");
+  revalidatePath("/[lang]/factory/orders/[id]", "page");
+  revalidatePath("/[lang]/admin/disputes", "page");
+
+  return { ok: true };
+}
+
+// =============================================================
+// Admin — resolve
+// =============================================================
+
+const ResolveSchema = z.object({
+  outcome: z.enum(["STANDARD", "CUSTOM", "REJECT"]),
+  decision: z.string().trim().min(20).max(4000),
+});
+
+export async function resolveDisputeAction(
+  disputeId: string,
+  input: {
+    outcome: "STANDARD" | "CUSTOM" | "REJECT";
+    decision: string;
+  },
+): Promise<DisputeSimpleResult> {
+  const admin = await requireAdminScope(AdminScope.DISPUTES);
+  const parsed = ResolveSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: "Please give your arbitration narrative (≥ 20 chars).",
+    };
+  }
+
+  const dispute = await prisma.dispute.findUnique({
+    where: { id: disputeId },
+    select: {
+      id: true,
+      status: true,
+      orderId: true,
+      primaryEscrowId: true,
+      order: {
+        select: {
+          clientOrgId: true,
+          factoryOrgId: true,
+          escrows: {
+            where: { status: EscrowStatus.DISPUTED },
+            select: { id: true, amountCents: true },
+          },
+        },
+      },
+    },
+  });
+  if (!dispute) return { ok: false, error: "Dispute not found." };
+  if (dispute.status === DisputeStatus.RESOLVED) {
+    return { ok: false, error: "This dispute has already been resolved." };
+  }
+
+  const totalDisputedCents = dispute.order.escrows.reduce(
+    (sum, e) => sum + e.amountCents,
+    0,
+  );
+
+  if (parsed.data.outcome === "REJECT") {
+    await prisma.$transaction(async (tx) => {
+      await tx.escrowTransaction.updateMany({
+        where: { orderId: dispute.orderId, status: EscrowStatus.DISPUTED },
+        data: { status: EscrowStatus.HELD },
+      });
+      await tx.dispute.update({
+        where: { id: dispute.id },
+        data: {
+          status: DisputeStatus.RESOLVED,
+          outcome: DisputeOutcome.REJECT,
+          adminDecision: parsed.data.decision,
+          resolvedAt: new Date(),
+          resolvedById: admin.id,
+          refundCents: 0,
+          retainedCents: totalDisputedCents,
+        },
+      });
+    });
+
     await writeAuditLog({
       actorUserId: admin.id,
-      action: "escrow.dispute_rejected",
-      targetType: "EscrowTransaction",
-      targetId: escrow.id,
+      action: "dispute.resolved",
+      targetType: "Dispute",
+      targetId: dispute.id,
+      payload: { outcome: "REJECT", totalDisputedCents },
     });
-    revalidatePath("/[lang]/admin/escrow", "page");
+
+    await notifyParties(
+      dispute.order.clientOrgId,
+      dispute.order.factoryOrgId,
+      dispute.id,
+      "REJECT",
+    );
+    revalidatePath("/[lang]/admin/disputes", "page");
+    revalidatePath("/[lang]/client/orders/[id]", "page");
+    revalidatePath("/[lang]/factory/orders/[id]", "page");
     return { ok: true };
   }
 
-  // Compute the buyer refund per policy (pure helper — see pricing.ts).
-  // The 20% platform/supplier split on a STANDARD refund is recorded for
-  // finance, not auto-disbursed in v1.
-  const { refundCents, retainedCents, supplierShareCents, platformShareCents } =
-    computeDisputeRefund(escrow.amountCents, outcome);
+  const split = computeDisputeRefund(totalDisputedCents, parsed.data.outcome);
 
-  // Issue the actual refund to the buyer. The buyer always pays via
-  // Stripe, so escrow.provider is "stripe" and providerRef is the
-  // PaymentIntent id. Refund against it for the computed amount.
-  let refundRef: string | null = null;
-  let refundError: string | null = null;
-  if (escrow.provider === "stripe" && escrow.providerRef && refundCents > 0) {
-    try {
-      const { getStripe } = await import("@/lib/stripe/client");
-      const stripe = getStripe();
-      const refund = await stripe.refunds.create(
-        {
-          payment_intent: escrow.providerRef,
-          amount: refundCents,
-          metadata: { escrowId: escrow.id, outcome },
-        },
-        { idempotencyKey: `refund-${escrow.id}` },
-      );
-      refundRef = refund.id;
-    } catch (e) {
-      refundError = (e as Error).message.slice(0, 500);
-    }
-  } else if (escrow.provider !== "stripe") {
-    refundError = `Refund rail for provider "${escrow.provider}" not automated — handle manually.`;
-  }
-
-  // Mark the escrow REFUNDED regardless of the provider call outcome: the
-  // dispute decision is final, and a failed refund call is an ops replay
-  // (we surface it via an ALERT audit), not a reason to leave the escrow
-  // stuck in DISPUTED.
-  await prisma.escrowTransaction.update({
-    where: { id: escrow.id },
-    data: { status: EscrowStatus.REFUNDED, releasedAt: new Date() },
+  await prisma.$transaction(async (tx) => {
+    await tx.escrowTransaction.updateMany({
+      where: { orderId: dispute.orderId, status: EscrowStatus.DISPUTED },
+      data: { status: EscrowStatus.REFUNDED, releasedAt: new Date() },
+    });
+    await tx.dispute.update({
+      where: { id: dispute.id },
+      data: {
+        status: DisputeStatus.RESOLVED,
+        outcome:
+          parsed.data.outcome === "STANDARD"
+            ? DisputeOutcome.STANDARD
+            : DisputeOutcome.CUSTOM,
+        adminDecision: parsed.data.decision,
+        resolvedAt: new Date(),
+        resolvedById: admin.id,
+        refundCents: split.refundCents,
+        retainedCents: split.retainedCents,
+        platformShareCents: split.platformShareCents,
+        supplierShareCents: split.supplierShareCents,
+      },
+    });
   });
 
   await writeAuditLog({
     actorUserId: admin.id,
-    action: refundError ? "escrow.dispute_refund_failed" : "escrow.dispute_resolved",
-    targetType: "EscrowTransaction",
-    targetId: escrow.id,
+    action: "dispute.resolved",
+    targetType: "Dispute",
+    targetId: dispute.id,
     payload: {
-      outcome,
-      escrowAmountCents: escrow.amountCents,
-      refundCents,
-      retainedCents,
-      platformShareCents,
-      supplierShareCents,
-      refundRef,
-      refundError,
+      outcome: parsed.data.outcome,
+      totalDisputedCents,
+      ...split,
     },
-    level: refundError ? "ALERT" : "WARN",
+    level: "WARN",
   });
 
-  const parties = await partyUserIds(
-    escrow.order.clientOrgId,
-    escrow.order.factoryOrgId,
+  await notifyParties(
+    dispute.order.clientOrgId,
+    dispute.order.factoryOrgId,
+    dispute.id,
+    parsed.data.outcome,
   );
-  await emitNotificationToMany(parties, {
-    type: NotificationType.SYSTEM,
-    vars: { systemKey: "order_dispute_resolved" },
-    contextType: "Order",
-    contextId: escrow.orderId,
-  });
-
-  revalidatePath("/[lang]/admin/escrow", "page");
+  revalidatePath("/[lang]/admin/disputes", "page");
+  revalidatePath("/[lang]/client/orders/[id]", "page");
+  revalidatePath("/[lang]/factory/orders/[id]", "page");
   return { ok: true };
 }
 
-async function partyUserIds(
+async function notifyParties(
   clientOrgId: string,
   factoryOrgId: string,
-): Promise<string[]> {
+  disputeId: string,
+  outcome: string,
+) {
   const users = await prisma.user.findMany({
     where: {
-      organizationId: { in: [clientOrgId, factoryOrgId] },
-      deletedAt: null,
+      OR: [
+        { organizationId: clientOrgId, deletedAt: null },
+        { organizationId: factoryOrgId, deletedAt: null },
+      ],
     },
     select: { id: true },
   });
-  return users.map((u) => u.id);
+  await emitNotificationToMany(
+    users.map((u) => u.id),
+    {
+      type: NotificationType.SYSTEM,
+      vars: { systemKey: "order_dispute_resolved" },
+      contextType: "Dispute",
+      contextId: disputeId,
+    },
+  );
 }
