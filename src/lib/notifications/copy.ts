@@ -40,7 +40,12 @@ export type NotificationVars = {
     | "forwarder_proof_uploaded"
     | "support_ticket_created"
     | "support_ticket_resolved"
-    | "marketplace_re_review_requested";
+    | "marketplace_re_review_requested"
+    | "marketplace_listing_blocked"
+    | "marketplace_listing_unblocked"
+    | "marketplace_listing_archived_by_admin"
+    | "marketplace_sample_ordered"
+    | "research_fee_refunded";
 };
 
 const SYSTEM_TITLES: Record<
@@ -154,6 +159,36 @@ const SYSTEM_TITLES: Record<
     en: "Listing edited — needs re-review",
     zh: "商品已修改 — 需要重新审核",
     ar: "تم تعديل قائمة — يلزم إعادة المراجعة",
+  },
+  research_fee_refunded: {
+    fr: "Frais de recherche remboursés en crédit",
+    en: "Research fee refunded as credit",
+    zh: "调研费已退款至账户",
+    ar: "تم استرداد رسوم البحث كرصيد",
+  },
+  marketplace_listing_blocked: {
+    fr: "Annonce temporairement bloquée par SourcingPick",
+    en: "Listing temporarily blocked by SourcingPick",
+    zh: "商品已被 SourcingPick 暂时下架",
+    ar: "تم حظر القائمة مؤقتًا من SourcingPick",
+  },
+  marketplace_listing_unblocked: {
+    fr: "Annonce débloquée — de retour en ligne",
+    en: "Listing unblocked — back live",
+    zh: "商品已解除封锁 — 已恢复上架",
+    ar: "تم رفع الحظر — عاد الإعلان مباشرًا",
+  },
+  marketplace_listing_archived_by_admin: {
+    fr: "Annonce archivée par SourcingPick",
+    en: "Listing archived by SourcingPick",
+    zh: "商品已被 SourcingPick 归档",
+    ar: "تمت أرشفة القائمة من SourcingPick",
+  },
+  marketplace_sample_ordered: {
+    fr: "Commande d'échantillon reçue",
+    en: "Sample order received",
+    zh: "收到样品订单",
+    ar: "تم استلام طلب عيّنة",
   },
 };
 

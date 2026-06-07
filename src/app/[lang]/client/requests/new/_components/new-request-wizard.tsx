@@ -56,7 +56,13 @@ type State = {
   targetUnitPriceEur: string;
   budgetEur: string;
   deadline: string;
+  // Partner #12: structured address fields. The freeform field is
+  // retained for backwards-compat reads but isn't surfaced any more.
   deliveryAddress: string;
+  deliveryStreet: string;
+  deliveryPostalCode: string;
+  deliveryCity: string;
+  deliveryCountry: string;
   incoterm: Incoterm | "";
   sourcingRegion: SourcingRegion | "";
   sourcingCountry: string;
@@ -96,6 +102,10 @@ export function NewRequestWizard({
     budgetEur: "",
     deadline: "",
     deliveryAddress: "",
+    deliveryStreet: "",
+    deliveryPostalCode: "",
+    deliveryCity: "",
+    deliveryCountry: "",
     incoterm: "",
     sourcingRegion: defaultRegion,
     sourcingCountry: defaultCountry,
@@ -130,7 +140,12 @@ export function NewRequestWizard({
       if (!state.deadline) return dict.client.requests.errorDeadline;
       if (new Date(state.deadline) <= new Date())
         return dict.client.requests.errorDeadlineFuture;
-      if (state.deliveryAddress.trim().length < 5)
+      if (
+        state.deliveryStreet.trim().length < 3 ||
+        state.deliveryPostalCode.trim().length < 2 ||
+        state.deliveryCity.trim().length < 2 ||
+        state.deliveryCountry.trim().length !== 2
+      )
         return dict.client.requests.errorAddress;
       if (!state.incoterm) return dict.client.requests.errorIncoterm;
       if (!state.sourcingRegion) return dict.client.requests.errorRegion;
@@ -169,11 +184,17 @@ export function NewRequestWizard({
     fd.append("targetUnitPriceEur", state.targetUnitPriceEur);
     fd.append("budgetEur", state.budgetEur);
     fd.append("deadline", state.deadline);
-    fd.append("deliveryAddress", state.deliveryAddress);
+    fd.append("deliveryStreet", state.deliveryStreet);
+    fd.append("deliveryPostalCode", state.deliveryPostalCode);
+    fd.append("deliveryCity", state.deliveryCity);
+    fd.append("deliveryCountry", state.deliveryCountry.toUpperCase());
     fd.append("incoterm", state.incoterm);
     fd.append("sourcingRegion", state.sourcingRegion);
     fd.append("sourcingCountry", state.sourcingCountry);
-    fd.append("requiredCerts", state.requiredCerts);
+    // Partner #9: requiredCerts is no longer buyer-facing — submitted
+    // empty here; admin populates it on the request when dispatching
+    // tenders if the brief calls for specific certifications.
+    fd.append("requiredCerts", "");
     for (const file of attachments) fd.append("attachments", file);
 
     startTransition(async () => {
@@ -482,15 +503,58 @@ function StepLogistics({
           {dict.client.requests.deadlineWarningShort}
         </div>
       )}
-      <Field label={dict.client.requests.addressLabel} required>
-        <Input
-          type="text"
-          autoComplete="street-address"
-          value={state.deliveryAddress}
-          onChange={(e) => set("deliveryAddress", e.target.value)}
-          placeholder={dict.client.requests.addressPlaceholder}
-        />
-      </Field>
+      {/* Partner #12: structured delivery address. */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <Field
+          label={dict.client.requests.addressStreetLabel}
+          required
+        >
+          <Input
+            type="text"
+            autoComplete="street-address"
+            value={state.deliveryStreet}
+            onChange={(e) => set("deliveryStreet", e.target.value)}
+            placeholder={dict.client.requests.addressStreetPlaceholder}
+          />
+        </Field>
+        <Field
+          label={dict.client.requests.addressPostalCodeLabel}
+          required
+        >
+          <Input
+            type="text"
+            autoComplete="postal-code"
+            value={state.deliveryPostalCode}
+            onChange={(e) => set("deliveryPostalCode", e.target.value)}
+            placeholder="75001"
+          />
+        </Field>
+        <Field label={dict.client.requests.addressCityLabel} required>
+          <Input
+            type="text"
+            autoComplete="address-level2"
+            value={state.deliveryCity}
+            onChange={(e) => set("deliveryCity", e.target.value)}
+            placeholder="Paris"
+          />
+        </Field>
+        <Field
+          label={dict.client.requests.addressCountryLabel}
+          required
+          hint={dict.client.requests.addressCountryHint}
+        >
+          <Input
+            type="text"
+            autoComplete="country"
+            value={state.deliveryCountry}
+            onChange={(e) =>
+              set("deliveryCountry", e.target.value.toUpperCase().slice(0, 2))
+            }
+            placeholder="FR"
+            className="font-mono uppercase"
+          />
+        </Field>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Field
           label={dict.client.requests.incotermLabel}
@@ -596,17 +660,11 @@ function StepRequirements({
 }) {
   return (
     <section className="flex flex-col gap-4">
-      <Field
-        label={dict.client.requests.certsLabel}
-        hint={dict.client.requests.certsHint}
-      >
-        <Input
-          type="text"
-          value={state.requiredCerts}
-          onChange={(e) => set("requiredCerts", e.target.value)}
-          placeholder={dict.client.requests.certsPlaceholder}
-        />
-      </Field>
+      {/* Partner #9: certifications field dropped from the wizard —
+          the concept wasn't landing for buyers. If a specific cert
+          matters they can call it out in the description; admin
+          translates that into `requiredCerts` on the request when
+          dispatching tenders. */}
 
       <AttachmentPicker
         label={dict.client.requests.attachmentsLabel}
@@ -655,7 +713,16 @@ function StepReview({
       value: state.budgetEur ? `${state.budgetEur} €` : "—",
     },
     { label: dict.client.requests.deadlineLabel, value: state.deadline },
-    { label: dict.client.requests.addressLabel, value: state.deliveryAddress },
+    {
+      label: dict.client.requests.addressLabel,
+      value: [
+        state.deliveryStreet,
+        `${state.deliveryPostalCode} ${state.deliveryCity}`.trim(),
+        state.deliveryCountry,
+      ]
+        .filter((s) => s.trim().length > 0)
+        .join(", "),
+    },
     {
       label: dict.client.requests.incotermLabel,
       value: state.incoterm
@@ -673,10 +740,6 @@ function StepReview({
       value: state.sourcingCountry
         ? `${countryName} · ${state.sourcingCountry}`
         : "—",
-    },
-    {
-      label: dict.client.requests.certsLabel,
-      value: state.requiredCerts || <span className="text-faint">—</span>,
     },
   ];
 

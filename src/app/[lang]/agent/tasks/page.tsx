@@ -69,7 +69,11 @@ export default async function AgentTasksPage({
     }),
     prisma.sourcingRequest.findMany({
       where: { agentId: agent.id, status: { in: OPEN_REQ_STATUSES } },
-      orderBy: { assignedAt: "asc" },
+      // Most recently assigned requests at the top — partner feedback
+      // #26: scrolling through old assignments to find today's work
+      // was wasteful. Null assignedAt (shouldn't happen for an agent's
+      // own list, but defensive) sorts last.
+      orderBy: { assignedAt: { sort: "desc", nulls: "last" } },
       select: { id: true, reference: true, title: true },
     }),
     prisma.agentTask.count({

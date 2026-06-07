@@ -6,6 +6,7 @@ import { MembersList } from "./members-list";
 import { PayoutSection } from "./payout-section";
 import { LogoSection } from "./logo-section";
 import { NotificationPreferences } from "./notification-preferences";
+import { SocialSection } from "./social-section";
 import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -27,8 +28,7 @@ export async function SettingsView({ locale }: { locale: Locale }) {
   const needsPayouts =
     user.role === Role.FACTORY || user.role === Role.AGENT;
 
-  // Single org read used by both the payout section (when relevant) and
-  // the logo section.
+  // Single org read used by the payout, logo, and social sections.
   const org = await prisma.organization.findUnique({
     where: { id: user.organizationId },
     select: {
@@ -36,6 +36,10 @@ export async function SettingsView({ locale }: { locale: Locale }) {
       payoutStatus: true,
       logoUrl: true,
       updatedAt: true,
+      websiteUrl: true,
+      instagramUrl: true,
+      facebookUrl: true,
+      linkedinUrl: true,
     },
   });
   const payouts = needsPayouts ? org : null;
@@ -109,6 +113,22 @@ export async function SettingsView({ locale }: { locale: Locale }) {
               orgName={user.organization.displayName}
               hasLogo={Boolean(org.logoUrl)}
               cacheBust={org.updatedAt.getTime()}
+            />
+          </Section>
+        )}
+
+        {isOwner && org && (
+          <Section
+            title={dict.settings.social.title}
+            description={dict.settings.social.description}
+          >
+            <SocialSection
+              initial={{
+                websiteUrl: org.websiteUrl ?? "",
+                instagramUrl: org.instagramUrl ?? "",
+                facebookUrl: org.facebookUrl ?? "",
+                linkedinUrl: org.linkedinUrl ?? "",
+              }}
             />
           </Section>
         )}

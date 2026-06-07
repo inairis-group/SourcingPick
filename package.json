@@ -29,6 +29,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.102.0",
     "@auth/prisma-adapter": "^2.11.2",
     "@formatjs/intl-localematcher": "^0.8.8",
     "@headlessui/react": "^2.2.10",
@@ -36,6 +37,7 @@
     "@hugeicons/react": "^1.1.6",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
+    "@react-pdf/renderer": "^4.5.1",
     "@tiptap/extension-link": "^3.25.0",
     "@tiptap/extension-placeholder": "^3.25.0",
     "@tiptap/react": "^3.25.0",

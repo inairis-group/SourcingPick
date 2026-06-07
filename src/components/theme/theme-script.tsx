@@ -8,11 +8,16 @@
  *      against the rare race where the cookie is unread (e.g. private
  *      windows that don't replay cookies on the same request).
  *
- * Uses a plain <script dangerouslySetInnerHTML> tag in <head>. React 19
- * supports inline scripts in <head> — that's the canonical pattern for
- * pre-hydration theme code (next-themes, etc.). next/script with
- * `beforeInteractive` triggered the "scripts inside React components are
- * never executed" warning under Next 16 + React 19 even though it works.
+ * React 19 inline-script pattern: `dangerouslySetInnerHTML`. Children
+ * triggers the "Encountered a script tag while rendering React
+ * component. Scripts inside React components are never executed when
+ * rendering on the client" warning, because React treats children as
+ * serialised text data (no execution semantics) — exactly what you'd
+ * want for embedding raw JSON. `dangerouslySetInnerHTML` is the
+ * documented escape hatch that tells React "this is markup, render it
+ * as a real `<script>`, the browser executes it on parse." The script
+ * still runs once on initial document parse — there is no client-side
+ * re-execution but we don't want one anyway (theme init runs once).
  */
 const SCRIPT = `(function(){
   try {
@@ -31,10 +36,10 @@ const SCRIPT = `(function(){
 })();`;
 
 export function ThemeScript() {
-  // React 19: inline scripts use children, not dangerouslySetInnerHTML —
-  // the latter triggers "Encountered a script tag while rendering React
-  // component" because React can't tell whether the markup is intended
-  // to execute. With children, React serialises the content into the
-  // HTML and the browser runs it as a normal inline script on parse.
-  return <script id="sp-theme-init">{SCRIPT}</script>;
+  return (
+    <script
+      id="sp-theme-init"
+      dangerouslySetInnerHTML={{ __html: SCRIPT }}
+    />
+  );
 }

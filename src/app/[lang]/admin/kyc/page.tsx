@@ -43,6 +43,10 @@ export default async function AdminKycPage({
       createdAt: true,
       vatNumber: true,
       address: true,
+      websiteUrl: true,
+      instagramUrl: true,
+      facebookUrl: true,
+      linkedinUrl: true,
       factoryProfile: {
         select: {
           category: true,

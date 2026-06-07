@@ -60,6 +60,10 @@ export default async function ClientMarketplacePage({
   const products = await prisma.marketplaceProduct.findMany({
     where: {
       status: MarketplaceProductStatus.PUBLISHED,
+      // Partner #1: admin block hides the listing from the storefront
+      // without changing its underlying status — factory keeps
+      // ownership and gets a notification with the reason.
+      blockedAt: null,
       ...(category ? { category } : {}),
       ...(condition ? { condition } : {}),
       // See marketing/marketplace/page.tsx for the AND-of-ORs rationale.

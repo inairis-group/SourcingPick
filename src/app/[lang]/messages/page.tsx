@@ -8,9 +8,11 @@ import {
   InvoiceIcon,
   Message01Icon,
   CustomerService01Icon,
+  ScrollIcon,
   Add01Icon,
 } from "@hugeicons/core-free-icons";
 import { buttonClass } from "@/components/ui/button";
+import { ContextThread } from "@/components/messaging/context-thread";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
@@ -34,6 +36,8 @@ const CTX_ICONS: Partial<Record<ThreadContextType, typeof Message01Icon>> = {
   QUOTE: InvoiceIcon,
   TENDER: Mail01Icon,
   SUPPORT: CustomerService01Icon,
+  DISPUTE: ScrollIcon,
+  DIRECT: Message01Icon,
 };
 
 export default async function GlobalMessagesPage({
@@ -50,6 +54,11 @@ export default async function GlobalMessagesPage({
     typeof search?.filter === "string" && search.filter === "unread"
       ? "unread"
       : "all";
+  // Partner #30: ?dm=<threadId> opens a DIRECT thread inline at the
+  // top of the page. The participant guard catches mismatches — only
+  // the two members can read it.
+  const dmThreadId =
+    typeof search?.dm === "string" ? search.dm : null;
 
   const participants = await prisma.threadParticipant.findMany({
     where: {
@@ -94,8 +103,32 @@ export default async function GlobalMessagesPage({
   const supportIds = participants
     .filter((p) => p.thread.contextType === ThreadContextType.SUPPORT)
     .map((p) => p.thread.contextId);
+  const disputeIds = participants
+    .filter((p) => p.thread.contextType === ThreadContextType.DISPUTE)
+    .map((p) => p.thread.contextId);
+  // Partner #30: DIRECT threads. The contextId IS the thread id, so
+  // we resolve the OTHER participant per thread to render a real name.
+  const directThreadIds = participants
+    .filter((p) => p.thread.contextType === ThreadContextType.DIRECT)
+    .map((p) => p.thread.id);
+  const directOthers =
+    directThreadIds.length > 0
+      ? await prisma.threadParticipant.findMany({
+          where: {
+            threadId: { in: directThreadIds },
+            userId: { not: user.id },
+          },
+          select: {
+            threadId: true,
+            user: { select: { id: true, firstName: true, lastName: true, role: true } },
+          },
+        })
+      : [];
+  const directOtherByThread = new Map(
+    directOthers.map((d) => [d.threadId, d.user]),
+  );
 
-  const [requests, orders, quotes, tenders, supports] = await Promise.all([
+  const [requests, orders, quotes, tenders, supports, disputes] = await Promise.all([
     requestIds.length > 0
       ? prisma.sourcingRequest.findMany({
           where: { id: { in: requestIds } },
@@ -150,6 +183,25 @@ export default async function GlobalMessagesPage({
           },
         })
       : Promise.resolve([]),
+    disputeIds.length > 0
+      ? prisma.dispute.findMany({
+          where: { id: { in: disputeIds } },
+          select: {
+            id: true,
+            reference: true,
+            status: true,
+            order: {
+              select: {
+                id: true,
+                reference: true,
+                request: { select: { title: true } },
+                clientOrg: { select: { displayName: true } },
+                factoryOrg: { select: { displayName: true } },
+              },
+            },
+          },
+        })
+      : Promise.resolve([]),
   ]);
 
   const requestMap = new Map(requests.map((r) => [r.id, r]));
@@ -157,6 +209,7 @@ export default async function GlobalMessagesPage({
   const quoteMap = new Map(quotes.map((q) => [q.id, q]));
   const tenderMap = new Map(tenders.map((t) => [t.id, t]));
   const supportMap = new Map(supports.map((s) => [s.id, s]));
+  const disputeMap = new Map(disputes.map((d) => [d.id, d]));
 
   const role = user.role.toLowerCase();
 
@@ -235,6 +288,33 @@ export default async function GlobalMessagesPage({
           href = `/${lang}/support/${s.id}`;
           break;
         }
+        case ThreadContextType.DISPUTE: {
+          const d = disputeMap.get(t.contextId);
+          if (!d) return null;
+          title = d.order.request.title;
+          reference = d.reference;
+          subtitle =
+            role === "admin"
+              ? `${d.order.clientOrg.displayName} ↔ ${d.order.factoryOrg.displayName}`
+              : role === "client"
+                ? d.order.factoryOrg.displayName
+                : d.order.clientOrg.displayName;
+          href =
+            role === "admin"
+              ? `/${lang}/admin/disputes/${d.id}`
+              : role === "client"
+                ? `/${lang}/client/orders/${d.order.id}`
+                : `/${lang}/factory/orders/${d.order.id}`;
+          break;
+        }
+        case ThreadContextType.DIRECT: {
+          const other = directOtherByThread.get(t.id);
+          if (!other) return null;
+          title = `${other.firstName} ${other.lastName}`;
+          subtitle = other.role;
+          href = `/${lang}/messages?dm=${t.id}`;
+          break;
+        }
         default:
           return null;
       }
@@ -260,6 +340,26 @@ export default async function GlobalMessagesPage({
   const totalUnread = rows.reduce((sum, r) => sum + r.unreadCount, 0);
 
   const t = dict.messaging;
+
+  // Resolve the DM panel, if any.
+  let openDmTitle: string | null = null;
+  if (dmThreadId) {
+    const allowed = await prisma.threadParticipant.findUnique({
+      where: { threadId_userId: { threadId: dmThreadId, userId: user.id } },
+      select: { threadId: true },
+    });
+    if (allowed) {
+      const other = await prisma.threadParticipant.findFirst({
+        where: { threadId: dmThreadId, userId: { not: user.id } },
+        select: {
+          user: { select: { firstName: true, lastName: true } },
+        },
+      });
+      openDmTitle = other
+        ? `${other.user.firstName} ${other.user.lastName}`
+        : t.directOpenCta;
+    }
+  }
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8">
@@ -294,6 +394,17 @@ export default async function GlobalMessagesPage({
           )}
         </div>
       </header>
+
+      {dmThreadId && openDmTitle && (
+        <section className="mb-6">
+          <ContextThread
+            contextType={ThreadContextType.DIRECT}
+            contextId={dmThreadId}
+            lang={lang}
+            title={openDmTitle}
+          />
+        </section>
+      )}
 
       <div className="flex items-center gap-1 mb-4">
         <FilterTab

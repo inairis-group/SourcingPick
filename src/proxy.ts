@@ -45,7 +45,18 @@ export function proxy(request: NextRequest) {
   void PROTECTED_PREFIXES;
 
   const urlLocale = pathname.split("/")[1] ?? defaultLocale;
-  const response = NextResponse.next();
+  // Forward `x-locale` to RSC + server actions via the REQUEST
+  // headers — `response.headers.set(...)` only puts it on the
+  // response to the browser, leaving `headers().get("x-locale")`
+  // null for downstream `currentLocale()` helpers. That null fell
+  // through to `defaultLocale = "fr"` and redirected the user to a
+  // `/fr/...` URL, flipping their locale silently after a server
+  // action (Order Now, sign-up, etc.).
+  const forwardedHeaders = new Headers(request.headers);
+  forwardedHeaders.set("x-locale", urlLocale);
+  const response = NextResponse.next({
+    request: { headers: forwardedHeaders },
+  });
   response.headers.set("x-locale", urlLocale);
 
   // Keep the cookie in lockstep with whatever URL the user is actually

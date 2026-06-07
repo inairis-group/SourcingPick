@@ -22,6 +22,21 @@
       "disputesResolvedInFavor": "Résolus en votre faveur",
       "empty": "Pas encore de données."
     },
+    "tutorial": {
+      "eyebrow": "Premiers pas",
+      "dismissAria": "Masquer le tutoriel",
+      "step1Title": "Marketplace : produits déjà négociés",
+      "step1Body": "Catalogue de produits pré-sourcés, MOQ et délais visibles. Commande en un clic — l'acompte déclenche la production, le solde se règle à l'expédition. Idéal pour les achats récurrents standards.",
+      "step2Title": "Demande de sourcing : un agent fait le travail",
+      "step2Body": "Pas de produit standard ? Décrivez votre besoin, un agent SourcingPick qualifie le brief, sollicite 3 à 10 usines présélectionnées et vous transmet les devis. Vous choisissez le gagnant.",
+      "step3Title": "Production, contrôle qualité, expédition",
+      "step3Body": "Une fois la commande passée, l'usine fabrique sous notre supervision : photos de QC partagées avant départ, suivi de livraison en temps réel, ouverture de litige possible sous 7 jours après réception.",
+      "step4Title": "Paiements protégés en séquestre",
+      "step4Body": "Tous les paiements transitent par notre compte séquestre. L'usine n'est payée qu'après votre confirmation de livraison. En cas de litige, les fonds restent bloqués jusqu'à arbitrage.",
+      "nextCta": "Suivant",
+      "backCta": "Précédent",
+      "finishCta": "C'est compris"
+    },
     "dashboard": {
       "eyebrow": "Tableau de bord",
       "title": "Vue d'ensemble",
@@ -85,6 +100,12 @@
       "deadlineWarningShort": "Délai inférieur à 31 jours. Une commande entièrement sécurisée (fret aérien compris) demande au minimum 31 jours — votre demande sera traitée, mais en dehors du parcours standard.",
       "addressLabel": "Adresse de livraison",
       "addressPlaceholder": "12 rue de la République, 69001 Lyon",
+      "addressStreetLabel": "Rue et numéro",
+      "addressStreetPlaceholder": "12 rue de la République",
+      "addressPostalCodeLabel": "Code postal",
+      "addressCityLabel": "Ville",
+      "addressCountryLabel": "Pays (ISO)",
+      "addressCountryHint": "Code à 2 lettres — FR, BE, DE, ES…",
       "incotermLabel": "Incoterm",
       "incotermPlaceholder": "Choisir un incoterm…",
       "incotermHint": "Définit qui prend en charge le transport, l'assurance et les droits.",
@@ -152,15 +173,6 @@
         "CANCELLED": "Annulée"
       }
     },
-    "certifications": {
-      "eyebrow": "Programme certification",
-      "title": "Sponsoriser une certification",
-      "description": "Aidez une usine partenaire à obtenir une certification. En retour, vous figurez comme sponsor sur le dossier et bénéficiez d'une vue prioritaire sur sa progression.",
-      "mineTitle": "Dossiers sponsorisés",
-      "sponsorableTitle": "Dossiers à sponsoriser",
-      "empty": "Aucun dossier ouvert à sponsoriser pour le moment.",
-      "sponsorCta": "Sponsoriser"
-    },
     "marketplace": {
       "eyebrow": "Marketplace",
       "title": "Produits pré-négociés",
@@ -174,6 +186,11 @@
       "unitPrice": "Prix unitaire",
       "orderTitle": "Commander",
       "totalLabel": "Total",
+      "sampleTitle": "Commander un échantillon",
+      "translatedBadge": "Description traduite automatiquement",
+      "sampleBody": "Recevez 1 unité avant de vous engager sur la commande complète. Idéal pour valider la qualité avant un volume.",
+      "samplePriceLabel": "Prix échantillon (livraison incluse)",
+      "orderSampleCta": "Commander l'échantillon",
       "buyCta": "Commander maintenant",
       "moqHint": "MOQ : {n} unités.",
       "addressHint": "Adresse de livraison finale.",
@@ -227,7 +244,8 @@
       "confirmAcceptCopy": "Les autres devis seront refusés.",
       "orderCreatedTitle": "Commande créée",
       "orderCreatedBody": "Votre commande {ref} est en paiement.",
-      "viewOrder": "Voir la commande"
+      "viewOrder": "Voir la commande",
+      "downloadPdf": "Télécharger le devis (PDF)"
     },
     "invoices": {
       "eyebrow": "Facturation",
@@ -271,6 +289,8 @@
       "trackingNumberLabel": "Numéro de suivi",
       "shippedAtLabel": "Expédiée le",
       "trackingPending": "Le numéro de suivi sera ajouté par l'usine au moment de l'expédition.",
+      "payConfigMissingTitle": "Coordonnées bancaires en cours de configuration",
+      "payConfigMissingBody": "Les coordonnées du compte bénéficiaire ne sont pas encore disponibles pour cette commande. Contactez le support SourcingPick — un opérateur vous transmettra les instructions de virement par e-mail.",
       "tracking": {
         "carrierLabel": "Transporteur",
         "numberLabel": "Numéro de suivi",
@@ -412,6 +432,17 @@
       "submitCta": "Mettre à jour",
       "saved": "Logo mis à jour."
     },
+    "social": {
+      "title": "Liens publics",
+      "description": "Site web et réseaux sociaux de votre organisation. Notre équipe les croise avec vos documents KYC pour vérifier l'identité.",
+      "websiteLabel": "Site web",
+      "websiteHint": "URL complète, ex. https://example.com",
+      "instagramLabel": "Instagram",
+      "facebookLabel": "Facebook",
+      "linkedinLabel": "LinkedIn",
+      "saveCta": "Enregistrer",
+      "savedMessage": "Enregistré"
+    },
     "security": {
       "title": "Sécurité",
       "description": "Changez votre mot de passe.",
@@ -513,7 +544,8 @@
         "QUOTED": "En attente de paiement",
         "PAID": "Payé",
         "CREDITED": "Remboursé en crédit",
-        "WAIVED": "Offert"
+        "WAIVED": "Offert",
+        "REFUNDED": "Remboursé (aucun résultat)"
       }
     },
     "dashboard": {
@@ -758,6 +790,30 @@
     "systemAuthor": "SourcingPick",
     "errorLoad": "Impossible de charger les messages. Réessayez.",
     "errorStream": "Connexion temps réel interrompue. Rechargez la page pour rétablir.",
+    "maximizeAria": "Agrandir la conversation",
+    "minimizeAria": "Réduire la conversation",
+    "directOpenCta": "Envoyer un message",
+    "dockOpenAria": "Ouvrir la messagerie",
+    "dockTitle": "Vos conversations",
+    "dockAllCta": "Voir toutes les conversations",
+    "templates": {
+      "pickerAria": "Insérer un modèle de message",
+      "pickerTitle": "Modèles de messages",
+      "titles": {
+        "invoicing": "Comment fonctionne la facturation",
+        "guarantees": "Garanties produit + délais",
+        "refunds": "Politique de remboursement",
+        "deposit_balance": "Acompte et solde",
+        "research_process": "Le processus de recherche fournisseur"
+      },
+      "bodies": {
+        "invoicing": "Bonjour,\n\nVoici comment fonctionne la facturation sur SourcingPick : chaque commande génère une facture d'acompte (entre 30 % et 50 % du total selon l'usine) au moment du passage en production, puis une facture de solde à l'expédition. Les factures sont disponibles en téléchargement depuis votre espace, conformes aux exigences européennes. Pour toute question, n'hésitez pas à demander.",
+        "guarantees": "Bonjour,\n\nNos garanties produit : 1) conformité aux spécifications acceptées au devis (contrôle qualité avant expédition, photos partagées) ; 2) fenêtre de litige de 7 jours après livraison confirmée pour signaler tout défaut ; 3) le séquestre couvre les remboursements en cas de litige tranché en votre faveur. Les délais de livraison annoncés par l'usine sont fermes — un retard >7 jours déclenche une notification à notre équipe.",
+        "refunds": "Bonjour,\n\nNotre politique de remboursement : si un litige est ouvert dans les 7 jours suivant la livraison, notre équipe arbitre sous 5 jours ouvrés. Trois issues possibles : remboursement intégral (produit personnalisé non conforme), partiel 80 % (produit standard non conforme), ou refus motivé. Les fonds restent en séquestre tant que le litige est ouvert.",
+        "deposit_balance": "Bonjour,\n\nLe paiement se fait en deux temps : 1) un acompte à la commande (30–50 % du total selon l'usine) qui déclenche la mise en production ; 2) le solde à l'expédition. Les deux paiements transitent par virement bancaire vers notre compte séquestre — nous reversons à l'usine uniquement après confirmation de livraison. Vous voyez le détail dans la page Commande.",
+        "research_process": "Bonjour,\n\nLe processus de recherche fournisseur : 1) vous décrivez votre besoin via une demande ; 2) un agent SourcingPick est assigné et qualifie le brief ; 3) il peut facturer des frais de recherche (125 €/jour ou 500 €/semaine selon l'envergure) — payables d'avance, remboursables en crédit plateforme si aucun résultat n'est trouvé dans le délai convenu ; 4) il sollicite 3 à 10 usines présélectionnées et vous transmet les devis. Vous gardez la main sur l'acceptation finale."
+      }
+    },
     "globalEyebrow": "Messagerie",
     "globalTitle": "Toutes mes conversations",
     "globalDescription": "Tous vos fils de discussion — demandes, appels d'offres, devis, commandes — regroupés en un seul endroit.",
@@ -812,7 +868,9 @@
     "sendCta": "Lancer un appel d'offres",
     "invitedCount": "{n} usines sollicitées",
     "errorMaxInvitations": "Vous ne pouvez sélectionner que {n} usines maximum.",
-    "errorMinSelection": "Sélectionnez au moins une usine."
+    "errorMinSelection": "Sélectionnez au moins une usine.",
+    "exemptTitle": "Brief éligible au dispatch direct",
+    "exemptBody": "Budget en dessous du seuil et catégorie standard : pas de validation pré-AO requise. Vous pouvez envoyer les invitations sans attendre."
   },
   "factory": {
     "analytics": {
@@ -887,6 +945,13 @@
       "compareAtHint": "Prix d'origine côté usine, affiché barré. Laissez vide pour ne pas afficher de remise.",
       "depositLabel": "Acompte (%)",
       "depositHint": "Part payée à la commande, 30 à 50 %. Le solde est encaissé à l'expédition. Aligné avec le flux sourcing.",
+      "incotermLabel": "Méthode de livraison (Incoterm)",
+      "incotermHint": "C'est vous, l'usine, qui choisissez la modalité — DAP (porte-à-porte) en standard. L'acheteur verra ce choix verrouillé sur la fiche.",
+      "sampleAvailableLabel": "Échantillon disponible",
+      "sampleAvailableHint": "Si activé, l'acheteur peut commander 1 unité comme échantillon avant de passer en gros volume.",
+      "sampleAvailableToggle": "Proposer un échantillon",
+      "samplePriceLabel": "Prix échantillon (€)",
+      "samplePriceHint": "Souvent supérieur au prix unitaire car il inclut l'envoi express. Laissez vide si désactivé.",
       "flashSaleLabel": "Fin de la vente flash",
       "flashSaleHint": "Optionnel. Tant que la date est à venir, l'annonce affiche un badge \"vente flash\" et un compte à rebours aux acheteurs.",
       "promotionTitle": "Promotions",
@@ -923,6 +988,9 @@
       "archiveCta": "Archiver",
       "submitForReviewCta": "Soumettre pour validation",
       "submitNeedsImage": "Ajoutez au moins une image avant de soumettre.",
+      "submitHint": "Brouillon ? Cliquez d'abord sur Enregistrer pour valider vos modifications, puis sur Soumettre pour validation pour envoyer la fiche à l'équipe d'examen.",
+      "adminBlockedTitle": "Annonce bloquée par SourcingPick",
+      "adminBlockedBody": "Cette annonce a été masquée des acheteurs en attendant une correction. Voici la raison communiquée par l'équipe :",
       "pendingReviewBanner": "En attente de validation par l'équipe SourcingPick.",
       "rejectedBanner": "Refusé — corrigez le produit et resoumettez.",
       "statuses": {
@@ -975,6 +1043,8 @@
       "newCta": "Nouvelle enchère",
       "newTitle": "Créer une enchère",
       "newBody": "Renseignez les détails du lot puis envoyez pour validation par notre équipe avant publication.",
+      "lifecycleTitle": "Pourquoi mon enchère n'apparaît pas pour les acheteurs ?",
+      "lifecycleBody": "Brouillon → Soumis pour validation → Validé par l'admin → En ligne (entre startsAt et endsAt). Les acheteurs ne voient l'enchère qu'une fois validée par l'admin ET sa date de début atteinte. Statut visible sur chaque ligne ci-dessous.",
       "backToList": "Retour aux enchères",
       "emptyTitle": "Aucune enchère pour l'instant",
       "emptyBody": "Créez votre première enchère pour proposer un lot à la communauté d'acheteurs.",
@@ -1005,6 +1075,13 @@
       "needsImageHint": "Ajoutez au moins une photo avant soumission.",
       "cancelCta": "Annuler le brouillon",
       "confirmCancel": "Annuler cette enchère ? Cette action est irréversible.",
+      "confirmReviewTitle": "Soumettre cette enchère pour validation",
+      "confirmReviewBody": "Avant publication, notre équipe vérifie l'alignement de vos prix avec les standards de la plateforme. Si vos chiffres sortent du cadre, ils peuvent être :",
+      "confirmReviewPoint1": "Refusés — vous serez prévenu avec une raison claire et pourrez ajuster.",
+      "confirmReviewPoint2": "Corrigés à la marge avec votre accord avant publication.",
+      "confirmReviewPoint3": "Modifiés pour respecter les écarts mise-de-départ / réserve / achat-immédiat attendus.",
+      "confirmReviewCancel": "Retour",
+      "confirmReviewSubmit": "Soumettre pour validation",
       "estimatedCommissionLabel": "Commission estimée",
       "estimatedCommissionHint": "Estimation sur la mise de départ — le taux final dépend du montant adjugé.",
       "bidsSuffix": "enchères",
@@ -1154,7 +1231,7 @@
       },
       "forwarder": {
         "title": "Lien transitaire",
-        "body": "Générez un lien à partager avec votre transitaire pour qu'il dépose lui-même les photos de remise au transporteur. Aucun compte requis ; le lien expire au bout de 14 jours.",
+        "body": "Générez un lien à partager avec votre transitaire pour qu'il dépose lui-même les photos de remise au transporteur. Aucun compte requis. Le lien expire automatiquement 14 jours après sa création : c'est la fenêtre maximale entre la sortie d'usine et la remise documentée, alignée avec les délais d'expédition internationaux moyens. Si la remise n'a pas eu lieu d'ici là, créez-en simplement un nouveau.",
         "labelLabel": "Étiquette (optionnelle)",
         "labelPlaceholder": "ex. Ramassage DHL, conteneur Maersk…",
         "createCta": "Générer un lien",
@@ -1524,6 +1601,24 @@
       "title": "Fiches en attente",
       "description": "Validez ou refusez les produits soumis par les usines avant publication.",
       "empty": "Aucune fiche en attente de modération.",
+      "allListingsTitle": "Toutes les annonces en ligne",
+      "allListingsBody": "Vous pouvez bloquer temporairement une annonce (avec motif) ou l'archiver définitivement. L'usine reçoit une notification dans les deux cas.",
+      "controls": {
+        "blockCta": "Bloquer",
+        "unblockCta": "Débloquer",
+        "deleteCta": "Archiver",
+        "alreadyArchived": "Archivée",
+        "blockedBadge": "Bloquée",
+        "blockDialogTitle": "Bloquer cette annonce",
+        "blockDialogBody": "L'annonce sera masquée des acheteurs jusqu'à ce que vous la débloquiez. Indiquez la raison à l'usine — elle apparaîtra dans leur tableau de bord et dans la notification.",
+        "reasonPlaceholder": "ex. Image principale floue, prix supérieur au plafond catégorie, description non conforme…",
+        "reasonTooShort": "Donnez au moins 10 caractères de raison.",
+        "blockConfirm": "Bloquer",
+        "deleteDialogTitle": "Archiver cette annonce",
+        "deleteDialogBody": "L'annonce passera au statut ARCHIVÉE et disparaîtra de la marketplace. Cette action est irréversible côté usine — seul vous pouvez la rétablir manuellement.",
+        "deleteConfirm": "Archiver",
+        "dialogCancel": "Annuler"
+      },
       "noImage": "Aucune image fournie",
       "factoryKycMissing": "KYC non validé",
       "reReviewBadge": "Réexamen",
@@ -1564,6 +1659,7 @@
       "reassign": "Réassigner",
       "loadSuffix": "demandes actives",
       "errorPickAgent": "Sélectionnez un agent avant d'assigner.",
+      "autoApproved": "Validation pré-AO non requise (budget en dessous du seuil et catégorie standard). L'agent peut dispatcher directement.",
       "preTender": {
         "helperUnassigned": "Validation pré-appel d'offres requise avant l'envoi de l'AO.",
         "helperAssigned": "Validez la demande pour que l'agent puisse lancer l'appel d'offres.",
@@ -1640,6 +1736,7 @@
       "contactName": "Nom du contact",
       "contactEmail": "E-mail",
       "submittedAt": "Soumis le",
+      "websiteLabel": "Site web",
       "noOwner": "Aucun contact principal lié à cette usine.",
       "noDocuments": "Aucun document n'a été téléversé.",
       "openDocument": "Ouvrir le document",
@@ -1841,6 +1938,16 @@
     "system": "Système"
   },
   "marketing": {
+    "contact": {
+      "title": "Une question avant de vous inscrire ?",
+      "body": "Nous reviendrons vers vous rapidement par e-mail. La création de compte est gratuite et vous permet d'ouvrir un ticket support directement.",
+      "openAria": "Ouvrir la zone de contact",
+      "closeAria": "Fermer",
+      "signupCtaTitle": "Créer un compte gratuit",
+      "signupCtaBody": "Ouvrez un ticket support en quelques clics depuis votre espace.",
+      "emailCtaTitle": "Nous écrire un e-mail",
+      "emailCtaBody": "Notre équipe répond sous 24 h ouvrées."
+    },
     "hero": {
       "eyebrow": "Sourcing · Marketplace · Certification",
       "title": "Sourcez à l'international, sans intermédiaires opaques.",

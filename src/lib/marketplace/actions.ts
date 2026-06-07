@@ -6,6 +6,7 @@ import { z } from "zod";
 import {
   AttachmentContext,
   Category,
+  Incoterm,
   KycStatus,
   LeadTimeUnit,
   MarketplaceCondition,
@@ -57,6 +58,17 @@ const ProductInputSchema = z
       .min(30, "Acompte must be at least 30%.")
       .max(50, "Acompte cannot exceed 50%.")
       .default(30),
+    /// Delivery method (Incoterm) the factory commits to on this
+    /// listing. Partner #15. Defaults to DAP for forms that don't
+    /// surface the field yet.
+    incoterm: z.enum(Incoterm).default(Incoterm.DAP),
+    // Partner #31: per-listing sample purchase.
+    sampleAvailable: z
+      .union([z.literal("on"), z.literal("true"), z.literal("")])
+      .optional(),
+    samplePriceEur: z
+      .union([z.coerce.number().positive(), z.literal("")])
+      .optional(),
     /// "Was" price (factory-side) — strikethrough is rendered against the
     /// client-side comparison after we apply the buyer markup, so both stay
     /// internally consistent (factory enters factory-net, buyer sees all-in).
@@ -135,6 +147,9 @@ export async function createProductAction(
     certifications: formData.get("certifications") ?? "",
     condition: formData.get("condition") ?? MarketplaceCondition.NEW,
     depositPercentage: formData.get("depositPercentage") ?? "30",
+    incoterm: formData.get("incoterm") ?? Incoterm.DAP,
+    sampleAvailable: formData.get("sampleAvailable") ?? "",
+    samplePriceEur: formData.get("samplePriceEur") ?? "",
     compareAtEur: formData.get("compareAtEur") ?? "",
     flashSaleEndsAt: formData.get("flashSaleEndsAt") ?? "",
   });
@@ -170,6 +185,14 @@ export async function createProductAction(
       flashSaleEndsAt,
       condition: parsed.data.condition,
       depositPercentageBps: parsed.data.depositPercentage * 100,
+      incoterm: parsed.data.incoterm,
+      sampleAvailable:
+        parsed.data.sampleAvailable === "on" ||
+        parsed.data.sampleAvailable === "true",
+      samplePriceCentsClient:
+        typeof parsed.data.samplePriceEur === "number"
+          ? Math.round(parsed.data.samplePriceEur * 100)
+          : null,
       moq: parsed.data.moq,
       stockAvailable: parsed.data.stockAvailable,
       stockLowThreshold:
@@ -291,6 +314,9 @@ export async function updateProductAction(
     certifications: formData.get("certifications") ?? "",
     condition: formData.get("condition") ?? MarketplaceCondition.NEW,
     depositPercentage: formData.get("depositPercentage") ?? "30",
+    incoterm: formData.get("incoterm") ?? Incoterm.DAP,
+    sampleAvailable: formData.get("sampleAvailable") ?? "",
+    samplePriceEur: formData.get("samplePriceEur") ?? "",
     compareAtEur: formData.get("compareAtEur") ?? "",
     flashSaleEndsAt: formData.get("flashSaleEndsAt") ?? "",
   });
@@ -341,6 +367,14 @@ export async function updateProductAction(
       flashSaleEndsAt,
       condition: parsed.data.condition,
       depositPercentageBps: parsed.data.depositPercentage * 100,
+      incoterm: parsed.data.incoterm,
+      sampleAvailable:
+        parsed.data.sampleAvailable === "on" ||
+        parsed.data.sampleAvailable === "true",
+      samplePriceCentsClient:
+        typeof parsed.data.samplePriceEur === "number"
+          ? Math.round(parsed.data.samplePriceEur * 100)
+          : null,
       moq: parsed.data.moq,
       stockAvailable: parsed.data.stockAvailable,
       stockLowThreshold:
@@ -560,6 +594,9 @@ export async function adminCreateProductAction(
     certifications: formData.get("certifications") ?? "",
     condition: formData.get("condition") ?? MarketplaceCondition.NEW,
     depositPercentage: formData.get("depositPercentage") ?? "30",
+    incoterm: formData.get("incoterm") ?? Incoterm.DAP,
+    sampleAvailable: formData.get("sampleAvailable") ?? "",
+    samplePriceEur: formData.get("samplePriceEur") ?? "",
     compareAtEur: formData.get("compareAtEur") ?? "",
     flashSaleEndsAt: formData.get("flashSaleEndsAt") ?? "",
   });
@@ -593,6 +630,14 @@ export async function adminCreateProductAction(
       flashSaleEndsAt,
       condition: parsed.data.condition,
       depositPercentageBps: parsed.data.depositPercentage * 100,
+      incoterm: parsed.data.incoterm,
+      sampleAvailable:
+        parsed.data.sampleAvailable === "on" ||
+        parsed.data.sampleAvailable === "true",
+      samplePriceCentsClient:
+        typeof parsed.data.samplePriceEur === "number"
+          ? Math.round(parsed.data.samplePriceEur * 100)
+          : null,
       moq: parsed.data.moq,
       stockAvailable: parsed.data.stockAvailable,
       stockLowThreshold:

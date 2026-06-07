@@ -43,7 +43,6 @@ export default async function FactoryCertificationPage({
         certificateUrl: true,
         issuedAt: true,
         expiresAt: true,
-        sponsorClientOrg: { select: { displayName: true } },
       },
     }),
     prisma.organization.findUnique({
@@ -82,7 +81,7 @@ export default async function FactoryCertificationPage({
         issuedAt: c.issuedAt ? formatDate(c.issuedAt, lang, "medium") : null,
         expiresAt: c.expiresAt ? formatDate(c.expiresAt, lang, "medium") : null,
         certificateUrl: c.certificateUrl,
-        sponsor: c.sponsorClientOrg?.displayName ?? null,
+        sponsor: null,
       }}
     />
   );

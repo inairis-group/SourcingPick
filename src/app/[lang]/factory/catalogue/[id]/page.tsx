@@ -62,9 +62,14 @@ export default async function FactoryProductDetailPage({
       leadTimeUnit: true,
       certifications: true,
       depositPercentageBps: true,
+      incoterm: true,
+      sampleAvailable: true,
+      samplePriceCentsClient: true,
       images: true,
       status: true,
       publishedAt: true,
+      blockedAt: true,
+      blockReason: true,
       viewsCount: true,
       soldCount: true,
     },
@@ -129,10 +134,26 @@ export default async function FactoryProductDetailPage({
         </div>
       </div>
 
+      {product.blockedAt && product.blockReason && (
+        <div
+          role="alert"
+          className="mb-4 rounded-md border border-danger-edge bg-danger-soft/40 p-4 text-sm"
+        >
+          <p className="font-semibold text-headline mb-1">
+            {dict.factory.catalogue.adminBlockedTitle}
+          </p>
+          <p className="text-xs text-fg mb-2">
+            {dict.factory.catalogue.adminBlockedBody}
+          </p>
+          <p className="text-xs text-fg italic border-s-2 border-danger ps-2">
+            {product.blockReason}
+          </p>
+        </div>
+      )}
+
       <ProductActions
         productId={product.id}
         status={product.status}
-        hasImages={product.images.length > 0}
       />
 
       {/* Promotion form lives alongside the main edit form for live
@@ -205,6 +226,9 @@ export default async function FactoryProductDetailPage({
               leadTimeUnit: product.leadTimeUnit,
               certifications: product.certifications,
               depositPercentageBps: product.depositPercentageBps,
+              incoterm: product.incoterm,
+              sampleAvailable: product.sampleAvailable,
+              samplePriceCentsClient: product.samplePriceCentsClient,
               existingImages: imageUrls,
             }}
           />

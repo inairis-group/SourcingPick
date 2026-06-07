@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   Category,
+  Incoterm,
   LeadTimeUnit,
   MarketplaceCondition,
 } from "@prisma/client";
@@ -58,6 +59,9 @@ export type ProductDefaults = {
   /// CTO audit F4 — acompte share (basis points). Default 3000 mirrors
   /// the legacy 30 % policy; valid range 3000–5000 (30–50 %).
   depositPercentageBps: number;
+  incoterm: Incoterm;
+  sampleAvailable: boolean;
+  samplePriceCentsClient: number | null;
   existingImages: string[]; // URLs (built from product id + index)
 };
 
@@ -255,6 +259,64 @@ export function ProductForm({
                 ? Math.round((defaults.depositPercentageBps ?? 3000) / 100)
                 : 30,
             )}
+          />
+        </Field>
+        <Field
+          label={dict.factory.catalogue.incotermLabel}
+          required
+          hint={dict.factory.catalogue.incotermHint}
+        >
+          <Select
+            name="incoterm"
+            required
+            defaultValue={defaults?.incoterm ?? Incoterm.DAP}
+            options={(
+              [
+                Incoterm.EXW,
+                Incoterm.FOB,
+                Incoterm.DAP,
+                Incoterm.DDP,
+                Incoterm.CIF,
+              ] as const
+            ).map((i) => ({
+              value: i,
+              label: `${i} — ${dict.client.requests.incoterms[i]}`,
+            }))}
+          />
+        </Field>
+        {/* Partner #31: sample-purchase toggle + price. */}
+        <Field
+          label={dict.factory.catalogue.sampleAvailableLabel}
+          hint={dict.factory.catalogue.sampleAvailableHint}
+        >
+          <label className="inline-flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              name="sampleAvailable"
+              defaultChecked={Boolean(defaults?.sampleAvailable)}
+              className="h-4 w-4 rounded border-line text-brand-700 focus:ring-focus"
+            />
+            <span className="text-fg">
+              {dict.factory.catalogue.sampleAvailableToggle}
+            </span>
+          </label>
+        </Field>
+        <Field
+          label={dict.factory.catalogue.samplePriceLabel}
+          hint={dict.factory.catalogue.samplePriceHint}
+        >
+          <Input
+            name="samplePriceEur"
+            type="number"
+            inputMode="decimal"
+            min="0"
+            step="0.01"
+            defaultValue={
+              defaults?.samplePriceCentsClient
+                ? String(defaults.samplePriceCentsClient / 100)
+                : ""
+            }
+            placeholder="29.90"
           />
         </Field>
         <Field

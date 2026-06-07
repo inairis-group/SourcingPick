@@ -12,7 +12,7 @@ import {
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { writeAuditLog } from "@/lib/audit/log";
-import { emitNotification, emitNotificationToMany } from "@/lib/notifications/emit";
+import { emitNotificationToMany } from "@/lib/notifications/emit";
 import { generateUniqueReference } from "@/lib/sourcing/reference";
 
 // =============================================================
@@ -323,85 +323,11 @@ export async function advanceCertificationAction(
 }
 
 // =============================================================
-// Client sponsorship: a buyer underwrites a factory certification
+// Client sponsorship — RETIRED 2026-06-07 (partner #10).
+//
+// The "buyer underwrites a factory certification" primitive was
+// removed because the feature wasn't landing with users. The
+// `Certification.sponsorClientOrgId` column is kept on the schema for
+// historical rows (no migration yet) but is no longer settable through
+// any UI or action. A future schema cleanup can drop it.
 // =============================================================
-
-export async function sponsorCertificationAction(
-  certificationId: string,
-): Promise<CertMutationResult> {
-  const user = await requireRole(Role.CLIENT);
-  const cert = await prisma.certification.findUnique({
-    where: { id: certificationId },
-    select: {
-      id: true,
-      status: true,
-      sponsorClientOrgId: true,
-      factoryOrgId: true,
-      reference: true,
-    },
-  });
-  if (!cert) return { ok: false, error: "Certification not found." };
-  if (cert.sponsorClientOrgId) {
-    return { ok: false, error: "This certification already has a sponsor." };
-  }
-  if (
-    cert.status === CertificationStatus.CERTIFIE ||
-    cert.status === CertificationStatus.REFUSE
-  ) {
-    return {
-      ok: false,
-      error: "This certification is closed and can't accept sponsorship.",
-    };
-  }
-
-  await prisma.certification.update({
-    where: { id: cert.id },
-    data: { sponsorClientOrgId: user.organizationId },
-  });
-  await writeAuditLog({
-    actorUserId: user.id,
-    action: "certification.sponsored",
-    targetType: "Certification",
-    targetId: cert.id,
-    payload: { reference: cert.reference, clientOrgId: user.organizationId },
-  });
-
-  // Notify factory + admins (admins pick up sponsor commitments in their queue).
-  const factoryOwnerIds = (
-    await prisma.user.findMany({
-      where: {
-        organizationId: cert.factoryOrgId,
-        role: Role.FACTORY,
-        deletedAt: null,
-      },
-      select: { id: true },
-    })
-  ).map((u) => u.id);
-  await emitNotificationToMany(factoryOwnerIds, {
-    type: NotificationType.CERT_UPDATE,
-    vars: { title: `${cert.reference} · sponsorship secured` },
-    contextType: "Certification",
-    contextId: cert.id,
-  });
-
-  const adminIds = (
-    await prisma.user.findMany({
-      where: { role: Role.ADMIN, deletedAt: null },
-      select: { id: true },
-    })
-  ).map((u) => u.id);
-  for (const aid of adminIds) {
-    await emitNotification({
-      recipientUserId: aid,
-      type: NotificationType.CERT_UPDATE,
-      vars: { title: `${cert.reference} sponsored` },
-      contextType: "Certification",
-      contextId: cert.id,
-    });
-  }
-
-  revalidatePath("/[lang]/client/certifications", "page");
-  revalidatePath("/[lang]/factory/certification", "page");
-  revalidatePath("/[lang]/admin/certifications", "page");
-  return { ok: true };
-}

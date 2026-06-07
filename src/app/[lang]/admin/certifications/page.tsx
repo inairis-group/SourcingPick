@@ -54,7 +54,6 @@ export default async function AdminCertificationsPage({
       factoryOrg: {
         select: { displayName: true, country: true, city: true },
       },
-      sponsorClientOrg: { select: { displayName: true } },
     },
   });
 
@@ -68,7 +67,7 @@ export default async function AdminCertificationsPage({
     progress: c.progress,
     factoryName: c.factoryOrg.displayName,
     factoryLocation: `${c.factoryOrg.city}, ${c.factoryOrg.country}`,
-    sponsor: c.sponsorClientOrg?.displayName ?? null,
+    sponsor: null,
     enrolledAt: formatDate(c.createdAt, lang, "short"),
     preAuditDate: c.preAuditDate
       ? formatDate(c.preAuditDate, lang, "short")

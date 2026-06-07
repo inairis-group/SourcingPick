@@ -169,6 +169,18 @@ export function ClientQuotesPanel({
               </p>
             )}
 
+            {/* Partner #22: link to the visual quote PDF. */}
+            <p className="mt-3 text-xs">
+              <a
+                href={`/api/quotes/${q.id}/pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-link hover:text-link-hover underline underline-offset-2"
+              >
+                {dict.client.quotes.downloadPdf}
+              </a>
+            </p>
+
             {decidable && (
               <div className="mt-4 pt-3 border-t border-line-subtle flex items-center justify-end gap-2 flex-wrap">
                 {confirmAcceptId === q.id ? (

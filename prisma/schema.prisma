@@ -388,6 +388,12 @@ enum ResearchFeeUnit {
  */
 enum CreditReason {
   RESEARCH_FEE_CREDIT
+  /// Issued when admin refunds a paid research fee because the agent
+  /// failed to produce a result within the agreed timeframe. Same
+  /// cents amount as RESEARCH_FEE_CREDIT, different reason so finance
+  /// reports can split "credit because order placed" vs "credit
+  /// because no result delivered" cleanly.
+  RESEARCH_FEE_REFUND
   ORDER_APPLIED
   ADMIN_ADJUSTMENT
 }
@@ -407,6 +413,12 @@ enum ResearchFeeStatus {
   PAID
   CREDITED
   WAIVED
+  /// Admin issued a no-result refund — fee credited back as platform
+  /// credit because the agent didn't deliver a matching quote within
+  /// the agreed timeframe. Distinct from CREDITED (which fires
+  /// automatically when an order completes within the credit-back
+  /// window) so finance can tell the two apart in reports.
+  REFUNDED
 }
 
 enum PayoutStatus {
@@ -588,6 +600,11 @@ model User {
   /// Marks whether the agent has finished onboarding. Until true, they
   /// land on /onboarding/agent on every login.
   agentOnboardedAt          DateTime?
+  /// Partner #16: tracks whether the buyer has dismissed the first-
+  /// order tutorial (a guided coachmark series on the client dashboard
+  /// + new-request wizard). Null = tutorial still shown. Stamped on
+  /// dismiss. Only meaningful for CLIENT users.
+  clientTutorialDismissedAt DateTime?
   organizationId   String
   organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
   passwordHash     String? // null when only OAuth
@@ -696,6 +713,14 @@ model Organization {
   /// on storefront/marketplace cards, clients on invoice headers). Null
   /// until the org uploads one — UI falls back to initials.
   logoUrl       String?
+  /// Public-web links surfaced on the KYC review screen so admin can
+  /// cross-check that the entity behind the account matches what's on
+  /// their public footprint. Partner #28. Free-form URLs (the form
+  /// trims and validates) — empty string = not supplied.
+  websiteUrl    String?
+  instagramUrl  String?
+  facebookUrl   String?
+  linkedinUrl   String?
   kycStatus     KycStatus @default(PENDING)
   kycVerifiedAt DateTime?
   suspended     Boolean   @default(false)
@@ -831,7 +856,20 @@ model SourcingRequest {
   budgetCents          Int?
   targetUnitPriceCents Int?
   deadline             DateTime
+  /// Legacy freeform delivery address. Kept for historical rows + as a
+  /// fallback when the structured fields are blank (e.g. an admin
+  /// imports a brief without parsing). Partner #12 added the structured
+  /// fields below — new requests populate all of them at submit time.
   deliveryAddress      String
+  /// Structured delivery address — partner #12. Buyer fills these on
+  /// the request wizard; the order detail page renders them; future
+  /// integration with a Google / Loqate address-validation API will
+  /// populate them from a single search.
+  deliveryStreet       String?
+  deliveryPostalCode   String?
+  deliveryCity         String?
+  deliveryCountry      String? // ISO 3166-1 alpha-2
+  deliveryRegion       String? // optional state / province
   incoterm             Incoterm
   sourcingRegion       SourcingRegion
   requiredCerts        String[]
@@ -966,6 +1004,11 @@ model Order {
   depositCents    Int // 30% default
   balanceCents    Int // 70% default
   commissionCents Int // platform margin — private
+  /// Partner #31: true when this order materialised from a sample-buy
+  /// flow (single unit, sample price). Drives a "Sample" badge in the
+  /// buyer + factory UIs and lets analytics distinguish sample orders
+  /// from bulk in aggregates.
+  isSample        Boolean         @default(false)
   status          OrderStatus     @default(PAYMENT_PENDING)
   estimatedEta    DateTime?
   shippedAt       DateTime?
@@ -1147,6 +1190,12 @@ model MarketplaceProduct {
   certifications    String[]
   status            MarketplaceProductStatus @default(DRAFT)
   publishedAt       DateTime?
+  /// Admin-block fields. Partner #1 — when admin temporarily blocks a
+  /// listing, the row stays in DRAFT/PENDING_REVIEW/PUBLISHED but
+  /// `blockedAt` is set so the storefront filter hides it. The reason
+  /// is shown to the factory so they know how to remediate.
+  blockedAt         DateTime?
+  blockReason       String?
   viewsCount        Int                      @default(0)
   soldCount         Int                      @default(0)
   /// Buyer-side acompte share in basis points (3000 = 30%, 5000 = 50%).
@@ -1154,6 +1203,26 @@ model MarketplaceProduct {
   /// the same 30–50% policy (CTO audit F4). Default 3000 keeps existing
   /// listings on the 30 % split.
   depositPercentageBps Int                   @default(3000)
+  /// Delivery method (Incoterm) the factory commits to on this listing.
+  /// Partner #15: previously the buyer picked the Incoterm at checkout,
+  /// which let buyers select terms the factory couldn't honour. Now the
+  /// factory locks it on the listing — buyers see it on the product
+  /// page and the buy form treats it as fixed metadata. Default DAP
+  /// (door-to-door) matches the v1 sourcing-flow default.
+  incoterm             Incoterm              @default(DAP)
+  /// Partner #31: factory exposes a sample purchase. When true, the
+  /// listing renders an "Order a sample" CTA that creates a single-
+  /// unit Order at `samplePriceCentsClient` (typically higher per-unit
+  /// than the bulk price because it includes air shipping). Null
+  /// price + flag false = no sample available.
+  sampleAvailable      Boolean               @default(false)
+  samplePriceCentsClient Int?
+  /// Partner #5: AI-translated product copy. Map of locale → object
+  /// with `{name, description, sourceLocale, generatedAt}`. Translated
+  /// on demand via the Anthropic API (Claude Haiku) and cached here so
+  /// repeat reads don't re-bill. Locale that the factory authored in
+  /// is the `sourceLocale` and isn't stored under itself.
+  translations         Json                  @default("{}")
   createdAt         DateTime                 @default(now())
   updatedAt         DateTime                 @updatedAt
 
@@ -1253,6 +1322,10 @@ model Certification {
   reference          String              @unique // CERT-YYYY-NNN
   factoryOrgId       String
   factoryOrg         Organization        @relation("CertFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  /// @deprecated Partner #10 (2026-06-07) — buyer sponsorship feature
+  /// retired because it wasn't landing with users. Column kept for
+  /// historical rows; no UI sets it anymore. Drop in a future cleanup
+  /// migration when we're sure nothing else reads it.
   sponsorClientOrgId String?
   sponsorClientOrg   Organization?       @relation("CertSponsorOrg", fields: [sponsorClientOrgId], references: [id], onDelete: SetNull)
   standard           String // e.g. "ISO 9001:2015"

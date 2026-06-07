@@ -5,7 +5,7 @@ import { canAccessThreadContext } from "@/lib/messaging/participants";
 import { getOrCreateThread } from "@/lib/messaging/threads";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import type { Locale } from "@/lib/i18n/config";
-import { MessageThread } from "./message-thread";
+import { MaximizableThread } from "./maximizable-thread";
 
 /**
  * Server wrapper that resolves access + lazy-creates the thread for a
@@ -33,14 +33,11 @@ export async function ContextThread({
   const thread = await getOrCreateThread(contextType, contextId, user.id);
 
   return (
-    <section className="rounded-lg border border-line bg-surface p-5">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">
-        {title ?? dict.messaging.sectionTitle}
-      </h2>
-      <p className="text-xs text-muted mb-3">
-        {dict.messaging.contextHints[contextType]}
-      </p>
-      <MessageThread threadId={thread.id} />
-    </section>
+    <MaximizableThread
+      threadId={thread.id}
+      title={title ?? dict.messaging.sectionTitle}
+      hint={dict.messaging.contextHints[contextType]}
+      contextType={contextType}
+    />
   );
 }

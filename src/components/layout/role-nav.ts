@@ -86,11 +86,10 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               label: dict.nav.messages,
               icon: Message01Icon,
             },
-            {
-              href: `${base}/client/certifications`,
-              label: dict.nav.certification,
-              icon: SecurityCheckIcon,
-            },
+            // Partner #9: certifications surface removed from the
+            // buyer journey — the concept wasn't landing. Factory +
+            // admin still manage certs internally; buyers don't see
+            // them in the menu or on product pages.
             {
               href: `${base}/client/invoices`,
               label: dict.nav.invoices,

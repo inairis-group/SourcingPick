@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Role } from "@prisma/client";
+import { Role, SourcingRequestOrigin } from "@prisma/client";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { PlusSignIcon } from "@hugeicons/core-free-icons";
 import { Link } from "@/components/ui/link";
@@ -29,7 +29,17 @@ export default async function ClientRequestsPage({
   const dict = await getDictionary(lang);
 
   const requests = await prisma.sourcingRequest.findMany({
-    where: { clientOrgId: user.organizationId },
+    // Marketplace purchases materialise a synthetic SourcingRequest at
+    // status=QUOTE_ACCEPTED so the Order/Invoice/Escrow pipeline can
+    // stay role-agnostic — but the buyer never goes through a quote
+    // step, so showing it in the "My requests" list rendered a
+    // confusing "Quote accepted" pill on something the buyer thinks of
+    // as an order. Filter them out — they're visible under
+    // /client/orders, which is their natural home. (Partner #18.)
+    where: {
+      clientOrgId: user.organizationId,
+      origin: SourcingRequestOrigin.SOURCING_FLOW,
+    },
     orderBy: { createdAt: "desc" },
     select: {
       id: true,

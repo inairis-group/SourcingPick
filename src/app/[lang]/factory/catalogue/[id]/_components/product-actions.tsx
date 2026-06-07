@@ -14,11 +14,9 @@ import { useDictionary } from "@/lib/i18n/client-provider";
 export function ProductActions({
   productId,
   status,
-  hasImages,
 }: {
   productId: string;
   status: MarketplaceProductStatus;
-  hasImages: boolean;
 }) {
   const dict = useDictionary();
   const router = useRouter();
@@ -56,12 +54,23 @@ export function ProductActions({
 
   if (status === MarketplaceProductStatus.ARCHIVED) return null;
 
-  const canSubmit =
-    status === MarketplaceProductStatus.DRAFT && hasImages;
-
   return (
     <div className="flex flex-col gap-3">
       {error && <FormError>{error}</FormError>}
+      {/* Partner item #33/#34: the Submit button was previously gated
+          client-side on `hasImages`, which fed off a STALE prop —
+          uploading new images in the form doesn't update the prop
+          until the factory clicks Save first. That left the button
+          permanently disabled in the partner's eyes. We now always
+          allow the click and let the server return a meaningful error
+          ("Add at least one image…") if the draft really has no
+          images. The hint below the buttons explains the two-step
+          flow so factories don't have to discover it by trial. */}
+      {status === MarketplaceProductStatus.DRAFT && (
+        <p className="text-xs text-muted leading-snug">
+          {dict.factory.catalogue.submitHint}
+        </p>
+      )}
       <div className="flex items-center justify-end gap-2 flex-wrap">
         <Button
           type="button"
@@ -79,12 +88,6 @@ export function ProductActions({
             size="sm"
             onClick={onSubmit}
             loading={pending === "submit"}
-            disabled={!canSubmit}
-            title={
-              !hasImages
-                ? dict.factory.catalogue.submitNeedsImage
-                : undefined
-            }
           >
             {dict.factory.catalogue.submitForReviewCta}
           </Button>

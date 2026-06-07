@@ -22,6 +22,21 @@
       "disputesResolvedInFavor": "胜诉",
       "empty": "暂无数据。"
     },
+    "tutorial": {
+      "eyebrow": "新手指南",
+      "dismissAria": "关闭新手指南",
+      "step1Title": "市场:预先协商的产品",
+      "step1Body": "浏览已寻源的产品,MOQ 与交期清晰可见。一键下单 — 定金启动生产,尾款发货时结算。适合标准化的复购品类。",
+      "step2Title": "采购需求:让代理为您寻源",
+      "step2Body": "找不到标准化的产品?描述需求,SourcingPick 代理审核后会向 3-10 家预筛工厂发起招标,并将报价转给您。最终选择权在您手中。",
+      "step3Title": "生产、质检、发货",
+      "step3Body": "下单后工厂在我们监督下生产:发货前共享 QC 照片、实时跟踪发货状态、确认收货后 7 天内可发起争议。",
+      "step4Title": "托管账户保障付款",
+      "step4Body": "所有付款均经过我们的托管账户。确认收货后才会将款项放给工厂。如有争议,款项将保留至仲裁结束。",
+      "nextCta": "下一步",
+      "backCta": "上一步",
+      "finishCta": "明白了"
+    },
     "dashboard": {
       "eyebrow": "仪表盘",
       "title": "概览",
@@ -85,6 +100,12 @@
       "deadlineWarningShort": "交付期不足 31 天。完全保障的订单（含空运）至少需要 31 天 — 我们仍可处理，但将脱离标准流程。",
       "addressLabel": "交货地址",
       "addressPlaceholder": "12 rue de la République, 69001 Lyon",
+      "addressStreetLabel": "街道与门牌",
+      "addressStreetPlaceholder": "12 rue de la République",
+      "addressPostalCodeLabel": "邮编",
+      "addressCityLabel": "城市",
+      "addressCountryLabel": "国家(ISO)",
+      "addressCountryHint": "2 位字母代码 — FR、BE、DE、ES…",
       "incotermLabel": "贸易术语",
       "incotermPlaceholder": "选择贸易术语…",
       "incotermHint": "定义运输、保险和关税的承担方。",
@@ -152,15 +173,6 @@
         "CANCELLED": "已取消"
       }
     },
-    "certifications": {
-      "eyebrow": "认证项目",
-      "title": "赞助认证",
-      "description": "帮助合作工厂获得认证。作为回报,您将作为赞助方列入项目并优先查看进度。",
-      "mineTitle": "已赞助的项目",
-      "sponsorableTitle": "开放赞助",
-      "empty": "目前没有开放赞助的项目。",
-      "sponsorCta": "赞助"
-    },
     "marketplace": {
       "eyebrow": "市场",
       "title": "预先协商的产品",
@@ -174,6 +186,11 @@
       "unitPrice": "单价",
       "orderTitle": "下单",
       "totalLabel": "合计",
+      "sampleTitle": "订购样品",
+      "translatedBadge": "描述已自动翻译",
+      "sampleBody": "先收到 1 件,再决定是否大批量下单。适合在批量采购前验证品质。",
+      "samplePriceLabel": "样品价格(含运费)",
+      "orderSampleCta": "订购样品",
       "buyCta": "立即购买",
       "moqHint": "MOQ:{n} 件。",
       "addressHint": "最终送货地址。",
@@ -227,7 +244,8 @@
       "confirmAcceptCopy": "其他报价将被拒绝。",
       "orderCreatedTitle": "订单已创建",
       "orderCreatedBody": "您的订单 {ref} 等待付款中。",
-      "viewOrder": "查看订单"
+      "viewOrder": "查看订单",
+      "downloadPdf": "下载报价单(PDF)"
     },
     "invoices": {
       "eyebrow": "账单",
@@ -271,6 +289,8 @@
       "trackingNumberLabel": "追踪号",
       "shippedAtLabel": "发货时间",
       "trackingPending": "工厂会在发货时添加追踪号。",
+      "payConfigMissingTitle": "收款账户信息配置中",
+      "payConfigMissingBody": "该订单的收款账户信息暂不可用。请联系 SourcingPick 客服 — 我们会通过邮件向您发送汇款指引。",
       "tracking": {
         "carrierLabel": "承运商",
         "numberLabel": "追踪号",
@@ -404,6 +424,17 @@
       "localeHint": "设置界面和通知的语言。",
       "saved": "个人资料已更新。"
     },
+    "social": {
+      "title": "公开链接",
+      "description": "贵公司的网站与社交媒体。我们的团队会将其与 KYC 文件交叉核对以核实身份。",
+      "websiteLabel": "网站",
+      "websiteHint": "完整 URL,例如 https://example.com",
+      "instagramLabel": "Instagram",
+      "facebookLabel": "Facebook",
+      "linkedinLabel": "LinkedIn",
+      "saveCta": "保存",
+      "savedMessage": "已保存"
+    },
     "logo": {
       "title": "组织 Logo",
       "description": "显示在市场列表、消息会话以及发票顶部。",
@@ -513,7 +544,8 @@
         "QUOTED": "等待支付",
         "PAID": "已支付",
         "CREDITED": "已返还积分",
-        "WAIVED": "已免除"
+        "WAIVED": "已免除",
+        "REFUNDED": "已退款(无结果)"
       }
     },
     "dashboard": {
@@ -758,6 +790,30 @@
     "systemAuthor": "SourcingPick",
     "errorLoad": "无法加载消息。请重试。",
     "errorStream": "实时更新已断开。请刷新页面重新连接。",
+    "maximizeAria": "放大对话",
+    "minimizeAria": "缩小对话",
+    "directOpenCta": "发消息",
+    "dockOpenAria": "打开消息中心",
+    "dockTitle": "您的对话",
+    "dockAllCta": "查看全部对话",
+    "templates": {
+      "pickerAria": "插入消息模板",
+      "pickerTitle": "消息模板",
+      "titles": {
+        "invoicing": "开具发票流程",
+        "guarantees": "产品保障与交期",
+        "refunds": "退款政策",
+        "deposit_balance": "定金与尾款",
+        "research_process": "供应商寻源流程"
+      },
+      "bodies": {
+        "invoicing": "您好,\n\nSourcingPick 的开票流程如下:每笔订单进入生产时生成定金发票(根据工厂为总额的 30%–50%),发货时再生成尾款发票。两张发票均可在您的账户下载,符合欧盟相关要求。如有疑问随时联系。",
+        "guarantees": "您好,\n\n产品保障:1) 严格符合接受报价时确认的规格(发货前共享 QC 照片);2) 确认收货后 7 天内可发起争议;3) 若争议判您胜诉,托管款项可覆盖退款。工厂报价中的交期为硬约束 — 延误超 7 天将自动通知我们团队。",
+        "refunds": "您好,\n\n退款政策:确认收货后 7 天内提交争议,我们团队将在 5 个工作日内仲裁。可能的三种结果:全额退款(定制产品不符)、部分退款 80%(标准产品不符)、或附理由的驳回。争议处理期间款项一直保留在托管账户。",
+        "deposit_balance": "您好,\n\n付款分两次:1) 下单时支付定金(根据工厂为总额的 30%–50%),开启生产;2) 发货时支付尾款。两笔均通过银行汇款进入我们的托管账户 — 确认收货后才会划付给工厂。详细金额可在您的订单页查看。",
+        "research_process": "您好,\n\n供应商寻源流程:1) 您通过需求表提交;2) SourcingPick 分配代理并审核需求;3) 代理可收取调研费(根据规模 €125/天 或 €500/周)— 先付费,如在约定期内无成果则以平台积分形式退还;4) 代理向 3 到 10 家预筛工厂发起招标,并将报价转给您。最终是否接受由您决定。"
+      }
+    },
     "globalEyebrow": "消息",
     "globalTitle": "全部会话",
     "globalDescription": "所有线索——需求、招标、报价、订单——集中在一处。",
@@ -812,7 +868,9 @@
     "sendCta": "发起招标",
     "invitedCount": "{n} 家工厂已邀请",
     "errorMaxInvitations": "最多只能选择 {n} 家工厂。",
-    "errorMinSelection": "至少选择一家工厂。"
+    "errorMinSelection": "至少选择一家工厂。",
+    "exemptTitle": "本需求可直接派发",
+    "exemptBody": "预算低于阈值且属于标准品类 — 无需招标前审批。您可以直接发送邀请。"
   },
   "factory": {
     "analytics": {
@@ -887,6 +945,13 @@
       "compareAtHint": "原工厂净价,用于划线显示。留空则不显示折扣徽章。",
       "depositLabel": "定金(%)",
       "depositHint": "下单时支付比例,30–50%。尾款发货时结算。与采购流程保持一致。",
+      "incotermLabel": "交付方式(Incoterm)",
+      "incotermHint": "由工厂方设定 — 默认 DAP(门到门)。买家在商品页只能看到锁定的选项。",
+      "sampleAvailableLabel": "可提供样品",
+      "sampleAvailableHint": "开启后,买家可在大批量下单前先订购 1 件样品。",
+      "sampleAvailableToggle": "开放样品订购",
+      "samplePriceLabel": "样品价格(€)",
+      "samplePriceHint": "通常高于批发单价 — 包含快递费。如未开放可留空。",
       "flashSaleLabel": "限时促销结束时间",
       "flashSaleHint": "可选。当结束时间在未来时,商品页面会显示限时促销徽章及倒计时。",
       "promotionTitle": "促销活动",
@@ -923,6 +988,9 @@
       "archiveCta": "归档",
       "submitForReviewCta": "提交审核",
       "submitNeedsImage": "提交前请至少添加一张图片。",
+      "submitHint": "草稿?先点击「保存」提交你的修改,然后点击「提交审核」将商品发送给审核团队。",
+      "adminBlockedTitle": "商品已被 SourcingPick 下架",
+      "adminBlockedBody": "该商品已对买家隐藏,等待修正。团队给出的原因如下:",
       "pendingReviewBanner": "等待 SourcingPick 团队审核。",
       "rejectedBanner": "已拒绝 — 请修改后重新提交。",
       "statuses": {
@@ -975,6 +1043,8 @@
       "newCta": "新建拍卖",
       "newTitle": "创建拍卖",
       "newBody": "填写商品详情，提交后由我们的团队审核再行发布。",
+      "lifecycleTitle": "为什么买家还看不到我的拍卖?",
+      "lifecycleBody": "草稿 → 已提交审核 → 管理员批准 → 上线(在 startsAt 至 endsAt 之间)。买家只有在管理员批准且到达开始时间后才能看到拍卖。每行下方会显示当前状态。",
       "backToList": "返回拍卖列表",
       "emptyTitle": "暂无拍卖",
       "emptyBody": "创建您的首个拍卖，向买家展示一批商品。",
@@ -1005,6 +1075,13 @@
       "needsImageHint": "提交前至少添加一张照片。",
       "cancelCta": "取消草稿",
       "confirmCancel": "取消此拍卖？此操作不可撤销。",
+      "confirmReviewTitle": "提交此拍卖审核",
+      "confirmReviewBody": "上架前,我们的团队会按照平台标准核查您的定价。若您的数值超出预期区间,可能会被:",
+      "confirmReviewPoint1": "拒绝 — 您将收到明确原因并可调整。",
+      "confirmReviewPoint2": "在您同意下进行小幅调整后上架。",
+      "confirmReviewPoint3": "为符合预期的「起拍价 / 保留价 / 立即购买价」之间的差距而修改。",
+      "confirmReviewCancel": "返回",
+      "confirmReviewSubmit": "提交审核",
       "estimatedCommissionLabel": "预估佣金",
       "estimatedCommissionHint": "基于起拍价的预估 — 实际费率取决于最终成交金额。",
       "bidsSuffix": "次出价",
@@ -1154,7 +1231,7 @@
       },
       "forwarder": {
         "title": "货代链接",
-        "body": "生成一个链接发送给您的货代,让他们直接上传交付给承运人的照片。无需账户,链接 14 天后过期。",
+        "body": "生成一个链接发送给您的货代,让他们直接上传交付给承运人的照片。无需账户。链接生成后 14 天自动过期 — 这是出厂到承运人交接的合理上限,与国际航运的平均时长相匹配。若届时仍未交接,只需重新生成一个即可。",
         "labelLabel": "备注(可选)",
         "labelPlaceholder": "例如 DHL 提货、马士基集装箱…",
         "createCta": "生成链接",
@@ -1527,6 +1604,24 @@
       "noImage": "未提供图片",
       "factoryKycMissing": "KYC 未验证",
       "reReviewBadge": "重新审核",
+      "allListingsTitle": "全部上架商品",
+      "allListingsBody": "您可以临时下架某个商品(附原因)或永久归档。两种情况下工厂都会收到通知。",
+      "controls": {
+        "blockCta": "下架",
+        "unblockCta": "恢复上架",
+        "deleteCta": "归档",
+        "alreadyArchived": "已归档",
+        "blockedBadge": "已下架",
+        "blockDialogTitle": "下架此商品",
+        "blockDialogBody": "买家将无法看到该商品,直至您恢复。请向工厂说明原因 — 将出现在他们的仪表盘和通知中。",
+        "reasonPlaceholder": "例如:主图模糊、价格高于品类上限、描述不合规……",
+        "reasonTooShort": "请提供至少 10 个字符的原因。",
+        "blockConfirm": "下架",
+        "deleteDialogTitle": "归档此商品",
+        "deleteDialogBody": "商品状态将变为「已归档」并从市场消失。工厂端不可逆 — 仅您可手动恢复。",
+        "deleteConfirm": "归档",
+        "dialogCancel": "取消"
+      },
       "submittedAt": "提交时间",
       "rejectCta": "拒绝",
       "approveCta": "批准并发布",
@@ -1564,6 +1659,7 @@
       "reassign": "重新分配",
       "loadSuffix": "个活跃需求",
       "errorPickAgent": "分配前请先选择代理。",
+      "autoApproved": "无需招标前审批(预算低于阈值,标准品类)。代理可直接派发。",
       "preTender": {
         "helperUnassigned": "招标发出前需通过预招标审核。",
         "helperAssigned": "审核通过后代理方可发起招标。",
@@ -1640,6 +1736,7 @@
       "contactName": "联系人姓名",
       "contactEmail": "邮箱",
       "submittedAt": "提交时间",
+      "websiteLabel": "网站",
       "noOwner": "此工厂没有关联的主要联系人。",
       "noDocuments": "尚未上传任何文件。",
       "openDocument": "打开文件",
@@ -1841,6 +1938,16 @@
     "system": "跟随系统"
   },
   "marketing": {
+    "contact": {
+      "title": "注册前有疑问?",
+      "body": "我们将尽快通过邮件回复您。注册免费,登录后可直接提交支持工单。",
+      "openAria": "打开联系面板",
+      "closeAria": "关闭",
+      "signupCtaTitle": "免费注册",
+      "signupCtaBody": "在仪表盘内快速提交支持工单。",
+      "emailCtaTitle": "发邮件联系",
+      "emailCtaBody": "我们将在 24 个工作小时内回复。"
+    },
     "hero": {
       "eyebrow": "采购 · 市场 · 认证",
       "title": "跨境采购,无需不透明的中间商。",

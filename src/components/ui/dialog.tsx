@@ -11,12 +11,22 @@ import {
 import { Fragment, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type Size = "sm" | "md" | "lg";
+type Size = "sm" | "md" | "lg" | "full";
 
 const sizeClasses: Record<Size, string> = {
   sm: "max-w-sm",
   md: "max-w-md",
   lg: "max-w-2xl",
+  // Near-fullscreen — for maximized chat / browse-image lightboxes. Caller
+  // controls inner padding (we strip the default p-6 via panelPadding).
+  full: "max-w-6xl w-full h-[95vh] sm:h-[90vh] max-h-[1000px]",
+};
+
+const panelPaddingClasses: Record<Size, string> = {
+  sm: "p-6",
+  md: "p-6",
+  lg: "p-6",
+  full: "p-0",
 };
 
 type DialogProps = {
@@ -54,7 +64,11 @@ export function Dialog({ open, onClose, size = "md", children }: DialogProps) {
           >
             <DialogPanel
               className={cn(
-                "w-full bg-surface text-fg rounded-xl shadow-lg p-6 border border-line",
+                "w-full bg-surface text-fg rounded-xl shadow-lg border border-line",
+                // `flex-col` so a `full` panel can ship a fixed header +
+                // a `flex-1` scrollable body without manual height math.
+                size === "full" && "flex flex-col overflow-hidden",
+                panelPaddingClasses[size],
                 sizeClasses[size],
               )}
             >

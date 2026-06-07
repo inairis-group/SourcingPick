@@ -206,7 +206,7 @@ export function ForwarderLinkPanel({
 
       {canCreate && (
         <div className="flex items-end gap-2 flex-wrap pt-4 border-t border-line-subtle">
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1 min-w-50">
             <label className="block text-xs font-medium uppercase tracking-wide text-faint mb-1">
               {t.labelLabel}
             </label>

@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
+  AdminScope,
+  CreditReason,
   InvoiceStatus,
   InvoiceType,
   NotificationType,
@@ -12,6 +14,7 @@ import {
 } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { writeAuditLog } from "@/lib/audit/log";
 import { emitNotificationToMany } from "@/lib/notifications/emit";
 import { computeResearchFee } from "@/lib/orders/pricing";
@@ -197,6 +200,107 @@ export async function waiveResearchFeeAction(
   });
 
   revalidatePath("/[lang]/agent/requests", "page");
+  revalidatePath("/[lang]/client/requests", "page");
+  return { ok: true };
+}
+
+/**
+ * Admin refunds a paid research fee — used when the agent failed to
+ * deliver a usable result within the agreed timeframe. Partner #24.
+ *
+ * Behaviour:
+ *   - PAID → REFUNDED
+ *   - A `RESEARCH_FEE_REFUND` credit transaction lands on the client
+ *     org (same cents amount as the fee). Finance distinguishes this
+ *     from the auto-CREDITED case (order placed within the window)
+ *     via the credit-transaction `reason` enum.
+ *
+ * Future hardening: tie this to a `researchFeeRefundDueAt` deadline
+ * stored on the request so the platform can prompt admin to action
+ * stale fees instead of relying on manual triage.
+ */
+export async function refundResearchFeeAction(
+  requestId: string,
+  reason: string,
+): Promise<ResearchFeeResult> {
+  const admin = await requireAdminScope(AdminScope.FINANCE);
+
+  const request = await prisma.sourcingRequest.findUnique({
+    where: { id: requestId },
+    select: {
+      id: true,
+      reference: true,
+      clientOrgId: true,
+      researchFeeStatus: true,
+      researchFeeCents: true,
+    },
+  });
+  if (!request) return { ok: false, error: "Request not found." };
+  if (request.researchFeeStatus !== ResearchFeeStatus.PAID) {
+    return {
+      ok: false,
+      error: "Only a paid research fee can be refunded.",
+    };
+  }
+  if (!request.researchFeeCents || request.researchFeeCents <= 0) {
+    return { ok: false, error: "Fee amount is missing or zero." };
+  }
+  const cleanReason = reason.trim();
+  if (cleanReason.length < 10) {
+    return {
+      ok: false,
+      error: "Please give a short reason (10+ characters) for the refund.",
+    };
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.creditTransaction.create({
+      data: {
+        organizationId: request.clientOrgId,
+        amountCents: request.researchFeeCents!,
+        reason: CreditReason.RESEARCH_FEE_REFUND,
+        refType: "SourcingRequest",
+        refId: request.id,
+        note: `Research fee refunded — ${cleanReason}`,
+      },
+    });
+    await tx.sourcingRequest.update({
+      where: { id: request.id },
+      data: { researchFeeStatus: ResearchFeeStatus.REFUNDED },
+    });
+  });
+
+  await writeAuditLog({
+    actorUserId: admin.id,
+    action: "request.research_fee_refunded",
+    targetType: "SourcingRequest",
+    targetId: request.id,
+    payload: {
+      reference: request.reference,
+      amountCents: request.researchFeeCents,
+      reason: cleanReason,
+    },
+    level: "WARN",
+  });
+
+  // Notify the client org so they see the credit landed.
+  const clientUserIds = (
+    await prisma.user.findMany({
+      where: { organizationId: request.clientOrgId, deletedAt: null },
+      select: { id: true },
+    })
+  ).map((u) => u.id);
+  await emitNotificationToMany(clientUserIds, {
+    type: NotificationType.SYSTEM,
+    vars: {
+      systemKey: "research_fee_refunded",
+      reference: request.reference,
+    },
+    contextType: "SourcingRequest",
+    contextId: request.id,
+  });
+
+  revalidatePath("/[lang]/admin/requests", "page");
   revalidatePath("/[lang]/client/requests", "page");
   return { ok: true };
 }

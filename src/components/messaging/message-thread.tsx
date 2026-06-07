@@ -23,6 +23,7 @@ import {
 import { AttachmentPicker } from "@/components/attachments/attachment-picker";
 import { VoiceRecorderButton } from "@/components/messaging/voice-recorder-button";
 import { VoicePlayer } from "@/components/messaging/voice-player";
+import { TemplatePicker } from "@/components/messaging/template-picker";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { formatDate } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
@@ -401,6 +402,20 @@ export function MessageThread({
                   strokeWidth={1.5}
                 />
               </button>
+
+              {/* Partner #23: quick-insert message templates for the
+                  recurring buyer questions (invoicing, guarantees,
+                  refunds, deposit/balance, search process). */}
+              {!voiceActive && (
+                <TemplatePicker
+                  onInsert={(body) => {
+                    setDraft((current) =>
+                      current.trim().length > 0 ? `${current}\n\n${body}` : body,
+                    );
+                    textareaRef.current?.focus();
+                  }}
+                />
+              )}
 
               <textarea
                 ref={textareaRef}

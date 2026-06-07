@@ -22,6 +22,21 @@
       "disputesResolvedInFavor": "Resolved in your favour",
       "empty": "No data yet."
     },
+    "tutorial": {
+      "eyebrow": "Getting started",
+      "dismissAria": "Dismiss the tutorial",
+      "step1Title": "Marketplace: pre-negotiated products",
+      "step1Body": "Browse pre-sourced products with visible MOQ + lead times. One-click order — the deposit kicks off production, the balance settles at shipment. Best for standard recurring buys.",
+      "step2Title": "Sourcing request: an agent does the work",
+      "step2Body": "No standard product fits? Describe what you need; a SourcingPick agent qualifies the brief, tenders 3 to 10 pre-screened factories, and forwards you the quotes. You pick the winner.",
+      "step3Title": "Production, QC, shipment",
+      "step3Body": "Once the order is placed, the factory produces under our supervision: QC photos shared before dispatch, real-time tracking, and a 7-day dispute window after delivery.",
+      "step4Title": "Escrow-protected payments",
+      "step4Body": "Every payment moves through our escrow account. The factory is only paid after you confirm delivery. If a dispute arises, funds stay frozen until arbitration.",
+      "nextCta": "Next",
+      "backCta": "Back",
+      "finishCta": "Got it"
+    },
     "dashboard": {
       "eyebrow": "Dashboard",
       "title": "Overview",
@@ -85,6 +100,12 @@
       "deadlineWarningShort": "Less than 31 days to delivery. A fully secured order (including air freight) needs at least 31 days — we can still take it on, but it falls outside the standard timeline.",
       "addressLabel": "Delivery address",
       "addressPlaceholder": "12 rue de la République, 69001 Lyon",
+      "addressStreetLabel": "Street and number",
+      "addressStreetPlaceholder": "12 rue de la République",
+      "addressPostalCodeLabel": "Postal code",
+      "addressCityLabel": "City",
+      "addressCountryLabel": "Country (ISO)",
+      "addressCountryHint": "2-letter code — FR, BE, DE, ES…",
       "incotermLabel": "Incoterm",
       "incotermPlaceholder": "Choose an incoterm…",
       "incotermHint": "Defines who handles transport, insurance and duties.",
@@ -152,15 +173,6 @@
         "CANCELLED": "Cancelled"
       }
     },
-    "certifications": {
-      "eyebrow": "Certification programme",
-      "title": "Sponsor a certification",
-      "description": "Help a partner factory get certified. In return, you're listed as the sponsor on the dossier and get priority visibility on progress.",
-      "mineTitle": "Sponsored enrollments",
-      "sponsorableTitle": "Open for sponsorship",
-      "empty": "No enrollments open for sponsorship right now.",
-      "sponsorCta": "Sponsor"
-    },
     "marketplace": {
       "eyebrow": "Marketplace",
       "title": "Pre-negotiated products",
@@ -174,6 +186,11 @@
       "unitPrice": "Unit price",
       "orderTitle": "Order",
       "totalLabel": "Total",
+      "sampleTitle": "Order a sample",
+      "translatedBadge": "Description automatically translated",
+      "sampleBody": "Get one unit before committing to a full order. Useful for validating quality before going bulk.",
+      "samplePriceLabel": "Sample price (shipping included)",
+      "orderSampleCta": "Order the sample",
       "buyCta": "Buy now",
       "moqHint": "MOQ: {n} units.",
       "addressHint": "Final delivery address.",
@@ -227,7 +244,8 @@
       "confirmAcceptCopy": "Other quotes will be rejected.",
       "orderCreatedTitle": "Order created",
       "orderCreatedBody": "Your order {ref} is awaiting payment.",
-      "viewOrder": "View order"
+      "viewOrder": "View order",
+      "downloadPdf": "Download quote (PDF)"
     },
     "invoices": {
       "eyebrow": "Billing",
@@ -271,6 +289,8 @@
       "trackingNumberLabel": "Tracking number",
       "shippedAtLabel": "Shipped on",
       "trackingPending": "The factory will add tracking when the order ships.",
+      "payConfigMissingTitle": "Bank details are still being configured",
+      "payConfigMissingBody": "We don't have receiving-account details ready for this order yet. Reach out to SourcingPick support — an operator will email you the wire instructions.",
       "tracking": {
         "carrierLabel": "Carrier",
         "numberLabel": "Tracking number",
@@ -404,6 +424,17 @@
       "localeHint": "Sets the interface and notification language.",
       "saved": "Profile updated."
     },
+    "social": {
+      "title": "Public links",
+      "description": "Your organisation's website and social profiles. Our team cross-checks them against your KYC documents to verify identity.",
+      "websiteLabel": "Website",
+      "websiteHint": "Full URL, e.g. https://example.com",
+      "instagramLabel": "Instagram",
+      "facebookLabel": "Facebook",
+      "linkedinLabel": "LinkedIn",
+      "saveCta": "Save",
+      "savedMessage": "Saved"
+    },
     "logo": {
       "title": "Organisation logo",
       "description": "Shown on the marketplace, in messaging threads, and at the top of invoices.",
@@ -513,7 +544,8 @@
         "QUOTED": "Awaiting payment",
         "PAID": "Paid",
         "CREDITED": "Credited back",
-        "WAIVED": "Waived"
+        "WAIVED": "Waived",
+        "REFUNDED": "Refunded (no result)"
       }
     },
     "dashboard": {
@@ -758,6 +790,30 @@
     "systemAuthor": "SourcingPick",
     "errorLoad": "Couldn't load messages. Try again.",
     "errorStream": "Live updates disconnected. Reload the page to reconnect.",
+    "maximizeAria": "Expand the conversation",
+    "minimizeAria": "Shrink the conversation",
+    "directOpenCta": "Message",
+    "dockOpenAria": "Open messaging",
+    "dockTitle": "Your conversations",
+    "dockAllCta": "See all conversations",
+    "templates": {
+      "pickerAria": "Insert a message template",
+      "pickerTitle": "Message templates",
+      "titles": {
+        "invoicing": "How invoicing works",
+        "guarantees": "Product guarantees + lead times",
+        "refunds": "Refund policy",
+        "deposit_balance": "Deposit and balance",
+        "research_process": "How supplier research works"
+      },
+      "bodies": {
+        "invoicing": "Hi,\n\nHere's how invoicing works on SourcingPick: each order generates a deposit invoice (30–50% of total, depending on the factory) when it goes into production, then a balance invoice at shipment. Both are downloadable from your dashboard and compliant with EU requirements. Let me know if you have any questions.",
+        "guarantees": "Hi,\n\nProduct guarantees: 1) compliance with the specs accepted in the quote (QC photos shared before shipping); 2) a 7-day dispute window after confirmed delivery to flag any defect; 3) the escrow covers refunds if a dispute is resolved in your favour. Factory-quoted lead times are firm — any delay over 7 days triggers a flag to our team.",
+        "refunds": "Hi,\n\nRefund policy: if a dispute is opened within 7 days of delivery, our team arbitrates within 5 business days. Three possible outcomes: full refund (custom product off-spec), partial 80% (standard product off-spec), or motivated refusal. Funds stay in escrow while the dispute is open.",
+        "deposit_balance": "Hi,\n\nPayment runs in two stages: 1) a deposit at order time (30–50% of total, set by the factory) that kicks off production; 2) the balance at shipment. Both move via bank wire to our escrow account — we only release to the factory after delivery is confirmed. Full breakdown is on your Order page.",
+        "research_process": "Hi,\n\nSupplier research process: 1) you submit a request describing what you need; 2) a SourcingPick agent is assigned and qualifies the brief; 3) they may bill a research fee (€125/day or €500/week depending on scope) — payable upfront, refundable as platform credit if no result is found within the agreed timeframe; 4) they tender 3 to 10 pre-screened factories and forward you the quotes. You keep final-acceptance control."
+      }
+    },
     "globalEyebrow": "Messages",
     "globalTitle": "All my conversations",
     "globalDescription": "Every thread — requests, tenders, quotes, orders — in one place.",
@@ -812,7 +868,9 @@
     "sendCta": "Run a tender",
     "invitedCount": "{n} factories invited",
     "errorMaxInvitations": "You can pick at most {n} factories.",
-    "errorMinSelection": "Select at least one factory."
+    "errorMinSelection": "Select at least one factory.",
+    "exemptTitle": "Brief eligible for direct dispatch",
+    "exemptBody": "Budget below threshold and standard category — no pre-tender approval required. You can send invitations straight away."
   },
   "factory": {
     "analytics": {
@@ -887,6 +945,13 @@
       "compareAtHint": "Original factory-net price for a strikethrough. Leave empty for no discount badge.",
       "depositLabel": "Deposit (%)",
       "depositHint": "Share paid at checkout, 30–50%. Balance settles at shipment. Aligned with the sourcing flow.",
+      "incotermLabel": "Delivery method (Incoterm)",
+      "incotermHint": "You, the factory, set this — DAP (door-to-door) is the default. Buyers see this locked on the listing.",
+      "sampleAvailableLabel": "Sample available",
+      "sampleAvailableHint": "If enabled, buyers can order one unit as a sample before committing to bulk.",
+      "sampleAvailableToggle": "Offer a sample",
+      "samplePriceLabel": "Sample price (€)",
+      "samplePriceHint": "Often higher per-unit than the bulk price — covers express shipping. Leave blank if disabled.",
       "flashSaleLabel": "Flash-sale ends",
       "flashSaleHint": "Optional. While set in the future, the listing shows a flash-sale badge and countdown to buyers.",
       "promotionTitle": "Promotions",
@@ -923,6 +988,9 @@
       "archiveCta": "Archive",
       "submitForReviewCta": "Submit for review",
       "submitNeedsImage": "Add at least one image before submitting.",
+      "submitHint": "Draft? Click Save first to commit your changes, then Submit for validation to push the listing to the review team.",
+      "adminBlockedTitle": "Listing blocked by SourcingPick",
+      "adminBlockedBody": "This listing has been hidden from buyers pending a fix. Here's the reason from the team:",
       "pendingReviewBanner": "Awaiting review by the SourcingPick team.",
       "rejectedBanner": "Rejected — fix the issues and resubmit.",
       "statuses": {
@@ -975,6 +1043,8 @@
       "newCta": "New auction",
       "newTitle": "Create an auction",
       "newBody": "Fill in the lot details, then submit for our team to review before publishing.",
+      "lifecycleTitle": "Why isn't my auction visible to buyers yet?",
+      "lifecycleBody": "Draft → Submitted for review → Approved by admin → Live (between startsAt and endsAt). Buyers see it only after admin approval AND once the start date arrives. Status of each one is shown in the row.",
       "backToList": "Back to auctions",
       "emptyTitle": "No auctions yet",
       "emptyBody": "Create your first auction to put a lot in front of buyers.",
@@ -1005,6 +1075,13 @@
       "needsImageHint": "Add at least one photo before submitting.",
       "cancelCta": "Cancel draft",
       "confirmCancel": "Cancel this auction? This can't be undone.",
+      "confirmReviewTitle": "Submit this auction for review",
+      "confirmReviewBody": "Before publication, our team checks your pricing against platform standards. If your numbers fall outside the expected range, they may be:",
+      "confirmReviewPoint1": "Rejected — you'll get a clear reason and a chance to adjust.",
+      "confirmReviewPoint2": "Adjusted at the margins with your agreement before going live.",
+      "confirmReviewPoint3": "Modified to align with the expected starting-bid / reserve / buy-now spreads.",
+      "confirmReviewCancel": "Back",
+      "confirmReviewSubmit": "Submit for review",
       "estimatedCommissionLabel": "Estimated commission",
       "estimatedCommissionHint": "Estimate on the starting bid — the actual rate depends on the winning amount.",
       "bidsSuffix": "bids",
@@ -1154,7 +1231,7 @@
       },
       "forwarder": {
         "title": "Forwarder link",
-        "body": "Generate a link to share with your forwarder so they upload the carrier-handoff photos themselves. No account required — link expires in 14 days.",
+        "body": "Generate a link to share with your forwarder so they upload the carrier-handoff photos themselves. No account required. The link auto-expires 14 days after creation — the upper bound between ex-works and documented carrier handoff, matching average international shipping windows. If the handoff hasn't happened by then, just generate a fresh one.",
         "labelLabel": "Label (optional)",
         "labelPlaceholder": "e.g. DHL pickup, Maersk container…",
         "createCta": "Generate link",
@@ -1527,6 +1604,24 @@
       "noImage": "No images uploaded",
       "factoryKycMissing": "KYC not verified",
       "reReviewBadge": "Re-review",
+      "allListingsTitle": "All live listings",
+      "allListingsBody": "You can temporarily block a listing (with a reason) or archive it for good. The factory is notified either way.",
+      "controls": {
+        "blockCta": "Block",
+        "unblockCta": "Unblock",
+        "deleteCta": "Archive",
+        "alreadyArchived": "Archived",
+        "blockedBadge": "Blocked",
+        "blockDialogTitle": "Block this listing",
+        "blockDialogBody": "The listing will be hidden from buyers until you unblock it. State the reason for the factory — it appears in their dashboard and in the notification.",
+        "reasonPlaceholder": "e.g. Hero image blurred, price above category cap, description off-spec…",
+        "reasonTooShort": "Provide at least 10 characters of reason.",
+        "blockConfirm": "Block",
+        "deleteDialogTitle": "Archive this listing",
+        "deleteDialogBody": "The listing flips to ARCHIVED and disappears from the marketplace. Irreversible on the factory side — only you can manually restore.",
+        "deleteConfirm": "Archive",
+        "dialogCancel": "Cancel"
+      },
       "submittedAt": "Submitted on",
       "rejectCta": "Reject",
       "approveCta": "Approve & publish",
@@ -1564,6 +1659,7 @@
       "reassign": "Reassign",
       "loadSuffix": "active requests",
       "errorPickAgent": "Pick an agent before assigning.",
+      "autoApproved": "Pre-tender approval not required (budget below threshold, standard category). Agent can dispatch directly.",
       "preTender": {
         "helperUnassigned": "Pre-tender approval required before the tender can go out.",
         "helperAssigned": "Approve so the agent can dispatch the tender.",
@@ -1640,6 +1736,7 @@
       "contactName": "Contact name",
       "contactEmail": "Email",
       "submittedAt": "Submitted",
+      "websiteLabel": "Website",
       "noOwner": "No primary contact linked to this factory.",
       "noDocuments": "No documents uploaded.",
       "openDocument": "Open document",
@@ -1841,6 +1938,16 @@
     "system": "System"
   },
   "marketing": {
+    "contact": {
+      "title": "Question before signing up?",
+      "body": "We'll get back to you by email shortly. Creating an account is free and lets you open a support ticket directly.",
+      "openAria": "Open the contact panel",
+      "closeAria": "Close",
+      "signupCtaTitle": "Create a free account",
+      "signupCtaBody": "Open a support ticket in a few clicks from your dashboard.",
+      "emailCtaTitle": "Email us",
+      "emailCtaBody": "Our team responds within 24 business hours."
+    },
     "hero": {
       "eyebrow": "Sourcing · Marketplace · Certification",
       "title": "Source internationally, without opaque middlemen.",

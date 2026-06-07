@@ -273,8 +273,16 @@ export function AuctionForm({
             name="startsAt"
             type="datetime-local"
             required
+            // Partner #8: previously empty by default. Factories were
+            // leaving startsAt blank or picking a future date, then
+            // wondering why their auction didn't appear after admin
+            // approval (the public list filters on `startsAt <= now`).
+            // Default to NOW for new auctions so the live-window starts
+            // the moment admin approves.
             defaultValue={
-              defaults?.startsAt ? toLocal(defaults.startsAt) : ""
+              defaults?.startsAt
+                ? toLocal(defaults.startsAt)
+                : toLocal(new Date())
             }
           />
         </Field>
@@ -283,7 +291,12 @@ export function AuctionForm({
             name="endsAt"
             type="datetime-local"
             required
-            defaultValue={defaults?.endsAt ? toLocal(defaults.endsAt) : ""}
+            // Default endsAt to NOW + 7 days for new auctions. Tweakable.
+            defaultValue={
+              defaults?.endsAt
+                ? toLocal(defaults.endsAt)
+                : toLocal(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
+            }
           />
         </Field>
       </div>

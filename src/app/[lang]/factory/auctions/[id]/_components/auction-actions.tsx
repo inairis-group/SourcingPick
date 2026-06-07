@@ -6,6 +6,12 @@ import { AuctionStatus } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/ui/form-error";
 import {
+  Dialog,
+  DialogActions,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   cancelAuctionDraftAction,
   submitAuctionForReviewAction,
 } from "@/lib/auctions/actions";
@@ -31,6 +37,11 @@ export function AuctionActions({
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  // Partner #7: confirm-popup before submission so factories know the
+  // pricing standards admin will check (starting bid floor, reserve
+  // alignment, buy-now sanity). Avoids the surprise of admin amending
+  // numbers post-submit.
+  const [confirming, setConfirming] = useState(false);
   const [_, startTransition] = useTransition();
 
   if (
@@ -52,12 +63,18 @@ export function AuctionActions({
     status === AuctionStatus.PENDING_REVIEW ||
     status === AuctionStatus.REJECTED;
 
-  const onSubmit = () => {
+  const openConfirm = () => {
+    setError(null);
+    setConfirming(true);
+  };
+
+  const onConfirmSubmit = () => {
     setError(null);
     setPending(true);
     startTransition(async () => {
       const r = await submitAuctionForReviewAction(auctionId);
       setPending(false);
+      setConfirming(false);
       if (!r.ok) {
         setError(r.error);
         return;
@@ -101,7 +118,7 @@ export function AuctionActions({
             type="button"
             variant="primary"
             size="sm"
-            onClick={onSubmit}
+            onClick={openConfirm}
             loading={pending}
           >
             {t.submitForReviewCta}
@@ -111,6 +128,36 @@ export function AuctionActions({
           <p className="text-xs text-warning">{t.needsImageHint}</p>
         )}
       </div>
+
+      <Dialog open={confirming} onClose={(v) => !pending && setConfirming(v)} size="md">
+        <DialogTitle>{t.confirmReviewTitle}</DialogTitle>
+        <DialogDescription>{t.confirmReviewBody}</DialogDescription>
+        <ul className="list-disc ms-5 text-xs text-muted mb-4 flex flex-col gap-1">
+          <li>{t.confirmReviewPoint1}</li>
+          <li>{t.confirmReviewPoint2}</li>
+          <li>{t.confirmReviewPoint3}</li>
+        </ul>
+        <DialogActions>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setConfirming(false)}
+            disabled={pending}
+          >
+            {t.confirmReviewCancel}
+          </Button>
+          <Button
+            type="button"
+            variant="primary"
+            size="sm"
+            onClick={onConfirmSubmit}
+            loading={pending}
+          >
+            {t.confirmReviewSubmit}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

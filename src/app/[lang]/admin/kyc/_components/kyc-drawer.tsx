@@ -180,6 +180,70 @@ export function KycDrawer({ org, open, onClose }: Props) {
                     label={dict.admin.kyc.submittedAt}
                     value={formatDate(org.createdAt, locale, "medium")}
                   />
+                  {/* Partner #28: surface public-web links so admin
+                      can cross-check the entity. Each row only renders
+                      if the org actually supplied a value — keeps
+                      the panel tidy when fields are blank. */}
+                  {org.websiteUrl && (
+                    <DetailRow
+                      label={dict.admin.kyc.websiteLabel}
+                      value={
+                        <a
+                          href={org.websiteUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-link hover:text-link-hover break-all"
+                        >
+                          {org.websiteUrl}
+                        </a>
+                      }
+                    />
+                  )}
+                  {org.instagramUrl && (
+                    <DetailRow
+                      label="Instagram"
+                      value={
+                        <a
+                          href={org.instagramUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-link hover:text-link-hover break-all"
+                        >
+                          {org.instagramUrl}
+                        </a>
+                      }
+                    />
+                  )}
+                  {org.facebookUrl && (
+                    <DetailRow
+                      label="Facebook"
+                      value={
+                        <a
+                          href={org.facebookUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-link hover:text-link-hover break-all"
+                        >
+                          {org.facebookUrl}
+                        </a>
+                      }
+                    />
+                  )}
+                  {org.linkedinUrl && (
+                    <DetailRow
+                      label="LinkedIn"
+                      value={
+                        <a
+                          href={org.linkedinUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-link hover:text-link-hover break-all"
+                        >
+                          {org.linkedinUrl}
+                        </a>
+                      }
+                    />
+                  )}
                 </DetailGroup>
 
                 {/* Manufacturing */}

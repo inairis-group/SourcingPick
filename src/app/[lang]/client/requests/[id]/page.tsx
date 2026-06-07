@@ -190,11 +190,9 @@ export default async function RequestDetailPage({
           <Detail label={dict.client.requests.regionLabel}>
             {dict.client.requests.regions[req.sourcingRegion]}
           </Detail>
-          {req.requiredCerts.length > 0 && (
-            <Detail label={dict.client.requests.certsLabel}>
-              {req.requiredCerts.join(", ")}
-            </Detail>
-          )}
+          {/* Partner #9: requiredCerts no longer surfaced on the
+              buyer-facing request detail. Admin + agent still see it
+              when dispatching tenders. */}
         </Section>
       </div>
 

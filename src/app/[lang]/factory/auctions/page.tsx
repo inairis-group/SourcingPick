@@ -68,6 +68,18 @@ export default async function FactoryAuctionsPage({
         }
       />
 
+      {/* Partner #8: surface the lifecycle so factories don't think
+          creation is broken when their auction is simply waiting on
+          admin approval. */}
+      <div className="mt-4 rounded-md border border-info-edge bg-info-soft/40 p-4 text-xs text-fg">
+        <p className="font-semibold text-headline mb-1">
+          {dict.factory.auctions.lifecycleTitle}
+        </p>
+        <p className="leading-snug text-muted">
+          {dict.factory.auctions.lifecycleBody}
+        </p>
+      </div>
+
       {auctions.length === 0 ? (
         <div className="mt-8 rounded-lg border border-line bg-surface px-6 py-12 text-center">
           <p className="text-sm font-semibold text-headline">

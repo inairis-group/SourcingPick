@@ -6,6 +6,7 @@ import { LocaleDropdown } from "@/components/layout/locale-dropdown";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { MessagesBell } from "@/components/messaging/messages-bell";
+import { MessagesDock } from "@/components/messaging/messages-dock";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { RoleNavPill } from "@/components/layout/role-nav-pill";
 import { RoleNavOverlay } from "@/components/layout/role-nav-overlay";
@@ -72,6 +73,11 @@ export async function RoleShell({ locale, role, children }: Props) {
       <main className="flex-1 pb-24">{children}</main>
 
       {pillItems.length > 0 && <RoleNavPill items={pillItems} />}
+
+      {/* Partner #3: persistent messaging dock — always present in the
+          bottom-right of every authenticated page, so the user never
+          has to navigate to /messages just to peek at recent threads. */}
+      <MessagesDock />
     </div>
   );
 }

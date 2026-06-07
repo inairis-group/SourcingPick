@@ -23,12 +23,22 @@ import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
 const BuySchema = z.object({
   productId: z.string().min(1),
   quantity: z.coerce.number().int().positive("Quantity must be positive."),
-  deliveryAddress: z
+  // Partner #12: structured fields. The freeform `deliveryAddress`
+  // legacy field is synthesised server-side from these so existing
+  // readers (shipping labels, audit, etc.) keep working.
+  deliveryStreet: z.string().trim().min(3).max(200),
+  deliveryPostalCode: z.string().trim().min(2).max(20),
+  deliveryCity: z.string().trim().min(2).max(100),
+  deliveryCountry: z
     .string()
     .trim()
-    .min(5, "Delivery address is required.")
-    .max(300),
-  incoterm: z.enum(Incoterm),
+    .length(2, "ISO country code (2 letters).")
+    .toUpperCase(),
+  // Partner #15: incoterm no longer accepted from the buyer — it's
+  // locked on the product and read server-side from the listing. The
+  // field is still parsed here as optional so an out-of-date client
+  // posting it doesn't fail validation; we just ignore the value.
+  incoterm: z.enum(Incoterm).optional(),
 });
 
 export type BuyResult = {
@@ -64,7 +74,10 @@ export async function buyMarketplaceProductAction(
   const parsed = BuySchema.safeParse({
     productId: formData.get("productId"),
     quantity: formData.get("quantity"),
-    deliveryAddress: formData.get("deliveryAddress"),
+    deliveryStreet: formData.get("deliveryStreet"),
+    deliveryPostalCode: formData.get("deliveryPostalCode"),
+    deliveryCity: formData.get("deliveryCity"),
+    deliveryCountry: formData.get("deliveryCountry"),
     incoterm: formData.get("incoterm"),
   });
   if (!parsed.success) {
@@ -78,6 +91,7 @@ export async function buyMarketplaceProductAction(
     where: {
       id: parsed.data.productId,
       status: MarketplaceProductStatus.PUBLISHED,
+      blockedAt: null,
     },
     select: {
       id: true,
@@ -90,6 +104,7 @@ export async function buyMarketplaceProductAction(
       leadTimeDays: true,
       factoryOrgId: true,
       depositPercentageBps: true,
+      incoterm: true,
     },
   });
   if (!product) return { error: "Product not found or no longer available." };
@@ -132,6 +147,7 @@ export async function buyMarketplaceProductAction(
           id: product.id,
           stockAvailable: { gte: parsed.data.quantity },
           status: MarketplaceProductStatus.PUBLISHED,
+          blockedAt: null,
         },
         data: {
           stockAvailable: { decrement: parsed.data.quantity },
@@ -151,8 +167,15 @@ export async function buyMarketplaceProductAction(
           category: product.category,
           quantity: parsed.data.quantity,
           deadline,
-          deliveryAddress: parsed.data.deliveryAddress,
-          incoterm: parsed.data.incoterm,
+          // Freeform legacy field is synthesised from the structured
+          // ones so older readers (PDF labels, audit log, etc.) keep
+          // working without changes.
+          deliveryAddress: `${parsed.data.deliveryStreet}, ${parsed.data.deliveryPostalCode} ${parsed.data.deliveryCity}, ${parsed.data.deliveryCountry}`,
+          deliveryStreet: parsed.data.deliveryStreet,
+          deliveryPostalCode: parsed.data.deliveryPostalCode,
+          deliveryCity: parsed.data.deliveryCity,
+          deliveryCountry: parsed.data.deliveryCountry,
+          incoterm: product.incoterm,
           sourcingRegion: SourcingRegion.ANYWHERE,
           requiredCerts: [],
           // Explicit marker so agent-assignment and dispatch surfaces can
@@ -184,7 +207,7 @@ export async function buyMarketplaceProductAction(
           quantity: parsed.data.quantity,
           leadTimeDays: product.leadTimeDays,
           moq: product.moq,
-          incoterm: parsed.data.incoterm,
+          incoterm: product.incoterm,
           validUntil: deadline,
           qualificationScore: 100,
           // Mirror the marketplace product's acompte choice onto the
@@ -255,6 +278,9 @@ async function currentLocale(): Promise<Locale> {
  * bounds, but a stray import or legacy row should never be allowed to
  * mint a 0 % or 99 % acompte.
  */
+// Local implementation kept for back-compat — sample-buy.ts imports
+// the shared `buy-helpers.ts` version. Both round and clamp to the
+// 30–50 % window.
 function clampDepositBps(value: number): number {
   if (!Number.isFinite(value)) return 3000;
   return Math.max(3000, Math.min(5000, Math.round(value)));

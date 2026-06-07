@@ -24,6 +24,7 @@ import {
 import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
 import { applyBuyerMarkup } from "@/lib/orders/pricing";
 import { computeQualificationScore } from "@/lib/sourcing/qualification-score";
+import { requiresPreTenderApproval } from "@/lib/sourcing/pre-tender-gate";
 
 // =============================================================
 // Tender invitations (agent → factories)
@@ -61,6 +62,7 @@ export async function sendTenderInvitationsAction(
       agentId: true,
       status: true,
       category: true,
+      budgetCents: true,
       preTenderApprovedAt: true,
     },
   });
@@ -68,11 +70,18 @@ export async function sendTenderInvitationsAction(
   if (request.agentId !== agent.id) {
     return { ok: false, error: "You are not assigned to this request." };
   }
-  // Partner #14: admin must validate the brief before tenders go out.
-  if (!request.preTenderApprovedAt) {
+  // Partner #21: pre-tender approval is now conditional — only
+  // high-budget or high-risk-category briefs require admin sign-off.
+  // Below thresholds, the agent dispatches straight away. Rule lives
+  // in `pre-tender-gate.ts` so the UI shows the same decision.
+  const needsApproval = requiresPreTenderApproval({
+    category: request.category,
+    budgetCents: request.budgetCents,
+  });
+  if (needsApproval && !request.preTenderApprovedAt) {
     return {
       ok: false,
-      error: "This request still needs admin pre-tender approval.",
+      error: "This request needs admin pre-tender approval before tenders go out.",
     };
   }
 

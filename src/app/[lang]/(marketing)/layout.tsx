@@ -1,5 +1,6 @@
 import { MarketingNavbar } from "@/components/marketing/navbar";
 import { MarketingFooter } from "@/components/marketing/footer";
+import { PublicContactButton } from "@/components/marketing/public-contact-button";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { getCurrentUser } from "@/lib/auth/session";
@@ -27,6 +28,9 @@ export default async function MarketingLayout({
       />
       <main className="flex-1">{children}</main>
       <MarketingFooter dict={dict} locale={lang} />
+      {/* Partner #17: lightweight pre-signup contact dock. Replace
+          with a vendor live-chat widget when ops is ready to staff it. */}
+      {!user && <PublicContactButton />}
     </div>
   );
 }

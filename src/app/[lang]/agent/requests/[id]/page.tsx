@@ -12,6 +12,7 @@ import { buttonClass } from "@/components/ui/button";
 import { ResearchFeeControl } from "./_components/research-fee-control";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
+import { requiresPreTenderApproval } from "@/lib/sourcing/pre-tender-gate";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
@@ -95,6 +96,14 @@ export default async function AgentRequestDetailPage({
     },
   });
   if (!req) notFound();
+
+  // Partner #21: conditional pre-tender gate. Below thresholds the
+  // agent can dispatch without admin sign-off; above, they wait. The
+  // rule lives in pre-tender-gate.ts so server + UI agree.
+  const gateNeeded = requiresPreTenderApproval({
+    category: req.category,
+    budgetCents: req.budgetCents,
+  });
 
   const order = req.orders[0];
 
@@ -217,13 +226,29 @@ export default async function AgentRequestDetailPage({
       />
 
       <Section title={dict.agent.requests.sectionTenders} className="mb-6">
-        <PreTenderGate
-          approvedAt={req.preTenderApprovedAt}
-          rejectedAt={req.preTenderRejectedAt}
-          rejectionReason={req.preTenderRejectionReason}
-          dict={dict}
-          lang={lang}
-        />
+        {/* Partner #21: pre-tender approval is now conditional. The
+            PreTenderGate component still renders the approval banner
+            when an admin has actioned it; when the brief is exempt,
+            we skip the gate entirely. */}
+        {gateNeeded && (
+          <PreTenderGate
+            approvedAt={req.preTenderApprovedAt}
+            rejectedAt={req.preTenderRejectedAt}
+            rejectionReason={req.preTenderRejectionReason}
+            dict={dict}
+            lang={lang}
+          />
+        )}
+        {!gateNeeded && (
+          <div className="mb-4 rounded-md border border-info-edge bg-info-soft/30 p-3 text-xs text-fg">
+            <p className="font-semibold text-headline mb-0.5">
+              {dict.tender.exemptTitle}
+            </p>
+            <p className="text-muted leading-snug">
+              {dict.tender.exemptBody}
+            </p>
+          </div>
+        )}
         <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
           <p className="text-sm text-muted">
             {dict.tender.invitedCount.replace(
@@ -231,7 +256,7 @@ export default async function AgentRequestDetailPage({
               String(req.tenderInvitations.length),
             )}
           </p>
-          {req.preTenderApprovedAt ? (
+          {!gateNeeded || req.preTenderApprovedAt ? (
             <Link
               href={`/${lang}/agent/requests/${req.id}/tender`}
               className={cn(buttonClass({ variant: "primary", size: "sm" }))}

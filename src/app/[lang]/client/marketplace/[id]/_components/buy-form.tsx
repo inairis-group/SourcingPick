@@ -76,37 +76,73 @@ export function BuyForm({
             onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 0))}
           />
         </Field>
-        <Field label={dict.client.requests.incotermLabel} required>
-          <Select
-            name="incoterm"
-            required
-            defaultValue={defaultIncoterm}
-            options={INCOTERMS.map((i) => ({
-              value: i,
-              label: `${i} — ${dict.client.requests.incoterms[i]}`,
-            }))}
-          />
+        {/* Partner #15: incoterm is now set by the factory on the
+            listing — buyers see it as fixed metadata. We keep the
+            display so buyers know the term, but no input. */}
+        <Field label={dict.client.requests.incotermLabel}>
+          <div
+            className="inline-flex items-center h-9 px-3 rounded-md border border-line bg-subtle text-sm text-fg"
+            aria-readonly
+          >
+            <span className="font-mono font-semibold">{defaultIncoterm}</span>
+            <span className="ms-2 text-muted">
+              — {dict.client.requests.incoterms[defaultIncoterm]}
+            </span>
+            <input type="hidden" name="incoterm" value={defaultIncoterm} />
+          </div>
         </Field>
       </div>
 
-      <Field
-        label={dict.client.requests.addressLabel}
-        required
-        hint={dict.client.marketplace.addressHint}
-      >
-        <textarea
-          name="deliveryAddress"
+      {/* Partner #12: structured address — separate fields so we can
+          render a clean shipping label downstream and (later) plug an
+          address-validation API. The freeform `deliveryAddress` field
+          is synthesised server-side from these. */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <Field
+          label={dict.client.requests.addressStreetLabel}
           required
-          rows={2}
-          minLength={5}
-          maxLength={300}
-          className={cn(
-            "w-full rounded-sm border bg-surface text-fg placeholder:text-faint p-3 text-base resize-y",
-            "border-line-strong focus:border-focus focus:outline-2 focus:outline-focus focus:outline-offset-2",
-          )}
-          placeholder={dict.client.requests.addressPlaceholder}
-        />
-      </Field>
+        >
+          <Input
+            name="deliveryStreet"
+            required
+            maxLength={200}
+            placeholder={dict.client.requests.addressStreetPlaceholder}
+          />
+        </Field>
+        <Field
+          label={dict.client.requests.addressPostalCodeLabel}
+          required
+        >
+          <Input
+            name="deliveryPostalCode"
+            required
+            maxLength={20}
+            placeholder="75001"
+          />
+        </Field>
+        <Field label={dict.client.requests.addressCityLabel} required>
+          <Input
+            name="deliveryCity"
+            required
+            maxLength={100}
+            placeholder="Paris"
+          />
+        </Field>
+        <Field
+          label={dict.client.requests.addressCountryLabel}
+          required
+          hint={dict.client.requests.addressCountryHint}
+        >
+          <Input
+            name="deliveryCountry"
+            required
+            minLength={2}
+            maxLength={2}
+            placeholder="FR"
+            className="font-mono uppercase"
+          />
+        </Field>
+      </div>
 
       <div className="rounded-md bg-subtle border border-line-subtle p-3 flex items-center justify-between gap-3">
         <span className="text-xs text-faint uppercase tracking-wide">

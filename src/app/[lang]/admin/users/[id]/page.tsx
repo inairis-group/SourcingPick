@@ -8,6 +8,7 @@ import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate } from "@/lib/i18n/formatters";
 import { AdminScopeEditor } from "./_components/scope-editor";
+import { StartDirectButton } from "@/components/messaging/start-direct-button";
 
 export async function generateMetadata({
   params,
@@ -59,27 +60,32 @@ export default async function AdminUserDetailPage({
         ← {t.backToList}
       </Link>
 
-      <header className="flex flex-col gap-1 mb-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
-          {user.role} · {user.subRole}
-        </p>
-        <h1 className="text-2xl font-bold text-headline tracking-tight">
-          {user.firstName} {user.lastName}
-        </h1>
-        <p className="text-sm text-muted">
-          {user.email} · {user.organization.displayName}
-        </p>
-        <p className="text-xs text-faint mt-1">
-          {t.createdOn} {formatDate(user.createdAt, lang, "medium")}
-          {user.lastSeenAt && (
-            <>
-              {" · "}
-              {t.lastSeenOn} {formatDate(user.lastSeenAt, lang, "medium")}
-            </>
-          )}
-          {" · "}
-          {user.twoFactorEnabled ? t.twoFaOn : t.twoFaOff}
-        </p>
+      <header className="flex items-start justify-between gap-4 mb-6 flex-wrap">
+        <div className="flex flex-col gap-1 min-w-0">
+          <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
+            {user.role} · {user.subRole}
+          </p>
+          <h1 className="text-2xl font-bold text-headline tracking-tight">
+            {user.firstName} {user.lastName}
+          </h1>
+          <p className="text-sm text-muted">
+            {user.email} · {user.organization.displayName}
+          </p>
+          <p className="text-xs text-faint mt-1">
+            {t.createdOn} {formatDate(user.createdAt, lang, "medium")}
+            {user.lastSeenAt && (
+              <>
+                {" · "}
+                {t.lastSeenOn} {formatDate(user.lastSeenAt, lang, "medium")}
+              </>
+            )}
+            {" · "}
+            {user.twoFactorEnabled ? t.twoFaOn : t.twoFaOff}
+          </p>
+        </div>
+        {/* Partner #30: admin needs to be able to message any user
+            directly without going through a request/order context. */}
+        {user.id !== actor.id && <StartDirectButton otherUserId={user.id} />}
       </header>
 
       {user.role === Role.ADMIN ? (

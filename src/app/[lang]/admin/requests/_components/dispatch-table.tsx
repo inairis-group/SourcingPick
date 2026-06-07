@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "@/components/ui/link";
 import { FormError } from "@/components/ui/form-error";
 import { assignAgentAction } from "@/lib/admin/dispatch-actions";
+import { requiresPreTenderApproval } from "@/lib/sourcing/pre-tender-gate";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
@@ -235,13 +236,26 @@ export function DispatchTable({
                 </Button>
               </div>
 
-              <PreTenderActions
-                requestId={r.id}
-                approvedAt={r.preTenderApprovedAt}
-                rejectedAt={r.preTenderRejectedAt}
-                rejectionReason={r.preTenderRejectionReason}
-                hasAgent={Boolean(r.agent)}
-              />
+              {/* Partner #21: pre-tender approval is now conditional.
+                  Show the approve/reject controls only when the brief
+                  is gated; otherwise mark the row as auto-approved so
+                  admin doesn't waste a click. */}
+              {requiresPreTenderApproval({
+                category: r.category,
+                budgetCents: r.budgetCents,
+              }) ? (
+                <PreTenderActions
+                  requestId={r.id}
+                  approvedAt={r.preTenderApprovedAt}
+                  rejectedAt={r.preTenderRejectedAt}
+                  rejectionReason={r.preTenderRejectionReason}
+                  hasAgent={Boolean(r.agent)}
+                />
+              ) : (
+                <p className="mt-2 text-[11px] text-muted">
+                  {dict.admin.dispatch.autoApproved}
+                </p>
+              )}
             </li>
           ))}
         </ul>

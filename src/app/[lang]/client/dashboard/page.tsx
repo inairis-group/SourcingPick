@@ -3,6 +3,7 @@ import {
   OrderStatus,
   QuoteStatus,
   Role,
+  SourcingRequestOrigin,
   SourcingStatus,
 } from "@prisma/client";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -15,6 +16,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { Link } from "@/components/ui/link";
 import { buttonClass } from "@/components/ui/button";
+import { FirstOrderTutorial } from "@/components/client/first-order-tutorial";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -74,6 +76,7 @@ export default async function ClientDashboardPage({
     prisma.sourcingRequest.count({
       where: {
         clientOrgId: user.organizationId,
+        origin: SourcingRequestOrigin.SOURCING_FLOW,
         status: { in: OPEN_REQ_STATUSES },
       },
     }),
@@ -129,7 +132,12 @@ export default async function ClientDashboardPage({
       },
     }),
     prisma.sourcingRequest.findMany({
-      where: { clientOrgId: user.organizationId },
+      // Same filter as /client/requests — only real agent-led requests
+      // surface here. Marketplace synthetic requests show in /orders.
+      where: {
+        clientOrgId: user.organizationId,
+        origin: SourcingRequestOrigin.SOURCING_FLOW,
+      },
       orderBy: { createdAt: "desc" },
       take: 5,
       select: {
@@ -154,6 +162,9 @@ export default async function ClientDashboardPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      {/* Partner #16: first-order tutorial — dismissible coachmark
+          series. Renders only until the user clicks dismiss. */}
+      {!user.clientTutorialDismissedAt && <FirstOrderTutorial />}
       <DashboardHeader
         eyebrow={dict.client.dashboard.eyebrow}
         title={dict.client.dashboard.title}

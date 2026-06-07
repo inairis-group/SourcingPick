@@ -21,6 +21,10 @@ export type QueueOrg = {
   createdAt: Date;
   vatNumber: string | null;
   address: string;
+  websiteUrl: string | null;
+  instagramUrl: string | null;
+  facebookUrl: string | null;
+  linkedinUrl: string | null;
   factoryProfile: {
     category: Category;
     capabilities: string[];

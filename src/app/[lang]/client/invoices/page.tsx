@@ -202,16 +202,18 @@ export default async function ClientInvoicesPage({
                         ? `${dict.client.orders.invoicePaidOn} ${formatDate(inv.paidAt, lang, "short")}`
                         : `${dict.client.invoices.dueOn} ${formatDate(inv.dueAt, lang, "short")}`}
                     </span>
-                    {inv.pdfUrl ? (
-                      <a
-                        href={inv.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[11px] text-link hover:text-link-hover underline underline-offset-2"
-                      >
-                        {dict.client.invoices.downloadPdf}
-                      </a>
-                    ) : inv.order ? (
+                    {/* Partner #11: every invoice now has a generated
+                        PDF route. Legacy externally-hosted `pdfUrl`
+                        still takes precedence if set. */}
+                    <a
+                      href={inv.pdfUrl ?? `/api/invoices/${inv.id}/pdf`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] text-link hover:text-link-hover underline underline-offset-2"
+                    >
+                      {dict.client.invoices.downloadPdf}
+                    </a>
+                    {inv.order && (
                       <Link
                         href={`/${lang}/client/orders/${inv.order.id}`}
                         variant="default"
@@ -219,7 +221,7 @@ export default async function ClientInvoicesPage({
                       >
                         {dict.client.invoices.viewOrder} →
                       </Link>
-                    ) : null}
+                    )}
                   </div>
                 </li>
               ))}
@@ -298,24 +300,23 @@ export default async function ClientInvoicesPage({
                           : formatDate(inv.dueAt, lang, "short")}
                       </td>
                       <td className="px-5 py-3 text-end">
-                        {inv.pdfUrl ? (
-                          <a
-                            href={inv.pdfUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[11px] text-link hover:text-link-hover underline underline-offset-2"
-                          >
-                            {dict.client.invoices.downloadPdf}
-                          </a>
-                        ) : inv.order ? (
+                        <a
+                          href={inv.pdfUrl ?? `/api/invoices/${inv.id}/pdf`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[11px] text-link hover:text-link-hover underline underline-offset-2"
+                        >
+                          {dict.client.invoices.downloadPdf}
+                        </a>
+                        {inv.order && (
                           <Link
                             href={`/${lang}/client/orders/${inv.order.id}`}
                             variant="default"
-                            className="text-[11px] font-medium"
+                            className="text-[11px] font-medium ms-2"
                           >
                             →
                           </Link>
-                        ) : null}
+                        )}
                       </td>
                     </tr>
                   ))}

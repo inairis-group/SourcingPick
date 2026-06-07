@@ -37,7 +37,16 @@ const RequestSchema = z.object({
   deadline: z.coerce.date().refine((d) => d > new Date(), {
     message: "Deadline must be in the future.",
   }),
-  deliveryAddress: z.string().trim().min(5, "Delivery address is required.").max(300),
+  // Partner #12: structured + freeform. Structured fields are required;
+  // freeform is synthesised from them server-side.
+  deliveryStreet: z.string().trim().min(3).max(200),
+  deliveryPostalCode: z.string().trim().min(2).max(20),
+  deliveryCity: z.string().trim().min(2).max(100),
+  deliveryCountry: z
+    .string()
+    .trim()
+    .length(2, "ISO country code (2 letters).")
+    .toUpperCase(),
   incoterm: z.enum(Incoterm),
   sourcingRegion: z.enum(SourcingRegion),
   sourcingCountry: z
@@ -67,7 +76,10 @@ export async function createSourcingRequestAction(
     targetUnitPriceEur: formData.get("targetUnitPriceEur") ?? "",
     budgetEur: formData.get("budgetEur") ?? "",
     deadline: formData.get("deadline"),
-    deliveryAddress: formData.get("deliveryAddress"),
+    deliveryStreet: formData.get("deliveryStreet"),
+    deliveryPostalCode: formData.get("deliveryPostalCode"),
+    deliveryCity: formData.get("deliveryCity"),
+    deliveryCountry: formData.get("deliveryCountry"),
     incoterm: formData.get("incoterm"),
     sourcingRegion: formData.get("sourcingRegion"),
     sourcingCountry: formData.get("sourcingCountry") ?? "CN",
@@ -125,7 +137,11 @@ export async function createSourcingRequestAction(
         budgetCents,
         targetUnitPriceCents,
         deadline: parsed.data.deadline,
-        deliveryAddress: parsed.data.deliveryAddress,
+        deliveryAddress: `${parsed.data.deliveryStreet}, ${parsed.data.deliveryPostalCode} ${parsed.data.deliveryCity}, ${parsed.data.deliveryCountry}`,
+        deliveryStreet: parsed.data.deliveryStreet,
+        deliveryPostalCode: parsed.data.deliveryPostalCode,
+        deliveryCity: parsed.data.deliveryCity,
+        deliveryCountry: parsed.data.deliveryCountry,
         incoterm: parsed.data.incoterm,
         sourcingRegion: parsed.data.sourcingRegion,
         sourcingCountry: parsed.data.sourcingCountry,

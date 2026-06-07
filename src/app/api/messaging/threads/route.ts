@@ -70,8 +70,11 @@ export async function GET() {
   const supportIds = participants
     .filter((p) => p.thread.contextType === ThreadContextType.SUPPORT)
     .map((p) => p.thread.contextId);
+  const disputeIds = participants
+    .filter((p) => p.thread.contextType === ThreadContextType.DISPUTE)
+    .map((p) => p.thread.contextId);
 
-  const [requests, orders, quotes, tenders, supports] = await Promise.all([
+  const [requests, orders, quotes, tenders, supports, disputes] = await Promise.all([
     requestIds.length > 0
       ? prisma.sourcingRequest.findMany({
           where: { id: { in: requestIds } },
@@ -114,6 +117,21 @@ export async function GET() {
           select: { id: true, reference: true, subject: true },
         })
       : Promise.resolve([]),
+    disputeIds.length > 0
+      ? prisma.dispute.findMany({
+          where: { id: { in: disputeIds } },
+          select: {
+            id: true,
+            reference: true,
+            order: {
+              select: {
+                id: true,
+                request: { select: { title: true } },
+              },
+            },
+          },
+        })
+      : Promise.resolve([]),
   ]);
 
   const requestMap = new Map(requests.map((r) => [r.id, r]));
@@ -121,6 +139,7 @@ export async function GET() {
   const quoteMap = new Map(quotes.map((q) => [q.id, q]));
   const tenderMap = new Map(tenders.map((t) => [t.id, t]));
   const supportMap = new Map(supports.map((s) => [s.id, s]));
+  const disputeMap = new Map(disputes.map((d) => [d.id, d]));
 
   const rolePrefix = user.role.toLowerCase();
 
@@ -184,8 +203,34 @@ export async function GET() {
           href = `/${lang}/support/${s.id}`;
           break;
         }
+        case ThreadContextType.DISPUTE: {
+          const d = disputeMap.get(t.contextId);
+          if (!d) return null;
+          title = d.order.request.title;
+          // Buyer/factory bounce to the order page (dispute panel sits
+          // there); admin goes to the dedicated arbitration page.
+          href =
+            rolePrefix === "admin"
+              ? `/${lang}/admin/disputes/${d.id}`
+              : rolePrefix === "client"
+                ? `/${lang}/client/orders/${d.order.id}`
+                : rolePrefix === "factory"
+                  ? `/${lang}/factory/orders/${d.order.id}`
+                  : `/${lang}/messages`;
+          break;
+        }
+        case ThreadContextType.CERT:
+        case ThreadContextType.KYC:
+        case ThreadContextType.DIRECT:
         default:
-          return null;
+          // Threads we don't enrich yet still surface in the bell so
+          // the unread count stays truthful — they just point to the
+          // global messages page where the user can find them. The
+          // global page (which has more breathing room) handles the
+          // i18n-aware title rendering.
+          title = t.contextType;
+          href = `/${lang}/messages`;
+          break;
       }
 
       const last = t.messages[0];

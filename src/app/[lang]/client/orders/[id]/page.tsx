@@ -241,13 +241,37 @@ export default async function ClientOrderDetailPage({
       )}
 
       {(() => {
-        // Wise bank-wire path. Visible above the legacy Stripe pay button
-        // whenever (a) the platform's Wise IBAN env vars are set and
-        // (b) the order is in a state that expects a payment. The buyer
-        // can use either rail; the webhook handler matches incoming Wise
+        // Wise bank-wire path. Visible whenever (a) the platform's Wise
+        // IBAN env vars are set AND (b) the order is in a state that
+        // expects a payment. The webhook handler matches incoming
         // wires by the per-payment reference shown in the panel.
+        //
+        // Partner #13: previously, when the env vars were missing we
+        // silently rendered nothing — the buyer landed on a
+        // PAYMENT_PENDING order with no instructions and no way to
+        // pay. Now we show a clear "contact support" fallback so the
+        // page is never a dead end.
         const platform = platformWireAccount();
-        if (!platform) return null;
+        const needsPayment =
+          order.status === OrderStatus.PAYMENT_PENDING ||
+          order.status === OrderStatus.SHIPPED ||
+          order.status === OrderStatus.IN_TRANSIT;
+
+        if (!needsPayment) return null;
+
+        if (!platform) {
+          return (
+            <div className="rounded-lg border border-warning-edge bg-warning-soft/40 p-5 mt-4">
+              <p className="text-sm font-semibold text-headline">
+                {dict.client.orders.payConfigMissingTitle}
+              </p>
+              <p className="text-xs text-muted mt-1 leading-snug">
+                {dict.client.orders.payConfigMissingBody}
+              </p>
+            </div>
+          );
+        }
+
         if (order.status === OrderStatus.PAYMENT_PENDING) {
           return (
             <WiseWirePanel
@@ -259,21 +283,17 @@ export default async function ClientOrderDetailPage({
             />
           );
         }
-        if (
-          order.status === OrderStatus.SHIPPED ||
-          order.status === OrderStatus.IN_TRANSIT
-        ) {
-          return (
-            <WiseWirePanel
-              {...platform}
-              reference={buildWireReference(order.reference, "BAL")}
-              amountCents={order.balanceCents}
-              currency="EUR"
-              lang={lang}
-            />
-          );
-        }
-        return null;
+        // SHIPPED or IN_TRANSIT — balance due before COMPLETED can
+        // close out (see F1b in the CTO audit).
+        return (
+          <WiseWirePanel
+            {...platform}
+            reference={buildWireReference(order.reference, "BAL")}
+            amountCents={order.balanceCents}
+            currency="EUR"
+            lang={lang}
+          />
+        );
       })()}
 
       <OrderActions
@@ -327,7 +347,7 @@ export default async function ClientOrderDetailPage({
                       : `${dict.client.orders.invoiceIssuedOn} ${formatDate(inv.issuedAt, lang, "short")}`}
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap">
                   <span className="text-sm font-semibold text-headline">
                     {formatEUR(inv.amountCents / 100, lang)}
                   </span>
@@ -340,6 +360,16 @@ export default async function ClientOrderDetailPage({
                   >
                     {dict.client.orders.invoiceStatuses[inv.status]}
                   </span>
+                  {/* Partner #11: server-rendered PDF — Article 226 +
+                      French CGI + reverse-charge wording included. */}
+                  <a
+                    href={`/api/invoices/${inv.id}/pdf`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] text-link hover:text-link-hover underline underline-offset-2"
+                  >
+                    {dict.client.invoices.downloadPdf}
+                  </a>
                 </div>
               </li>
             ))}

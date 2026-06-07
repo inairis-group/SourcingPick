@@ -9,6 +9,7 @@ import { Link } from "@/components/ui/link";
 import { buttonClass } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ModerationQueue } from "./_components/moderation-queue";
+import { AdminListingControls } from "./_components/admin-listing-controls";
 
 export async function generateMetadata({
   params,
@@ -52,6 +53,33 @@ export default async function AdminMarketplacePage({
     },
   });
 
+  // All live + blocked listings — for the admin override section.
+  const allListings = await prisma.marketplaceProduct.findMany({
+    where: {
+      status: {
+        in: [
+          MarketplaceProductStatus.PUBLISHED,
+          MarketplaceProductStatus.OUT_OF_STOCK,
+        ],
+      },
+    },
+    orderBy: [
+      { blockedAt: { sort: "desc", nulls: "last" } },
+      { publishedAt: "desc" },
+    ],
+    take: 80,
+    select: {
+      id: true,
+      reference: true,
+      name: true,
+      status: true,
+      priceCentsClient: true,
+      blockedAt: true,
+      blockReason: true,
+      factoryOrg: { select: { displayName: true } },
+    },
+  });
+
   const rows = pending.map((p) => ({
     id: p.id,
     reference: p.reference,
@@ -76,6 +104,18 @@ export default async function AdminMarketplacePage({
     // non-null value here means "this is a re-review, not a brand-new
     // listing." The queue surfaces a pill so admin can prioritise.
     isReReview: p.publishedAt !== null,
+  }));
+
+  // Map the all-live block once for the JSX below.
+  const liveRows = allListings.map((l) => ({
+    id: l.id,
+    reference: l.reference,
+    name: l.name,
+    status: l.status,
+    priceClientEur: formatEUR(l.priceCentsClient / 100, lang),
+    blockedAt: l.blockedAt,
+    blockReason: l.blockReason,
+    factoryName: l.factoryOrg.displayName,
   }));
 
   return (
@@ -109,6 +149,54 @@ export default async function AdminMarketplacePage({
       </header>
 
       <ModerationQueue items={rows} />
+
+      {/* Partner #1 + #2: admin needs full leverage over factory
+          listings. The "All live listings" section below lets admin
+          block (with reason) or archive any live row without going
+          through the factory's own form. */}
+      {liveRows.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">
+            {dict.admin.marketplace.allListingsTitle}
+          </h2>
+          <p className="text-xs text-muted mb-4 max-w-prose">
+            {dict.admin.marketplace.allListingsBody}
+          </p>
+          <ul className="rounded-lg border border-line bg-surface divide-y divide-line-subtle">
+            {liveRows.map((l) => (
+              <li key={l.id} className="p-4">
+                <div className="flex items-start justify-between gap-3 flex-wrap">
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-mono uppercase tracking-wide text-faint">
+                      {l.reference} · {l.status}
+                    </p>
+                    <p className="text-sm font-semibold text-headline">
+                      {l.name}
+                    </p>
+                    <p className="text-xs text-muted mt-0.5">
+                      {l.factoryName} · {l.priceClientEur}
+                      {l.blockedAt && l.blockReason && (
+                        <>
+                          {" · "}
+                          <span className="text-warning font-medium">
+                            {dict.admin.marketplace.controls.blockedBadge}:
+                          </span>{" "}
+                          {l.blockReason}
+                        </>
+                      )}
+                    </p>
+                  </div>
+                  <AdminListingControls
+                    productId={l.id}
+                    status={l.status}
+                    blocked={Boolean(l.blockedAt)}
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }
