@@ -4,6 +4,7 @@ import {
   startTransition,
   useActionState,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -16,6 +17,9 @@ import { Field } from "@/components/ui/field";
 import { FormError } from "@/components/ui/form-error";
 import { Select } from "@/components/ui/select";
 import { MarkdownEditor } from "@/components/ui/markdown-editor";
+import { ExistingImageDelete } from "@/components/attachments/existing-image-delete";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import {
   createAuctionAction,
   updateAuctionAction,
@@ -68,7 +72,9 @@ export function AuctionForm({
     ? updateAuctionAction.bind(null, defaults!.id)
     : createAuctionAction;
   const [state, formAction, pending] = useActionState(action, INITIAL);
-  const [newImagePreviews, setNewImagePreviews] = useState<string[]>([]);
+  // Staged images held in React state so each preview can be removed
+  // before submit — see product-form.tsx for the same pattern.
+  const [stagedImages, setStagedImages] = useState<File[]>([]);
   const [clientError, setClientError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -83,18 +89,40 @@ export function AuctionForm({
   const remainingSlots = Math.max(0, 6 - existingCount);
 
   const onFiles = (files: FileList | null) => {
-    if (!files) return;
-    const previews: string[] = [];
-    for (let i = 0; i < files.length; i++) {
-      previews.push(URL.createObjectURL(files[i]));
-    }
-    setNewImagePreviews(previews);
+    if (!files || files.length === 0) return;
+    setStagedImages((prev) => {
+      const next = [...prev];
+      for (
+        let i = 0;
+        i < files.length && next.length < remainingSlots;
+        i++
+      ) {
+        next.push(files[i]);
+      }
+      return next;
+    });
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
+
+  const removeStagedImage = (i: number) => {
+    setStagedImages((prev) => prev.filter((_, idx) => idx !== i));
+  };
+
+  const newImagePreviews = useMemo(
+    () => stagedImages.map((f) => URL.createObjectURL(f)),
+    [stagedImages],
+  );
+  useEffect(() => {
+    return () => {
+      for (const url of newImagePreviews) URL.revokeObjectURL(url);
+    };
+  }, [newImagePreviews]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setClientError(null);
     const fd = new FormData(e.currentTarget);
+    for (const f of stagedImages) fd.append("images", f);
     const total = sumFileSizes(fd.getAll("images"));
     if (total > MAX_UPLOAD_BYTES) {
       setClientError(
@@ -324,6 +352,11 @@ export function AuctionForm({
                   className="object-cover"
                   unoptimized
                 />
+                <ExistingImageDelete
+                  entity="auction"
+                  entityId={defaults.id}
+                  index={i}
+                />
               </div>
             ))}
           </div>
@@ -347,7 +380,9 @@ export function AuctionForm({
           <input
             ref={fileInputRef}
             type="file"
-            name="images"
+            // No `name` — staged images live in React state and are
+            // appended to FormData manually in onSubmit so each
+            // preview can be removed before posting.
             accept="image/jpeg,image/png,image/webp"
             multiple
             hidden
@@ -370,6 +405,23 @@ export function AuctionForm({
                   className="object-cover"
                   unoptimized
                 />
+                <button
+                  type="button"
+                  onClick={() => removeStagedImage(i)}
+                  aria-label={dict.common.actions.delete}
+                  className={cn(
+                    "absolute top-1 inset-e-1 z-10",
+                    "inline-flex items-center justify-center h-6 w-6 rounded-full",
+                    "bg-page/90 backdrop-blur text-muted hover:text-danger hover:bg-page",
+                    "border border-line shadow-sm transition-colors duration-fast",
+                  )}
+                >
+                  <HugeiconsIcon
+                    icon={Cancel01Icon}
+                    size={12}
+                    strokeWidth={1.75}
+                  />
+                </button>
               </div>
             ))}
           </div>

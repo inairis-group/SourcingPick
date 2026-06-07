@@ -4,6 +4,7 @@ import {
   startTransition,
   useActionState,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -29,6 +30,7 @@ import {
   type ProductActionState,
 } from "@/lib/marketplace/actions";
 import { AttachmentPicker } from "@/components/attachments/attachment-picker";
+import { ExistingImageDelete } from "@/components/attachments/existing-image-delete";
 import { MarkdownEditor } from "@/components/ui/markdown-editor";
 import { useDictionary } from "@/lib/i18n/client-provider";
 import { leadTimeDisplayValue } from "@/lib/marketplace/lead-time";
@@ -92,7 +94,11 @@ export function ProductForm({
     : createProductAction;
   const [state, formAction, pending] = useActionState(action, INITIAL);
 
-  const [newImagePreviews, setNewImagePreviews] = useState<string[]>([]);
+  // Staged images held in React state so each preview can be removed
+  // before submit. The native `<input type="file">` is click-only; on
+  // submit we hand the kept files to the FormData ourselves rather
+  // than relying on the input's FileList.
+  const [stagedImages, setStagedImages] = useState<File[]>([]);
   const [extraMedia, setExtraMedia] = useState<File[]>([]);
   // Surfaced for failures we catch before posting (e.g. total upload over the
   // limit) — the Server Action never runs in that case, so it can't return one.
@@ -105,18 +111,44 @@ export function ProductForm({
     }
   }, [state.productId, isEdit, lang, router]);
 
+  const existingCount = defaults?.existingImages.length ?? 0;
+  const remainingSlots = Math.max(0, 6 - existingCount);
+
   const onFiles = (files: FileList | null) => {
-    if (!files) return;
-    const previews: string[] = [];
-    for (let i = 0; i < files.length; i++) {
-      previews.push(URL.createObjectURL(files[i]));
-    }
-    setNewImagePreviews(previews);
+    if (!files || files.length === 0) return;
+    setStagedImages((prev) => {
+      const next = [...prev];
+      for (
+        let i = 0;
+        i < files.length && next.length < remainingSlots;
+        i++
+      ) {
+        next.push(files[i]);
+      }
+      return next;
+    });
+    // Reset the native input so picking the same file twice in a row
+    // still fires `change` (browsers de-dupe identical FileLists).
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const existingCount = defaults?.existingImages.length ?? 0;
-  const totalAfterUpload = existingCount + newImagePreviews.length;
-  const remainingSlots = Math.max(0, 6 - existingCount);
+  const removeStagedImage = (i: number) => {
+    setStagedImages((prev) => prev.filter((_, idx) => idx !== i));
+  };
+
+  // Object-URL previews — recreated whenever the staged list changes
+  // and revoked on cleanup so blob URLs don't leak.
+  const newImagePreviews = useMemo(
+    () => stagedImages.map((f) => URL.createObjectURL(f)),
+    [stagedImages],
+  );
+  useEffect(() => {
+    return () => {
+      for (const url of newImagePreviews) URL.revokeObjectURL(url);
+    };
+  }, [newImagePreviews]);
+
+  const totalAfterUpload = existingCount + stagedImages.length;
 
   // Intercept submit so we can fold the staged video/file attachments
   // (held in React state, not a native <input>) into the FormData before
@@ -125,6 +157,10 @@ export function ProductForm({
     e.preventDefault();
     setClientError(null);
     const fd = new FormData(e.currentTarget);
+    // Staged images live in React state (not the native input) so the
+    // user can remove individual previews before submit; fold them
+    // into the FormData under the same `images` key the server expects.
+    for (const f of stagedImages) fd.append("images", f);
     for (const f of extraMedia) fd.append("attachments", f);
 
     // Catch oversized submissions here: a too-large body is rejected by the
@@ -437,6 +473,11 @@ export function ProductForm({
                   className="object-cover"
                   unoptimized
                 />
+                <ExistingImageDelete
+                  entity="marketplaceProduct"
+                  entityId={defaults.id}
+                  index={i}
+                />
               </div>
             ))}
           </div>
@@ -466,7 +507,9 @@ export function ProductForm({
           <input
             ref={fileInputRef}
             type="file"
-            name="images"
+            // No `name` — staged images are appended to FormData
+            // manually in onSubmit from `stagedImages` state so we
+            // can let the user remove a preview before posting.
             accept="image/jpeg,image/png,image/webp"
             multiple
             hidden
@@ -489,6 +532,23 @@ export function ProductForm({
                   className="object-cover"
                   unoptimized
                 />
+                <button
+                  type="button"
+                  onClick={() => removeStagedImage(i)}
+                  aria-label={dict.common.actions.delete}
+                  className={cn(
+                    "absolute top-1 inset-e-1 z-10",
+                    "inline-flex items-center justify-center h-6 w-6 rounded-full",
+                    "bg-page/90 backdrop-blur text-muted hover:text-danger hover:bg-page",
+                    "border border-line shadow-sm transition-colors duration-fast",
+                  )}
+                >
+                  <HugeiconsIcon
+                    icon={Cancel01Icon}
+                    size={12}
+                    strokeWidth={1.75}
+                  />
+                </button>
               </div>
             ))}
           </div>

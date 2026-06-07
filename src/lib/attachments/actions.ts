@@ -139,3 +139,221 @@ async function canManage(
       return false;
   }
 }
+
+/**
+ * App-wide image delete — works on the three entities that carry their
+ * own `images: String[]` column (rather than rows in the polymorphic
+ * Attachment table):
+ *
+ *   - MarketplaceProduct (factory listings)
+ *   - SourcingProduct (request wizard line items)
+ *   - Auction
+ *
+ * The Attachment-table version above is for any media uploaded through
+ * the AttachmentPicker; this is for the pre-existing image slots
+ * embedded directly on the parent row.
+ *
+ * Permission:
+ *   - SUPER admin or scope-MARKETPLACE / scope-REQUESTS, OR
+ *   - the org that owns the parent row.
+ *
+ * Same status-flow rule as the edit action for MarketplaceProduct:
+ *   PUBLISHED / OUT_OF_STOCK → PENDING_REVIEW on owner-side delete
+ *   (admin delete preserves status — admin is authoritative).
+ */
+export type DeleteUploadedImageResult =
+  | { ok: true }
+  | { ok: false; error: string };
+
+export type ImageEntity = "marketplaceProduct" | "sourcingProduct" | "auction";
+
+export async function deleteUploadedImageAction(input: {
+  entity: ImageEntity;
+  entityId: string;
+  index: number;
+}): Promise<DeleteUploadedImageResult> {
+  const user = await requireAuth();
+
+  if (!Number.isInteger(input.index) || input.index < 0) {
+    return { ok: false, error: "Invalid image index." };
+  }
+
+  switch (input.entity) {
+    case "marketplaceProduct":
+      return deleteMarketplaceImage(input.entityId, input.index, user);
+    case "sourcingProduct":
+      return deleteSourcingImage(input.entityId, input.index, user);
+    case "auction":
+      return deleteAuctionImage(input.entityId, input.index, user);
+  }
+}
+
+async function deleteMarketplaceImage(
+  productId: string,
+  index: number,
+  user: { id: string; role: Role; organizationId: string },
+): Promise<DeleteUploadedImageResult> {
+  const product = await prisma.marketplaceProduct.findUnique({
+    where: { id: productId },
+    select: {
+      id: true,
+      images: true,
+      status: true,
+      factoryOrgId: true,
+      reference: true,
+    },
+  });
+  if (!product) return { ok: false, error: "Listing not found." };
+
+  const isOwner = user.organizationId === product.factoryOrgId;
+  const isAdmin = user.role === Role.ADMIN;
+  if (!isOwner && !isAdmin) {
+    return { ok: false, error: "You can't edit this listing." };
+  }
+
+  const urls = [...product.images];
+  if (index >= urls.length) return { ok: false, error: "Image not found." };
+  const removed = urls.splice(index, 1)[0];
+
+  // Owner-side edits to a live listing bounce it back to PENDING_REVIEW
+  // (consistent with updateProductAction). Admin edits stay live.
+  const nextStatus =
+    !isAdmin &&
+    (product.status === "PUBLISHED" || product.status === "OUT_OF_STOCK")
+      ? "PENDING_REVIEW"
+      : product.status;
+
+  await prisma.marketplaceProduct.update({
+    where: { id: product.id },
+    data: { images: urls, status: nextStatus },
+  });
+  await unlinkBestEffort(removed);
+  await writeAuditLog({
+    actorUserId: user.id,
+    action: isAdmin
+      ? "marketplace.product_image_deleted_by_admin"
+      : "marketplace.product_image_deleted",
+    targetType: "MarketplaceProduct",
+    targetId: product.id,
+    payload: { reference: product.reference, index, removed },
+    level: isAdmin ? "WARN" : "INFO",
+  });
+
+  revalidatePath("/[lang]/factory/catalogue", "page");
+  revalidatePath("/[lang]/admin/marketplace", "page");
+  return { ok: true };
+}
+
+async function deleteSourcingImage(
+  productLineId: string,
+  index: number,
+  user: { id: string; role: Role; organizationId: string },
+): Promise<DeleteUploadedImageResult> {
+  const line = await prisma.sourcingProduct.findUnique({
+    where: { id: productLineId },
+    select: {
+      id: true,
+      images: true,
+      request: {
+        select: { id: true, reference: true, clientOrgId: true, agentId: true },
+      },
+    },
+  });
+  if (!line) return { ok: false, error: "Product line not found." };
+
+  const isClientOwner =
+    user.organizationId === line.request.clientOrgId && user.role === Role.CLIENT;
+  const isAgent =
+    line.request.agentId === user.id && user.role === Role.AGENT;
+  const isAdmin = user.role === Role.ADMIN;
+  if (!isClientOwner && !isAgent && !isAdmin) {
+    return { ok: false, error: "You can't edit this request." };
+  }
+
+  const urls = [...line.images];
+  if (index >= urls.length) return { ok: false, error: "Image not found." };
+  const removed = urls.splice(index, 1)[0];
+
+  await prisma.sourcingProduct.update({
+    where: { id: line.id },
+    data: { images: urls },
+  });
+  await unlinkBestEffort(removed);
+  await writeAuditLog({
+    actorUserId: user.id,
+    action: "sourcing.product_image_deleted",
+    targetType: "SourcingProduct",
+    targetId: line.id,
+    payload: { requestRef: line.request.reference, index, removed },
+  });
+
+  revalidatePath("/[lang]/client/requests", "page");
+  revalidatePath("/[lang]/agent/requests", "page");
+  return { ok: true };
+}
+
+async function deleteAuctionImage(
+  auctionId: string,
+  index: number,
+  user: { id: string; role: Role; organizationId: string },
+): Promise<DeleteUploadedImageResult> {
+  const auction = await prisma.auction.findUnique({
+    where: { id: auctionId },
+    select: {
+      id: true,
+      images: true,
+      status: true,
+      factoryOrgId: true,
+      reference: true,
+    },
+  });
+  if (!auction) return { ok: false, error: "Auction not found." };
+
+  const isOwner = user.organizationId === auction.factoryOrgId;
+  const isAdmin = user.role === Role.ADMIN;
+  if (!isOwner && !isAdmin) {
+    return { ok: false, error: "You can't edit this auction." };
+  }
+
+  // Once bids are running the listing is frozen — image edits have to
+  // happen before launch.
+  if (
+    auction.status === "ACTIVE" ||
+    auction.status === "ENDED" ||
+    auction.status === "SOLD"
+  ) {
+    return { ok: false, error: "Live or closed auctions can't be edited." };
+  }
+
+  const urls = [...auction.images];
+  if (index >= urls.length) return { ok: false, error: "Image not found." };
+  const removed = urls.splice(index, 1)[0];
+
+  await prisma.auction.update({
+    where: { id: auction.id },
+    data: { images: urls },
+  });
+  await unlinkBestEffort(removed);
+  await writeAuditLog({
+    actorUserId: user.id,
+    action: isAdmin
+      ? "auction.image_deleted_by_admin"
+      : "auction.image_deleted",
+    targetType: "Auction",
+    targetId: auction.id,
+    payload: { reference: auction.reference, index, removed },
+    level: isAdmin ? "WARN" : "INFO",
+  });
+
+  revalidatePath("/[lang]/factory/auctions", "page");
+  revalidatePath("/[lang]/admin/auctions", "page");
+  return { ok: true };
+}
+
+async function unlinkBestEffort(storageUrl: string | undefined) {
+  if (!storageUrl) return;
+  const target = resolve(process.cwd(), storageUrl);
+  if (target.startsWith(UPLOADS_ROOT + sep)) {
+    await rm(target, { force: true }).catch(() => {});
+  }
+}
