@@ -48,9 +48,16 @@ export type DisputeSimpleResult = { ok: true } | { ok: false; error: string };
 const DISPUTE_WINDOW_DAYS = 7;
 const FACTORY_RESPONSE_WINDOW_DAYS = 5;
 
-export const DISPUTE_EVIDENCE_CONTEXT = AttachmentContext.DISPUTE_EVIDENCE;
-export const DISPUTE_WINDOW = DISPUTE_WINDOW_DAYS;
-export const FACTORY_RESPONSE_WINDOW = FACTORY_RESPONSE_WINDOW_DAYS;
+// NOTE: kept un-exported. A "use server" file can only EXPORT async
+// functions (Next.js Server Actions enforcement); exporting these
+// constants threw "A 'use server' file can only export async functions,
+// found string" at runtime on every request. They have no external
+// importers anyway. If they ever need to be shared, move them to a
+// sibling non-"use server" module like ./dispute-constants.ts.
+const DISPUTE_EVIDENCE_CONTEXT = AttachmentContext.DISPUTE_EVIDENCE;
+const DISPUTE_WINDOW = DISPUTE_WINDOW_DAYS;
+const FACTORY_RESPONSE_WINDOW = FACTORY_RESPONSE_WINDOW_DAYS;
+void DISPUTE_EVIDENCE_CONTEXT; void DISPUTE_WINDOW; void FACTORY_RESPONSE_WINDOW;
 
 // =============================================================
 // Buyer — open a dispute
