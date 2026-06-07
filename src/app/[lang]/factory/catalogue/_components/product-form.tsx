@@ -23,6 +23,7 @@ import { Field } from "@/components/ui/field";
 import { FormError } from "@/components/ui/form-error";
 import { Select } from "@/components/ui/select";
 import {
+  adminUpdateProductAction,
   createProductAction,
   updateProductAction,
   type ProductActionState,
@@ -68,16 +69,26 @@ export type ProductDefaults = {
 export function ProductForm({
   lang,
   defaults,
+  /**
+   * Selects which server-action variant to bind.
+   * - "factory" (default): factory-owned product, factory user editing.
+   * - "admin": admin overriding any listing. Skips factory-ownership
+   *   check and preserves the listing's status (no re-review bounce).
+   */
+  actorVariant = "factory",
 }: {
   lang: string;
   defaults?: ProductDefaults;
+  actorVariant?: "factory" | "admin";
 }) {
   const dict = useDictionary();
   const router = useRouter();
   const isEdit = Boolean(defaults);
 
+  const editAction =
+    actorVariant === "admin" ? adminUpdateProductAction : updateProductAction;
   const action = isEdit
-    ? updateProductAction.bind(null, defaults!.id)
+    ? editAction.bind(null, defaults!.id)
     : createProductAction;
   const [state, formAction, pending] = useActionState(action, INITIAL);
 

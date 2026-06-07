@@ -116,7 +116,12 @@ export function PinInput({
           className={cn(
             "h-12 w-10 text-center font-mono text-xl font-semibold rounded-md border bg-surface text-fg",
             "transition-colors duration-fast",
-            "focus:outline-2 focus:outline-focus focus:outline-offset-2",
+            // Focus indicator as an inset ring (not an outline with
+            // positive offset) so the focused cell stays exactly the
+            // same outer footprint as the other 5 — previously the
+            // 2px outline + 2px offset visually enlarged just the
+            // focused cell by 4px on each side and looked misaligned.
+            "focus:outline-none focus:ring-2 focus:ring-focus focus:ring-inset",
             invalid
               ? "border-danger focus:border-danger"
               : "border-line-strong focus:border-focus",

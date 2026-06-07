@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";
 import {
+  AdminScope,
   AttachmentContext,
   Category,
   Incoterm,
@@ -16,6 +17,7 @@ import {
 } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
+import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { writeAuditLog } from "@/lib/audit/log";
 import { emitNotificationToMany } from "@/lib/notifications/emit";
 import { generateUniqueReference } from "@/lib/sourcing/reference";
@@ -472,6 +474,180 @@ function nextStatusAfterEdit(
       // Should never hit — guard rejects above; defensive identity.
       return current;
   }
+}
+
+/**
+ * Admin-side edit of a marketplace listing — partner round 4.
+ *
+ * Differences from `updateProductAction`:
+ *   - Looks up the product by id alone (no factory-ownership check).
+ *   - Guards on AdminScope.MARKETPLACE.
+ *   - Status is preserved: an admin's edit is authoritative, so it
+ *     does NOT bounce PUBLISHED back to PENDING_REVIEW the way a
+ *     factory's edit does. The factory-led re-review flow only
+ *     exists to police factory-side changes; admin changes already
+ *     went through review.
+ *   - Audit log records the admin actor and the product's prior
+ *     state for accountability.
+ */
+export async function adminUpdateProductAction(
+  productId: string,
+  _prev: ProductActionState,
+  formData: FormData,
+): Promise<ProductActionState> {
+  const admin = await requireAdminScope(AdminScope.MARKETPLACE);
+
+  const existing = await prisma.marketplaceProduct.findUnique({
+    where: { id: productId },
+    select: {
+      id: true,
+      status: true,
+      images: true,
+      reference: true,
+      name: true,
+      factoryOrgId: true,
+    },
+  });
+  if (!existing) return { error: "Product not found." };
+  if (existing.status === MarketplaceProductStatus.ARCHIVED) {
+    return { error: "Archived listings can't be edited." };
+  }
+
+  const parsed = ProductInputSchema.safeParse({
+    name: formData.get("name"),
+    category: formData.get("category"),
+    description: formData.get("description"),
+    priceEur: formData.get("priceEur"),
+    moq: formData.get("moq") ?? "0",
+    stockAvailable: formData.get("stockAvailable") ?? "0",
+    stockLowThreshold: formData.get("stockLowThreshold") ?? "",
+    leadTimeDays: formData.get("leadTimeDays"),
+    leadTimeUnit: formData.get("leadTimeUnit") ?? LeadTimeUnit.DAY,
+    certifications: formData.get("certifications") ?? "",
+    condition: formData.get("condition") ?? MarketplaceCondition.NEW,
+    depositPercentage: formData.get("depositPercentage") ?? "30",
+    incoterm: formData.get("incoterm") ?? Incoterm.DAP,
+    sampleAvailable: formData.get("sampleAvailable") ?? "",
+    samplePriceEur: formData.get("samplePriceEur") ?? "",
+    compareAtEur: formData.get("compareAtEur") ?? "",
+    flashSaleEndsAt: formData.get("flashSaleEndsAt") ?? "",
+  });
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
+  }
+
+  const priceCentsFactory = Math.round(parsed.data.priceEur * 100);
+  const priceCentsClient = computeClientPriceCents(priceCentsFactory);
+  const compareAtCents =
+    typeof parsed.data.compareAtEur === "number"
+      ? applyBuyerMarkup(Math.round(parsed.data.compareAtEur * 100))
+      : null;
+  const flashSaleEndsAt =
+    parsed.data.flashSaleEndsAt instanceof Date
+      ? parsed.data.flashSaleEndsAt
+      : null;
+
+  const newImages = formData.getAll("images") as File[];
+  const storedUrls: string[] = [...existing.images];
+  for (let i = 0; i < newImages.length && storedUrls.length < 6; i++) {
+    const file = newImages[i];
+    if (!file || file.size === 0) continue;
+    try {
+      const stored = await storeFile({
+        scope: "marketplace",
+        ownerId: existing.id,
+        kindPrefix: `image-${storedUrls.length + 1}`,
+        file,
+      });
+      storedUrls.push(stored.storageUrl);
+    } catch (e) {
+      if (e instanceof StorageError) return { error: e.message };
+      throw e;
+    }
+  }
+
+  await prisma.marketplaceProduct.update({
+    where: { id: existing.id },
+    data: {
+      name: parsed.data.name,
+      category: parsed.data.category,
+      description: parsed.data.description,
+      priceCentsFactory,
+      priceCentsClient,
+      compareAtCents,
+      flashSaleEndsAt,
+      condition: parsed.data.condition,
+      depositPercentageBps: parsed.data.depositPercentage * 100,
+      incoterm: parsed.data.incoterm,
+      sampleAvailable:
+        parsed.data.sampleAvailable === "on" ||
+        parsed.data.sampleAvailable === "true",
+      samplePriceCentsClient:
+        typeof parsed.data.samplePriceEur === "number"
+          ? Math.round(parsed.data.samplePriceEur * 100)
+          : null,
+      moq: parsed.data.moq,
+      stockAvailable: parsed.data.stockAvailable,
+      stockLowThreshold:
+        typeof parsed.data.stockLowThreshold === "number"
+          ? parsed.data.stockLowThreshold
+          : null,
+      leadTimeDays: leadTimeToDays(
+        parsed.data.leadTimeDays,
+        parsed.data.leadTimeUnit,
+      ),
+      leadTimeUnit: parsed.data.leadTimeUnit,
+      certifications: parseCerts(parsed.data.certifications),
+      images: storedUrls,
+      // Admin edits don't trigger re-review — admin is authoritative.
+    },
+  });
+
+  const mediaFiles = formData
+    .getAll("attachments")
+    .filter((f): f is File => f instanceof File && f.size > 0);
+  if (mediaFiles.length > 0) {
+    await storeAttachments({
+      contextType: AttachmentContext.MARKETPLACE_PRODUCT,
+      contextId: existing.id,
+      uploaderId: admin.id,
+      files: mediaFiles,
+    });
+  }
+
+  await writeAuditLog({
+    actorUserId: admin.id,
+    action: "marketplace.product_edited_by_admin",
+    targetType: "MarketplaceProduct",
+    targetId: existing.id,
+    payload: { reference: existing.reference, prevStatus: existing.status },
+    level: "WARN",
+  });
+
+  // Notify the factory so they know admin reshaped their listing.
+  const factoryOwnerIds = (
+    await prisma.user.findMany({
+      where: {
+        organizationId: existing.factoryOrgId,
+        role: Role.FACTORY,
+        deletedAt: null,
+      },
+      select: { id: true },
+    })
+  ).map((u) => u.id);
+  await emitNotificationToMany(factoryOwnerIds, {
+    type: NotificationType.SYSTEM,
+    vars: {
+      systemKey: "marketplace_listing_edited_by_admin",
+      reference: existing.reference,
+    },
+    contextType: "MarketplaceProduct",
+    contextId: existing.id,
+  });
+
+  revalidatePath("/[lang]/factory/catalogue", "page");
+  revalidatePath("/[lang]/admin/marketplace", "page");
+  return { productId: existing.id };
 }
 
 export type ProductMutationResult = { ok: true } | { ok: false; error: string };

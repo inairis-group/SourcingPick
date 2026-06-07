@@ -21,7 +21,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
   );
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 mx-auto w-full max-w-md">
       <header className="flex flex-col gap-1.5">
         <h1 className="text-2xl font-bold text-headline tracking-tight">
           {dict.auth.reset.title}

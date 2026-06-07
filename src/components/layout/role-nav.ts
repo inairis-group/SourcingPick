@@ -91,6 +91,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
             // admin still manage certs internally; buyers don't see
             // them in the menu or on product pages.
             {
+              href: `${base}/client/quotes`,
+              label: dict.client.quotesAggregated.title,
+              icon: InvoiceIcon,
+            },
+            {
               href: `${base}/client/invoices`,
               label: dict.nav.invoices,
               icon: InvoiceIcon,
@@ -194,6 +199,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               primary: true,
             },
             {
+              href: `${base}/agent/quotes`,
+              label: dict.agent.quotesAggregated.title,
+              icon: InvoiceIcon,
+            },
+            {
               href: `${base}/agent/orders`,
               label: dict.nav.orders,
               icon: PackageIcon,
@@ -295,6 +305,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               href: `${base}/admin/payouts`,
               label: dict.admin.payouts.title,
               icon: Wallet01Icon,
+            },
+            {
+              href: `${base}/admin/invoices`,
+              label: dict.admin.invoices.title,
+              icon: InvoiceIcon,
             },
           ],
         },

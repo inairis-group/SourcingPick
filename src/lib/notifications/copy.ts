@@ -44,7 +44,9 @@ export type NotificationVars = {
     | "marketplace_listing_blocked"
     | "marketplace_listing_unblocked"
     | "marketplace_listing_archived_by_admin"
+    | "marketplace_listing_edited_by_admin"
     | "marketplace_sample_ordered"
+    | "quote_relance"
     | "research_fee_refunded";
 };
 
@@ -184,11 +186,23 @@ const SYSTEM_TITLES: Record<
     zh: "商品已被 SourcingPick 归档",
     ar: "تمت أرشفة القائمة من SourcingPick",
   },
+  marketplace_listing_edited_by_admin: {
+    fr: "Annonce modifiée par SourcingPick",
+    en: "Listing edited by SourcingPick",
+    zh: "商品已被 SourcingPick 编辑",
+    ar: "تم تعديل القائمة من SourcingPick",
+  },
   marketplace_sample_ordered: {
     fr: "Commande d'échantillon reçue",
     en: "Sample order received",
     zh: "收到样品订单",
     ar: "تم استلام طلب عيّنة",
+  },
+  quote_relance: {
+    fr: "Relance — devis en attente de décision",
+    en: "Reminder — quote awaiting your decision",
+    zh: "提醒 — 报价等待您决定",
+    ar: "تذكير — العرض بانتظار قرارك",
   },
 };
 

@@ -25,7 +25,13 @@ const FR_VAT_RATE_BPS = 2000; // 20.00 %
 export type InvoicePdfPayload = {
   // Document fields
   reference: string;
-  type: "DEPOSIT" | "BALANCE" | "RESEARCH_FEE" | "SOURCING_FEE" | "CERT_FEE";
+  type:
+    | "DEPOSIT"
+    | "BALANCE"
+    | "RESEARCH_FEE"
+    | "SOURCING_FEE"
+    | "CERT_FEE"
+    | "ADMIN_CUSTOM";
   issuedAt: Date;
   dueAt: Date;
   amountCents: number;
@@ -308,6 +314,7 @@ const TYPE_LABEL: Record<InvoicePdfPayload["type"], string> = {
   RESEARCH_FEE: "Frais de recherche / Research fee",
   SOURCING_FEE: "Frais de sourcing / Sourcing fee",
   CERT_FEE: "Frais de certification / Certification fee",
+  ADMIN_CUSTOM: "Facture / Invoice",
 };
 
 function formatEur(cents: number): string {

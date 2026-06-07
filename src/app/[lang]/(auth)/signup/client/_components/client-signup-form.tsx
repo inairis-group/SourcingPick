@@ -27,7 +27,7 @@ export function ClientSignupForm() {
   );
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 mx-auto w-full max-w-md">
       <header className="flex flex-col gap-1.5">
         <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
           {dict.auth.signup.clientEyebrow}

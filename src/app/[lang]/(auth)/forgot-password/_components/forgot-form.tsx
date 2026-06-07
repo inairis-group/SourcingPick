@@ -24,7 +24,7 @@ export function ForgotPasswordForm() {
 
   if (state.sent) {
     return (
-      <div className="flex flex-col gap-4 text-center">
+      <div className="flex flex-col gap-4 text-center mx-auto w-full max-w-md">
         <h1 className="text-2xl font-bold text-headline tracking-tight">
           {dict.auth.forgot.sentTitle}
         </h1>
@@ -43,7 +43,7 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 mx-auto w-full max-w-md">
       <header className="flex flex-col gap-1.5">
         <h1 className="text-2xl font-bold text-headline tracking-tight">
           {dict.auth.forgot.title}

@@ -17,9 +17,11 @@ const sizeClasses: Record<Size, string> = {
   sm: "max-w-sm",
   md: "max-w-md",
   lg: "max-w-2xl",
-  // Near-fullscreen — for maximized chat / browse-image lightboxes. Caller
-  // controls inner padding (we strip the default p-6 via panelPadding).
-  full: "max-w-6xl w-full h-[95vh] sm:h-[90vh] max-h-[1000px]",
+  // True fullscreen — fills the dynamic viewport (100dvh) edge-to-edge
+  // so the role-nav pill (z-sticky) doesn't peek through below the
+  // panel. Caller controls inner padding (we strip the default p-6
+  // via panelPadding).
+  full: "max-w-none w-screen h-[100dvh]",
 };
 
 const panelPaddingClasses: Record<Size, string> = {
@@ -52,7 +54,17 @@ export function Dialog({ open, onClose, size = "md", children }: DialogProps) {
           <div className="fixed inset-0 bg-overlay" aria-hidden />
         </TransitionChild>
 
-        <div className="fixed inset-0 flex items-end sm:items-center justify-center p-4 z-modal">
+        <div
+          className={cn(
+            "fixed inset-0 z-modal flex justify-center",
+            // For sized dialogs keep the breathing-room padding +
+            // bottom-anchor on mobile / centered on sm+. Full takes
+            // the whole viewport so we strip both.
+            size === "full"
+              ? "items-stretch"
+              : "items-end sm:items-center p-4",
+          )}
+        >
           <TransitionChild
             as={Fragment}
             enter="transition duration-slow ease-emphasize"
@@ -64,10 +76,12 @@ export function Dialog({ open, onClose, size = "md", children }: DialogProps) {
           >
             <DialogPanel
               className={cn(
-                "w-full bg-surface text-fg rounded-xl shadow-lg border border-line",
-                // `flex-col` so a `full` panel can ship a fixed header +
-                // a `flex-1` scrollable body without manual height math.
-                size === "full" && "flex flex-col overflow-hidden",
+                "w-full bg-surface text-fg shadow-lg",
+                size === "full"
+                  ? // Edge-to-edge: no rounded corners, no outer border,
+                    // dialog panel IS the viewport.
+                    "flex flex-col overflow-hidden"
+                  : "rounded-xl border border-line",
                 panelPaddingClasses[size],
                 sizeClasses[size],
               )}

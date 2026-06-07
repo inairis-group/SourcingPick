@@ -41,6 +41,7 @@ export function Select({
   disabled,
   className,
   size = "md",
+  inline = false,
 }: {
   name?: string;
   options: SelectOption[];
@@ -52,6 +53,15 @@ export function Select({
   disabled?: boolean;
   className?: string;
   size?: "sm" | "md";
+  /**
+   * Render the options menu inside the trigger's wrapper (absolutely
+   * positioned) instead of via Headless UI's anchored portal. The
+   * portal mode is great for forms in the page but breaks inside
+   * `<Dialog>` — the Dialog inerts its sibling subtree, killing
+   * pointer events on the portaled options menu. Same workaround
+   * the LocaleDropdown carries for its overlay mode.
+   */
+  inline?: boolean;
 }) {
   const [internal, setInternal] = useState<string>(defaultValue ?? "");
   const value = controlled ?? internal;
@@ -103,7 +113,10 @@ export function Select({
           </span>
         </ListboxButton>
         <ListboxOptions
-          anchor={{ to: "bottom start", gap: 4 }}
+          // `inline` skips Headless UI's portal so the menu lives
+          // inside the trigger's wrapper. Required when the Select is
+          // inside a Dialog — see prop doc.
+          {...(inline ? {} : { anchor: { to: "bottom start", gap: 4 } })}
           transition
           className={cn(
             // Grow to fit the widest option, but never narrower than the
@@ -114,6 +127,10 @@ export function Select({
             "focus:outline-none",
             "origin-top transition duration-100 ease-out",
             "data-closed:scale-95 data-closed:opacity-0",
+            inline && [
+              "absolute top-full mt-1 inset-s-0",
+              "z-overlay-popover",
+            ],
           )}
         >
           {options.map((option) => (

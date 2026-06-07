@@ -23,7 +23,9 @@ export function LoginForm() {
   const [googlePending, setGooglePending] = useState(false);
 
   return (
-    <div className="flex flex-col gap-6">
+    // Self-constrain — the auth layout's wider `max-w-xl` exists for
+    // the signup wizards; login itself wants a tighter column.
+    <div className="flex flex-col gap-6 mx-auto w-full max-w-md">
       <header className="flex flex-col gap-1.5">
         <h1 className="text-2xl font-bold text-headline tracking-tight">
           {dict.auth.login.title}

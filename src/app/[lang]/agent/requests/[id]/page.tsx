@@ -10,6 +10,8 @@ import {
 import { Link } from "@/components/ui/link";
 import { buttonClass } from "@/components/ui/button";
 import { ResearchFeeControl } from "./_components/research-fee-control";
+import { AgentDirectQuoteDialog } from "./_components/agent-direct-quote-dialog";
+import { KycStatus, OrgType } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { requiresPreTenderApproval } from "@/lib/sourcing/pre-tender-gate";
@@ -104,6 +106,27 @@ export default async function AgentRequestDetailPage({
     category: req.category,
     budgetCents: req.budgetCents,
   });
+
+  // Partner round 4: shortlist of registered factories for the
+  // agent-direct quote picker. Same category, KYC verified, not
+  // shadow. Top 20.
+  const shortlistFactories = (
+    await prisma.organization.findMany({
+      where: {
+        type: OrgType.FACTORY,
+        kycStatus: KycStatus.VERIFIED,
+        isShadowOrg: false,
+        deletedAt: null,
+        OR: [
+          { factoryProfile: { category: req.category } },
+          { factoryProfile: { is: null } },
+        ],
+      },
+      orderBy: { displayName: "asc" },
+      take: 20,
+      select: { id: true, displayName: true, country: true },
+    })
+  ).map((f) => ({ id: f.id, displayName: f.displayName, country: f.country }));
 
   const order = req.orders[0];
 
@@ -256,26 +279,35 @@ export default async function AgentRequestDetailPage({
               String(req.tenderInvitations.length),
             )}
           </p>
-          {!gateNeeded || req.preTenderApprovedAt ? (
-            <Link
-              href={`/${lang}/agent/requests/${req.id}/tender`}
-              className={cn(buttonClass({ variant: "primary", size: "sm" }))}
-            >
-              <HugeiconsIcon icon={Mail01Icon} size={14} strokeWidth={1.5} />
-              <span className="ms-1.5">{dict.tender.sendCta}</span>
-            </Link>
-          ) : (
-            <span
-              className={cn(
-                buttonClass({ variant: "primary", size: "sm" }),
-                "opacity-50 cursor-not-allowed pointer-events-none",
-              )}
-              aria-disabled="true"
-            >
-              <HugeiconsIcon icon={Mail01Icon} size={14} strokeWidth={1.5} />
-              <span className="ms-1.5">{dict.tender.sendCta}</span>
-            </span>
-          )}
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Partner round 4: agent-direct quote — bypass the
+                tender flow entirely if the agent already negotiated
+                with a factory (typically Chinese, off-platform). */}
+            <AgentDirectQuoteDialog
+              requestId={req.id}
+              factories={shortlistFactories}
+            />
+            {!gateNeeded || req.preTenderApprovedAt ? (
+              <Link
+                href={`/${lang}/agent/requests/${req.id}/tender`}
+                className={cn(buttonClass({ variant: "primary", size: "sm" }))}
+              >
+                <HugeiconsIcon icon={Mail01Icon} size={14} strokeWidth={1.5} />
+                <span className="ms-1.5">{dict.tender.sendCta}</span>
+              </Link>
+            ) : (
+              <span
+                className={cn(
+                  buttonClass({ variant: "primary", size: "sm" }),
+                  "opacity-50 cursor-not-allowed pointer-events-none",
+                )}
+                aria-disabled="true"
+              >
+                <HugeiconsIcon icon={Mail01Icon} size={14} strokeWidth={1.5} />
+                <span className="ms-1.5">{dict.tender.sendCta}</span>
+              </span>
+            )}
+          </div>
         </div>
 
         {req.tenderInvitations.length > 0 && (

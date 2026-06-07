@@ -23,7 +23,12 @@ export default async function AuthLayout({
       </header>
 
       <main className="flex flex-1 items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">{children}</div>
+        {/* `max-w-xl` (576px) is the wizard-friendly width — the
+            factory + client signup forms have a 5-step stepper that
+            overflows below `max-w-md`. Login + verify-OTP pages can
+            still look visually narrow by adding `mx-auto max-w-md` on
+            their own root nodes. */}
+        <div className="w-full max-w-xl">{children}</div>
       </main>
 
       <footer className="px-4 py-6 sm:px-6 lg:px-8 text-xs text-faint text-center">

@@ -65,7 +65,11 @@ export default async function FactoryDashboardPage({
   ] = await Promise.all([
     prisma.organization.findUnique({
       where: { id: user.organizationId },
-      select: { kycStatus: true, stripeConnectAccountId: true },
+      // Wise is the sole payout rail — `payoutOnboardedAt` is the
+      // canonical "factory has set up payouts" signal regardless of
+      // which provider was selected (the legacy stripeConnectAccountId
+      // column is no longer read).
+      select: { kycStatus: true, payoutOnboardedAt: true },
     }),
     prisma.tenderInvitation.findMany({
       where: {
@@ -159,7 +163,7 @@ export default async function FactoryDashboardPage({
     )?._count._all ?? 0;
 
   const kycReady = org?.kycStatus === KycStatus.VERIFIED;
-  const connectReady = Boolean(org?.stripeConnectAccountId);
+  const payoutsReady = Boolean(org?.payoutOnboardedAt);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
@@ -179,14 +183,14 @@ export default async function FactoryDashboardPage({
           </p>
         </div>
       )}
-      {kycReady && !connectReady && (
+      {kycReady && !payoutsReady && (
         <div className="rounded-md border border-info-edge bg-info-soft/40 px-4 py-3 mb-4 text-sm text-fg flex items-center justify-between gap-3 flex-wrap">
           <div>
             <p className="font-semibold text-headline">
-              {dict.factory.dashboard.connectPendingTitle}
+              {dict.factory.dashboard.payoutPendingTitle}
             </p>
             <p className="text-xs text-muted mt-0.5">
-              {dict.factory.dashboard.connectPendingBody}
+              {dict.factory.dashboard.payoutPendingBody}
             </p>
           </div>
           <Link

@@ -3,7 +3,8 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { MarketplaceProductStatus } from "@prisma/client";
-import { Button } from "@/components/ui/button";
+import { Button, buttonClass } from "@/components/ui/button";
+import { Link } from "@/components/ui/link";
 import {
   Dialog,
   DialogActions,
@@ -16,7 +17,7 @@ import {
   adminDeleteProductAction,
   adminUnblockProductAction,
 } from "@/lib/marketplace/admin-actions";
-import { useDictionary } from "@/lib/i18n/client-provider";
+import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { cn } from "@/lib/utils";
 
 /**
@@ -35,6 +36,7 @@ export function AdminListingControls({
   blocked: boolean;
 }) {
   const dict = useDictionary();
+  const lang = useLocale();
   const t = dict.admin.marketplace.controls;
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -103,6 +105,16 @@ export function AdminListingControls({
     <div className="flex flex-col gap-2">
       {error && <FormError>{error}</FormError>}
       <div className="flex items-center gap-2 flex-wrap">
+        {/* Partner round-4: admin needs direct edit power on any
+            listing without going through the factory. Opens the same
+            form the factory uses, bound to adminUpdateProductAction. */}
+        <Link
+          href={`/${lang}/admin/marketplace/${productId}/edit`}
+          variant="muted"
+          className={buttonClass({ variant: "secondary", size: "sm" })}
+        >
+          {t.editCta}
+        </Link>
         {blocked ? (
           <Button
             type="button"

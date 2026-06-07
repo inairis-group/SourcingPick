@@ -34,6 +34,7 @@ export async function GET(
       vatRateBps: true,
       issuedAt: true,
       dueAt: true,
+      lineDescription: true,
       organizationId: true,
       organization: {
         select: {
@@ -108,10 +109,14 @@ export async function GET(
     },
     delivery,
     orderReference: invoice.order?.reference ?? null,
+    // Prefer the admin-supplied free-text line (ADMIN_CUSTOM); fall
+    // back to a stock description derived from the order or invoice
+    // type for system-generated rows.
     lineDescription:
-      invoice.order?.reference
+      invoice.lineDescription?.trim() ||
+      (invoice.order?.reference
         ? `Order ${invoice.order.reference} — ${invoice.type}`
-        : `${invoice.type} ${invoice.reference}`,
+        : `${invoice.type} ${invoice.reference}`),
   });
 
   return new NextResponse(new Uint8Array(pdf), {

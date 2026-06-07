@@ -333,6 +333,12 @@ enum InvoiceType {
   // Legacy from spec §1.1 (sourcing-side commission). Kept until commission wiring lands in Phase 3.
   SOURCING_FEE
   CERT_FEE
+  /// Partner round 4 — admin-issued ad-hoc invoice. Used for one-off
+  /// billing the standard order/research/cert paths don't cover
+  /// (commission true-ups, manual platform fees, bespoke services).
+  /// The cents amount, line description, and direction (to client /
+  /// factory / agent) are all set by the admin at create time.
+  ADMIN_CUSTOM
 }
 
 enum InvoiceStatus {
@@ -631,6 +637,7 @@ model User {
   supportTicketsResolved  SupportTicket[]     @relation("SupportTicketResolver")
   disputesOpened          Dispute[]           @relation("DisputeOpener")
   disputesResolved        Dispute[]           @relation("DisputeResolver")
+  invoicesIssued          Invoice[]           @relation("InvoiceIssuer")
   quotesAsAgent           Quote[]             @relation("QuoteAgent")
   ordersAsAgent           Order[]             @relation("OrderAgent")
   authoredMessages        Message[]           @relation("MessageAuthor")
@@ -722,6 +729,15 @@ model Organization {
   facebookUrl   String?
   linkedinUrl   String?
   kycStatus     KycStatus @default(PENDING)
+  /// Partner round 4 — set true when the org was created by an agent
+  /// on behalf of an off-platform factory (typically a Chinese factory
+  /// the agent has negotiated with by phone / WeChat / email and that
+  /// doesn't have a SourcingPick account yet). KYC stays PENDING; the
+  /// only fields populated are the bare minimum (displayName, country,
+  /// city). The agent can later invite the real factory to claim it
+  /// via an onboarding link, after which `isShadowOrg` flips back to
+  /// false and the regular KYC flow runs.
+  isShadowOrg   Boolean   @default(false)
   kycVerifiedAt DateTime?
   suspended     Boolean   @default(false)
   // Stripe identifiers — populated lazily on first checkout / first onboarding.
@@ -977,6 +993,14 @@ model Quote {
   depositPercentageBps  Int             @default(3000)
   status                QuoteStatus     @default(DRAFT)
   notes                 String?
+  /// Partner round 4 — "relance". When the quote has been forwarded
+  /// to the client (status=SENT_TO_CLIENT) and the buyer hasn't
+  /// actioned it after N business days, a reminder cron stamps this
+  /// timestamp and emits a notification to buyer + agent. Null means
+  /// no reminder has been sent yet. We only ever send one per quote
+  /// to avoid pestering — if the buyer still hasn't acted after the
+  /// reminder, the agent picks up the phone.
+  relancedAt            DateTime?
   createdAt             DateTime        @default(now())
   updatedAt             DateTime        @updatedAt
 
@@ -1252,6 +1276,15 @@ model Invoice {
   paidAt         DateTime?
   status         InvoiceStatus @default(DRAFT)
   pdfUrl         String?
+  /// Partner round 4 — admin-issued invoices. Free-text line shown
+  /// in the PDF + the buyer's list. Null for system-generated rows
+  /// where the line comes from the order reference.
+  lineDescription String?
+  /// Partner round 4 — admin actor who created an ADMIN_CUSTOM
+  /// invoice. Null for system-generated rows (DEPOSIT, BALANCE,
+  /// RESEARCH_FEE etc.) where no human pushed the button.
+  issuedByUserId String?
+  issuedBy       User?         @relation("InvoiceIssuer", fields: [issuedByUserId], references: [id], onDelete: SetNull)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 
