@@ -1004,7 +1004,7 @@
       "descriptionPlaceholder": "Coton bio 250 gsm, 38×42 cm, anses 60 cm, impression sérigraphie 1 couleur recto…",
       "priceLabel": "Prix unitaire usine",
       "clientPriceLabel": "Prix unitaire client",
-      "clientPriceHint": "Calculé avec la marge plateforme 6%.",
+      "clientPriceHint": "Calculé avec la marge plateforme 3%.",
       "conditionLabel": "État",
       "conditions": {
         "NEW": "Neuf",
@@ -1177,7 +1177,7 @@
       "pendingBody": "Il manque encore quelques informations avant qu'on puisse vous verser. Reprenez le formulaire pour activer les paiements.",
       "resumeOnboardingCta": "Reprendre",
       "readyTitle": "Versements actifs",
-      "readyBody": "Vos versements sont activés. Chaque commande livrée déclenche un virement net de la commission 3%.",
+      "readyBody": "Vos versements sont activés. Chaque commande livrée déclenche un virement net de la commission 6%.",
       "manageAccountCta": "Gérer",
       "unreachableTitle": "Prestataire de versement injoignable",
       "unreachableBody": "Nous n'avons pas pu joindre notre prestataire de versement. Réessayez dans quelques minutes ; vos versements en cours ne sont pas impactés.",
@@ -1227,7 +1227,7 @@
       "emptyBody": "Vos commandes apparaissent ici une fois qu'un client a accepté votre devis.",
       "clientLabel": "Client",
       "revenueLabel": "Revenu brut",
-      "supplierFeeLabel": "Commission SourcingPick (3%)",
+      "supplierFeeLabel": "Commission SourcingPick (6%)",
       "supplierFeeHint": "Plafonnée à 5 000 € — pricing v2.",
       "netLabel": "Versement net",
       "netHint": "Estimation ; le versement réel passe par le séquestre (Phase 3).",
@@ -2226,11 +2226,11 @@
       "items": [
         {
           "question": "Combien coûte la vente sur SourcingPick ?",
-          "answer": "Pas d'abonnement ni de frais de mise en ligne. Nous prélevons une commission de 3 % sur votre versement uniquement lorsqu'une commande aboutit. Rien d'avance, rien si vous ne vendez pas."
+          "answer": "Pas d'abonnement ni de frais de mise en ligne. Nous prélevons une commission de 6 % sur votre versement uniquement lorsqu'une commande aboutit. Rien d'avance, rien si vous ne vendez pas."
         },
         {
           "question": "Comment et quand suis-je payé ?",
-          "answer": "Les fonds de l'acheteur sont en séquestre Wise dès leur réception. À la livraison conforme confirmée, votre montant net (valeur de la commande moins les 3 %) est viré sur votre compte bancaire en 1 à 3 jours."
+          "answer": "Les fonds de l'acheteur sont en séquestre Wise dès leur réception. À la livraison conforme confirmée, votre montant net (valeur de la commande moins les 6 %) est viré sur votre compte bancaire en 1 à 3 jours."
         },
         {
           "question": "Quel est le rôle de Wise dans tout ça ?",
@@ -2330,7 +2330,9 @@
     "founders": {
       "eyebrow": "L'équipe",
       "title": "Les visages derrière la plateforme.",
-      "coFounderRole": "Co-fondateur"
+      "adamRole": "Fondateur du projet · vérificateur des commandes",
+      "wheyRole": "Agent principal · négociation auprès des usines",
+      "calebRole": "Ingénieur logiciel · intégrations sur mesure"
     }
   },
   "pricing": {
@@ -2344,13 +2346,13 @@
         "tagline": "Pour vos besoins sur mesure, négociés par un agent dédié.",
         "buyer": {
           "label": "Côté acheteur",
-          "rate": "6 %",
+          "rate": "3 %",
           "cap": null,
           "note": "Commission prélevée à la livraison conforme. Le même taux sur toutes les commandes, sans plafond."
         },
         "supplier": {
           "label": "Côté fournisseur",
-          "rate": "3 %",
+          "rate": "6 %",
           "cap": null,
           "note": "Commission déduite du versement à l'usine après libération du séquestre."
         },
@@ -2367,13 +2369,13 @@
         "tagline": "Pour les produits déjà sourcés et négociés, achetables en un clic.",
         "buyer": {
           "label": "Côté acheteur",
-          "rate": "6 %",
+          "rate": "3 %",
           "cap": null,
           "note": "Intégré au prix affiché. Vous payez ce que vous voyez, sans surcoût au checkout."
         },
         "supplier": {
           "label": "Côté vendeur",
-          "rate": "3 %",
+          "rate": "6 %",
           "cap": null,
           "note": "Commission déduite du versement au vendeur après libération du séquestre."
         },

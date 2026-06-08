@@ -110,5 +110,8 @@ export async function GET(
       })),
     })),
     selfUserId: user.id,
+    // Surfaced so the composer can hide admin-only affordances
+    // (message templates) for non-admin users.
+    selfRole: user.role,
   });
 }

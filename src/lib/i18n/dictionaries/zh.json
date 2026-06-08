@@ -1004,7 +1004,7 @@
       "descriptionPlaceholder": "有机棉 250 gsm,38×42 cm,提手 60 cm,正面单色丝印…",
       "priceLabel": "工厂单价",
       "clientPriceLabel": "客户单价",
-      "clientPriceHint": "已包含平台 6% 加成。",
+      "clientPriceHint": "已包含平台 3% 加成。",
       "conditionLabel": "成色",
       "conditions": {
         "NEW": "全新",
@@ -1177,7 +1177,7 @@
       "pendingBody": "我们还需要一些信息才能向您付款。请继续填写表单以启用收款。",
       "resumeOnboardingCta": "继续",
       "readyTitle": "收款已激活",
-      "readyBody": "收款已启用。每个已交付的订单将扣除 3% 佣金后自动转账。",
+      "readyBody": "收款已启用。每个已交付的订单将扣除 6% 佣金后自动转账。",
       "manageAccountCta": "管理",
       "unreachableTitle": "无法连接收款服务方",
       "unreachableBody": "暂时无法连接到收款服务方。请稍后重试 — 您正在处理的收款不会受影响。",
@@ -1227,7 +1227,7 @@
       "emptyBody": "当客户接受您的报价后,订单会显示在这里。",
       "clientLabel": "客户",
       "revenueLabel": "毛收入",
-      "supplierFeeLabel": "SourcingPick 佣金(3%)",
+      "supplierFeeLabel": "SourcingPick 佣金(6%)",
       "supplierFeeHint": "上限 5,000 € — 定价 v2。",
       "netLabel": "净收款",
       "netHint": "估算值;实际付款通过托管完成(第 3 阶段)。",
@@ -2226,11 +2226,11 @@
       "items": [
         {
           "question": "在 SourcingPick 销售要花多少钱?",
-          "answer": "没有订阅费，也没有上架费。仅在订单完成时从您的回款中扣除 3% 佣金。无需预付，不成交则不收费。"
+          "answer": "没有订阅费，也没有上架费。仅在订单完成时从您的回款中扣除 6% 佣金。无需预付，不成交则不收费。"
         },
         {
           "question": "我何时、以何种方式收款?",
-          "answer": "买家电汇后，资金即进入 SourcingPick 的 Wise 托管账户。确认合规交付后，您的净额（订单金额减去 3%）将在 1–3 个工作日内汇入您的银行账户。"
+          "answer": "买家电汇后，资金即进入 SourcingPick 的 Wise 托管账户。确认合规交付后，您的净额（订单金额减去 6%）将在 1–3 个工作日内汇入您的银行账户。"
         },
         {
           "question": "Wise 在其中扮演什么角色？",
@@ -2330,7 +2330,9 @@
     "founders": {
       "eyebrow": "团队",
       "title": "平台背后的面孔。",
-      "coFounderRole": "联合创始人"
+      "adamRole": "项目创始人 · 订单审核",
+      "wheyRole": "首席代理 · 工厂端谈判",
+      "calebRole": "软件工程师 · 定制集成"
     }
   },
   "pricing": {
@@ -2344,13 +2346,13 @@
         "tagline": "为您量身定制的需求,由专属代理协商。",
         "buyer": {
           "label": "买家方",
-          "rate": "6 %",
+          "rate": "3 %",
           "cap": null,
           "note": "佣金在确认收货后收取。所有订单同一费率,无上限。"
         },
         "supplier": {
           "label": "供应商方",
-          "rate": "3 %",
+          "rate": "6 %",
           "cap": null,
           "note": "佣金在托管释放后从工厂付款中扣除。"
         },
@@ -2367,13 +2369,13 @@
         "tagline": "已采购并谈判好的产品,一键购买。",
         "buyer": {
           "label": "买家方",
-          "rate": "6 %",
+          "rate": "3 %",
           "cap": null,
           "note": "已包含在标示价格中。所见即所付,结算时无附加费用。"
         },
         "supplier": {
           "label": "卖家方",
-          "rate": "3 %",
+          "rate": "6 %",
           "cap": null,
           "note": "佣金在托管释放后从卖家付款中扣除。"
         },

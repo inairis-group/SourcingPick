@@ -57,7 +57,7 @@ export default async function AdminPayoutsPage({
         reference: true,
         amountCents: true,
         // Renamed from `commissionCents` (CTO audit F3) — Payout
-        // carries the supplier-side 3% fee, distinct from
+        // carries the supplier-side 6% fee, distinct from
         // Order.commissionCents (full buyer-side platform margin).
         supplierFeeCents: true,
         status: true,

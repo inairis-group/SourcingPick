@@ -49,6 +49,7 @@ export function RoleNavPill({ items }: { items: NavItem[] }) {
                     : "text-fg hover:bg-ghost-hover",
                 )}
                 title={item.label}
+                {...(item.tourId ? { "data-tour": item.tourId } : {})}
               >
                 <HugeiconsIcon
                   icon={item.icon}

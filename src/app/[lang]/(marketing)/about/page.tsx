@@ -129,20 +129,25 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
           </h2>
         </div>
 
-        {/* Founder cards. Swap the photoUrl on each FounderCard to a real
-            asset once the photo files land — until then the initials are the
-            fallback. Names below are placeholders that the team can edit in
-            this file (one place, no i18n round-trip needed). */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl">
-          
+        {/* Team cards. Swap the photoUrl on each card to a real asset
+            once the photo files land — until then the initials are
+            the fallback. Names live in this file (one place, no i18n
+            round-trip needed); roles come from the dictionary so
+            translations stay in sync. */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <FounderCard
             name="Adam Fernandez"
-            role={dict.about.founders.coFounderRole}
+            role={dict.about.founders.adamRole}
+            photoUrl={null}
+          />
+          <FounderCard
+            name="Whey"
+            role={dict.about.founders.wheyRole}
             photoUrl={null}
           />
           <FounderCard
             name="Caleb-Livingstone Emmanuel"
-            role={dict.about.founders.eyebrow}
+            role={dict.about.founders.calebRole}
             photoUrl={null}
           />
         </div>
@@ -165,10 +170,19 @@ const TONE_CLASSES: Record<
 };
 
 /**
- * Founder card with photo or initials-avatar fallback. The initials variant
- * is intentional — the alternative would be a stock silhouette which looks
- * worse than two clean letters in the brand palette. To swap in a real
- * photo later, pass `photoUrl` and the component renders an `<img>` cover.
+ * Founder card styled as a polaroid: square photo at the top, thick
+ * white border, extra "caption" space at the bottom (the part you'd
+ * sign on a real instant photo), drop shadow to suggest a physical
+ * print on a desk. Name + role render BELOW the polaroid as plain
+ * text — the photo frame stays focused on the image.
+ *
+ * The initials variant is intentional — the alternative would be a
+ * stock silhouette which looks worse than two clean letters in the
+ * brand palette. To swap in a real photo later, pass `photoUrl` and
+ * the component renders an `<img>` cover inside the frame.
+ *
+ * Subtle hover lift (translate + slight scale) + tighter shadow so
+ * the card feels picked up off the page when hovered.
  */
 function FounderCard({
   name,
@@ -187,22 +201,36 @@ function FounderCard({
     .join("");
 
   return (
-    <div className="flex items-center gap-4 rounded-xl border border-line bg-surface p-4">
-      <div className="shrink-0 h-16 w-16 rounded-full overflow-hidden bg-brand-50 text-brand-700 flex items-center justify-center font-semibold text-lg">
-        {photoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={photoUrl}
-            alt={name}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <span aria-hidden>{initials}</span>
+    <div className="flex flex-col items-start gap-4">
+      {/* Polaroid frame — white card with a square photo on top and
+          extra "caption-space" at the bottom (just a strip, no text). */}
+      <div
+        className={cn(
+          "w-full max-w-65 rounded-sm bg-brand-50",
+          "p-3 pb-12",
+          "transition-all duration-base ease-default",
+          "hover:-translate-y-0.5",
         )}
+      >
+        <div className="aspect-square overflow-hidden bg-brand-200 text-brand-700 flex items-center justify-center font-semibold text-4xl tracking-tight">
+          {photoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={photoUrl}
+              alt={name}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span aria-hidden>{initials}</span>
+          )}
+        </div>
       </div>
-      <div className="min-w-0">
-        <p className="font-semibold text-headline">{name}</p>
-        <p className="text-sm text-muted">{role}</p>
+
+      {/* Caption — sits below the polaroid, not inside, so the frame
+          stays focused on the photo. */}
+      <div className="px-1">
+        <p className="font-semibold text-headline text-base">{name}</p>
+        <p className="text-sm text-muted mt-0.5">{role}</p>
       </div>
     </div>
   );

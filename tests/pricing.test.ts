@@ -12,34 +12,35 @@ import {
   computeResearchFee,
 } from "../src/lib/orders/pricing";
 
-test("rate constants match the locked v2 model (6% buyer / 3% supplier)", () => {
-  assert.equal(BUYER_MARKUP_BPS, 600);
-  assert.equal(SUPPLIER_FEE_BPS, 300);
-  // divisor used to derive marketplace listed price = 1 − 6% − 3% = 91%
+test("rate constants match the locked v2.1 model (3% buyer / 6% supplier)", () => {
+  assert.equal(BUYER_MARKUP_BPS, 300);
+  assert.equal(SUPPLIER_FEE_BPS, 600);
+  // divisor used to derive marketplace listed price = 1 − 3% − 6% = 91%
+  // (total platform take unchanged; redistributed between sides).
   assert.equal(MARKETPLACE_NET_DIVISOR_BPS, 9100);
 });
 
-test("applyBuyerMarkup adds 6% and rounds to the nearest cent", () => {
-  assert.equal(applyBuyerMarkup(10_000), 10_600); // 100.00 → 106.00
+test("applyBuyerMarkup adds 3% and rounds to the nearest cent", () => {
+  assert.equal(applyBuyerMarkup(10_000), 10_300); // 100.00 → 103.00
   assert.equal(applyBuyerMarkup(0), 0);
-  // 333 * 1.06 = 352.98 → rounds to 353
-  assert.equal(applyBuyerMarkup(333), 353);
+  // 333 * 1.03 = 342.99 → rounds to 343
+  assert.equal(applyBuyerMarkup(333), 343);
 });
 
-test("computeFactoryPayout deducts 3% supplier fee from gross", () => {
+test("computeFactoryPayout deducts 6% supplier fee from gross", () => {
   const r = computeFactoryPayout(10_000, 3); // unit 100.00 × 3 = 300.00
   assert.equal(r.grossCents, 30_000);
-  assert.equal(r.feeCents, 900); // 3% of 30000
-  assert.equal(r.netCents, 29_100);
+  assert.equal(r.feeCents, 1_800); // 6% of 30000
+  assert.equal(r.netCents, 28_200);
   // net + fee always reconstitutes gross
   assert.equal(r.netCents + r.feeCents, r.grossCents);
 });
 
 test("computeFactoryPayout fee rounds half-up at the cent", () => {
-  // gross 1_050 → 3% = 31.5 → rounds to 32
-  const r = computeFactoryPayout(1_050, 1);
-  assert.equal(r.feeCents, 32);
-  assert.equal(r.netCents, 1_018);
+  // gross 1_025 → 6% = 61.5 → rounds to 62
+  const r = computeFactoryPayout(1_025, 1);
+  assert.equal(r.feeCents, 62);
+  assert.equal(r.netCents, 963);
 });
 
 test("computeDisputeRefund CUSTOM refunds the full escrow", () => {

@@ -52,6 +52,7 @@ type Message = {
 type FetchPayload = {
   messages: Message[];
   selfUserId: string;
+  selfRole: Role;
 };
 
 /**
@@ -84,6 +85,7 @@ export function MessageThread({
   const locale = useLocale();
   const [messages, setMessages] = useState<Message[]>([]);
   const [selfId, setSelfId] = useState<string | null>(null);
+  const [selfRole, setSelfRole] = useState<Role | null>(null);
   const [draft, setDraft] = useState("");
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [showPicker, setShowPicker] = useState(false);
@@ -119,6 +121,7 @@ export function MessageThread({
       const data = (await res.json()) as FetchPayload;
       setMessages(data.messages);
       setSelfId(data.selfUserId);
+      setSelfRole(data.selfRole);
     } catch {
       setError(dict.messaging.errorLoad);
     } finally {
@@ -403,10 +406,12 @@ export function MessageThread({
                 />
               </button>
 
-              {/* Partner #23: quick-insert message templates for the
+              {/* Quick-insert message templates — admin-only. The
                   recurring buyer questions (invoicing, guarantees,
-                  refunds, deposit/balance, search process). */}
-              {!voiceActive && (
+                  refunds, deposit/balance, search process) are
+                  authoritative answers that should only ship from
+                  the platform, not from buyer/factory/agent users. */}
+              {!voiceActive && selfRole === Role.ADMIN && (
                 <TemplatePicker
                   onInsert={(body) => {
                     setDraft((current) =>

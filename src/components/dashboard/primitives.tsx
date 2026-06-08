@@ -16,6 +16,7 @@ export function KpiCard({
   tone = "neutral",
   icon,
   href,
+  tourId,
 }: {
   label: string;
   value: ReactNode;
@@ -23,6 +24,8 @@ export function KpiCard({
   tone?: "neutral" | "warning" | "success" | "danger" | "info";
   icon?: IconSvgElement;
   href?: string;
+  /** Optional id consumed by the first-order tutorial spotlight. */
+  tourId?: string;
 }) {
   const toneClasses = {
     neutral: "text-headline",
@@ -39,6 +42,7 @@ export function KpiCard({
         "transition-colors duration-fast",
         href && "hover:bg-subtle cursor-pointer",
       )}
+      {...(tourId ? { "data-tour": tourId } : {})}
     >
       <div className="flex items-start justify-between gap-2">
         <p className="text-[11px] font-medium uppercase tracking-wide text-faint">

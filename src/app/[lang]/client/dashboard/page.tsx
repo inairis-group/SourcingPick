@@ -172,6 +172,7 @@ export default async function ClientDashboardPage({
         actions={
           <Link
             href={`/${lang}/client/requests/new`}
+            data-tour="new-request"
             className={`w-full md:w-auto ${cn(buttonClass({ variant: "primary", size: "sm" }))}`}
           >
             <HugeiconsIcon icon={Add01Icon} size={14} strokeWidth={1.5} />
@@ -209,12 +210,14 @@ export default async function ClientDashboardPage({
           value={formatNumber(activeOrdersCount, lang)}
           icon={PackageIcon}
           href={`/${lang}/client/orders`}
+          tourId="active-orders"
         />
         <KpiCard
           label={dict.client.dashboard.kpiAwaitingPayment}
           value={formatNumber(awaitingPaymentOrders.length, lang)}
           tone={awaitingPaymentOrders.length > 0 ? "warning" : "neutral"}
           icon={Wallet01Icon}
+          tourId="awaiting-payment"
         />
         <KpiCard
           label={dict.client.dashboard.kpiTotalSpent}

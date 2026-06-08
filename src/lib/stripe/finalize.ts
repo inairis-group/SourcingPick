@@ -406,7 +406,7 @@ async function releaseFactoryPayout(orderId: string): Promise<void> {
       amountCents: netCents,
       currency: "EUR",
       idempotencyKey: `payout-${order.id}`,
-      description: `Payout ${order.reference} (net of 3% supplier fee)`,
+      description: `Payout ${order.reference} (net of 6% supplier fee)`,
     });
     if (result.ok) {
       providerRef = result.providerRef;

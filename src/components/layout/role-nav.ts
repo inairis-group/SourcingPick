@@ -32,6 +32,12 @@ export type NavItem = {
   icon: typeof DashboardSquare01Icon;
   /** Primary items show in the bottom pill. Secondary items live in the hamburger overlay only. */
   primary?: boolean;
+  /**
+   * Optional tour id — used by the first-order tutorial coachmark
+   * (FirstOrderTutorial) to spotlight this item. Rendered as
+   * `data-tour="..."` on the nav link.
+   */
+  tourId?: string;
 };
 
 export type NavGroup = {
@@ -75,6 +81,7 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               label: dict.nav.marketplace,
               icon: Store01Icon,
               primary: true,
+              tourId: "marketplace",
             },
             {
               href: `${base}/client/auctions`,
@@ -99,6 +106,7 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               href: `${base}/client/invoices`,
               label: dict.nav.invoices,
               icon: InvoiceIcon,
+              tourId: "invoices",
             },
             {
               href: `${base}/client/analytics`,
