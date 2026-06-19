@@ -50,7 +50,7 @@ const PILLARS: Pillar[] = [
 export function Pillars({ dict }: { dict: Dictionary }) {
   return (
     <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-      <div className="max-w-2xl mb-12 lg:mb-16">
+      <div className="max-w-2xl mb-12 lg:mb-16 animate-fade-up">
         <p className="text-xs font-medium tracking-wide uppercase text-brand-700 mb-3">
           {dict.marketing.pillars.eyebrow}
         </p>
@@ -60,12 +60,13 @@ export function Pillars({ dict }: { dict: Dictionary }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-line rounded-lg overflow-hidden border border-line">
-        {PILLARS.map((p) => {
+        {PILLARS.map((p, i) => {
           const copy = dict.marketing.pillars[p.key];
           return (
             <div
               key={p.key}
-              className="bg-surface p-6 lg:p-8 flex flex-col gap-4"
+              className="bg-surface p-6 lg:p-8 flex flex-col gap-4 animate-fade-up transition-colors duration-base hover:bg-subtle/40"
+              style={{ animationDelay: `${80 + i * 70}ms` }}
             >
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-700">
                 {p.icon}

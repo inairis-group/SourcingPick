@@ -339,6 +339,11 @@ async function releaseFactoryPayout(orderId: string): Promise<void> {
         select: {
           unitPriceCentsFactory: true,
           quantity: true,
+          // Pricing v3 split: sourcing 1% supplier vs marketplace 1%
+          // (same rate today but kept separate so they can diverge
+          // without changing this query). The request's `origin`
+          // tells us which flow this order came from.
+          request: { select: { origin: true } },
         },
       },
       factoryOrg: {
@@ -374,9 +379,12 @@ async function releaseFactoryPayout(orderId: string): Promise<void> {
   }
   const primaryEscrow = heldEscrows[0]!;
 
+  const pricingFlow =
+    order.quote.request.origin === "SOURCING_FLOW" ? "sourcing" : "marketplace";
   const { grossCents, feeCents, netCents } = computeFactoryPayout(
     order.quote.unitPriceCentsFactory,
     order.quote.quantity,
+    pricingFlow,
   );
 
   // Resolve the payout rail. CTO audit F8: the legacy Stripe-Connect

@@ -14,6 +14,7 @@ import {
 import { buttonClass } from "@/components/ui/button";
 import { ContextThread } from "@/components/messaging/context-thread";
 import { Link } from "@/components/ui/link";
+import { FilterTab } from "@/components/ui/filter-tab";
 import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -467,32 +468,6 @@ function contextLabel(
     Record<ThreadContextType, string>
   >;
   return labels[ctx] ?? null;
-}
-
-function FilterTab({
-  href,
-  active,
-  label,
-}: {
-  href: string;
-  active: boolean;
-  label: string;
-}) {
-  return (
-    <Link
-      href={href}
-      variant="muted"
-      className={cn(
-        "inline-flex items-center h-8 px-3 rounded-full text-xs font-medium whitespace-nowrap",
-        "transition-colors duration-fast",
-        active
-          ? "bg-action text-on-action"
-          : "bg-subtle text-muted hover:text-fg",
-      )}
-    >
-      {label}
-    </Link>
-  );
 }
 
 function ThreadRow({

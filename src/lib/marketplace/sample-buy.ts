@@ -75,6 +75,7 @@ export async function buySampleAction(
       status: MarketplaceProductStatus.PUBLISHED,
       blockedAt: null,
       sampleAvailable: true,
+      testedAndApprovedAt: { not: null },
     },
     select: {
       id: true,
@@ -135,6 +136,7 @@ export async function buySampleAction(
           stockAvailable: { gte: 1 },
           status: MarketplaceProductStatus.PUBLISHED,
           blockedAt: null,
+          testedAndApprovedAt: { not: null },
         },
         data: {
           stockAvailable: { decrement: 1 },

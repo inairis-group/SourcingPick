@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
-import { AdminScope } from "@prisma/client";
+import { AdminScope, AttachmentContext } from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { ProductForm } from "@/app/[lang]/factory/catalogue/_components/product-form";
+import { TestVideoUploader } from "@/app/[lang]/admin/marketplace/_components/test-video-uploader";
 
 /**
  * Admin-side edit of any marketplace listing — partner round 4.
@@ -68,6 +69,16 @@ export default async function AdminEditListingPage({
   });
   if (!product) notFound();
 
+  // Phase 2 — current test video, if any.
+  const testVideo = await prisma.attachment.findFirst({
+    where: {
+      contextType: AttachmentContext.MARKETPLACE_TEST_VIDEO,
+      contextId: product.id,
+    },
+    orderBy: { createdAt: "desc" },
+    select: { id: true },
+  });
+
   const imageUrls = product.images.map(
     (_, i) => `/api/marketplace/image/${product.id}/${i}`,
   );
@@ -93,6 +104,13 @@ export default async function AdminEditListingPage({
           {dict.admin.marketplace.editBody}
         </p>
       </header>
+
+      <div className="mb-6">
+        <TestVideoUploader
+          productId={product.id}
+          currentVideoAttachmentId={testVideo?.id ?? null}
+        />
+      </div>
 
       <ProductForm
         lang={lang}

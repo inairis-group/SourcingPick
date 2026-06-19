@@ -36,11 +36,34 @@ import { prisma } from "../src/lib/db/client";
 const DEV_PASSWORD = "password123!";
 
 async function main() {
+  // Phase-3 delivery rates are config data, not demo data — they're
+  // upserted on every seed run so the table stays in sync with the
+  // code-defined rate matrix even when fixtures are skipped below.
+  const deliverySeed = buildDeliveryRateSeed();
+  for (const row of deliverySeed) {
+    await prisma.deliveryRate.upsert({
+      where: {
+        originCountry_destinationCountry_incoterm_weightBracketKg: {
+          originCountry: row.originCountry,
+          destinationCountry: row.destinationCountry,
+          incoterm: row.incoterm,
+          weightBracketKg: row.weightBracketKg,
+        },
+      },
+      create: row,
+      update: row,
+    });
+  }
+  const deliveryCount = await prisma.deliveryRate.count();
+  console.log(`Delivery rates upserted: ${deliveryCount}`);
+
   const existing = await prisma.organization.count({
     where: { type: OrgType.PLATFORM },
   });
   if (existing > 0) {
-    console.log("Seed skipped — PLATFORM org already exists. Run db:reset to re-seed.");
+    console.log(
+      "Seed fixtures skipped — PLATFORM org already exists. Run db:reset to re-seed demo data.",
+    );
     return;
   }
 
@@ -562,6 +585,66 @@ async function main() {
   console.log("  owner@saigon-stationery.example (Factory VN — verified)");
   console.log("  owner@jaipur-cosmetics.example  (Factory IN — KYC pending)");
   console.log("  owner@anadolu-metal.example     (Factory TR — flagged)");
+}
+
+/**
+ * Phase-3 delivery-rate starter table — China sourcing routes into
+ * the main destinations our v1 buyers sit in. Numbers are
+ * representative LCL+last-mile ranges per bracket, intentionally
+ * rough — surfaced as "approximate" everywhere they're shown.
+ */
+function buildDeliveryRateSeed() {
+  type Row = {
+    originCountry: string;
+    destinationCountry: string;
+    incoterm: Incoterm;
+    weightBracketKg: number;
+    minCents: number;
+    maxCents: number;
+    partnerName: string;
+    notes: string | null;
+  };
+  const brackets = [
+    { kg: 0, minEur: 80, maxEur: 140 },
+    { kg: 10, minEur: 110, maxEur: 180 },
+    { kg: 50, minEur: 220, maxEur: 360 },
+    { kg: 100, minEur: 380, maxEur: 580 },
+    { kg: 250, minEur: 740, maxEur: 1100 },
+    { kg: 500, minEur: 1280, maxEur: 1880 },
+    { kg: 1000, minEur: 2200, maxEur: 3200 },
+  ];
+  const destinations: Array<{
+    country: string;
+    partner: string;
+    notes: string | null;
+  }> = [
+    { country: "FR", partner: "Geodis · LCL air-sea", notes: "Transit ~22–28 days. Customs not included." },
+    { country: "DE", partner: "DB Schenker · LCL air-sea", notes: "Transit ~24–30 days. Customs not included." },
+    { country: "ES", partner: "DSV · LCL air-sea", notes: "Transit ~25–32 days. Customs not included." },
+    { country: "IT", partner: "Kuehne+Nagel · LCL air-sea", notes: "Transit ~24–30 days. Customs not included." },
+    { country: "NL", partner: "DSV · LCL air-sea", notes: "Transit ~22–28 days. Customs not included." },
+    { country: "BE", partner: "DSV · LCL air-sea", notes: "Transit ~22–28 days. Customs not included." },
+  ];
+  const rows: Row[] = [];
+  for (const dest of destinations) {
+    for (const inco of [Incoterm.DAP, Incoterm.DDP, Incoterm.FOB] as const) {
+      // FOB ships no last-mile; DDP includes prepaid customs.
+      const scale = inco === Incoterm.FOB ? 0.55 : inco === Incoterm.DDP ? 1.35 : 1;
+      for (const b of brackets) {
+        rows.push({
+          originCountry: "CN",
+          destinationCountry: dest.country,
+          incoterm: inco,
+          weightBracketKg: b.kg,
+          minCents: Math.round(b.minEur * scale * 100),
+          maxCents: Math.round(b.maxEur * scale * 100),
+          partnerName: dest.partner,
+          notes: dest.notes,
+        });
+      }
+    }
+  }
+  return rows;
 }
 
 main()

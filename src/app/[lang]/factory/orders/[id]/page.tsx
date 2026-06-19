@@ -59,6 +59,8 @@ export default async function FactoryOrderDetailPage({
           quantity: true,
           deadline: true,
           requiredCerts: true,
+          // Pricing v3 — supplier-fee rate depends on the flow.
+          origin: true,
         },
       },
       quote: {
@@ -114,6 +116,7 @@ export default async function FactoryOrderDetailPage({
   } = computeFactoryPayout(
     order.quote.unitPriceCentsFactory,
     order.request.quantity,
+    order.request.origin === "SOURCING_FLOW" ? "sourcing" : "marketplace",
   );
 
   return (

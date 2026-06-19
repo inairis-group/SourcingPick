@@ -92,6 +92,9 @@ export async function buyMarketplaceProductAction(
       id: parsed.data.productId,
       status: MarketplaceProductStatus.PUBLISHED,
       blockedAt: null,
+      // Pricing-v3 Phase 2: untested products can't be ordered, even
+      // by URL — admin must mark them tested-and-approved first.
+      testedAndApprovedAt: { not: null },
     },
     select: {
       id: true,
@@ -148,6 +151,7 @@ export async function buyMarketplaceProductAction(
           stockAvailable: { gte: parsed.data.quantity },
           status: MarketplaceProductStatus.PUBLISHED,
           blockedAt: null,
+          testedAndApprovedAt: { not: null },
         },
         data: {
           stockAvailable: { decrement: parsed.data.quantity },

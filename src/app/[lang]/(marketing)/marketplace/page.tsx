@@ -17,6 +17,7 @@ import {
 } from "@/components/marketplace/listing-price";
 import { DeliveryEtaNotice } from "@/components/marketplace/delivery-eta-notice";
 import { MarketplaceBannerRail } from "@/components/marketplace/banner-rail";
+import { MarketplaceInDevelopmentBanner } from "@/components/marketplace/in-development-banner";
 import { AuctionTeaserRail } from "@/components/auctions/teaser-rail";
 import { LoadMoreNudge } from "./_components/load-more-nudge";
 import { MarketplaceFilters } from "./_components/filters";
@@ -62,6 +63,10 @@ export default async function PublicMarketplacePage({
   const products = await prisma.marketplaceProduct.findMany({
     where: {
       status: MarketplaceProductStatus.PUBLISHED,
+      // Pricing-v3 Phase 2: only physically-tested products surface in
+      // public catalogue queries. Factory + admin views still see
+      // pending-test listings via their own queries.
+      testedAndApprovedAt: { not: null },
       ...(category ? { category } : {}),
       ...(condition ? { condition } : {}),
       // Compose "deals only" + free-text search via AND so each can carry
@@ -129,6 +134,8 @@ export default async function PublicMarketplacePage({
           {dict.client.marketplace.description}
         </p>
       </header>
+
+      <MarketplaceInDevelopmentBanner dict={dict} />
 
       <MarketplaceBannerRail locale={lang} />
 

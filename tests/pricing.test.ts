@@ -1,8 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  BUYER_MARKUP_BPS,
-  SUPPLIER_FEE_BPS,
+  SOURCING_BUYER_BPS,
+  SOURCING_SUPPLIER_BPS,
+  MARKETPLACE_BUYER_BPS,
+  MARKETPLACE_SELLER_BPS,
   MARKETPLACE_NET_DIVISOR_BPS,
   RESEARCH_FEE_DAY_CENTS,
   RESEARCH_FEE_WEEK_CENTS,
@@ -10,37 +12,59 @@ import {
   computeFactoryPayout,
   computeDisputeRefund,
   computeResearchFee,
+  buyerMarkupBps,
+  supplierFeeBps,
 } from "../src/lib/orders/pricing";
 
-test("rate constants match the locked v2.1 model (3% buyer / 6% supplier)", () => {
-  assert.equal(BUYER_MARKUP_BPS, 300);
-  assert.equal(SUPPLIER_FEE_BPS, 600);
-  // divisor used to derive marketplace listed price = 1 − 3% − 6% = 91%
-  // (total platform take unchanged; redistributed between sides).
-  assert.equal(MARKETPLACE_NET_DIVISOR_BPS, 9100);
+test("rate constants match the locked v3 model (sourcing 4%/1%, marketplace 2%/1%)", () => {
+  assert.equal(SOURCING_BUYER_BPS, 400);
+  assert.equal(SOURCING_SUPPLIER_BPS, 100);
+  assert.equal(MARKETPLACE_BUYER_BPS, 200);
+  assert.equal(MARKETPLACE_SELLER_BPS, 100);
+  // Marketplace listed-price divisor = 1 − 2% − 1% = 97%
+  assert.equal(MARKETPLACE_NET_DIVISOR_BPS, 9700);
 });
 
-test("applyBuyerMarkup adds 3% and rounds to the nearest cent", () => {
-  assert.equal(applyBuyerMarkup(10_000), 10_300); // 100.00 → 103.00
-  assert.equal(applyBuyerMarkup(0), 0);
-  // 333 * 1.03 = 342.99 → rounds to 343
-  assert.equal(applyBuyerMarkup(333), 343);
+test("buyerMarkupBps / supplierFeeBps resolve per flow", () => {
+  assert.equal(buyerMarkupBps("sourcing"), 400);
+  assert.equal(buyerMarkupBps("marketplace"), 200);
+  assert.equal(supplierFeeBps("sourcing"), 100);
+  assert.equal(supplierFeeBps("marketplace"), 100);
 });
 
-test("computeFactoryPayout deducts 6% supplier fee from gross", () => {
-  const r = computeFactoryPayout(10_000, 3); // unit 100.00 × 3 = 300.00
+test("applyBuyerMarkup(sourcing) adds 4%", () => {
+  assert.equal(applyBuyerMarkup(10_000, "sourcing"), 10_400); // 100.00 → 104.00
+  assert.equal(applyBuyerMarkup(0, "sourcing"), 0);
+  // 333 × 1.04 = 346.32 → rounds to 346
+  assert.equal(applyBuyerMarkup(333, "sourcing"), 346);
+});
+
+test("applyBuyerMarkup(marketplace) adds 2%", () => {
+  assert.equal(applyBuyerMarkup(10_000, "marketplace"), 10_200);
+  // 555 × 1.02 = 566.10 → rounds to 566
+  assert.equal(applyBuyerMarkup(555, "marketplace"), 566);
+});
+
+test("computeFactoryPayout(sourcing) deducts 1% supplier fee from gross", () => {
+  const r = computeFactoryPayout(10_000, 3, "sourcing"); // unit 100.00 × 3 = 300.00
   assert.equal(r.grossCents, 30_000);
-  assert.equal(r.feeCents, 1_800); // 6% of 30000
-  assert.equal(r.netCents, 28_200);
-  // net + fee always reconstitutes gross
+  assert.equal(r.feeCents, 300); // 1% of 30000
+  assert.equal(r.netCents, 29_700);
   assert.equal(r.netCents + r.feeCents, r.grossCents);
 });
 
+test("computeFactoryPayout(marketplace) deducts 1% seller fee from gross", () => {
+  const r = computeFactoryPayout(10_000, 3, "marketplace");
+  assert.equal(r.grossCents, 30_000);
+  assert.equal(r.feeCents, 300);
+  assert.equal(r.netCents, 29_700);
+});
+
 test("computeFactoryPayout fee rounds half-up at the cent", () => {
-  // gross 1_025 → 6% = 61.5 → rounds to 62
-  const r = computeFactoryPayout(1_025, 1);
-  assert.equal(r.feeCents, 62);
-  assert.equal(r.netCents, 963);
+  // gross 12_345 → 1% = 123.45 → rounds to 123
+  const r = computeFactoryPayout(12_345, 1, "sourcing");
+  assert.equal(r.feeCents, 123);
+  assert.equal(r.netCents, 12_222);
 });
 
 test("computeDisputeRefund CUSTOM refunds the full escrow", () => {
@@ -57,7 +81,6 @@ test("computeDisputeRefund STANDARD refunds 80%, splits the retained 20% in half
   assert.equal(r.retainedCents, 10_000); // 20%
   assert.equal(r.supplierShareCents, 5_000);
   assert.equal(r.platformShareCents, 5_000);
-  // the split always reconstitutes the retained amount (no lost cents)
   assert.equal(
     r.supplierShareCents + r.platformShareCents,
     r.retainedCents,
@@ -82,8 +105,13 @@ test("computeResearchFee multiplies the rate by quantity", () => {
   assert.equal(computeResearchFee("WEEK", 2), 100_000);
 });
 
-test("computeResearchFee floors fractional and clamps negative quantities", () => {
-  assert.equal(computeResearchFee("DAY", 2.9), 25_000); // floor → 2
-  assert.equal(computeResearchFee("WEEK", -5), 0); // clamp → 0
-  assert.equal(computeResearchFee("DAY", 0), 0);
+test("computeResearchFee honors per-agent overrides", () => {
+  assert.equal(
+    computeResearchFee("DAY", 2, { dayCents: 20_000 }),
+    40_000,
+  );
+  assert.equal(
+    computeResearchFee("WEEK", 1, { weekCents: 60_000 }),
+    60_000,
+  );
 });

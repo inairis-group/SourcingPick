@@ -221,3 +221,155 @@ export async function adminDeleteProductAction(
   revalidatePath("/[lang]/factory/catalogue", "page");
   return { ok: true };
 }
+
+/**
+ * Pricing-v3 / Phase 2: mark a marketplace product as tested-and-approved.
+ *
+ * Distinct from the editorial `PENDING_REVIEW → PUBLISHED` review:
+ *   - The status flow validates listing copy / images / metadata.
+ *   - This flag confirms we have hands-on test of the physical product.
+ *
+ * Public marketplace queries filter on `testedAndApprovedAt IS NOT NULL`.
+ * A product can be PUBLISHED yet unapproved; in that case it's visible to
+ * the admin/factory but hidden from buyers until tested.
+ *
+ * Idempotent: re-running on an already-approved product is a no-op +
+ * returns ok. An admin can revoke via the second argument `approve=false`,
+ * which clears the timestamp + approver back to null.
+ */
+export async function adminMarkProductTestedAction(
+  productId: string,
+  approve: boolean = true,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const admin = await requireAdminScope(AdminScope.MARKETPLACE);
+
+  const product = await prisma.marketplaceProduct.findUnique({
+    where: { id: productId },
+    select: { id: true, reference: true, testedAndApprovedAt: true },
+  });
+  if (!product) return { ok: false, error: "Listing not found." };
+
+  if (approve && product.testedAndApprovedAt) {
+    return { ok: true };
+  }
+  if (!approve && !product.testedAndApprovedAt) {
+    return { ok: true };
+  }
+
+  await prisma.marketplaceProduct.update({
+    where: { id: product.id },
+    data: {
+      testedAndApprovedAt: approve ? new Date() : null,
+      testedAndApprovedById: approve ? admin.id : null,
+    },
+  });
+
+  await writeAuditLog({
+    actorUserId: admin.id,
+    action: approve
+      ? "marketplace.product_tested_approved"
+      : "marketplace.product_tested_revoked",
+    targetType: "MarketplaceProduct",
+    targetId: product.id,
+    payload: { reference: product.reference },
+    level: "WARN",
+  });
+
+  revalidatePath("/[lang]/admin/marketplace", "page");
+  revalidatePath("/[lang]/marketplace", "page");
+  revalidatePath("/[lang]/client/marketplace", "page");
+  return { ok: true };
+}
+
+/**
+ * Phase 2 — replace the marketplace test video for a product.
+ *
+ * One video per listing: any pre-existing MARKETPLACE_TEST_VIDEO
+ * attachments on the same product are removed (DB + disk) before the
+ * new file is stored. Files limited to mp4 / webm at the storage
+ * layer; size cap is the standard upload limit.
+ *
+ * Admin scope: MARKETPLACE (same as edit / tested-approved). Audit
+ * logged at WARN level — replacing the proof of test is a meaningful
+ * operational event.
+ */
+export async function adminUploadTestVideoAction(
+  productId: string,
+  formData: FormData,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const { rm } = await import("node:fs/promises");
+  const { resolve, sep } = await import("node:path");
+  const { AttachmentContext } = await import("@prisma/client");
+  const { storeAttachments } = await import("@/lib/storage/attachments");
+
+  const admin = await requireAdminScope(AdminScope.MARKETPLACE);
+
+  const product = await prisma.marketplaceProduct.findUnique({
+    where: { id: productId },
+    select: { id: true, reference: true },
+  });
+  if (!product) return { ok: false, error: "Listing not found." };
+
+  const file = formData.get("video");
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: "No video file provided." };
+  }
+  if (!/^video\/(mp4|webm)$/.test(file.type)) {
+    return {
+      ok: false,
+      error: "Only MP4 or WebM video uploads are accepted.",
+    };
+  }
+
+  // Drop any existing test videos for this listing first.
+  const existing = await prisma.attachment.findMany({
+    where: {
+      contextType: AttachmentContext.MARKETPLACE_TEST_VIDEO,
+      contextId: product.id,
+    },
+    select: { id: true, storageUrl: true },
+  });
+  if (existing.length > 0) {
+    await prisma.attachment.deleteMany({
+      where: { id: { in: existing.map((a) => a.id) } },
+    });
+    const UPLOADS_ROOT = resolve(process.cwd(), "uploads");
+    for (const a of existing) {
+      const path = resolve(process.cwd(), a.storageUrl);
+      if (path.startsWith(UPLOADS_ROOT + sep)) {
+        await rm(path, { force: true }).catch(() => {});
+      }
+    }
+  }
+
+  const { created, errors } = await storeAttachments({
+    contextType: AttachmentContext.MARKETPLACE_TEST_VIDEO,
+    contextId: product.id,
+    uploaderId: admin.id,
+    files: [file],
+  });
+  if (errors.length > 0 || created.length === 0) {
+    return {
+      ok: false,
+      error: errors[0] ?? "Failed to store the video.",
+    };
+  }
+
+  await writeAuditLog({
+    actorUserId: admin.id,
+    action: "marketplace.test_video_uploaded",
+    targetType: "MarketplaceProduct",
+    targetId: product.id,
+    payload: {
+      reference: product.reference,
+      replacedCount: existing.length,
+      attachmentId: created[0]?.id ?? null,
+    },
+    level: "WARN",
+  });
+
+  revalidatePath("/[lang]/admin/marketplace", "page");
+  revalidatePath("/[lang]/marketplace", "page");
+  revalidatePath("/[lang]/client/marketplace", "page");
+  return { ok: true };
+}

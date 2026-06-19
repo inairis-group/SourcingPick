@@ -144,7 +144,10 @@ export async function agentSubmitDirectQuoteAction(
     }
   }
 
-  const unitPriceCentsClient = applyBuyerMarkup(parsed.data.unitPriceCentsFactory);
+  const unitPriceCentsClient = applyBuyerMarkup(
+    parsed.data.unitPriceCentsFactory,
+    "sourcing",
+  );
   const totalCentsClient = unitPriceCentsClient * parsed.data.quantity;
   const marginCents =
     totalCentsClient - parsed.data.unitPriceCentsFactory * parsed.data.quantity;

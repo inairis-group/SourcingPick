@@ -17,6 +17,7 @@ export function KpiCard({
   icon,
   href,
   tourId,
+  index,
 }: {
   label: string;
   value: ReactNode;
@@ -26,6 +27,12 @@ export function KpiCard({
   href?: string;
   /** Optional id consumed by the first-order tutorial spotlight. */
   tourId?: string;
+  /**
+   * Position within its row — controls the stagger-fade delay so
+   * cards arrive sequentially on mount. Omit and the card fades in
+   * immediately (no stagger).
+   */
+  index?: number;
 }) {
   const toneClasses = {
     neutral: "text-headline",
@@ -39,9 +46,13 @@ export function KpiCard({
     <article
       className={cn(
         "group rounded-lg border border-line bg-surface p-4 flex flex-col gap-2 h-full",
-        "transition-colors duration-fast",
-        href && "hover:bg-subtle cursor-pointer",
+        "transition-all duration-base ease-default",
+        "animate-fade-up",
+        href && "hover:bg-subtle hover:-translate-y-0.5 hover:shadow-sm cursor-pointer",
       )}
+      style={
+        index !== undefined ? { animationDelay: `${index * 50}ms` } : undefined
+      }
       {...(tourId ? { "data-tour": tourId } : {})}
     >
       <div className="flex items-start justify-between gap-2">
@@ -53,11 +64,16 @@ export function KpiCard({
             icon={icon}
             size={16}
             strokeWidth={1.5}
-            className="text-faint"
+            className="text-faint transition-colors duration-base group-hover:text-fg"
           />
         )}
       </div>
-      <p className={cn("text-2xl font-bold leading-none mt-auto", toneClasses)}>
+      <p
+        className={cn(
+          "text-2xl font-bold leading-none mt-auto tabular-nums",
+          toneClasses,
+        )}
+      >
         {value}
       </p>
       {/* Hint slot is always rendered so cards in the same grid match height. */}
@@ -83,15 +99,26 @@ export function DashboardSection({
   action,
   children,
   className,
+  index,
 }: {
   title: string;
   description?: string;
   action?: ReactNode;
   children: ReactNode;
   className?: string;
+  /** Optional position used to stagger-fade the section in. */
+  index?: number;
 }) {
   return (
-    <section className={cn("rounded-lg border border-line bg-surface", className)}>
+    <section
+      className={cn(
+        "rounded-lg border border-line bg-surface animate-fade-up",
+        className,
+      )}
+      style={
+        index !== undefined ? { animationDelay: `${200 + index * 60}ms` } : undefined
+      }
+    >
       <header className="flex items-start justify-between gap-3 px-5 py-3 border-b border-line-subtle">
         <div className="min-w-0">
           <h2 className="text-sm font-semibold text-headline">{title}</h2>

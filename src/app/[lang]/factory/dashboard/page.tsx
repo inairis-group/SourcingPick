@@ -136,7 +136,7 @@ export default async function FactoryDashboardPage({
         reference: true,
         status: true,
         estimatedEta: true,
-        request: { select: { title: true } },
+        request: { select: { title: true, origin: true } },
         quote: {
           select: { unitPriceCentsFactory: true, quantity: true },
         },
@@ -214,12 +214,14 @@ export default async function FactoryDashboardPage({
           tone={openTenders.length > 0 ? "warning" : "neutral"}
           icon={Mail01Icon}
           href={`/${lang}/factory/tenders`}
+          index={0}
         />
         <KpiCard
           label={dict.factory.dashboard.kpiActiveOrders}
           value={formatNumber(activeOrdersCount, lang)}
           icon={PackageIcon}
           href={`/${lang}/factory/orders`}
+          index={1}
         />
         <KpiCard
           label={dict.factory.dashboard.kpiPendingPayouts}
@@ -234,6 +236,7 @@ export default async function FactoryDashboardPage({
           tone={pendingPayoutsAgg._count > 0 ? "warning" : "neutral"}
           icon={Wallet01Icon}
           href={`/${lang}/factory/payouts`}
+          index={2}
         />
         <KpiCard
           label={dict.factory.dashboard.kpiTotalEarned}
@@ -243,6 +246,7 @@ export default async function FactoryDashboardPage({
             String(sentPayoutsAgg._count),
           )}
           icon={ShoppingBag03Icon}
+          index={3}
         />
       </div>
 
@@ -251,6 +255,7 @@ export default async function FactoryDashboardPage({
           title={dict.factory.dashboard.openTendersTitle}
           description={dict.factory.dashboard.openTendersDesc}
           className="lg:col-span-2"
+          index={0}
           action={
             <Link
               href={`/${lang}/factory/tenders`}
@@ -298,6 +303,7 @@ export default async function FactoryDashboardPage({
 
         <DashboardSection
           title={dict.factory.dashboard.catalogueTitle}
+          index={1}
           action={
             <Link
               href={`/${lang}/factory/catalogue`}
@@ -330,6 +336,7 @@ export default async function FactoryDashboardPage({
 
       <DashboardSection
         title={dict.factory.dashboard.activeOrdersTitle}
+        index={2}
         action={
           <Link
             href={`/${lang}/factory/orders`}
@@ -347,6 +354,7 @@ export default async function FactoryDashboardPage({
             const { netCents } = computeFactoryPayout(
               o.quote.unitPriceCentsFactory,
               o.quote.quantity,
+              o.request.origin === "SOURCING_FLOW" ? "sourcing" : "marketplace",
             );
             return (
               <Link

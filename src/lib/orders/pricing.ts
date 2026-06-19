@@ -1,62 +1,90 @@
 /**
- * Pricing v2.1 — pure commission, no caps.
+ * Pricing v3 — split commission per flow.
  *
  * Spec (docs/pricing-v2.md):
- *   buyer side  : 3% on top of factory price
- *   supplier side: 6% deducted from factory revenue
  *
- * v2 originally inverted these (6% buyer / 3% factory); v2.1 flips
- * them on the partner's call — most of the platform take lands on the
- * factory now, and buyers see a smaller surcharge at checkout.
+ *   Sourcing flow   : buyer 4% / supplier 1%   (total platform take 5%)
+ *   Marketplace flow: buyer 2% / seller    1%  (total platform take 3%)
  *
- * Single source of truth for the platform rates. tender-actions,
- * marketplace/actions and marketplace/buy all import from here —
- * changing the rate is a one-line edit (no migration, since rates are
- * runtime-only until Phase 3 introduces PricingRule).
+ * v2 + v2.1 had a single buyer / supplier pair shared across both flows
+ * (most recently 3% buyer / 6% supplier). v3 splits them because the
+ * two flows now carry different rates — marketplace is intentionally
+ * cheaper to reflect the lower agent labour cost.
+ *
+ * Single source of truth: tender-actions, marketplace/actions and
+ * marketplace/buy all import these helpers. Changing rates is a
+ * one-line edit per constant (no schema migration; rates are runtime).
  *
  * Pure functions — no I/O, no side effects, safe to unit test.
  */
 
-export const BUYER_MARKUP_BPS = 300; // 3% in basis points
-export const SUPPLIER_FEE_BPS = 600; // 6% in basis points
+export type PricingFlow = "sourcing" | "marketplace";
+
+export const SOURCING_BUYER_BPS = 400; // 4% in basis points
+export const SOURCING_SUPPLIER_BPS = 100; // 1% in basis points
+export const MARKETPLACE_BUYER_BPS = 200; // 2% in basis points
+export const MARKETPLACE_SELLER_BPS = 100; // 1% in basis points
+
+/**
+ * Resolve the basis-point rate for the buyer side of the given flow.
+ * Inlined math in `applyBuyerMarkup` / divisor uses these.
+ */
+export function buyerMarkupBps(flow: PricingFlow): number {
+  return flow === "sourcing" ? SOURCING_BUYER_BPS : MARKETPLACE_BUYER_BPS;
+}
+
+/**
+ * Resolve the basis-point rate for the supplier/seller side of the
+ * given flow.
+ */
+export function supplierFeeBps(flow: PricingFlow): number {
+  return flow === "sourcing"
+    ? SOURCING_SUPPLIER_BPS
+    : MARKETPLACE_SELLER_BPS;
+}
 
 /**
  * Marketplace-side helper: given the factory's net target, derive the
- * all-in listed price so that factory_net = listed × (1 − buyer% − supplier%).
+ * all-in listed price so that factory_net = listed × (1 − buyer% − seller%).
  *
- *   listed = factory_net / (1 − BUYER_MARKUP − SUPPLIER_FEE)
+ *   listed = factory_net / (1 − MARKETPLACE_BUYER_BPS − MARKETPLACE_SELLER_BPS)
  *
- * At 3% + 6% → divisor 0.91 (same total take as v2, just redistributed).
- * The buyer never sees the breakdown; they pay the sticker price.
+ * At 2% + 1% → divisor 0.97. The buyer never sees the breakdown; they
+ * pay the sticker price.
  */
 export const MARKETPLACE_NET_DIVISOR_BPS =
-  10_000 - BUYER_MARKUP_BPS - SUPPLIER_FEE_BPS;
+  10_000 - MARKETPLACE_BUYER_BPS - MARKETPLACE_SELLER_BPS;
 
 /**
- * Apply the buyer-side markup to a factory unit price (in cents). Used at
- * quote submission and marketplace listing creation.
+ * Apply the buyer-side markup to a factory unit price (in cents).
+ * Used at quote submission (sourcing) and marketplace listing
+ * creation. Pass the matching `flow` so the right rate applies.
  */
-export function applyBuyerMarkup(unitPriceCentsFactory: number): number {
+export function applyBuyerMarkup(
+  unitPriceCentsFactory: number,
+  flow: PricingFlow,
+): number {
   return Math.round(
-    (unitPriceCentsFactory * (10_000 + BUYER_MARKUP_BPS)) / 10_000,
+    (unitPriceCentsFactory * (10_000 + buyerMarkupBps(flow))) / 10_000,
   );
 }
 
 export type FactoryPayoutBreakdown = {
   /** Factory's gross revenue: unit price × quantity. */
   grossCents: number;
-  /** Supplier-side fee (6% of gross). */
+  /** Supplier-side fee (1% sourcing or 1% marketplace, of gross). */
   feeCents: number;
-  /** Net amount to wire to the factory's Connect account. */
+  /** Net amount to wire to the factory's payout account. */
   netCents: number;
 };
 
 export function computeFactoryPayout(
   unitPriceCentsFactory: number,
   quantity: number,
+  flow: PricingFlow,
 ): FactoryPayoutBreakdown {
   const grossCents = unitPriceCentsFactory * quantity;
-  const feeCents = Math.round((grossCents * SUPPLIER_FEE_BPS) / 10_000);
+  const feeCents = Math.round((grossCents * supplierFeeBps(flow)) / 10_000);
   return {
     grossCents,
     feeCents,

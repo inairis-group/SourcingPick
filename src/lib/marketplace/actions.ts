@@ -102,7 +102,7 @@ const ProductInputSchema = z
   );
 
 function computeClientPriceCents(priceCentsFactory: number): number {
-  return applyBuyerMarkup(priceCentsFactory);
+  return applyBuyerMarkup(priceCentsFactory, "marketplace");
 }
 
 function parseCerts(raw: string | undefined): string[] {
@@ -165,7 +165,7 @@ export async function createProductAction(
   // sees should be apples-to-apples with the displayed sale price.
   const compareAtCents =
     typeof parsed.data.compareAtEur === "number"
-      ? applyBuyerMarkup(Math.round(parsed.data.compareAtEur * 100))
+      ? applyBuyerMarkup(Math.round(parsed.data.compareAtEur * 100), "marketplace")
       : null;
   const flashSaleEndsAt =
     parsed.data.flashSaleEndsAt instanceof Date
@@ -330,7 +330,7 @@ export async function updateProductAction(
   const priceCentsClient = computeClientPriceCents(priceCentsFactory);
   const compareAtCents =
     typeof parsed.data.compareAtEur === "number"
-      ? applyBuyerMarkup(Math.round(parsed.data.compareAtEur * 100))
+      ? applyBuyerMarkup(Math.round(parsed.data.compareAtEur * 100), "marketplace")
       : null;
   const flashSaleEndsAt =
     parsed.data.flashSaleEndsAt instanceof Date
@@ -540,7 +540,7 @@ export async function adminUpdateProductAction(
   const priceCentsClient = computeClientPriceCents(priceCentsFactory);
   const compareAtCents =
     typeof parsed.data.compareAtEur === "number"
-      ? applyBuyerMarkup(Math.round(parsed.data.compareAtEur * 100))
+      ? applyBuyerMarkup(Math.round(parsed.data.compareAtEur * 100), "marketplace")
       : null;
   const flashSaleEndsAt =
     parsed.data.flashSaleEndsAt instanceof Date
@@ -784,7 +784,7 @@ export async function adminCreateProductAction(
   const priceCentsClient = computeClientPriceCents(priceCentsFactory);
   const compareAtCents =
     typeof parsed.data.compareAtEur === "number"
-      ? applyBuyerMarkup(Math.round(parsed.data.compareAtEur * 100))
+      ? applyBuyerMarkup(Math.round(parsed.data.compareAtEur * 100), "marketplace")
       : null;
   const flashSaleEndsAt =
     parsed.data.flashSaleEndsAt instanceof Date
@@ -965,7 +965,7 @@ export async function setPromotionAction(
 
   const compareAtCents =
     typeof parsed.data.compareAtEur === "number"
-      ? applyBuyerMarkup(Math.round(parsed.data.compareAtEur * 100))
+      ? applyBuyerMarkup(Math.round(parsed.data.compareAtEur * 100), "marketplace")
       : null;
   if (
     compareAtCents !== null &&

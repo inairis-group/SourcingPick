@@ -11,6 +11,8 @@ import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { formatLeadTime } from "@/lib/marketplace/lead-time";
+import { estimateDeliveryFee } from "@/lib/delivery/calculator";
+import { DeliveryEstimateCard } from "@/components/delivery/delivery-estimate-card";
 // (Sample form below — formatEUR shared with the listing card.)
 import {
   ListingBadges,
@@ -41,7 +43,7 @@ export default async function ClientMarketplaceProductPage({
 }: PageProps<"/[lang]/client/marketplace/[id]">) {
   const { lang, id } = await params;
   if (!isLocale(lang)) notFound();
-  await requireRole(Role.CLIENT);
+  const user = await requireRole(Role.CLIENT);
   const dict = await getDictionary(lang);
 
   const product = await prisma.marketplaceProduct.findFirst({
@@ -49,6 +51,7 @@ export default async function ClientMarketplaceProductPage({
       id,
       status: MarketplaceProductStatus.PUBLISHED,
       blockedAt: null,
+      testedAndApprovedAt: { not: null },
     },
     select: {
       id: true,
@@ -113,6 +116,31 @@ export default async function ClientMarketplaceProductPage({
     (_, i) => `/api/marketplace/image/${product.id}/${i}`,
   );
 
+  // Phase 2 — admin-recorded "Product test" video, if any.
+  const testVideo = await prisma.attachment.findFirst({
+    where: {
+      contextType: AttachmentContext.MARKETPLACE_TEST_VIDEO,
+      contextId: product.id,
+    },
+    orderBy: { createdAt: "desc" },
+    select: { id: true },
+  });
+
+  // Phase 3 — delivery estimate. Heuristic: 50 kg consignment going
+  // from the factory's country to the buyer's org country. We
+  // explicitly label it "approximate" so this isn't load-bearing.
+  const buyerOrg = await prisma.organization.findUnique({
+    where: { id: user.organizationId },
+    select: { country: true },
+  });
+  const APPROX_WEIGHT_KG = 50;
+  const deliveryEstimate = await estimateDeliveryFee({
+    originCountry: product.factoryOrg.country,
+    destinationCountry: buyerOrg?.country ?? "FR",
+    incoterm: product.incoterm,
+    weightKg: APPROX_WEIGHT_KG,
+  });
+
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
       <Link
@@ -124,10 +152,29 @@ export default async function ClientMarketplaceProductPage({
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <ProductImageGallery
-          imageUrls={imageUrls}
-          productName={displayName}
-        />
+        <div className="flex flex-col gap-4">
+          <ProductImageGallery
+            imageUrls={imageUrls}
+            productName={displayName}
+          />
+          {testVideo && (
+            <section className="rounded-lg border border-success-edge bg-success-soft/30 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-success mb-2">
+                {dict.admin.marketplace.publicVideoTitle}
+              </p>
+              <video
+                src={`/api/attachments/${testVideo.id}`}
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full aspect-video rounded-md border border-line bg-page"
+              />
+              <p className="text-xs text-muted mt-2 leading-relaxed">
+                {dict.admin.marketplace.publicVideoBody}
+              </p>
+            </section>
+          )}
+        </div>
 
         <div className="flex flex-col gap-4">
           <div>
@@ -200,6 +247,19 @@ export default async function ClientMarketplaceProductPage({
           {/* Partner #9: factory-side certifications no longer shown
               on buyer product pages — the concept wasn't landing in
               the client journey. Admin + factory still see them. */}
+
+          {/* Phase 3 — approximate delivery estimate. Hidden when
+              we have no rate row for this origin / destination /
+              Incoterm — the empty state lives in the calculator
+              page proper. */}
+          {deliveryEstimate && (
+            <DeliveryEstimateCard
+              estimate={deliveryEstimate}
+              dict={dict}
+              locale={lang}
+              weightKg={APPROX_WEIGHT_KG}
+            />
+          )}
 
           <MarkdownDisplay source={displayDescription} />
 

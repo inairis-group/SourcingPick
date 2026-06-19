@@ -80,7 +80,9 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               href: `${base}/client/marketplace`,
               label: dict.nav.marketplace,
               icon: Store01Icon,
-              primary: true,
+              // Pricing-v3 Phase 2: marketplace de-emphasised — removed
+              // from the primary bottom-pill, lives in the hamburger
+              // overlay only until the catalogue is mature.
               tourId: "marketplace",
             },
             {

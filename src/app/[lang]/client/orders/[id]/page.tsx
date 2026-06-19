@@ -11,6 +11,7 @@ import { ContextThread } from "@/components/messaging/context-thread";
 import { MediaGrid } from "@/components/attachments/media-grid";
 import { OrderActions } from "./_components/order-actions";
 import { OrgAvatar } from "@/components/org/org-avatar";
+import { InsuredBadge } from "@/components/orders/insured-badge";
 import { TrackingDisplay } from "./_components/tracking-display";
 import { WiseWirePanel } from "./_components/wise-wire-panel";
 import { BuyerDisputePanel } from "./_components/dispute-panel";
@@ -118,9 +119,12 @@ export default async function ClientOrderDetailPage({
         <p className="text-xs font-mono uppercase tracking-wide text-faint">
           {order.reference} · {order.request.reference}
         </p>
-        <h1 className="text-2xl font-bold text-headline tracking-tight">
-          {order.request.title}
-        </h1>
+        <div className="flex items-center gap-3 flex-wrap">
+          <h1 className="text-2xl font-bold text-headline tracking-tight">
+            {order.request.title}
+          </h1>
+          <InsuredBadge covered={order.insuranceCovered} dict={dict} size="md" />
+        </div>
         <div className="flex items-center gap-2 mt-2 text-sm text-muted">
           <OrgAvatar
             orgId={order.factoryOrg.id}

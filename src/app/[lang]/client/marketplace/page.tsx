@@ -19,6 +19,7 @@ import {
 } from "@/components/marketplace/listing-price";
 import { DeliveryEtaNotice } from "@/components/marketplace/delivery-eta-notice";
 import { MarketplaceBannerRail } from "@/components/marketplace/banner-rail";
+import { MarketplaceInDevelopmentBanner } from "@/components/marketplace/in-development-banner";
 import { AuctionTeaserRail } from "@/components/auctions/teaser-rail";
 import { MarketplaceFilters } from "./_components/filters";
 
@@ -64,6 +65,9 @@ export default async function ClientMarketplacePage({
       // without changing its underlying status — factory keeps
       // ownership and gets a notification with the reason.
       blockedAt: null,
+      // Pricing-v3 Phase 2: hands-on-tested products only on public
+      // surfaces; pending-test listings stay invisible until approved.
+      testedAndApprovedAt: { not: null },
       ...(category ? { category } : {}),
       ...(condition ? { condition } : {}),
       // See marketing/marketplace/page.tsx for the AND-of-ORs rationale.
@@ -127,6 +131,8 @@ export default async function ClientMarketplacePage({
           {dict.client.marketplace.description}
         </p>
       </header>
+
+      <MarketplaceInDevelopmentBanner dict={dict} />
 
       <MarketplaceBannerRail locale={lang} />
 

@@ -160,6 +160,47 @@ async function canRead(att: {
         order.factoryOrgId === session.user.organizationId
       );
     }
+
+    case AttachmentContext.MARKETPLACE_TEST_VIDEO: {
+      // Tied to a marketplace product. Visible whenever the parent
+      // listing is — admin/factory always; buyers only when status is
+      // not ARCHIVED.
+      const product = await prisma.marketplaceProduct.findUnique({
+        where: { id: att.contextId },
+        select: { status: true, factoryOrgId: true },
+      });
+      if (!product) return false;
+      if (product.status !== MarketplaceProductStatus.ARCHIVED) return true;
+      const session = await auth();
+      if (!session?.user) return false;
+      if (session.user.role === Role.ADMIN) return true;
+      return session.user.organizationId === product.factoryOrgId;
+    }
+
+    case AttachmentContext.DISPUTE_EVIDENCE: {
+      // Either side of the dispute, the assigned agent, or admin.
+      const session = await auth();
+      if (!session?.user) return false;
+      if (session.user.role === Role.ADMIN) return true;
+      const dispute = await prisma.dispute.findUnique({
+        where: { id: att.contextId },
+        select: {
+          order: {
+            select: {
+              clientOrgId: true,
+              factoryOrgId: true,
+              agentId: true,
+            },
+          },
+        },
+      });
+      if (!dispute) return false;
+      if (dispute.order.agentId === session.user.id) return true;
+      return (
+        dispute.order.clientOrgId === session.user.organizationId ||
+        dispute.order.factoryOrgId === session.user.organizationId
+      );
+    }
   }
   // Exhaustive — guard against new contexts being added without auth.
   void ThreadContextType;

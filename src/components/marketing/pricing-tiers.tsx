@@ -1,5 +1,12 @@
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Tick02Icon, CancelCircleIcon } from "@hugeicons/core-free-icons";
+import {
+  Tick02Icon,
+  CancelCircleIcon,
+  UserCircleIcon,
+  Factory01Icon,
+  StoreManagement01Icon,
+  ShoppingBag01Icon,
+} from "@hugeicons/core-free-icons";
 import { Link } from "@/components/ui/link";
 import { buttonClass } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -7,30 +14,60 @@ import type { Dictionary } from "@/lib/i18n/get-dictionary";
 import type { Locale } from "@/lib/i18n/config";
 
 /**
- * Pricing model v2 — see docs/pricing-v2.md.
+ * Pricing v3 cards — per-flow split. See docs/pricing-v2.md.
  *
- * Two flows, each shown as a card. Within each card we show the buyer side,
- * the supplier side, and (for sourcing only) the research fee.
+ * Top of each card: the headline total platform take (5% sourcing,
+ * 3% marketplace), shown as a confident hero number rather than
+ * buried inside side-by-side rate rows.
  *
- * Values here come from dict.pricing.* — backed by the spec deviation locked
- * in docs/pricing-v2.md. Do NOT hardcode numbers inline.
+ * Below it: a proportional split bar visualising how the total
+ * divides between the buyer side and the supplier side, with small
+ * chips labelling each. The split bar is read at a glance — partners
+ * can verify the math without doing arithmetic.
+ *
+ * Sourcing card additionally shows the research fee as a secondary
+ * info block below the split.
+ *
+ * All copy in dict.pricing.*; no hardcoded numbers.
  */
-export function PricingTiers({ dict, locale }: { dict: Dictionary; locale: Locale }) {
+export function PricingTiers({
+  dict,
+  locale,
+}: {
+  dict: Dictionary;
+  locale: Locale;
+}) {
   const flows = [
-    { key: "sourcing" as const, featured: true, ctaHref: `/${locale}/signup` },
-    { key: "marketplace" as const, featured: false, ctaHref: `/${locale}/marketplace` },
+    {
+      key: "sourcing" as const,
+      featured: true,
+      ctaHref: `/${locale}/signup`,
+      buyerIcon: ShoppingBag01Icon,
+      supplierIcon: Factory01Icon,
+    },
+    {
+      key: "marketplace" as const,
+      featured: false,
+      ctaHref: `/${locale}/marketplace`,
+      buyerIcon: UserCircleIcon,
+      supplierIcon: StoreManagement01Icon,
+    },
   ];
 
   return (
     <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-16 lg:pb-24">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
-        {flows.map(({ key, featured, ctaHref }) => (
+        {flows.map(({ key, featured, ctaHref, buyerIcon, supplierIcon }, i) => (
           <FlowCard
             key={key}
             flow={dict.pricing.flows[key]}
             featured={featured}
             popularLabel={dict.pricing.popular}
+            totalTakeLabel={dict.pricing.totalTakeLabel}
             ctaHref={ctaHref}
+            buyerIcon={buyerIcon}
+            supplierIcon={supplierIcon}
+            style={{ animationDelay: `${i * 80}ms` }}
           />
         ))}
       </div>
@@ -48,19 +85,44 @@ function FlowCard({
   flow,
   featured,
   popularLabel,
+  totalTakeLabel,
   ctaHref,
+  buyerIcon,
+  supplierIcon,
+  style,
 }: {
   flow: FlowCopy;
   featured: boolean;
   popularLabel: string;
+  totalTakeLabel: string;
   ctaHref: string;
+  buyerIcon: typeof ShoppingBag01Icon;
+  supplierIcon: typeof Factory01Icon;
+  style?: React.CSSProperties;
 }) {
+  // Parse buyer / supplier rate strings into numeric bps so we can
+  // (a) show a derived total and (b) draw the proportional split.
+  // Strings look like "4 %" / "4%" in any locale — extract the digit
+  // run defensively.
+  const buyerPct = parseRate(flow.buyer.rate);
+  const supplierPct = parseRate(flow.supplier.rate);
+  const totalPct = buyerPct + supplierPct;
+  // Use the parsed total as a safety net for missing dict keys; the
+  // dict's `totalRate` is the canonical display string per locale.
+  const totalDisplay = flow.totalRate ?? `${totalPct} %`;
+
   return (
     <div
       className={cn(
-        "relative flex flex-col rounded-xl border p-6 lg:p-8",
-        featured ? "border-action bg-surface shadow-md" : "border-line bg-surface",
+        "relative flex flex-col rounded-2xl border p-6 lg:p-8",
+        "transition-all duration-base ease-default",
+        "animate-fade-up",
+        "hover:-translate-y-0.5 hover:shadow-md",
+        featured
+          ? "border-action bg-surface shadow-md ring-1 ring-action/10"
+          : "border-line bg-surface",
       )}
+      style={style}
     >
       {featured && (
         <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center rounded-full bg-action text-on-action px-3 py-1 text-xs font-semibold tracking-wide uppercase">
@@ -75,31 +137,70 @@ function FlowCard({
         <p className="mt-2 text-base text-muted leading-snug">{flow.tagline}</p>
       </header>
 
-      <div className="space-y-5 mb-8">
-        <PriceRow
+      {/* Headline total — the number partners read first. */}
+      <div className="flex items-end gap-3 mb-5">
+        <span className="text-5xl lg:text-6xl font-bold text-headline tracking-tight leading-none tabular-nums">
+          {totalDisplay}
+        </span>
+        <span className="text-xs font-medium uppercase tracking-wide text-faint pb-2">
+          {totalTakeLabel}
+        </span>
+      </div>
+
+      {/* Proportional split bar — buyer side then supplier side,
+          each segment flex-grown by its rate percentage so the
+          ratios are visually true (4:1 ↔ 2:1). */}
+      <div
+        className="h-2 rounded-full overflow-hidden flex bg-line-subtle mb-3"
+        role="img"
+        aria-label={`${flow.buyer.label} ${flow.buyer.rate} + ${flow.supplier.label} ${flow.supplier.rate}`}
+      >
+        <span
+          className="bg-brand-600 transition-all"
+          style={{ flexGrow: buyerPct }}
+        />
+        <span
+          className="bg-brand-300 transition-all"
+          style={{ flexGrow: supplierPct }}
+        />
+      </div>
+
+      {/* Side labels for the split — small chips with icons. */}
+      <div className="grid grid-cols-2 gap-2 mb-6">
+        <SplitChip
+          icon={buyerIcon}
           label={flow.buyer.label}
           rate={flow.buyer.rate}
-          cap={flow.buyer.cap}
+          tone="strong"
           note={flow.buyer.note}
-          featured={featured}
         />
-        <PriceRow
+        <SplitChip
+          icon={supplierIcon}
           label={flow.supplier.label}
           rate={flow.supplier.rate}
-          cap={flow.supplier.cap}
+          tone="soft"
           note={flow.supplier.note}
-          featured={featured}
         />
-        {"research" in flow && flow.research && (
-          <PriceRow
-            label={flow.research.label}
-            rate={flow.research.amount}
-            cap={flow.research.cap}
-            note={flow.research.note}
-            featured={featured}
-          />
-        )}
       </div>
+
+      {"research" in flow && flow.research && (
+        <div className="rounded-lg border border-dashed border-line bg-page/40 p-3 mb-6">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-faint">
+            {flow.research.label}
+          </p>
+          <p className="text-sm font-semibold text-headline mt-0.5">
+            {flow.research.amount}
+            {flow.research.cap && (
+              <span className="text-xs text-muted font-normal ms-1">
+                {flow.research.cap}
+              </span>
+            )}
+          </p>
+          <p className="text-xs text-muted mt-1.5 leading-relaxed">
+            {flow.research.note}
+          </p>
+        </div>
+      )}
 
       <div className="mt-auto">
         <Link
@@ -120,46 +221,65 @@ function FlowCard({
   );
 }
 
-function PriceRow({
+function SplitChip({
+  icon,
   label,
   rate,
-  cap,
+  tone,
   note,
-  featured,
 }: {
+  icon: typeof ShoppingBag01Icon;
   label: string;
   rate: string;
-  cap: string | null;
+  tone: "strong" | "soft";
   note: string;
-  featured: boolean;
 }) {
   return (
-    <div className="border-t border-line-subtle pt-4 first:border-t-0 first:pt-0">
-      <div className="flex items-baseline justify-between gap-3 mb-1">
-        <p className="text-xs font-semibold uppercase tracking-wide text-faint">
+    <div
+      className={cn(
+        "rounded-lg p-3 flex flex-col gap-1",
+        tone === "strong"
+          ? "bg-brand-50 text-brand-800"
+          : "bg-subtle text-fg",
+      )}
+      title={note}
+    >
+      <div className="flex items-center gap-2">
+        <span
+          className={cn(
+            "inline-flex items-center justify-center h-5 w-5 rounded-sm",
+            tone === "strong"
+              ? "bg-brand-600 text-on-action"
+              : "bg-brand-200 text-brand-800",
+          )}
+        >
+          <HugeiconsIcon icon={icon} size={11} strokeWidth={1.75} />
+        </span>
+        <span className="text-[10px] font-semibold uppercase tracking-wide">
           {label}
-        </p>
-        <div className="flex items-baseline gap-2 text-end">
-          <span
-            className={cn(
-              "text-2xl font-bold tracking-tight",
-              featured ? "text-headline" : "text-headline",
-            )}
-          >
-            {rate}
-          </span>
-          {cap && <span className="text-xs text-muted whitespace-nowrap">{cap}</span>}
-        </div>
+        </span>
       </div>
-      <p className="text-sm text-muted leading-snug">{note}</p>
+      <p className="text-xl font-bold tracking-tight tabular-nums leading-none">
+        {rate}
+      </p>
     </div>
   );
+}
+
+/** Parse a locale-rendered rate string like "4 %" / "4%" / "4 ٪" → 4. */
+function parseRate(s: string): number {
+  const match = s.match(/(\d+(?:[.,]\d+)?)/);
+  if (!match) return 0;
+  return Number(match[1]!.replace(",", "."));
 }
 
 function IncludedExcluded({ dict }: { dict: Dictionary }) {
   return (
     <div className="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-      <div className="rounded-lg border border-line bg-surface p-6">
+      <div
+        className="rounded-lg border border-line bg-surface p-6 animate-fade-up"
+        style={{ animationDelay: "160ms" }}
+      >
         <h3 className="text-sm font-semibold uppercase tracking-wide text-success mb-4">
           {dict.pricing.included.title}
         </h3>
@@ -175,7 +295,10 @@ function IncludedExcluded({ dict }: { dict: Dictionary }) {
         </ul>
       </div>
 
-      <div className="rounded-lg border border-line bg-subtle p-6">
+      <div
+        className="rounded-lg border border-line bg-subtle p-6 animate-fade-up"
+        style={{ animationDelay: "220ms" }}
+      >
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted mb-4">
           {dict.pricing.excluded.title}
         </h3>

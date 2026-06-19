@@ -10,6 +10,7 @@ import {
   WalletDoneIcon,
 } from "@hugeicons/core-free-icons";
 import { CtaSection } from "@/components/marketing/cta-section";
+import { WhereWeWork } from "@/components/marketing/where-we-work";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
@@ -118,6 +119,8 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
           </div>
         </div>
       </section>
+
+      <WhereWeWork dict={dict} />
 
       <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
         <div className="max-w-2xl mb-10">

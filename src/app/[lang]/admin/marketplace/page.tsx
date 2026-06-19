@@ -76,6 +76,8 @@ export default async function AdminMarketplacePage({
       priceCentsClient: true,
       blockedAt: true,
       blockReason: true,
+      // Phase 2: tested-approved gate distinct from editorial review.
+      testedAndApprovedAt: true,
       factoryOrg: { select: { displayName: true } },
     },
   });
@@ -115,6 +117,7 @@ export default async function AdminMarketplacePage({
     priceClientEur: formatEUR(l.priceCentsClient / 100, lang),
     blockedAt: l.blockedAt,
     blockReason: l.blockReason,
+    testedApproved: l.testedAndApprovedAt !== null,
     factoryName: l.factoryOrg.displayName,
   }));
 
@@ -173,16 +176,28 @@ export default async function AdminMarketplacePage({
                     <p className="text-sm font-semibold text-headline">
                       {l.name}
                     </p>
-                    <p className="text-xs text-muted mt-0.5">
-                      {l.factoryName} · {l.priceClientEur}
+                    <p className="text-xs text-muted mt-0.5 flex items-center gap-2 flex-wrap">
+                      <span>
+                        {l.factoryName} · {l.priceClientEur}
+                      </span>
+                      <span
+                        className={`inline-flex items-center h-5 px-2 rounded-full border text-[10px] font-medium uppercase tracking-wide whitespace-nowrap ${
+                          l.testedApproved
+                            ? "bg-success-soft text-success border-success-edge"
+                            : "bg-warning-soft text-warning border-warning-edge"
+                        }`}
+                      >
+                        {l.testedApproved
+                          ? dict.admin.marketplace.controls.testedApprovedBadge
+                          : dict.admin.marketplace.controls.testedPendingBadge}
+                      </span>
                       {l.blockedAt && l.blockReason && (
-                        <>
-                          {" · "}
+                        <span>
                           <span className="text-warning font-medium">
                             {dict.admin.marketplace.controls.blockedBadge}:
                           </span>{" "}
                           {l.blockReason}
-                        </>
+                        </span>
                       )}
                     </p>
                   </div>
@@ -190,6 +205,7 @@ export default async function AdminMarketplacePage({
                     productId={l.id}
                     status={l.status}
                     blocked={Boolean(l.blockedAt)}
+                    testedApproved={l.testedApproved}
                   />
                 </div>
               </li>

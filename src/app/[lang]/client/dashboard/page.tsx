@@ -204,6 +204,7 @@ export default async function ClientDashboardPage({
           value={formatNumber(openRequestsCount, lang)}
           icon={ShoppingBag01Icon}
           href={`/${lang}/client/requests`}
+          index={0}
         />
         <KpiCard
           label={dict.client.dashboard.kpiActiveOrders}
@@ -211,6 +212,7 @@ export default async function ClientDashboardPage({
           icon={PackageIcon}
           href={`/${lang}/client/orders`}
           tourId="active-orders"
+          index={1}
         />
         <KpiCard
           label={dict.client.dashboard.kpiAwaitingPayment}
@@ -218,6 +220,7 @@ export default async function ClientDashboardPage({
           tone={awaitingPaymentOrders.length > 0 ? "warning" : "neutral"}
           icon={Wallet01Icon}
           tourId="awaiting-payment"
+          index={2}
         />
         <KpiCard
           label={dict.client.dashboard.kpiTotalSpent}
@@ -230,6 +233,7 @@ export default async function ClientDashboardPage({
             String(completedOrdersAgg._count),
           )}
           icon={InvoiceIcon}
+          index={3}
         />
       </div>
 
@@ -238,6 +242,7 @@ export default async function ClientDashboardPage({
           title={dict.client.dashboard.quotesAwaitingTitle}
           description={dict.client.dashboard.quotesAwaitingDesc}
           className="lg:col-span-2"
+          index={0}
         >
           <ActivityList
             items={pendingQuotes}
@@ -276,6 +281,7 @@ export default async function ClientDashboardPage({
         <DashboardSection
           title={dict.client.dashboard.awaitingPaymentTitle}
           description={dict.client.dashboard.awaitingPaymentDesc}
+          index={1}
         >
           <ActivityList
             items={awaitingPaymentOrders}
@@ -306,6 +312,7 @@ export default async function ClientDashboardPage({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <DashboardSection
           title={dict.client.dashboard.recentOrdersTitle}
+          index={2}
           action={
             <Link
               href={`/${lang}/client/orders`}
@@ -351,6 +358,7 @@ export default async function ClientDashboardPage({
 
         <DashboardSection
           title={dict.client.dashboard.recentRequestsTitle}
+          index={3}
           action={
             <Link
               href={`/${lang}/client/requests`}

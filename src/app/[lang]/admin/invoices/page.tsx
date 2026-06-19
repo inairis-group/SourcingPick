@@ -15,6 +15,7 @@ import {
   KpiCard,
 } from "@/components/dashboard/primitives";
 import { Link } from "@/components/ui/link";
+import { FilterTab } from "@/components/ui/filter-tab";
 import { cn } from "@/lib/utils";
 import { CreateInvoiceDialog } from "./_components/create-invoice-dialog";
 import { InvoiceRowControls } from "./_components/invoice-row-controls";
@@ -156,37 +157,44 @@ export default async function AdminInvoicesPage({
           href={`/${lang}/admin/invoices`}
           active={!recipientFilter && !statusFilter}
           label={t.filterAll}
+          size="sm"
         />
         <FilterTab
           href={`/${lang}/admin/invoices?recipient=CLIENT`}
           active={recipientParam === "CLIENT"}
           label={t.filterClient}
+          size="sm"
         />
         <FilterTab
           href={`/${lang}/admin/invoices?recipient=FACTORY`}
           active={recipientParam === "FACTORY"}
           label={t.filterFactory}
+          size="sm"
         />
         <FilterTab
           href={`/${lang}/admin/invoices?recipient=AGENT`}
           active={recipientParam === "AGENT"}
           label={t.filterAgent}
+          size="sm"
         />
         <span className="mx-2 text-faint">·</span>
         <FilterTab
           href={`/${lang}/admin/invoices?status=ISSUED`}
           active={statusFilter === "ISSUED"}
           label={t.filterIssued}
+          size="sm"
         />
         <FilterTab
           href={`/${lang}/admin/invoices?status=PAID`}
           active={statusFilter === "PAID"}
           label={t.filterPaid}
+          size="sm"
         />
         <FilterTab
           href={`/${lang}/admin/invoices?status=VOID`}
           active={statusFilter === "VOID"}
           label={t.filterVoid}
+          size="sm"
         />
       </div>
 
@@ -280,29 +288,6 @@ export default async function AdminInvoicesPage({
   );
 }
 
-function FilterTab({
-  href,
-  active,
-  label,
-}: {
-  href: string;
-  active: boolean;
-  label: string;
-}) {
-  return (
-    <Link
-      href={href}
-      variant="muted"
-      className={cn(
-        "inline-flex items-center h-7 px-2.5 rounded-full text-[11px] font-medium whitespace-nowrap",
-        "transition-colors duration-fast",
-        active ? "bg-action text-on-action" : "bg-subtle text-muted hover:text-fg",
-      )}
-    >
-      {label}
-    </Link>
-  );
-}
 
 // Type-only — silences unused-warning for `InvoiceType` if compiler can't see
 // it referenced in the JSX (used in dict.types lookups).

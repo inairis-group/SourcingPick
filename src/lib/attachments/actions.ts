@@ -132,10 +132,12 @@ async function canManage(
     }
     // Messages, orders, and banners aren't deletable via this path.
     // Banner media is admin-managed (handled by deleteBannerAction) and
-    // admins already short-circuit to true above.
+    // admins already short-circuit to true above. MARKETPLACE_TEST_VIDEO
+    // is admin-only (same short-circuit) so falls through to false.
     case AttachmentContext.MESSAGE:
     case AttachmentContext.ORDER:
     case AttachmentContext.MARKETPLACE_BANNER:
+    case AttachmentContext.MARKETPLACE_TEST_VIDEO:
       return false;
   }
 }

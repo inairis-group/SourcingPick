@@ -11,7 +11,7 @@ export function HowItWorks({ dict }: { dict: Dictionary }) {
   return (
     <section className="bg-subtle border-y border-line-subtle">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <div className="max-w-2xl mb-12 lg:mb-16">
+        <div className="max-w-2xl mb-12 lg:mb-16 animate-fade-up">
           <p className="text-xs font-medium tracking-wide uppercase text-brand-700 mb-3">
             {dict.marketing.howItWorks.eyebrow}
           </p>
@@ -22,7 +22,11 @@ export function HowItWorks({ dict }: { dict: Dictionary }) {
 
         <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {steps.map((step, i) => (
-            <li key={i} className="flex flex-col gap-3">
+            <li
+              key={i}
+              className="flex flex-col gap-3 animate-fade-up"
+              style={{ animationDelay: `${100 + i * 70}ms` }}
+            >
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-headline text-on-action font-mono font-semibold text-sm">
                 {i + 1}
               </span>

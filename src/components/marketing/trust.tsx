@@ -59,7 +59,7 @@ export function Trust({ dict }: { dict: Dictionary }) {
 
   return (
     <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-      <div className="max-w-2xl mb-12 lg:mb-16">
+      <div className="max-w-2xl mb-12 lg:mb-16 animate-fade-up">
         <p className="text-xs font-medium tracking-wide uppercase text-brand-700 mb-3">
           {dict.marketing.trust.eyebrow}
         </p>
@@ -69,8 +69,12 @@ export function Trust({ dict }: { dict: Dictionary }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-        {items.map((item) => (
-          <div key={item.title} className="flex flex-col gap-3">
+        {items.map((item, i) => (
+          <div
+            key={item.title}
+            className="flex flex-col gap-3 animate-fade-up"
+            style={{ animationDelay: `${100 + i * 70}ms` }}
+          >
             <span className="inline-flex h-11 w-11 items-center justify-center rounded-md bg-brand-50 text-brand-700">
               {item.icon}
             </span>
@@ -80,13 +84,19 @@ export function Trust({ dict }: { dict: Dictionary }) {
         ))}
       </div>
 
-      <div className="mt-12 pt-8 border-t border-line-subtle">
+      <div
+        className="mt-12 pt-8 border-t border-line-subtle animate-fade-up"
+        style={{ animationDelay: "320ms" }}
+      >
         <p className="text-xs font-medium uppercase tracking-wide text-faint mb-4">
           {dict.marketing.trust.partnersLabel}
         </p>
         <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
           {CERT_BODIES.map((name) => (
-            <span key={name} className="text-base font-semibold text-muted">
+            <span
+              key={name}
+              className="text-base font-semibold text-muted transition-colors duration-base hover:text-fg"
+            >
               {name}
             </span>
           ))}

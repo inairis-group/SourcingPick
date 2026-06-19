@@ -15,6 +15,7 @@ import { FormError } from "@/components/ui/form-error";
 import {
   adminBlockProductAction,
   adminDeleteProductAction,
+  adminMarkProductTestedAction,
   adminUnblockProductAction,
 } from "@/lib/marketplace/admin-actions";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
@@ -30,10 +31,13 @@ export function AdminListingControls({
   productId,
   status,
   blocked,
+  testedApproved = false,
 }: {
   productId: string;
   status: MarketplaceProductStatus;
   blocked: boolean;
+  /** Phase-2 gate: when true the listing is visible to buyers. */
+  testedApproved?: boolean;
 }) {
   const dict = useDictionary();
   const lang = useLocale();
@@ -101,6 +105,20 @@ export function AdminListingControls({
     });
   };
 
+  const toggleTested = () => {
+    setError(null);
+    setPending(true);
+    startTransition(async () => {
+      const r = await adminMarkProductTestedAction(productId, !testedApproved);
+      setPending(false);
+      if (!r.ok) {
+        setError(r.error);
+        return;
+      }
+      router.refresh();
+    });
+  };
+
   return (
     <div className="flex flex-col gap-2">
       {error && <FormError>{error}</FormError>}
@@ -115,6 +133,20 @@ export function AdminListingControls({
         >
           {t.editCta}
         </Link>
+        {/* Phase 2: hands-on test approval gate. Distinct from the
+            editorial review (which polices listing copy/images) —
+            this records that a human held the product and it works
+            as advertised. Public marketplace queries hide listings
+            without this. */}
+        <Button
+          type="button"
+          variant={testedApproved ? "ghost" : "primary"}
+          size="sm"
+          onClick={toggleTested}
+          loading={pending}
+        >
+          {testedApproved ? t.testedRevokeCta : t.testedApproveCta}
+        </Button>
         {blocked ? (
           <Button
             type="button"

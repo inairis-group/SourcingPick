@@ -8,6 +8,7 @@ import {
   CustomerService01Icon,
 } from "@hugeicons/core-free-icons";
 import { Link } from "@/components/ui/link";
+import { FilterTab } from "@/components/ui/filter-tab";
 import { prisma } from "@/lib/db/client";
 import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -249,42 +250,6 @@ export default async function AdminSupportPage({
         )}
       </DashboardSection>
     </div>
-  );
-}
-
-function FilterTab({
-  href,
-  active,
-  label,
-  count,
-}: {
-  href: string;
-  active: boolean;
-  label: string;
-  count: number;
-}) {
-  return (
-    <Link
-      href={href}
-      variant="muted"
-      className={cn(
-        "inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-xs font-medium whitespace-nowrap",
-        "transition-colors duration-fast",
-        active
-          ? "bg-action text-on-action"
-          : "bg-subtle text-muted hover:text-fg",
-      )}
-    >
-      <span>{label}</span>
-      <span
-        className={cn(
-          "inline-flex items-center justify-center h-4 min-w-4 px-1 rounded-full text-[10px] font-mono",
-          active ? "bg-on-action/20" : "bg-line",
-        )}
-      >
-        {count}
-      </span>
-    </Link>
   );
 }
 

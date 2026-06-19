@@ -201,6 +201,10 @@
       "eyebrow": "市场",
       "title": "预先协商的产品",
       "description": "已采购和协商的产品目录。实时库存和交期、一键下单、内置托管。",
+      "inDevelopment": {
+        "title": "我们的商品库正在积极完善中",
+        "body": "我们刻意保持目录精简:仅展示经过实物测试并审核通过的产品。若所需产品暂未列出,请发布采购需求 — 由专属代理为您搜寻。"
+      },
       "backToBrowse": "返回市场",
       "searchPlaceholder": "搜索产品…",
       "allCategories": "全部",
@@ -825,7 +829,11 @@
       "COMPLETED": "已完成",
       "CANCELLED": "已取消"
     },
-    "cancelledBanner": "此订单已取消。"
+    "cancelledBanner": "此订单已取消。",
+    "insurance": {
+      "label": "已投保",
+      "tooltip": "依品类提供的专属保险已包含在内,无额外费用。覆盖范围从工厂出货至确认收货整个运输阶段。"
+    }
   },
   "publicMarketplace": {
     "loadMoreTitle": "超过 20 件产品可供浏览",
@@ -1004,7 +1012,7 @@
       "descriptionPlaceholder": "有机棉 250 gsm,38×42 cm,提手 60 cm,正面单色丝印…",
       "priceLabel": "工厂单价",
       "clientPriceLabel": "客户单价",
-      "clientPriceHint": "已包含平台 3% 加成。",
+      "clientPriceHint": "已包含平台市场 2% 加成。",
       "conditionLabel": "成色",
       "conditions": {
         "NEW": "全新",
@@ -1177,7 +1185,7 @@
       "pendingBody": "我们还需要一些信息才能向您付款。请继续填写表单以启用收款。",
       "resumeOnboardingCta": "继续",
       "readyTitle": "收款已激活",
-      "readyBody": "收款已启用。每个已交付的订单将扣除 6% 佣金后自动转账。",
+      "readyBody": "收款已启用。每个已交付的订单将扣除 1% 佣金后自动转账。",
       "manageAccountCta": "管理",
       "unreachableTitle": "无法连接收款服务方",
       "unreachableBody": "暂时无法连接到收款服务方。请稍后重试 — 您正在处理的收款不会受影响。",
@@ -1227,7 +1235,7 @@
       "emptyBody": "当客户接受您的报价后,订单会显示在这里。",
       "clientLabel": "客户",
       "revenueLabel": "毛收入",
-      "supplierFeeLabel": "SourcingPick 佣金(6%)",
+      "supplierFeeLabel": "SourcingPick 佣金(1%)",
       "supplierFeeHint": "上限 5,000 € — 定价 v2。",
       "netLabel": "净收款",
       "netHint": "估算值;实际付款通过托管完成(第 3 阶段)。",
@@ -1754,6 +1762,16 @@
       "backToList": "返回市场",
       "editTitle": "编辑商品",
       "editBody": "您的编辑具有权威性:商品继续上架,工厂将收到通知。无需重新进入审核队列。",
+      "testVideo": {
+        "title": "测试视频(仅管理员)",
+        "body": "上传一段 MP4 或 WebM 短片,展示产品的实际使用情况。买家会在公开商品页看到 — 表明我们对产品做过实物测试。",
+        "uploadCta": "上传视频",
+        "replaceCta": "替换视频",
+        "statusUploaded": "已上传",
+        "statusMissing": "尚未上传"
+      },
+      "publicVideoTitle": "产品测试",
+      "publicVideoBody": "上架前由我们的团队对该产品进行的简短测试片段。",
       "controls": {
         "editCta": "编辑",
         "blockCta": "下架",
@@ -1761,6 +1779,10 @@
         "deleteCta": "归档",
         "alreadyArchived": "已归档",
         "blockedBadge": "已下架",
+        "testedApprovedBadge": "已测试 ✓",
+        "testedPendingBadge": "待测试",
+        "testedApproveCta": "标记已测试 ✓",
+        "testedRevokeCta": "撤销测试",
         "blockDialogTitle": "下架此商品",
         "blockDialogBody": "买家将无法看到该商品,直至您恢复。请向工厂说明原因 — 将出现在他们的仪表盘和通知中。",
         "reasonPlaceholder": "例如:主图模糊、价格高于品类上限、描述不合规……",
@@ -2226,11 +2248,11 @@
       "items": [
         {
           "question": "在 SourcingPick 销售要花多少钱?",
-          "answer": "没有订阅费，也没有上架费。仅在订单完成时从您的回款中扣除 6% 佣金。无需预付，不成交则不收费。"
+          "answer": "没有订阅费，也没有上架费。仅在订单完成时从您的回款中扣除 1% 佣金。无需预付，不成交则不收费。"
         },
         {
           "question": "我何时、以何种方式收款?",
-          "answer": "买家电汇后，资金即进入 SourcingPick 的 Wise 托管账户。确认合规交付后，您的净额（订单金额减去 6%）将在 1–3 个工作日内汇入您的银行账户。"
+          "answer": "买家电汇后，资金即进入 SourcingPick 的 Wise 托管账户。确认合规交付后，您的净额（订单金额减去 1%）将在 1–3 个工作日内汇入您的银行账户。"
         },
         {
           "question": "Wise 在其中扮演什么角色？",
@@ -2327,6 +2349,15 @@
         "body": "我们的合作工厂遍布五大洲。我们既能与您的供应商沟通,也能与您的采购团队对接。"
       }
     },
+    "whereWeWork": {
+      "eyebrow": "我们的服务网络",
+      "title": "四大采购枢纽,六大欧洲目的地。",
+      "body": "我们的代理实地驻扎于亚洲、中东及地中海的主要工业区,而我们服务的买家集中在欧盟工业核心地带。链条越短,意外越少。",
+      "hubsLabel": "采购枢纽",
+      "destinationsLabel": "买家所在地",
+      "footerLeft": "天然跨境 — 我们的代理既懂供应商的语言,也懂买家的语言。",
+      "footerRight": "每季度新增更多线路。"
+    },
     "founders": {
       "eyebrow": "团队",
       "title": "平台背后的面孔。",
@@ -2335,24 +2366,48 @@
       "calebRole": "软件工程师 · 定制集成"
     }
   },
+  "delivery": {
+    "estimate": {
+      "eyebrow": "运费估算",
+      "approximate": "区间参考,非最终报价。",
+      "partnerPrefix": "由",
+      "bracketLabel": "{kg} 公斤时,",
+      "bracketSuffix": "适用 {matched} 公斤档位。",
+      "emptyTitle": "此线路暂无费率数据。",
+      "emptyBody": "告诉我们您要采购什么 — 我们会从合作物流商处取回真实报价。"
+    },
+    "calculator": {
+      "eyebrow": "运费计算器",
+      "title": "下单前先估算门到门运费",
+      "description": "根据线路、重量和 Incoterm 快速得出参考区间。正式报价仍来自我们的物流合作伙伴,本页只是给您一个大致量级。",
+      "originLabel": "起运地",
+      "destinationLabel": "目的地",
+      "incotermLabel": "Incoterm",
+      "weightLabel": "重量(公斤)",
+      "computeCta": "估算",
+      "disclaimer": "估算基于各线路代表性的拼箱+末端配送价。除 DDP 外,关税和增值税不含。最终报价始终来自我们的合作物流商。"
+    }
+  },
   "pricing": {
     "eyebrow": "永远没有订阅费。",
     "title": "您只为成功的订单付费。",
     "subtitle": "透明的佣金,在确认收货后收取。资金托管、物流跟踪和保险均包含在内。",
     "popular": "核心业务",
+    "totalTakeLabel": "平台佣金合计",
     "flows": {
       "sourcing": {
         "name": "按需采购",
         "tagline": "为您量身定制的需求,由专属代理协商。",
+        "totalRate": "5 %",
         "buyer": {
           "label": "买家方",
-          "rate": "3 %",
+          "rate": "4 %",
           "cap": null,
           "note": "佣金在确认收货后收取。所有订单同一费率,无上限。"
         },
         "supplier": {
           "label": "供应商方",
-          "rate": "6 %",
+          "rate": "1 %",
           "cap": null,
           "note": "佣金在托管释放后从工厂付款中扣除。"
         },
@@ -2367,15 +2422,16 @@
       "marketplace": {
         "name": "市场",
         "tagline": "已采购并谈判好的产品,一键购买。",
+        "totalRate": "3 %",
         "buyer": {
           "label": "买家方",
-          "rate": "3 %",
+          "rate": "2 %",
           "cap": null,
           "note": "已包含在标示价格中。所见即所付,结算时无附加费用。"
         },
         "supplier": {
           "label": "卖家方",
-          "rate": "6 %",
+          "rate": "1 %",
           "cap": null,
           "note": "佣金在托管释放后从卖家付款中扣除。"
         },

@@ -270,7 +270,10 @@ export async function submitQuoteAction(
   }
 
   const unitPriceCentsFactory = Math.round(parsed.data.unitPriceEur * 100);
-  const unitPriceCentsClient = applyBuyerMarkup(unitPriceCentsFactory);
+  const unitPriceCentsClient = applyBuyerMarkup(
+    unitPriceCentsFactory,
+    "sourcing",
+  );
   const totalCentsClient = unitPriceCentsClient * parsed.data.quantity;
   const marginCents = totalCentsClient - unitPriceCentsFactory * parsed.data.quantity;
   const validUntil = new Date(

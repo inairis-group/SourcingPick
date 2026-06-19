@@ -216,6 +216,43 @@ enum LeadTimeUnit {
   MONTH
 }
 
+/**
+ * Pricing-v3 Phase 3 — approximate delivery-fee bracket per route.
+ *
+ * Keyed by (originCountry, destinationCountry, incoterm, weightBracket).
+ * The bracket field is an INT representing kg (one row per 10 kg
+ * bracket up to a cap — e.g. 0, 10, 20, 50, 100, 250, 500, 1000).
+ * estimateDeliveryFee() finds the bracket that brackets the actual
+ * weight and returns the row's min/max range.
+ *
+ * Numbers are intentionally rough — we tell buyers they're estimates.
+ * Real quotes still go through the logistics partner of record at
+ * tender time. Rates can be edited by an admin from the (future)
+ * /admin/delivery-rates page.
+ */
+model DeliveryRate {
+  id                String   @id @default(cuid(2))
+  originCountry     String // ISO 3166-1 alpha-2 (e.g. "CN")
+  destinationCountry String // ISO 3166-1 alpha-2 (e.g. "FR")
+  incoterm          Incoterm
+  /// Inclusive lower bound of the weight bracket in kg.
+  weightBracketKg   Int
+  /// Lower estimate of the all-in delivery fee, in cents.
+  minCents          Int
+  /// Upper estimate of the all-in delivery fee, in cents.
+  maxCents          Int
+  /// Display-only label for the logistics partner shown alongside
+  /// the estimate (e.g. "DHL Global Forwarding", "Maersk LCL").
+  partnerName       String
+  /// Optional notes (e.g. "transit ~22d", "customs not included").
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([originCountry, destinationCountry, incoterm, weightBracketKg])
+  @@index([originCountry, destinationCountry])
+}
+
 enum AttachmentContext {
   MESSAGE
   SOURCING_REQUEST
@@ -234,6 +271,12 @@ enum AttachmentContext {
   /// damaged goods, side-by-side comparisons, packing slips, etc.).
   /// Admin arbitrates with these visible in the dispute detail page.
   DISPUTE_EVIDENCE
+  /// Admin-recorded short video (mp4/webm) of a marketplace product
+  /// being tested — used to justify the tested-and-approved gate
+  /// during the "marketplace de-emphasis" phase. Single video per
+  /// listing; replaces any previous one. Shown on the public product
+  /// page as a "Product test" section once the listing is approved.
+  MARKETPLACE_TEST_VIDEO
 }
 
 /** Preset visual treatment for an admin-managed marketplace campaign banner. */
@@ -638,6 +681,7 @@ model User {
   disputesOpened          Dispute[]           @relation("DisputeOpener")
   disputesResolved        Dispute[]           @relation("DisputeResolver")
   invoicesIssued          Invoice[]           @relation("InvoiceIssuer")
+  marketplaceTestedProducts MarketplaceProduct[] @relation("MarketplaceProductTester")
   quotesAsAgent           Quote[]             @relation("QuoteAgent")
   ordersAsAgent           Order[]             @relation("OrderAgent")
   authoredMessages        Message[]           @relation("MessageAuthor")
@@ -1033,6 +1077,14 @@ model Order {
   /// buyer + factory UIs and lets analytics distinguish sample orders
   /// from bulk in aggregates.
   isSample        Boolean         @default(false)
+  /// Pricing-v3 Phase 4 — category-specific insurance covers the
+  /// transaction at no extra cost. Defaults true for v1 (every order
+  /// is covered). Admin can flip it off per-order later for
+  /// restricted-goods categories where insurance can't be bound
+  /// (firearms, large-volume liquids, etc.). Surfaced as an
+  /// "Insured" badge on the buyer order page, on the quote PDF, and
+  /// in confirmation emails.
+  insuranceCovered Boolean        @default(true)
   status          OrderStatus     @default(PAYMENT_PENDING)
   estimatedEta    DateTime?
   shippedAt       DateTime?
@@ -1214,6 +1266,16 @@ model MarketplaceProduct {
   certifications    String[]
   status            MarketplaceProductStatus @default(DRAFT)
   publishedAt       DateTime?
+  /// Pricing-v3 marketplace de-emphasis: admin must physically test
+  /// the product before it shows on the public catalogue. This flag
+  /// is distinct from `status PUBLISHED` (which is editorial review
+  /// of the listing copy/images) — it records that we have hands-on
+  /// confirmation the product works as advertised. Public marketplace
+  /// queries filter on `testedAndApprovedAt IS NOT NULL`. Set via
+  /// `adminMarkProductTestedAction` (AdminScope.MARKETPLACE).
+  testedAndApprovedAt   DateTime?
+  testedAndApprovedById String?
+  testedAndApprovedBy   User?  @relation("MarketplaceProductTester", fields: [testedAndApprovedById], references: [id], onDelete: SetNull)
   /// Admin-block fields. Partner #1 — when admin temporarily blocks a
   /// listing, the row stays in DRAFT/PENDING_REVIEW/PUBLISHED but
   /// `blockedAt` is set so the storefront filter hides it. The reason

@@ -201,6 +201,10 @@
       "eyebrow": "Marketplace",
       "title": "Produits pré-négociés",
       "description": "Catalogue de produits déjà sourcés et négociés. MOQ et délais visibles, commande en un clic, séquestre intégré.",
+      "inDevelopment": {
+        "title": "Notre catalogue est en cours de développement actif",
+        "body": "Nous le gardons volontairement restreint : seuls les produits que nous avons testés et validés y figurent. Pour tout produit absent, déposez une demande de sourcing — un agent s'en charge."
+      },
       "backToBrowse": "Retour à la marketplace",
       "searchPlaceholder": "Rechercher un produit…",
       "allCategories": "Toutes",
@@ -825,7 +829,11 @@
       "COMPLETED": "Terminée",
       "CANCELLED": "Annulée"
     },
-    "cancelledBanner": "Cette commande a été annulée."
+    "cancelledBanner": "Cette commande a été annulée.",
+    "insurance": {
+      "label": "Assurée",
+      "tooltip": "L'assurance spécifique à la catégorie est incluse sans surcoût. La couverture s'étend de l'expédition usine à la réception confirmée."
+    }
   },
   "publicMarketplace": {
     "loadMoreTitle": "Plus de 20 produits disponibles",
@@ -1004,7 +1012,7 @@
       "descriptionPlaceholder": "Coton bio 250 gsm, 38×42 cm, anses 60 cm, impression sérigraphie 1 couleur recto…",
       "priceLabel": "Prix unitaire usine",
       "clientPriceLabel": "Prix unitaire client",
-      "clientPriceHint": "Calculé avec la marge plateforme 3%.",
+      "clientPriceHint": "Calculé avec la marge plateforme 2% (marketplace).",
       "conditionLabel": "État",
       "conditions": {
         "NEW": "Neuf",
@@ -1177,7 +1185,7 @@
       "pendingBody": "Il manque encore quelques informations avant qu'on puisse vous verser. Reprenez le formulaire pour activer les paiements.",
       "resumeOnboardingCta": "Reprendre",
       "readyTitle": "Versements actifs",
-      "readyBody": "Vos versements sont activés. Chaque commande livrée déclenche un virement net de la commission 6%.",
+      "readyBody": "Vos versements sont activés. Chaque commande livrée déclenche un virement net de la commission 1%.",
       "manageAccountCta": "Gérer",
       "unreachableTitle": "Prestataire de versement injoignable",
       "unreachableBody": "Nous n'avons pas pu joindre notre prestataire de versement. Réessayez dans quelques minutes ; vos versements en cours ne sont pas impactés.",
@@ -1227,7 +1235,7 @@
       "emptyBody": "Vos commandes apparaissent ici une fois qu'un client a accepté votre devis.",
       "clientLabel": "Client",
       "revenueLabel": "Revenu brut",
-      "supplierFeeLabel": "Commission SourcingPick (6%)",
+      "supplierFeeLabel": "Commission SourcingPick (1%)",
       "supplierFeeHint": "Plafonnée à 5 000 € — pricing v2.",
       "netLabel": "Versement net",
       "netHint": "Estimation ; le versement réel passe par le séquestre (Phase 3).",
@@ -1751,6 +1759,16 @@
       "backToList": "Retour à la marketplace",
       "editTitle": "Modifier la fiche produit",
       "editBody": "Les modifications sont autoritaires : la fiche reste en ligne, l'usine est notifiée du changement. Pas de remise en file de modération.",
+      "testVideo": {
+        "title": "Vidéo de test (admin uniquement)",
+        "body": "Enregistrez un court MP4 ou WebM montrant le produit en conditions réelles. Les acheteurs la voient sur la fiche publique : preuve que nous l'avons testé physiquement.",
+        "uploadCta": "Importer la vidéo",
+        "replaceCta": "Remplacer la vidéo",
+        "statusUploaded": "Importée",
+        "statusMissing": "Pas de vidéo enregistrée"
+      },
+      "publicVideoTitle": "Test produit",
+      "publicVideoBody": "Court extrait de ce produit testé par notre équipe avant mise en vente.",
       "controls": {
         "editCta": "Éditer",
         "blockCta": "Bloquer",
@@ -1758,6 +1776,10 @@
         "deleteCta": "Archiver",
         "alreadyArchived": "Archivée",
         "blockedBadge": "Bloquée",
+        "testedApprovedBadge": "Testée ✓",
+        "testedPendingBadge": "Test en attente",
+        "testedApproveCta": "Marquer testée ✓",
+        "testedRevokeCta": "Révoquer le test",
         "blockDialogTitle": "Bloquer cette annonce",
         "blockDialogBody": "L'annonce sera masquée des acheteurs jusqu'à ce que vous la débloquiez. Indiquez la raison à l'usine — elle apparaîtra dans leur tableau de bord et dans la notification.",
         "reasonPlaceholder": "ex. Image principale floue, prix supérieur au plafond catégorie, description non conforme…",
@@ -2226,11 +2248,11 @@
       "items": [
         {
           "question": "Combien coûte la vente sur SourcingPick ?",
-          "answer": "Pas d'abonnement ni de frais de mise en ligne. Nous prélevons une commission de 6 % sur votre versement uniquement lorsqu'une commande aboutit. Rien d'avance, rien si vous ne vendez pas."
+          "answer": "Pas d'abonnement ni de frais de mise en ligne. Nous prélevons une commission de 1 % sur votre versement uniquement lorsqu'une commande aboutit. Rien d'avance, rien si vous ne vendez pas."
         },
         {
           "question": "Comment et quand suis-je payé ?",
-          "answer": "Les fonds de l'acheteur sont en séquestre Wise dès leur réception. À la livraison conforme confirmée, votre montant net (valeur de la commande moins les 6 %) est viré sur votre compte bancaire en 1 à 3 jours."
+          "answer": "Les fonds de l'acheteur sont en séquestre Wise dès leur réception. À la livraison conforme confirmée, votre montant net (valeur de la commande moins les 1 %) est viré sur votre compte bancaire en 1 à 3 jours."
         },
         {
           "question": "Quel est le rôle de Wise dans tout ça ?",
@@ -2327,6 +2349,15 @@
         "body": "Nos usines partenaires sont sur cinq continents. Nous parlons la langue de votre fournisseur et de votre service achats."
       }
     },
+    "whereWeWork": {
+      "eyebrow": "Où nous opérons",
+      "title": "Quatre pôles de sourcing, six destinations européennes.",
+      "body": "Nos agents sont physiquement implantés dans les principales régions industrielles d'Asie, du Moyen-Orient et de la Méditerranée — et les acheteurs que nous livrons se concentrent sur la colonne vertébrale industrielle de l'UE. Plus la chaîne est courte, moins il y a de mauvaises surprises.",
+      "hubsLabel": "Pôles de sourcing",
+      "destinationsLabel": "Destinations acheteurs",
+      "footerLeft": "Transfrontalier par nature — nos agents parlent la langue du fournisseur et celle de l'acheteur.",
+      "footerRight": "De nouvelles routes ajoutées chaque trimestre."
+    },
     "founders": {
       "eyebrow": "L'équipe",
       "title": "Les visages derrière la plateforme.",
@@ -2335,24 +2366,48 @@
       "calebRole": "Ingénieur logiciel · intégrations sur mesure"
     }
   },
+  "delivery": {
+    "estimate": {
+      "eyebrow": "Frais de livraison approximatifs",
+      "approximate": "Fourchette indicative, pas un devis.",
+      "partnerPrefix": "Acheminé par",
+      "bracketLabel": "Pour {kg} kg,",
+      "bracketSuffix": "tranche {matched} kg appliquée.",
+      "emptyTitle": "Aucun tarif en base pour cette combinaison.",
+      "emptyBody": "Dites-nous ce que vous sourcez — nous revenons avec un vrai chiffre auprès d'un de nos partenaires logistiques."
+    },
+    "calculator": {
+      "eyebrow": "Calculateur de livraison",
+      "title": "Estimez vos frais de livraison avant de vous engager",
+      "description": "Fourchette rapide selon le trajet, le poids et l'Incoterm. Les vrais devis viennent de nos partenaires logistiques au moment du sourcing — cette page vous met dans la bonne zone.",
+      "originLabel": "Départ",
+      "destinationLabel": "Destination",
+      "incotermLabel": "Incoterm",
+      "weightLabel": "Poids (kg)",
+      "computeCta": "Estimer",
+      "disclaimer": "Les estimations s'appuient sur des tarifs LCL + livraison locale représentatifs. Les frais de douane et la TVA ne sont pas inclus sauf si l'Incoterm est DDP. Les devis définitifs proviennent de nos partenaires au moment du sourcing."
+    }
+  },
   "pricing": {
     "eyebrow": "Pas d'abonnement, jamais.",
     "title": "Vous payez uniquement sur les commandes réussies.",
     "subtitle": "Commission claire, prélevée à la livraison conforme. Le séquestre, le suivi et les assurances sont inclus.",
     "popular": "Cœur d'activité",
+    "totalTakeLabel": "Commission plateforme",
     "flows": {
       "sourcing": {
         "name": "Sourcing à la demande",
         "tagline": "Pour vos besoins sur mesure, négociés par un agent dédié.",
+        "totalRate": "5 %",
         "buyer": {
           "label": "Côté acheteur",
-          "rate": "3 %",
+          "rate": "4 %",
           "cap": null,
           "note": "Commission prélevée à la livraison conforme. Le même taux sur toutes les commandes, sans plafond."
         },
         "supplier": {
           "label": "Côté fournisseur",
-          "rate": "6 %",
+          "rate": "1 %",
           "cap": null,
           "note": "Commission déduite du versement à l'usine après libération du séquestre."
         },
@@ -2367,15 +2422,16 @@
       "marketplace": {
         "name": "Marketplace",
         "tagline": "Pour les produits déjà sourcés et négociés, achetables en un clic.",
+        "totalRate": "3 %",
         "buyer": {
           "label": "Côté acheteur",
-          "rate": "3 %",
+          "rate": "2 %",
           "cap": null,
           "note": "Intégré au prix affiché. Vous payez ce que vous voyez, sans surcoût au checkout."
         },
         "supplier": {
           "label": "Côté vendeur",
-          "rate": "6 %",
+          "rate": "1 %",
           "cap": null,
           "note": "Commission déduite du versement au vendeur après libération du séquestre."
         },

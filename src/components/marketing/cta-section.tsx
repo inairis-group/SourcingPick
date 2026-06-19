@@ -16,7 +16,7 @@ export function CtaSection({ dict, locale, hidePricingLink }: Props) {
       {/* Fixed dark surface (ink-deep) so the banner reads identically in
           light and dark mode — flipping bg-headline made the card go white
           on dark, killing contrast against the dark page background. */}
-      <div className="relative overflow-hidden rounded-xl bg-ink-deep text-white px-6 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20">
+      <div className="relative overflow-hidden rounded-xl bg-ink-deep text-white px-6 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20 animate-fade-up">
         {/* Decorative dot grid — sparse on the left where the text sits, dense
             on the right. Slow linear drift (40s loop) — paused under
             prefers-reduced-motion via the global base layer. */}
