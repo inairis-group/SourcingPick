@@ -22,6 +22,18 @@ const eslintConfig = defineConfig([
       "react-hooks/refs": "warn",
     },
   },
+  {
+    // PDF templates render through @react-pdf/renderer, NOT the DOM. Its
+    // <Text> primitive writes raw string content into a PDF buffer and does
+    // not HTML-decode entities — so `react/no-unescaped-entities` is actively
+    // harmful here: "&apos;" would print literally instead of an apostrophe.
+    // The French copy in these templates is full of apostrophes (l'usine,
+    // jusqu'au), so disable the DOM-only rule for the PDF files.
+    files: ["src/lib/**/pdf.tsx"],
+    rules: {
+      "react/no-unescaped-entities": "off",
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

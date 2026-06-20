@@ -47,7 +47,8 @@ export type NotificationVars = {
     | "marketplace_listing_edited_by_admin"
     | "marketplace_sample_ordered"
     | "quote_relance"
-    | "research_fee_refunded";
+    | "research_fee_refunded"
+    | "account_deletion_rejected";
 };
 
 const SYSTEM_TITLES: Record<
@@ -167,6 +168,12 @@ const SYSTEM_TITLES: Record<
     en: "Research fee refunded as credit",
     zh: "调研费已退款至账户",
     ar: "تم استرداد رسوم البحث كرصيد",
+  },
+  account_deletion_rejected: {
+    fr: "Votre demande de suppression de compte a été refusée",
+    en: "Your account deletion request was declined",
+    zh: "您的账户删除请求已被拒绝",
+    ar: "تم رفض طلب حذف حسابك",
   },
   marketplace_listing_blocked: {
     fr: "Annonce temporairement bloquée par SourcingPick",

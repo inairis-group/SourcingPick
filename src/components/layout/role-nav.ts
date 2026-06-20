@@ -14,6 +14,7 @@ import {
   TaskDone01Icon,
   UserGroup02Icon,
   UserMultiple02Icon,
+  UserRemove01Icon,
   Wallet01Icon,
   Building01Icon,
   BookOpen01Icon,
@@ -335,6 +336,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               href: `${base}/admin/users`,
               label: dict.admin.users.title,
               icon: UserMultiple02Icon,
+            },
+            {
+              href: `${base}/admin/account-deletions`,
+              label: dict.admin.accountDeletions.title,
+              icon: UserRemove01Icon,
             },
             {
               href: `${base}/admin/agents`,

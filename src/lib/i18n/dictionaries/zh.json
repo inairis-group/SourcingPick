@@ -440,6 +440,25 @@
     }
   },
   "settings": {
+    "privacy": {
+      "title": "隐私与数据",
+      "description": "导出您的数据或申请删除账户。",
+      "exportHeading": "导出我的数据",
+      "exportDescription": "下载我们所持有的关于您的个人数据副本(JSON 格式)。",
+      "exportCta": "下载我的数据",
+      "deletionHeading": "删除我的账户",
+      "deletionDescription": "申请删除您的账户。由于我们保存财务记录,您的申请将由我们的团队在删除前进行审核(可能适用法定保存义务)。",
+      "deletionReasonLabel": "原因(选填)",
+      "deletionReasonPlaceholder": "告诉我们您离开的原因(选填)",
+      "deletionCta": "申请删除账户",
+      "deletionConfirmCta": "确认申请",
+      "deletionAbort": "取消",
+      "pendingTitle": "删除申请审核中",
+      "pendingNote": "我们的团队将审核您的申请。在作出决定前,您可以撤回申请。",
+      "pendingSubmitted": "提交于",
+      "cancelCta": "撤回申请",
+      "error": "出现错误,请重试。"
+    },
     "eyebrow": "账户设置",
     "title": "设置",
     "description": "管理您的账户和 {org} 组织。",
@@ -1361,6 +1380,33 @@
     }
   },
   "admin": {
+    "accountDeletions": {
+      "title": "账户删除",
+      "eyebrow": "删除请求",
+      "description": "等待审核的 GDPR 删除请求。",
+      "empty": "暂无删除请求。",
+      "columns": {
+        "user": "用户",
+        "requested": "申请时间",
+        "reason": "原因",
+        "status": "状态"
+      },
+      "noReason": "未提供原因",
+      "approveCta": "批准并删除",
+      "approveConfirm": "此操作将永久匿名化该账户并撤销访问权限。是否继续?",
+      "rejectCta": "拒绝",
+      "rejectNoteLabel": "拒绝原因",
+      "rejectNotePlaceholder": "请说明原因(将发送给用户)",
+      "rejectSubmit": "拒绝请求",
+      "cancel": "取消",
+      "statusLabels": {
+        "PENDING": "待处理",
+        "CANCELLED": "已撤回",
+        "REJECTED": "已拒绝",
+        "COMPLETED": "已删除"
+      },
+      "error": "操作失败,请重试。"
+    },
     "dashboard": {
       "eyebrow": "运营视图",
       "title": "SourcingPick 平台",
@@ -2577,6 +2623,30 @@
     "eyebrow": "法律条款",
     "lastUpdated": "最后更新:2026 年 5 月",
     "draftNotice": "本文档为 v0 草稿。最终内容将由我们的法律顾问在正式上线前审核。如有任何疑问,请发送邮件至 legal@sourcingpick.com。",
+    "mentionsLegales": {
+      "title": "法律声明",
+      "intro": "根据法国 2004 年 6 月 21 日第 2004-575 号《数字经济信任法》(LCEN) 第 6 条的规定，特向本网站用户提供以下信息。",
+      "publisherHeading": "网站发布方",
+      "labels": {
+        "legalName": "公司名称",
+        "legalForm": "法律形式",
+        "shareCapital": "注册资本",
+        "address": "注册地址",
+        "rcs": "商业登记 (RCS)",
+        "siren": "SIREN 企业编号",
+        "vat": "欧盟增值税号",
+        "email": "联系方式"
+      },
+      "directorHeading": "出版负责人",
+      "directorBody": "出版负责人为发布公司的法定代表人。",
+      "hostHeading": "托管服务",
+      "hostBody": "本网站由第三方基础设施服务商托管。如有任何法律请求或举报，请联系发布方，发布方将在必要时转交托管服务商。",
+      "ipHeading": "知识产权",
+      "ipBody": "本网站的所有内容——包括文字、商标、徽标、图形元素及界面——均受知识产权法保护。未经发布方事先授权，禁止任何形式的复制或再利用。",
+      "dataHeading": "个人数据",
+      "dataBody": "我们对您个人数据的处理方式，详见我们的",
+      "dataLink": "隐私政策"
+    },
     "terms": {
       "title": "服务条款",
       "sections": [

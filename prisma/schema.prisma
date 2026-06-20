@@ -690,6 +690,8 @@ model User {
   auditLogs               AuditLog[]
   assignedTasks           AgentTask[]         @relation("TaskAgent")
   placedBids              Bid[]               @relation("BidderUser")
+  deletionRequests         AccountDeletionRequest[] @relation("DeletionRequester")
+  deletionRequestsReviewed AccountDeletionRequest[] @relation("DeletionReviewer")
 
   @@index([organizationId])
   @@index([role, deletedAt])
@@ -1776,4 +1778,42 @@ model PlatformSettings {
   deliveryEtaAmericas      String?
   deliveryEtaAsia          String?
   updatedAt                DateTime         @updatedAt
+}
+
+/// GDPR right-to-erasure (Art. 17) request. Erasure is NOT self-serve in a
+/// platform that holds financial/accounting records (legal-retention
+/// exceptions under Art. 17(3)) — a user files a request, an admin reviews
+/// it, and erasure (PII anonymisation + soft-delete) runs on approval.
+/// One open (PENDING) request per user is enforced in the action layer.
+model AccountDeletionRequest {
+  id     String                @id @default(cuid(2))
+  userId String
+  user   User                  @relation("DeletionRequester", fields: [userId], references: [id], onDelete: Cascade)
+  status DeletionRequestStatus @default(PENDING)
+  /// Optional free-text reason supplied by the requester.
+  reason String?
+
+  /// Admin review trail.
+  reviewedById String?
+  reviewedBy   User?     @relation("DeletionReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  reviewNote   String?
+  reviewedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([userId])
+}
+
+enum DeletionRequestStatus {
+  /// Awaiting admin review.
+  PENDING
+  /// User withdrew the request before review.
+  CANCELLED
+  /// Admin refused (e.g. active orders / accounting-retention obligation).
+  REJECTED
+  /// Admin approved AND erasure has been executed (PII anonymised, account
+  /// soft-deleted). Terminal.
+  COMPLETED
 }

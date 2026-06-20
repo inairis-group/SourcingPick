@@ -440,6 +440,25 @@
     }
   },
   "settings": {
+    "privacy": {
+      "title": "Privacy & data",
+      "description": "Export your data or request account deletion.",
+      "exportHeading": "Export my data",
+      "exportDescription": "Download a copy of the personal data we hold about you (JSON).",
+      "exportCta": "Download my data",
+      "deletionHeading": "Delete my account",
+      "deletionDescription": "Request erasure of your account. Because we hold financial records, your request is reviewed by our team before deletion (legal-retention obligations may apply).",
+      "deletionReasonLabel": "Reason (optional)",
+      "deletionReasonPlaceholder": "Tell us why you're leaving (optional)",
+      "deletionCta": "Request account deletion",
+      "deletionConfirmCta": "Confirm request",
+      "deletionAbort": "Cancel",
+      "pendingTitle": "Deletion request under review",
+      "pendingNote": "Our team will review your request. You can withdraw it until a decision is made.",
+      "pendingSubmitted": "Submitted on",
+      "cancelCta": "Withdraw request",
+      "error": "Something went wrong. Please try again."
+    },
     "eyebrow": "Account settings",
     "title": "Settings",
     "description": "Manage your account and the {org} organisation.",
@@ -1361,6 +1380,33 @@
     }
   },
   "admin": {
+    "accountDeletions": {
+      "title": "Account deletions",
+      "eyebrow": "Erasure requests",
+      "description": "GDPR erasure requests awaiting review.",
+      "empty": "No deletion requests.",
+      "columns": {
+        "user": "User",
+        "requested": "Requested",
+        "reason": "Reason",
+        "status": "Status"
+      },
+      "noReason": "No reason given",
+      "approveCta": "Approve & erase",
+      "approveConfirm": "This permanently anonymises the account and revokes access. Continue?",
+      "rejectCta": "Decline",
+      "rejectNoteLabel": "Reason for declining",
+      "rejectNotePlaceholder": "Explain why (sent to the user)",
+      "rejectSubmit": "Decline request",
+      "cancel": "Cancel",
+      "statusLabels": {
+        "PENDING": "Pending",
+        "CANCELLED": "Withdrawn",
+        "REJECTED": "Declined",
+        "COMPLETED": "Erased"
+      },
+      "error": "Action failed. Please try again."
+    },
     "dashboard": {
       "eyebrow": "Operator view",
       "title": "SourcingPick platform",
@@ -2577,6 +2623,30 @@
     "eyebrow": "Legal",
     "lastUpdated": "Last updated: May 2026",
     "draftNotice": "This is a v0 draft. The final wording will be reviewed by legal counsel before production. For any questions, write to legal@sourcingpick.com.",
+    "mentionsLegales": {
+      "title": "Legal notice",
+      "intro": "In accordance with Article 6 of French Act No. 2004-575 of 21 June 2004 on confidence in the digital economy (LCEN), the following information is provided to users of the site.",
+      "publisherHeading": "Site publisher",
+      "labels": {
+        "legalName": "Legal name",
+        "legalForm": "Legal form",
+        "shareCapital": "Share capital",
+        "address": "Registered office",
+        "rcs": "Trade register (RCS)",
+        "siren": "SIREN",
+        "vat": "EU VAT number",
+        "email": "Contact"
+      },
+      "directorHeading": "Publication director",
+      "directorBody": "The publication director is the legal representative of the publishing company.",
+      "hostHeading": "Hosting",
+      "hostBody": "The site is hosted by a third-party infrastructure provider. For any legal request or report, please contact the publisher, who will forward it to the host where necessary.",
+      "ipHeading": "Intellectual property",
+      "ipBody": "All content on this site — text, trademarks, logos, graphics and interfaces — is protected by intellectual property law. Any reproduction or reuse without the publisher's prior authorisation is prohibited.",
+      "dataHeading": "Personal data",
+      "dataBody": "The processing of your personal data is described in our",
+      "dataLink": "privacy policy"
+    },
     "terms": {
       "title": "Terms of service",
       "sections": [

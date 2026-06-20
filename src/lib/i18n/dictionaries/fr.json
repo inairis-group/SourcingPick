@@ -440,6 +440,25 @@
     }
   },
   "settings": {
+    "privacy": {
+      "title": "Confidentialité et données",
+      "description": "Exportez vos données ou demandez la suppression de votre compte.",
+      "exportHeading": "Exporter mes données",
+      "exportDescription": "Téléchargez une copie des données personnelles que nous détenons sur vous (format JSON).",
+      "exportCta": "Télécharger mes données",
+      "deletionHeading": "Supprimer mon compte",
+      "deletionDescription": "Demandez l'effacement de votre compte. Comme nous conservons des documents financiers, votre demande est examinée par notre équipe avant suppression (des obligations légales de conservation peuvent s'appliquer).",
+      "deletionReasonLabel": "Motif (facultatif)",
+      "deletionReasonPlaceholder": "Dites-nous pourquoi vous partez (facultatif)",
+      "deletionCta": "Demander la suppression du compte",
+      "deletionConfirmCta": "Confirmer la demande",
+      "deletionAbort": "Annuler",
+      "pendingTitle": "Demande de suppression en cours d'examen",
+      "pendingNote": "Notre équipe examinera votre demande. Vous pouvez la retirer tant qu'aucune décision n'a été prise.",
+      "pendingSubmitted": "Soumise le",
+      "cancelCta": "Retirer la demande",
+      "error": "Une erreur s'est produite. Veuillez réessayer."
+    },
     "eyebrow": "Paramètres du compte",
     "title": "Paramètres",
     "description": "Gérez votre compte et l'organisation {org}.",
@@ -1361,6 +1380,33 @@
     }
   },
   "admin": {
+    "accountDeletions": {
+      "title": "Suppressions de compte",
+      "eyebrow": "Demandes d'effacement",
+      "description": "Demandes d'effacement RGPD en attente d'examen.",
+      "empty": "Aucune demande de suppression.",
+      "columns": {
+        "user": "Utilisateur",
+        "requested": "Demandée",
+        "reason": "Motif",
+        "status": "Statut"
+      },
+      "noReason": "Aucun motif indiqué",
+      "approveCta": "Approuver et effacer",
+      "approveConfirm": "Cette action anonymise définitivement le compte et révoque l'accès. Continuer ?",
+      "rejectCta": "Refuser",
+      "rejectNoteLabel": "Motif du refus",
+      "rejectNotePlaceholder": "Expliquez pourquoi (transmis à l'utilisateur)",
+      "rejectSubmit": "Refuser la demande",
+      "cancel": "Annuler",
+      "statusLabels": {
+        "PENDING": "En attente",
+        "CANCELLED": "Retirée",
+        "REJECTED": "Refusée",
+        "COMPLETED": "Effacé"
+      },
+      "error": "L'action a échoué. Veuillez réessayer."
+    },
     "dashboard": {
       "eyebrow": "Vue opérateur",
       "title": "Plateforme SourcingPick",
@@ -2577,6 +2623,30 @@
     "eyebrow": "Mentions légales",
     "lastUpdated": "Dernière mise à jour : mai 2026",
     "draftNotice": "Document en version v0. Le contenu définitif sera revu par notre conseil juridique avant la mise en production. Pour toute question, écrivez-nous à legal@sourcingpick.com.",
+    "mentionsLegales": {
+      "title": "Mentions légales",
+      "intro": "Conformément à l'article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN), les informations suivantes sont portées à la connaissance des utilisateurs du site.",
+      "publisherHeading": "Éditeur du site",
+      "labels": {
+        "legalName": "Dénomination sociale",
+        "legalForm": "Forme juridique",
+        "shareCapital": "Capital social",
+        "address": "Siège social",
+        "rcs": "RCS",
+        "siren": "SIREN",
+        "vat": "TVA intracommunautaire",
+        "email": "Contact"
+      },
+      "directorHeading": "Directeur de la publication",
+      "directorBody": "Le directeur de la publication est le représentant légal de la société éditrice.",
+      "hostHeading": "Hébergement",
+      "hostBody": "Le site est hébergé par un prestataire d'infrastructure tiers. Pour toute réquisition ou tout signalement, veuillez contacter l'éditeur, qui transmettra à l'hébergeur lorsque cela est nécessaire.",
+      "ipHeading": "Propriété intellectuelle",
+      "ipBody": "L'ensemble des contenus du site — textes, marques, logos, éléments graphiques et interfaces — est protégé par le droit de la propriété intellectuelle. Toute reproduction ou réutilisation sans autorisation préalable de l'éditeur est interdite.",
+      "dataHeading": "Données personnelles",
+      "dataBody": "Le traitement de vos données personnelles est décrit dans notre",
+      "dataLink": "politique de confidentialité"
+    },
     "terms": {
       "title": "Conditions générales d'utilisation",
       "sections": [

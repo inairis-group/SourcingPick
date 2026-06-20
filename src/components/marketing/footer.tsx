@@ -30,6 +30,10 @@ export function MarketingFooter({ dict, locale }: { dict: Dictionary; locale: Lo
         { href: `/${locale}/legal/terms`, label: dict.footer.terms },
         { href: `/${locale}/legal/privacy`, label: dict.footer.privacy },
         { href: `/${locale}/legal/cookies`, label: dict.footer.cookies },
+        {
+          href: `/${locale}/legal/mentions-legales`,
+          label: dict.legal.mentionsLegales.title,
+        },
         { href: `/${locale}/legal/security`, label: dict.footer.security },
       ],
     },

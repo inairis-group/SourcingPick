@@ -7,11 +7,16 @@ import type { NextAuthConfig } from "next-auth";
  *
  * This file is imported by the proxy (which runs in the Edge runtime) so it
  * must NOT pull in the Prisma adapter or anything Node-only. The full config
- * (with adapter + DB-touching callbacks) lives in `src/lib/auth.ts`.
+ * (with adapter + DB-touching callbacks + the REAL credential/2FA logic)
+ * lives in `src/lib/auth.ts`.
  *
- * Phase 6 will wire the Credentials provider's authorize() to call into
- * password.ts + otp.ts. For Phase 0 it's a placeholder that always rejects —
- * routes that depend on auth will still build, just won't sign anyone in.
+ * The Credentials provider here intentionally returns null: actual sign-in
+ * (password verification + email-OTP 2FA gating) happens in the Node config
+ * in auth.ts, which is what the route handlers use. Do NOT implement
+ * credential validation in this file — it would force Prisma/password.ts into
+ * the Edge bundle and break the proxy. The proxy only uses the `authorized`
+ * callback below for optimistic redirects; real authorization is enforced
+ * server-side via requireRole() in layouts.
  */
 export const authConfig = {
   pages: {
@@ -26,7 +31,7 @@ export const authConfig = {
         password: { label: "Password", type: "password" },
         otp: { label: "OTP", type: "text" },
       },
-      // TODO Phase 1: actual credential validation + 2FA gating
+      // Intentional no-op — see file header. Real authorize() is in auth.ts.
       async authorize() {
         return null;
       },

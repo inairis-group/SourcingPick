@@ -10,14 +10,33 @@ import { ThemeScript } from "@/components/theme/theme-script";
 import { directionFor, isLocale, locales } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { THEME_COOKIE, isStoredTheme } from "@/lib/theme/config";
+import { getSiteUrl } from "@/lib/seo/site";
 import "@/styles/globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
+const DESCRIPTION =
+  "Sourcing international industrialisé avec séquestre intégré.";
+
 export const metadata: Metadata = {
+  // Anchors every relative metadata/OG/canonical URL to the public origin so
+  // crawlers and social scrapers resolve absolute links in prod.
+  metadataBase: new URL(getSiteUrl()),
   title: { default: "SourcingPick", template: "%s · SourcingPick" },
-  description: "Sourcing international industrialisé avec séquestre intégré.",
+  description: DESCRIPTION,
+  applicationName: "SourcingPick",
+  openGraph: {
+    type: "website",
+    siteName: "SourcingPick",
+    title: "SourcingPick",
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SourcingPick",
+    description: DESCRIPTION,
+  },
 };
 
 export function generateStaticParams() {

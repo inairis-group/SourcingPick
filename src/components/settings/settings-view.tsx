@@ -7,8 +7,10 @@ import { PayoutSection } from "./payout-section";
 import { LogoSection } from "./logo-section";
 import { NotificationPreferences } from "./notification-preferences";
 import { SocialSection } from "./social-section";
+import { PrivacySection } from "./privacy-section";
 import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
+import { getMyPendingDeletionRequest } from "@/lib/account/deletion";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import type { Locale } from "@/lib/i18n/config";
 
@@ -48,6 +50,10 @@ export async function SettingsView({ locale }: { locale: Locale }) {
   // get one too — invoices we issue them carry the logo; harmless to allow.
   // Only owners can change it (action also enforces this).
   const canEditLogo = isOwner;
+
+  // GDPR self-service (data export + deletion request) — available to every
+  // signed-in user regardless of role.
+  const pendingDeletion = await getMyPendingDeletionRequest(user.id);
 
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8">
@@ -155,6 +161,15 @@ export async function SettingsView({ locale }: { locale: Locale }) {
             <MembersList organizationId={user.organizationId} locale={locale} />
           </Section>
         )}
+
+        <Section
+          title={dict.settings.privacy.title}
+          description={dict.settings.privacy.description}
+        >
+          <PrivacySection
+            pendingSince={pendingDeletion?.createdAt.toISOString() ?? null}
+          />
+        </Section>
       </div>
     </div>
   );
