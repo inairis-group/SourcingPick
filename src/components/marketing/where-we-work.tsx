@@ -25,14 +25,17 @@ export function WhereWeWork({ dict }: { dict: Dictionary }) {
     { code: "TR", city: "Bursa · Istanbul" },
   ];
 
-  // Right column = buyer destinations.
+  // Right column = buyer destinations. Deliberately cross-continental,
+  // not Europe-only — SourcingPick serves buyers globally (see the
+  // about-page narrative), so the list pairs major EU markets with key
+  // African hubs (West + East) rather than reading as an EU-only network.
   const DESTINATIONS = [
     { code: "FR", city: "Paris · Lyon" },
     { code: "DE", city: "Berlin · Munich" },
     { code: "ES", city: "Madrid · Barcelona" },
     { code: "IT", city: "Milan · Rome" },
-    { code: "NL", city: "Amsterdam · Rotterdam" },
-    { code: "BE", city: "Brussels · Antwerp" },
+    { code: "NG", city: "Lagos · Abuja" },
+    { code: "KE", city: "Nairobi · Mombasa" },
   ];
 
   return (
@@ -200,16 +203,24 @@ function RouteLines({
   hubs: number;
   destinations: number;
 }) {
-  // Build a (hub × destination) cross-product of paths. Each path is
-  // a smooth cubic Bézier from (0, hubY) to (1, destY) with the
-  // control points pushed inward so the curves bend toward the
-  // middle of the column.
-  const paths: string[] = [];
+  // Build a (hub × destination) cross-product of paths. Each path is a
+  // symmetric, horizontal-tangent cubic Bézier from the hub anchor (left
+  // edge) to the destination anchor (right edge) — the classic "sankey"
+  // S-curve that leaves and arrives flat so the routes read as smooth
+  // arcs rather than kinked diagonals.
+  //
+  // `opacity` fades steep cross-routes (those spanning the most vertical
+  // distance) so the full mesh reads as depth, not clutter — near-level
+  // routes stay crisp, long diagonals recede.
+  const paths: { d: string; opacity: number }[] = [];
   for (let h = 0; h < hubs; h++) {
     const hy = ((h + 0.5) / hubs) * 100;
     for (let d = 0; d < destinations; d++) {
       const dy = ((d + 0.5) / destinations) * 100;
-      paths.push(`M0,${hy} C40,${hy} 60,${dy} 100,${dy}`);
+      paths.push({
+        d: `M0,${hy} C50,${hy} 50,${dy} 100,${dy}`,
+        opacity: 0.55 - (Math.abs(hy - dy) / 100) * 0.3,
+      });
     }
   }
   return (
@@ -220,21 +231,27 @@ function RouteLines({
     >
       <defs>
         <linearGradient id="route-line-gradient" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="var(--color-brand-600)" stopOpacity="0.45" />
-          <stop offset="50%" stopColor="var(--color-brand-700)" stopOpacity="0.7" />
-          <stop offset="100%" stopColor="var(--color-brand-600)" stopOpacity="0.45" />
+          <stop offset="0%" stopColor="var(--color-brand-500)" stopOpacity="0.35" />
+          <stop offset="50%" stopColor="var(--color-brand-600)" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="var(--color-brand-500)" stopOpacity="0.35" />
         </linearGradient>
       </defs>
-      {paths.map((d, i) => (
+      {paths.map((p, i) => (
         <path
           key={i}
-          d={d}
+          d={p.d}
           fill="none"
           stroke="url(#route-line-gradient)"
-          strokeWidth="0.4"
-          strokeDasharray="2 2"
+          strokeWidth={1.1}
+          strokeOpacity={p.opacity}
+          strokeDasharray="1 7"
+          strokeLinecap="round"
+          // Render the stroke + dash pattern in uniform screen pixels so
+          // the non-uniform `preserveAspectRatio="none"` scale doesn't
+          // stretch the dashes into uneven combs near the hub anchors.
+          vectorEffect="non-scaling-stroke"
           className="route-line"
-          style={{ animationDelay: `${500 + i * 20}ms` }}
+          style={{ animationDelay: `${400 + i * 18}ms` }}
         />
       ))}
     </svg>

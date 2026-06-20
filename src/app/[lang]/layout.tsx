@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { CookieBanner } from "@/components/layout/cookie-banner";
+import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 import { TopProgressBar } from "@/components/layout/top-progress";
 import { I18nProvider } from "@/lib/i18n/client-provider";
 import { ThemeScript } from "@/components/theme/theme-script";
@@ -26,6 +27,13 @@ export const metadata: Metadata = {
   title: { default: "SourcingPick", template: "%s · SourcingPick" },
   description: DESCRIPTION,
   applicationName: "SourcingPick",
+  // iOS standalone behaviour for "Add to Home Screen". The home-screen icon
+  // falls back to favicon.ico (no dedicated apple-touch PNG yet).
+  appleWebApp: {
+    capable: true,
+    title: "SourcingPick",
+    statusBarStyle: "default",
+  },
   openGraph: {
     type: "website",
     siteName: "SourcingPick",
@@ -37,6 +45,12 @@ export const metadata: Metadata = {
     title: "SourcingPick",
     description: DESCRIPTION,
   },
+};
+
+export const viewport: Viewport = {
+  // Tints the mobile browser UI (address bar) to the brand blue. Matches
+  // the manifest theme_color so the installed PWA and the browser agree.
+  themeColor: "#155dfc",
 };
 
 export function generateStaticParams() {
@@ -72,6 +86,7 @@ export default async function RootLayout({
         <ThemeScript />
       </head>
       <body>
+        <ServiceWorkerRegister />
         {/* Suspense wraps the top progress bar because useSearchParams
             opts the subtree into client-side rendering for the search-
             params change detection — App Router requires a boundary. */}

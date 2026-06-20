@@ -43,6 +43,9 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Tests run under node:test via tsx; not part of the app lint surface.
     "tests/**",
+    // Static assets — incl. the service worker (worker globals, not the app
+    // lint surface).
+    "public/**",
   ]),
 ]);
 

@@ -10,6 +10,26 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "150mb",
     },
   },
+  async headers() {
+    return [
+      {
+        // The service worker must not be cached by the browser, or a new
+        // deploy's SW won't be picked up. Served from the app root so its
+        // scope can cover the whole site.
+        source: "/sw.js",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/javascript; charset=utf-8",
+          },
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
