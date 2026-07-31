@@ -2167,7 +2167,11 @@
     },
     "hero": {
       "eyebrow": "Sourcing · Marketplace · Certification",
-      "title": "Sourcez à l'international, sans intermédiaires opaques.",
+      "title": {
+        "lead": "Sourcez à l'international, sans ",
+        "emphasis": "intermédiaires opaques",
+        "trail": "."
+      },
       "subtitle": "Déposez votre besoin, recevez des devis qualifiés en moins de 72 h, et payez en toute sérénité grâce au séquestre intégré.",
       "ctaPrimary": "Démarrer gratuitement",
       "ctaSecondary": "Voir la marketplace",

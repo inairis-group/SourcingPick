@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    // The "how it works" step cards use Unsplash-hosted photographs. Scoped to
+    // that one host so the optimizer can't be pointed at arbitrary origins.
+    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com", pathname: "/**" }],
+  },
   experimental: {
     serverActions: {
       // Product/listing creation posts a multipart Server Action carrying up

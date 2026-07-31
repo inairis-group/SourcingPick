@@ -41,7 +41,7 @@ export function MarketingFooter({ dict, locale }: { dict: Dictionary; locale: Lo
 
   return (
     <footer className="relative overflow-hidden bg-subtle border-t border-line-subtle mt-20">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 lg:py-16">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
           <div className="col-span-2">
             <Link href={`/${locale}`} variant="muted">
@@ -71,13 +71,13 @@ export function MarketingFooter({ dict, locale }: { dict: Dictionary; locale: Lo
           <p className="text-xs text-faint">
             © {year} SourcingPick · {dict.footer.allRights}
           </p>
-          <p className="text-xs text-faint">{dict.footer.madeIn}</p>
+          <a href='https://inairis.fr' className="text-xs text-faint" target="_blank">{dict.footer.madeIn}</a>
         </div>
       </div>
 
       <div
         aria-hidden="true"
-        className="pointer-events-none select-none overflow-hidden text-center font-display translate-y-3 md:translate-y-16 text-[12vw] font-black leading-none tracking-tight text-brand-700/20"
+        className="pointer-events-none select-none overflow-hidden text-center font-display translate-y-3 md:translate-y-16 text-[12vw] font-black leading-none tracking-tight text-info/20"
       >
         SOURCINGPICK
       </div>

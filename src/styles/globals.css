@@ -70,6 +70,13 @@
   /* ---------- Typography ---------- */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* Display face — marketing headlines and the oversized wordmarks only.
+   * App UI never uses this. Currently aliased to Geist so `font-display`
+   * (already referenced by footer.tsx and the home intro) resolves to a
+   * real family instead of silently doing nothing. Swapping in a genuine
+   * display face is a one-line change here plus the loader in
+   * app/[lang]/layout.tsx — see docs/landing-v2.md §5.3, open question Q2. */
+  --font-display: var(--font-geist-sans);
 
   --text-xs: 0.6875rem; /* 11px */
   --text-xs--line-height: 1rem;
@@ -104,6 +111,12 @@
   --radius-md: 5px;
   --radius-lg: 8px;
   --radius-xl: 12px;
+  /* 2xl/3xl are MARKETING-ONLY. App UI (admin tables, agent queues,
+   * dashboards) stays capped at --radius-xl. A 12px corner on a
+   * full-bleed 1400px panel reads as a rendering bug, which is the only
+   * reason these exist. See docs/landing-v2.md §5.1. */
+  --radius-2xl: 20px;
+  --radius-3xl: 28px;
   --radius-full: 9999px;
 
   /* ---------- Shadows: restrained, neutral-tinted ---------- */
@@ -127,6 +140,11 @@
 
   /* ---------- Breakpoints (default Tailwind + 3xl for admin) ---------- */
   --breakpoint-3xl: 1920px;
+
+  /* Tailwind's container scale stops at 7xl (80rem). The hero's inset card
+   * needs to run wider than the 6xl/7xl content columns without going
+   * edge-to-edge, so `max-w-8xl` earns its keep. Marketing only. */
+  --container-8xl: 90rem;
 }
 
 /* =============================================================
@@ -191,8 +209,21 @@
 @utility z-toast {
   z-index: 60;
 }
+/* Home intro overlay — the only thing that outranks the routing progress
+ * bar (z-100). It covers the viewport for at most ~2.5s on first visit,
+ * and nothing should ever paint over it while it does. */
+@utility z-intro {
+  z-index: 110;
+}
 
-:root {
+/* `.theme-light` re-declares this whole block on a subtree, which is how the
+ * marketing pages stay light while the app honours the user's theme. Custom
+ * properties inherit, so a `.theme-light` wrapper inside `<html class="dark">`
+ * overrides the inherited dark values for itself and everything under it —
+ * no !important, no duplicated token list. Applied in
+ * app/[lang]/(marketing)/layout.tsx. */
+:root,
+.theme-light {
   /* Surfaces */
   --color-page: var(--color-neutral-0);
   --color-surface: var(--color-neutral-0);
@@ -348,6 +379,14 @@
   }
 }
 
+/* Marketing is light-only, so its selection colour must not follow the app
+ * theme either. Declared last: it ties on specificity with the two dark rules
+ * above, so source order is what makes it win inside the wrapper. */
+.theme-light ::selection {
+  background-color: var(--color-brand-100);
+  color: var(--color-ink);
+}
+
 /* =============================================================
  * Base layer
  * ============================================================= */
@@ -418,6 +457,100 @@
 
   .animate-fade-up {
     animation: fade-up var(--duration-pageish) var(--ease-emphasize) both;
+  }
+
+  /* ---------------------------------------------------------
+   * .reveal — viewport-triggered entrance.
+   *
+   * `.animate-fade-up` is a plain CSS animation, so it fires the
+   * instant the element renders regardless of whether it is on
+   * screen. Everything below the fold therefore finishes its
+   * entrance against an empty viewport. `.reveal` is the fix:
+   * <Reveal> (components/marketing/reveal.tsx) sets
+   * data-revealed on intersection.
+   *
+   * The pre-animation hidden state is gated on `scripting:
+   * enabled` rather than a class written onto <html> by an inline
+   * script: React owns <html>'s className here (see the note in
+   * app/[lang]/layout.tsx) and would clobber it on reconcile.
+   * Browsers without the media feature ignore the rule and render
+   * content visible, which is the safe direction to fail in.
+   * One-shot: the observer unobserves after firing, so this can
+   * never re-trigger on scroll-back.
+   * --------------------------------------------------------- */
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .reveal:not([data-revealed]) {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  .reveal[data-revealed] {
+    animation: fade-up var(--duration-pageish) var(--ease-emphasize) both;
+  }
+
+  /* ---------------------------------------------------------
+   * .panel-stack — full-bleed panels that park and are covered
+   * by the next one, so the section reads as a physical stack
+   * rather than as sequential scrolling blocks.
+   *
+   * Pure `position: sticky`. No scroll listener, no observer, no
+   * scrubbed transforms — which is exactly why it is allowed
+   * under the amended motion rule. Each item parks a little
+   * lower than the last (--panel-index) so the earlier panels'
+   * top edges stay visible behind the current one.
+   *
+   * Degrades perfectly: with sticky unsupported, or under
+   * reduced motion, these are simply stacked sections.
+   * --------------------------------------------------------- */
+  .panel-stack-item {
+    position: sticky;
+    /* Panels are 90vh tall, so the park offset has to be small enough that
+     * offset + 90vh still fits inside the viewport — otherwise a parked panel
+     * is clipped at the bottom with no way to scroll the rest into view.
+     * 4rem clears most of the fixed pill navbar (56px + 16px inset, and the
+     * bar is translucent anyway), and the 0.5rem stagger keeps the earlier
+     * panels' edges peeking through: 4rem + 3 × 0.5rem = 5.5rem worst case,
+     * which leaves ~10vh of headroom on a 900px-tall viewport. */
+    top: calc(4rem + var(--panel-index, 0) * 0.5rem);
+  }
+
+  /* ---------------------------------------------------------
+   * Home intro overlay (components/marketing/home-intro.tsx).
+   *
+   * Server-rendered at 0% so it is present in the first paint,
+   * then driven and dismissed by the client component. Repeat
+   * visits never render it at all — the server reads the
+   * `sp_seen_intro` session cookie and omits the markup, so
+   * there is no flash and no hydration mismatch.
+   *
+   * Three independent ways it can never trap a user:
+   *   1. Reduced motion hides it in CSS, before paint.
+   *   2. <noscript> hides it outright (see home-intro.tsx) —
+   *      without JS nothing would ever dismiss it.
+   *   3. The failsafe animation below retires it after 6s even
+   *      if JS loaded but threw before dismissing it.
+   * --------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .sp-intro {
+      display: none;
+    }
+  }
+
+  @keyframes sp-intro-failsafe {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  .sp-intro {
+    animation: sp-intro-failsafe 1ms linear 6s forwards;
+  }
+
+  .sp-intro[data-phase="leaving"] {
+    transform: translateY(-100%);
+    transition: transform var(--duration-slow) var(--ease-emphasize);
   }
 
   /* Decorative dot grid for the CTA section.
@@ -597,36 +730,64 @@
     height: 0;
   }
 
-  /* About-page "where we work" routes — each dashed path draws
-     itself from origin to destination on mount, then stays visible.
-     Done with stroke-dashoffset so it works regardless of path
-     length. Subtle, one-shot, no infinite loop. */
-  @keyframes route-line-draw {
-    from {
-      stroke-dashoffset: 100;
-      opacity: 0;
-    }
-    to {
-      stroke-dashoffset: 0;
-      opacity: 1;
-    }
-  }
-  .route-line {
-    stroke-dashoffset: 100;
-    opacity: 0;
-    animation: route-line-draw 1.2s ease-out forwards;
+  /* ---------------------------------------------------------
+   * .sheen-top — hairline light wash down the top edge of the
+   * fixed-dark surfaces (product panels, CTA banner).
+   *
+   * Two jobs, one of them structural rather than decorative:
+   * `--color-ink-deep` (#0a1330) sits at 1.02:1 against the dark
+   * page background (#0b1220), so in dark mode those surfaces
+   * have essentially no discernible boundary. The wash gives
+   * them a lit top edge in both themes, and stops them reading
+   * as flat rectangles in light mode.
+   *
+   * DELIBERATELY sets no `position` of its own. It used to set
+   * `position: relative`, which silently broke the product
+   * panels: `.panel-stack-item` is `position: sticky` and this
+   * rule is declared later at equal specificity, so `relative`
+   * won and the whole stacking effect died. The consumer must
+   * already be positioned — sticky counts, and a plain card just
+   * adds `relative` itself (see cta-section.tsx).
+   *
+   * The ::before is absolutely positioned, so it paints above
+   * static children. Any content that must sit over it needs its
+   * own `relative` — see the panel grid and the CTA inner div.
+   * --------------------------------------------------------- */
+  /* ---------------------------------------------------------
+   * .sheen-brand — the light-surface counterpart to .sheen-top.
+   *
+   * A white wash is invisible on a near-white card, so light
+   * surfaces get a brand-blue tint down the top edge instead.
+   * Same contract as .sheen-top: sets NO `position` of its own,
+   * so it can never clobber a sticky/absolute consumer. Whatever
+   * it's applied to must already be positioned, and any content
+   * that must sit above the wash needs its own `relative`.
+   * --------------------------------------------------------- */
+  .sheen-brand::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      var(--color-brand-500) 0%,
+      transparent 55%
+    );
+    opacity: 0.08;
   }
 
-  /* Landing-page hero composition — three gentle floats with
-     different periods so the cards never sync. The reduced-motion
-     media query at the bottom of this layer cancels them out. */
-  @keyframes hero-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+  .sheen-top::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.09) 0%,
+      rgba(255, 255, 255, 0.02) 28%,
+      transparent 60%
+    );
   }
-  .hero-float-slow { animation: hero-float 7.5s ease-in-out infinite; }
-  .hero-float-mid  { animation: hero-float 5.5s ease-in-out infinite; }
-  .hero-float-fast { animation: hero-float 4s   ease-in-out infinite; }
 
   /* Respect user motion preferences */
   @media (prefers-reduced-motion: reduce) {

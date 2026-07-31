@@ -55,7 +55,7 @@ export default async function FaqPage({
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
       <header className="flex flex-col gap-2 mb-10 max-w-2xl">
-        <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
+        <p className="text-xs font-semibold uppercase tracking-wide text-info">
           {t.eyebrow}
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold text-headline tracking-tight">
@@ -79,7 +79,7 @@ export default async function FaqPage({
               <Link
                 href={`#${s.key}`}
                 variant="muted"
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-fg hover:text-brand-700 transition-colors duration-fast"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-fg hover:text-info transition-colors duration-fast"
               >
                 <HugeiconsIcon icon={s.icon} size={14} strokeWidth={1.5} />
                 {s.block.heading}
@@ -100,7 +100,7 @@ export default async function FaqPage({
         <Link
           href={`mailto:${t.contactEmail}`}
           variant="muted"
-          className="font-medium text-brand-700 hover:text-brand-800"
+          className="font-medium text-info hover:text-info"
         >
           {t.contactEmail}
         </Link>
@@ -121,7 +121,7 @@ function FaqSection({
   return (
     <section id={id} className="scroll-mt-24">
       <div className="flex items-center gap-3 mb-1">
-        <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-700">
+        <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-info-soft text-info">
           <HugeiconsIcon icon={icon} size={18} strokeWidth={1.75} />
         </span>
         <h2 className="text-xl sm:text-2xl font-bold text-headline tracking-tight">

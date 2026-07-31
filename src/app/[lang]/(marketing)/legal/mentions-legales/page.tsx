@@ -65,7 +65,7 @@ export default async function MentionsLegalesPage({
     <>
       <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-16 pb-8 lg:pt-24 lg:pb-12">
         <div className="animate-fade-up">
-          <p className="text-sm font-medium text-brand-700 tracking-wide uppercase mb-4">
+          <p className="text-sm font-medium text-info tracking-wide uppercase mb-4">
             {dict.legal.eyebrow}
           </p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-headline tracking-tight leading-tight">

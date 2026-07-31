@@ -16,7 +16,6 @@ import {
 import { Link } from "@/components/ui/link";
 import { buttonClass } from "@/components/ui/button";
 import { LocaleDropdown } from "@/components/layout/locale-dropdown";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Logo } from "./logo";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { cn } from "@/lib/utils";
@@ -81,7 +80,6 @@ export function MarketingNavbar({
             </ul>
 
             <div className="hidden md:flex items-center gap-1">
-              <ThemeToggle display="compact" />
               <LocaleDropdown display="compact" />
               {signedIn ? (
                 <Link
@@ -116,7 +114,6 @@ export function MarketingNavbar({
             </div>
 
             <div className="md:hidden flex items-center gap-1">
-              <ThemeToggle display="compact" />
               <LocaleDropdown display="compact" />
               <button
                 type="button"

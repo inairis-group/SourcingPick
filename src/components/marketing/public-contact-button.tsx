@@ -69,7 +69,7 @@ export function PublicContactButton() {
                 "hover:bg-subtle transition-colors duration-fast",
               )}
             >
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-brand-100 text-brand-700">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-info-soft text-info">
                 <HugeiconsIcon
                   icon={UserAdd01Icon}
                   size={14}

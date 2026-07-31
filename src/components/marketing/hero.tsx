@@ -1,236 +1,110 @@
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Factory01Icon,
-  PackageIcon,
-  SecurityCheckIcon,
-  StoreManagement01Icon,
-  WalletDoneIcon,
-} from "@hugeicons/core-free-icons";
 import { Link } from "@/components/ui/link";
 import { buttonClass } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 import type { Locale } from "@/lib/i18n/config";
 
 /**
- * Landing-page hero.
+ * Landing-page hero — centred type on an inset, rounded surface.
  *
- * Left column: the same headline + dual-CTA stack as before, with
- * each piece arriving on its own stagger-fade so the hero composes
- * piece-by-piece on load instead of as one block.
+ * No photograph and no mock-UI composition: the headline is the whole hero.
+ * The lockup (emphasised phrase in a filled dark box) does the work an image
+ * would otherwise do, which is the same bet the reference site makes.
  *
- * Right column (lg+): a "live platform" composition built from the
- * same UI tokens we ship on the real product — an Order card, an
- * Insured badge, a Tested-✓ pill, an example factory profile, etc.
- * Stock illustration energy intentionally avoided; the right side
- * reads as "the platform exists and looks like this," not "here's a
- * vector man holding a box."
+ * Why the card is light rather than dark
+ * --------------------------------------
+ * Three reasons, all structural:
  *
- * Hidden below lg to keep the mobile hero focused on the message.
+ *   1. Rhythm. The next section is three fixed-dark stacking panels. A dark
+ *      hero would run straight into them as one continuous dark mass; light
+ *      here gives light → dark → light → dark down the page.
+ *   2. Dark mode. `--color-ink-deep` (#0a1330) sits almost exactly on the dark
+ *      page background (#0b1220), so a dark hero card would all but disappear
+ *      in that theme. Theme-following surface tokens hold up in both.
+ *   3. The navbar. It's a floating `bg-page/85` pill — light and translucent.
+ *      Over a dark card it reads as a misplaced element.
+ *
+ * It also keeps the emphasis box dark-on-light, which is the distinctive half
+ * of the lockup; inverting it to white-on-dark is a weaker mark.
  */
 export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   return (
-    <section className="relative overflow-hidden">
-      {/* Subtle brand-tinted radial. Same as before. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-50/40 to-page pointer-events-none"
-      />
+    <section className="px-4 pt-24 pb-8 sm:px-6 lg:pt-28">
+      <div className="border-line bg-subtle max-w-8xl relative mx-auto overflow-hidden rounded-3xl border shadow-sm">
+        {/* Brand-tinted bloom from the top edge. Applied as a single layer at
+            a flat opacity rather than as a pre-tinted colour, so it lands
+            correctly over both the light and dark values of `bg-subtle`
+            without needing a second token. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 70% at 50% -5%, var(--color-brand-500), transparent 72%)",
+            // Raised from 0.10: on a near-white surface a brand tint has far
+            // less room to register than the same glow would on a dark one.
+            opacity: 0.18,
+          }}
+        />
 
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-24 pb-12 lg:pt-32 lg:pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Copy column */}
-          <div className="lg:col-span-7">
-            <p
-              className="text-sm font-medium text-brand-700 tracking-wide uppercase mb-4 animate-fade-up"
-              style={{ animationDelay: "0ms" }}
-            >
-              {dict.marketing.hero.eyebrow}
-            </p>
-            <h1
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-headline tracking-tight leading-tight animate-fade-up"
-              style={{ animationDelay: "80ms" }}
-            >
-              {dict.marketing.hero.title}
-            </h1>
-            <p
-              className="mt-6 text-lg sm:text-xl text-muted max-w-2xl leading-relaxed animate-fade-up"
-              style={{ animationDelay: "160ms" }}
-            >
-              {dict.marketing.hero.subtitle}
-            </p>
-
-            <div
-              className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 animate-fade-up"
-              style={{ animationDelay: "240ms" }}
-            >
-              <Link
-                href={`/${locale}/signup`}
-                className={buttonClass({ variant: "primary", size: "lg" })}
-              >
-                {dict.marketing.hero.ctaPrimary}
-              </Link>
-              <Link
-                href={`/${locale}/marketplace`}
-                className={buttonClass({ variant: "secondary", size: "lg" })}
-              >
-                {dict.marketing.hero.ctaSecondary}
-              </Link>
-            </div>
-
-            <p
-              className="mt-6 text-sm text-faint animate-fade-up"
-              style={{ animationDelay: "320ms" }}
-            >
-              {dict.marketing.hero.assurance}
-            </p>
-          </div>
-
-          {/* Composition column — lg+ only. */}
-          <div
-            aria-hidden
-            className="hidden lg:block lg:col-span-5 relative h-105 animate-fade-up"
-            style={{ animationDelay: "200ms" }}
+        <div className="relative mx-auto max-w-4xl px-6 py-24 text-center sm:px-10 sm:py-32 lg:py-40">
+          <p
+            className="animate-fade-up text-info mb-4 text-sm font-medium tracking-wide uppercase"
+            style={{ animationDelay: "0ms" }}
           >
-            {/* Soft brand aura behind the cards. */}
-            <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-brand-100/70 via-brand-50/50 to-transparent blur-2xl" />
+            {dict.marketing.hero.eyebrow}
+          </p>
 
-            {/* Decorative dot grid. */}
-            <div
-              aria-hidden
-              className="absolute inset-0 opacity-30"
-              style={{
-                backgroundImage:
-                  "radial-gradient(var(--color-line-strong) 1px, transparent 1px)",
-                backgroundSize: "20px 20px",
-              }}
-            />
+          {/* The emphasised phrase sits in a filled box, so the headline reads
+              as a lockup rather than a sentence. The split lives in the
+              dictionary (lead / emphasis / trail) rather than being derived
+              here — the emphasised words aren't in the same position in every
+              language, and in Arabic they aren't even on the same side.
+              `box-decoration-clone` keeps the padding and radius intact when
+              the box wraps across lines, which at this width it will. */}
+          <h1
+            className="animate-fade-up font-display text-headline text-4xl leading-tight font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl"
+            style={{ animationDelay: "80ms" }}
+          >
+            {dict.marketing.hero.title.lead}
+            <span className="bg-ink-deep rounded-lg box-decoration-clone px-3 py-0.5 text-white">
+              {dict.marketing.hero.title.emphasis}
+            </span>
+            {dict.marketing.hero.title.trail}
+          </h1>
 
-            {/* The composition. Each card uses real UI tokens; the
-                gentle floating animation is paused under reduced-
-                motion via globals.css. */}
-            <div className="relative h-full">
-              <OrderCard className="absolute top-2 inset-s-2 hero-float-slow" />
-              <TestedPill className="absolute top-8 inset-e-4 hero-float-mid" />
-              <InsuredPill className="absolute top-28 inset-e-2 hero-float-fast" />
-              <FactoryCard className="absolute bottom-16 inset-s-6 hero-float-mid" />
-              <PayoutChip className="absolute bottom-4 inset-e-8 hero-float-slow" />
-            </div>
+          <p
+            className="animate-fade-up text-muted mx-auto mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl"
+            style={{ animationDelay: "160ms" }}
+          >
+            {dict.marketing.hero.subtitle}
+          </p>
+
+          <div
+            className="animate-fade-up mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center"
+            style={{ animationDelay: "240ms" }}
+          >
+            <Link
+              href={`/${locale}/signup`}
+              className={buttonClass({ variant: "primary", size: "lg" })}
+            >
+              {dict.marketing.hero.ctaPrimary}
+            </Link>
+            <Link
+              href={`/${locale}/marketplace`}
+              className={buttonClass({ variant: "secondary", size: "lg" })}
+            >
+              {dict.marketing.hero.ctaSecondary}
+            </Link>
           </div>
+
+          <p
+            className="animate-fade-up text-faint mt-6 text-sm"
+            style={{ animationDelay: "320ms" }}
+          >
+            {dict.marketing.hero.assurance}
+          </p>
         </div>
       </div>
     </section>
-  );
-}
-
-function OrderCard({ className }: { className?: string }) {
-  return (
-    <article
-      className={cn(
-        "w-64 rounded-xl border border-line bg-page shadow-lg p-4 flex flex-col gap-2",
-        className,
-      )}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-[10px] font-mono uppercase tracking-wide text-faint">
-            ORD-58127
-          </p>
-          <p className="text-sm font-semibold text-headline">
-            Stainless-steel kettles · 1 200 u
-          </p>
-        </div>
-        <span className="inline-flex items-center h-5 px-2 rounded-full border border-warning-edge bg-warning-soft text-warning text-[10px] font-medium uppercase tracking-wide whitespace-nowrap">
-          QC
-        </span>
-      </div>
-      <div className="flex items-center gap-2 text-[11px] text-muted">
-        <span className="inline-flex items-center gap-1">
-          <HugeiconsIcon icon={PackageIcon} size={12} strokeWidth={1.5} />
-          ETA 23 d
-        </span>
-        <span className="text-faint">·</span>
-        <span>DAP · Geodis</span>
-      </div>
-      <div className="h-1.5 rounded-full bg-line-subtle overflow-hidden mt-1">
-        <span
-          className="block h-full bg-action"
-          style={{ width: "62%" }}
-        />
-      </div>
-    </article>
-  );
-}
-
-function TestedPill({ className }: { className?: string }) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1 h-7 px-3 rounded-full border border-success-edge bg-success-soft text-success text-[11px] font-semibold uppercase tracking-wide shadow-sm",
-        className,
-      )}
-    >
-      <HugeiconsIcon icon={SecurityCheckIcon} size={12} strokeWidth={1.75} />
-      Tested ✓
-    </span>
-  );
-}
-
-function InsuredPill({ className }: { className?: string }) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1 h-7 px-3 rounded-full border border-info-edge bg-info-soft text-info text-[11px] font-semibold uppercase tracking-wide shadow-sm",
-        className,
-      )}
-    >
-      <HugeiconsIcon icon={SecurityCheckIcon} size={12} strokeWidth={1.75} />
-      Insured
-    </span>
-  );
-}
-
-function FactoryCard({ className }: { className?: string }) {
-  return (
-    <article
-      className={cn(
-        "w-56 rounded-xl border border-line bg-page shadow-md p-3 flex items-center gap-3",
-        className,
-      )}
-    >
-      <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-700">
-        <HugeiconsIcon icon={Factory01Icon} size={16} strokeWidth={1.5} />
-      </span>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-headline truncate">
-          Shenzhen Acme Mfg
-        </p>
-        <p className="text-[11px] text-muted">CN · Verified · 14d MOQ 1 000</p>
-      </div>
-    </article>
-  );
-}
-
-function PayoutChip({ className }: { className?: string }) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-2 h-9 px-3 rounded-full bg-page border border-line shadow-md",
-        className,
-      )}
-    >
-      <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-success-soft text-success">
-        <HugeiconsIcon icon={WalletDoneIcon} size={12} strokeWidth={1.75} />
-      </span>
-      <span className="text-[11px] font-semibold text-fg">Escrow released</span>
-      <span className="text-[11px] text-muted tabular-nums">€18,420</span>
-      <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-subtle text-muted">
-        <HugeiconsIcon
-          icon={StoreManagement01Icon}
-          size={12}
-          strokeWidth={1.5}
-        />
-      </span>
-    </span>
   );
 }

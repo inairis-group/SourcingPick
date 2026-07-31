@@ -1,16 +1,6 @@
 import { notFound } from "next/navigation";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Factory01Icon,
-  GlobeIcon,
-  PackageIcon,
-  SecurityCheckIcon,
-  ShoppingBag01Icon,
-  UserCircleIcon,
-  WalletDoneIcon,
-} from "@hugeicons/core-free-icons";
 import { CtaSection } from "@/components/marketing/cta-section";
-import { WhereWeWork } from "@/components/marketing/where-we-work";
+import { Reveal } from "@/components/marketing/reveal";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
@@ -22,136 +12,138 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/about">) {
   return { title: dict.about.title };
 }
 
+/**
+ * About — editorial rather than promotional.
+ *
+ * Structure follows the reference About page: a statement opener, then a
+ * labelled story band split by a vertical rule, then values, then the team.
+ *
+ * Two of the reference's sections are deliberately absent. It leads with a
+ * full-bleed group photograph and closes with a "life at / we're hiring"
+ * block; we have neither a team photo nor any hiring copy, and inventing
+ * either — particularly staged team imagery — would be a worse outcome than
+ * a shorter page. They slot straight in if those assets ever land.
+ */
 export default async function AboutPage({ params }: PageProps<"/[lang]/about">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const dict = await getDictionary(lang);
 
   const values = [
-    { icon: WalletDoneIcon, copy: dict.about.values.escrow },
-    { icon: UserCircleIcon, copy: dict.about.values.agents },
-    { icon: GlobeIcon, copy: dict.about.values.global },
+    dict.about.values.escrow,
+    dict.about.values.agents,
+    dict.about.values.global,
   ];
+
+  // The closing paragraph is set as a display statement rather than body
+  // copy — the same move the reference makes with its last line. Guarded so a
+  // single-paragraph translation still renders sensibly.
+  const body = dict.about.body;
+  const closing = body.length > 1 ? body[body.length - 1] : null;
+  const lead = closing ? body.slice(0, -1) : body;
 
   return (
     <>
-      <section className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-24 pb-12 lg:pt-32 lg:pb-20 overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7 animate-fade-up">
-            <p className="text-sm font-medium text-brand-700 tracking-wide uppercase mb-4">
-              {dict.about.eyebrow}
-            </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-headline tracking-tight leading-tight">
-              {dict.about.title}
-            </h1>
-          </div>
+      {/* Statement opener. The reference runs a group photograph here; with
+          no such asset, the sentence carries it alone. */}
+      <section className="max-w-6xl mx-auto px-4 pt-32 pb-16 sm:px-6 lg:pt-40 lg:pb-24">
+        <Reveal className="mx-auto max-w-4xl text-center">
+          <p className="text-info mb-4 text-xs font-medium tracking-wide uppercase">
+            {dict.about.eyebrow}
+          </p>
+          <h1 className="font-display text-headline text-4xl leading-tight font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+            {dict.about.title}
+          </h1>
+        </Reveal>
+      </section>
 
-          {/* Sober right-side composition: a soft brand-tinted aura behind
-              a small grid of category pills. Reuses brand tokens so the
-              piece reads as platform UI rather than a stock illustration.
-              Hidden below `lg` to preserve the existing mobile layout. */}
-          <div
-            aria-hidden
-            className="hidden lg:block lg:col-span-5 relative h-72"
-          >
-            <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-brand-100/70 via-brand-50/50 to-transparent blur-2xl" />
-            <div className="relative h-full grid grid-cols-2 grid-rows-3 gap-3">
-              <PillTile
-                icon={Factory01Icon}
-                title={dict.about.tiles.factories}
-                tone="brand"
-                className="col-span-2"
-              />
-              <PillTile
-                icon={WalletDoneIcon}
-                title={dict.about.tiles.escrow}
-                tone="success"
-              />
-              <PillTile
-                icon={SecurityCheckIcon}
-                title={dict.about.tiles.certified}
-                tone="info"
-              />
-              <PillTile
-                icon={GlobeIcon}
-                title={dict.about.tiles.global}
-                tone="muted"
-              />
-              <PillTile
-                icon={PackageIcon}
-                title={dict.about.tiles.tracking}
-                tone="warning"
-              />
+      {/* Story band — narrow label column, vertical rule, wide prose column.
+          The rule uses `border-s` (inline-start) so it flips correctly in
+          Arabic rather than stranding itself on the wrong edge. */}
+      <section className="max-w-6xl mx-auto px-4 pb-20 sm:px-6 lg:pb-32">
+        <Reveal className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-0">
+          <p className="text-faint font-mono text-xs tracking-wide uppercase lg:col-span-3">
+            {dict.about.principles.eyebrow}
+          </p>
+
+          <div className="lg:border-line lg:col-span-9 lg:border-s lg:ps-12">
+            <div className="text-fg space-y-6 text-lg leading-relaxed">
+              {lead.map((paragraph, i) => (
+                <p key={i}>{paragraph}</p>
+              ))}
             </div>
+
+            {closing && (
+              <p className="font-display text-headline mt-10 text-2xl leading-snug font-bold tracking-tight text-balance sm:text-3xl">
+                {closing}
+              </p>
+            )}
           </div>
-        </div>
+        </Reveal>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-16 lg:pb-24">
-        <div className="space-y-6 text-lg leading-relaxed text-fg">
-          {dict.about.body.map((paragraph, i) => (
-            <p key={i}>{paragraph}</p>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-subtle border-y border-line-subtle">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <div className="max-w-2xl mb-12">
-            <p className="text-xs font-medium tracking-wide uppercase text-brand-700 mb-3">
-              {dict.about.principles.eyebrow}
-            </p>
-            <h2 className="text-3xl lg:text-4xl font-bold text-headline tracking-tight">
+      {/* Values. Typographic rather than the previous icon grid — and
+          deliberately not uppercased: the reference's all-caps value list is a
+          Latin-script device that does nothing in Chinese and Arabic. */}
+      <section className="bg-subtle border-line-subtle border-y">
+        <div className="max-w-6xl mx-auto px-4 py-20 sm:px-6 lg:py-32">
+          <Reveal className="mb-12 max-w-3xl lg:mb-16">
+            <h2 className="font-display text-headline text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-5xl">
               {dict.about.principles.title}
             </h2>
-          </div>
+          </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            {values.map(({ icon, copy }) => (
-              <div key={copy.title} className="flex flex-col gap-3">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-md bg-brand-50 text-brand-700">
-                  <HugeiconsIcon icon={icon} size={22} strokeWidth={1.5} />
-                </span>
-                <h3 className="text-md font-semibold text-headline">{copy.title}</h3>
-                <p className="text-sm text-muted leading-relaxed">{copy.body}</p>
-              </div>
+          <dl className="flex flex-col">
+            {values.map((value, i) => (
+              <Reveal
+                key={value.title}
+                delay={80 + i * 70}
+                className="border-line-subtle grid grid-cols-1 gap-3 border-t py-8 md:grid-cols-12 md:gap-8"
+              >
+                <dt className="font-display text-headline text-xl font-bold tracking-tight md:col-span-5 lg:text-2xl">
+                  {value.title}
+                </dt>
+                <dd className="text-muted text-md leading-relaxed md:col-span-7">
+                  {value.body}
+                </dd>
+              </Reveal>
             ))}
-          </div>
+          </dl>
         </div>
       </section>
 
-      <WhereWeWork dict={dict} />
-
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <div className="max-w-2xl mb-10">
-          <p className="text-xs font-medium tracking-wide uppercase text-brand-700 mb-3">
+      <section className="max-w-6xl mx-auto px-4 py-20 sm:px-6 lg:py-32">
+        <Reveal className="mb-12 max-w-3xl">
+          <p className="text-info mb-3 text-xs font-medium tracking-wide uppercase">
             {dict.about.founders.eyebrow}
           </p>
-          <h2 className="text-3xl lg:text-4xl font-bold text-headline tracking-tight">
+          <h2 className="font-display text-headline text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-5xl">
             {dict.about.founders.title}
           </h2>
-        </div>
+        </Reveal>
 
-        {/* Team cards. Swap the photoUrl on each card to a real asset
-            once the photo files land — until then the initials are
-            the fallback. Names live in this file (one place, no i18n
-            round-trip needed); roles come from the dictionary so
-            translations stay in sync. */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <FounderCard
+        {/* Names live here rather than in the dictionaries — they're the same
+            in every locale. Roles come from the dictionary so translations
+            stay in sync. Pass `photoUrl` once real portraits exist; until
+            then the initials render. */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <TeamCard
             name="Adam Fernandez"
             role={dict.about.founders.adamRole}
             photoUrl={null}
+            delay={80}
           />
-          <FounderCard
+          <TeamCard
             name="Whey"
             role={dict.about.founders.wheyRole}
             photoUrl={null}
+            delay={150}
           />
-          <FounderCard
+          <TeamCard
             name="Caleb-Livingstone Emmanuel"
             role={dict.about.founders.calebRole}
             photoUrl={null}
+            delay={220}
           />
         </div>
       </section>
@@ -161,40 +153,24 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
   );
 }
 
-const TONE_CLASSES: Record<
-  "brand" | "success" | "info" | "muted" | "warning",
-  string
-> = {
-  brand: "bg-brand-50 border-brand-100 text-brand-700",
-  success: "bg-success-soft/60 border-success-edge text-success",
-  info: "bg-info-soft/60 border-info-edge text-info",
-  muted: "bg-surface border-line text-muted",
-  warning: "bg-warning-soft/60 border-warning-edge text-warning",
-};
-
 /**
- * Founder card styled as a polaroid: square photo at the top, thick
- * white border, extra "caption" space at the bottom (the part you'd
- * sign on a real instant photo), drop shadow to suggest a physical
- * print on a desk. Name + role render BELOW the polaroid as plain
- * text — the photo frame stays focused on the image.
+ * Team card — tall portrait frame with the name and role beneath, matching
+ * the portrait grid on the reference page.
  *
- * The initials variant is intentional — the alternative would be a
- * stock silhouette which looks worse than two clean letters in the
- * brand palette. To swap in a real photo later, pass `photoUrl` and
- * the component renders an `<img>` cover inside the frame.
- *
- * Subtle hover lift (translate + slight scale) + tighter shadow so
- * the card feels picked up off the page when hovered.
+ * The initials fallback is intentional. A stock silhouette would read as a
+ * placeholder for a person who doesn't exist; two letters in the brand palette
+ * read as a deliberate choice until real photography lands.
  */
-function FounderCard({
+function TeamCard({
   name,
   role,
   photoUrl,
+  delay,
 }: {
   name: string;
   role: string;
   photoUrl: string | null;
+  delay: number;
 }) {
   const initials = name
     .split(/\s+/)
@@ -204,62 +180,32 @@ function FounderCard({
     .join("");
 
   return (
-    <div className="flex flex-col items-start gap-4">
-      {/* Polaroid frame — white card with a square photo on top and
-          extra "caption-space" at the bottom (just a strip, no text). */}
+    <Reveal as="article" delay={delay} className="flex flex-col gap-4">
       <div
         className={cn(
-          "w-full max-w-65 rounded-sm bg-brand-50",
-          "p-3 pb-12",
-          "transition-all duration-base ease-default",
-          "hover:-translate-y-0.5",
+          "bg-info-soft border-line aspect-3/4 overflow-hidden rounded-3xl border",
+          "text-info flex items-center justify-center",
+          "duration-base ease-default transition-transform hover:-translate-y-0.5",
         )}
       >
-        <div className="aspect-square overflow-hidden bg-brand-200 text-brand-700 flex items-center justify-center font-semibold text-4xl tracking-tight">
-          {photoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={photoUrl}
-              alt={name}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <span aria-hidden>{initials}</span>
-          )}
-        </div>
+        {photoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={photoUrl}
+            alt={name}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <span aria-hidden className="text-5xl font-bold tracking-tight">
+            {initials}
+          </span>
+        )}
       </div>
 
-      {/* Caption — sits below the polaroid, not inside, so the frame
-          stays focused on the photo. */}
-      <div className="px-1">
-        <p className="font-semibold text-headline text-base">{name}</p>
-        <p className="text-sm text-muted mt-0.5">{role}</p>
+      <div>
+        <p className="text-headline text-base font-semibold">{name}</p>
+        <p className="text-muted mt-0.5 text-sm">{role}</p>
       </div>
-    </div>
-  );
-}
-
-function PillTile({
-  icon,
-  title,
-  tone,
-  className,
-}: {
-  icon: typeof ShoppingBag01Icon;
-  title: string;
-  tone: keyof typeof TONE_CLASSES;
-  className?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "rounded-xl border backdrop-blur-md px-3 py-2 flex items-center gap-2",
-        TONE_CLASSES[tone],
-        className,
-      )}
-    >
-      <HugeiconsIcon icon={icon} size={16} strokeWidth={1.5} />
-      <span className="text-xs font-semibold tracking-wide">{title}</span>
-    </div>
+    </Reveal>
   );
 }

@@ -177,7 +177,7 @@ export default async function PublicAuctionDetailPage({
       </div>
 
       <section className="mt-10 rounded-lg border border-line bg-surface p-5">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-info mb-3">
           {tAuc.descriptionTitle}
         </h2>
         <MarkdownDisplay source={auction.description} />
@@ -235,7 +235,7 @@ function RecentBids({
 }) {
   return (
     <section className="mt-6 rounded-lg border border-line bg-surface p-5">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">
+      <h2 className="text-sm font-semibold uppercase tracking-wide text-info mb-3">
         {title}
       </h2>
       {bids.length === 0 ? (

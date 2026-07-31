@@ -21,7 +21,13 @@ export default async function MarketingLayout({
   const dashboardHref = user ? dashboardPathForRole(user.role, lang) : null;
 
   return (
-    <div className="flex min-h-dvh flex-col">
+    /* `theme-light` pins every marketing surface to the light palette
+       regardless of the user's theme cookie — see the token block in
+       globals.css. Light/dark is a dashboard affordance only, so the marketing
+       navbar carries no theme toggle. `bg-page` is repeated here because the
+       <body> background is painted outside this wrapper and would otherwise
+       show through as dark behind an overscroll. */
+    <div className="theme-light bg-page flex min-h-dvh flex-col">
       <MarketingNavbar
         signedIn={Boolean(user)}
         dashboardHref={dashboardHref}

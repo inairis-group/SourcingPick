@@ -2167,7 +2167,11 @@
     },
     "hero": {
       "eyebrow": "Sourcing · Marketplace · Certification",
-      "title": "Source internationally, without opaque middlemen.",
+      "title": {
+        "lead": "Source internationally, without ",
+        "emphasis": "opaque middlemen",
+        "trail": "."
+      },
       "subtitle": "Post your need, get qualified quotes in under 72 hours, and pay with confidence through built-in escrow.",
       "ctaPrimary": "Get started free",
       "ctaSecondary": "Browse marketplace",

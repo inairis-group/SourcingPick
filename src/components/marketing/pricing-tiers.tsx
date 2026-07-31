@@ -55,7 +55,7 @@ export function PricingTiers({
   ];
 
   return (
-    <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-16 lg:pb-24">
+    <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-20 lg:pb-32">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
         {flows.map(({ key, featured, ctaHref, buyerIcon, supplierIcon }, i) => (
           <FlowCard
@@ -131,7 +131,7 @@ function FlowCard({
       )}
 
       <header className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
+        <p className="text-xs font-semibold uppercase tracking-wide text-info">
           {flow.name}
         </p>
         <p className="mt-2 text-base text-muted leading-snug">{flow.tagline}</p>
@@ -239,7 +239,7 @@ function SplitChip({
       className={cn(
         "rounded-lg p-3 flex flex-col gap-1",
         tone === "strong"
-          ? "bg-brand-50 text-brand-800"
+          ? "bg-info-soft text-info"
           : "bg-subtle text-fg",
       )}
       title={note}
@@ -250,7 +250,7 @@ function SplitChip({
             "inline-flex items-center justify-center h-5 w-5 rounded-sm",
             tone === "strong"
               ? "bg-brand-600 text-on-action"
-              : "bg-brand-200 text-brand-800",
+              : "bg-info-soft text-info",
           )}
         >
           <HugeiconsIcon icon={icon} size={11} strokeWidth={1.75} />
