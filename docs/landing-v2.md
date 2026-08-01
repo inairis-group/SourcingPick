@@ -49,10 +49,10 @@ actually on the page now:
    LNE). Those keys are still in all four dictionaries, so nothing is lost if you want the roster
    back; say the word and it's a small addition to the How-it-works section.
 
-**Still open:** Q2 in §8, the display font. `--font-display` now exists and is applied to every
-marketing headline, but it's aliased to Geist — so the plumbing is done and swapping in a real
-display face is one line in globals.css plus a loader in `app/[lang]/layout.tsx`. Until then the
-headlines have the new layout and the old voice.
+**Q2 (display font) — RESOLVED 2026-08-01: keep Geist.** `--font-display` stays aliased to Geist.
+The slot is real, so every marketing headline resolves to an actual family and a distinctive face
+remains a one-line swap if that changes. The trade-off stands as written in §5.3: we have the
+reference's layout with our own typographic voice, which was the decision.
 
 **Before launch:** the four How-it-works step photos are hotlinked from the Unsplash CDN. Worth
 pulling them into `/public` so a third-party origin isn't in the loading path. Less urgent now that

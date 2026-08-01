@@ -71,11 +71,14 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   /* Display face — marketing headlines and the oversized wordmarks only.
-   * App UI never uses this. Currently aliased to Geist so `font-display`
-   * (already referenced by footer.tsx and the home intro) resolves to a
-   * real family instead of silently doing nothing. Swapping in a genuine
-   * display face is a one-line change here plus the loader in
-   * app/[lang]/layout.tsx — see docs/landing-v2.md §5.3, open question Q2. */
+   * App UI never uses this.
+   *
+   * DECIDED 2026-08-01: stays aliased to Geist. The slot exists so
+   * `font-display` (referenced by footer.tsx, the home intro and every
+   * marketing headline) resolves to a real family rather than silently doing
+   * nothing, and so a distinctive face can be swapped in later by changing
+   * this one line plus the loader in app/[lang]/layout.tsx. No such swap is
+   * planned — the headlines are Geist Bold by choice, not by omission. */
   --font-display: var(--font-geist-sans);
 
   --text-xs: 0.6875rem; /* 11px */

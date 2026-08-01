@@ -278,6 +278,21 @@ export async function createShipmentForOrder(_prev: unknown, formData: FormData)
 
   if (items.length === 0) return { ok: false as const, error: "missing_items" };
 
+  // §2.1.1 — one optional photo per product row, posted as a parallel array.
+  // Empty file inputs still submit a zero-byte File, so index alignment with
+  // the text rows only holds if we keep the blanks rather than filtering them.
+  const rawImages = formData.getAll("itemImage");
+  const imageForRow = labels.map((_, i) => {
+    const f = rawImages[i];
+    return f instanceof File && f.size > 0 ? f : null;
+  });
+  // `items` dropped rows with a blank label/nature, so re-derive which of the
+  // original rows survived to keep photos attached to the right product.
+  const keptRowIndexes = labels
+    .map((label, i) => ({ i, keep: label.trim() && (natures[i] ?? "").trim() }))
+    .filter((r) => r.keep)
+    .map((r) => r.i);
+
   const reference = await generateUniqueReference("SHP");
 
   const shipment = await prisma.shipment.create({
@@ -307,6 +322,35 @@ export async function createShipmentForOrder(_prev: unknown, formData: FormData)
     },
     select: { id: true, reference: true },
   });
+
+  // Photos are stored after the shipment exists: the item ids only come back
+  // from a nested create once it has run, and a failed upload must not lose
+  // the brief. Order is taken from the DB rather than assumed.
+  const createdItems = await prisma.shipmentItem.findMany({
+    where: { shipmentId: shipment.id },
+    orderBy: { id: "asc" },
+    select: { id: true },
+  });
+  for (const [n, rowIndex] of keptRowIndexes.entries()) {
+    const file = imageForRow[rowIndex];
+    const target = createdItems[n];
+    if (!file || !target) continue;
+    const { created } = await storeAttachments({
+      contextType: AttachmentContext.SHIPMENT_ITEM_IMAGE,
+      contextId: target.id,
+      uploaderId: user.id,
+      files: [file],
+    });
+    // A rejected photo (too large, wrong type) leaves the item without one
+    // rather than failing the whole brief — the text data is what the shipper
+    // cannot proceed without.
+    if (created[0]) {
+      await prisma.shipmentItem.update({
+        where: { id: target.id },
+        data: { imageUrl: created[0].storageUrl },
+      });
+    }
+  }
 
   await writeAuditLog({
     actorUserId: user.id,

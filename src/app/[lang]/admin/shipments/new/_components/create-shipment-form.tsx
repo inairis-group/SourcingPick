@@ -46,7 +46,7 @@ export function CreateShipmentForm({
     state && !state.ok ? (copy[`err_${state.error}`] ?? copy.err_generic ?? state.error) : null;
 
   return (
-    <form action={action} className="flex flex-col gap-5">
+    <form action={action} encType="multipart/form-data" className="flex flex-col gap-5">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label className={LABEL} htmlFor="orderId">
@@ -131,7 +131,10 @@ export function CreateShipmentForm({
         <legend className="text-faint px-2 text-xs font-medium">{copy.items}</legend>
         <div className="flex flex-col gap-3">
           {rows.map((r) => (
-            <div key={r} className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <div
+              key={r}
+              className="border-line-subtle grid grid-cols-2 gap-2 border-b pb-3 last:border-b-0 last:pb-0 sm:grid-cols-4"
+            >
               <input name="itemLabel" placeholder={copy.itemLabel} required className={FIELD} />
               <input name="itemNature" placeholder={copy.nature} required className={FIELD} />
               <input
@@ -149,6 +152,15 @@ export function CreateShipmentForm({
                 min="0"
                 placeholder={copy.unitPrice}
                 className={FIELD}
+              />
+              {/* §2.1.1 — one photo per product. Optional at the field level
+                  but always posted, even when empty, so the zero-byte File
+                  keeps this row aligned with its text inputs server-side. */}
+              <input
+                name="itemImage"
+                type="file"
+                accept="image/*"
+                className="text-faint col-span-2 text-xs sm:col-span-4"
               />
             </div>
           ))}

@@ -142,7 +142,7 @@ export function AttachInvoiceForm({ shipmentId, copy }: { shipmentId: string; co
   const error = useError(state, copy);
 
   return (
-    <form action={action} className="flex flex-col gap-3">
+    <form action={action} encType="multipart/form-data" className="flex flex-col gap-3">
       <input type="hidden" name="shipmentId" value={shipmentId} />
       <p className="text-faint text-xs">{copy.attachInvoiceHint}</p>
       <input

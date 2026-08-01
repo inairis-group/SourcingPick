@@ -53,7 +53,7 @@ Also fixed while wiring the login path (both found by inspection, not by the spe
   `redirect(/onboarding/factory)`, so any unmatched role — including SHIPPER — was sent into the
   **factory** wizard. Handled explicitly now, like ADMIN.
 
-## Phase 2 — Close the §2 data gaps · **PARTIAL — invoice done, item images NOT done**
+## Phase 2 — Close the §2 data gaps · **DONE 2026-08-01**
 
 `AttachmentContext.SHIPMENT_INVOICE` and `SHIPMENT_ITEM_IMAGE` added (migration
 `20260731154018`), served by `attachShipmentDocuments`. Reuses the existing `storeAttachments`
@@ -63,14 +63,19 @@ Upload is a separate step from `createShipmentForOrder` on purpose: files can't 
 a validation-and-retry path, so a rejected brief would silently discard whatever the admin had
 picked.
 
-**§2.1.1 product images are still not implemented.** `AttachmentContext.SHIPMENT_ITEM_IMAGE` exists
-and `canManage` covers it, but nothing writes to it: `attachShipmentDocuments` only reads the
-`invoice` field, and `ShipmentItem.imageUrl` is read by the queries and rendered on the shipper's
-detail page while never being set. Every item therefore shows the grey placeholder. Marking this
-phase DONE was wrong.
+**§2.1.1 product images** — one optional photo per product row on the hand-off form, stored under
+`SHIPMENT_ITEM_IMAGE` and written back to `ShipmentItem.imageUrl`.
 
-Remaining work: accept per-item files on the hand-off form (or the admin detail page), store them
-under `SHIPMENT_ITEM_IMAGE`, and write the resulting path back to `ShipmentItem.imageUrl`.
+Two things the implementation has to get right, both easy to get wrong:
+
+- **Row alignment.** Empty file inputs still submit a zero-byte `File`, so the photo array is only
+  index-aligned with the text rows if the blanks are *kept* rather than filtered. And because rows
+  with a blank label/nature are dropped from `items`, the surviving original row indexes have to be
+  re-derived — otherwise photo 3 lands on product 2. Verified with a deliberate gap: rows `[0, _, 2]`
+  map to created items `#0←row0`, `#1←row2`.
+- **Failure mode.** Photos are stored after the shipment exists (item ids only come back once the
+  nested create has run), and a rejected photo leaves that item without one rather than failing the
+  whole brief — the text data is what the shipper cannot proceed without.
 
 `canManage` in `lib/attachments/actions.ts` is exhaustive over `AttachmentContext`, so the two new
 values broke it — resolved deliberately rather than by a fallthrough: shipment documents are part of
