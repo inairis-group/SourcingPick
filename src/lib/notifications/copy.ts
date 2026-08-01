@@ -268,6 +268,20 @@ const FR: Pack = {
     title: title ? `Nouveau message · ${title}` : "Nouveau message",
     description: "Vous avez reçu un nouveau message.",
   }),
+  SHIPMENT_QUOTE: ({ reference }) => ({
+    title: `Devis logistique · ${reference ?? ""}`.trim(),
+    description:
+      "L'expéditeur a transmis un prix fixe avec sa date de validité.",
+  }),
+  SHIPMENT_STATUS: ({ reference }) => ({
+    title: `Expédition · ${reference ?? ""}`.trim(),
+    description: "Le statut de l'expédition a changé.",
+  }),
+  SHIPMENT_INCIDENT: ({ reference }) => ({
+    title: `Incident expédition · ${reference ?? ""}`.trim(),
+    description:
+      "L'expéditeur signale un incident : retard, blocage, surcoût ou douane.",
+  }),
   SYSTEM: ({ title, systemKey }) => ({
     title: (systemKey && SYSTEM_TITLES[systemKey]?.fr) ?? title ?? "Notification",
     description: "",
@@ -320,6 +334,19 @@ const EN: Pack = {
     title: title ? `New message · ${title}` : "New message",
     description: "You have a new message.",
   }),
+  SHIPMENT_QUOTE: ({ reference }) => ({
+    title: `Logistics quote · ${reference ?? ""}`.trim(),
+    description: "The shipper has sent a fixed price with its validity date.",
+  }),
+  SHIPMENT_STATUS: ({ reference }) => ({
+    title: `Shipment · ${reference ?? ""}`.trim(),
+    description: "The shipment status has changed.",
+  }),
+  SHIPMENT_INCIDENT: ({ reference }) => ({
+    title: `Shipment incident · ${reference ?? ""}`.trim(),
+    description:
+      "The shipper reported an incident: delay, blockage, surcharge or customs.",
+  }),
   SYSTEM: ({ title, systemKey }) => ({
     title: (systemKey && SYSTEM_TITLES[systemKey]?.en) ?? title ?? "Notification",
     description: "",
@@ -369,6 +396,18 @@ const ZH: Pack = {
   MESSAGE_MENTION: ({ title }) => ({
     title: title ? `新消息 · ${title}` : "新消息",
     description: "您有一条新消息。",
+  }),
+  SHIPMENT_QUOTE: ({ reference }) => ({
+    title: `物流报价 · ${reference ?? ""}`.trim(),
+    description: "发货方已提交固定价格及有效期。",
+  }),
+  SHIPMENT_STATUS: ({ reference }) => ({
+    title: `运单 · ${reference ?? ""}`.trim(),
+    description: "运单状态已更新。",
+  }),
+  SHIPMENT_INCIDENT: ({ reference }) => ({
+    title: `运单异常 · ${reference ?? ""}`.trim(),
+    description: "发货方报告异常：延误、滞留、附加费或海关问题。",
   }),
   SYSTEM: ({ title, systemKey }) => ({
     title: (systemKey && SYSTEM_TITLES[systemKey]?.zh) ?? title ?? "通知",
@@ -422,6 +461,18 @@ const AR: Pack = {
     title: title ? `رسالة جديدة · ${title}` : "رسالة جديدة",
     description: "لديك رسالة جديدة.",
   }),
+  SHIPMENT_QUOTE: ({ reference }) => ({
+    title: `عرض سعر الشحن · ${reference ?? ""}`.trim(),
+    description: "أرسل الشاحن سعراً ثابتاً مع تاريخ صلاحيته.",
+  }),
+  SHIPMENT_STATUS: ({ reference }) => ({
+    title: `الشحنة · ${reference ?? ""}`.trim(),
+    description: "تغيّرت حالة الشحنة.",
+  }),
+  SHIPMENT_INCIDENT: ({ reference }) => ({
+    title: `حادث شحن · ${reference ?? ""}`.trim(),
+    description: "أبلغ الشاحن عن حادث: تأخير أو توقف أو رسوم إضافية أو جمارك.",
+  }),
   SYSTEM: ({ title, systemKey }) => ({
     title: (systemKey && SYSTEM_TITLES[systemKey]?.ar) ?? title ?? "إشعار",
     description: "",
@@ -447,4 +498,9 @@ export const EMAIL_TYPES: Set<NotificationType> = new Set([
   NotificationType.QUOTE_ACCEPTED,
   NotificationType.KYC_DECISION,
   NotificationType.SHIPMENT,
+  // §6.1 mandates a dual in-app + email channel for every shipment event,
+  // so these three are emailed regardless of digest preference batching.
+  NotificationType.SHIPMENT_QUOTE,
+  NotificationType.SHIPMENT_STATUS,
+  NotificationType.SHIPMENT_INCIDENT,
 ]);

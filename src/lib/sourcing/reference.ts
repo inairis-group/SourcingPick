@@ -11,6 +11,7 @@ import { prisma } from "@/lib/db/client";
  *   PAY-YYYY-NNNN (payouts)
  *   CERT-YYYY-NNN (certifications)
  *   MKT-XXX     (marketplace products)
+ *   SHP-XXXXX   (shipments — Expéditeur logistics leg)
  *
  * v1 strategy: random + uniqueness retry. For high-throughput phases we'd
  * switch to a sequence-per-prefix model or use Postgres SEQUENCES.
@@ -29,7 +30,8 @@ export async function generateUniqueReference<
     | "CERT"
     | "AUC"
     | "TKT"
-    | "DSP",
+    | "DSP"
+    | "SHP",
 >(prefix: T): Promise<string> {
   // Year-scoped serials for finance + certification: INV-2026-NNNN, etc.
   // Random + retry serial scheme for the rest: REQ-XXXXXX, ORD-XXXXX, MKT-XXX.
@@ -53,7 +55,10 @@ export async function generateUniqueReference<
   }
 
   const digits =
-    prefix === "ORD" || prefix === "TKT" || prefix === "DSP"
+    prefix === "ORD" ||
+    prefix === "TKT" ||
+    prefix === "DSP" ||
+    prefix === "SHP"
       ? 5
       : prefix === "MKT" || prefix === "AUC"
         ? 3
@@ -144,7 +149,16 @@ async function referenceExists(prefix: string, candidate: string): Promise<boole
       });
       return row !== null;
     }
+    case "SHP": {
+      const row = await prisma.shipment.findUnique({
+        where: { reference: candidate },
+        select: { id: true },
+      });
+      return row !== null;
+    }
     default:
-      return false;
+      // Deliberately conservative: an unregistered prefix would otherwise
+      // report "no collision" for every candidate and hand back duplicates.
+      throw new Error(`referenceExists: unhandled prefix "${prefix}"`);
   }
 }

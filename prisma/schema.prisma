@@ -30,6 +30,11 @@ enum Role {
   FACTORY
   AGENT
   ADMIN
+  /// Expéditeur Sourcing Pick — the exclusive logistics intermediary for
+  /// multi-product sourcing orders. Named SHIPPER rather than FORWARDER
+  /// because `forwarder` is already taken by the token-based, unauthenticated
+  /// document-upload link (app/[lang]/forwarder/upload/[token]).
+  SHIPPER
 }
 
 /**
@@ -39,7 +44,6 @@ enum Role {
  * everyone else gets a curated subset (e.g. customer support staff get
  * SUPPORT + DISPUTES + AGENTS, finance staff get FINANCE + AUDIT, KYC
  * reviewers get KYC + MARKETPLACE + USERS).
- *
  * The `requireAdminScope` middleware short-circuits to `true` when the
  * caller has SUPER, so adding a new scope doesn't lock SUPER admins
  * out by default.
@@ -89,6 +93,8 @@ enum SubRole {
 enum OrgType {
   CLIENT
   FACTORY
+  /// Third-party logistics partner operating the Expéditeur role.
+  SHIPPER
   // Internal SourcingPick org. Admin and Agent users belong to a PLATFORM org
   // so the User → Organization invariant holds without nullable FKs.
   PLATFORM
@@ -218,36 +224,34 @@ enum LeadTimeUnit {
 
 /**
  * Pricing-v3 Phase 3 — approximate delivery-fee bracket per route.
- *
  * Keyed by (originCountry, destinationCountry, incoterm, weightBracket).
  * The bracket field is an INT representing kg (one row per 10 kg
  * bracket up to a cap — e.g. 0, 10, 20, 50, 100, 250, 500, 1000).
  * estimateDeliveryFee() finds the bracket that brackets the actual
  * weight and returns the row's min/max range.
- *
  * Numbers are intentionally rough — we tell buyers they're estimates.
  * Real quotes still go through the logistics partner of record at
  * tender time. Rates can be edited by an admin from the (future)
  * /admin/delivery-rates page.
  */
 model DeliveryRate {
-  id                String   @id @default(cuid(2))
-  originCountry     String // ISO 3166-1 alpha-2 (e.g. "CN")
+  id                 String   @id @default(cuid(2))
+  originCountry      String // ISO 3166-1 alpha-2 (e.g. "CN")
   destinationCountry String // ISO 3166-1 alpha-2 (e.g. "FR")
-  incoterm          Incoterm
+  incoterm           Incoterm
   /// Inclusive lower bound of the weight bracket in kg.
-  weightBracketKg   Int
+  weightBracketKg    Int
   /// Lower estimate of the all-in delivery fee, in cents.
-  minCents          Int
+  minCents           Int
   /// Upper estimate of the all-in delivery fee, in cents.
-  maxCents          Int
+  maxCents           Int
   /// Display-only label for the logistics partner shown alongside
   /// the estimate (e.g. "DHL Global Forwarding", "Maersk LCL").
-  partnerName       String
+  partnerName        String
   /// Optional notes (e.g. "transit ~22d", "customs not included").
-  notes             String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  notes              String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   @@unique([originCountry, destinationCountry, incoterm, weightBracketKg])
   @@index([originCountry, destinationCountry])
@@ -256,6 +260,12 @@ model DeliveryRate {
 enum AttachmentContext {
   MESSAGE
   SOURCING_REQUEST
+  /// §2.2.1 — the order invoice handed to the expéditeur. One invoice may
+  /// cover several products of the same order ("regroupement multi-produits
+  /// autorisé"), so this is one attachment per Shipment, not per item.
+  SHIPMENT_INVOICE
+  /// §2.1.1 — per-product photo supplied with the brief.
+  SHIPMENT_ITEM_IMAGE
   ORDER
   MARKETPLACE_PRODUCT
   MARKETPLACE_BANNER
@@ -279,7 +289,9 @@ enum AttachmentContext {
   MARKETPLACE_TEST_VIDEO
 }
 
-/** Preset visual treatment for an admin-managed marketplace campaign banner. */
+/**
+ * Preset visual treatment for an admin-managed marketplace campaign banner.
+ */
 enum BannerTone {
   BRAND // brand-blue gradient
   DARK // ink-deep, matches the CTA banner
@@ -288,10 +300,10 @@ enum BannerTone {
 
 /**
  * How a banner's background is rendered.
- *   PRESET   — one of the BannerTone gradients (default, no config)
- *   GRADIENT — admin-defined linear gradient (from/via?/to + angle)
- *   IMAGE    — uploaded image, with a dark overlay for text legibility
- *   VIDEO    — uploaded muted-autoplay-loop video, with overlay
+ * PRESET   — one of the BannerTone gradients (default, no config)
+ * GRADIENT — admin-defined linear gradient (from/via?/to + angle)
+ * IMAGE    — uploaded image, with a dark overlay for text legibility
+ * VIDEO    — uploaded muted-autoplay-loop video, with overlay
  */
 enum BannerBackground {
   PRESET
@@ -333,14 +345,12 @@ enum AttachmentKind {
 
 /**
  * Payout provider a factory or agent has onboarded with.
- *
- *   STRIPE_CONNECT — default for the EU/US/UK/SG/HK/UAE/MX/JP/AU/NZ
- *                   footprint plus parts of Africa (ZA, NG, KE, etc.).
- *   LIANLIAN       — cross-border payouts to mainland China + SE Asia.
- *   ALIPAY         — Alipay Cross-border / Ant International, also for
- *                   mainland China factories that prefer Alipay over
- *                   LianLian's bank-account flow.
- *
+ * STRIPE_CONNECT — default for the EU/US/UK/SG/HK/UAE/MX/JP/AU/NZ
+ * footprint plus parts of Africa (ZA, NG, KE, etc.).
+ * LIANLIAN       — cross-border payouts to mainland China + SE Asia.
+ * ALIPAY         — Alipay Cross-border / Ant International, also for
+ * mainland China factories that prefer Alipay over
+ * LianLian's bank-account flow.
  * Locked once chosen (changing mid-relationship invalidates prior
  * payout audit references). Each provider has its own credential set
  * in env and its own KYC flow; see lib/payouts/* for adapters.
@@ -361,11 +371,11 @@ enum PayoutProvider {
  * mean Stripe/LianLian/Alipay accepted the account.
  */
 enum PayoutAccountStatus {
-  NONE          // No provider chosen / no account opened
-  PENDING       // Provider onboarding started, awaiting provider verification
-  ACTIVE        // Account verified and can receive payouts
-  RESTRICTED    // Provider returned a restriction (missing docs, suspended)
-  REJECTED      // Provider permanently refused
+  NONE // No provider chosen / no account opened
+  PENDING // Provider onboarding started, awaiting provider verification
+  ACTIVE // Account verified and can receive payouts
+  RESTRICTED // Provider returned a restriction (missing docs, suspended)
+  REJECTED // Provider permanently refused
 }
 
 enum InvoiceType {
@@ -422,7 +432,9 @@ enum PayoutMethod {
   WISE
 }
 
-/** Billing unit for the sourcing research fee (€125/day or €500/week). */
+/**
+ * Billing unit for the sourcing research fee (€125/day or €500/week).
+ */
 enum ResearchFeeUnit {
   DAY
   WEEK
@@ -430,10 +442,10 @@ enum ResearchFeeUnit {
 
 /**
  * Why a CreditTransaction was written.
- *   RESEARCH_FEE_CREDIT — buyer ordered within the credit-back window; the
- *                         research fee they paid is returned as credit (+).
- *   ORDER_APPLIED       — credit spent against an order payment (−).
- *   ADMIN_ADJUSTMENT    — manual ops correction (±).
+ * RESEARCH_FEE_CREDIT — buyer ordered within the credit-back window; the
+ * research fee they paid is returned as credit (+).
+ * ORDER_APPLIED       — credit spent against an order payment (−).
+ * ADMIN_ADJUSTMENT    — manual ops correction (±).
  */
 enum CreditReason {
   RESEARCH_FEE_CREDIT
@@ -449,12 +461,12 @@ enum CreditReason {
 
 /**
  * Lifecycle of a request's research fee.
- *   NONE     — no fee quoted yet
- *   QUOTED   — agent set the fee; an ISSUED invoice awaits payment
- *   PAID     — buyer paid the research fee
- *   CREDITED — buyer placed an order within the credit-back window; the fee
- *              was returned as platform credit (credit-back phase — TBD)
- *   WAIVED   — agent/admin waived the fee
+ * NONE     — no fee quoted yet
+ * QUOTED   — agent set the fee; an ISSUED invoice awaits payment
+ * PAID     — buyer paid the research fee
+ * CREDITED — buyer placed an order within the credit-back window; the fee
+ * was returned as platform credit (credit-back phase — TBD)
+ * WAIVED   — agent/admin waived the fee
  */
 enum ResearchFeeStatus {
   NONE
@@ -548,6 +560,12 @@ enum NotificationType {
   CERT_UPDATE
   KYC_DECISION
   MESSAGE_MENTION
+  /// Shipper submitted or revised a logistics quote (fixed price + validity).
+  SHIPMENT_QUOTE
+  /// Shipment moved to a new status in the 10-step lifecycle.
+  SHIPMENT_STATUS
+  /// Shipper reported an incident: delay, blockage, surcharge, customs.
+  SHIPMENT_INCIDENT
   SYSTEM
 }
 
@@ -612,22 +630,22 @@ model User {
   image         String?
 
   // Domain
-  firstName        String
-  lastName         String
-  phone            String?
-  locale           Locale       @default(fr)
+  firstName       String
+  lastName        String
+  phone           String?
+  locale          Locale          @default(fr)
   /// Email delivery cadence for non-critical notifications.
   ///   IMMEDIATE — one email per event (default).
   ///   DAILY     — events accumulate in-app, one digest email per day.
   ///   OFF       — no notification emails (in-app only).
   /// Critical events (password reset, OTP) ignore this setting.
-  emailDigestMode  EmailDigestMode @default(IMMEDIATE)
-  role             Role
-  subRole          SubRole
+  emailDigestMode EmailDigestMode @default(IMMEDIATE)
+  role            Role
+  subRole         SubRole
   /// Per-admin permission scopes. Empty / irrelevant for non-admins;
   /// for admins, an empty array means "no admin powers" (effectively
   /// read-only). Use the `SUPER` sentinel to grant everything.
-  adminScopes      AdminScope[] @default([])
+  adminScopes     AdminScope[]    @default([])
 
   // ─── Agent-specific overrides ─────────────────────────────
   // Only meaningful when role=AGENT. Null = default rates from
@@ -645,7 +663,7 @@ model User {
   agentTimezone             String?
   /// Categories the agent self-declares expertise in. Used by the
   /// dispatch loader to break ties when load is equal.
-  agentCategories           Category[]    @default([])
+  agentCategories           Category[]   @default([])
   /// Marks whether the agent has finished onboarding. Until true, they
   /// land on /onboarding/agent on every login.
   agentOnboardedAt          DateTime?
@@ -654,15 +672,15 @@ model User {
   /// + new-request wizard). Null = tutorial still shown. Stamped on
   /// dismiss. Only meaningful for CLIENT users.
   clientTutorialDismissedAt DateTime?
-  organizationId   String
-  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
-  passwordHash     String? // null when only OAuth
-  hasOnboarded     Boolean      @default(false)
-  twoFactorEnabled Boolean      @default(false)
-  lastSeenAt       DateTime?
-  deletedAt        DateTime?
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
+  organizationId            String
+  organization              Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  passwordHash              String? // null when only OAuth
+  hasOnboarded              Boolean      @default(false)
+  twoFactorEnabled          Boolean      @default(false)
+  lastSeenAt                DateTime?
+  deletedAt                 DateTime?
+  createdAt                 DateTime     @default(now())
+  updatedAt                 DateTime     @updatedAt
 
   // Auth.js relations
   accounts  Account[]
@@ -672,26 +690,28 @@ model User {
   attachments Attachment[]
 
   // Domain relations
-  sourcingRequestsCreated SourcingRequest[]   @relation("RequestCreatedBy")
-  agentForRequests        SourcingRequest[]   @relation("RequestAgent")
-  preTenderApprovals      SourcingRequest[]   @relation("PreTenderApprover")
-  forwarderTokensCreated  ForwarderUploadToken[] @relation("ForwarderTokenCreator")
-  supportTicketsOpened    SupportTicket[]     @relation("SupportTicketRequester")
-  supportTicketsResolved  SupportTicket[]     @relation("SupportTicketResolver")
-  disputesOpened          Dispute[]           @relation("DisputeOpener")
-  disputesResolved        Dispute[]           @relation("DisputeResolver")
-  invoicesIssued          Invoice[]           @relation("InvoiceIssuer")
-  marketplaceTestedProducts MarketplaceProduct[] @relation("MarketplaceProductTester")
-  quotesAsAgent           Quote[]             @relation("QuoteAgent")
-  ordersAsAgent           Order[]             @relation("OrderAgent")
-  authoredMessages        Message[]           @relation("MessageAuthor")
-  threadParticipations    ThreadParticipant[]
-  notifications           Notification[]
-  auditLogs               AuditLog[]
-  assignedTasks           AgentTask[]         @relation("TaskAgent")
-  placedBids              Bid[]               @relation("BidderUser")
-  deletionRequests         AccountDeletionRequest[] @relation("DeletionRequester")
-  deletionRequestsReviewed AccountDeletionRequest[] @relation("DeletionReviewer")
+  sourcingRequestsCreated   SourcingRequest[]        @relation("RequestCreatedBy")
+  agentForRequests          SourcingRequest[]        @relation("RequestAgent")
+  preTenderApprovals        SourcingRequest[]        @relation("PreTenderApprover")
+  forwarderTokensCreated    ForwarderUploadToken[]   @relation("ForwarderTokenCreator")
+  supportTicketsOpened      SupportTicket[]          @relation("SupportTicketRequester")
+  supportTicketsResolved    SupportTicket[]          @relation("SupportTicketResolver")
+  disputesOpened            Dispute[]                @relation("DisputeOpener")
+  disputesResolved          Dispute[]                @relation("DisputeResolver")
+  invoicesIssued            Invoice[]                @relation("InvoiceIssuer")
+  marketplaceTestedProducts MarketplaceProduct[]     @relation("MarketplaceProductTester")
+  quotesAsAgent             Quote[]                  @relation("QuoteAgent")
+  ordersAsAgent             Order[]                  @relation("OrderAgent")
+  shipmentEvents            ShipmentEvent[]          @relation("ShipmentEventActor")
+  shipmentQuotes            ShipmentQuote[]          @relation("ShipmentQuoteAuthor")
+  authoredMessages          Message[]                @relation("MessageAuthor")
+  threadParticipations      ThreadParticipant[]
+  notifications             Notification[]
+  auditLogs                 AuditLog[]
+  assignedTasks             AgentTask[]              @relation("TaskAgent")
+  placedBids                Bid[]                    @relation("BidderUser")
+  deletionRequests          AccountDeletionRequest[] @relation("DeletionRequester")
+  deletionRequestsReviewed  AccountDeletionRequest[] @relation("DeletionReviewer")
 
   @@index([organizationId])
   @@index([role, deletedAt])
@@ -753,28 +773,28 @@ model EmailOtp {
 }
 
 model Organization {
-  id            String    @id @default(cuid(2))
-  type          OrgType
-  legalName     String
-  displayName   String
-  country       String
-  city          String
-  address       String
-  vatNumber     String?
-  siren         String? // FR only
+  id                     String    @id @default(cuid(2))
+  type                   OrgType
+  legalName              String
+  displayName            String
+  country                String
+  city                   String
+  address                String
+  vatNumber              String?
+  siren                  String? // FR only
   /// Stored relative path to the org's logo image (factories surface this
   /// on storefront/marketplace cards, clients on invoice headers). Null
   /// until the org uploads one — UI falls back to initials.
-  logoUrl       String?
+  logoUrl                String?
   /// Public-web links surfaced on the KYC review screen so admin can
   /// cross-check that the entity behind the account matches what's on
   /// their public footprint. Partner #28. Free-form URLs (the form
   /// trims and validates) — empty string = not supplied.
-  websiteUrl    String?
-  instagramUrl  String?
-  facebookUrl   String?
-  linkedinUrl   String?
-  kycStatus     KycStatus @default(PENDING)
+  websiteUrl             String?
+  instagramUrl           String?
+  facebookUrl            String?
+  linkedinUrl            String?
+  kycStatus              KycStatus @default(PENDING)
   /// Partner round 4 — set true when the org was created by an agent
   /// on behalf of an off-platform factory (typically a Chinese factory
   /// the agent has negotiated with by phone / WeChat / email and that
@@ -783,9 +803,9 @@ model Organization {
   /// city). The agent can later invite the real factory to claim it
   /// via an onboarding link, after which `isShadowOrg` flips back to
   /// false and the regular KYC flow runs.
-  isShadowOrg   Boolean   @default(false)
-  kycVerifiedAt DateTime?
-  suspended     Boolean   @default(false)
+  isShadowOrg            Boolean   @default(false)
+  kycVerifiedAt          DateTime?
+  suspended              Boolean   @default(false)
   // Stripe identifiers — populated lazily on first checkout / first onboarding.
   // stripeCustomerId is used for clients (deposits + balance payments).
   // stripeConnectAccountId is used for factories (Connect Express payouts).
@@ -797,21 +817,21 @@ model Organization {
   // address payouts in `lib/payouts/wise.ts`. Null until the factory has
   // completed bank-details onboarding. Will replace the Stripe fields
   // above once the Wise migration retires Stripe.
-  wiseRecipientId        String?
+  wiseRecipientId String?
 
   // Payouts — which provider this org has chosen (factories + agents).
   // Locked once `payoutOnboardedAt` is set: changing provider mid-relationship
   // invalidates audit references on already-paid orders. The provider-specific
   // ID lives in `payoutAccountId` (Stripe acct_..., LianLian payee id, Alipay
   // login id) and is interpreted by the adapter in `lib/payouts/<provider>.ts`.
-  payoutProvider     PayoutProvider?
-  payoutAccountId    String?
-  payoutStatus       PayoutAccountStatus @default(NONE)
-  payoutOnboardedAt  DateTime?
+  payoutProvider    PayoutProvider?
+  payoutAccountId   String?
+  payoutStatus      PayoutAccountStatus @default(NONE)
+  payoutOnboardedAt DateTime?
 
-  deletedAt              DateTime?
-  createdAt              DateTime  @default(now())
-  updatedAt              DateTime  @updatedAt
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   users          User[]
   factoryProfile FactoryProfile?
@@ -840,6 +860,8 @@ model Organization {
 
   creditTransactions CreditTransaction[]
 
+  shipmentsAsShipper Shipment[] @relation("ShipmentShipperOrg")
+
   @@index([type, kycStatus, deletedAt])
   @@index([type, country])
 }
@@ -852,17 +874,17 @@ model Organization {
  * the only sink is applying credit to an order's deposit.
  */
 model CreditTransaction {
-  id             String       @id @default(cuid(2))
-  organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  amountCents    Int // signed: + granted, − spent
-  reason         CreditReason
+  id              String       @id @default(cuid(2))
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  amountCents     Int // signed: + granted, − spent
+  reason          CreditReason
   /// Optional pointer to what triggered it (e.g. "Order:ord_..", "SourcingRequest:req_..").
-  refType        String?
-  refId          String?
-  note           String?
+  refType         String?
+  refId           String?
+  note            String?
   createdByUserId String?
-  createdAt      DateTime     @default(now())
+  createdAt       DateTime     @default(now())
 
   @@index([organizationId, createdAt])
 }
@@ -904,14 +926,14 @@ model FactoryProfile {
 // =============================================================
 
 model SourcingRequest {
-  id                   String         @id @default(cuid(2))
-  reference            String         @unique // REQ-XXXXXX
+  id                   String                @id @default(cuid(2))
+  reference            String                @unique // REQ-XXXXXX
   clientOrgId          String
-  clientOrg            Organization   @relation("RequestClientOrg", fields: [clientOrgId], references: [id], onDelete: Restrict)
+  clientOrg            Organization          @relation("RequestClientOrg", fields: [clientOrgId], references: [id], onDelete: Restrict)
   createdByUserId      String
-  createdBy            User           @relation("RequestCreatedBy", fields: [createdByUserId], references: [id], onDelete: Restrict)
+  createdBy            User                  @relation("RequestCreatedBy", fields: [createdByUserId], references: [id], onDelete: Restrict)
   agentId              String?
-  agent                User?          @relation("RequestAgent", fields: [agentId], references: [id], onDelete: SetNull)
+  agent                User?                 @relation("RequestAgent", fields: [agentId], references: [id], onDelete: SetNull)
   title                String
   category             Category
   quantity             Int
@@ -961,12 +983,12 @@ model SourcingRequest {
   researchFeeUnit      ResearchFeeUnit?
   researchFeeQuantity  Int?
   researchFeeCents     Int?
-  researchFeeStatus    ResearchFeeStatus     @default(NONE)
+  researchFeeStatus    ResearchFeeStatus @default(NONE)
   researchFeeInvoiceId String?
   researchFeePaidAt    DateTime? // anchors the 30-day credit-back window
 
-  createdAt            DateTime       @default(now())
-  updatedAt            DateTime       @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   products          SourcingProduct[]
   tenderInvitations TenderInvitation[]
@@ -1058,27 +1080,27 @@ model Quote {
 }
 
 model Order {
-  id              String          @id @default(cuid(2))
-  reference       String          @unique // ORD-XXXXX
-  quoteId         String          @unique
-  quote           Quote           @relation(fields: [quoteId], references: [id], onDelete: Restrict)
-  requestId       String
-  request         SourcingRequest @relation(fields: [requestId], references: [id], onDelete: Restrict)
-  clientOrgId     String
-  clientOrg       Organization    @relation("OrderClientOrg", fields: [clientOrgId], references: [id], onDelete: Restrict)
-  factoryOrgId    String
-  factoryOrg      Organization    @relation("OrderFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
-  agentId         String?
-  agent           User?           @relation("OrderAgent", fields: [agentId], references: [id], onDelete: SetNull)
-  totalCents      Int
-  depositCents    Int // 30% default
-  balanceCents    Int // 70% default
-  commissionCents Int // platform margin — private
+  id               String          @id @default(cuid(2))
+  reference        String          @unique // ORD-XXXXX
+  quoteId          String          @unique
+  quote            Quote           @relation(fields: [quoteId], references: [id], onDelete: Restrict)
+  requestId        String
+  request          SourcingRequest @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  clientOrgId      String
+  clientOrg        Organization    @relation("OrderClientOrg", fields: [clientOrgId], references: [id], onDelete: Restrict)
+  factoryOrgId     String
+  factoryOrg       Organization    @relation("OrderFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  agentId          String?
+  agent            User?           @relation("OrderAgent", fields: [agentId], references: [id], onDelete: SetNull)
+  totalCents       Int
+  depositCents     Int // 30% default
+  balanceCents     Int // 70% default
+  commissionCents  Int // platform margin — private
   /// Partner #31: true when this order materialised from a sample-buy
   /// flow (single unit, sample price). Drives a "Sample" badge in the
   /// buyer + factory UIs and lets analytics distinguish sample orders
   /// from bulk in aggregates.
-  isSample        Boolean         @default(false)
+  isSample         Boolean         @default(false)
   /// Pricing-v3 Phase 4 — category-specific insurance covers the
   /// transaction at no extra cost. Defaults true for v1 (every order
   /// is covered). Admin can flip it off per-order later for
@@ -1086,32 +1108,35 @@ model Order {
   /// (firearms, large-volume liquids, etc.). Surfaced as an
   /// "Insured" badge on the buyer order page, on the quote PDF, and
   /// in confirmation emails.
-  insuranceCovered Boolean        @default(true)
-  status          OrderStatus     @default(PAYMENT_PENDING)
-  estimatedEta    DateTime?
-  shippedAt       DateTime?
+  insuranceCovered Boolean         @default(true)
+  status           OrderStatus     @default(PAYMENT_PENDING)
+  estimatedEta     DateTime?
+  shippedAt        DateTime?
   /// Set when the buyer confirms physical receipt of the goods. Separate
   /// from `balancePaidAt` — both must be set for COMPLETED to be reached
   /// (CTO audit F1b). When the buyer confirms before paying the balance,
   /// this is recorded but the status stays at SHIPPED / IN_TRANSIT until
   /// the balance settles.
-  deliveredAt     DateTime?
+  deliveredAt      DateTime?
   /// Set by the payment finaliser when the balance wire / charge has
   /// reconciled. Together with `deliveredAt`, gates the transition into
   /// COMPLETED + factory payout (CTO audit F1b / F1c). Buyer-initiated
   /// COMPLETED is blocked while this is null.
-  balancePaidAt   DateTime?
-  trackingNumber  String?
-  trackingCarrier String?
-  trackingUrl     String?
-  deletedAt       DateTime?
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  balancePaidAt    DateTime?
+  trackingNumber   String?
+  trackingCarrier  String?
+  /// Logistics leg handled by an Expéditeur Sourcing Pick. Optional: only
+  /// orders routed through the shipper role have one.
+  shipment         Shipment?
+  trackingUrl      String?
+  deletedAt        DateTime?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
 
-  invoices         Invoice[]
-  escrows          EscrowTransaction[]
-  forwarderTokens  ForwarderUploadToken[]
-  disputes         Dispute[]
+  invoices        Invoice[]
+  escrows         EscrowTransaction[]
+  forwarderTokens ForwarderUploadToken[]
+  disputes        Dispute[]
 
   @@index([status, factoryOrgId])
   @@index([status, clientOrgId])
@@ -1124,7 +1149,6 @@ model Order {
  * partner. The forwarder lands on /forwarder/upload/<token>, sees the
  * order summary (no SourcingPick account required) and uploads handoff
  * photos that land as ORDER_SHIPMENT_PROOF attachments.
- *
  * Tokens are one-use-per-upload but live for `expiresAt`, so the
  * forwarder can come back to add more photos in the same window. Set
  * `revokedAt` to kill access early. `lastUsedAt` is bumped on every
@@ -1151,36 +1175,33 @@ model ForwarderUploadToken {
 
 /**
  * Buyer-initiated post-delivery dispute. The schema flow:
- *
- *   buyer opens (within 7 days of deliveredAt)
- *     → factory responds (within 5 days, defaults to silence)
- *       → admin arbitrates, picks an outcome:
- *           STANDARD — partial refund (buyer gets back the dispute math
- *                      from `computeDisputeRefund`)
- *           CUSTOM   — full refund (the product can't be resold)
- *           REJECT   — dispute not upheld, escrow flips back to HELD
- *
+ * buyer opens (within 7 days of deliveredAt)
+ * → factory responds (within 5 days, defaults to silence)
+ * → admin arbitrates, picks an outcome:
+ * STANDARD — partial refund (buyer gets back the dispute math
+ * from `computeDisputeRefund`)
+ * CUSTOM   — full refund (the product can't be resold)
+ * REJECT   — dispute not upheld, escrow flips back to HELD
  * One open dispute per order. A REJECT-resolved dispute lets the buyer
  * open another one — closing one but not the escrow status restores
  * the original release path.
- *
  * Evidence attachments live in the polymorphic Attachment table with
  * `contextType=DISPUTE_EVIDENCE`, `contextId=this.id`.
  */
 model Dispute {
-  id               String          @id @default(cuid(2))
-  reference        String          @unique // DSP-XXXXX
-  orderId          String
-  order            Order           @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  id              String             @id @default(cuid(2))
+  reference       String             @unique // DSP-XXXXX
+  orderId         String
+  order           Order              @relation(fields: [orderId], references: [id], onDelete: Restrict)
   /// Primary escrow being disputed. Set when the dispute is opened
   /// against a specific escrow leg (deposit / balance); null when the
   /// dispute is whole-order (admin re-attributes the escrow at resolve
   /// time).
-  primaryEscrowId  String?
-  primaryEscrow    EscrowTransaction? @relation(fields: [primaryEscrowId], references: [id], onDelete: SetNull)
+  primaryEscrowId String?
+  primaryEscrow   EscrowTransaction? @relation(fields: [primaryEscrowId], references: [id], onDelete: SetNull)
 
   openedByUserId   String
-  openedBy         User            @relation("DisputeOpener", fields: [openedByUserId], references: [id], onDelete: Restrict)
+  openedBy         User    @relation("DisputeOpener", fields: [openedByUserId], references: [id], onDelete: Restrict)
   /// Free-text buyer claim — what's wrong, what they want.
   buyerStatement   String
   /// Optional factory rebuttal. Defaults to null when the factory
@@ -1189,21 +1210,21 @@ model Dispute {
   /// Admin's narrative when resolving. Surfaces to both parties.
   adminDecision    String?
 
-  status           DisputeStatus   @default(OPEN)
-  outcome          DisputeOutcome? // set when status=RESOLVED
-  refundCents      Int?            // computed via computeDisputeRefund
-  retainedCents    Int?
+  status             DisputeStatus   @default(OPEN)
+  outcome            DisputeOutcome? // set when status=RESOLVED
+  refundCents        Int? // computed via computeDisputeRefund
+  retainedCents      Int?
   platformShareCents Int?
   supplierShareCents Int?
 
-  openedAt         DateTime        @default(now())
-  respondedAt      DateTime?
-  resolvedAt       DateTime?
-  resolvedById     String?
-  resolvedBy       User?           @relation("DisputeResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
+  openedAt     DateTime  @default(now())
+  respondedAt  DateTime?
+  resolvedAt   DateTime?
+  resolvedById String?
+  resolvedBy   User?     @relation("DisputeResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
 
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([orderId, status])
   @@index([status, openedAt])
@@ -1234,40 +1255,40 @@ enum DisputeOutcome {
 // =============================================================
 
 model MarketplaceProduct {
-  id                String                   @id @default(cuid(2))
-  reference         String                   @unique // MKT-XXX
-  factoryOrgId      String
-  factoryOrg        Organization             @relation(fields: [factoryOrgId], references: [id], onDelete: Restrict)
-  name              String
-  category          Category
-  description       String
-  images            String[]
-  priceCentsClient  Int
-  priceCentsFactory Int // private
+  id                     String                   @id @default(cuid(2))
+  reference              String                   @unique // MKT-XXX
+  factoryOrgId           String
+  factoryOrg             Organization             @relation(fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  name                   String
+  category               Category
+  description            String
+  images                 String[]
+  priceCentsClient       Int
+  priceCentsFactory      Int // private
   /// Optional "was" price for strikethrough display. When set and greater
   /// than priceCentsClient, the storefront renders a discount badge.
   /// Independent of flashSaleEndsAt — used for permanent discounts on
   /// used / refurbished / clearance items.
-  compareAtCents    Int?
+  compareAtCents         Int?
   /// Optional flash-sale end timestamp. When in the future, the storefront
   /// renders a flash-sale badge with a countdown alongside the discount.
   /// After this passes, the listing keeps its discounted price but the
   /// urgency badge disappears — factory must update the listing to revert.
-  flashSaleEndsAt   DateTime?
-  condition         MarketplaceCondition     @default(NEW)
-  moq               Int
-  stockAvailable    Int                      @default(0)
-  stockLowThreshold Int?
+  flashSaleEndsAt        DateTime?
+  condition              MarketplaceCondition     @default(NEW)
+  moq                    Int
+  stockAvailable         Int                      @default(0)
+  stockLowThreshold      Int?
   /// Canonical lead time in DAYS — used by order ETAs, filters, ranking.
   /// The factory may have entered it in months via the UI; conversion to
   /// days happens at submit (see lib/marketplace/lead-time.ts).
-  leadTimeDays      Int
+  leadTimeDays           Int
   /// Display preference (DAY | MONTH). Drives the input unit on edit and
   /// the formatted output on product pages.
-  leadTimeUnit      LeadTimeUnit             @default(DAY)
-  certifications    String[]
-  status            MarketplaceProductStatus @default(DRAFT)
-  publishedAt       DateTime?
+  leadTimeUnit           LeadTimeUnit             @default(DAY)
+  certifications         String[]
+  status                 MarketplaceProductStatus @default(DRAFT)
+  publishedAt            DateTime?
   /// Pricing-v3 marketplace de-emphasis: admin must physically test
   /// the product before it shows on the public catalogue. This flag
   /// is distinct from `status PUBLISHED` (which is editorial review
@@ -1275,44 +1296,44 @@ model MarketplaceProduct {
   /// confirmation the product works as advertised. Public marketplace
   /// queries filter on `testedAndApprovedAt IS NOT NULL`. Set via
   /// `adminMarkProductTestedAction` (AdminScope.MARKETPLACE).
-  testedAndApprovedAt   DateTime?
-  testedAndApprovedById String?
-  testedAndApprovedBy   User?  @relation("MarketplaceProductTester", fields: [testedAndApprovedById], references: [id], onDelete: SetNull)
+  testedAndApprovedAt    DateTime?
+  testedAndApprovedById  String?
+  testedAndApprovedBy    User?                    @relation("MarketplaceProductTester", fields: [testedAndApprovedById], references: [id], onDelete: SetNull)
   /// Admin-block fields. Partner #1 — when admin temporarily blocks a
   /// listing, the row stays in DRAFT/PENDING_REVIEW/PUBLISHED but
   /// `blockedAt` is set so the storefront filter hides it. The reason
   /// is shown to the factory so they know how to remediate.
-  blockedAt         DateTime?
-  blockReason       String?
-  viewsCount        Int                      @default(0)
-  soldCount         Int                      @default(0)
+  blockedAt              DateTime?
+  blockReason            String?
+  viewsCount             Int                      @default(0)
+  soldCount              Int                      @default(0)
   /// Buyer-side acompte share in basis points (3000 = 30%, 5000 = 50%).
   /// Mirrors `Quote.depositPercentageBps` so marketplace + sourcing share
   /// the same 30–50% policy (CTO audit F4). Default 3000 keeps existing
   /// listings on the 30 % split.
-  depositPercentageBps Int                   @default(3000)
+  depositPercentageBps   Int                      @default(3000)
   /// Delivery method (Incoterm) the factory commits to on this listing.
   /// Partner #15: previously the buyer picked the Incoterm at checkout,
   /// which let buyers select terms the factory couldn't honour. Now the
   /// factory locks it on the listing — buyers see it on the product
   /// page and the buy form treats it as fixed metadata. Default DAP
   /// (door-to-door) matches the v1 sourcing-flow default.
-  incoterm             Incoterm              @default(DAP)
+  incoterm               Incoterm                 @default(DAP)
   /// Partner #31: factory exposes a sample purchase. When true, the
   /// listing renders an "Order a sample" CTA that creates a single-
   /// unit Order at `samplePriceCentsClient` (typically higher per-unit
   /// than the bulk price because it includes air shipping). Null
   /// price + flag false = no sample available.
-  sampleAvailable      Boolean               @default(false)
+  sampleAvailable        Boolean                  @default(false)
   samplePriceCentsClient Int?
   /// Partner #5: AI-translated product copy. Map of locale → object
   /// with `{name, description, sourceLocale, generatedAt}`. Translated
   /// on demand via the Anthropic API (Claude Haiku) and cached here so
   /// repeat reads don't re-bill. Locale that the factory authored in
   /// is the `sourceLocale` and isn't stored under itself.
-  translations         Json                  @default("{}")
-  createdAt         DateTime                 @default(now())
-  updatedAt         DateTime                 @updatedAt
+  translations           Json                     @default("{}")
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
 
   @@index([status, category])
   @@index([factoryOrgId, status])
@@ -1326,20 +1347,20 @@ model MarketplaceProduct {
 // =============================================================
 
 model Invoice {
-  id             String        @id @default(cuid(2))
-  reference      String        @unique // INV-YYYY-NNNN
-  orderId        String?
-  order          Order?        @relation(fields: [orderId], references: [id], onDelete: Restrict)
-  organizationId String
-  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Restrict)
-  type           InvoiceType
-  amountCents    Int // TTC
-  vatRateBps     Int           @default(2000) // 20.00% in basis points (1bp = 0.01%)
-  issuedAt       DateTime
-  dueAt          DateTime
-  paidAt         DateTime?
-  status         InvoiceStatus @default(DRAFT)
-  pdfUrl         String?
+  id              String        @id @default(cuid(2))
+  reference       String        @unique // INV-YYYY-NNNN
+  orderId         String?
+  order           Order?        @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  organizationId  String
+  organization    Organization  @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  type            InvoiceType
+  amountCents     Int // TTC
+  vatRateBps      Int           @default(2000) // 20.00% in basis points (1bp = 0.01%)
+  issuedAt        DateTime
+  dueAt           DateTime
+  paidAt          DateTime?
+  status          InvoiceStatus @default(DRAFT)
+  pdfUrl          String?
   /// Partner round 4 — admin-issued invoices. Free-text line shown
   /// in the PDF + the buyer's list. Null for system-generated rows
   /// where the line comes from the order reference.
@@ -1347,10 +1368,10 @@ model Invoice {
   /// Partner round 4 — admin actor who created an ADMIN_CUSTOM
   /// invoice. Null for system-generated rows (DEPOSIT, BALANCE,
   /// RESEARCH_FEE etc.) where no human pushed the button.
-  issuedByUserId String?
-  issuedBy       User?         @relation("InvoiceIssuer", fields: [issuedByUserId], references: [id], onDelete: SetNull)
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  issuedByUserId  String?
+  issuedBy        User?         @relation("InvoiceIssuer", fields: [issuedByUserId], references: [id], onDelete: SetNull)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   escrow EscrowTransaction?
 
@@ -1376,7 +1397,7 @@ model EscrowTransaction {
   createdAt      DateTime              @default(now())
   updatedAt      DateTime              @updatedAt
 
-  payout Payout?
+  payout   Payout?
   disputes Dispute[]
 
   @@index([status, orderId])
@@ -1384,27 +1405,27 @@ model EscrowTransaction {
 }
 
 model Payout {
-  id              String            @id @default(cuid(2))
-  reference       String            @unique // PAY-YYYY-NNNN
-  factoryOrgId    String
-  factoryOrg      Organization      @relation(fields: [factoryOrgId], references: [id], onDelete: Restrict)
-  escrowId        String            @unique
-  escrow          EscrowTransaction @relation(fields: [escrowId], references: [id], onDelete: Restrict)
-  amountCents     Int // net paid to the factory (gross − supplier fee)
+  id               String            @id @default(cuid(2))
+  reference        String            @unique // PAY-YYYY-NNNN
+  factoryOrgId     String
+  factoryOrg       Organization      @relation(fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  escrowId         String            @unique
+  escrow           EscrowTransaction @relation(fields: [escrowId], references: [id], onDelete: Restrict)
+  amountCents      Int // net paid to the factory (gross − supplier fee)
   /// 3% supplier-side fee retained by the platform on a payout. Renamed
   /// from `commissionCents` (CTO audit F3) because `Order.commissionCents`
   /// already means "total buyer-side platform margin" — two columns with
   /// the same name + different semantics was making finance reporting
   /// drift.
   supplierFeeCents Int
-  method          PayoutMethod
-  status          PayoutStatus      @default(PENDING)
-  scheduledAt     DateTime?
-  sentAt          DateTime?
-  providerRef     String?
-  failureReason   String?
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  method           PayoutMethod
+  status           PayoutStatus      @default(PENDING)
+  scheduledAt      DateTime?
+  sentAt           DateTime?
+  providerRef      String?
+  failureReason    String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 
   @@index([factoryOrgId, status])
   @@index([status, scheduledAt])
@@ -1494,12 +1515,10 @@ model Message {
  * uses contextType=SUPPORT, contextId=this.id so every messaging feature
  * (attachments, voice notes, SSE, unread counts) works without forking
  * code.
- *
  * Lifecycle:
- *   - PENDING: created by the requester, no admin reply yet.
- *   - OPEN: an admin has engaged, ticket is active.
- *   - RESOLVED: admin closed it. A new requester message reopens it.
- *
+ * - PENDING: created by the requester, no admin reply yet.
+ * - OPEN: an admin has engaged, ticket is active.
+ * - RESOLVED: admin closed it. A new requester message reopens it.
  * `topicKind` + `topicId` are polymorphic. Admin attaches one of the
  * supported entity types (order, marketplace product, organization,
  * agent, etc.) to give the conversation structure. The pair is plain
@@ -1507,23 +1526,23 @@ model Message {
  * stale links are resolved + flagged in the UI.
  */
 model SupportTicket {
-  id               String              @id @default(cuid(2))
-  reference        String              @unique // TKT-XXXXX
-  subject          String
-  status           SupportTicketStatus @default(PENDING)
-  requesterUserId  String
-  requester        User                @relation("SupportTicketRequester", fields: [requesterUserId], references: [id], onDelete: Restrict)
-  requesterOrgId   String?
-  requesterOrg     Organization?       @relation("SupportTicketRequesterOrg", fields: [requesterOrgId], references: [id], onDelete: SetNull)
-  topicKind        SupportTopicKind?
-  topicId          String?
-  openedAt         DateTime?
-  resolvedAt       DateTime?
-  resolvedById     String?
-  resolvedBy       User?               @relation("SupportTicketResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
-  deletedAt        DateTime?
-  createdAt        DateTime            @default(now())
-  updatedAt        DateTime            @updatedAt
+  id              String              @id @default(cuid(2))
+  reference       String              @unique // TKT-XXXXX
+  subject         String
+  status          SupportTicketStatus @default(PENDING)
+  requesterUserId String
+  requester       User                @relation("SupportTicketRequester", fields: [requesterUserId], references: [id], onDelete: Restrict)
+  requesterOrgId  String?
+  requesterOrg    Organization?       @relation("SupportTicketRequesterOrg", fields: [requesterOrgId], references: [id], onDelete: SetNull)
+  topicKind       SupportTopicKind?
+  topicId         String?
+  openedAt        DateTime?
+  resolvedAt      DateTime?
+  resolvedById    String?
+  resolvedBy      User?               @relation("SupportTicketResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
+  deletedAt       DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
 
   @@index([status, createdAt])
   @@index([requesterUserId, status])
@@ -1601,7 +1620,6 @@ model AgentTask {
 /**
  * Polymorphic attachment — images, videos, or files attached to any
  * context: messages, sourcing requests, orders, or marketplace listings.
- *
  * Stored URL is whatever `storeFile()` returns (today: local disk, later:
  * S3 / R2). `mimeType` is what we sniffed at upload time; `kind` is the
  * coarse bucket used for grouping in the gallery UI (images grid, video
@@ -1632,7 +1650,6 @@ model Attachment {
  * "Summer flash sale", "New African suppliers", etc. This is the
  * curation surface; individual factory flash-sales surface separately
  * via the listing-level compareAt/flashSaleEndsAt fields.
- *
  * A banner is shown when `active` AND now is within the optional
  * [startsAt, endsAt] window. Ordered by `sortOrder` then `createdAt`.
  * Text + CTA + tone only (no image upload in v1) — keeps it dependency
@@ -1672,47 +1689,46 @@ model MarketplaceBanner {
  * price, ready stock) and SourcingRequest (custom-spec, agent-negotiated).
  * On settlement an Order is created at the winning bid price; the auction
  * commission curve is separate from 6%/3% — see docs/pricing-auctions.md.
- *
  * v1 scaffold only — no UI yet. Schema in place so future builds can
  * reference the relations.
  */
 model Auction {
-  id                String        @id @default(cuid(2))
-  reference         String        @unique // AUC-XXX
-  factoryOrgId      String
-  factoryOrg        Organization  @relation("AuctionFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
-  title             String
-  description       String
-  category          Category
-  images            String[]
+  id                  String        @id @default(cuid(2))
+  reference           String        @unique // AUC-XXX
+  factoryOrgId        String
+  factoryOrg          Organization  @relation("AuctionFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  title               String
+  description         String
+  category            Category
+  images              String[]
   /// Lowest bid we accept — buyers must bid above this.
-  startingBidCents  Int
+  startingBidCents    Int
   /// Optional reserve — when set, the auction only sells if the winning
   /// bid is at or above this. Null = no reserve, highest bid wins.
-  reserveCents      Int?
+  reserveCents        Int?
   /// Optional buy-now price — bidder can skip the auction and buy
   /// immediately at this price. Null = no buy-now option.
-  buyNowCents       Int?
-  quantity          Int
-  moq               Int           @default(1)
-  leadTimeDays      Int
-  leadTimeUnit      LeadTimeUnit  @default(DAY)
-  incoterm          Incoterm
-  startsAt          DateTime
-  endsAt            DateTime
-  status            AuctionStatus @default(DRAFT)
-  winnerBidId       String?       @unique
-  winnerBid         Bid?          @relation("AuctionWinner", fields: [winnerBidId], references: [id])
+  buyNowCents         Int?
+  quantity            Int
+  moq                 Int           @default(1)
+  leadTimeDays        Int
+  leadTimeUnit        LeadTimeUnit  @default(DAY)
+  incoterm            Incoterm
+  startsAt            DateTime
+  endsAt              DateTime
+  status              AuctionStatus @default(DRAFT)
+  winnerBidId         String?       @unique
+  winnerBid           Bid?          @relation("AuctionWinner", fields: [winnerBidId], references: [id])
   /// The Order materialised from this auction once it SOLD. Null while
   /// the auction is still running or ended without a winner. Used for
   /// idempotency — the settler refuses to materialise twice.
-  materializedOrderId String?     @unique
-  publishedAt       DateTime?
-  rejectionReason   String?
-  rejectedAt        DateTime?
-  deletedAt         DateTime?
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  materializedOrderId String?       @unique
+  publishedAt         DateTime?
+  rejectionReason     String?
+  rejectedAt          DateTime?
+  deletedAt           DateTime?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
 
   bids Bid[] @relation("AuctionBids")
 
@@ -1721,16 +1737,16 @@ model Auction {
 }
 
 model Bid {
-  id            String       @id @default(cuid(2))
-  auctionId     String
-  auction       Auction      @relation("AuctionBids", fields: [auctionId], references: [id], onDelete: Cascade)
-  bidderOrgId   String
-  bidderOrg     Organization @relation("BidderOrg", fields: [bidderOrgId], references: [id], onDelete: Restrict)
-  bidderUserId  String
-  bidderUser    User         @relation("BidderUser", fields: [bidderUserId], references: [id], onDelete: Restrict)
-  amountCents   Int
-  status        BidStatus    @default(ACTIVE)
-  createdAt     DateTime     @default(now())
+  id           String       @id @default(cuid(2))
+  auctionId    String
+  auction      Auction      @relation("AuctionBids", fields: [auctionId], references: [id], onDelete: Cascade)
+  bidderOrgId  String
+  bidderOrg    Organization @relation("BidderOrg", fields: [bidderOrgId], references: [id], onDelete: Restrict)
+  bidderUserId String
+  bidderUser   User         @relation("BidderUser", fields: [bidderUserId], references: [id], onDelete: Restrict)
+  amountCents  Int
+  status       BidStatus    @default(ACTIVE)
+  createdAt    DateTime     @default(now())
 
   wonAuction Auction? @relation("AuctionWinner")
 
@@ -1756,11 +1772,9 @@ model WebhookEvent {
 
 /**
  * Operator-controlled platform settings. Singleton row (id = "default").
- *
  * Lets admins expand the geographic footprint (regions / countries
  * available in the new-request wizard, factory directory filters, etc.)
  * without a code change. Read everywhere via getSourcingAllowlist().
- *
  * `allowedSourcingCountries` are ISO 3166-1 alpha-2 codes. A country can
  * be allowed without its parent region (lets ops onboard a single country
  * like UAE without unlocking the whole MIDDLE_EAST region).
@@ -1816,4 +1830,161 @@ enum DeletionRequestStatus {
   /// Admin approved AND erasure has been executed (PII anonymised, account
   /// soft-deleted). Terminal.
   COMPLETED
+}
+
+/// =============================================================
+/// Expéditeur Sourcing Pick — logistics leg
+///
+/// Spec: "Documentation officielle – Rôle Expéditeur Sourcing Pick".
+/// The shipper is a pure intermediary: it never contacts the end client
+/// (§1.2). Everything below is exchanged between the internal team and the
+/// shipper only; what reaches the client is decided by `ShipmentEvent.
+/// clientVisible` (see the comment on that model).
+/// =============================================================
+
+/// The 10 official statuses (§4), in lifecycle order. Deliberately separate
+/// from `OrderStatus`: that tracks the commercial order (payment, QC, buyer
+/// receipt), this tracks the logistics leg, and the two advance independently.
+enum ShipmentStatus {
+  /// 1. Demande de devis reçue — shipper has all product + delivery data.
+  QUOTE_REQUESTED
+  /// 2. Devis en cours de calcul.
+  QUOTE_CALCULATING
+  /// 3. Devis validé (prix fixe) — confirmed and locked with a validity date.
+  QUOTE_VALIDATED
+  /// 4. Commande en préparation logistique.
+  PREPARATION
+  /// 5. Colis pris en charge par le transport.
+  PICKED_UP
+  /// 6. Colis en transit.
+  IN_TRANSIT
+  /// 7. Livraison en attente de finalisation.
+  AWAITING_FINAL_DELIVERY
+  /// 8. Livraison terminée.
+  DELIVERED
+  /// 9. Traitement incident en cours — delay, blockage, surcharge, customs.
+  INCIDENT
+  /// 10. Commande annulée.
+  CANCELLED
+}
+
+/// One logistics leg per order. §2.2 allows one invoice to cover several
+/// products, so the relation to Order is 1:1 and the per-product data lives
+/// in ShipmentItem.
+model Shipment {
+  id           String        @id @default(cuid(2))
+  reference    String        @unique // SHP-XXXXX
+  orderId      String        @unique
+  order        Order         @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  /// Assigned shipper org. Null between creation and assignment.
+  shipperOrgId String?
+  shipperOrg   Organization? @relation("ShipmentShipperOrg", fields: [shipperOrgId], references: [id], onDelete: SetNull)
+
+  status ShipmentStatus @default(QUOTE_REQUESTED)
+
+  // ---- §2.2 order-level data supplied by the internal team ----
+  shippingMethod String // méthode d'expédition souhaitée par le client
+  totalWeightKg  Decimal @db.Decimal(10, 3)
+  lengthCm       Decimal @db.Decimal(10, 2)
+  widthCm        Decimal @db.Decimal(10, 2)
+  heightCm       Decimal @db.Decimal(10, 2)
+  /// Full destination (§2.2.6). Denormalised rather than pointing at the
+  /// client org: the delivery address can differ from the billing entity, and
+  /// it must stay frozen as quoted even if the org later edits its address.
+  destName       String
+  destAddress    String
+  destCity       String
+  destPostalCode String
+  destCountry    String
+
+  /// Currently accepted quote, if any. History lives in ShipmentQuote.
+  acceptedQuoteId String?        @unique
+  acceptedQuote   ShipmentQuote? @relation("ShipmentAcceptedQuote", fields: [acceptedQuoteId], references: [id], onDelete: SetNull)
+
+  /// §3.2 — set when the brief changes (weight, dimensions, method, address
+  /// or composition) after a quote was accepted. The fixed price no longer
+  /// applies and the shipper owes a justified revision. Cleared when a new
+  /// quote is submitted.
+  quoteStale Boolean @default(false)
+
+  items  ShipmentItem[]
+  quotes ShipmentQuote[] @relation("ShipmentQuotes")
+  events ShipmentEvent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([shipperOrgId, status])
+  @@index([status, updatedAt])
+}
+
+/// §2.1 — per-product data. Prices are the goods' unit price (used for customs
+/// valuation), NOT the logistics price.
+model ShipmentItem {
+  id             String   @id @default(cuid(2))
+  shipmentId     String
+  shipment       Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  label          String
+  /// Nature / type — "marchandise en usage libre" and similar declarations.
+  nature         String
+  quantity       Int      @default(1)
+  unitPriceCents Int
+  /// Stored relative path to the product image (§2.1.1).
+  imageUrl       String?
+
+  @@index([shipmentId])
+}
+
+/// §3 — every quote the shipper issues, kept as history rather than
+/// overwritten. §3.2 obliges the shipper to re-price whenever weight,
+/// dimensions, method, address or composition change, and §3.1/§3.3 oblige
+/// them to state conditions and justify changes — so each revision carries its
+/// own conditions, validity date and reason.
+model ShipmentQuote {
+  id             String   @id @default(cuid(2))
+  shipmentId     String
+  shipment       Shipment @relation("ShipmentQuotes", fields: [shipmentId], references: [id], onDelete: Cascade)
+  amountCents    Int
+  currency       String   @default("CNY")
+  /// §3.1 — the fixed price is only held until this date.
+  validUntil     DateTime
+  /// §3.1 — conditions applicable to the price.
+  conditions     String
+  /// §3.3 — special cases, surcharges, constraints.
+  notes          String?
+  /// §3.2 — why this revision differs from the previous one. Null on the first.
+  revisionReason String?
+  authorId       String?
+  author         User?    @relation("ShipmentQuoteAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt      DateTime @default(now())
+
+  acceptedFor Shipment? @relation("ShipmentAcceptedQuote")
+
+  @@index([shipmentId, createdAt])
+}
+
+/// Status history and the audit trail behind §5's 24h reporting duty.
+model ShipmentEvent {
+  id            String         @id @default(cuid(2))
+  shipmentId    String
+  shipment      Shipment       @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  status        ShipmentStatus
+  /// Free-text detail: incident description, justification, handover note.
+  note          String?
+  actorId       String?
+  actor         User?          @relation("ShipmentEventActor", fields: [actorId], references: [id], onDelete: SetNull)
+  /// Whether this event may surface on the CLIENT's order timeline.
+  ///
+  /// §1.2 forbids any contact between shipper and client, and §6.2 says the
+  /// client only gets what the internal team passes on — but explicitly allows
+  /// that to happen "manuellement/automatiquement via votre interface". So
+  /// progress statuses mirror automatically under SourcingPick's own branding
+  /// (never the shipper's identity, never a logistics price), while anything
+  /// commercially sensitive — the quote steps, incidents, cancellations —
+  /// defaults to false and waits for a human to relay it. See
+  /// CLIENT_VISIBLE_STATUSES in lib/shipments/status.ts.
+  clientVisible Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+
+  @@index([shipmentId, createdAt])
 }

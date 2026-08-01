@@ -1,5 +1,5 @@
 import "server-only";
-import { ThreadContextType } from "@prisma/client";
+import { Role, ThreadContextType } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { resolveParticipantsFor } from "./participants";
 
@@ -14,6 +14,20 @@ export async function getOrCreateThread(
   contextId: string,
   joiningUserId: string,
 ): Promise<{ id: string }> {
+  // §1.2 — the expéditeur must never share a room with the end client. The
+  // joining user is added to a context thread regardless of whether the
+  // participant resolver returned them, so a shipper opening an ORDER or
+  // REQUEST thread would land in the buyer's conversation. They have no
+  // legitimate context-thread need in v1: their only channel is the internal
+  // team, over DIRECT threads.
+  const joiner = await prisma.user.findUnique({
+    where: { id: joiningUserId },
+    select: { role: true },
+  });
+  if (joiner?.role === Role.SHIPPER) {
+    throw new Error("Shippers cannot join context threads (Expéditeur spec §1.2).");
+  }
+
   const existing = await prisma.thread.findFirst({
     where: { contextType, contextId },
     select: { id: true },

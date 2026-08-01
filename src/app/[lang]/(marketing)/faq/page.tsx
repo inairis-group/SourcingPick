@@ -53,7 +53,7 @@ export default async function FaqPage({
   }));
 
   return (
-    <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    <div className="mx-auto max-w-4xl px-4 sm:px-6 py-12 lg:py-16">
       <header className="flex flex-col gap-2 mb-10 max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-wide text-info">
           {t.eyebrow}

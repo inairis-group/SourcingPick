@@ -14,6 +14,8 @@ export function dashboardPathForRole(role: Role, locale: string): string {
       return `/${locale}/agent/dashboard`;
     case Role.ADMIN:
       return `/${locale}/admin`;
+    case Role.SHIPPER:
+      return `/${locale}/shipper/shipments`;
   }
 }
 
@@ -44,5 +46,7 @@ export function settingsPathForRole(role: Role, locale: string): string {
       return `/${locale}/agent/settings`;
     case Role.ADMIN:
       return `/${locale}/admin/settings`;
+    case Role.SHIPPER:
+      return `/${locale}/shipper/settings`;
   }
 }

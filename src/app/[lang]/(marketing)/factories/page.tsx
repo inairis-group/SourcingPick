@@ -199,7 +199,7 @@ export default async function FactoriesPage({ params }: PageProps<"/[lang]/facto
                   "panel-stack-item bg-ink-deep overflow-hidden rounded-3xl text-white",
                   "sheen-top ring-1 ring-white/10 ring-inset",
                   "px-6 py-14 sm:px-12 sm:py-20 lg:px-20 lg:py-24",
-                  "flex min-h-[70vh] md:min-h-[90vh] flex-col",
+                  "flex min-h-[80vh] flex-col md:min-h-[90vh]",
                   "shadow-lg",
                 )}
               >

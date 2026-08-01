@@ -7,6 +7,8 @@ import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { OrderTimeline } from "@/components/orders/timeline";
+import { ClientShipmentProgress } from "@/components/shipments/client-progress";
+import { getClientVisibleShipmentEvents } from "@/lib/shipments/queries";
 import { ContextThread } from "@/components/messaging/context-thread";
 import { MediaGrid } from "@/components/attachments/media-grid";
 import { OrderActions } from "./_components/order-actions";
@@ -15,14 +17,9 @@ import { InsuredBadge } from "@/components/orders/insured-badge";
 import { TrackingDisplay } from "./_components/tracking-display";
 import { WiseWirePanel } from "./_components/wise-wire-panel";
 import { BuyerDisputePanel } from "./_components/dispute-panel";
-import {
-  buildWireReference,
-  platformWireAccount,
-} from "@/lib/wise/platform-account";
+import { buildWireReference, platformWireAccount } from "@/lib/wise/platform-account";
 
-export async function generateMetadata({
-  params,
-}: PageProps<"/[lang]/client/orders/[id]">) {
+export async function generateMetadata({ params }: PageProps<"/[lang]/client/orders/[id]">) {
   const { lang, id } = await params;
   if (!isLocale(lang)) return {};
   const order = await prisma.order.findUnique({
@@ -41,8 +38,7 @@ export default async function ClientOrderDetailPage({
   if (!isLocale(lang)) notFound();
   const user = await requireRole(Role.CLIENT);
   const dict = await getDictionary(lang);
-  const paymentStatus =
-    typeof search?.payment === "string" ? search.payment : undefined;
+  const paymentStatus = typeof search?.payment === "string" ? search.payment : undefined;
 
   const order = await prisma.order.findFirst({
     where: { id, clientOrgId: user.organizationId, deletedAt: null },
@@ -105,27 +101,25 @@ export default async function ClientOrderDetailPage({
   });
   if (!order) notFound();
 
+  // Only the events flagged clientVisible; the query selects no shipper
+  // identity and no logistics price (§1.2).
+  const shipmentEvents = await getClientVisibleShipmentEvents(order.id, user.organizationId);
+
   return (
-    <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-8">
-      <Link
-        href={`/${lang}/client/orders`}
-        variant="muted"
-        className="text-sm mb-4 inline-block"
-      >
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+      <Link href={`/${lang}/client/orders`} variant="muted" className="mb-4 inline-block text-sm">
         ← {dict.client.orders.backToList}
       </Link>
 
-      <header className="flex flex-col gap-1 mb-6">
-        <p className="text-xs font-mono uppercase tracking-wide text-faint">
+      <header className="mb-6 flex flex-col gap-1">
+        <p className="text-faint font-mono text-xs tracking-wide uppercase">
           {order.reference} · {order.request.reference}
         </p>
-        <div className="flex items-center gap-3 flex-wrap">
-          <h1 className="text-2xl font-bold text-headline tracking-tight">
-            {order.request.title}
-          </h1>
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-headline text-2xl font-bold tracking-tight">{order.request.title}</h1>
           <InsuredBadge covered={order.insuranceCovered} dict={dict} size="md" />
         </div>
-        <div className="flex items-center gap-2 mt-2 text-sm text-muted">
+        <div className="text-muted mt-2 flex items-center gap-2 text-sm">
           <OrgAvatar
             orgId={order.factoryOrg.id}
             name={order.factoryOrg.displayName}
@@ -140,27 +134,23 @@ export default async function ClientOrderDetailPage({
       </header>
 
       {paymentStatus === "success" && (
-        <div className="rounded-md border border-success-edge bg-success-soft/40 p-4 mb-6">
-          <p className="text-sm font-semibold text-success">
+        <div className="border-success-edge bg-success-soft/40 mb-6 rounded-md border p-4">
+          <p className="text-success text-sm font-semibold">
             {dict.client.orders.paymentSuccessTitle}
           </p>
-          <p className="text-xs text-muted mt-0.5">
-            {dict.client.orders.paymentSuccessBody}
-          </p>
+          <p className="text-muted mt-0.5 text-xs">{dict.client.orders.paymentSuccessBody}</p>
         </div>
       )}
       {paymentStatus === "cancelled" && (
-        <div className="rounded-md border border-warning-edge bg-warning-soft/40 p-4 mb-6">
-          <p className="text-sm font-semibold text-warning">
+        <div className="border-warning-edge bg-warning-soft/40 mb-6 rounded-md border p-4">
+          <p className="text-warning text-sm font-semibold">
             {dict.client.orders.paymentCancelledTitle}
           </p>
-          <p className="text-xs text-muted mt-0.5">
-            {dict.client.orders.paymentCancelledBody}
-          </p>
+          <p className="text-muted mt-0.5 text-xs">{dict.client.orders.paymentCancelledBody}</p>
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
         <Stat
           label={dict.client.orders.totalLabel}
           value={formatEUR(order.totalCents / 100, lang)}
@@ -177,8 +167,12 @@ export default async function ClientOrderDetailPage({
         />
       </div>
 
-      <div className="rounded-lg border border-line bg-surface p-5 mb-6">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-4">
+      {/* §7.1 — logistics progress the internal team allows to auto-surface.
+          Renders nothing for orders with no shipper leg. */}
+      <ClientShipmentProgress events={shipmentEvents} lang={lang} dict={dict} />
+
+      <div className="border-line bg-surface mb-6 rounded-lg border p-5">
+        <h2 className="text-brand-700 mb-4 text-sm font-semibold tracking-wide uppercase">
           {dict.client.orders.timelineTitle}
         </h2>
         <OrderTimeline
@@ -191,14 +185,11 @@ export default async function ClientOrderDetailPage({
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
         <Section title={dict.client.orders.sectionLogistics}>
-          <Detail label={dict.client.requests.addressLabel}>
-            {order.request.deliveryAddress}
-          </Detail>
+          <Detail label={dict.client.requests.addressLabel}>{order.request.deliveryAddress}</Detail>
           <Detail label={dict.client.requests.incotermLabel}>
-            {order.request.incoterm} —{" "}
-            {dict.client.requests.incoterms[order.request.incoterm]}
+            {order.request.incoterm} — {dict.client.requests.incoterms[order.request.incoterm]}
           </Detail>
           <Detail label={dict.client.requests.quantityLabel}>
             {formatNumber(order.request.quantity, lang)}
@@ -225,9 +216,7 @@ export default async function ClientOrderDetailPage({
               )}
             </div>
           ) : (
-            <p className="text-sm text-muted">
-              {dict.client.orders.trackingPending}
-            </p>
+            <p className="text-muted text-sm">{dict.client.orders.trackingPending}</p>
           )}
         </Section>
       </div>
@@ -265,11 +254,11 @@ export default async function ClientOrderDetailPage({
 
         if (!platform) {
           return (
-            <div className="rounded-lg border border-warning-edge bg-warning-soft/40 p-5 mt-4">
-              <p className="text-sm font-semibold text-headline">
+            <div className="border-warning-edge bg-warning-soft/40 mt-4 rounded-lg border p-5">
+              <p className="text-headline text-sm font-semibold">
                 {dict.client.orders.payConfigMissingTitle}
               </p>
-              <p className="text-xs text-muted mt-1 leading-snug">
+              <p className="text-muted mt-1 text-xs leading-snug">
                 {dict.client.orders.payConfigMissingBody}
               </p>
             </div>
@@ -300,11 +289,7 @@ export default async function ClientOrderDetailPage({
         );
       })()}
 
-      <OrderActions
-        orderId={order.id}
-        status={order.status}
-        lang={lang}
-      />
+      <OrderActions orderId={order.id} status={order.status} lang={lang} />
 
       {(() => {
         // Dispute eligibility — must mirror openDisputeAction's gate.
@@ -314,10 +299,8 @@ export default async function ClientOrderDetailPage({
           order.status === OrderStatus.COMPLETED;
         const windowOpen =
           !order.deliveredAt ||
-          (Date.now() - order.deliveredAt.getTime()) / (1000 * 60 * 60 * 24) <=
-            7;
-        const activeDispute =
-          order.disputes.find((d) => d.status !== "RESOLVED") ?? null;
+          (Date.now() - order.deliveredAt.getTime()) / (1000 * 60 * 60 * 24) <= 7;
+        const activeDispute = order.disputes.find((d) => d.status !== "RESOLVED") ?? null;
         const mostRecent = order.disputes[0] ?? null;
         return (
           <BuyerDisputePanel
@@ -330,14 +313,11 @@ export default async function ClientOrderDetailPage({
 
       {order.invoices.length > 0 && (
         <Section title={dict.client.orders.sectionInvoices} className="mt-6">
-          <ul className="divide-y divide-line-subtle">
+          <ul className="divide-line-subtle divide-y">
             {order.invoices.map((inv) => (
-              <li
-                key={inv.id}
-                className="flex items-center justify-between py-2.5 gap-3 flex-wrap"
-              >
+              <li key={inv.id} className="flex flex-wrap items-center justify-between gap-3 py-2.5">
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-fg">
+                  <p className="text-fg text-sm font-medium">
                     {inv.reference} ·{" "}
                     {inv.type === "DEPOSIT"
                       ? dict.client.orders.invoiceTypeDeposit
@@ -345,21 +325,21 @@ export default async function ClientOrderDetailPage({
                         ? dict.client.orders.invoiceTypeBalance
                         : inv.type}
                   </p>
-                  <p className="text-xs text-faint mt-0.5">
+                  <p className="text-faint mt-0.5 text-xs">
                     {inv.paidAt
                       ? `${dict.client.orders.invoicePaidOn} ${formatDate(inv.paidAt, lang, "short")}`
                       : `${dict.client.orders.invoiceIssuedOn} ${formatDate(inv.issuedAt, lang, "short")}`}
                   </p>
                 </div>
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-sm font-semibold text-headline">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-headline text-sm font-semibold">
                     {formatEUR(inv.amountCents / 100, lang)}
                   </span>
                   <span
                     className={
                       inv.status === "PAID"
-                        ? "inline-flex items-center h-6 px-2 rounded-full border text-[11px] font-medium uppercase tracking-wide bg-success-soft text-success border-success-edge"
-                        : "inline-flex items-center h-6 px-2 rounded-full border text-[11px] font-medium uppercase tracking-wide bg-warning-soft text-warning border-warning-edge"
+                        ? "bg-success-soft text-success border-success-edge inline-flex h-6 items-center rounded-full border px-2 text-[11px] font-medium tracking-wide uppercase"
+                        : "bg-warning-soft text-warning border-warning-edge inline-flex h-6 items-center rounded-full border px-2 text-[11px] font-medium tracking-wide uppercase"
                     }
                   >
                     {dict.client.orders.invoiceStatuses[inv.status]}
@@ -370,7 +350,7 @@ export default async function ClientOrderDetailPage({
                     href={`/api/invoices/${inv.id}/pdf`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[11px] text-link hover:text-link-hover underline underline-offset-2"
+                    className="text-link hover:text-link-hover text-[11px] underline underline-offset-2"
                   >
                     {dict.client.invoices.downloadPdf}
                   </a>
@@ -405,32 +385,18 @@ export default async function ClientOrderDetailPage({
       />
 
       <div className="mt-6">
-        <ContextThread
-          contextType={ThreadContextType.ORDER}
-          contextId={order.id}
-          lang={lang}
-        />
+        <ContextThread contextType={ThreadContextType.ORDER} contextId={order.id} lang={lang} />
       </div>
     </div>
   );
 }
 
-function Stat({
-  label,
-  value,
-  hint,
-}: {
-  label: string;
-  value: React.ReactNode;
-  hint?: string;
-}) {
+function Stat({ label, value, hint }: { label: string; value: React.ReactNode; hint?: string }) {
   return (
-    <div className="rounded-md border border-line bg-surface px-4 py-3">
-      <p className="text-xs font-medium uppercase tracking-wide text-faint">
-        {label}
-      </p>
-      <p className="mt-0.5 text-lg font-semibold text-headline">{value}</p>
-      {hint && <p className="mt-0.5 text-[11px] text-faint">{hint}</p>}
+    <div className="border-line bg-surface rounded-md border px-4 py-3">
+      <p className="text-faint text-xs font-medium tracking-wide uppercase">{label}</p>
+      <p className="text-headline mt-0.5 text-lg font-semibold">{value}</p>
+      {hint && <p className="text-faint mt-0.5 text-[11px]">{hint}</p>}
     </div>
   );
 }
@@ -446,29 +412,19 @@ function Section({
 }) {
   return (
     <section
-      className={`rounded-lg border border-line bg-surface p-5${className ? ` ${className}` : ""}`}
+      className={`border-line bg-surface rounded-lg border p-5${className ? ` ${className}` : ""}`}
     >
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">
-        {title}
-      </h2>
+      <h2 className="text-brand-700 mb-3 text-sm font-semibold tracking-wide uppercase">{title}</h2>
       <dl className="flex flex-col gap-2">{children}</dl>
     </section>
   );
 }
 
-function Detail({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function Detail({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-3">
-      <dt className="text-xs font-medium uppercase tracking-wide text-faint">
-        {label}
-      </dt>
-      <dd className="text-sm text-fg sm:col-span-2 wrap-break-word">{children}</dd>
+    <div className="grid grid-cols-1 gap-1 sm:grid-cols-3 sm:gap-3">
+      <dt className="text-faint text-xs font-medium tracking-wide uppercase">{label}</dt>
+      <dd className="text-fg text-sm wrap-break-word sm:col-span-2">{children}</dd>
     </div>
   );
 }

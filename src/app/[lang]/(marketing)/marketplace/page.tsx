@@ -122,7 +122,7 @@ export default async function PublicMarketplacePage({
   const visible = products.slice(0, PUBLIC_LIMIT);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-16">
       <header className="flex flex-col gap-1 mb-8 max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-wide text-info">
           {dict.client.marketplace.eyebrow}

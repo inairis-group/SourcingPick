@@ -67,7 +67,7 @@ export default async function DeliveryCalculatorPage({
 
   return (
     <>
-      <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-20 pb-12">
+      <section className="mx-auto max-w-3xl px-4 sm:px-6 pt-20 pb-12">
         <div className="animate-fade-up">
           <p className="text-xs font-semibold uppercase tracking-wide text-info mb-3">
             {t.eyebrow}

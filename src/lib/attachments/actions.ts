@@ -83,6 +83,13 @@ async function canManage(
   if (att.uploaderId && att.uploaderId === user.id) return true;
 
   switch (att.contextType) {
+    // Shipment documents are part of the brief the internal team is obliged
+    // to supply (§2), and the shipper quotes against them. Neither the shipper
+    // nor an agent may prune them after the fact — the ADMIN and uploader
+    // short-circuits above are the only ways they come off.
+    case AttachmentContext.SHIPMENT_INVOICE:
+    case AttachmentContext.SHIPMENT_ITEM_IMAGE:
+      return false;
     case AttachmentContext.MARKETPLACE_PRODUCT: {
       const product = await prisma.marketplaceProduct.findUnique({
         where: { id: att.contextId },
@@ -163,9 +170,7 @@ async function canManage(
  *   PUBLISHED / OUT_OF_STOCK → PENDING_REVIEW on owner-side delete
  *   (admin delete preserves status — admin is authoritative).
  */
-export type DeleteUploadedImageResult =
-  | { ok: true }
-  | { ok: false; error: string };
+export type DeleteUploadedImageResult = { ok: true } | { ok: false; error: string };
 
 export type ImageEntity = "marketplaceProduct" | "sourcingProduct" | "auction";
 
@@ -220,8 +225,7 @@ async function deleteMarketplaceImage(
   // Owner-side edits to a live listing bounce it back to PENDING_REVIEW
   // (consistent with updateProductAction). Admin edits stay live.
   const nextStatus =
-    !isAdmin &&
-    (product.status === "PUBLISHED" || product.status === "OUT_OF_STOCK")
+    !isAdmin && (product.status === "PUBLISHED" || product.status === "OUT_OF_STOCK")
       ? "PENDING_REVIEW"
       : product.status;
 
@@ -265,8 +269,7 @@ async function deleteSourcingImage(
 
   const isClientOwner =
     user.organizationId === line.request.clientOrgId && user.role === Role.CLIENT;
-  const isAgent =
-    line.request.agentId === user.id && user.role === Role.AGENT;
+  const isAgent = line.request.agentId === user.id && user.role === Role.AGENT;
   const isAdmin = user.role === Role.ADMIN;
   if (!isClientOwner && !isAgent && !isAdmin) {
     return { ok: false, error: "You can't edit this request." };
@@ -319,11 +322,7 @@ async function deleteAuctionImage(
 
   // Once bids are running the listing is frozen — image edits have to
   // happen before launch.
-  if (
-    auction.status === "ACTIVE" ||
-    auction.status === "ENDED" ||
-    auction.status === "SOLD"
-  ) {
+  if (auction.status === "ACTIVE" || auction.status === "ENDED" || auction.status === "SOLD") {
     return { ok: false, error: "Live or closed auctions can't be edited." };
   }
 
@@ -338,9 +337,7 @@ async function deleteAuctionImage(
   await unlinkBestEffort(removed);
   await writeAuditLog({
     actorUserId: user.id,
-    action: isAdmin
-      ? "auction.image_deleted_by_admin"
-      : "auction.image_deleted",
+    action: isAdmin ? "auction.image_deleted_by_admin" : "auction.image_deleted",
     targetType: "Auction",
     targetId: auction.id,
     payload: { reference: auction.reference, index, removed },

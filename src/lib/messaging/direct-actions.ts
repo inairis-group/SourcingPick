@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { ThreadContextType } from "@prisma/client";
+import { Role, ThreadContextType } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
 import { writeAuditLog } from "@/lib/audit/log";
@@ -22,9 +22,7 @@ import { writeAuditLog } from "@/lib/audit/log";
  * Self-talk and talking to a deleted user are both rejected.
  */
 
-export type OpenDirectThreadResult =
-  | { ok: true; threadId: string }
-  | { ok: false; error: string };
+export type OpenDirectThreadResult = { ok: true; threadId: string } | { ok: false; error: string };
 
 export async function openOrCreateDirectThreadAction(
   otherUserId: string,
@@ -36,10 +34,29 @@ export async function openOrCreateDirectThreadAction(
 
   const other = await prisma.user.findUnique({
     where: { id: otherUserId },
-    select: { id: true, deletedAt: true, firstName: true, lastName: true },
+    select: {
+      id: true,
+      deletedAt: true,
+      firstName: true,
+      lastName: true,
+      role: true,
+    },
   });
   if (!other || other.deletedAt) {
     return { ok: false, error: "User not found." };
+  }
+
+  // §1.2 of the Expéditeur spec: "Interdiction totale de contact direct entre
+  // l'expéditeur et le client final." The internal team is the only channel
+  // between them. Enforced here rather than by hiding the UI, because this
+  // action takes a raw user id from the client and previously accepted any
+  // pairing that resolved to a live user.
+  const pair = new Set([user.role, other.role]);
+  if (pair.has(Role.SHIPPER) && pair.has(Role.CLIENT)) {
+    return {
+      ok: false,
+      error: "Direct messages between a shipper and a client are not allowed.",
+    };
   }
 
   // Look up an existing DIRECT thread where BOTH users are

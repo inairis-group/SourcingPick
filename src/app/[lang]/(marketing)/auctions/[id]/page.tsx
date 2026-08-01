@@ -49,7 +49,7 @@ export default async function PublicAuctionDetailPage({
   const tFac = dict.factory.auctions;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12 lg:py-16">
       <Link
         href={`/${lang}/auctions`}
         variant="muted"

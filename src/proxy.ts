@@ -1,13 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
-import {
-  defaultLocale,
-  isLocale,
-  localeCookieName,
-  locales,
-} from "@/lib/i18n/config";
+import { defaultLocale, isLocale, localeCookieName, locales } from "@/lib/i18n/config";
 import { resolveLocale } from "@/lib/i18n/match-locale";
 
-const PROTECTED_PREFIXES = ["/client", "/factory", "/agent", "/admin"] as const;
+const PROTECTED_PREFIXES = ["/client", "/factory", "/agent", "/admin", "/shipper"] as const;
 const ONE_YEAR_SECONDS = 365 * 24 * 60 * 60;
 
 export function proxy(request: NextRequest) {

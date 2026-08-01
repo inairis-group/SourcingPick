@@ -87,7 +87,7 @@ export default async function PublicMarketplaceProductPage({
   const loginHref = `/${lang}/login`;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
       <Link
         href={`/${lang}/marketplace`}
         variant="muted"

@@ -1,5 +1,5 @@
 import "server-only";
-import type { NotificationType } from "@prisma/client";
+import type { NotificationType, Role } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 
 const PAGE_SIZE = 20;
@@ -16,12 +16,22 @@ const PAGE_SIZE = 20;
  */
 export async function notificationHref(
   lang: string,
-  role: "CLIENT" | "FACTORY" | "AGENT" | "ADMIN",
+  role: Role,
   type: NotificationType,
   contextType: string | null,
   contextId: string | null,
 ): Promise<string | null> {
   const r = role.toLowerCase();
+
+  // The shipper is handled up front rather than falling through the branches
+  // below: several of those default to a /client/* path for any role they
+  // don't recognise, which would bounce a shipper straight off a role guard.
+  // They also only have one surface, so there is nowhere else to send them.
+  if (role === "SHIPPER") {
+    return contextType === "Shipment" && contextId
+      ? `/${lang}/shipper/shipments/${contextId}`
+      : `/${lang}/shipper/shipments`;
+  }
 
   // Type-driven overrides: an INVOICE_DUE notification points to where the
   // user actually acts on it. For clients with an Order context that
@@ -65,9 +75,7 @@ export async function notificationHref(
           where: { id: contextId },
           select: { requestId: true },
         });
-        return quote
-          ? `/${lang}/agent/requests/${quote.requestId}`
-          : `/${lang}/agent/requests`;
+        return quote ? `/${lang}/agent/requests/${quote.requestId}` : `/${lang}/agent/requests`;
       }
       return `/${lang}/client/requests`;
     }
@@ -81,19 +89,20 @@ export async function notificationHref(
           where: { id: contextId },
           select: { requestId: true },
         });
-        return order
-          ? `/${lang}/agent/requests/${order.requestId}`
-          : `/${lang}/agent/requests`;
+        return order ? `/${lang}/agent/requests/${order.requestId}` : `/${lang}/agent/requests`;
       }
       return `/${lang}/admin/requests`;
     }
+    case "Shipment":
+      // Internal team only — the shipper never reaches this switch (see the
+      // early return above). Agents and admins both work shipments from the
+      // admin surface for now.
+      return r === "admin" || r === "agent" ? `/${lang}/admin/shipments/${contextId}` : null;
     case "TenderInvitation":
       // Partner item #11: route directly to the specific tender so the
       // factory lands inside the record. Used to drop them on the list,
       // which felt like a missed click.
-      return r === "factory"
-        ? `/${lang}/factory/tenders/${contextId}`
-        : null;
+      return r === "factory" ? `/${lang}/factory/tenders/${contextId}` : null;
     case "Auction":
       // Outbid notifications go to the buyer's auction detail so they can
       // re-bid. Factory-side auction-sold notifications use Order context

@@ -26,7 +26,7 @@ export function LegalLayout({
 }: LegalLayoutProps) {
   return (
     <>
-      <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-16 pb-8 lg:pt-24 lg:pb-12">
+      <section className="mx-auto max-w-3xl px-4 sm:px-6 pt-16 pb-8 lg:pt-24 lg:pb-12">
         <div className="animate-fade-up">
           <p className="text-sm font-medium text-info tracking-wide uppercase mb-4">
             {eyebrow}
@@ -38,7 +38,7 @@ export function LegalLayout({
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-20 lg:pb-32">
+      <section className="mx-auto max-w-3xl px-4 sm:px-6 pb-20 lg:pb-32">
         <div
           role="note"
           className="rounded-md border border-warning-edge bg-warning-soft px-4 py-3 mb-10 text-sm text-warning"

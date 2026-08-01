@@ -49,7 +49,7 @@ export default async function PublicAuctionsPage({
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12 lg:py-16">
       <header className="flex flex-col gap-2 mb-10">
         <p className="text-xs font-semibold uppercase tracking-wide text-info">
           {dict.auctions.eyebrow}

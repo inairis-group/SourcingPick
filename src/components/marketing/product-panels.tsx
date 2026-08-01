@@ -96,7 +96,7 @@ export function ProductPanels({ dict }: { dict: Dictionary }) {
                 // .panel-stack-item so that offset + height still fits the
                 // viewport — a sticky panel taller than the viewport parks
                 // with its bottom clipped and no way to scroll it into view.
-                "flex min-h-[70vh] md:min-h-[90vh] flex-col",
+                "flex min-h-[80vh] flex-col md:min-h-[90vh]",
                 "shadow-lg",
               )}
             >

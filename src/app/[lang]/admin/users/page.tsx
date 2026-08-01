@@ -25,6 +25,7 @@ const ROLE_TONE: Record<Role, string> = {
   FACTORY: "bg-success-soft text-success border-success-edge",
   AGENT: "bg-warning-soft text-warning border-warning-edge",
   ADMIN: "bg-danger-soft text-danger border-danger-edge",
+  SHIPPER: "bg-subtle text-muted border-line",
 };
 
 export default async function AdminUsersPage({

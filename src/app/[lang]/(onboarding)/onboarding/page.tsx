@@ -48,6 +48,24 @@ export default async function OnboardingDispatcherPage({
     redirect(dashboardPathForRole(user.role, lang));
   }
 
+  if (user.role === Role.SHIPPER) {
+    // Shipper partners are provisioned by an admin, so there is no onboarding
+    // wizard for them. Handled explicitly because the fallthrough at the
+    // bottom of this file sends every unmatched role into the FACTORY wizard —
+    // which a shipper would have no way out of.
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { hasOnboarded: true },
+    });
+    await writeAuditLog({
+      actorUserId: user.id,
+      action: "onboarding.skipped_shipper",
+      targetType: "User",
+      targetId: user.id,
+    });
+    redirect(dashboardPathForRole(user.role, lang));
+  }
+
   if (user.role === Role.CLIENT) {
     redirect(`/${lang}/onboarding/client`);
   }
