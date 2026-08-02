@@ -182,6 +182,13 @@ const FactorySignupSchema = z.object({
   city: z.string().trim().min(1, "City is required.").max(120),
   address: z.string().trim().min(3, "Address is required.").max(300),
   vatNumber: z.string().trim().max(40).optional().or(z.literal("")),
+  /// 统一社会信用代码 — the Unified Social Credit Code, 18 alphanumeric
+  /// characters printed on the 营业执照. This is the primary identifier for a
+  /// Chinese legal entity, so it replaces SIREN/VAT as the required field.
+  unifiedSocialCreditCode: z
+    .string()
+    .trim()
+    .regex(/^[0-9A-Z]{18}$/, "The Unified Social Credit Code is 18 characters."),
   category: z.enum(Category),
   capabilities: z
     .string()
@@ -236,22 +243,14 @@ export async function signupFactoryAction(
     return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
 
-  // Required files
-  const registryFile = formData.get("doc_registry");
-  const taxFile = formData.get("doc_tax");
-  const facilityFiles = formData.getAll("doc_facility");
-
-  if (!(registryFile instanceof File) || registryFile.size === 0) {
-    return { error: "Business registration document is required." };
-  }
-  if (!(taxFile instanceof File) || taxFile.size === 0) {
-    return { error: "Tax certificate is required." };
-  }
-  const facilityActual = facilityFiles.filter(
-    (f): f is File => f instanceof File && f.size > 0,
-  );
-  if (facilityActual.length < 1) {
-    return { error: "At least one photo of your facility is required." };
+  // Registration needs exactly one document: the 营业执照 (business licence).
+  // It carries the legal name, business scope and the Unified Social Credit
+  // Code, which is everything needed to open the account. The representative's
+  // ID (>25% of capital) is a verification requirement, not a registration one,
+  // so it is collected during KYC review rather than gating signup.
+  const licenseFile = formData.get("doc_business_license");
+  if (!(licenseFile instanceof File) || licenseFile.size === 0) {
+    return { error: "The business licence (营业执照) is required." };
   }
 
   const locale = await currentLocale();
@@ -287,6 +286,7 @@ export async function signupFactoryAction(
           city: parsed.data.city,
           address: parsed.data.address,
           vatNumber: parsed.data.vatNumber || null,
+          unifiedSocialCreditCode: parsed.data.unifiedSocialCreditCode,
           kycStatus: KycStatus.PENDING,
           factoryProfile: {
             create: {
@@ -326,34 +326,14 @@ export async function signupFactoryAction(
       const stored: Array<{ kind: KycDocumentKind; file: import("@/lib/storage/local").StoredFile }> = [];
 
       stored.push({
-        kind: KycDocumentKind.REGISTRY,
+        kind: KycDocumentKind.BUSINESS_LICENSE,
         file: await storeFile({
           scope: "factories",
           ownerId: created.org.id,
-          kindPrefix: "registry",
-          file: registryFile,
+          kindPrefix: "business-license",
+          file: licenseFile,
         }),
       });
-      stored.push({
-        kind: KycDocumentKind.TAX,
-        file: await storeFile({
-          scope: "factories",
-          ownerId: created.org.id,
-          kindPrefix: "tax",
-          file: taxFile,
-        }),
-      });
-      for (let i = 0; i < facilityActual.length; i++) {
-        stored.push({
-          kind: KycDocumentKind.FACILITY_PHOTO,
-          file: await storeFile({
-            scope: "factories",
-            ownerId: created.org.id,
-            kindPrefix: `facility-${i + 1}`,
-            file: facilityActual[i]!,
-          }),
-        });
-      }
 
       await prisma.kycDocument.createMany({
         data: stored.map((s) => ({

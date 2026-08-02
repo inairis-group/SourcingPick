@@ -54,13 +54,12 @@ type State = {
   city: string;
   address: string;
   vatNumber: string;
+  unifiedSocialCreditCode: string;
   // Step 3
   category: Category | "";
   capabilities: string;
   // Step 4
-  registry: File | null;
-  tax: File | null;
-  facility: File[];
+  businessLicense: File | null;
   // Step 5
   termsAccepted: boolean;
 };
@@ -77,11 +76,10 @@ const INITIAL_STATE: State = {
   city: "",
   address: "",
   vatNumber: "",
+  unifiedSocialCreditCode: "",
   category: "",
   capabilities: "",
-  registry: null,
-  tax: null,
-  facility: [],
+  businessLicense: null,
   termsAccepted: false,
 };
 
@@ -122,15 +120,16 @@ export function FactorySignupForm() {
       if (!state.city.trim()) return dict.auth.signup.errorCity;
       if (state.address.trim().length < 3)
         return dict.auth.signup.errorAddress;
+      // Mirrors the server regex so the applicant is told at step 2 rather
+      // than after filling four more steps and submitting.
+      if (!/^[0-9A-Z]{18}$/.test(state.unifiedSocialCreditCode.trim()))
+        return dict.auth.signup.errorUscc;
     }
     if (s === 3) {
       if (!state.category) return dict.auth.signup.errorCategory;
     }
     if (s === 4) {
-      if (!state.registry) return dict.auth.signup.errorRegistry;
-      if (!state.tax) return dict.auth.signup.errorTax;
-      if (state.facility.length === 0)
-        return dict.auth.signup.errorFacility;
+      if (!state.businessLicense) return dict.auth.signup.errorBusinessLicense;
     }
     if (s === 5) {
       if (!state.termsAccepted) return dict.auth.signup.errorTerms;
@@ -172,12 +171,15 @@ export function FactorySignupForm() {
     fd.append("city", state.city);
     fd.append("address", state.address);
     fd.append("vatNumber", state.vatNumber);
+    fd.append(
+      "unifiedSocialCreditCode",
+      state.unifiedSocialCreditCode.trim().toUpperCase(),
+    );
     fd.append("category", state.category);
     fd.append("capabilities", state.capabilities);
     fd.append("terms", "on");
-    if (state.registry) fd.append("doc_registry", state.registry);
-    if (state.tax) fd.append("doc_tax", state.tax);
-    state.facility.forEach((f) => fd.append("doc_facility", f));
+    if (state.businessLicense)
+      fd.append("doc_business_license", state.businessLicense);
 
     startTransition(async () => {
       const result = await signupFactoryAction({}, fd);
@@ -434,6 +436,26 @@ function StepCompany({ dict, state, set }: StepProps) {
           onChange={(e) => set("address", e.target.value)}
         />
       </Field>
+      {/* The Unified Social Credit Code is the primary identifier for a
+          Chinese legal entity — it does the job SIREN/VAT do in France, so it
+          is required while VAT stays optional. Uppercased on submit because
+          the code is canonically upper-case and licences are often transcribed
+          in lower. */}
+      <Field
+        label={dict.auth.signup.usccLabel}
+        hint={dict.auth.signup.usccHint}
+        required
+      >
+        <Input
+          type="text"
+          maxLength={18}
+          autoCapitalize="characters"
+          value={state.unifiedSocialCreditCode}
+          onChange={(e) =>
+            set("unifiedSocialCreditCode", e.target.value.toUpperCase())
+          }
+        />
+      </Field>
       <Field
         label={dict.auth.signup.vatLabel}
         hint={dict.auth.signup.vatHint}
@@ -483,39 +505,22 @@ function StepDocuments({ dict, state, set }: StepProps) {
       <p className="text-sm text-muted leading-snug -mt-2 mb-2">
         {dict.auth.signup.documentsDescription}
       </p>
+      {/* One document to register: the 营业执照. It carries the legal name,
+          business scope and Unified Social Credit Code, which is everything
+          needed to open the account. The representative's ID (>25% of capital)
+          is a verification requirement and is collected during KYC review, not
+          here — asking for it up front would gate registration on a document
+          the applicant may need time to obtain. */}
       <FileField
-        label={dict.auth.signup.docRegistryLabel}
-        hint={dict.auth.signup.docRegistryHint}
+        label={dict.auth.signup.docBusinessLicenseLabel}
+        hint={dict.auth.signup.docBusinessLicenseHint}
         required
         accept=".pdf,.jpg,.jpeg,.png,.webp,.heic"
         chooseLabel={dict.auth.signup.fileChoose}
         replaceLabel={dict.auth.signup.fileReplace}
         removeLabel={dict.common.actions.delete}
-        value={state.registry ? [state.registry] : []}
-        onChange={(files) => set("registry", files[0] ?? null)}
-      />
-      <FileField
-        label={dict.auth.signup.docTaxLabel}
-        hint={dict.auth.signup.docTaxHint}
-        required
-        accept=".pdf,.jpg,.jpeg,.png,.webp,.heic"
-        chooseLabel={dict.auth.signup.fileChoose}
-        replaceLabel={dict.auth.signup.fileReplace}
-        removeLabel={dict.common.actions.delete}
-        value={state.tax ? [state.tax] : []}
-        onChange={(files) => set("tax", files[0] ?? null)}
-      />
-      <FileField
-        label={dict.auth.signup.docFacilityLabel}
-        hint={dict.auth.signup.docFacilityHint}
-        required
-        multiple
-        accept=".jpg,.jpeg,.png,.webp,.heic"
-        chooseLabel={dict.auth.signup.fileChoose}
-        replaceLabel={dict.auth.signup.fileReplace}
-        removeLabel={dict.common.actions.delete}
-        value={state.facility}
-        onChange={(files) => set("facility", files)}
+        value={state.businessLicense ? [state.businessLicense] : []}
+        onChange={(files) => set("businessLicense", files[0] ?? null)}
       />
     </section>
   );
@@ -549,19 +554,12 @@ function StepReview({
       value: state.capabilities || <span className="text-faint">—</span>,
     },
     {
-      label: dict.auth.signup.docRegistryLabel,
-      value: state.registry?.name ?? "—",
+      label: dict.auth.signup.usccLabel,
+      value: state.unifiedSocialCreditCode || "—",
     },
     {
-      label: dict.auth.signup.docTaxLabel,
-      value: state.tax?.name ?? "—",
-    },
-    {
-      label: dict.auth.signup.docFacilityLabel,
-      value:
-        state.facility.length > 0
-          ? state.facility.map((f) => f.name).join(", ")
-          : "—",
+      label: dict.auth.signup.docBusinessLicenseLabel,
+      value: state.businessLicense?.name ?? "—",
     },
   ];
 

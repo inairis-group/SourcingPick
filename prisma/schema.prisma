@@ -608,6 +608,16 @@ enum WebhookStatus {
 // KYC documents submitted by factories at signup. Reviewed by Admin in
 // the KYC queue (admin/kyc).
 enum KycDocumentKind {
+  /// 营业执照 (yíngyè zhízhào) — the Chinese business licence. Sourcing is
+  /// China-only, and this single document is what a factory needs to register:
+  /// it carries the legal name, scope and the Unified Social Credit Code.
+  BUSINESS_LICENSE
+  /// Identity document of a company representative holding more than 25% of
+  /// the capital. Not required to register — required to pass verification,
+  /// which is the beneficial-owner check.
+  REPRESENTATIVE_ID
+  /// Legacy kinds. Kept so historical rows stay readable; no longer requested
+  /// at signup. Postgres cannot drop an enum value that data may reference.
   REGISTRY // Registre du commerce / business registration certificate (required per spec §10.1)
   TAX // Certificat fiscal / tax compliance certificate (required)
   FACILITY_PHOTO // Photo of installations (required, min. 3)
@@ -773,28 +783,34 @@ model EmailOtp {
 }
 
 model Organization {
-  id                     String    @id @default(cuid(2))
-  type                   OrgType
-  legalName              String
-  displayName            String
-  country                String
-  city                   String
-  address                String
-  vatNumber              String?
-  siren                  String? // FR only
+  id                      String    @id @default(cuid(2))
+  type                    OrgType
+  legalName               String
+  displayName             String
+  country                 String
+  city                    String
+  address                 String
+  vatNumber               String?
+  siren                   String? // FR only
+  /// 统一社会信用代码 (Tongyi Shehui Xinyong Daima) — Unified Social Credit
+  /// Code. The single primary identifier for a Chinese legal entity: 18
+  /// characters, printed on the 营业执照, and what replaces SIREN/VAT for the
+  /// factories we onboard. Nullable because non-Chinese orgs (clients,
+  /// platform) don't have one.
+  unifiedSocialCreditCode String?
   /// Stored relative path to the org's logo image (factories surface this
   /// on storefront/marketplace cards, clients on invoice headers). Null
   /// until the org uploads one — UI falls back to initials.
-  logoUrl                String?
+  logoUrl                 String?
   /// Public-web links surfaced on the KYC review screen so admin can
   /// cross-check that the entity behind the account matches what's on
   /// their public footprint. Partner #28. Free-form URLs (the form
   /// trims and validates) — empty string = not supplied.
-  websiteUrl             String?
-  instagramUrl           String?
-  facebookUrl            String?
-  linkedinUrl            String?
-  kycStatus              KycStatus @default(PENDING)
+  websiteUrl              String?
+  instagramUrl            String?
+  facebookUrl             String?
+  linkedinUrl             String?
+  kycStatus               KycStatus @default(PENDING)
   /// Partner round 4 — set true when the org was created by an agent
   /// on behalf of an off-platform factory (typically a Chinese factory
   /// the agent has negotiated with by phone / WeChat / email and that
@@ -803,14 +819,14 @@ model Organization {
   /// city). The agent can later invite the real factory to claim it
   /// via an onboarding link, after which `isShadowOrg` flips back to
   /// false and the regular KYC flow runs.
-  isShadowOrg            Boolean   @default(false)
-  kycVerifiedAt          DateTime?
-  suspended              Boolean   @default(false)
+  isShadowOrg             Boolean   @default(false)
+  kycVerifiedAt           DateTime?
+  suspended               Boolean   @default(false)
   // Stripe identifiers — populated lazily on first checkout / first onboarding.
   // stripeCustomerId is used for clients (deposits + balance payments).
   // stripeConnectAccountId is used for factories (Connect Express payouts).
-  stripeCustomerId       String?
-  stripeConnectAccountId String?
+  stripeCustomerId        String?
+  stripeConnectAccountId  String?
 
   // Wise recipient account ID — the ID Wise issues after the platform
   // registers a factory's bank details via POST /v1/accounts. Used to
@@ -1987,4 +2003,56 @@ model ShipmentEvent {
   createdAt     DateTime       @default(now())
 
   @@index([shipmentId, createdAt])
+}
+
+/// =============================================================
+/// Public live chat — logged-out visitors talking to the team.
+///
+/// Deliberately NOT modelled on Thread/ThreadParticipant. Those are keyed to
+/// User rows, and a visitor has none; the alternatives were minting throwaway
+/// User records (which would pollute the user table, the role enum and every
+/// count/query that walks it) or making Thread.participants nullable (which
+/// would weaken an invariant the whole messaging system relies on). A separate
+/// pair of tables keeps the anonymous surface anonymous and leaves the
+/// authenticated messaging model untouched.
+///
+/// Access is by unguessable token, the same pattern as the forwarder upload
+/// link (`app/[lang]/forwarder/upload/[token]`). The widget keeps the token in
+/// localStorage so a returning visitor sees their history.
+/// =============================================================
+model GuestConversation {
+  id        String    @id @default(cuid(2))
+  /// Unguessable; the visitor's only credential. Never displayed.
+  token     String    @unique
+  name      String
+  email     String
+  /// Locale the visitor was browsing in, so replies go out in their language.
+  locale    Locale    @default(fr)
+  /// Set when the team has read everything — drives the admin queue badge.
+  handledAt DateTime?
+  /// SHA-256 of the client IP, salted with AUTH_SECRET. Stored hashed, never
+  /// raw: this is an unauthenticated endpoint so it needs a rate-limit key,
+  /// but a public contact form has no business retaining visitors' IPs. The
+  /// hash is enough to count recent submissions and useless for anything else.
+  ipHash    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  messages GuestMessage[]
+
+  @@index([handledAt, updatedAt])
+}
+
+model GuestMessage {
+  id             String            @id @default(cuid(2))
+  conversationId String
+  conversation   GuestConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  body           String
+  /// True when written by the internal team. The visitor is never shown which
+  /// staff member replied — the product promise is "the team", not a named
+  /// person, so no author relation is stored at all.
+  fromTeam       Boolean           @default(false)
+  createdAt      DateTime          @default(now())
+
+  @@index([conversationId, createdAt])
 }

@@ -190,11 +190,6 @@ function FlowCard({
           </p>
           <p className="text-sm font-semibold text-headline mt-0.5">
             {flow.research.amount}
-            {flow.research.cap && (
-              <span className="text-xs text-muted font-normal ms-1">
-                {flow.research.cap}
-              </span>
-            )}
           </p>
           <p className="text-xs text-muted mt-1.5 leading-relaxed">
             {flow.research.note}

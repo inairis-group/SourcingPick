@@ -1,7 +1,7 @@
 {
   "brand": {
     "name": "SourcingPick",
-    "tagline": "Le sourcing international, industrialisé."
+    "tagline": "Le sourcing en Chine, industrialisé."
   },
   "client": {
     "analytics": {
@@ -408,7 +408,7 @@
       "pillarEscrowTitle": "Séquestre intégré",
       "pillarEscrowBody": "Vos fonds restent bloqués chez notre prestataire de paiement jusqu'à la confirmation de réception conforme.",
       "pillarReachTitle": "Un réseau global",
-      "pillarReachBody": "Europe, Maghreb, Asie, Afrique, Amériques. Notre équipe parle la langue de votre fournisseur.",
+      "pillarReachBody": "Chine. Nos agents sont sur place et parlent la langue de vos fournisseurs.",
       "step2Eyebrow": "Comment ça marche",
       "step2Title": "Votre première demande en 4 étapes.",
       "step2Body": "Voici ce qui se passe entre le moment où vous déposez un besoin et la livraison.",
@@ -623,7 +623,7 @@
     },
     "researchFee": {
       "title": "Frais de recherche",
-      "description": "Facturez à l'acheteur le travail de qualification avant le sourcing. 125 €/jour ou 500 €/semaine.",
+      "description": "Facturez à l'acheteur le travail de qualification avant le sourcing. 125 €/jour.",
       "unitLabel": "Facturer par",
       "quantityLabel": "Quantité",
       "amountLabel": "Frais",
@@ -908,7 +908,7 @@
         "guarantees": "Bonjour,\n\nNos garanties produit : 1) conformité aux spécifications acceptées au devis (contrôle qualité avant expédition, photos partagées) ; 2) fenêtre de litige de 7 jours après livraison confirmée pour signaler tout défaut ; 3) le séquestre couvre les remboursements en cas de litige tranché en votre faveur. Les délais de livraison annoncés par l'usine sont fermes — un retard >7 jours déclenche une notification à notre équipe.",
         "refunds": "Bonjour,\n\nNotre politique de remboursement : si un litige est ouvert dans les 7 jours suivant la livraison, notre équipe arbitre sous 5 jours ouvrés. Trois issues possibles : remboursement intégral (produit personnalisé non conforme), partiel 80 % (produit standard non conforme), ou refus motivé. Les fonds restent en séquestre tant que le litige est ouvert.",
         "deposit_balance": "Bonjour,\n\nLe paiement se fait en deux temps : 1) un acompte à la commande (30–50 % du total selon l'usine) qui déclenche la mise en production ; 2) le solde à l'expédition. Les deux paiements transitent par virement bancaire vers notre compte séquestre — nous reversons à l'usine uniquement après confirmation de livraison. Vous voyez le détail dans la page Commande.",
-        "research_process": "Bonjour,\n\nLe processus de recherche fournisseur : 1) vous décrivez votre besoin via une demande ; 2) un agent SourcingPick est assigné et qualifie le brief ; 3) il peut facturer des frais de recherche (125 €/jour ou 500 €/semaine selon l'envergure) — payables d'avance, remboursables en crédit plateforme si aucun résultat n'est trouvé dans le délai convenu ; 4) il sollicite 3 à 10 usines présélectionnées et vous transmet les devis. Vous gardez la main sur l'acceptation finale."
+        "research_process": "Bonjour,\n\nLe processus de recherche fournisseur : 1) vous décrivez votre besoin via une demande ; 2) un agent SourcingPick est assigné et qualifie le brief ; 3) il peut facturer des frais de recherche (125 €/jour selon l'envergure) — payables d'avance, remboursables en crédit plateforme si aucun résultat n'est trouvé dans le délai convenu ; 4) il sollicite 3 à 10 usines présélectionnées et vous transmet les devis. Vous gardez la main sur l'acceptation finale."
       }
     },
     "globalEyebrow": "Messagerie",
@@ -1968,6 +1968,8 @@
       "confirmFlag": "Confirmer le signalement",
       "errorReasonRequired": "Veuillez indiquer un motif d'au moins 3 caractères.",
       "docKinds": {
+        "BUSINESS_LICENSE": "Licence d'exploitation (营业执照)",
+        "REPRESENTATIVE_ID": "Pièce d'identité du mandataire (>25 %)",
         "REGISTRY": "Registre du commerce",
         "TAX": "Certificat fiscal",
         "FACILITY_PHOTO": "Photo d'installation",
@@ -2264,6 +2266,29 @@
   "marketing": {
     "contact": {
       "title": "Une question avant de vous inscrire ?",
+      "chatTitle": "Discuter avec l'équipe",
+      "chatQueueTitle": "Chat public",
+      "chatQueueEmpty": "Aucune conversation pour le moment.",
+      "chatUnhandled": "À traiter",
+      "chatHandled": "Traité",
+      "chatReplyLabel": "Répondre",
+      "chatErr_rate_limited": "Trop de messages envoyés. Réessayez dans un moment.",
+      "chatIntro": "Posez votre question, notre équipe vous répond ici même.",
+      "chatName": "Votre nom",
+      "chatEmail": "Votre e-mail",
+      "chatMessage": "Votre message",
+      "chatSend": "Envoyer",
+      "chatStarted": "Message envoyé. L'équipe vous répond ici — gardez cet onglet ouvert ou revenez plus tard.",
+      "chatTeam": "L'équipe SourcingPick",
+      "chatYou": "Vous",
+      "chatReply": "Écrire un message",
+      "chatErr_missing_name": "Merci d'indiquer votre nom.",
+      "chatErr_invalid_email": "Adresse e-mail invalide.",
+      "chatErr_missing_message": "Merci d'écrire un message.",
+      "chatErr_message_too_long": "Message trop long.",
+      "chatErr_too_many_open": "Vous avez déjà plusieurs conversations en cours.",
+      "chatErr_not_found": "Conversation introuvable.",
+      "chatErr_generic": "Une erreur est survenue.",
       "body": "Nous reviendrons vers vous rapidement par e-mail. La création de compte est gratuite et vous permet d'ouvrir un ticket support directement.",
       "openAria": "Ouvrir la zone de contact",
       "closeAria": "Fermer",
@@ -2275,7 +2300,7 @@
     "hero": {
       "eyebrow": "Sourcing · Marketplace · Certification",
       "title": {
-        "lead": "Sourcez à l'international, sans ",
+        "lead": "Sourcez en Chine, sans ",
         "emphasis": "intermédiaires opaques",
         "trail": "."
       },
@@ -2479,7 +2504,7 @@
     "body": [
       "SourcingPick existe parce que l'acte d'acheter à l'international reste, en 2026, un parcours de patience, de WhatsApp et de virements à l'aveugle. Les acheteurs paient d'avance des fournisseurs qu'ils n'ont jamais vus. Les usines acceptent des cahiers des charges qu'elles n'ont pas le temps de qualifier. L'intermédiaire opaque rentre dans sa marge.",
       "Nous construisons l'inverse : une plateforme où chaque demande est qualifiée par un humain, chaque devis est comparé sur la même grille, et chaque paiement reste en séquestre jusqu'à confirmation. La marge de la plateforme est transparente, pas cachée dans le prix.",
-      "Nous sommes basés en France mais notre réseau d'usines couvre l'Europe, le Maghreb, l'Asie, l'Afrique et les Amériques. La langue n'est pas une barrière, le fuseau horaire non plus."
+      "Nous sommes basés en France et notre réseau d'usines est aujourd'hui concentré en Chine. Nos agents sont sur place, parlent la langue de vos fournisseurs et travaillent à leur fuseau horaire."
     ],
     "tiles": {
       "factories": "Usines qualifiées",
@@ -2571,7 +2596,6 @@
         "research": {
           "label": "Frais de recherche",
           "amount": "125 € / jour",
-          "cap": "ou 500 € / semaine",
           "note": "Devis sur mesure selon l'ampleur de votre demande. Remboursés en crédit plateforme si une commande est passée dans les 30 jours. S'applique à toutes les demandes, y compris les petites commandes."
         },
         "cta": "Déposer une demande"
@@ -2693,6 +2717,12 @@
       "errorRegistry": "Le registre du commerce est requis.",
       "errorTax": "Le certificat fiscal est requis.",
       "errorFacility": "Ajoutez au moins une photo de vos installations.",
+      "docBusinessLicenseLabel": "Licence d'exploitation (营业执照)",
+      "docBusinessLicenseHint": "Le seul document requis pour vous inscrire. Il porte votre raison sociale, votre objet social et votre code de crédit social unifié.",
+      "errorBusinessLicense": "La licence d'exploitation (营业执照) est obligatoire.",
+      "usccLabel": "Code de crédit social unifié (统一社会信用代码)",
+      "usccHint": "18 caractères, tels qu'imprimés sur votre licence d'exploitation.",
+      "errorUscc": "Le code de crédit social unifié doit comporter 18 caractères.",
       "errorTerms": "Vous devez accepter les conditions pour continuer."
     },
     "forgot": {
@@ -3021,7 +3051,7 @@
           },
           {
             "q": "Y a-t-il des frais d'étude facturés à l'avance ?",
-            "a": "Sur les demandes très spécifiques, l'agent peut facturer des frais de recherche (125 €/jour ou 500 €/semaine). Ces frais sont entièrement crédités sur la commande si vous validez un devis dans les 30 jours suivant le paiement."
+            "a": "Sur les demandes très spécifiques, l'agent peut facturer des frais de recherche (125 €/jour). Ces frais sont entièrement crédités sur la commande si vous validez un devis dans les 30 jours suivant le paiement."
           },
           {
             "q": "Puis-je modifier ma demande après l'avoir envoyée ?",

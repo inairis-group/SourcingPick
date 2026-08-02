@@ -1,7 +1,7 @@
 {
   "brand": {
     "name": "SourcingPick",
-    "tagline": "International sourcing, industrialised."
+    "tagline": "China sourcing, industrialised."
   },
   "client": {
     "analytics": {
@@ -408,7 +408,7 @@
       "pillarEscrowTitle": "Built-in escrow",
       "pillarEscrowBody": "Your funds stay blocked at our payment provider until you confirm conforming delivery.",
       "pillarReachTitle": "A global network",
-      "pillarReachBody": "Europe, Maghreb, Asia, Africa, Americas. Our team speaks your supplier's language.",
+      "pillarReachBody": "China. Our agents are on the ground and speak your supplier's language.",
       "step2Eyebrow": "How it works",
       "step2Title": "Your first request in 4 steps.",
       "step2Body": "Here's what happens between posting a need and receiving your order.",
@@ -623,7 +623,7 @@
     },
     "researchFee": {
       "title": "Research fee",
-      "description": "Bill the buyer for the qualification work before sourcing begins. €125/day or €500/week.",
+      "description": "Bill the buyer for the qualification work before sourcing begins. €125/day.",
       "unitLabel": "Bill by",
       "quantityLabel": "Quantity",
       "amountLabel": "Fee",
@@ -908,7 +908,7 @@
         "guarantees": "Hi,\n\nProduct guarantees: 1) compliance with the specs accepted in the quote (QC photos shared before shipping); 2) a 7-day dispute window after confirmed delivery to flag any defect; 3) the escrow covers refunds if a dispute is resolved in your favour. Factory-quoted lead times are firm — any delay over 7 days triggers a flag to our team.",
         "refunds": "Hi,\n\nRefund policy: if a dispute is opened within 7 days of delivery, our team arbitrates within 5 business days. Three possible outcomes: full refund (custom product off-spec), partial 80% (standard product off-spec), or motivated refusal. Funds stay in escrow while the dispute is open.",
         "deposit_balance": "Hi,\n\nPayment runs in two stages: 1) a deposit at order time (30–50% of total, set by the factory) that kicks off production; 2) the balance at shipment. Both move via bank wire to our escrow account — we only release to the factory after delivery is confirmed. Full breakdown is on your Order page.",
-        "research_process": "Hi,\n\nSupplier research process: 1) you submit a request describing what you need; 2) a SourcingPick agent is assigned and qualifies the brief; 3) they may bill a research fee (€125/day or €500/week depending on scope) — payable upfront, refundable as platform credit if no result is found within the agreed timeframe; 4) they tender 3 to 10 pre-screened factories and forward you the quotes. You keep final-acceptance control."
+        "research_process": "Hi,\n\nSupplier research process: 1) you submit a request describing what you need; 2) a SourcingPick agent is assigned and qualifies the brief; 3) they may bill a research fee (€125/day depending on scope) — payable upfront, refundable as platform credit if no result is found within the agreed timeframe; 4) they tender 3 to 10 pre-screened factories and forward you the quotes. You keep final-acceptance control."
       }
     },
     "globalEyebrow": "Messages",
@@ -1968,6 +1968,8 @@
       "confirmFlag": "Confirm flag",
       "errorReasonRequired": "Please provide a reason of at least 3 characters.",
       "docKinds": {
+        "BUSINESS_LICENSE": "Business licence (营业执照)",
+        "REPRESENTATIVE_ID": "Representative ID (>25% owner)",
         "REGISTRY": "Business registration",
         "TAX": "Tax certificate",
         "FACILITY_PHOTO": "Facility photo",
@@ -2264,6 +2266,29 @@
   "marketing": {
     "contact": {
       "title": "Question before signing up?",
+      "chatTitle": "Chat with the team",
+      "chatQueueTitle": "Public chat",
+      "chatQueueEmpty": "No conversations yet.",
+      "chatUnhandled": "Needs reply",
+      "chatHandled": "Handled",
+      "chatReplyLabel": "Reply",
+      "chatErr_rate_limited": "Too many messages sent. Try again shortly.",
+      "chatIntro": "Ask your question — our team replies right here.",
+      "chatName": "Your name",
+      "chatEmail": "Your email",
+      "chatMessage": "Your message",
+      "chatSend": "Send",
+      "chatStarted": "Message sent. The team replies here — keep this tab open or come back later.",
+      "chatTeam": "The SourcingPick team",
+      "chatYou": "You",
+      "chatReply": "Write a message",
+      "chatErr_missing_name": "Please tell us your name.",
+      "chatErr_invalid_email": "Invalid email address.",
+      "chatErr_missing_message": "Please write a message.",
+      "chatErr_message_too_long": "Message is too long.",
+      "chatErr_too_many_open": "You already have several conversations open.",
+      "chatErr_not_found": "Conversation not found.",
+      "chatErr_generic": "Something went wrong.",
       "body": "We'll get back to you by email shortly. Creating an account is free and lets you open a support ticket directly.",
       "openAria": "Open the contact panel",
       "closeAria": "Close",
@@ -2275,7 +2300,7 @@
     "hero": {
       "eyebrow": "Sourcing · Marketplace · Certification",
       "title": {
-        "lead": "Source internationally, without ",
+        "lead": "Source from China, without ",
         "emphasis": "opaque middlemen",
         "trail": "."
       },
@@ -2479,7 +2504,7 @@
     "body": [
       "SourcingPick exists because international procurement, in 2026, is still a chain of patience, WhatsApp threads, and wire transfers in the dark. Buyers pay upfront to suppliers they've never met. Factories accept specs they haven't had time to qualify. The opaque middleman pockets the difference.",
       "We're building the opposite: a platform where every request is qualified by a human, every quote is compared on the same scoring grid, and every payment stays in escrow until confirmed delivery. The platform's margin is transparent, not buried in the price.",
-      "We're based in France but our factory network covers Europe, the Maghreb, Asia, Africa, and the Americas. Language is not a barrier — neither is time zone."
+      "We're based in France and our factory network is currently concentrated in China. Our agents are on the ground, speak your suppliers' language and work in their time zone."
     ],
     "tiles": {
       "factories": "Qualified factories",
@@ -2571,7 +2596,6 @@
         "research": {
           "label": "Research fee",
           "amount": "€125 / day",
-          "cap": "or €500 / week",
           "note": "Custom quote per request based on scope. Credited back as platform credit if an order is placed within 30 days. Applies to every request, including small orders."
         },
         "cta": "Post a request"
@@ -2693,6 +2717,12 @@
       "errorRegistry": "Business registration document is required.",
       "errorTax": "Tax certificate is required.",
       "errorFacility": "Please add at least one facility photo.",
+      "docBusinessLicenseLabel": "Business licence (营业执照)",
+      "docBusinessLicenseHint": "The only document needed to register. It carries your legal name, business scope and Unified Social Credit Code.",
+      "errorBusinessLicense": "The business licence (营业执照) is required.",
+      "usccLabel": "Unified Social Credit Code (统一社会信用代码)",
+      "usccHint": "18 characters, exactly as printed on your business licence.",
+      "errorUscc": "The Unified Social Credit Code must be 18 characters.",
       "errorTerms": "You must accept the terms to continue."
     },
     "forgot": {
@@ -3113,7 +3143,7 @@
           },
           {
             "q": "Is there an upfront research fee?",
-            "a": "On highly specific requests the agent may charge a research fee (€125/day or €500/week). It's credited back in full toward your order if you accept a quote within 30 days of paying it."
+            "a": "On highly specific requests the agent may charge a research fee (€125/day). It's credited back in full toward your order if you accept a quote within 30 days of paying it."
           },
           {
             "q": "Can I edit my request after sending it?",

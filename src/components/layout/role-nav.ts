@@ -373,6 +373,13 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               icon: Mail01Icon,
             },
             {
+              // Public pre-sales chat — distinct from the authenticated
+              // support-ticket queue above it.
+              href: `${base}/admin/support/chat`,
+              label: dict.marketing.contact.chatQueueTitle,
+              icon: Message01Icon,
+            },
+            {
               href: `${base}/admin/disputes`,
               label: dict.admin.disputes.title,
               icon: ScrollIcon,
