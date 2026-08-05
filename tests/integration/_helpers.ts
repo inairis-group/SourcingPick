@@ -69,43 +69,31 @@ export const prisma = new PrismaClient({ adapter, log: ["error"] });
  * dependency chain for us but listing them explicitly is faster + makes
  * the test boot deterministic when one table grows large.
  */
-const TABLES = [
-  "ForwarderUploadToken",
-  "Notification",
-  "Payout",
-  "EscrowTransaction",
-  "Invoice",
-  "Order",
-  "Bid",
-  "Auction",
-  "Quote",
-  "TenderInvitation",
-  "SourcingProduct",
-  "SourcingRequest",
-  "SupportTicket",
-  "Attachment",
-  "Message",
-  "ThreadParticipant",
-  "Thread",
-  "MarketplaceProduct",
-  "MarketplaceBanner",
-  "Certification",
-  "WebhookEvent",
-  "CreditTransaction",
-  "AuditLog",
-  "AgentTask",
-  "EmailOtp",
-  "Session",
-  "Account",
-  "VerificationToken",
-  "FactoryProfile",
-  "KycDocument",
-  "User",
-  "Organization",
-] as const;
+/**
+ * Tables to truncate between tests, read from the database rather than listed
+ * by hand.
+ *
+ * The hardcoded list this replaces had silently gone stale: GuestConversation,
+ * GuestMessage and InboundEmail were never in it, so rows survived across runs
+ * and a test that asserts "this is the first time we've seen this message"
+ * passed alone and failed in the suite. Any list maintained by hand drifts the
+ * moment someone adds a model; this can't.
+ */
+let cachedTables: string[] | null = null;
+
+async function allTables(): Promise<string[]> {
+  if (cachedTables) return cachedTables;
+  const rows = await prisma.$queryRaw<{ tablename: string }[]>`
+    SELECT tablename FROM pg_tables
+    WHERE schemaname = 'public' AND tablename <> '_prisma_migrations'
+  `;
+  cachedTables = rows.map((r) => r.tablename);
+  return cachedTables;
+}
 
 export async function resetDb(): Promise<void> {
-  const quoted = TABLES.map((t) => `"${t}"`).join(", ");
+  const quoted = (await allTables()).map((t) => `"${t}"`).join(", ");
+  if (!quoted) return;
   await prisma.$executeRawUnsafe(
     `TRUNCATE TABLE ${quoted} RESTART IDENTITY CASCADE;`,
   );

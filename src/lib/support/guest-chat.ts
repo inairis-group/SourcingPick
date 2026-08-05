@@ -226,13 +226,19 @@ export async function replyToGuest(_prev: unknown, formData: FormData) {
   const { default: PublicReplyEmail } = await import(
     "@/lib/email/templates/public-reply"
   );
+  const { inboundReplyAddress } = await import("@/lib/email/inbound-address");
+  const replyTo = inboundReplyAddress({ kind: "g", id: conversation.id });
   void sendEmail({
     to: conversation.email,
     subject: REPLY_SUBJECT[conversation.locale],
+    // Null when inbound email isn't configured, in which case we fall back to
+    // EMAIL_REPLY_TO rather than advertising an address that routes nowhere.
+    ...(replyTo ? { replyTo } : {}),
     react: PublicReplyEmail({
       visitorName: conversation.name,
       body,
       locale: conversation.locale,
+      canReplyByEmail: replyTo !== null,
     }),
   }).catch(() => {
     /* the in-widget transcript still carries the reply */

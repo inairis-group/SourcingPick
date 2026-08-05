@@ -22,37 +22,44 @@ import { directionFor, type Locale } from "@/lib/i18n/config";
  * recipient has no account — sending them to a login screen would be a dead
  * end. The reply is the whole payload.
  *
- * The footer points at the chat widget rather than inviting an email reply.
- * Inbound email isn't parsed back into the thread, so promising "just reply"
- * would swallow answers into a mailbox the conversation never sees. Set
- * EMAIL_REPLY_TO to route replies to a monitored inbox in the meantime.
+ * The footer invites an email reply only when the mail carries a signed
+ * Reply-To that routes back into this conversation. Where inbound email isn't
+ * configured it points at the chat widget instead — promising "just reply"
+ * and then discarding the answer is worse than not asking.
  */
 
 const COPY: Record<
   Locale,
-  { heading: string; replyHint: string; footer: string }
+  { heading: string; replyHint: string; replyByMail: string; footer: string }
 > = {
   fr: {
     heading: "Réponse de l'équipe SourcingPick",
     replyHint:
       "Pour poursuivre, reprenez la conversation depuis le chat de notre site — nous y retrouverons tout l'historique.",
+    replyByMail:
+      "Répondez simplement à cet e-mail — votre réponse arrivera directement dans notre conversation.",
     footer: "SourcingPick — sourcing en Chine",
   },
   en: {
     heading: "A reply from the SourcingPick team",
     replyHint:
       "To continue, pick the conversation back up in the chat on our site — the whole history is waiting there.",
+    replyByMail:
+      "Just reply to this email — your answer lands straight back in our conversation.",
     footer: "SourcingPick — sourcing from China",
   },
   zh: {
     heading: "SourcingPick 团队回复",
     replyHint: "如需继续沟通，请回到我们网站的聊天窗口——完整记录都在那里。",
+    replyByMail: "直接回复本邮件即可，您的回复会回到我们的会话中。",
     footer: "SourcingPick — 中国采购",
   },
   ar: {
     heading: "رد من فريق SourcingPick",
     replyHint:
       "لمتابعة الحديث، عُد إلى نافذة الدردشة على موقعنا — سجلّ المحادثة كاملًا محفوظ هناك.",
+    replyByMail:
+      "يكفي أن ترد على هذا البريد — سيصل ردك مباشرة إلى محادثتنا.",
     footer: "SourcingPick — التوريد من الصين",
   },
 };
@@ -61,10 +68,17 @@ export default function PublicReplyEmail({
   visitorName,
   body,
   locale,
+  canReplyByEmail = false,
 }: {
   visitorName: string;
   body: string;
   locale: Locale;
+  /**
+   * True once the mail carries a signed Reply-To that routes back into the
+   * conversation. The footer says so only when it's actually true — inviting a
+   * reply we'd then discard is worse than not asking.
+   */
+  canReplyByEmail?: boolean;
 }) {
   const t = COPY[locale];
   const dir = directionFor(locale);
@@ -136,7 +150,7 @@ export default function PublicReplyEmail({
           <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0 16px" }} />
 
           <Text style={{ color: "#6b7280", fontSize: "12px", margin: "0 0 4px" }}>
-            {t.replyHint}
+            {canReplyByEmail ? t.replyByMail : t.replyHint}
           </Text>
           <Text style={{ color: "#9ca3af", fontSize: "11px", margin: 0 }}>
             {t.footer}

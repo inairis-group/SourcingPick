@@ -39,6 +39,7 @@ export type NotificationVars = {
     | "pre_tender_rejected"
     | "forwarder_proof_uploaded"
     | "support_ticket_created"
+    | "guest_chat_reply"
     | "support_ticket_resolved"
     | "marketplace_re_review_requested"
     | "marketplace_listing_blocked"
@@ -144,6 +145,12 @@ const SYSTEM_TITLES: Record<
     en: "Forwarder uploaded shipment proofs",
     zh: "货运代理已上传发货证明",
     ar: "حمّل وكيل الشحن إثباتات الشحنة",
+  },
+  guest_chat_reply: {
+    fr: "Réponse par e-mail sur le chat public",
+    en: "Email reply on a public chat",
+    zh: "公开聊天收到邮件回复",
+    ar: "رد بالبريد على دردشة عامة",
   },
   support_ticket_created: {
     fr: "Nouveau ticket support ouvert",

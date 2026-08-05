@@ -481,3 +481,99 @@ test("customer-facing copy states the pricing that the pricing page states", asy
     );
   }
 });
+
+// ---------------------------------------------------------- inbound replies
+
+test("an emailed reply lands in the chat and floats it back up the queue", async () => {
+  process.env.INBOUND_EMAIL_SECRET = "integration-secret";
+  process.env.INBOUND_EMAIL_DOMAIN = "reply.sourcingpick.com";
+  const { inboundReplyAddress } = await import(
+    "../../src/lib/email/inbound-address.ts"
+  );
+  const { handleInboundEmail } = await import("../../src/lib/email/inbound.ts");
+
+  const convo = await seedConversation("visitor@example.com");
+  await prisma.guestConversation.update({
+    where: { id: convo.id },
+    data: { handledAt: new Date() },
+  });
+
+  const to = inboundReplyAddress({ kind: "g", id: convo.id })!;
+  const res = await handleInboundEmail({
+    recipients: [to],
+    messageId: "<abc@mail.example.com>",
+    text: "Yes please, send the quote.\n\nOn Tue, SourcingPick wrote:\n> hello",
+  });
+  assert.deepEqual(res, { ok: true, target: { kind: "g", id: convo.id } });
+
+  const after = await prisma.guestConversation.findUniqueOrThrow({
+    where: { id: convo.id },
+    select: {
+      handledAt: true,
+      messages: { orderBy: { createdAt: "asc" }, select: { body: true, fromTeam: true } },
+    },
+  });
+  const last = after.messages[after.messages.length - 1]!;
+  assert.equal(last.fromTeam, false, "an emailed reply is the visitor speaking");
+  assert.equal(
+    last.body,
+    "Yes please, send the quote.",
+    "the quoted history must not be stored as part of their message",
+  );
+  assert.equal(
+    after.handledAt,
+    null,
+    "a reply by email must resurface the conversation exactly like one typed in the widget",
+  );
+});
+
+test("a retried webhook delivery does not duplicate the message", async () => {
+  process.env.INBOUND_EMAIL_SECRET = "integration-secret";
+  process.env.INBOUND_EMAIL_DOMAIN = "reply.sourcingpick.com";
+  const { inboundReplyAddress } = await import(
+    "../../src/lib/email/inbound-address.ts"
+  );
+  const { handleInboundEmail } = await import("../../src/lib/email/inbound.ts");
+
+  const convo = await seedConversation("retry@example.com");
+  const to = inboundReplyAddress({ kind: "g", id: convo.id })!;
+  const payload = {
+    recipients: [to],
+    messageId: "<dup@mail.example.com>",
+    text: "Same message twice.",
+  };
+
+  const first = await handleInboundEmail(payload);
+  const second = await handleInboundEmail(payload);
+  assert.ok(first.ok && !first.deduped);
+  assert.ok(second.ok && second.deduped, "the retry must be recognised");
+
+  const count = await prisma.guestMessage.count({
+    where: { conversationId: convo.id },
+  });
+  assert.equal(count, 3, "2 seeded + 1 ingested, not 4");
+});
+
+test("a mail addressed to an unsigned address is dropped, not guessed at", async () => {
+  process.env.INBOUND_EMAIL_SECRET = "integration-secret";
+  process.env.INBOUND_EMAIL_DOMAIN = "reply.sourcingpick.com";
+  const { handleInboundEmail } = await import("../../src/lib/email/inbound.ts");
+
+  const convo = await seedConversation("victim@example.com");
+
+  // The attack: a stranger mails support@ pretending to be the visitor.
+  // Without a valid token there is nothing to route to, and we must not fall
+  // back to matching the From address.
+  const res = await handleInboundEmail({
+    recipients: ["support@sourcingpick.com"],
+    messageId: "<forged@evil.example>",
+    text: "Please change my delivery address.",
+  });
+  assert.deepEqual(res, { ok: false, reason: "unroutable" });
+
+  assert.equal(
+    await prisma.guestMessage.count({ where: { conversationId: convo.id } }),
+    2,
+    "nothing may be written on the strength of a From header",
+  );
+});

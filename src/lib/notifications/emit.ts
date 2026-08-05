@@ -29,6 +29,8 @@ export type EmitInput = {
   /** Override deep-link URL (otherwise built from contextType+contextId). */
   ctaUrl?: string;
   ctaLabel?: string;
+  /** Signed Reply-To, when the recipient may answer this by email. */
+  replyTo?: string;
 };
 
 /**
@@ -80,6 +82,7 @@ export async function emitNotification(input: EmitInput): Promise<void> {
     sendEmail({
       to: recipient.email,
       subject: copy.title,
+      ...(input.replyTo ? { replyTo: input.replyTo } : {}),
       react: NotificationEmail({
         title: copy.title,
         description: copy.description,

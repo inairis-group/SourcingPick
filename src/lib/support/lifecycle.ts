@@ -7,6 +7,7 @@ import {
 } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { emitNotification } from "@/lib/notifications/emit";
+import { inboundReplyAddress } from "@/lib/email/inbound-address";
 import { appUrl } from "@/lib/urls";
 
 /**
@@ -60,6 +61,7 @@ export async function onSupportMessageSent(input: {
    * already written, and the in-app row stays authoritative either way.
    */
   if (isAdmin && !isRequester) {
+    const replyTo = inboundReplyAddress({ kind: "t", id: ticket.id });
     void emitNotification({
       recipientUserId: ticket.requesterUserId,
       type: NotificationType.SUPPORT_REPLY,
@@ -69,6 +71,9 @@ export async function onSupportMessageSent(input: {
       // Inbound email isn't wired, so the mail has to point at the one place
       // a reply can actually be written.
       ctaUrl: appUrl(`/${ticket.requester.locale}/support/${ticket.id}`),
+      // Lets them answer straight from their inbox; the reply lands in this
+      // same thread rather than in a mailbox nobody reads.
+      ...(replyTo ? { replyTo } : {}),
     }).catch(() => {
       /* in-app row is authoritative */
     });

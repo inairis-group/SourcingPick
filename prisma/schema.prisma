@@ -2081,6 +2081,25 @@ enum GuestConversationStatus {
   CLOSED
 }
 
+/// Inbound email we have already ingested, keyed on the provider's Message-ID.
+///
+/// Webhooks retry: a slow response or a 500 means the same reply arrives two
+/// or three times, and without this the customer's message appears three times
+/// in the thread. The row is the dedupe key and nothing else — the message
+/// itself lands in GuestMessage or Message.
+model InboundEmail {
+  id         String   @id @default(cuid(2))
+  /// Provider Message-ID header. Unique index is the whole point of the table.
+  messageId  String   @unique
+  /// "g" (guest conversation) or "t" (support ticket), plus the target id —
+  /// kept for tracing a mis-routed reply back to what it was addressed to.
+  targetKind String
+  targetId   String
+  receivedAt DateTime @default(now())
+
+  @@index([targetKind, targetId])
+}
+
 model GuestConversation {
   id        String                  @id @default(cuid(2))
   /// Unguessable; the visitor's only credential. Never displayed.
