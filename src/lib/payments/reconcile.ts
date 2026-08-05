@@ -5,17 +5,17 @@ import { writeAuditLog } from "@/lib/audit/log";
 import {
   finalizeBuyerOrderPayment,
   finalizeResearchFeeReceived,
-} from "@/lib/stripe/finalize";
+} from "@/lib/payments/finalize";
 
 /**
- * Wise webhook reconciliation: match an incoming balance-credit event to
+ * Wire reconciliation: match an incoming credit event to
  * an outstanding obligation by parsing the wire memo, then dispatch to
- * the existing provider-agnostic finalizers (the same ones the Stripe
- * webhook calls — the only difference is `provider: "wise"` on the
+ * the existing provider-agnostic finalizers (the same ones the PingPong
+ * webhook calls — the only difference is how the credit reached us, on the
  * recorded escrow row).
  *
  * Memo format the platform tells buyers to include (set in
- * `lib/wise/platform-account.ts#buildWireReference`):
+ * `lib/payments/platform-account.ts#buildWireReference`):
  *
  *   ORD-{NNNNN}-DEP   30% deposit on order ref ORD-NNNNN
  *   ORD-{NNNNN}-BAL   70% balance on order ref ORD-NNNNN
@@ -47,14 +47,14 @@ function normaliseMemo(raw: string): string {
     .trim();
 }
 
-export type WiseBalanceCreditEvent = {
-  /** Wise transfer / transaction id — used as the idempotency providerRef. */
+export type WireCreditEvent = {
+  /** Provider transaction id — used as the idempotency providerRef. */
   transactionId: string;
   /** Amount credited, in the smallest unit of `currency`. */
   amountCents: number;
   currency: string;
   /**
-   * Any free-text fields the wire arrived with — Wise sometimes puts the
+   * Any free-text fields the wire arrived with — providers sometimes put the
    * buyer's memo in `reference`, sometimes in `note` / `narrative`. We
    * scan all of them.
    */
@@ -65,8 +65,8 @@ export type ReconcileResult =
   | { matched: true; kind: "DEPOSIT" | "BALANCE" | "RESEARCH_FEE"; ref: string }
   | { matched: false; reason: string };
 
-export async function reconcileWiseBalanceCredit(
-  event: WiseBalanceCreditEvent,
+export async function reconcileWireCredit(
+  event: WireCreditEvent,
 ): Promise<ReconcileResult> {
   const joinedMemo = normaliseMemo(
     event.memoCandidates.filter(Boolean).join(" "),
@@ -137,7 +137,7 @@ async function reconcileOrderPayment(input: {
 
   const expected =
     input.kind === "DEP" ? order.depositCents : order.balanceCents;
-  // Tolerate a tiny FX-rounding drift; Wise can round in either direction
+  // Tolerate a tiny FX-rounding drift; a rail can round in either direction
   // when the buyer wires from a non-EUR account. Use the expected amount
   // for the recorded invoice/escrow either way — the buyer-side variance
   // is the platform's problem to absorb at this scale.
@@ -165,7 +165,7 @@ async function reconcileOrderPayment(input: {
     type:
       input.kind === "DEP" ? InvoiceType.DEPOSIT : InvoiceType.BALANCE,
     amountCents: expected,
-    provider: "wise",
+    provider: "pingpong",
     providerRef: input.transactionId,
   });
 
@@ -211,7 +211,7 @@ async function reconcileResearchFee(input: {
   await finalizeResearchFeeReceived({
     requestId: request.id,
     invoiceId: request.researchFeeInvoiceId,
-    provider: "wise",
+    provider: "pingpong",
     providerRef: input.transactionId,
   });
 

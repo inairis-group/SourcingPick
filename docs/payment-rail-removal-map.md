@@ -1,9 +1,48 @@
 # Payment rail removal — blast-radius map
 
-**Status:** planning only. No code removed yet. Decision (2026-06-19): move
-away from **both Stripe and Wise**; a new rail will be provided later. Goal of
-this map: remove Stripe + Wise cleanly while **preserving** the provider-
-agnostic seam so the new rail drops in.
+**Status: DONE 2026-08-05.** Stripe and Wise are removed; PingPong is the
+live rail. This file is kept as the record of what was removed and why, and as
+the checklist anyone should re-read before touching the payment seam.
+
+**What actually happened**, against the plan below:
+
+- `finalizeBuyerOrderPayment()` and the escrow core moved out of
+  `lib/stripe/finalize.ts` to **`lib/payments/finalize.ts`** — the suggested
+  rail-neutral home. `lib/wise/reconcile.ts` → `lib/payments/reconcile.ts`
+  (`reconcileWireCredit`), `lib/wise/platform-account.ts` →
+  `lib/payments/platform-account.ts` (`PLATFORM_IBAN` / `_BIC` /
+  `_HOLDER_NAME`).
+- `lib/stripe/`, `lib/wise/`, `lib/payouts/wise.ts`, both webhook routes and
+  the two Wise recipient components are gone.
+- **PingPong** lives at `lib/payments/pingpong/` behind the unchanged
+  `PayoutAdapter` interface, with a webhook at `/api/pingpong/webhook` that
+  calls `finalizeBuyerOrderPayment()` with the same shape as before. The
+  interface survived the rail change untouched, which is the whole reason it
+  existed.
+- `PayoutProvider.WISE` and `WebhookSource.STRIPE`/`WISE` **stay in the enums**
+  — `Payout` and `EscrowTransaction` rows reference them and financial records
+  are immutable. `WISE` has no adapter, so nothing can dispatch through it.
+- Migration `migrate_orgs_off_retired_rail` moves any organisation still on
+  WISE to PINGPONG, clearing `payoutAccountId` and dropping status to PENDING:
+  a Wise recipient id means nothing to PingPong, and leaving it would look like
+  a working payout account while every dispatch failed. Zero rows in
+  production; it exists so no environment can be stranded.
+- `dispatchProviderPayout()` returns a failed result for a retired provider
+  rather than throwing. Throwing aborted the release transaction and left a
+  delivered order's escrow stuck HELD — caught by
+  `tests/integration/payment-lifecycle.test.ts`.
+
+**Still outstanding:** PingPong's real API. `lib/payments/pingpong/client.ts`
+throws rather than returning a fake success — a payout rail that pretends to
+have sent money is the most dangerous thing this codebase could do. Needed from
+PingPong: API base URLs, auth scheme, payout-creation endpoint, payee
+onboarding endpoint, and the webhook signature algorithm + header name. The
+first four land in `client.ts`, the last in `webhook.ts`.
+
+---
+
+*Original plan, 2026-06-19, kept for the record:*
+
 
 **Two things to preserve at all costs:**
 

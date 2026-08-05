@@ -16,7 +16,7 @@ import { OrderStatus, Role } from "@prisma/client";
  *   CANCELLED      ─ terminal
  *
  * PAYMENT_PENDING → PREPARATION is reserved for ADMIN (manual override)
- * and the payment finaliser (Wise webhook + reconciliation). The buyer
+ * and the payment finaliser (PingPong webhook + wire reconciliation). The buyer
  * cannot move the order out of PAYMENT_PENDING by themselves any more
  * (CTO audit F1a) — the deposit must actually land first.
  *

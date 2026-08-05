@@ -31,7 +31,7 @@ import { clampDepositBps } from "./buy-helpers";
  * unit at `samplePriceCentsClient`. Materialises a SourcingRequest +
  * Quote + Order all in one transaction, marks the Order with
  * `isSample = true`, and routes the buyer to the order detail page
- * where the standard Wise wire panel handles payment.
+ * where the standard wire panel handles payment.
  *
  * Stock decrement uses the same anti-race `updateMany` pattern as
  * bulk buys so two simultaneous sample requests can't both win when

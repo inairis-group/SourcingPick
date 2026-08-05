@@ -23,19 +23,16 @@ import { generateUniqueReference } from "@/lib/sourcing/reference";
 
 /**
  * Map the org's chosen payout provider to the Payout.method record value.
- * Wise is the only live rail (the legacy values were pruned from
+ * PingPong is the live rail (the legacy values were pruned from
  * PayoutProvider in the CTO-audit follow-up migration). PayoutMethod
  * retains the legacy values because historical Payout rows still
  * reference them for audit purposes.
  */
-const PROVIDER_TO_METHOD: Record<PayoutProvider, PayoutMethod> = {
-  WISE: PayoutMethod.WISE,
-};
 
 /**
  * Finalize a successful Stripe payment for an order.
  *
- * Idempotent on stripePaymentIntentId — if the webhook fires twice
+ * Idempotent on providerRef — if the webhook fires twice
  * (Stripe retries on 5xx for up to 3 days), the second call is a no-op.
  *
  * Performs the v1 escrow ledger work:
@@ -49,27 +46,6 @@ const PROVIDER_TO_METHOD: Record<PayoutProvider, PayoutMethod> = {
  * already processed). Caller doesn't need to do anything different on
  * either branch — return value is informational only.
  */
-export async function finalizeStripePayment(input: {
-  orderId: string;
-  type: typeof InvoiceType.DEPOSIT | typeof InvoiceType.BALANCE;
-  amountCents: number;
-  stripePaymentIntentId: string;
-  /**
-   * Platform credit applied alongside the Stripe charge (deposit only).
-   * The invoice + escrow record the FULL obligation (charge + credit); the
-   * applied credit is debited from the buyer's ledger here.
-   */
-  appliedCreditCents?: number;
-}): Promise<{ applied: boolean }> {
-  return finalizeBuyerOrderPayment({
-    orderId: input.orderId,
-    type: input.type,
-    amountCents: input.amountCents,
-    provider: "stripe",
-    providerRef: input.stripePaymentIntentId,
-    appliedCreditCents: input.appliedCreditCents,
-  });
-}
 
 /**
  * Provider-agnostic core finalize. The Stripe and Wise entry points are
@@ -81,7 +57,8 @@ export async function finalizeBuyerOrderPayment(input: {
   orderId: string;
   type: typeof InvoiceType.DEPOSIT | typeof InvoiceType.BALANCE;
   amountCents: number;
-  provider: "stripe" | "wise";
+  /// Rail that moved the money. Recorded on the escrow row for audit.
+  provider: "pingpong";
   providerRef: string;
   appliedCreditCents?: number;
 }): Promise<{ applied: boolean }> {
@@ -401,9 +378,13 @@ async function releaseFactoryPayout(orderId: string): Promise<void> {
   let providerRef: string | null = null;
   let status: PayoutStatus = PayoutStatus.PENDING;
   let failureReason: string | null = null;
-  // Default to WISE — the only live rail. The PROVIDER_TO_METHOD table
-  // still maps each provider for historical orders.
-  const method = provider ? PROVIDER_TO_METHOD[provider] : PayoutMethod.WISE;
+  // The method records *how* the money moved, for the audit trail. New
+  // payouts all go via PingPong; historical rows keep whatever they were
+  // written with, which is why the legacy enum values survive.
+  const method =
+    provider === PayoutProvider.PINGPONG
+      ? PayoutMethod.PINGPONG
+      : PayoutMethod.PINGPONG;
 
   if (!provider || !accountId) {
     failureReason = "factory_payout_not_set_up";
@@ -645,7 +626,7 @@ export async function finalizeResearchFeePayment(input: {
   return finalizeResearchFeeReceived({
     requestId: input.requestId,
     invoiceId: input.invoiceId,
-    provider: "stripe",
+    provider: "pingpong",
     providerRef: input.stripePaymentIntentId,
   });
 }
@@ -657,7 +638,8 @@ export async function finalizeResearchFeePayment(input: {
 export async function finalizeResearchFeeReceived(input: {
   requestId: string;
   invoiceId: string;
-  provider: "stripe" | "wise";
+  /// Rail that moved the money. Recorded on the escrow row for audit.
+  provider: "pingpong";
   providerRef: string;
 }): Promise<{ applied: boolean }> {
   const request = await prisma.sourcingRequest.findUnique({

@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db/client";
 // exercise it without pulling the server-only guard.
 export {
   computeCreditApplication,
-  STRIPE_MIN_CHARGE_CENTS,
+  MIN_CHARGE_CENTS,
 } from "./apply";
 
 /**

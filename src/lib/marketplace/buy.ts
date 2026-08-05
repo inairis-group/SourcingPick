@@ -53,7 +53,7 @@ export type BuyResult = {
  *
  * The marketplace bypasses the agent-led sourcing flow but reuses the
  * Order + escrow + payment infrastructure. We materialise a synthetic
- * SourcingRequest + Quote so downstream code (the Wise webhook
+ * SourcingRequest + Quote so downstream code (the PingPong webhook
  * reconciler, the order detail UI, messaging threads, etc.) can stay
  * role-agnostic.
  *

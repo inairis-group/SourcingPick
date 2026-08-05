@@ -30,6 +30,7 @@ const STATUS_TONE: Record<WebhookStatus, string> = {
 };
 
 const SOURCE_TONE: Record<WebhookSource, string> = {
+  PINGPONG: "PingPong",
   STRIPE: "bg-info-soft text-info border-info-edge",
   WISE: "bg-brand-50 text-brand-700 border-brand-200",
   CARRIER: "bg-warning-soft text-warning border-warning-edge",

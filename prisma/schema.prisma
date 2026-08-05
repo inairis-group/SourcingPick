@@ -369,6 +369,13 @@ enum AttachmentKind {
 /// pointing at the legacy rails were back-migrated to NULL — they need
 /// to onboard Wise before payouts can resume.
 enum PayoutProvider {
+  /// PingPong — the rail as of 2026-08. Chosen for China: our suppliers are
+  /// Chinese factories, and a rail that settles to a domestic Chinese account
+  /// is the difference between a payout landing in two days and a supplier
+  /// chasing an intermediary bank for a fortnight.
+  PINGPONG
+  /// @deprecated — removed 2026-08. Retained because Payout and
+  /// EscrowTransaction rows reference it and financial records are immutable.
   WISE
 }
 
@@ -437,7 +444,10 @@ enum PayoutMethod {
   LIANLIAN
   /// @deprecated — see PayoutProvider.
   ALIPAY
+  /// @deprecated — see PayoutProvider.
   WISE
+  /// Domestic Chinese bank transfer via PingPong.
+  PINGPONG
 }
 
 /**
@@ -601,6 +611,8 @@ enum AgentTaskStatus {
 }
 
 enum WebhookSource {
+  PINGPONG
+  /// @deprecated — retained so historical WebhookEvent rows stay readable.
   STRIPE
   /// Wise Business webhook deliveries — buyer wire credits + payout state
   /// transitions. Added 2026-06 (partner item #6) so the admin webhook

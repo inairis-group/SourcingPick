@@ -1,6 +1,6 @@
 # Folder structure proposal — SourcingPick v1
 
-**Status:** awaiting Caystone sign-off. Once approved, I'll create the skeleton in the repo.
+**Status:** shipped, and since diverged. The tree below was the starting skeleton; the repo has grown past it. Useful for the conventions it states, not as an inventory.
 
 ## Principles
 

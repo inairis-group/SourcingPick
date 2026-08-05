@@ -1323,31 +1323,13 @@
       "statusSent": "Versé",
       "statusReceived": "Reçu",
       "statusFailed": "Échec",
-      "wise": {
-        "notConfiguredTitle": "Versements via Wise — configuration en attente",
-        "notConfiguredBody": "L'équipe SourcingPick finalise la connexion Wise. Vous pourrez renseigner vos coordonnées bancaires ici dès l'activation.",
-        "connectedTitle": "Compte Wise lié",
-        "connectedBody": "Vos versements arrivent automatiquement sur ce compte. Référence Wise : {ref}.",
-        "setupTitle": "Renseignez vos coordonnées bancaires",
-        "setupBody": "Wise vous verse en 1 à 3 jours au taux interbancaire. Sélectionnez le type de compte adapté à votre banque.",
-        "typeLabel": "Type de compte",
-        "types": {
-          "IBAN": "IBAN (UE / SEPA)",
-          "SWIFT": "SWIFT (international)",
-          "CHINESE_LOCAL": "Compte bancaire chinois (CNY)"
-        },
-        "holderNameLabel": "Titulaire du compte",
-        "holderNameHint": "Exactement comme indiqué sur votre relevé bancaire.",
-        "currencyLabel": "Devise (ISO 3 lettres)",
-        "ibanLabel": "IBAN",
-        "ibanHint": "Sans espaces ni tirets — Wise normalise pour vous.",
-        "swiftCodeLabel": "Code SWIFT / BIC",
-        "swiftCodeHint": "8 ou 11 caractères, majuscules.",
-        "bankCodeLabel": "Code de la banque",
-        "bankCodeHint": "Code court de la banque, p. ex. ICBC, BOC, CCB.",
-        "accountNumberLabel": "Numéro de compte",
-        "submitCta": "Enregistrer"
-      }
+      "accountTitle": "Compte de versement",
+      "railNotReady": "Les versements ne sont pas encore activés sur la plateforme. Rien à faire de votre côté — nous vous préviendrons dès l'ouverture.",
+      "accountActive": "Votre compte est actif. Les versements partent automatiquement à la livraison confirmée.",
+      "accountRestricted": "Votre compte est restreint : PingPong demande des informations complémentaires avant d'autoriser les versements.",
+      "accountRejected": "Votre compte a été refusé par PingPong. Contactez-nous pour en comprendre la raison.",
+      "accountMissing": "Configurez votre compte de versement pour recevoir le règlement de vos commandes.",
+      "startOnboarding": "Configurer les versements"
     },
     "orders": {
       "eyebrow": "Mes commandes",

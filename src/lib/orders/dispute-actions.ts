@@ -34,7 +34,7 @@ import { generateUniqueReference } from "@/lib/sourcing/reference";
  * payout.
  *
  * Refunds for STANDARD / CUSTOM outcomes record the cents math but
- * don't auto-dispatch on Wise — refund execution is a manual ops step
+ * don't auto-dispatch on PingPong — refund execution is a manual ops step
  * via the admin webhook console for now. The dispute row carries the
  * computed numbers so finance can reconcile after the fact.
  */

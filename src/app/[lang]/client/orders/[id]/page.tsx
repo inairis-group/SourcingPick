@@ -17,7 +17,7 @@ import { InsuredBadge } from "@/components/orders/insured-badge";
 import { TrackingDisplay } from "./_components/tracking-display";
 import { WiseWirePanel } from "./_components/wise-wire-panel";
 import { BuyerDisputePanel } from "./_components/dispute-panel";
-import { buildWireReference, platformWireAccount } from "@/lib/wise/platform-account";
+import { buildWireReference, platformWireAccount } from "@/lib/payments/platform-account";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/client/orders/[id]">) {
   const { lang, id } = await params;

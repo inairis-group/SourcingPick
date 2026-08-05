@@ -1323,31 +1323,13 @@
       "statusSent": "Sent",
       "statusReceived": "Received",
       "statusFailed": "Failed",
-      "wise": {
-        "notConfiguredTitle": "Wise payouts — pending admin setup",
-        "notConfiguredBody": "The SourcingPick team is finishing the Wise integration. You'll be able to enter your bank details here once it's live.",
-        "connectedTitle": "Wise account linked",
-        "connectedBody": "Earnings route here automatically. Wise recipient ref: {ref}.",
-        "setupTitle": "Add your bank details",
-        "setupBody": "Wise sends your earnings to your bank in 1–3 days at the mid-market rate. Pick the account type that matches your bank.",
-        "typeLabel": "Account type",
-        "types": {
-          "IBAN": "IBAN (EU / SEPA)",
-          "SWIFT": "SWIFT (international)",
-          "CHINESE_LOCAL": "Chinese bank account (CNY)"
-        },
-        "holderNameLabel": "Account holder",
-        "holderNameHint": "Exactly as it appears on your bank statement.",
-        "currencyLabel": "Currency (ISO 3-letter)",
-        "ibanLabel": "IBAN",
-        "ibanHint": "No spaces or dashes — Wise normalises for you.",
-        "swiftCodeLabel": "SWIFT / BIC",
-        "swiftCodeHint": "8 or 11 characters, uppercase.",
-        "bankCodeLabel": "Bank code",
-        "bankCodeHint": "Short code for the bank, e.g. ICBC, BOC, CCB.",
-        "accountNumberLabel": "Account number",
-        "submitCta": "Save"
-      }
+      "accountTitle": "Payout account",
+      "railNotReady": "Payouts aren't switched on for the platform yet. Nothing for you to do — we'll tell you as soon as they open.",
+      "accountActive": "Your account is active. Payouts go out automatically once delivery is confirmed.",
+      "accountRestricted": "Your account is restricted: PingPong needs more information before it will release payouts.",
+      "accountRejected": "PingPong declined your account. Get in touch and we'll find out why.",
+      "accountMissing": "Set up your payout account so we can pay you for completed orders.",
+      "startOnboarding": "Set up payouts"
     },
     "orders": {
       "eyebrow": "My orders",

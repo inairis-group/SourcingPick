@@ -456,7 +456,7 @@ export async function advanceOrderStatusAction(
   // SHIPPED / IN_TRANSIT; closure happens in finalize.ts when the
   // balance lands.
   if (effectiveNextStatus === OrderStatus.COMPLETED && nextStatus === OrderStatus.COMPLETED) {
-    const { closeOrderOnCompletion } = await import("@/lib/stripe/finalize");
+    const { closeOrderOnCompletion } = await import("@/lib/payments/finalize");
     await closeOrderOnCompletion(order.id);
   }
 

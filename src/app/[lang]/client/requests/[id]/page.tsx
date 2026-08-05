@@ -16,7 +16,7 @@ import { MediaGrid } from "@/components/attachments/media-grid";
 import { cn } from "@/lib/utils";
 import { ClientQuotesPanel } from "./_components/client-quotes-panel";
 import { ResearchFeePanel } from "./_components/research-fee-panel";
-import { platformWireAccount } from "@/lib/wise/platform-account";
+import { platformWireAccount } from "@/lib/payments/platform-account";
 
 export async function generateMetadata({
   params,

@@ -1323,31 +1323,13 @@
       "statusSent": "مُرسَلة",
       "statusReceived": "مستلَمة",
       "statusFailed": "فاشلة",
-      "wise": {
-        "notConfiguredTitle": "تحويلات Wise — بانتظار إعداد المسؤول",
-        "notConfiguredBody": "يُنهي فريق SourcingPick حاليًا ربط Wise. ستتمكن من إدخال تفاصيل حسابك المصرفي هنا فور التفعيل.",
-        "connectedTitle": "تم ربط حساب Wise",
-        "connectedBody": "تُحوَّل أرباحك تلقائيًا إلى هذا الحساب. مرجع المستلم على Wise: {ref}.",
-        "setupTitle": "أدخل تفاصيل حسابك المصرفي",
-        "setupBody": "يُحوّل Wise أرباحك إلى حسابك المصرفي خلال 1–3 أيام بسعر الصرف المتوسط. اختر نوع الحساب الذي يطابق مصرفك.",
-        "typeLabel": "نوع الحساب",
-        "types": {
-          "IBAN": "IBAN (الاتحاد الأوروبي / SEPA)",
-          "SWIFT": "SWIFT (دولي)",
-          "CHINESE_LOCAL": "حساب مصرفي صيني (يوان)"
-        },
-        "holderNameLabel": "صاحب الحساب",
-        "holderNameHint": "تمامًا كما يظهر في كشف حسابك المصرفي.",
-        "currencyLabel": "العملة (رمز ISO من ثلاثة أحرف)",
-        "ibanLabel": "IBAN",
-        "ibanHint": "بدون مسافات أو شرطات — يقوم Wise بتوحيد الشكل تلقائيًا.",
-        "swiftCodeLabel": "SWIFT / BIC",
-        "swiftCodeHint": "8 أو 11 حرفًا بالأحرف الكبيرة.",
-        "bankCodeLabel": "رمز المصرف",
-        "bankCodeHint": "الرمز المختصر للمصرف، مثل ICBC أو BOC أو CCB.",
-        "accountNumberLabel": "رقم الحساب",
-        "submitCta": "حفظ"
-      }
+      "accountTitle": "حساب التحويلات",
+      "railNotReady": "لم تُفعَّل التحويلات على المنصة بعد. لا شيء عليك فعله — سنخبرك فور فتحها.",
+      "accountActive": "حسابك نشط. تُرسل المدفوعات تلقائيًا بعد تأكيد التسليم.",
+      "accountRestricted": "حسابك مقيّد: تطلب PingPong معلومات إضافية قبل الإفراج عن المدفوعات.",
+      "accountRejected": "رفضت PingPong حسابك. تواصل معنا لمعرفة السبب.",
+      "accountMissing": "أعدّ حساب التحويلات كي نتمكن من دفع قيمة طلباتك المكتملة.",
+      "startOnboarding": "إعداد التحويلات"
     },
     "orders": {
       "eyebrow": "طلبياتي",

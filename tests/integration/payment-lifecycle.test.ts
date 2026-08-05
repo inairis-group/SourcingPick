@@ -13,7 +13,7 @@ import {
   seedOrder,
   type BaseFixtures,
 } from "./_helpers.ts";
-import { finalizeBuyerOrderPayment } from "../../src/lib/stripe/finalize.ts";
+import { finalizeBuyerOrderPayment } from "../../src/lib/payments/finalize.ts";
 
 // CTO audit F1b / F1c / F2 — the finaliser must respect the order state
 // machine and never force COMPLETED out of state. These tests exercise
@@ -43,7 +43,7 @@ test("DEPOSIT finalisation moves PAYMENT_PENDING → PREPARATION and parks the e
     orderId,
     type: InvoiceType.DEPOSIT,
     amountCents: depositCents,
-    provider: "wise",
+    provider: "pingpong",
     providerRef: `wise-test-${randomUUID()}`,
   });
 
@@ -80,7 +80,7 @@ test("DEPOSIT on a non-PAYMENT_PENDING order records the escrow but DOESN'T touc
     orderId,
     type: InvoiceType.DEPOSIT,
     amountCents: depositCents,
-    provider: "wise",
+    provider: "pingpong",
     providerRef: `wise-test-${randomUUID()}`,
   });
 
@@ -108,7 +108,7 @@ test("BALANCE finalisation BEFORE delivery confirm only sets balancePaidAt (F1b)
     orderId,
     type: InvoiceType.BALANCE,
     amountCents: balanceCents,
-    provider: "wise",
+    provider: "pingpong",
     providerRef: `wise-test-${randomUUID()}`,
   });
 
@@ -138,7 +138,7 @@ test("BALANCE after delivery confirm flips to COMPLETED and releases ALL escrows
     orderId,
     type: InvoiceType.DEPOSIT,
     amountCents: depositCents,
-    provider: "wise",
+    provider: "pingpong",
     providerRef: `wise-test-${randomUUID()}`,
   });
 
@@ -153,7 +153,7 @@ test("BALANCE after delivery confirm flips to COMPLETED and releases ALL escrows
     orderId,
     type: InvoiceType.BALANCE,
     amountCents: balanceCents,
-    provider: "wise",
+    provider: "pingpong",
     providerRef: `wise-test-${randomUUID()}`,
   });
 
@@ -196,7 +196,7 @@ test("Idempotent on providerRef: replaying the same DEPOSIT webhook does NOT dou
     orderId,
     type: InvoiceType.DEPOSIT,
     amountCents: depositCents,
-    provider: "wise",
+    provider: "pingpong",
     providerRef,
   });
 
@@ -205,7 +205,7 @@ test("Idempotent on providerRef: replaying the same DEPOSIT webhook does NOT dou
     orderId,
     type: InvoiceType.DEPOSIT,
     amountCents: depositCents,
-    provider: "wise",
+    provider: "pingpong",
     providerRef,
   });
 

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { PayoutStatus, Role } from "@prisma/client";
+import { PayoutAccountStatus, PayoutStatus, Role } from "@prisma/client";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   CheckmarkCircle02Icon,
@@ -8,14 +8,12 @@ import {
 } from "@hugeicons/core-free-icons";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
+import { getDictionary, type Dictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR } from "@/lib/i18n/formatters";
-import { fetchConnectStatus } from "@/lib/stripe/connect";
 import { cn } from "@/lib/utils";
 import { ConnectOnboardingButton } from "./_components/onboarding-button";
-import { WiseRecipientCard } from "./_components/wise-recipient-card";
-import { wiseIsConfigured } from "@/lib/wise/client";
+import { pingpongIsConfigured } from "@/lib/payments/pingpong/config";
 
 export async function generateMetadata({
   params,
@@ -34,29 +32,22 @@ export default async function FactoryPayoutsPage({
   const user = await requireRole(Role.FACTORY);
   const dict = await getDictionary(lang);
 
-  // Stripe call is wrapped — if STRIPE_SECRET_KEY isn't set yet we degrade
-  // to a "not connected" state so the page still renders in dev.
-  let status: Awaited<ReturnType<typeof fetchConnectStatus>> = {
-    exists: false,
-    payoutsEnabled: false,
-    chargesEnabled: false,
-    requirementsDue: [],
-    accountId: null,
-  };
-  let stripeReachable = true;
-  try {
-    status = await fetchConnectStatus(user.organizationId);
-  } catch {
-    stripeReachable = false;
-  }
-
-  // Wise recipient state — the Wise card sits ABOVE Stripe during the
-  // migration window. Once Stripe is retired this becomes the only payout
-  // setup surface on the page.
+  /**
+   * Payout setup now lives entirely on the Organization: which rail, which
+   * account, what the rail last told us about it. The previous version made a
+   * live Stripe call on render and fell back to a fake "not connected" object
+   * when the key was missing — the page is faster and more honest reading our
+   * own record, and the rail's view of the account arrives by webhook anyway.
+   */
   const org = await prisma.organization.findUnique({
     where: { id: user.organizationId },
-    select: { wiseRecipientId: true },
+    select: {
+      payoutProvider: true,
+      payoutAccountId: true,
+      payoutStatus: true,
+    },
   });
+  const railReady = pingpongIsConfigured();
 
   const payouts = await prisma.payout.findMany({
     where: { factoryOrgId: user.organizationId },
@@ -98,22 +89,12 @@ export default async function FactoryPayoutsPage({
         </p>
       </header>
 
-      <WiseRecipientCard
-        wiseRecipientId={org?.wiseRecipientId ?? null}
+      <PayoutAccountCard
+        accountId={org?.payoutAccountId ?? null}
+        status={org?.payoutStatus ?? null}
+        railReady={railReady}
         dict={dict}
       />
-
-      {/* Stripe Connect surface only renders as a fallback when Wise isn't
-          configured yet (transitional). Once the Wise env vars are set the
-          card is hidden — Stripe is the retired rail. The lib files stay
-          for rollback safety; the user-facing path is Wise-only. */}
-      {!wiseIsConfigured() && (
-        <ConnectStatusCard
-          status={status}
-          stripeReachable={stripeReachable}
-          dict={dict}
-        />
-      )}
 
       <section className="mt-8">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-brand-700 mb-3">
@@ -172,118 +153,82 @@ export default async function FactoryPayoutsPage({
   );
 }
 
-function ConnectStatusCard({
+/**
+ * Payout account state, from our own record rather than a live API call.
+ *
+ * Three cases the factory actually cares about, and they need different
+ * answers: the rail isn't switched on yet (nothing they can do), they haven't
+ * onboarded (a button), or they're set up (a confirmation). Collapsing those
+ * into one "not connected" state is what made the old card unhelpful.
+ */
+function PayoutAccountCard({
+  accountId,
   status,
-  stripeReachable,
+  railReady,
   dict,
 }: {
-  status: Awaited<ReturnType<typeof fetchConnectStatus>>;
-  stripeReachable: boolean;
-  dict: Awaited<ReturnType<typeof getDictionary>>;
+  accountId: string | null;
+  status: PayoutAccountStatus | null;
+  railReady: boolean;
+  dict: Dictionary;
 }) {
-  if (!stripeReachable) {
-    return (
-      <div className="rounded-lg border border-warning-edge bg-warning-soft/40 p-5 flex items-start gap-3">
-        <HugeiconsIcon
-          icon={AlertCircleIcon}
-          size={20}
-          strokeWidth={1.5}
-          className="text-warning shrink-0 mt-0.5"
-        />
-        <div>
-          <p className="text-sm font-semibold text-headline">
-            {dict.factory.payouts.unreachableTitle}
-          </p>
-          <p className="text-xs text-muted mt-0.5">
-            {dict.factory.payouts.unreachableBody}
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (status.payoutsEnabled) {
-    return (
-      <div className="rounded-lg border border-success-edge bg-success-soft/40 p-5 flex items-start gap-3">
-        <HugeiconsIcon
-          icon={CheckmarkCircle02Icon}
-          size={20}
-          strokeWidth={1.5}
-          className="text-success shrink-0 mt-0.5"
-        />
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-headline">
-            {dict.factory.payouts.readyTitle}
-          </p>
-          <p className="text-xs text-muted mt-0.5">
-            {dict.factory.payouts.readyBody}
-          </p>
-        </div>
-        <ConnectOnboardingButton
-          label={dict.factory.payouts.manageAccountCta}
-          variant="ghost"
-        />
-      </div>
-    );
-  }
-
-  if (status.exists) {
-    return (
-      <div className="rounded-lg border border-warning-edge bg-warning-soft/40 p-5 flex items-start gap-3">
-        <HugeiconsIcon
-          icon={AlertCircleIcon}
-          size={20}
-          strokeWidth={1.5}
-          className="text-warning shrink-0 mt-0.5"
-        />
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-headline">
-            {dict.factory.payouts.pendingTitle}
-          </p>
-          <p className="text-xs text-muted mt-0.5">
-            {dict.factory.payouts.pendingBody}
-          </p>
-          {status.requirementsDue.length > 0 && (
-            <ul className="mt-2 text-[11px] text-muted list-disc ps-4">
-              {status.requirementsDue.slice(0, 5).map((r) => (
-                <li key={r}>{r}</li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <ConnectOnboardingButton
-          label={dict.factory.payouts.resumeOnboardingCta}
-          variant="primary"
-        />
-      </div>
-    );
-  }
+  const active = status === PayoutAccountStatus.ACTIVE && Boolean(accountId);
 
   return (
-    <div
-      className={cn(
-        "rounded-lg border border-line bg-surface p-5 flex items-start gap-3",
-      )}
-    >
-      <HugeiconsIcon
-        icon={BankIcon}
-        size={20}
-        strokeWidth={1.5}
-        className="text-brand-700 shrink-0 mt-0.5"
-      />
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-headline">
-          {dict.factory.payouts.startTitle}
-        </p>
-        <p className="text-xs text-muted mt-0.5">
-          {dict.factory.payouts.startBody}
-        </p>
+    <section className="rounded-lg border border-line bg-surface p-6">
+      <div className="flex items-start gap-4">
+        <span
+          className={cn(
+            "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
+            active
+              ? "bg-success-soft text-success"
+              : "bg-subtle text-muted",
+          )}
+        >
+          <HugeiconsIcon
+            icon={active ? CheckmarkCircle02Icon : BankIcon}
+            size={20}
+            strokeWidth={1.5}
+          />
+        </span>
+
+        <div className="min-w-0 flex-1">
+          <h2 className="text-sm font-semibold text-headline">
+            {dict.factory.payouts.accountTitle}
+          </h2>
+
+          {!railReady ? (
+            // Not the factory's problem to solve — say so rather than showing
+            // a button that would fail.
+            <p className="mt-1 text-sm text-muted">
+              {dict.factory.payouts.railNotReady}
+            </p>
+          ) : active ? (
+            <>
+              <p className="mt-1 text-sm text-muted">
+                {dict.factory.payouts.accountActive}
+              </p>
+              <p className="mt-2 font-mono text-xs text-faint">{accountId}</p>
+            </>
+          ) : (
+            <>
+              <p className="mt-1 text-sm text-muted">
+                {status === PayoutAccountStatus.RESTRICTED
+                  ? dict.factory.payouts.accountRestricted
+                  : status === PayoutAccountStatus.REJECTED
+                    ? dict.factory.payouts.accountRejected
+                    : dict.factory.payouts.accountMissing}
+              </p>
+              <div className="mt-3">
+                <ConnectOnboardingButton
+                  label={dict.factory.payouts.startOnboarding}
+                />
+              </div>
+            </>
+          )}
+        </div>
       </div>
-      <ConnectOnboardingButton
-        label={dict.factory.payouts.startOnboardingCta}
-        variant="primary"
-      />
-    </div>
+    </section>
   );
 }
 

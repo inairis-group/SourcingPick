@@ -1,6 +1,6 @@
 # Landing v2 — design direction
 
-**Status:** awaiting Caystone sign-off. Nothing in here is built yet.
+**Status:** built. The landing page was rebuilt against this note and then iterated further in review, so treat this as the brief rather than a description of what shipped.
 
 **Reference:** [midddleman.com](https://midddleman.com/) — a China-sourcing procurement app for the
 Nigerian / West African market. Adjacent problem space, very different brand posture.

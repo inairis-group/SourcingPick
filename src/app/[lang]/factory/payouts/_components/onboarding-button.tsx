@@ -2,7 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { startFactoryOnboardingAction } from "@/lib/stripe/connect-actions";
+import { PayoutProvider } from "@prisma/client";
+import { startPayoutOnboardingAction } from "@/lib/payouts/actions";
 import { useDictionary } from "@/lib/i18n/client-provider";
 
 type Variant = "primary" | "ghost";
@@ -23,7 +24,7 @@ export function ConnectOnboardingButton({
     setError(null);
     setPending(true);
     startTransition(async () => {
-      const result = await startFactoryOnboardingAction();
+      const result = await startPayoutOnboardingAction(PayoutProvider.PINGPONG);
       setPending(false);
       if (!result.ok) {
         setError(result.error);

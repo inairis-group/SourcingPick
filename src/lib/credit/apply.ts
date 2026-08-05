@@ -3,7 +3,15 @@
  * unit-testable. Decides how much platform credit to apply to a charge.
  */
 
-export const STRIPE_MIN_CHARGE_CENTS = 50;
+/**
+ * Smallest amount worth charging a buyer after credit is applied.
+ *
+ * Was Stripe's 50-cent card floor. It survives the rail change because the
+ * underlying reason does: collecting a few cents by bank transfer costs more
+ * in fees and reconciliation effort than the money is worth. Re-tune when
+ * PingPong's actual per-transaction cost is known.
+ */
+export const MIN_CHARGE_CENTS = 50;
 
 /**
  * Rules:
@@ -20,7 +28,7 @@ export function computeCreditApplication(input: {
   balanceCents: number;
   minChargeCents?: number;
 }): { appliedCents: number; remainderCents: number } {
-  const min = input.minChargeCents ?? STRIPE_MIN_CHARGE_CENTS;
+  const min = input.minChargeCents ?? MIN_CHARGE_CENTS;
   const balance = Math.max(0, input.balanceCents);
   const charge = Math.max(0, input.chargeCents);
 

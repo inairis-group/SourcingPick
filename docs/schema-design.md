@@ -1,6 +1,6 @@
 # Prisma schema design — SourcingPick v1
 
-**Status:** awaiting Caystone sign-off. Schema lives at [prisma/schema.prisma](../prisma/schema.prisma). No migration has been run yet — review first.
+**Status:** superseded by the code. This was the original design note; the schema at [prisma/schema.prisma](../prisma/schema.prisma) has since moved well past it and is the source of truth. 71 migrations are applied. Read this for intent, not for current shape.
 
 ## What this models
 

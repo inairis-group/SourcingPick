@@ -15,8 +15,8 @@ const PROVIDERS: Array<{
   recommendedFor: string;
 }> = [
   {
-    value: "WISE",
-    label: "Wise Business",
+    value: "PINGPONG",
+    label: "PingPong",
     blurb:
       "Cross-border payouts covering 80+ countries. Lower fees than the legacy rails on most corridors; receive in your local currency.",
     recommendedFor: "All factory corridors — EU · UK · CN · VN · IN · TR · MA",
@@ -175,7 +175,10 @@ export function PayoutSection({
 
 function providerLabel(p: PayoutProvider): string {
   switch (p) {
+    case "PINGPONG":
+      return "PingPong";
+    // Retired 2026-08, but historical rows still carry it.
     case "WISE":
-      return "Wise Business";
+      return "Wise Business (retired)";
   }
 }

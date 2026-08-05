@@ -10,14 +10,14 @@ import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { writeAuditLog } from "@/lib/audit/log";
 import {
-  reconcileWiseBalanceCredit,
-  type WiseBalanceCreditEvent,
-} from "@/lib/wise/reconcile";
+  reconcileWireCredit,
+  type WireCreditEvent,
+} from "@/lib/payments/reconcile";
 
 /**
  * Admin manual replay for a stalled webhook event (partner item #6).
  *
- * Used when a buyer paid through Wise but the memo didn't match — the
+ * Used when a buyer paid by wire but the memo didn't match — the
  * admin updates the order's reference / acks the deposit out-of-band,
  * then hits Replay so the same payload runs through the reconciler again.
  * Idempotent: if the reconciler already PROCESSED the event, the second
@@ -45,10 +45,10 @@ export async function replayWebhookEventAction(
   });
   if (!event) return { ok: false, error: "Event not found." };
 
-  if (event.source !== WebhookSource.WISE) {
+  if (event.source !== WebhookSource.PINGPONG) {
     return {
       ok: false,
-      error: "Manual replay is only wired up for Wise events.",
+      error: "Manual replay is only wired up for PingPong events.",
     };
   }
   if (event.eventType !== "balances#credit") {
@@ -76,7 +76,7 @@ export async function replayWebhookEventAction(
   });
 
   try {
-    const result = await reconcileWiseBalanceCredit(credit);
+    const result = await reconcileWireCredit(credit);
     await prisma.webhookEvent.update({
       where: { id: event.id },
       data: {
@@ -91,8 +91,8 @@ export async function replayWebhookEventAction(
     await writeAuditLog({
       actorUserId: admin.id,
       action: result.matched
-        ? "wise.webhook_replay_matched"
-        : "wise.webhook_replay_unmatched",
+        ? "pingpong.webhook_replay_matched"
+        : "pingpong.webhook_replay_unmatched",
       level: result.matched ? "INFO" : "WARN",
       targetType: "WebhookEvent",
       targetId: event.id,
@@ -118,7 +118,7 @@ export async function replayWebhookEventAction(
     });
     await writeAuditLog({
       actorUserId: admin.id,
-      action: "wise.webhook_replay_failed",
+      action: "pingpong.webhook_replay_failed",
       level: "ALERT",
       targetType: "WebhookEvent",
       targetId: event.id,
@@ -131,7 +131,7 @@ export async function replayWebhookEventAction(
 
 function readBalanceCreditFromStoredPayload(
   payload: unknown,
-): WiseBalanceCreditEvent | null {
+): WireCreditEvent | null {
   if (!payload || typeof payload !== "object") return null;
   const e = payload as Record<string, unknown>;
   const data = (e.data ?? e) as Record<string, unknown>;

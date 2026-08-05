@@ -24,12 +24,15 @@ export async function generateMetadata({
 }
 
 const PROVIDER_LABELS: Record<PayoutProvider, string> = {
-  WISE: "Wise Business",
+  PINGPONG: "PingPong",
+  WISE: "Wise Business (retired)",
 };
 
 const PROVIDER_DESCRIPTIONS: Record<PayoutProvider, string> = {
+  PINGPONG:
+    "PingPong — the live rail since 2026-08. Chosen for the China corridor: our suppliers are Chinese factories, and settling to a domestic Chinese account is the difference between a payout arriving in days and a supplier chasing an intermediary bank for a fortnight.",
   WISE:
-    "Wise Business — single rail covering 80+ countries including all current supplier corridors. Sole live provider since the CTO-audit follow-up migration; legacy Stripe / Alipay / LianLian adapters have been retired.",
+    "Retired 2026-08. Kept in the enum only because Payout and EscrowTransaction rows reference it and financial records are immutable. It has no adapter, so nothing can dispatch through it.",
 };
 
 /**

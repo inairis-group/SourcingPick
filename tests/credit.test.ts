@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   computeCreditApplication,
-  STRIPE_MIN_CHARGE_CENTS,
+  MIN_CHARGE_CENTS,
 } from "../src/lib/credit/apply";
 
 test("no balance → nothing applied, full charge stands", () => {
@@ -41,7 +41,7 @@ test("remainder exactly at the minimum is chargeable", () => {
   // charge 300, balance 250 → remainder 50 (== min) → allowed
   const r = computeCreditApplication({ chargeCents: 300, balanceCents: 250 });
   assert.equal(r.appliedCents, 250);
-  assert.equal(r.remainderCents, STRIPE_MIN_CHARGE_CENTS);
+  assert.equal(r.remainderCents, MIN_CHARGE_CENTS);
 });
 
 test("negative balance is clamped to zero", () => {

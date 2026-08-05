@@ -1,5 +1,22 @@
 # Deployment
 
+> **Reality check, 2026-08-05.** Production (`sourcingpick.com`, host
+> `srv1104436`) does **not** match the VPS section below. It runs **nginx +
+> PM2**, not Caddy + systemd, with Postgres local to the box and the checkout at
+> `/var/www/sourcingpick`. Restart with `pm2 restart sourcingpick`. The Caddy
+> and systemd material below is the original recommendation, not a description
+> of what is deployed — treat it as an alternative, and trust the running box
+> over this file.
+>
+> **Crons do not run.** `vercel.json` declares them, but Vercel's scheduler
+> does not exist on a VPS, and `CRON_SECRET` is unset so the endpoints 503
+> anyway. Flash sales never expire, shipment reminders never send and auctions
+> never settle. See [auctions-plan.md](auctions-plan.md#the-blocker-settlement-never-runs)
+> for the fix.
+>
+> **Payments are PingPong**, not Stripe. Every `STRIPE_*` reference below is
+> retired — see [payment-rail-removal-map.md](payment-rail-removal-map.md).
+
 Two supported targets:
 
 1. **VPS** (single-server, dockerised) — closest to dev, full control, cheapest.
@@ -25,10 +42,7 @@ Pick one and run with it. The codebase is provider-agnostic; the differences liv
 | `AUTH_SECRET` | Auth.js JWT signing | `openssl rand -base64 32` — rotate by issuing a new one + restarting; sessions invalidate |
 | `AUTH_URL` | Auth.js | `https://your-domain.tld` |
 | `NEXT_PUBLIC_APP_URL` | Email links | `https://your-domain.tld` |
-| `NEXT_PUBLIC_SITE_URL` | Stripe redirect URLs | `https://your-domain.tld` |
-| `STRIPE_SECRET_KEY` | Server-side Stripe | `sk_test_…` or `sk_live_…` |
-| `STRIPE_PUBLISHABLE_KEY` | Client-side (currently unused but reserved for Elements) | `pk_test_…` / `pk_live_…` |
-| `STRIPE_WEBHOOK_SECRET` | Webhook verification | `whsec_…` — per-endpoint, distinct from CLI |
+| `NEXT_PUBLIC_SITE_URL` | Absolute links in email | `https://your-domain.tld` |
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` | Nodemailer | See [`mailing.md`](./mailing.md) |
 | `EMAIL_FROM` | Outgoing `From:` | `"SourcingPick <hello@your-domain.tld>"` |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | OAuth login | Optional — first-time Google sign-ins are rejected (role/org collection isn't wired) |
@@ -181,12 +195,20 @@ sudo systemctl reload caddy
 
 Caddy provisions a Let's Encrypt cert automatically the first time you load `https://sourcingpick.com`.
 
-### 1.8 Stripe webhook endpoint
+### 1.8 PingPong webhook endpoint
 
-In the Stripe dashboard → Developers → Webhooks → Add endpoint:
-- URL: `https://sourcingpick.com/api/stripe/webhook`
-- Events: `payment_intent.succeeded`, `payment_intent.payment_failed`, `account.updated`
-- Copy the signing secret into `STRIPE_WEBHOOK_SECRET`, restart the app.
+In the PingPong partner console, register:
+- URL: `https://sourcingpick.com/api/pingpong/webhook`
+- Header: `x-pingpong-signature` — HMAC-SHA256 of the **raw** body
+- Copy the signing secret into `PINGPONG_WEBHOOK_SECRET`, restart the app.
+
+The route verifies the signature against the raw body *before* parsing JSON;
+signing a re-serialised payload is how a signature check ends up validating
+something other than what was sent.
+
+Buyer payments call the rail-neutral `finalizeBuyerOrderPayment()` in
+`lib/payments/finalize.ts`, which is idempotent on `providerRef` — a replayed
+delivery does not double-charge.
 
 ### 1.9 Backups
 
@@ -298,7 +320,7 @@ git push origin main
 
 ### 2.5 Stripe webhook on Vercel
 
-Same as VPS — point Stripe at `https://your-vercel-domain.com/api/stripe/webhook`. The `STRIPE_WEBHOOK_SECRET` is the only thing that differs per environment.
+Same as VPS — point PingPong at `https://your-vercel-domain.com/api/pingpong/webhook`. The `PINGPONG_WEBHOOK_SECRET` is the only thing that differs per environment.
 
 ---
 
@@ -312,6 +334,14 @@ After either deployment path:
 - [ ] Sign up as a test client, place a sandbox Stripe order (card `4242 4242 4242 4242`), check the webhook fires and the order advances.
 - [ ] Send a test email — sign up, click "forgot password", confirm the reset email lands.
 - [ ] Configure DKIM/SPF for your sending domain (per your SMTP provider's instructions).
+- [ ] Set `CRON_SECRET` **and install the cron entries** — nothing schedules
+      itself on a VPS. Without this, flash sales never expire, shipment
+      reminders never send and auctions never settle.
+- [ ] Set `PINGPONG_*` and register the webhook, or payouts fail (retryably)
+      and buyers cannot pay in.
+- [ ] Optional: `INBOUND_EMAIL_DOMAIN` + `INBOUND_EMAIL_SECRET` and an inbound
+      route at your mail provider, so customers can answer support mail by
+      replying. Left unset, the mails point people back to the app instead.
 - [ ] Schedule daily DB backups + verify a restore works *before* you need it.
 - [ ] Set up uptime monitoring (Better Uptime, OneUptime, or a single Healthchecks.io check pinged by a cron job hitting `/api/auth/csrf`).
 

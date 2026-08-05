@@ -1323,31 +1323,13 @@
       "statusSent": "已发送",
       "statusReceived": "已收到",
       "statusFailed": "失败",
-      "wise": {
-        "notConfiguredTitle": "Wise 收款 — 等待管理员配置",
-        "notConfiguredBody": "SourcingPick 团队正在完成 Wise 接入。启用后您即可在此填写银行账户信息。",
-        "connectedTitle": "已绑定 Wise 账户",
-        "connectedBody": "您的收款将自动到此账户。Wise 收款人编号：{ref}。",
-        "setupTitle": "添加银行账户信息",
-        "setupBody": "Wise 以中间汇率在 1–3 天内将您的收入转入银行账户。请选择与您银行匹配的账户类型。",
-        "typeLabel": "账户类型",
-        "types": {
-          "IBAN": "IBAN（欧盟 / SEPA）",
-          "SWIFT": "SWIFT（国际）",
-          "CHINESE_LOCAL": "中国境内银行账户（人民币）"
-        },
-        "holderNameLabel": "账户持有人",
-        "holderNameHint": "请与银行对账单上的名称完全一致。",
-        "currencyLabel": "币种（ISO 三字母）",
-        "ibanLabel": "IBAN",
-        "ibanHint": "无需空格或破折号 — Wise 会自动规范化。",
-        "swiftCodeLabel": "SWIFT / BIC",
-        "swiftCodeHint": "8 或 11 个字符，大写。",
-        "bankCodeLabel": "银行代码",
-        "bankCodeHint": "银行的简称，例如 ICBC、BOC、CCB。",
-        "accountNumberLabel": "账号",
-        "submitCta": "保存"
-      }
+      "accountTitle": "收款账户",
+      "railNotReady": "平台尚未开通打款功能。您无需操作，开通后我们会立即通知您。",
+      "accountActive": "账户已激活。确认收货后款项将自动发放。",
+      "accountRestricted": "账户受限：PingPong 需要补充资料后才能放款。",
+      "accountRejected": "PingPong 已拒绝您的账户。请联系我们了解具体原因。",
+      "accountMissing": "请设置收款账户，以便我们支付已完成订单的货款。",
+      "startOnboarding": "设置收款"
     },
     "orders": {
       "eyebrow": "我的订单",

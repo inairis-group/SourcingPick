@@ -1,6 +1,6 @@
 # Design tokens proposal — SourcingPick v1
 
-**Status:** awaiting Caystone sign-off. Once approved, I'll write them into [src/styles/globals.css](../src/styles/globals.css) and [src/lib/tokens.ts](../src/lib/tokens.ts), and that becomes the visual law for the whole app.
+**Status:** shipped. These tokens live in [src/styles/globals.css](../src/styles/globals.css) and are the visual law for the app. This file documents the reasoning; the CSS is authoritative.
 
 ## Source of truth
 
