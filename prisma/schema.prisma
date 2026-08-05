@@ -2056,3 +2056,56 @@ model GuestMessage {
 
   @@index([conversationId, createdAt])
 }
+
+enum Vendor1688OrderStatus {
+  /// Basket assembled on our side, nothing sent yet.
+  DRAFT
+  /// Handed to 1688 (or to the agent who places it there).
+  SUBMITTED
+  /// Supplier accepted and is producing/picking.
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  /// Submission failed — see failureReason. Distinct from CANCELLED, which is
+  /// a decision rather than a fault.
+  FAILED
+}
+
+model Vendor1688Order {
+  id             String                @id @default(cuid(2))
+  reference      String                @unique // V1688-XXXXX
+  clientOrgId    String
+  placedByUserId String?
+  status         Vendor1688OrderStatus @default(DRAFT)
+
+  /// The 1688 offer, snapshotted at order time. Since the catalogue is never
+  /// cached, this is the only surviving record of what was bought — title,
+  /// images, specs, supplier, as they were at purchase.
+  offerSnapshot Json
+  offerId       String
+  offerUrl      String
+  quantity      Int
+
+  /// Money in CNY fen (1/100 yuan), integer — same convention as the rest of
+  /// the app's *Cents fields.
+  unitPriceFen Int
+  subtotalFen  Int
+  /// Markup stored as BOTH the rate applied and the resulting amount. Keeping
+  /// only the rate would silently restate historical orders when the rate
+  /// changes; keeping only the amount would make them unauditable.
+  markupBps    Int
+  markupFen    Int
+  totalFen     Int
+
+  /// Identifier returned by 1688 once the order exists on their side.
+  vendorOrderId String?
+  submittedAt   DateTime?
+  failureReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clientOrgId, status])
+  @@index([status, updatedAt])
+}
