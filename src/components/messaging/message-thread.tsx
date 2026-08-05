@@ -24,6 +24,7 @@ import { AttachmentPicker } from "@/components/attachments/attachment-picker";
 import { VoiceRecorderButton } from "@/components/messaging/voice-recorder-button";
 import { VoicePlayer } from "@/components/messaging/voice-player";
 import { TemplatePicker } from "@/components/messaging/template-picker";
+import { useMessageChime } from "@/lib/notifications/chime";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { formatDate } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
@@ -83,6 +84,7 @@ export function MessageThread({
 }) {
   const dict = useDictionary();
   const locale = useLocale();
+  const { notify } = useMessageChime();
   const [messages, setMessages] = useState<Message[]>([]);
   const [selfId, setSelfId] = useState<string | null>(null);
   const [selfRole, setSelfRole] = useState<Role | null>(null);
@@ -156,6 +158,11 @@ export function MessageThread({
     loadInitial();
   }, [loadInitial]);
 
+  useEffect(() => {
+    if (!selfId) return;
+    notify(messages.filter((m) => m.authorUserId !== selfId).length);
+  }, [messages, selfId, notify]);
+
   // Mark thread read whenever the panel is mounted or new messages arrive.
   useEffect(() => {
     if (messages.length === 0) return;
@@ -192,6 +199,32 @@ export function MessageThread({
     });
     return () => source.close();
   }, [threadId, loadIncremental, dict.messaging.errorStream]);
+
+  /**
+   * Safety-net poll.
+   *
+   * SSE carries the latency win, but a lost NOTIFY or a proxy that buffers
+   * the stream leaves the panel silently stale — which looks exactly like
+   * "messages don't arrive until I reload". This catches up within 20s
+   * regardless, and costs one conditional request when nothing has changed.
+   */
+  useEffect(() => {
+    const tick = () => {
+      if (document.visibilityState !== "visible") return;
+      setMessages((current) => {
+        void loadIncremental(
+          current[current.length - 1]?.createdAt ?? new Date(0).toISOString(),
+        );
+        return current;
+      });
+    };
+    const id = window.setInterval(tick, 20_000);
+    document.addEventListener("visibilitychange", tick);
+    return () => {
+      window.clearInterval(id);
+      document.removeEventListener("visibilitychange", tick);
+    };
+  }, [loadIncremental]);
 
   // Auto-scroll to bottom when new messages arrive *if* the user was
   // already at the bottom; otherwise leave their scroll position alone.

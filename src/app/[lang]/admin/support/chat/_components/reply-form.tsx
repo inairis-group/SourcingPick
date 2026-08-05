@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { replyToGuest } from "@/lib/support/guest-chat";
 
 /**
@@ -14,12 +14,20 @@ export function GuestReplyForm({
   conversationId,
   label,
   send,
+  onSent,
 }: {
   conversationId: string;
   label: string;
   send: string;
+  /// Optional: the live queue passes a refresh so a sent reply appears at
+  /// once instead of on the next poll.
+  onSent?: () => void;
 }) {
-  const [, action, pending] = useActionState(replyToGuest, null);
+  const [state, action, pending] = useActionState(replyToGuest, null);
+
+  useEffect(() => {
+    if (state?.ok) onSent?.();
+  }, [state, onSent]);
 
   return (
     <form action={action} className="mt-3 flex items-end gap-2">

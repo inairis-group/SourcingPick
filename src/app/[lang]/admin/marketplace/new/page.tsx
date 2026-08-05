@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import {AdminScope, KycStatus } from "@prisma/client";
+import { AdminScope, KycStatus, OrgType } from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireAdminScope } from "@/lib/permissions/admin-scopes";
@@ -24,19 +24,35 @@ export default async function AdminCreateListingPage({
   await requireAdminScope(AdminScope.MARKETPLACE);
   const dict = await getDictionary(lang);
 
-  const factories = await prisma.organization.findMany({
-    where: {
-      kycStatus: KycStatus.VERIFIED,
-      deletedAt: null,
-      type: "FACTORY",
-    },
-    select: {
-      id: true,
-      displayName: true,
-      country: true,
-    },
-    orderBy: { displayName: "asc" },
-  });
+  /**
+   * Sellers an admin can list on behalf of.
+   *
+   * SourcingPick itself comes first and is preselected: a listing created
+   * from the admin side is ours unless someone deliberately says otherwise,
+   * and defaulting to whichever factory happened to sort first was a quiet
+   * way to attribute our own stock to a partner.
+   */
+  const [platform, factories] = await Promise.all([
+    prisma.organization.findFirst({
+      where: { type: OrgType.PLATFORM, deletedAt: null },
+      select: { id: true, displayName: true, country: true },
+    }),
+    prisma.organization.findMany({
+      where: {
+        kycStatus: KycStatus.VERIFIED,
+        deletedAt: null,
+        type: OrgType.FACTORY,
+      },
+      select: {
+        id: true,
+        displayName: true,
+        country: true,
+      },
+      orderBy: { displayName: "asc" },
+    }),
+  ]);
+
+  const sellers = [...(platform ? [platform] : []), ...factories];
 
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8">
@@ -60,14 +76,14 @@ export default async function AdminCreateListingPage({
         </p>
       </header>
 
-      {factories.length === 0 ? (
+      {sellers.length === 0 ? (
         <div className="rounded-lg border border-line bg-surface px-6 py-12 text-center">
           <p className="text-sm text-muted">
             {dict.admin.adminListing.noFactories}
           </p>
         </div>
       ) : (
-        <AdminProductForm lang={lang} factories={factories} />
+        <AdminProductForm lang={lang} factories={sellers} />
       )}
     </div>
   );

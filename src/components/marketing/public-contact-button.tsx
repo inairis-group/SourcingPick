@@ -8,6 +8,7 @@ import {
   postGuestMessage,
   startGuestConversation,
 } from "@/lib/support/guest-chat";
+import { useMessageChime } from "@/lib/notifications/chime";
 import { useDictionary } from "@/lib/i18n/client-provider";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +46,8 @@ type Message = {
 export function PublicContactButton() {
   const dict = useDictionary();
   const t = dict.marketing.contact as unknown as Record<string, string>;
+
+  const { notify } = useMessageChime();
 
   const [open, setOpen] = useState(false);
   const [restored, setRestored] = useState<string | null>(null);
@@ -91,13 +94,15 @@ export function PublicContactButton() {
     const convo = await getGuestConversation(tk);
     if (convo) {
       setMessages(convo.messages);
+      // Only the team's messages ring — the visitor knows what they sent.
+      notify(convo.messages.filter((m) => m.fromTeam).length);
       return;
     }
     // Token no longer resolves — stale value from another environment, or the
     // record was purged. Drop it rather than leaving the panel stuck empty.
     window.localStorage.removeItem(STORAGE_KEY);
     setRestored(null);
-  }, []);
+  }, [notify]);
 
   /**
    * Poll while the panel is open. `refresh` is async, so its `setMessages`

@@ -122,7 +122,11 @@ export function AdminListingControls({
   return (
     <div className="flex flex-col gap-2">
       {error && <FormError>{error}</FormError>}
-      <div className="flex items-center gap-2 flex-wrap">
+      {/* Grouped in a callout rather than left loose against the row: these
+          are four destructive-to-neutral actions sitting next to a listing's
+          own text, and without a container it isn't obvious where the row
+          ends and the controls begin. */}
+      <div className="border-line bg-subtle flex flex-wrap items-center gap-2 rounded-lg border p-2">
         {/* Partner round-4: admin needs direct edit power on any
             listing without going through the factory. Opens the same
             form the factory uses, bound to adminUpdateProductAction. */}

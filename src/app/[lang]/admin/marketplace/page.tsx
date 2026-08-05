@@ -10,6 +10,7 @@ import { buttonClass } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ModerationQueue } from "./_components/moderation-queue";
 import { AdminListingControls } from "./_components/admin-listing-controls";
+import { ListingSearch } from "./_components/listing-search";
 
 export async function generateMetadata({
   params,
@@ -22,15 +23,39 @@ export async function generateMetadata({
 
 export default async function AdminMarketplacePage({
   params,
+  searchParams,
 }: PageProps<"/[lang]/admin/marketplace">) {
   const { lang } = await params;
+  const search = await searchParams;
   if (!isLocale(lang)) notFound();
   await requireAdminScope(AdminScope.MARKETPLACE);
   const dict = await getDictionary(lang);
 
+  const query = typeof search?.q === "string" ? search.q.trim().slice(0, 100) : "";
+  /**
+   * Reference, name and seller — the three things an admin actually has to
+   * hand when hunting a listing: a code from an email, a product they
+   * remember, or "everything from that factory". Applied to both queues, so
+   * one search doesn't leave the other showing unrelated rows.
+   */
+  const searchWhere = query
+    ? {
+        OR: [
+          { reference: { contains: query, mode: "insensitive" as const } },
+          { name: { contains: query, mode: "insensitive" as const } },
+          {
+            factoryOrg: {
+              displayName: { contains: query, mode: "insensitive" as const },
+            },
+          },
+        ],
+      }
+    : {};
+
   const pending = await prisma.marketplaceProduct.findMany({
     where: {
       status: MarketplaceProductStatus.PENDING_REVIEW,
+      ...searchWhere,
     },
     orderBy: { updatedAt: "asc" },
     select: {
@@ -62,6 +87,7 @@ export default async function AdminMarketplacePage({
           MarketplaceProductStatus.OUT_OF_STOCK,
         ],
       },
+      ...searchWhere,
     },
     orderBy: [
       { blockedAt: { sort: "desc", nulls: "last" } },
@@ -150,6 +176,20 @@ export default async function AdminMarketplacePage({
           </Link>
         </div>
       </header>
+
+      <ListingSearch
+        lang={lang}
+        query={query}
+        placeholder={dict.admin.marketplace.searchPlaceholder}
+        submitLabel={dict.admin.marketplace.searchCta}
+        clearLabel={dict.admin.marketplace.searchClear}
+      />
+
+      {query && liveRows.length === 0 && rows.length === 0 && (
+        <p className="border-line bg-surface text-muted rounded-lg border px-6 py-12 text-center text-sm">
+          {dict.admin.marketplace.searchEmpty}
+        </p>
+      )}
 
       <ModerationQueue items={rows} />
 
