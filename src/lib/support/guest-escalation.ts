@@ -14,6 +14,62 @@ import { requireRole } from "@/lib/permissions/guards";
 import { writeAuditLog } from "@/lib/audit/log";
 import { emitNotificationToMany } from "@/lib/notifications/emit";
 import { generateUniqueReference } from "@/lib/sourcing/reference";
+import { sendEmail } from "@/lib/email/send";
+import NotificationEmail from "@/lib/email/templates/notification";
+import { appUrl } from "@/lib/urls";
+import type { Locale } from "@/lib/i18n/config";
+
+/**
+ * Copy for the one email that has to reach the visitor regardless of any
+ * notification preference: the notice that their conversation moved.
+ *
+ * Everything after this point is answered in the ticket, so someone who never
+ * gets this mail is left watching a chat widget nobody is going to reply in.
+ * That makes it a channel-change notice rather than a notification, which is
+ * why it bypasses `emitNotification` and its digest settings.
+ */
+const ESCALATION_EMAIL: Record<
+  Locale,
+  { subject: string; title: string; body: string; cta: string }
+> = {
+  fr: {
+    subject: "Votre conversation a été transférée à notre support",
+    title: "Nous reprenons votre demande",
+    body: "Votre échange sur le chat a été transformé en demande de support. La suite se passe dans votre espace — c'est là que nous répondrons.",
+    cta: "Voir ma demande",
+  },
+  en: {
+    subject: "Your conversation moved to our support desk",
+    title: "We've picked up your request",
+    body: "Your chat has been turned into a support request. The conversation continues in your dashboard — that's where we'll reply.",
+    cta: "View my request",
+  },
+  zh: {
+    subject: "您的会话已转至客服工单",
+    title: "我们已受理您的请求",
+    body: "您的聊天已转为客服工单。后续沟通将在您的后台进行，我们会在那里回复您。",
+    cta: "查看我的工单",
+  },
+  ar: {
+    subject: "تم تحويل محادثتك إلى فريق الدعم",
+    title: "تسلّمنا طلبك",
+    body: "تم تحويل محادثتك إلى طلب دعم. تكملة الحوار تجري في لوحة التحكم، وهناك سنرد عليك.",
+    cta: "عرض طلبي",
+  },
+};
+
+/**
+ * Closing line dropped into the widget itself.
+ *
+ * The thread stays open — we don't strand anyone — but leaving it silent
+ * would have the visitor typing into a channel nobody is watching any more.
+ */
+const HANDOFF_MESSAGE: Record<Locale, string> = {
+  fr: "Nous reprenons votre demande depuis votre espace client. Vous venez de recevoir un e-mail : la suite de nos échanges s'y trouvera.",
+  en: "We're picking this up from your account. You've just been emailed — that's where the rest of this conversation will happen.",
+  zh: "我们将在您的账户后台继续处理此请求。刚刚已向您发送邮件，后续沟通将在那里进行。",
+  ar: "سنتابع طلبك من حسابك. أرسلنا إليك بريدًا للتو، وهناك ستكمل هذه المحادثة.",
+};
 
 /**
  * Routing and escalation for public-chat conversations.
@@ -193,6 +249,7 @@ export async function escalateGuestToTicket(
       id: true,
       name: true,
       email: true,
+      locale: true,
       team: true,
       escalatedTicketId: true,
       messages: {
@@ -265,6 +322,14 @@ export async function escalateGuestToTicket(
       },
     });
 
+    await tx.guestMessage.create({
+      data: {
+        conversationId: convo.id,
+        body: HANDOFF_MESSAGE[convo.locale],
+        fromTeam: true,
+      },
+    });
+
     await tx.guestConversation.update({
       where: { id: convo.id },
       data: {
@@ -295,6 +360,24 @@ export async function escalateGuestToTicket(
     },
     contextType: "SupportTicket",
     contextId: ticketId,
+  });
+
+  // Tell them the channel changed, in the language they were browsing in.
+  // Fire-and-forget: the ticket exists and is authoritative whether or not
+  // SMTP is reachable.
+  const copy = ESCALATION_EMAIL[convo.locale];
+  void sendEmail({
+    to: convo.email,
+    subject: `${copy.subject} · ${reference}`,
+    react: NotificationEmail({
+      title: copy.title,
+      description: copy.body,
+      ctaLabel: copy.cta,
+      ctaUrl: appUrl(`/${convo.locale}/support/${ticketId}`),
+      locale: convo.locale,
+    }),
+  }).catch(() => {
+    /* the in-app notification above still lands */
   });
 
   revalidatePath("/[lang]/admin/support/chat", "page");

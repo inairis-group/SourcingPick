@@ -268,6 +268,11 @@ const FR: Pack = {
     title: title ? `Nouveau message · ${title}` : "Nouveau message",
     description: "Vous avez reçu un nouveau message.",
   }),
+  SUPPORT_REPLY: ({ reference }) => ({
+    title: `Réponse du support · ${reference ?? ""}`.trim(),
+    description:
+      "Notre équipe a répondu à votre demande. Répondez depuis votre espace.",
+  }),
   SHIPMENT_QUOTE: ({ reference }) => ({
     title: `Devis logistique · ${reference ?? ""}`.trim(),
     description:
@@ -334,6 +339,10 @@ const EN: Pack = {
     title: title ? `New message · ${title}` : "New message",
     description: "You have a new message.",
   }),
+  SUPPORT_REPLY: ({ reference }) => ({
+    title: `Support reply · ${reference ?? ""}`.trim(),
+    description: "Our team has answered your request. Reply from your dashboard.",
+  }),
   SHIPMENT_QUOTE: ({ reference }) => ({
     title: `Logistics quote · ${reference ?? ""}`.trim(),
     description: "The shipper has sent a fixed price with its validity date.",
@@ -396,6 +405,10 @@ const ZH: Pack = {
   MESSAGE_MENTION: ({ title }) => ({
     title: title ? `新消息 · ${title}` : "新消息",
     description: "您有一条新消息。",
+  }),
+  SUPPORT_REPLY: ({ reference }) => ({
+    title: `客服回复 · ${reference ?? ""}`.trim(),
+    description: "我们的团队已回复您的请求。请在您的后台回复。",
   }),
   SHIPMENT_QUOTE: ({ reference }) => ({
     title: `物流报价 · ${reference ?? ""}`.trim(),
@@ -461,6 +474,10 @@ const AR: Pack = {
     title: title ? `رسالة جديدة · ${title}` : "رسالة جديدة",
     description: "لديك رسالة جديدة.",
   }),
+  SUPPORT_REPLY: ({ reference }) => ({
+    title: `رد الدعم · ${reference ?? ""}`.trim(),
+    description: "أجاب فريقنا على طلبك. يمكنك الرد من لوحة التحكم.",
+  }),
   SHIPMENT_QUOTE: ({ reference }) => ({
     title: `عرض سعر الشحن · ${reference ?? ""}`.trim(),
     description: "أرسل الشاحن سعراً ثابتاً مع تاريخ صلاحيته.",
@@ -495,6 +512,10 @@ export function renderNotification(
  */
 export const EMAIL_TYPES: Set<NotificationType> = new Set([
   NotificationType.QUOTE_RECEIVED,
+  // A support answer that only appears in-app reaches nobody who isn't
+  // already logged in — and the whole point of escalating a public chat is
+  // that the person came from outside the app.
+  NotificationType.SUPPORT_REPLY,
   NotificationType.QUOTE_ACCEPTED,
   NotificationType.KYC_DECISION,
   NotificationType.SHIPMENT,

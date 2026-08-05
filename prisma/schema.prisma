@@ -568,6 +568,10 @@ enum NotificationType {
   CERT_UPDATE
   KYC_DECISION
   MESSAGE_MENTION
+  /// The team answered a support ticket. Emailed rather than in-app only:
+  /// the requester may have raised it from the public chat widget and has no
+  /// reason to be logged in waiting for it.
+  SUPPORT_REPLY
   /// Shipper submitted or revised a logistics quote (fixed price + validity).
   SHIPMENT_QUOTE
   /// Shipment moved to a new status in the 10-step lifecycle.

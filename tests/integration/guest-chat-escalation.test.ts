@@ -2,11 +2,14 @@ import { test, before, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import {
+  EmailDigestMode,
   GuestChatTeam,
   GuestConversationStatus,
+  NotificationType,
   SupportTicketStatus,
   ThreadContextType,
 } from "@prisma/client";
+import { EMAIL_TYPES } from "../../src/lib/notifications/copy.ts";
 import {
   prisma,
   resetDb,
@@ -319,4 +322,102 @@ test("filters select by team, by unrouted, and by what was actually said", async
     where: { name: { contains: "ali", mode: "insensitive" } },
   });
   assert.equal(byName, 1);
+});
+
+// ------------------------------------------------------ email reply channel
+
+test("a support reply is an emailable notification, not in-app only", () => {
+  // The regression this guards: before, answering a ticket produced an in-app
+  // row and nothing else, so an escalated public-chat visitor — who has no
+  // reason to be logged in — heard nothing back at all.
+  assert.ok(
+    EMAIL_TYPES.has(NotificationType.SUPPORT_REPLY),
+    "SUPPORT_REPLY must be emailed, or escalation strands the person",
+  );
+  assert.ok(
+    !EMAIL_TYPES.has(NotificationType.MESSAGE_MENTION),
+    "ordinary in-app chatter stays in-app; only the support answer mails out",
+  );
+});
+
+test("the reply notification lands on the requester with a deep link", async () => {
+  const client = await prisma.user.findUniqueOrThrow({
+    where: { id: base.clientUser.id },
+    select: { email: true, emailDigestMode: true },
+  });
+  assert.equal(
+    client.emailDigestMode,
+    EmailDigestMode.IMMEDIATE,
+    "the default has to be IMMEDIATE or the reply gets batched into a digest",
+  );
+
+  const ticket = await prisma.supportTicket.create({
+    data: {
+      reference: `TKT-${randomUUID().slice(0, 5)}`,
+      subject: "Escalated from chat",
+      requesterUserId: base.clientUser.id,
+      requesterOrgId: base.clientOrg.id,
+    },
+    select: { id: true, reference: true },
+  });
+
+  await prisma.notification.create({
+    data: {
+      recipientUserId: base.clientUser.id,
+      type: NotificationType.SUPPORT_REPLY,
+      title: `Support reply · ${ticket.reference}`,
+      contextType: "SupportTicket",
+      contextId: ticket.id,
+      deliveredInapp: true,
+      deliveredEmail: true,
+    },
+  });
+
+  const row = await prisma.notification.findFirstOrThrow({
+    where: {
+      recipientUserId: base.clientUser.id,
+      type: NotificationType.SUPPORT_REPLY,
+    },
+    select: { deliveredEmail: true, contextId: true, contextType: true },
+  });
+  assert.equal(row.deliveredEmail, true);
+  assert.equal(row.contextType, "SupportTicket");
+  assert.equal(
+    row.contextId,
+    ticket.id,
+    "the mail must point at the ticket — inbound email isn't wired, so the link is the only way back",
+  );
+});
+
+test("escalation leaves a handoff note in the widget rather than going silent", async () => {
+  const client = await prisma.user.findUniqueOrThrow({
+    where: { id: base.clientUser.id },
+    select: { email: true },
+  });
+  const convo = await seedConversation(client.email);
+
+  // What escalateGuestToTicket writes inside its transaction.
+  await prisma.guestMessage.create({
+    data: {
+      conversationId: convo.id,
+      body: "We're picking this up from your account.",
+      fromTeam: true,
+    },
+  });
+  await prisma.guestConversation.update({
+    where: { id: convo.id },
+    data: { status: GuestConversationStatus.ESCALATED },
+  });
+
+  const messages = await prisma.guestMessage.findMany({
+    where: { conversationId: convo.id },
+    orderBy: { createdAt: "asc" },
+    select: { fromTeam: true },
+  });
+  assert.equal(messages.length, 3);
+  assert.equal(
+    messages[messages.length - 1]?.fromTeam,
+    true,
+    "the visitor must be told where the answer is coming from",
+  );
 });
