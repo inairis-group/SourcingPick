@@ -421,3 +421,63 @@ test("escalation leaves a handoff note in the widget rather than going silent", 
     "the visitor must be told where the answer is coming from",
   );
 });
+
+// ------------------------------------------------------------- mail templates
+
+test("every public-chat template exists in all four locales", async () => {
+  const KEYS = [
+    "how_it_works",
+    "pricing",
+    "lead_times",
+    "china_only",
+    "become_supplier",
+    "marketplace_buy",
+    "vehicles",
+    "create_account",
+  ];
+  const { readFile } = await import("node:fs/promises");
+
+  for (const loc of ["fr", "en", "zh", "ar"]) {
+    const dict = JSON.parse(
+      await readFile(`src/lib/i18n/dictionaries/${loc}.json`, "utf-8"),
+    );
+    const tpl = dict.admin.guestChat.templates;
+    for (const key of KEYS) {
+      assert.ok(tpl.titles[key], `${loc}: missing title ${key}`);
+      assert.ok(
+        tpl.bodies[key]?.length > 80,
+        `${loc}: ${key} body is too short to be a real answer`,
+      );
+    }
+  }
+});
+
+test("customer-facing copy states the pricing that the pricing page states", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const en = JSON.parse(
+    await readFile("src/lib/i18n/dictionaries/en.json", "utf-8"),
+  );
+  const pricingBody = en.admin.guestChat.templates.bodies.pricing;
+
+  // These have to agree with docs/pricing-v2.md and the public pricing page —
+  // a template quoting a stale rate is a quote we'd have to honour.
+  assert.equal(en.pricing.flows.sourcing.buyer.rate.replace(/\s/g, ""), "4%");
+  assert.equal(en.pricing.flows.marketplace.buyer.rate.replace(/\s/g, ""), "2%");
+  assert.match(pricingBody, /4%/);
+  assert.match(pricingBody, /2%/);
+  assert.match(pricingBody, /125/);
+
+  // "€500/week" was deliberately removed from the pricing page; a canned
+  // reply must not quietly reintroduce it.
+  for (const loc of ["fr", "en", "zh", "ar"]) {
+    const dict = JSON.parse(
+      await readFile(`src/lib/i18n/dictionaries/${loc}.json`, "utf-8"),
+    );
+    assert.ok(
+      !/500\s*(\/|per |\s)?(week|semaine|周|أسبوع)/i.test(
+        dict.admin.guestChat.templates.bodies.pricing,
+      ),
+      `${loc}: the withdrawn weekly rate must not reappear`,
+    );
+  }
+});

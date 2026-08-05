@@ -12,6 +12,12 @@ export type SendEmailInput = {
   text?: string;
   /** Optional override of EMAIL_FROM. */
   from?: string;
+  /**
+   * Where a human reply should land. Defaults to EMAIL_REPLY_TO when set,
+   * because EMAIL_FROM is typically a no-reply address — and a mail that
+   * invites an answer it then discards is worse than one that doesn't ask.
+   */
+  replyTo?: string;
 };
 
 /**
@@ -24,10 +30,12 @@ export async function sendEmail(input: SendEmailInput): Promise<void> {
   const text = input.text ?? (await render(input.react, { plainText: true }));
 
   const transport = getTransport();
+  const replyTo = input.replyTo ?? process.env.EMAIL_REPLY_TO;
   await transport.sendMail({
     from: input.from ?? process.env.EMAIL_FROM ?? "no-reply@sourcingpick.local",
     to: input.to,
     subject: input.subject,
+    ...(replyTo ? { replyTo } : {}),
     html,
     text,
   });

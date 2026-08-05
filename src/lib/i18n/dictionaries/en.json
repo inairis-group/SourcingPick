@@ -2255,7 +2255,30 @@
       "gcErr_empty": "This conversation is empty.",
       "gcErr_invalid_team": "Invalid team.",
       "gcErr_invalid_status": "Invalid status.",
-      "gcErr_generic": "Something went wrong."
+      "gcErr_generic": "Something went wrong.",
+      "templates": {
+        "titles": {
+          "how_it_works": "How sourcing works",
+          "pricing": "Pricing",
+          "lead_times": "Lead times",
+          "china_only": "Where we source",
+          "become_supplier": "Listing your factory",
+          "marketplace_buy": "Buying from the marketplace",
+          "vehicles": "Vehicle listings",
+          "create_account": "Creating an account"
+        },
+        "bodies": {
+          "how_it_works": "Hi,\n\nHere's how it works:\n\n1. You send us a request describing what you need — specs, quantity, target price and deadline.\n2. One of our agents in China qualifies it and approaches suitable factories.\n3. You receive a quote covering the product, the checks and the delivery terms.\n4. If you accept, your payment is held in escrow and released only once conforming delivery is confirmed.\n\nHappy to walk through a specific project whenever you're ready.",
+          "pricing": "Hi,\n\nThere's no subscription — we're paid on successful transactions.\n\nSourcing (agent-led, custom production): 4% of order value from the buyer, 1% from the supplier. A research fee of €125/day covers the qualification work before sourcing starts, and it's credited back as platform credit if you place an order within 30 days.\n\nMarketplace (ready catalogue, one-click): 2% from the buyer — already included in the listed price, so there's nothing added at checkout — and 1% from the seller.\n\nShipping is quoted separately.\n\nHappy to break this down for a specific order.",
+          "lead_times": "Hi,\n\nFor a fully secured order — including production, quality checks and air freight — plan on at least 31 days from acceptance of the quote.\n\nShorter is sometimes possible, but it usually means giving up one of the checks, so we'd rather tell you up front than surprise you later. Tell us your deadline and we'll say honestly whether it's realistic.",
+          "china_only": "Hi,\n\nSourcingPick currently sources from China. Our agents are on the ground there, speak the language and visit the factories in person — which is what makes the checks worth anything.\n\nMore countries will open later. If your project needs another origin today, we'd rather say so than take it on and disappoint you.",
+          "become_supplier": "Hi,\n\nThanks for your interest in selling through SourcingPick.\n\nTo register you'll need your business licence (营业执照). Your unified social credit code (统一社会信用代码) is what identifies your company on the platform.\n\nFor verification we additionally need the ID of a company representative holding more than 25% of the capital.\n\nYou can start the registration from our site, and we'll come back to you once the documents are reviewed.",
+          "marketplace_buy": "Hi,\n\nMarketplace listings are products we've already negotiated and checked, so you can order them directly without going through a sourcing request.\n\nThe price you see is the price you pay — our commission is already included. Payment is held in escrow and released to the supplier only once delivery is confirmed.\n\nTell us what you're looking for and we'll point you to the right listings.",
+          "vehicles": "Hi,\n\nOur vehicle listings show make, model, year, mileage, fuel, gearbox and — importantly — whether a Certificate of Conformity (CoC) is available.\n\nThat last one matters: without a CoC the vehicle cannot be registered in the EU, so we state it plainly on every listing rather than leaving you to find out later.\n\nTell us what you're after and we'll send you what matches.",
+          "create_account": "Hi,\n\nTo place a request, follow an order or talk to us about a specific transaction, you'll need an account — that's what lets us tie the conversation to your company and your orders.\n\nSigning up takes a couple of minutes. Once you're in, message us from your dashboard and we'll pick up right where we left off here."
+        }
+      },
+      "templatesPicker": "Insert a template"
     }
   },
   "attachments": {

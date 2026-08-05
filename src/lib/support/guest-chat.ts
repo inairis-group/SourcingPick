@@ -181,6 +181,13 @@ export async function getGuestConversation(token: string) {
 }
 
 /** Team reply. Authenticated — admins only. */
+const REPLY_SUBJECT: Record<Locale, string> = {
+  fr: "Réponse de l'équipe SourcingPick",
+  en: "A reply from the SourcingPick team",
+  zh: "SourcingPick 团队回复",
+  ar: "رد من فريق SourcingPick",
+};
+
 export async function replyToGuest(_prev: unknown, formData: FormData) {
   const { requireRole } = await import("@/lib/permissions/guards");
   const admin = await requireRole(Role.ADMIN);
@@ -192,7 +199,7 @@ export async function replyToGuest(_prev: unknown, formData: FormData) {
 
   const conversation = await prisma.guestConversation.findUnique({
     where: { id: conversationId },
-    select: { id: true },
+    select: { id: true, name: true, email: true, locale: true },
   });
   if (!conversation) return { ok: false as const, error: "not_found" };
 
@@ -202,6 +209,33 @@ export async function replyToGuest(_prev: unknown, formData: FormData) {
   await prisma.guestConversation.update({
     where: { id: conversation.id },
     data: { handledAt: new Date() },
+  });
+
+  /**
+   * Deliver the same answer to their inbox.
+   *
+   * A widget reply only reaches someone still sitting on the page, and most
+   * people ask a question and leave — so a chat-only reply is written into a
+   * box nobody comes back to. They handed us an email address at the start of
+   * the conversation for exactly this.
+   *
+   * Fire-and-forget: the transcript is already written and is authoritative;
+   * an SMTP outage must not cost the operator their message.
+   */
+  const { sendEmail } = await import("@/lib/email/send");
+  const { default: PublicReplyEmail } = await import(
+    "@/lib/email/templates/public-reply"
+  );
+  void sendEmail({
+    to: conversation.email,
+    subject: REPLY_SUBJECT[conversation.locale],
+    react: PublicReplyEmail({
+      visitorName: conversation.name,
+      body,
+      locale: conversation.locale,
+    }),
+  }).catch(() => {
+    /* the in-widget transcript still carries the reply */
   });
 
   const { revalidatePath } = await import("next/cache");

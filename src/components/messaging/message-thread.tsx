@@ -24,6 +24,16 @@ import { AttachmentPicker } from "@/components/attachments/attachment-picker";
 import { VoiceRecorderButton } from "@/components/messaging/voice-recorder-button";
 import { VoicePlayer } from "@/components/messaging/voice-player";
 import { TemplatePicker } from "@/components/messaging/template-picker";
+
+/// Authoritative answers about an existing order — deliberately admin-only,
+/// see the guard at the call site.
+const MESSAGING_TEMPLATE_KEYS = [
+  "invoicing",
+  "guarantees",
+  "refunds",
+  "deposit_balance",
+  "research_process",
+] as const;
 import { useMessageChime } from "@/lib/notifications/chime";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
 import { formatDate } from "@/lib/i18n/formatters";
@@ -446,6 +456,11 @@ export function MessageThread({
                   the platform, not from buyer/factory/agent users. */}
               {!voiceActive && selfRole === Role.ADMIN && (
                 <TemplatePicker
+                  templates={MESSAGING_TEMPLATE_KEYS.map((key) => ({
+                    key,
+                    title: dict.messaging.templates.titles[key],
+                    body: dict.messaging.templates.bodies[key],
+                  }))}
                   onInsert={(body) => {
                     setDraft((current) =>
                       current.trim().length > 0 ? `${current}\n\n${body}` : body,

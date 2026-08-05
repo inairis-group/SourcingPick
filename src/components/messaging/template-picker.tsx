@@ -7,40 +7,34 @@ import { useDictionary } from "@/lib/i18n/client-provider";
 import { cn } from "@/lib/utils";
 
 /**
- * Quick-insert templates for the message composer — partner #23.
+ * Quick-insert templates for a message composer — partner #23.
  *
- * Covers the recurring client questions the support team kept
- * re-explaining by hand: invoicing flow, guarantees, refunds,
- * deposit/balance breakdown, and the research-process timeline.
+ * The picker is a popover triggered from a small icon next to the composer.
+ * Selecting a template injects the localized body into the draft via
+ * `onInsert`, so the operator edits before sending — a canned answer sent
+ * verbatim reads like a robot, and half of these need a detail filled in.
  *
- * The picker is a popover triggered from a small icon next to the
- * attachment button. Selecting a template injects the localized body
- * into the composer draft via the `onInsert` callback.
+ * The template *set* is passed in rather than read from the dictionary here:
+ * internal threads answer existing customers about their order, while public
+ * chat answers strangers asking what the company even does. Same mechanism,
+ * different questions.
  */
 
-export type TemplateKey =
-  | "invoicing"
-  | "guarantees"
-  | "refunds"
-  | "deposit_balance"
-  | "research_process";
-
-const TEMPLATE_KEYS: TemplateKey[] = [
-  "invoicing",
-  "guarantees",
-  "refunds",
-  "deposit_balance",
-  "research_process",
-];
+export type MessageTemplate = { key: string; title: string; body: string };
 
 export function TemplatePicker({
+  templates,
   onInsert,
 }: {
+  /// Resolved and localized by the caller.
+  templates: MessageTemplate[];
   onInsert: (body: string) => void;
 }) {
   const dict = useDictionary();
   const t = dict.messaging.templates;
   const [open, setOpen] = useState(false);
+
+  if (templates.length === 0) return null;
 
   return (
     <div className="relative">
@@ -77,21 +71,19 @@ export function TemplatePicker({
               {t.pickerTitle}
             </p>
             <ul className="flex flex-col gap-0.5">
-              {TEMPLATE_KEYS.map((key) => (
-                <li key={key}>
+              {templates.map((tpl) => (
+                <li key={tpl.key}>
                   <button
                     type="button"
                     onClick={() => {
-                      onInsert(t.bodies[key]);
+                      onInsert(tpl.body);
                       setOpen(false);
                     }}
                     className="w-full text-start px-2 py-1.5 rounded-md hover:bg-subtle text-xs text-fg"
                   >
-                    <p className="font-medium text-headline">
-                      {t.titles[key]}
-                    </p>
+                    <p className="font-medium text-headline">{tpl.title}</p>
                     <p className="text-faint truncate text-[10px]">
-                      {t.bodies[key].slice(0, 70)}…
+                      {tpl.body.slice(0, 70)}…
                     </p>
                   </button>
                 </li>

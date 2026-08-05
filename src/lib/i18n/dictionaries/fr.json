@@ -2255,7 +2255,30 @@
       "gcErr_empty": "Cette conversation est vide.",
       "gcErr_invalid_team": "Équipe invalide.",
       "gcErr_invalid_status": "État invalide.",
-      "gcErr_generic": "Une erreur est survenue."
+      "gcErr_generic": "Une erreur est survenue.",
+      "templates": {
+        "titles": {
+          "how_it_works": "Comment fonctionne le sourcing",
+          "pricing": "Tarifs",
+          "lead_times": "Délais",
+          "china_only": "Nos zones de sourcing",
+          "become_supplier": "Référencer votre usine",
+          "marketplace_buy": "Acheter sur la marketplace",
+          "vehicles": "Annonces véhicules",
+          "create_account": "Créer un compte"
+        },
+        "bodies": {
+          "how_it_works": "Bonjour,\n\nVoici le déroulé :\n\n1. Vous nous envoyez une demande décrivant votre besoin — spécifications, quantité, prix cible et délai.\n2. Un de nos agents en Chine la qualifie et approche les usines adaptées.\n3. Vous recevez un devis couvrant le produit, les contrôles et les conditions de livraison.\n4. Si vous l'acceptez, votre paiement est séquestré et n'est libéré qu'une fois la livraison conforme confirmée.\n\nNous restons disponibles pour en parler sur un projet précis.",
+          "pricing": "Bonjour,\n\nPas d'abonnement : nous sommes rémunérés sur les transactions réussies.\n\nSourcing (accompagné par un agent, production sur mesure) : 4 % du montant de la commande côté acheteur, 1 % côté fournisseur. Des frais de recherche de 125 € / jour couvrent le travail de qualification en amont, et ils vous sont recrédités en avoir si vous passez commande sous 30 jours.\n\nMarketplace (catalogue prêt à commander) : 2 % côté acheteur — déjà inclus dans le prix affiché, rien ne s'ajoute au paiement — et 1 % côté vendeur.\n\nLe transport est chiffré à part.\n\nNous pouvons détailler cela sur une commande précise.",
+          "lead_times": "Bonjour,\n\nPour une commande entièrement sécurisée — production, contrôles qualité et fret aérien compris — comptez au minimum 31 jours à partir de l'acceptation du devis.\n\nPlus court est parfois possible, mais cela revient généralement à renoncer à l'un des contrôles : nous préférons vous le dire d'emblée. Indiquez-nous votre échéance et nous vous dirons franchement si elle est tenable.",
+          "china_only": "Bonjour,\n\nSourcingPick source actuellement en Chine. Nos agents y sont sur place, parlent la langue et visitent les usines — c'est ce qui donne du poids à nos contrôles.\n\nD'autres pays ouvriront plus tard. Si votre projet exige une autre origine dès maintenant, nous préférons vous le dire plutôt que de vous décevoir.",
+          "become_supplier": "Bonjour,\n\nMerci de votre intérêt pour la vente via SourcingPick.\n\nPour l'inscription, votre licence d'exploitation (营业执照) suffit. Votre code de crédit social unifié (统一社会信用代码) identifie votre entreprise sur la plateforme.\n\nPour la vérification, nous demandons en plus la pièce d'identité d'un mandataire représentant plus de 25 % du capital.\n\nVous pouvez démarrer l'inscription depuis notre site ; nous revenons vers vous après examen des documents.",
+          "marketplace_buy": "Bonjour,\n\nLes annonces de la marketplace correspondent à des produits déjà négociés et contrôlés : vous pouvez les commander directement, sans passer par une demande de sourcing.\n\nLe prix affiché est le prix payé — notre commission y est déjà incluse. Le paiement est séquestré et libéré au fournisseur une fois la livraison confirmée.\n\nDites-nous ce que vous cherchez et nous vous orienterons vers les bonnes annonces.",
+          "vehicles": "Bonjour,\n\nNos annonces véhicules précisent la marque, le modèle, l'année, le kilométrage, le carburant, la boîte de vitesses et surtout la disponibilité du certificat de conformité (CoC).\n\nCe dernier point est déterminant : sans CoC, le véhicule ne peut pas être immatriculé dans l'UE. Nous l'indiquons donc clairement sur chaque annonce.\n\nDites-nous ce que vous recherchez et nous vous enverrons les correspondances.",
+          "create_account": "Bonjour,\n\nPour déposer une demande, suivre une commande ou échanger sur une transaction précise, il vous faut un compte — c'est ce qui nous permet de rattacher la conversation à votre société et à vos commandes.\n\nL'inscription prend deux minutes. Une fois connecté, écrivez-nous depuis votre espace et nous reprendrons exactement où nous en sommes ici."
+        }
+      },
+      "templatesPicker": "Insérer un modèle"
     }
   },
   "attachments": {
