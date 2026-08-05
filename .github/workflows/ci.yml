@@ -13,6 +13,12 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      # `prisma.config.ts` resolves `env("DATABASE_URL")` eagerly, so even
+      # `prisma generate` — which never opens a connection — refuses to run
+      # without it. A placeholder satisfies the resolver; nothing in this job
+      # touches a database.
+      DATABASE_URL: "postgresql://ci:ci@localhost:5432/ci?schema=public"
     steps:
       - uses: actions/checkout@v4
 
@@ -31,6 +37,12 @@ jobs:
       # is skipped in some runner configs.
       - name: Generate Prisma client
         run: npx prisma generate
+
+      # `PageProps<"/route">` and friends are generated into `.next/types`,
+      # so a bare `tsc --noEmit` fails on every page in the app. `next typegen`
+      # emits them without paying for a full build.
+      - name: Generate route types
+        run: npx next typegen
 
       - name: Typecheck
         run: npm run typecheck:fast
