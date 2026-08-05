@@ -731,6 +731,7 @@ model User {
   placedBids                Bid[]                    @relation("BidderUser")
   deletionRequests          AccountDeletionRequest[] @relation("DeletionRequester")
   deletionRequestsReviewed  AccountDeletionRequest[] @relation("DeletionReviewer")
+  guestConversations        GuestConversation[]      @relation("GuestChatLinkedUser")
 
   @@index([organizationId])
   @@index([role, deletedAt])
@@ -1259,6 +1260,8 @@ model Dispute {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  guestConversations GuestConversation[] @relation("GuestChatDispute")
+
   @@index([orderId, status])
   @@index([status, openedAt])
 }
@@ -1590,6 +1593,8 @@ model SupportTicket {
   deletedAt       DateTime?
   createdAt       DateTime            @default(now())
   updatedAt       DateTime            @updatedAt
+
+  guestConversations GuestConversation[] @relation("GuestChatTicket")
 
   @@index([status, createdAt])
   @@index([requesterUserId, status])
@@ -2051,27 +2056,68 @@ model ShipmentEvent {
 /// link (`app/[lang]/forwarder/upload/[token]`). The widget keeps the token in
 /// localStorage so a returning visitor sees their history.
 /// =============================================================
+/// Internal queue a public-chat conversation belongs to. Mirrors how the team
+/// is actually organised rather than the AdminScope permission list — routing
+/// is about who answers, not about who is allowed to.
+enum GuestChatTeam {
+  SALES
+  SUPPORT
+  ENGINEERING
+  BILLING
+  PARTNERSHIPS
+  KYC
+  LOGISTICS
+}
+
+enum GuestConversationStatus {
+  OPEN
+  /// Handed to a SupportTicket or a Dispute. The guest thread stays the
+  /// visitor's channel; the internal work moves.
+  ESCALATED
+  CLOSED
+}
+
 model GuestConversation {
-  id        String    @id @default(cuid(2))
+  id        String                  @id @default(cuid(2))
   /// Unguessable; the visitor's only credential. Never displayed.
-  token     String    @unique
+  token     String                  @unique
   name      String
   email     String
   /// Locale the visitor was browsing in, so replies go out in their language.
-  locale    Locale    @default(fr)
+  locale    Locale                  @default(fr)
   /// Set when the team has read everything — drives the admin queue badge.
   handledAt DateTime?
+  /// Queue that owns this conversation. Null until someone routes it, which is
+  /// itself the signal for the unrouted inbox.
+  team      GuestChatTeam?
+  status    GuestConversationStatus @default(OPEN)
+  closedAt  DateTime?
+
+  /// Account matched to the visitor's email, if any. A public-chat visitor is
+  /// anonymous, so this is the only bridge to anything that needs a real user
+  /// — and it is what gates escalation rather than a fabricated placeholder.
+  linkedUserId String?
+  linkedUser   User?   @relation("GuestChatLinkedUser", fields: [linkedUserId], references: [id], onDelete: SetNull)
+
+  /// Where the conversation was escalated to. SetNull rather than Cascade: a
+  /// deleted ticket must not take the visitor transcript with it.
+  escalatedTicketId  String?
+  escalatedTicket    SupportTicket? @relation("GuestChatTicket", fields: [escalatedTicketId], references: [id], onDelete: SetNull)
+  escalatedDisputeId String?
+  escalatedDispute   Dispute?       @relation("GuestChatDispute", fields: [escalatedDisputeId], references: [id], onDelete: SetNull)
+  escalatedAt        DateTime?
   /// SHA-256 of the client IP, salted with AUTH_SECRET. Stored hashed, never
   /// raw: this is an unauthenticated endpoint so it needs a rate-limit key,
   /// but a public contact form has no business retaining visitors' IPs. The
   /// hash is enough to count recent submissions and useless for anything else.
-  ipHash    String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  ipHash             String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
 
   messages GuestMessage[]
 
   @@index([handledAt, updatedAt])
+  @@index([status, team, updatedAt])
 }
 
 model GuestMessage {

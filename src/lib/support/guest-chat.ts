@@ -1,7 +1,12 @@
 "use server";
 
 import { createHash, randomBytes } from "node:crypto";
-import { NotificationType, Role } from "@prisma/client";
+import {
+  GuestChatTeam,
+  GuestConversationStatus,
+  NotificationType,
+  Role,
+} from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { emitNotificationToMany } from "@/lib/notifications/emit";
 import { headers } from "next/headers";
@@ -211,12 +216,47 @@ export async function replyToGuest(_prev: unknown, formData: FormData) {
  * Returns full transcripts — these are short, and the team needs the context
  * to reply without clicking through.
  */
-export async function listGuestConversations() {
+export async function listGuestConversations(filters?: {
+  team?: string;
+  status?: string;
+  query?: string;
+}) {
   const { requireRole: guard } = await import("@/lib/permissions/guards");
   await guard(Role.ADMIN);
+
+  const team = (Object.values(GuestChatTeam) as string[]).includes(
+    filters?.team ?? "",
+  )
+    ? (filters?.team as GuestChatTeam)
+    : undefined;
+  // "unrouted" is the queue that matters most — nobody owns those yet.
+  const unrouted = filters?.team === "NONE";
+  const status = (Object.values(GuestConversationStatus) as string[]).includes(
+    filters?.status ?? "",
+  )
+    ? (filters?.status as GuestConversationStatus)
+    : undefined;
+  const q = (filters?.query ?? "").trim().slice(0, 100);
+
   return prisma.guestConversation.findMany({
+    where: {
+      ...(team ? { team } : {}),
+      ...(unrouted ? { team: null } : {}),
+      ...(status ? { status } : {}),
+      ...(q
+        ? {
+            OR: [
+              { name: { contains: q, mode: "insensitive" as const } },
+              { email: { contains: q, mode: "insensitive" as const } },
+              // Searching what was actually said matters more than searching
+              // who said it — an operator remembers the problem, not the name.
+              { messages: { some: { body: { contains: q, mode: "insensitive" as const } } } },
+            ],
+          }
+        : {}),
+    },
     orderBy: [{ handledAt: "asc" }, { updatedAt: "desc" }],
-    take: 50,
+    take: 100,
     select: {
       id: true,
       name: true,
@@ -224,6 +264,12 @@ export async function listGuestConversations() {
       locale: true,
       handledAt: true,
       updatedAt: true,
+      team: true,
+      status: true,
+      escalatedTicketId: true,
+      escalatedDisputeId: true,
+      escalatedTicket: { select: { reference: true } },
+      escalatedDispute: { select: { reference: true } },
       messages: {
         orderBy: { createdAt: "asc" },
         select: { id: true, body: true, fromTeam: true, createdAt: true },
