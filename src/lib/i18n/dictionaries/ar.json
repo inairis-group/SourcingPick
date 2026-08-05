@@ -435,8 +435,7 @@
       "step2Body": "هذه الإجراءات تجعلك جاهزاً لاستقبال أول دعوات عطاء فور التحقق من ملفك.",
       "step2Item1": "أكمل الملف التعريفي للمصنع: القدرات، اللغات المتحدث بها، الشهادات الحالية.",
       "step2Item2": "جهّز من 3 إلى 5 صور عالية الجودة لمنتجاتك الرئيسية.",
-      "step2Item3": "تحقق من تحديث رقم IBAN الخاص بك لاستلام المدفوعات."
-,
+      "step2Item3": "تحقق من تحديث رقم IBAN الخاص بك لاستلام المدفوعات.",
       "finish": "الانتقال إلى لوحتي"
     }
   },
@@ -628,7 +627,10 @@
       "unitLabel": "الاحتساب حسب",
       "quantityLabel": "الكمية",
       "amountLabel": "الرسوم",
-      "units": { "DAY": "يوم", "WEEK": "أسبوع" },
+      "units": {
+        "DAY": "يوم",
+        "WEEK": "أسبوع"
+      },
       "quoteCta": "تسعير الرسوم",
       "requoteCta": "تحديث الرسوم",
       "waiveCta": "إعفاء",
@@ -857,6 +859,45 @@
   },
   "publicMarketplace": {
     "loadMoreTitle": "أكثر من 20 منتجاً متاحاً",
+    "reviewsTitle": "التقييمات",
+    "reviewsEmpty": "لا توجد تقييمات لهذا المنتج بعد.",
+    "reviewsCount": "تقييم",
+    "verifiedPurchase": "شراء موثّق",
+    "writeReview": "اكتب تقييماً",
+    "reviewRating": "التقييم",
+    "reviewTitleField": "العنوان (اختياري)",
+    "reviewBody": "تقييمك",
+    "reviewSubmit": "نشر",
+    "reviewPending": "شكراً — سيُنشر تقييمك بعد المراجعة.",
+    "reviewLoginPrompt": "سجّل الدخول لكتابة تقييم.",
+    "variantsTitle": "الخيارات",
+    "variantFrom": "ابتداءً من",
+    "vehicleTitle": "بيانات المركبة",
+    "vehicleYear": "السنة",
+    "vehicleMileage": "المسافة المقطوعة",
+    "vehicleFuel": "الوقود",
+    "vehicleTransmission": "ناقل الحركة",
+    "vehicleDrivetrain": "الدفع",
+    "vehicleColour": "اللون",
+    "vehicleEngine": "سعة المحرك",
+    "vehiclePower": "القدرة",
+    "vehicleVin": "رقم الهيكل",
+    "vehicleCoc": "شهادة المطابقة (CoC)",
+    "vehicleCocYes": "متوفّرة",
+    "vehicleCocNo": "غير متوفّرة — لا يمكن تسجيل السيارة في الاتحاد الأوروبي بدونها",
+    "moderationTitle": "تقييمات بانتظار المراجعة",
+    "moderationEmpty": "لا توجد تقييمات معلّقة.",
+    "moderationPublish": "نشر",
+    "moderationReject": "رفض",
+    "moderationNote": "السبب (إلزامي عند الرفض)",
+    "rvErr_invalid_rating": "يجب أن يكون التقييم بين 1 و5.",
+    "rvErr_body_too_short": "التقييم قصير جداً.",
+    "rvErr_body_too_long": "التقييم طويل جداً.",
+    "rvErr_already_reviewed": "لقد قيّمت هذا المنتج بالفعل.",
+    "rvErr_own_product": "لا يمكنك تقييم منتجك.",
+    "rvErr_not_found": "المنتج غير موجود.",
+    "rvErr_missing_note": "الرفض يتطلّب سبباً.",
+    "rvErr_generic": "حدث خطأ ما.",
     "loadMoreBody": "أنشئ حساب عميل لتصفح الكتالوج الكامل والطلب بنقرة واحدة.",
     "endOfPreviewTitle": "هذا ختام المعاينة",
     "endOfPreviewBody": "أنشئ حساباً لتتبع الطلبيات، ومراسلة وكلائنا، وفتح ميزات حصرية.",
@@ -864,7 +905,29 @@
     "loginCta": "تسجيل الدخول",
     "orderTitle": "اطلب هذا المنتج",
     "orderBody": "سجّل الدخول أو أنشئ حساباً لإتمام طلبيتك مع دفعة مقدمة مؤمَّنة.",
-    "signupToBuyCta": "سجّل لتطلب"
+    "signupToBuyCta": "سجّل لتطلب",
+    "rvErr_missing_product": "المنتج غير موجود.",
+    "rvErr_invalid_decision": "قرار غير صالح.",
+    "fuels": {
+      "PETROL": "بنزين",
+      "DIESEL": "ديزل",
+      "HYBRID": "هجين",
+      "PLUGIN_HYBRID": "هجين قابل للشحن",
+      "ELECTRIC": "كهربائي",
+      "LPG": "غاز البترول المسال",
+      "OTHER": "أخرى"
+    },
+    "transmissions": {
+      "MANUAL": "يدوي",
+      "AUTOMATIC": "أوتوماتيكي"
+    },
+    "drivetrains": {
+      "FWD": "دفع أمامي",
+      "RWD": "دفع خلفي",
+      "AWD": "دفع رباعي"
+    },
+    "vehicleYearFrom": "من سنة",
+    "vehicleKmUpTo": "أقصى كم"
   },
   "notifications": {
     "bellLabel": "الإشعارات",
@@ -1098,7 +1161,47 @@
         "REJECTED": "مرفوض",
         "OUT_OF_STOCK": "نفد المخزون",
         "ARCHIVED": "مؤرشف"
-      }
+      },
+      "uniqueItemLabel": "قطعة فريدة",
+      "uniqueItemHint": "وحدة بعينها — سيارة مستعملة أو آلة واحدة. تُضبط الكمية على 1 ويُسحب الإعلان بمجرد بيعها.",
+      "uniqueItemToggle": "هذا الإعلان يخص قطعة واحدة بعينها",
+      "vehicleSectionTitle": "تفاصيل المركبة",
+      "vehicleSectionHint": "إلزامية لفئة المركبات — لا يمكن للمشتري تقييم سيارة بدونها.",
+      "vinLabel": "رقم الهيكل (VIN)",
+      "vinHint": "17 خانة، بدون I أو O أو Q. اتركه فارغًا إن لم يكن متوفرًا.",
+      "makeLabel": "الماركة",
+      "modelLabel": "الطراز",
+      "yearLabel": "سنة الصنع",
+      "mileageLabel": "المسافة المقطوعة (كم)",
+      "fuelLabel": "الوقود",
+      "transmissionLabel": "ناقل الحركة",
+      "drivetrainLabel": "نظام الدفع",
+      "colourLabel": "اللون",
+      "engineCcLabel": "سعة المحرك (سم³)",
+      "powerKwLabel": "القدرة (كيلوواط)",
+      "cocLabel": "شهادة المطابقة",
+      "cocHint": "بدون شهادة مطابقة لا يمكن تسجيل المركبة في الاتحاد الأوروبي.",
+      "cocToggle": "شهادة المطابقة متوفرة",
+      "cocReferenceLabel": "مرجع شهادة المطابقة",
+      "variantsTitle": "الخيارات",
+      "variantsHint": "الألوان والمقاسات والتكوينات. متى وُجدت خيارات، صار المخزون محسوبًا عليها.",
+      "variantOptionsLabel": "الخيارات",
+      "variantOptionsPlaceholder": "اللون: أحمر، المقاس: M",
+      "variantNameLabel": "الاسم المعروض",
+      "variantNameHint": "اتركه فارغًا ليُشتق من الخيارات.",
+      "variantSkuLabel": "رمز المنتج (SKU)",
+      "variantPriceLabel": "سعر المصنع (€)",
+      "variantPriceHint": "فارغ = نفس سعر الإعلان.",
+      "variantStockLabel": "المخزون",
+      "variantAdd": "إضافة خيار",
+      "variantRemove": "إزالة",
+      "variantsSave": "حفظ الخيارات",
+      "variantsSaved": "تم حفظ الخيارات.",
+      "variantsEmpty": "لا توجد خيارات — يُباع الإعلان كما هو.",
+      "variantsUniqueBlocked": "القطعة الفريدة لا تحتمل خيارات.",
+      "variantsStockNote": "يصبح مخزون الإعلان مجموع مخزون خياراته.",
+      "variantImageLabel": "صورة الخيار",
+      "variantImageRemove": "إزالة الصورة"
     },
     "certification": {
       "eyebrow": "برنامج الشهادات",
@@ -1448,7 +1551,11 @@
       "colActor": "الفاعل",
       "colTarget": "الهدف",
       "colIp": "عنوان IP",
-      "levels": { "INFO": "معلومة", "WARN": "تحذير", "ALERT": "تنبيه" }
+      "levels": {
+        "INFO": "معلومة",
+        "WARN": "تحذير",
+        "ALERT": "تنبيه"
+      }
     },
     "finance": {
       "eyebrow": "المالية",
@@ -1847,7 +1954,11 @@
       "rejectReasonLabel": "سبب الرفض (ظاهر في التدقيق)",
       "rejectReasonPlaceholder": "صف ما يحتاج إلى إصلاح…",
       "confirmReject": "تأكيد الرفض",
-      "back": "رجوع"
+      "back": "رجوع",
+      "searchPlaceholder": "ابحث بالمرجع أو الاسم أو البائع…",
+      "searchCta": "بحث",
+      "searchClear": "مسح",
+      "searchEmpty": "لا يوجد إعلان مطابق لهذا البحث."
     },
     "auctions": {
       "eyebrow": "المزادات",
@@ -2125,6 +2236,7 @@
     }
   },
   "categories": {
+    "VEHICLE": "المركبات",
     "TEXTILE": "النسيج",
     "HOME": "مستلزمات المنزل",
     "STATIONERY": "القرطاسية",
@@ -2296,7 +2408,9 @@
       "signupCtaTitle": "أنشئ حسابًا مجانًا",
       "signupCtaBody": "افتح تذكرة دعم بنقرات قليلة من لوحتك.",
       "emailCtaTitle": "راسلنا عبر البريد",
-      "emailCtaBody": "يردّ فريقنا خلال 24 ساعة عمل."
+      "emailCtaBody": "يردّ فريقنا خلال 24 ساعة عمل.",
+      "chatSoundOn": "الصوت مفعّل",
+      "chatSoundOff": "الصوت مكتوم"
     },
     "hero": {
       "eyebrow": "توريد · سوق · شهادات",

@@ -22,6 +22,9 @@ import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
 
 const BuySchema = z.object({
   productId: z.string().min(1),
+  /// Empty for a listing without variants. Validated against the product
+  /// below rather than trusted — it arrives from a form field.
+  variantId: z.union([z.string().min(1), z.literal("")]).optional(),
   quantity: z.coerce.number().int().positive("Quantity must be positive."),
   // Partner #12: structured fields. The freeform `deliveryAddress`
   // legacy field is synthesised server-side from these so existing
@@ -73,6 +76,7 @@ export async function buyMarketplaceProductAction(
 
   const parsed = BuySchema.safeParse({
     productId: formData.get("productId"),
+    variantId: formData.get("variantId") ?? "",
     quantity: formData.get("quantity"),
     deliveryStreet: formData.get("deliveryStreet"),
     deliveryPostalCode: formData.get("deliveryPostalCode"),
@@ -108,23 +112,58 @@ export async function buyMarketplaceProductAction(
       factoryOrgId: true,
       depositPercentageBps: true,
       incoterm: true,
+      isUniqueItem: true,
+      variants: {
+        select: {
+          id: true,
+          label: true,
+          priceCentsFactory: true,
+          priceCentsClient: true,
+          stockAvailable: true,
+        },
+      },
     },
   });
   if (!product) return { error: "Product not found or no longer available." };
+
+  /**
+   * Variant resolution.
+   *
+   * Once a listing has variants they own both the price and the stock, so a
+   * purchase that doesn't name one is ambiguous — refuse it rather than
+   * guessing at the first row. A variant posted against a listing that has
+   * none is equally wrong, and silently ignoring it would charge the buyer for
+   * something other than what they picked.
+   */
+  const variantId = parsed.data.variantId || null;
+  const variant = variantId
+    ? (product.variants.find((v) => v.id === variantId) ?? null)
+    : null;
+  if (variantId && !variant) {
+    return { error: "That option is no longer available." };
+  }
+  if (product.variants.length > 0 && !variant) {
+    return { error: "Choose an option before ordering." };
+  }
 
   if (product.moq > 0 && parsed.data.quantity < product.moq) {
     return {
       error: `Minimum order quantity for this product is ${product.moq}.`,
     };
   }
-  if (parsed.data.quantity > product.stockAvailable) {
+  const availableStock = variant
+    ? variant.stockAvailable
+    : product.stockAvailable;
+  if (parsed.data.quantity > availableStock) {
     return {
-      error: `Only ${product.stockAvailable} units in stock.`,
+      error: `Only ${availableStock} units in stock.`,
     };
   }
 
-  const unitClient = product.priceCentsClient;
-  const unitFactory = product.priceCentsFactory;
+  // A variant with no price override inherits the listing's, which is the
+  // common case — most ranges are one price across every option.
+  const unitClient = variant?.priceCentsClient ?? product.priceCentsClient;
+  const unitFactory = variant?.priceCentsFactory ?? product.priceCentsFactory;
   const totalClient = unitClient * parsed.data.quantity;
   const marginCents = totalClient - unitFactory * parsed.data.quantity;
   // CTO audit F4: marketplace + sourcing share the same acompte policy
@@ -145,6 +184,20 @@ export async function buyMarketplaceProductAction(
   try {
     orderId = await prisma.$transaction(async (tx) => {
       // Atomic stock check — fail the whole purchase if two clients race.
+      // With a variant the conditional guard has to sit on the variant row:
+      // that is the one that can actually run out, and guarding only the
+      // product total would let two buyers take the last red one.
+      if (variant) {
+        const variantUpdate = await tx.marketplaceVariant.updateMany({
+          where: {
+            id: variant.id,
+            stockAvailable: { gte: parsed.data.quantity },
+          },
+          data: { stockAvailable: { decrement: parsed.data.quantity } },
+        });
+        if (variantUpdate.count === 0) throw new Error("OUT_OF_STOCK");
+      }
+
       const stockUpdate = await tx.marketplaceProduct.updateMany({
         where: {
           id: product.id,
@@ -162,12 +215,25 @@ export async function buyMarketplaceProductAction(
         throw new Error("OUT_OF_STOCK");
       }
 
+      /**
+       * A one-of-a-kind listing is a specific object, not a stock line: once
+       * it's gone it can never come back, so leaving it PUBLISHED at zero
+       * would keep showing a car that has already been sold. Retire it in the
+       * same transaction as the sale.
+       */
+      if (product.isUniqueItem) {
+        await tx.marketplaceProduct.update({
+          where: { id: product.id },
+          data: { status: MarketplaceProductStatus.OUT_OF_STOCK },
+        });
+      }
+
       const request = await tx.sourcingRequest.create({
         data: {
           reference: reqReference,
           clientOrgId: user.organizationId,
           createdByUserId: user.id,
-          title: product.name,
+          title: variant ? `${product.name} — ${variant.label}` : product.name,
           category: product.category,
           quantity: parsed.data.quantity,
           deadline,
@@ -190,7 +256,7 @@ export async function buyMarketplaceProductAction(
           products: {
             create: [
               {
-                name: product.name,
+                name: variant ? `${product.name} — ${variant.label}` : product.name,
                 quantity: parsed.data.quantity,
                 images: [],
               },
@@ -237,6 +303,7 @@ export async function buyMarketplaceProductAction(
           commissionCents: marginCents,
           status: OrderStatus.PAYMENT_PENDING,
           estimatedEta: deadline,
+          marketplaceVariantId: variant?.id ?? null,
         },
         select: { id: true },
       });
@@ -259,6 +326,7 @@ export async function buyMarketplaceProductAction(
     targetId: orderId,
     payload: {
       productId: product.id,
+      variantId: variant?.id ?? null,
       quantity: parsed.data.quantity,
       totalCents: totalClient,
     },

@@ -627,7 +627,10 @@
       "unitLabel": "Bill by",
       "quantityLabel": "Quantity",
       "amountLabel": "Fee",
-      "units": { "DAY": "Day", "WEEK": "Week" },
+      "units": {
+        "DAY": "Day",
+        "WEEK": "Week"
+      },
       "quoteCta": "Quote fee",
       "requoteCta": "Update fee",
       "waiveCta": "Waive",
@@ -856,6 +859,45 @@
   },
   "publicMarketplace": {
     "loadMoreTitle": "More than 20 products available",
+    "reviewsTitle": "Reviews",
+    "reviewsEmpty": "No reviews on this product yet.",
+    "reviewsCount": "reviews",
+    "verifiedPurchase": "Verified purchase",
+    "writeReview": "Write a review",
+    "reviewRating": "Rating",
+    "reviewTitleField": "Title (optional)",
+    "reviewBody": "Your review",
+    "reviewSubmit": "Publish",
+    "reviewPending": "Thanks — your review will appear once checked.",
+    "reviewLoginPrompt": "Sign in to leave a review.",
+    "variantsTitle": "Options",
+    "variantFrom": "From",
+    "vehicleTitle": "Vehicle details",
+    "vehicleYear": "Year",
+    "vehicleMileage": "Mileage",
+    "vehicleFuel": "Fuel",
+    "vehicleTransmission": "Gearbox",
+    "vehicleDrivetrain": "Drivetrain",
+    "vehicleColour": "Colour",
+    "vehicleEngine": "Engine",
+    "vehiclePower": "Power",
+    "vehicleVin": "VIN",
+    "vehicleCoc": "Certificate of Conformity (CoC)",
+    "vehicleCocYes": "Provided",
+    "vehicleCocNo": "Not provided — the car cannot be registered in the EU without it",
+    "moderationTitle": "Reviews to moderate",
+    "moderationEmpty": "No reviews pending.",
+    "moderationPublish": "Publish",
+    "moderationReject": "Reject",
+    "moderationNote": "Reason (required to reject)",
+    "rvErr_invalid_rating": "Rating must be between 1 and 5.",
+    "rvErr_body_too_short": "Your review is too short.",
+    "rvErr_body_too_long": "Your review is too long.",
+    "rvErr_already_reviewed": "You have already reviewed this product.",
+    "rvErr_own_product": "You cannot review your own product.",
+    "rvErr_not_found": "Product not found.",
+    "rvErr_missing_note": "A rejection needs a reason.",
+    "rvErr_generic": "Something went wrong.",
     "loadMoreBody": "Create a client account to browse the full catalogue and order in one click.",
     "endOfPreviewTitle": "That's the preview",
     "endOfPreviewBody": "Create an account to track orders, message our agents, and unlock exclusives.",
@@ -863,7 +905,29 @@
     "loginCta": "Sign in",
     "orderTitle": "Order this product",
     "orderBody": "Sign in or create an account to complete your order with a secured deposit.",
-    "signupToBuyCta": "Sign up to order"
+    "signupToBuyCta": "Sign up to order",
+    "rvErr_missing_product": "Product not found.",
+    "rvErr_invalid_decision": "Invalid decision.",
+    "fuels": {
+      "PETROL": "Petrol",
+      "DIESEL": "Diesel",
+      "HYBRID": "Hybrid",
+      "PLUGIN_HYBRID": "Plug-in hybrid",
+      "ELECTRIC": "Electric",
+      "LPG": "LPG",
+      "OTHER": "Other"
+    },
+    "transmissions": {
+      "MANUAL": "Manual",
+      "AUTOMATIC": "Automatic"
+    },
+    "drivetrains": {
+      "FWD": "Front-wheel drive",
+      "RWD": "Rear-wheel drive",
+      "AWD": "All-wheel drive"
+    },
+    "vehicleYearFrom": "Year from",
+    "vehicleKmUpTo": "Max km"
   },
   "notifications": {
     "bellLabel": "Notifications",
@@ -1097,7 +1161,47 @@
         "REJECTED": "Rejected",
         "OUT_OF_STOCK": "Out of stock",
         "ARCHIVED": "Archived"
-      }
+      },
+      "uniqueItemLabel": "One-of-a-kind item",
+      "uniqueItemHint": "A specific unit — a used vehicle, a single machine. Quantity is set to 1 and the listing retires once it sells.",
+      "uniqueItemToggle": "This listing is for one specific item",
+      "vehicleSectionTitle": "Vehicle details",
+      "vehicleSectionHint": "Required for the Vehicles category — a buyer can't assess a car without these.",
+      "vinLabel": "VIN",
+      "vinHint": "17 characters, no I, O or Q. Leave blank if you don't have it.",
+      "makeLabel": "Make",
+      "modelLabel": "Model",
+      "yearLabel": "Year",
+      "mileageLabel": "Mileage (km)",
+      "fuelLabel": "Fuel",
+      "transmissionLabel": "Transmission",
+      "drivetrainLabel": "Drivetrain",
+      "colourLabel": "Colour",
+      "engineCcLabel": "Engine (cc)",
+      "powerKwLabel": "Power (kW)",
+      "cocLabel": "Certificate of Conformity",
+      "cocHint": "Without a CoC the vehicle can't be registered in the EU.",
+      "cocToggle": "A Certificate of Conformity is available",
+      "cocReferenceLabel": "CoC reference",
+      "variantsTitle": "Variants",
+      "variantsHint": "Colours, sizes, configurations. Once variants exist, they carry the stock.",
+      "variantOptionsLabel": "Options",
+      "variantOptionsPlaceholder": "Colour: Red, Size: M",
+      "variantNameLabel": "Display name",
+      "variantNameHint": "Blank = built from the options.",
+      "variantSkuLabel": "SKU",
+      "variantPriceLabel": "Factory price (€)",
+      "variantPriceHint": "Blank = same as the listing.",
+      "variantStockLabel": "Stock",
+      "variantAdd": "Add a variant",
+      "variantRemove": "Remove",
+      "variantsSave": "Save variants",
+      "variantsSaved": "Variants saved.",
+      "variantsEmpty": "No variants — the listing sells as it is.",
+      "variantsUniqueBlocked": "A one-of-a-kind item has no variants.",
+      "variantsStockNote": "The listing's stock becomes the sum of its variants.",
+      "variantImageLabel": "Variant photo",
+      "variantImageRemove": "Remove photo"
     },
     "certification": {
       "eyebrow": "Certification programme",
@@ -1447,7 +1551,11 @@
       "colActor": "Actor",
       "colTarget": "Target",
       "colIp": "IP",
-      "levels": { "INFO": "Info", "WARN": "Warning", "ALERT": "Alert" }
+      "levels": {
+        "INFO": "Info",
+        "WARN": "Warning",
+        "ALERT": "Alert"
+      }
     },
     "finance": {
       "eyebrow": "Finance",
@@ -1846,7 +1954,11 @@
       "rejectReasonLabel": "Rejection reason (audit-visible)",
       "rejectReasonPlaceholder": "Describe what needs fixing…",
       "confirmReject": "Confirm rejection",
-      "back": "Back"
+      "back": "Back",
+      "searchPlaceholder": "Search by reference, name or seller…",
+      "searchCta": "Search",
+      "searchClear": "Clear",
+      "searchEmpty": "No listing matches that search."
     },
     "auctions": {
       "eyebrow": "Auctions",
@@ -2124,6 +2236,7 @@
     }
   },
   "categories": {
+    "VEHICLE": "Vehicles",
     "TEXTILE": "Textile",
     "HOME": "Home goods",
     "STATIONERY": "Stationery",
@@ -2295,7 +2408,9 @@
       "signupCtaTitle": "Create a free account",
       "signupCtaBody": "Open a support ticket in a few clicks from your dashboard.",
       "emailCtaTitle": "Email us",
-      "emailCtaBody": "Our team responds within 24 business hours."
+      "emailCtaBody": "Our team responds within 24 business hours.",
+      "chatSoundOn": "Sound on",
+      "chatSoundOff": "Sound off"
     },
     "hero": {
       "eyebrow": "Sourcing · Marketplace · Certification",

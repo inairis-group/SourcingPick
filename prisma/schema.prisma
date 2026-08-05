@@ -109,6 +109,14 @@ enum KycStatus {
 
 // Internal identifiers in English — UI labels come from i18n dictionaries.
 enum Category {
+  /// Vehicles — cars, and by extension anything road-registrable.
+  ///
+  /// Note for anyone extending this: a vehicle is not a fungible SKU. The rest
+  /// of this model assumes interchangeable stock (`stockAvailable`, `moq`),
+  /// which holds for a new car but not a used one, where each unit is a
+  /// distinct item with its own VIN, mileage and history. See
+  /// docs/marketplace-vehicles.md before building on this.
+  VEHICLE
   TEXTILE
   HOME
   STATIONERY
@@ -714,6 +722,7 @@ model User {
   ordersAsAgent             Order[]                  @relation("OrderAgent")
   shipmentEvents            ShipmentEvent[]          @relation("ShipmentEventActor")
   shipmentQuotes            ShipmentQuote[]          @relation("ShipmentQuoteAuthor")
+  marketplaceReviews        MarketplaceReview[]      @relation("ReviewAuthorUser")
   authoredMessages          Message[]                @relation("MessageAuthor")
   threadParticipations      ThreadParticipant[]
   notifications             Notification[]
@@ -876,7 +885,8 @@ model Organization {
 
   creditTransactions CreditTransaction[]
 
-  shipmentsAsShipper Shipment[] @relation("ShipmentShipperOrg")
+  shipmentsAsShipper Shipment[]          @relation("ShipmentShipperOrg")
+  marketplaceReviews MarketplaceReview[] @relation("ReviewAuthorOrg")
 
   @@index([type, kycStatus, deletedAt])
   @@index([type, country])
@@ -1096,27 +1106,27 @@ model Quote {
 }
 
 model Order {
-  id               String          @id @default(cuid(2))
-  reference        String          @unique // ORD-XXXXX
-  quoteId          String          @unique
-  quote            Quote           @relation(fields: [quoteId], references: [id], onDelete: Restrict)
-  requestId        String
-  request          SourcingRequest @relation(fields: [requestId], references: [id], onDelete: Restrict)
-  clientOrgId      String
-  clientOrg        Organization    @relation("OrderClientOrg", fields: [clientOrgId], references: [id], onDelete: Restrict)
-  factoryOrgId     String
-  factoryOrg       Organization    @relation("OrderFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
-  agentId          String?
-  agent            User?           @relation("OrderAgent", fields: [agentId], references: [id], onDelete: SetNull)
-  totalCents       Int
-  depositCents     Int // 30% default
-  balanceCents     Int // 70% default
-  commissionCents  Int // platform margin — private
+  id                   String              @id @default(cuid(2))
+  reference            String              @unique // ORD-XXXXX
+  quoteId              String              @unique
+  quote                Quote               @relation(fields: [quoteId], references: [id], onDelete: Restrict)
+  requestId            String
+  request              SourcingRequest     @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  clientOrgId          String
+  clientOrg            Organization        @relation("OrderClientOrg", fields: [clientOrgId], references: [id], onDelete: Restrict)
+  factoryOrgId         String
+  factoryOrg           Organization        @relation("OrderFactoryOrg", fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  agentId              String?
+  agent                User?               @relation("OrderAgent", fields: [agentId], references: [id], onDelete: SetNull)
+  totalCents           Int
+  depositCents         Int // 30% default
+  balanceCents         Int // 70% default
+  commissionCents      Int // platform margin — private
   /// Partner #31: true when this order materialised from a sample-buy
   /// flow (single unit, sample price). Drives a "Sample" badge in the
   /// buyer + factory UIs and lets analytics distinguish sample orders
   /// from bulk in aggregates.
-  isSample         Boolean         @default(false)
+  isSample             Boolean             @default(false)
   /// Pricing-v3 Phase 4 — category-specific insurance covers the
   /// transaction at no extra cost. Defaults true for v1 (every order
   /// is covered). Admin can flip it off per-order later for
@@ -1124,30 +1134,37 @@ model Order {
   /// (firearms, large-volume liquids, etc.). Surfaced as an
   /// "Insured" badge on the buyer order page, on the quote PDF, and
   /// in confirmation emails.
-  insuranceCovered Boolean         @default(true)
-  status           OrderStatus     @default(PAYMENT_PENDING)
-  estimatedEta     DateTime?
-  shippedAt        DateTime?
+  insuranceCovered     Boolean             @default(true)
+  status               OrderStatus         @default(PAYMENT_PENDING)
+  estimatedEta         DateTime?
+  shippedAt            DateTime?
   /// Set when the buyer confirms physical receipt of the goods. Separate
   /// from `balancePaidAt` — both must be set for COMPLETED to be reached
   /// (CTO audit F1b). When the buyer confirms before paying the balance,
   /// this is recorded but the status stays at SHIPPED / IN_TRANSIT until
   /// the balance settles.
-  deliveredAt      DateTime?
+  deliveredAt          DateTime?
   /// Set by the payment finaliser when the balance wire / charge has
   /// reconciled. Together with `deliveredAt`, gates the transition into
   /// COMPLETED + factory payout (CTO audit F1b / F1c). Buyer-initiated
   /// COMPLETED is blocked while this is null.
-  balancePaidAt    DateTime?
-  trackingNumber   String?
-  trackingCarrier  String?
+  balancePaidAt        DateTime?
+  /// Marketplace purchases of a listing that has variants record which one
+  /// was bought. SetNull rather than Restrict: a factory retiring an option
+  /// must not be blocked by an order from last year, and the human-readable
+  /// record survives in the synthetic request's title either way.
+  marketplaceVariantId String?
+  marketplaceVariant   MarketplaceVariant? @relation("OrderVariant", fields: [marketplaceVariantId], references: [id], onDelete: SetNull)
+  trackingNumber       String?
+  trackingCarrier      String?
   /// Logistics leg handled by an Expéditeur Sourcing Pick. Optional: only
   /// orders routed through the shipper role have one.
-  shipment         Shipment?
-  trackingUrl      String?
-  deletedAt        DateTime?
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  shipment             Shipment?
+  marketplaceReviews   MarketplaceReview[] @relation("ReviewOrder")
+  trackingUrl          String?
+  deletedAt            DateTime?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
 
   invoices        Invoice[]
   escrows         EscrowTransaction[]
@@ -1294,6 +1311,17 @@ model MarketplaceProduct {
   condition              MarketplaceCondition     @default(NEW)
   moq                    Int
   stockAvailable         Int                      @default(0)
+  /// True when the listing IS one specific physical object rather than a
+  /// quantity of interchangeable ones — a used vehicle being the case that
+  /// forced this. Unique listings hold stock 1 and retire on sale instead of
+  /// decrementing, and they cannot carry variants: there is nothing to vary.
+  isUniqueItem           Boolean                  @default(false)
+  /// Denormalised rating aggregates. Kept on the row so listing cards and
+  /// sort-by-rating don't need an aggregate join per card; recomputed inside
+  /// the same transaction that publishes or hides a review, so they cannot
+  /// drift from MarketplaceReview.
+  ratingCount            Int                      @default(0)
+  ratingSum              Int                      @default(0)
   stockLowThreshold      Int?
   /// Canonical lead time in DAYS — used by order ETAs, filters, ranking.
   /// The factory may have entered it in months via the UI; conversion to
@@ -1313,6 +1341,9 @@ model MarketplaceProduct {
   /// queries filter on `testedAndApprovedAt IS NOT NULL`. Set via
   /// `adminMarkProductTestedAction` (AdminScope.MARKETPLACE).
   testedAndApprovedAt    DateTime?
+  variants               MarketplaceVariant[]
+  reviews                MarketplaceReview[]
+  vehicle                VehicleDetail?
   testedAndApprovedById  String?
   testedAndApprovedBy    User?                    @relation("MarketplaceProductTester", fields: [testedAndApprovedById], references: [id], onDelete: SetNull)
   /// Admin-block fields. Partner #1 — when admin temporarily blocks a
@@ -2057,6 +2088,25 @@ model GuestMessage {
   @@index([conversationId, createdAt])
 }
 
+/// =============================================================
+/// 1688 INTEGRATION — REMOVABLE STUB
+///
+/// Deliberately isolated so it can be deleted without touching anything else.
+/// See src/lib/integrations/vendor-1688/README.md for the removal checklist.
+///
+/// Note what is NOT here: no cached catalogue. Listings are proxied live from
+/// the provider and never persisted, so there is nothing to go stale and
+/// nothing of theirs stored. The only thing we keep is our own order record —
+/// because we have to be able to answer "what did this buyer purchase, at what
+/// price, and where is it" long after the listing has changed or vanished.
+///
+/// The org/user columns are plain Strings with NO relation to Organization or
+/// User. That costs referential integrity and is a deliberate trade: a
+/// relation would put a back-reference field on two core models, and removing
+/// this integration would then mean editing them. Here, removal is dropping
+/// two tables.
+/// =============================================================
+
 enum Vendor1688OrderStatus {
   /// Basket assembled on our side, nothing sent yet.
   DRAFT
@@ -2108,4 +2158,155 @@ model Vendor1688Order {
 
   @@index([clientOrgId, status])
   @@index([status, updatedAt])
+}
+
+/// =============================================================
+/// Marketplace: variants, reviews, vehicles
+/// =============================================================
+
+/// A purchasable option within a listing — "Blue / XL", "2 m cable".
+///
+/// Optional by design: a product with no variants behaves exactly as it did
+/// before, so nothing existing has to be migrated. When variants exist they
+/// own stock, and price falls back to the product when not overridden — most
+/// ranges are one price across every option, and repeating it per variant
+/// invites the two drifting apart.
+model MarketplaceVariant {
+  id                String             @id @default(cuid(2))
+  productId         String
+  product           MarketplaceProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+  /// Factory's own code. Optional; nullable so several variants may have none
+  /// (Postgres treats NULLs as distinct under the unique index below).
+  sku               String?
+  /// Display label, precomputed from `options` so lists don't rebuild it.
+  label             String
+  /// Ordered option pairs: [{ "name": "Colour", "value": "Blue" }, …].
+  /// Json rather than a table: options are display-only here, never queried
+  /// across products, and a normalised option/value pair of tables would be
+  /// three joins to render one card.
+  options           Json
+  /// Null = inherit the product price. Set = override for this option.
+  priceCentsClient  Int?
+  priceCentsFactory Int?
+  stockAvailable    Int                @default(0)
+  imageUrl          String?
+  position          Int                @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders Order[] @relation("OrderVariant")
+
+  @@unique([productId, sku])
+  @@index([productId, position])
+}
+
+enum ReviewStatus {
+  /// Awaiting moderation. Reviews are never published unseen — one libellous
+  /// or retaliatory review on a factory's listing is a legal problem.
+  PENDING
+  PUBLISHED
+  REJECTED
+}
+
+/// A buyer's rating of a listing.
+///
+/// Attributed to the ORGANISATION, not the individual: the buyer relationship
+/// is with the company, and one review per company per product stops a firm
+/// stacking five accounts onto one listing.
+model MarketplaceReview {
+  id           String             @id @default(cuid(2))
+  productId    String
+  product      MarketplaceProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+  authorOrgId  String
+  authorOrg    Organization       @relation("ReviewAuthorOrg", fields: [authorOrgId], references: [id], onDelete: Cascade)
+  authorUserId String?
+  authorUser   User?              @relation("ReviewAuthorUser", fields: [authorUserId], references: [id], onDelete: SetNull)
+
+  /// 1–5. Range is enforced in the action, not the DB — Prisma has no check
+  /// constraint, so the guard lives where the write happens.
+  rating Int
+  title  String?
+  body   String
+
+  /// The delivered order this review is tied to, when there is one. Its
+  /// presence is what makes a review "verified purchase"; absence is allowed
+  /// so a buyer who ordered off-platform can still be heard, clearly labelled.
+  orderId String?
+  order   Order?  @relation("ReviewOrder", fields: [orderId], references: [id], onDelete: SetNull)
+
+  status         ReviewStatus @default(PENDING)
+  moderatedById  String?
+  moderatedAt    DateTime?
+  /// Shown to the author when rejected, so moderation isn't a black hole.
+  moderationNote String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([productId, authorOrgId])
+  @@index([productId, status, createdAt])
+  @@index([status, createdAt])
+}
+
+enum VehicleFuel {
+  PETROL
+  DIESEL
+  HYBRID
+  PLUGIN_HYBRID
+  ELECTRIC
+  LPG
+  OTHER
+}
+
+enum VehicleTransmission {
+  MANUAL
+  AUTOMATIC
+}
+
+enum VehicleDrivetrain {
+  FWD
+  RWD
+  AWD
+}
+
+/// Vehicle-specific fields, 1:1 with a Category.VEHICLE listing.
+///
+/// A separate table rather than nullable columns on MarketplaceProduct: these
+/// are meaningless for the other nine categories, and eleven always-null
+/// columns on every textile listing is a worse trade than one join on the few
+/// listings that are cars.
+model VehicleDetail {
+  id        String             @id @default(cuid(2))
+  productId String             @unique
+  product   MarketplaceProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  /// Unique per physical car. Optional because a NEW-car listing can be a
+  /// build slot rather than a specific vehicle; required in practice for used
+  /// ones, which the action enforces.
+  vin          String?
+  makeName     String
+  modelName    String
+  year         Int
+  mileageKm    Int?
+  fuel         VehicleFuel
+  transmission VehicleTransmission
+  drivetrain   VehicleDrivetrain?
+  colour       String?
+  /// Engine displacement in cc, and power in kW — kW rather than hp because
+  /// it is what EU registration documents use.
+  engineCc     Int?
+  powerKw      Int?
+
+  /// EU Certificate of Conformity. Without it an imported car cannot be
+  /// registered in the EU, so this is a transaction blocker rather than a
+  /// nice-to-have — surfaced prominently on the listing.
+  hasCoc       Boolean @default(false)
+  cocReference String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([makeName, modelName, year])
+  @@index([vin])
 }

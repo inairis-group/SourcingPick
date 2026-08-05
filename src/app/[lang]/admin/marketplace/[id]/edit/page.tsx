@@ -6,6 +6,7 @@ import { requireAdminScope } from "@/lib/permissions/admin-scopes";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { ProductForm } from "@/app/[lang]/factory/catalogue/_components/product-form";
+import { VariantsEditor } from "@/app/[lang]/factory/catalogue/[id]/_components/variants-editor";
 import { TestVideoUploader } from "@/app/[lang]/admin/marketplace/_components/test-video-uploader";
 
 /**
@@ -62,8 +63,38 @@ export default async function AdminEditListingPage({
       incoterm: true,
       sampleAvailable: true,
       samplePriceCentsClient: true,
+      isUniqueItem: true,
+      vehicle: {
+        select: {
+          vin: true,
+          makeName: true,
+          modelName: true,
+          year: true,
+          mileageKm: true,
+          fuel: true,
+          transmission: true,
+          drivetrain: true,
+          colour: true,
+          engineCc: true,
+          powerKw: true,
+          hasCoc: true,
+          cocReference: true,
+        },
+      },
       images: true,
       status: true,
+      variants: {
+        select: {
+          id: true,
+          label: true,
+          sku: true,
+          options: true,
+          priceCentsFactory: true,
+          stockAvailable: true,
+          imageUrl: true,
+        },
+        orderBy: { position: "asc" },
+      },
       factoryOrg: { select: { displayName: true } },
     },
   });
@@ -134,8 +165,17 @@ export default async function AdminEditListingPage({
           incoterm: product.incoterm,
           sampleAvailable: product.sampleAvailable,
           samplePriceCentsClient: product.samplePriceCentsClient,
+          isUniqueItem: product.isUniqueItem,
+          vehicle: product.vehicle,
           existingImages: imageUrls,
         }}
+      />
+
+      <VariantsEditor
+        productId={product.id}
+        variants={product.variants}
+        isUniqueItem={product.isUniqueItem}
+        actorVariant="admin"
       />
     </div>
   );

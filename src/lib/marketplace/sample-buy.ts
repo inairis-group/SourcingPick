@@ -40,6 +40,7 @@ import { clampDepositBps } from "./buy-helpers";
 
 const SampleBuySchema = z.object({
   productId: z.string().min(1),
+  variantId: z.union([z.string().min(1), z.literal("")]).optional(),
   deliveryStreet: z.string().trim().min(3).max(200),
   deliveryPostalCode: z.string().trim().min(2).max(20),
   deliveryCity: z.string().trim().min(2).max(100),
@@ -60,6 +61,7 @@ export async function buySampleAction(
 
   const parsed = SampleBuySchema.safeParse({
     productId: formData.get("productId"),
+    variantId: formData.get("variantId") ?? "",
     deliveryStreet: formData.get("deliveryStreet"),
     deliveryPostalCode: formData.get("deliveryPostalCode"),
     deliveryCity: formData.get("deliveryCity"),
@@ -89,10 +91,30 @@ export async function buySampleAction(
       factoryOrgId: true,
       depositPercentageBps: true,
       incoterm: true,
+      variants: { select: { id: true, label: true, stockAvailable: true } },
     },
   });
   if (!product) {
     return { error: "Product not found or sample unavailable." };
+  }
+
+  /**
+   * A sample of a listing with options is a sample of one of them — the
+   * buyer has to say which, or the factory guesses and ships the wrong
+   * colour. The sample price itself stays listing-level: it covers the cost
+   * of sending one unit, not the unit's own price.
+   */
+  const variant = parsed.data.variantId
+    ? (product.variants.find((v) => v.id === parsed.data.variantId) ?? null)
+    : null;
+  if (parsed.data.variantId && !variant) {
+    return { error: "That option is no longer available." };
+  }
+  if (product.variants.length > 0 && !variant) {
+    return { error: "Choose an option before ordering a sample." };
+  }
+  if (variant && variant.stockAvailable < 1) {
+    return { error: "Out of stock — no sample available." };
   }
   if (
     !product.samplePriceCentsClient ||
@@ -130,6 +152,14 @@ export async function buySampleAction(
   let orderId: string;
   try {
     orderId = await prisma.$transaction(async (tx) => {
+      if (variant) {
+        const variantUpdate = await tx.marketplaceVariant.updateMany({
+          where: { id: variant.id, stockAvailable: { gte: 1 } },
+          data: { stockAvailable: { decrement: 1 } },
+        });
+        if (variantUpdate.count === 0) throw new Error("OUT_OF_STOCK");
+      }
+
       const stockUpdate = await tx.marketplaceProduct.updateMany({
         where: {
           id: product.id,
@@ -150,7 +180,9 @@ export async function buySampleAction(
           reference: reqReference,
           clientOrgId: user.organizationId,
           createdByUserId: user.id,
-          title: `${product.name} (sample)`,
+          title: variant
+            ? `${product.name} — ${variant.label} (sample)`
+            : `${product.name} (sample)`,
           category: product.category,
           quantity: 1,
           deadline,
@@ -206,6 +238,7 @@ export async function buySampleAction(
           commissionCents,
           status: OrderStatus.PAYMENT_PENDING,
           isSample: true,
+          marketplaceVariantId: variant?.id ?? null,
         },
         select: { id: true },
       });

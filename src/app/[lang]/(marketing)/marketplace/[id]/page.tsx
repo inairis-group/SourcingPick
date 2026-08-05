@@ -15,6 +15,16 @@ import {
   ListingPrice,
 } from "@/components/marketplace/listing-price";
 import { MediaGrid } from "@/components/attachments/media-grid";
+import { formatEUR } from "@/lib/i18n/formatters";
+import { RatingStars } from "@/components/marketplace/rating-stars";
+import { ReviewList } from "@/components/marketplace/review-list";
+import { VehicleSpecs } from "@/components/marketplace/vehicle-specs";
+import { ReviewForm } from "./_components/review-form";
+import { averageRating, priceRangeCents } from "@/lib/marketplace/variants";
+import {
+  canReviewProduct,
+  getPublishedReviews,
+} from "@/lib/marketplace/reviews";
 import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
@@ -58,6 +68,21 @@ export default async function PublicMarketplaceProductPage({
       leadTimeUnit: true,
       certifications: true,
       images: true,
+      ratingCount: true,
+      ratingSum: true,
+      isUniqueItem: true,
+      vehicle: true,
+      variants: {
+        orderBy: { position: "asc" },
+        select: {
+          id: true,
+          label: true,
+          options: true,
+          priceCentsClient: true,
+          stockAvailable: true,
+          imageUrl: true,
+        },
+      },
       factoryOrg: {
         select: {
           id: true,
@@ -78,6 +103,13 @@ export default async function PublicMarketplaceProductPage({
       data: { viewsCount: { increment: 1 } },
     })
     .catch(() => { });
+
+  const mkt = dict.publicMarketplace as unknown as Record<string, string>;
+  const rating = averageRating(product.ratingSum, product.ratingCount);
+  const reviews = await getPublishedReviews(product.id);
+  // Resolves to false for signed-out visitors and for anyone who already
+  // reviewed, so the form simply isn't rendered rather than failing on submit.
+  const mayReview = await canReviewProduct(product.id);
 
   const imageUrls = product.images.map(
     (_, i) => `/api/marketplace/image/${product.id}/${i}`,
@@ -205,6 +237,76 @@ export default async function PublicMarketplaceProductPage({
           </div>
         </div>
       </div>
+
+      {product.vehicle && (
+        <VehicleSpecs vehicle={product.vehicle} lang={lang} dict={dict} />
+      )}
+
+      {product.variants.length > 0 && (
+        <section className="border-line bg-surface mt-8 rounded-lg border p-5">
+          <h2 className="text-headline mb-4 text-sm font-semibold">
+            {mkt.variantsTitle}
+          </h2>
+          <ul className="flex flex-col gap-2">
+            {product.variants.map((v) => (
+              <li
+                key={v.id}
+                className="border-line-subtle flex items-center justify-between gap-4 border-b py-2 text-sm last:border-b-0"
+              >
+                <span className="text-fg flex min-w-0 items-center gap-3">
+                  {v.imageUrl && (
+                    // Decorative: the label right beside it already names the
+                    // option, so an alt would just repeat it to a screen reader.
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={v.imageUrl}
+                      alt=""
+                      className="border-line h-10 w-10 shrink-0 rounded-md border object-cover"
+                    />
+                  )}
+                  <span className="truncate">{v.label}</span>
+                </span>
+                <span className="text-muted flex items-center gap-4">
+                  <span className="tabular-nums">
+                    {formatEUR(
+                      (v.priceCentsClient ?? product.priceCentsClient) / 100,
+                      lang,
+                    )}
+                  </span>
+                  <span className="text-faint tabular-nums">
+                    {v.stockAvailable}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section className="border-line bg-surface mt-8 rounded-lg border p-5">
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          <h2 className="text-headline text-sm font-semibold">
+            {mkt.reviewsTitle}
+          </h2>
+          <RatingStars
+            average={rating}
+            count={product.ratingCount}
+            countLabel={mkt.reviewsCount}
+            size="md"
+          />
+        </div>
+
+        <ReviewList reviews={reviews} lang={lang} copy={mkt} />
+
+        {mayReview && (
+          <div className="border-line-subtle mt-6 border-t pt-5">
+            <h3 className="text-headline mb-3 text-sm font-semibold">
+              {mkt.writeReview}
+            </h3>
+            <ReviewForm productId={product.id} copy={mkt} />
+          </div>
+        )}
+      </section>
 
       <MediaGrid
         contextType={AttachmentContext.MARKETPLACE_PRODUCT}

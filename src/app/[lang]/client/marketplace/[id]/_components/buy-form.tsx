@@ -25,12 +25,21 @@ const INCOTERMS: Incoterm[] = [
 
 const INITIAL: BuyResult = {};
 
+export type BuyVariant = {
+  id: string;
+  label: string;
+  priceCentsClient: number | null;
+  stockAvailable: number;
+  imageUrl: string | null;
+};
+
 export function BuyForm({
   productId,
   moq,
   stockAvailable,
   defaultIncoterm,
   unitPriceCentsClient,
+  variants = [],
   lang,
 }: {
   productId: string;
@@ -38,6 +47,9 @@ export function BuyForm({
   stockAvailable: number;
   defaultIncoterm: Incoterm;
   unitPriceCentsClient: number;
+  /// Empty for a listing without options. When present one must be chosen —
+  /// the server refuses a purchase that doesn't name one.
+  variants?: BuyVariant[];
   lang: string;
 }) {
   const dict = useDictionary();
@@ -47,13 +59,59 @@ export function BuyForm({
     INITIAL,
   );
   const [qty, setQty] = useState(Math.max(moq, 1));
+  // Preselect the first option that is actually in stock, so the default
+  // choice is one the buyer can complete.
+  const [variantId, setVariantId] = useState(
+    () => variants.find((v) => v.stockAvailable > 0)?.id ?? variants[0]?.id ?? "",
+  );
 
-  const totalCents = qty * unitPriceCentsClient;
+  const variant = variants.find((v) => v.id === variantId) ?? null;
+  // Price and stock follow the option once there are options — the same rule
+  // the server applies, so the total on screen is the total charged.
+  const unitCents = variant?.priceCentsClient ?? unitPriceCentsClient;
+  const maxQty = variant ? variant.stockAvailable : stockAvailable;
+  const totalCents = qty * unitCents;
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
       {state.error && <FormError>{state.error}</FormError>}
       <input type="hidden" name="productId" value={productId} />
+      <input type="hidden" name="variantId" value={variantId} />
+
+      {variants.length > 0 && (
+        <Field label={dict.publicMarketplace.variantsTitle} required>
+          <div className="flex items-center gap-3">
+            {/* Confirms what's actually being bought — a dropdown of
+                "Red / XL" tells you less than the thing itself. */}
+            {variant?.imageUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={variant.imageUrl}
+                alt=""
+                className="border-line h-11 w-11 shrink-0 rounded-md border object-cover"
+              />
+            )}
+            <div className="min-w-0 flex-1">
+          <Select
+            value={variantId}
+            onChange={setVariantId}
+            options={variants.map((v) => ({
+              value: v.id,
+              label: v.label,
+              // Sold-out options stay listed rather than disappearing: the
+              // buyer looking for "Red / XL" should be told it's gone, not
+              // left wondering whether it ever existed.
+              disabled: v.stockAvailable === 0,
+              description:
+                v.stockAvailable === 0
+                  ? dict.client.marketplace.outOfStock
+                  : undefined,
+            }))}
+          />
+            </div>
+          </div>
+        </Field>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Field
@@ -70,7 +128,7 @@ export function BuyForm({
             name="quantity"
             inputMode="numeric"
             min={Math.max(moq, 1)}
-            max={stockAvailable}
+            max={maxQty}
             required
             value={qty}
             onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 0))}

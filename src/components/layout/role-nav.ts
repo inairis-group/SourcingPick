@@ -10,6 +10,7 @@ import {
   Settings01Icon,
   ShoppingBag01Icon,
   ShoppingBag03Icon,
+  StarIcon,
   Store01Icon,
   TaskDone01Icon,
   UserGroup02Icon,
@@ -281,6 +282,13 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               label: dict.admin.marketplace.title,
               icon: Store01Icon,
               primary: true,
+            },
+            {
+              // The moderation queue is a daily job, not a settings page —
+              // it needs a nav entry or reviews sit pending unseen.
+              href: `${base}/admin/marketplace/reviews`,
+              label: dict.publicMarketplace.moderationTitle,
+              icon: StarIcon,
             },
             {
               href: `${base}/admin/auctions`,

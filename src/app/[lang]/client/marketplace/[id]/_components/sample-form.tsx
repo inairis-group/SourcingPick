@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Field } from "@/components/ui/field";
 import { FormError } from "@/components/ui/form-error";
 import { buySampleAction } from "@/lib/marketplace/sample-buy";
@@ -17,17 +18,43 @@ const INITIAL: { error?: string } = {};
 export function SampleForm({
   productId,
   samplePriceLabel,
+  variants = [],
 }: {
   productId: string;
   samplePriceLabel: string;
+  /// A sample of a listing with options is a sample of one of them, so the
+  /// same picker appears here as on the bulk form.
+  variants?: { id: string; label: string; stockAvailable: number }[];
 }) {
   const dict = useDictionary();
   const [state, formAction, pending] = useActionState(buySampleAction, INITIAL);
+  const [variantId, setVariantId] = useState(
+    () => variants.find((v) => v.stockAvailable > 0)?.id ?? variants[0]?.id ?? "",
+  );
 
   return (
     <form action={formAction} className="flex flex-col gap-3">
       {state?.error && <FormError>{state.error}</FormError>}
       <input type="hidden" name="productId" value={productId} />
+      <input type="hidden" name="variantId" value={variantId} />
+
+      {variants.length > 0 && (
+        <Field label={dict.publicMarketplace.variantsTitle} required>
+          <Select
+            value={variantId}
+            onChange={setVariantId}
+            options={variants.map((v) => ({
+              value: v.id,
+              label: v.label,
+              disabled: v.stockAvailable === 0,
+              description:
+                v.stockAvailable === 0
+                  ? dict.client.marketplace.outOfStock
+                  : undefined,
+            }))}
+          />
+        </Field>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Field

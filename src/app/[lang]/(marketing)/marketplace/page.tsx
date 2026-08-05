@@ -21,6 +21,12 @@ import { MarketplaceInDevelopmentBanner } from "@/components/marketplace/in-deve
 import { AuctionTeaserRail } from "@/components/auctions/teaser-rail";
 import { LoadMoreNudge } from "./_components/load-more-nudge";
 import { MarketplaceFilters } from "./_components/filters";
+import {
+  readVehicleFacets,
+  vehicleWhere,
+} from "@/lib/marketplace/vehicle-filter";
+import { RatingStars } from "@/components/marketplace/rating-stars";
+import { averageRating } from "@/lib/marketplace/variants";
 
 const PUBLIC_LIMIT = 20;
 
@@ -60,6 +66,31 @@ export default async function PublicMarketplacePage({
 
   // Fetch one extra to detect whether there are more products beyond the
   // public window — drives the "load more" / sign-up nudge.
+  // Car facets are read for every request but only bite when set, so a
+  // non-vehicle search pays nothing for them.
+  const facets = readVehicleFacets(search);
+  const vehicleFilter = vehicleWhere(facets);
+
+  /**
+   * Makes on offer, not makes that exist. Derived from published vehicle
+   * listings so the dropdown can't promise a brand we don't carry.
+   */
+  const makeRows =
+    category === Category.VEHICLE
+      ? await prisma.vehicleDetail.findMany({
+          where: {
+            product: {
+              status: MarketplaceProductStatus.PUBLISHED,
+              testedAndApprovedAt: { not: null },
+            },
+          },
+          select: { makeName: true },
+          distinct: ["makeName"],
+          orderBy: { makeName: "asc" },
+        })
+      : [];
+  const makes = makeRows.map((m) => m.makeName);
+
   const products = await prisma.marketplaceProduct.findMany({
     where: {
       status: MarketplaceProductStatus.PUBLISHED,
@@ -69,6 +100,7 @@ export default async function PublicMarketplacePage({
       testedAndApprovedAt: { not: null },
       ...(category ? { category } : {}),
       ...(condition ? { condition } : {}),
+      ...vehicleFilter,
       // Compose "deals only" + free-text search via AND so each can carry
       // its own OR-list. Without this, the second `OR` would silently
       // replace the first under Prisma's WHERE-merge semantics.
@@ -108,6 +140,8 @@ export default async function PublicMarketplacePage({
       reference: true,
       name: true,
       category: true,
+      ratingCount: true,
+      ratingSum: true,
       priceCentsClient: true,
       compareAtCents: true,
       flashSaleEndsAt: true,
@@ -145,6 +179,14 @@ export default async function PublicMarketplacePage({
         condition={condition}
         deals={dealsOnly}
         query={rawQuery}
+        makes={makes}
+        vehicle={{
+          make: facets.make,
+          fuel: facets.fuel ?? "",
+          transmission: facets.transmission ?? "",
+          yearMin: facets.yearMin ? String(facets.yearMin) : "",
+          kmMax: facets.kmMax ? String(facets.kmMax) : "",
+        }}
       />
 
       <DeliveryEtaNotice dict={dict} />
@@ -197,6 +239,14 @@ export default async function PublicMarketplacePage({
                     <p className="text-xs text-muted mt-0.5">
                       {p.factoryOrg.displayName} · {p.factoryOrg.country}
                     </p>
+                    {/* Renders nothing when a listing has no reviews — five
+                        empty stars would read as "rated zero". */}
+                    <RatingStars
+                      average={averageRating(p.ratingSum, p.ratingCount)}
+                      count={p.ratingCount}
+                      countLabel={dict.publicMarketplace.reviewsCount}
+                      className="mt-1.5"
+                    />
                   </div>
                   <div className="flex items-end justify-between gap-2 pt-2 border-t border-line-subtle">
                     <ListingPrice

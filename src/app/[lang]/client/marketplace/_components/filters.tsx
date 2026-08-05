@@ -4,7 +4,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Category, MarketplaceCondition } from "@prisma/client";
 import { useDictionary } from "@/lib/i18n/client-provider";
-import { MarketplaceFilterBar } from "@/app/[lang]/(marketing)/marketplace/_components/filters";
+import {
+  EMPTY_VEHICLE_FACETS,
+  MarketplaceFilterBar,
+  type VehicleFacetValues,
+} from "@/app/[lang]/(marketing)/marketplace/_components/filters";
 
 const CATEGORIES = Object.values(Category);
 const CONDITIONS = Object.values(MarketplaceCondition);
@@ -15,12 +19,16 @@ export function MarketplaceFilters({
   condition,
   deals,
   query,
+  makes = [],
+  vehicle = EMPTY_VEHICLE_FACETS,
 }: {
   lang: string;
   category?: Category;
   condition?: MarketplaceCondition;
   deals?: boolean;
   query: string;
+  makes?: string[];
+  vehicle?: VehicleFacetValues;
 }) {
   const dict = useDictionary();
   const router = useRouter();
@@ -32,8 +40,13 @@ export function MarketplaceFilters({
     category?: string;
     condition?: string;
     deals?: boolean;
+    vehicle?: Partial<VehicleFacetValues>;
   }) => {
     const sp = new URLSearchParams(params.toString());
+    for (const [key, value] of Object.entries(next.vehicle ?? {})) {
+      if (value) sp.set(key, value);
+      else sp.delete(key);
+    }
     if (next.q !== undefined) {
       if (next.q) sp.set("q", next.q);
       else sp.delete("q");
@@ -70,7 +83,19 @@ export function MarketplaceFilters({
       draftQuery={draftQuery}
       onDraftQueryChange={setDraftQuery}
       onSearch={onSearch}
-      onCategoryChange={(v) => router.push(buildHref({ category: v }))}
+      makes={makes}
+      vehicle={vehicle}
+      onVehicleChange={(patch) => router.push(buildHref({ vehicle: patch }))}
+      onCategoryChange={(v) =>
+        router.push(
+          buildHref({
+            category: v,
+            ...(v === Category.VEHICLE
+              ? {}
+              : { vehicle: EMPTY_VEHICLE_FACETS }),
+          }),
+        )
+      }
       onConditionChange={(v) => router.push(buildHref({ condition: v }))}
       onDealsChange={(v) => router.push(buildHref({ deals: v }))}
     />

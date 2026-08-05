@@ -14,6 +14,9 @@ import {
   MarketplaceProductStatus,
   NotificationType,
   Role,
+  VehicleDrivetrain,
+  VehicleFuel,
+  VehicleTransmission,
 } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
@@ -82,6 +85,12 @@ const ProductInputSchema = z
     flashSaleEndsAt: z
       .union([z.coerce.date(), z.literal("")])
       .optional(),
+    /// One-of-a-kind listing — a specific used car, a single machine. The
+    /// quantity isn't a stock level, it's "this exact thing". Forces stock
+    /// to 1, forbids variants, and retires the listing once it sells.
+    isUniqueItem: z
+      .union([z.literal("on"), z.literal("true"), z.literal("")])
+      .optional(),
   })
   .refine(
     (d) =>
@@ -100,6 +109,124 @@ const ProductInputSchema = z
       message: "Flash sale end must be in the future.",
     },
   );
+
+/**
+ * §VEHICLE — a car listing carries facts a generic product doesn't have, and
+ * a buyer cannot assess one without them. Make, model, year, mileage, fuel and
+ * transmission are therefore required; everything else is optional because a
+ * factory may genuinely not have it to hand.
+ *
+ * The CoC (Certificate of Conformity) is the field with real consequences: no
+ * CoC, no EU registration. We record it rather than infer it, and the buyer-
+ * facing spec block states its absence plainly instead of leaving a blank.
+ */
+const VehicleInputSchema = z.object({
+  /// ISO 3779 VIN — 17 characters, and I/O/Q are excluded from the alphabet
+  /// precisely because they're confusable with 1/0. Optional (a pre-production
+  /// or not-yet-built unit has none) but checked when supplied, since a typo'd
+  /// VIN is worse than no VIN.
+  vin: z
+    .union([
+      z
+        .string()
+        .trim()
+        .toUpperCase()
+        .regex(/^[A-HJ-NPR-Z0-9]{17}$/, "A VIN is 17 characters (no I, O or Q)."),
+      z.literal(""),
+    ])
+    .optional(),
+  makeName: z.string().trim().min(1, "Make is required.").max(60),
+  modelName: z.string().trim().min(1, "Model is required.").max(80),
+  year: z.coerce
+    .number()
+    .int()
+    .min(1900, "Year looks wrong.")
+    .max(new Date().getFullYear() + 2, "Year looks wrong."),
+  mileageKm: z.coerce.number().int().nonnegative().max(3_000_000),
+  fuel: z.enum(VehicleFuel),
+  transmission: z.enum(VehicleTransmission),
+  drivetrain: z.union([z.enum(VehicleDrivetrain), z.literal("")]).optional(),
+  colour: z.union([z.string().trim().max(40), z.literal("")]).optional(),
+  engineCc: z
+    .union([z.coerce.number().int().positive().max(30_000), z.literal("")])
+    .optional(),
+  powerKw: z
+    .union([z.coerce.number().int().positive().max(2_000), z.literal("")])
+    .optional(),
+  hasCoc: z
+    .union([z.literal("on"), z.literal("true"), z.literal("")])
+    .optional(),
+  cocReference: z.union([z.string().trim().max(60), z.literal("")]).optional(),
+});
+
+type VehicleWriteData = {
+  vin: string | null;
+  makeName: string;
+  modelName: string;
+  year: number;
+  mileageKm: number;
+  fuel: VehicleFuel;
+  transmission: VehicleTransmission;
+  drivetrain: VehicleDrivetrain | null;
+  colour: string | null;
+  engineCc: number | null;
+  powerKw: number | null;
+  hasCoc: boolean;
+  cocReference: string | null;
+};
+
+const blankToNull = (v: string | number | undefined): string | null =>
+  typeof v === "string" && v.trim() !== "" ? v.trim() : null;
+
+/**
+ * Reads the vehicle block off the form. Returns `null` for non-vehicle
+ * categories — the caller then clears any VehicleDetail left behind by a
+ * category change, so a listing re-categorised away from VEHICLE doesn't keep
+ * stale mileage attached to it.
+ */
+function parseVehicle(
+  formData: FormData,
+  category: Category,
+): { data: VehicleWriteData | null } | { error: string } {
+  if (category !== Category.VEHICLE) return { data: null };
+
+  const parsed = VehicleInputSchema.safeParse({
+    vin: formData.get("vin") ?? "",
+    makeName: formData.get("makeName") ?? "",
+    modelName: formData.get("modelName") ?? "",
+    year: formData.get("year") ?? "",
+    mileageKm: formData.get("mileageKm") ?? "0",
+    fuel: formData.get("fuel") ?? "",
+    transmission: formData.get("transmission") ?? "",
+    drivetrain: formData.get("drivetrain") ?? "",
+    colour: formData.get("colour") ?? "",
+    engineCc: formData.get("engineCc") ?? "",
+    powerKw: formData.get("powerKw") ?? "",
+    hasCoc: formData.get("hasCoc") ?? "",
+    cocReference: formData.get("cocReference") ?? "",
+  });
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Invalid vehicle data." };
+  }
+  const v = parsed.data;
+  return {
+    data: {
+      vin: blankToNull(v.vin),
+      makeName: v.makeName,
+      modelName: v.modelName,
+      year: v.year,
+      mileageKm: v.mileageKm,
+      fuel: v.fuel,
+      transmission: v.transmission,
+      drivetrain: v.drivetrain === "" || !v.drivetrain ? null : v.drivetrain,
+      colour: blankToNull(v.colour),
+      engineCc: typeof v.engineCc === "number" ? v.engineCc : null,
+      powerKw: typeof v.powerKw === "number" ? v.powerKw : null,
+      hasCoc: v.hasCoc === "on" || v.hasCoc === "true",
+      cocReference: blankToNull(v.cocReference),
+    },
+  };
+}
 
 function computeClientPriceCents(priceCentsFactory: number): number {
   return applyBuyerMarkup(priceCentsFactory, "marketplace");
@@ -154,10 +281,20 @@ export async function createProductAction(
     samplePriceEur: formData.get("samplePriceEur") ?? "",
     compareAtEur: formData.get("compareAtEur") ?? "",
     flashSaleEndsAt: formData.get("flashSaleEndsAt") ?? "",
+    isUniqueItem: formData.get("isUniqueItem") ?? "",
   });
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
+
+  const vehicle = parseVehicle(formData, parsed.data.category);
+  if ("error" in vehicle) return { error: vehicle.error };
+
+  const isUniqueItem =
+    parsed.data.isUniqueItem === "on" || parsed.data.isUniqueItem === "true";
+  // A one-of-a-kind listing has a quantity of exactly one by definition, so we
+  // set it rather than ask the seller to keep two answers consistent.
+  const stockAvailable = isUniqueItem ? 1 : parsed.data.stockAvailable;
 
   const priceCentsFactory = Math.round(parsed.data.priceEur * 100);
   const priceCentsClient = computeClientPriceCents(priceCentsFactory);
@@ -196,7 +333,8 @@ export async function createProductAction(
           ? Math.round(parsed.data.samplePriceEur * 100)
           : null,
       moq: parsed.data.moq,
-      stockAvailable: parsed.data.stockAvailable,
+      stockAvailable,
+      isUniqueItem,
       stockLowThreshold:
         typeof parsed.data.stockLowThreshold === "number"
           ? parsed.data.stockLowThreshold
@@ -207,6 +345,7 @@ export async function createProductAction(
       ),
       leadTimeUnit: parsed.data.leadTimeUnit,
       certifications: parseCerts(parsed.data.certifications),
+      ...(vehicle.data ? { vehicle: { create: vehicle.data } } : {}),
       status: MarketplaceProductStatus.DRAFT,
     },
     select: { id: true },
@@ -294,7 +433,14 @@ export async function updateProductAction(
 
   const existing = await prisma.marketplaceProduct.findFirst({
     where: { id: productId, factoryOrgId: factory.organizationId },
-    select: { id: true, status: true, images: true, reference: true, name: true },
+    select: {
+      id: true,
+      status: true,
+      images: true,
+      reference: true,
+      name: true,
+      vehicle: { select: { id: true } },
+    },
   });
   if (!existing) return { error: "Product not found." };
   if (existing.status === MarketplaceProductStatus.ARCHIVED) {
@@ -321,10 +467,20 @@ export async function updateProductAction(
     samplePriceEur: formData.get("samplePriceEur") ?? "",
     compareAtEur: formData.get("compareAtEur") ?? "",
     flashSaleEndsAt: formData.get("flashSaleEndsAt") ?? "",
+    isUniqueItem: formData.get("isUniqueItem") ?? "",
   });
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
+
+  const vehicle = parseVehicle(formData, parsed.data.category);
+  if ("error" in vehicle) return { error: vehicle.error };
+
+  const isUniqueItem =
+    parsed.data.isUniqueItem === "on" || parsed.data.isUniqueItem === "true";
+  // A one-of-a-kind listing has a quantity of exactly one by definition, so we
+  // set it rather than ask the seller to keep two answers consistent.
+  const stockAvailable = isUniqueItem ? 1 : parsed.data.stockAvailable;
 
   const priceCentsFactory = Math.round(parsed.data.priceEur * 100);
   const priceCentsClient = computeClientPriceCents(priceCentsFactory);
@@ -378,7 +534,8 @@ export async function updateProductAction(
           ? Math.round(parsed.data.samplePriceEur * 100)
           : null,
       moq: parsed.data.moq,
-      stockAvailable: parsed.data.stockAvailable,
+      stockAvailable,
+      isUniqueItem,
       stockLowThreshold:
         typeof parsed.data.stockLowThreshold === "number"
           ? parsed.data.stockLowThreshold
@@ -390,6 +547,20 @@ export async function updateProductAction(
       leadTimeUnit: parsed.data.leadTimeUnit,
       certifications: parseCerts(parsed.data.certifications),
       images: storedUrls,
+      // Upsert on the way in, delete on the way out: a listing edited from
+      // VEHICLE to another category must not keep a mileage reading attached.
+      ...(vehicle.data
+        ? {
+            vehicle: {
+              upsert: { create: vehicle.data, update: vehicle.data },
+            },
+          }
+        : existing.vehicle
+          ? { vehicle: { delete: true } }
+          : {}),
+      // Variants describe interchangeable units; a unique item has none. Drop
+      // them here so the flag can't be set with orphans left behind.
+      ...(isUniqueItem ? { variants: { deleteMany: {} } } : {}),
       // Status flow per partner item #4:
       //   REJECTED → DRAFT (factory iterates before resubmit)
       //   PUBLISHED / OUT_OF_STOCK → PENDING_REVIEW (re-review request)
@@ -506,6 +677,7 @@ export async function adminUpdateProductAction(
       reference: true,
       name: true,
       factoryOrgId: true,
+      vehicle: { select: { id: true } },
     },
   });
   if (!existing) return { error: "Product not found." };
@@ -531,10 +703,20 @@ export async function adminUpdateProductAction(
     samplePriceEur: formData.get("samplePriceEur") ?? "",
     compareAtEur: formData.get("compareAtEur") ?? "",
     flashSaleEndsAt: formData.get("flashSaleEndsAt") ?? "",
+    isUniqueItem: formData.get("isUniqueItem") ?? "",
   });
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
+
+  const vehicle = parseVehicle(formData, parsed.data.category);
+  if ("error" in vehicle) return { error: vehicle.error };
+
+  const isUniqueItem =
+    parsed.data.isUniqueItem === "on" || parsed.data.isUniqueItem === "true";
+  // A one-of-a-kind listing has a quantity of exactly one by definition, so we
+  // set it rather than ask the seller to keep two answers consistent.
+  const stockAvailable = isUniqueItem ? 1 : parsed.data.stockAvailable;
 
   const priceCentsFactory = Math.round(parsed.data.priceEur * 100);
   const priceCentsClient = computeClientPriceCents(priceCentsFactory);
@@ -587,7 +769,8 @@ export async function adminUpdateProductAction(
           ? Math.round(parsed.data.samplePriceEur * 100)
           : null,
       moq: parsed.data.moq,
-      stockAvailable: parsed.data.stockAvailable,
+      stockAvailable,
+      isUniqueItem,
       stockLowThreshold:
         typeof parsed.data.stockLowThreshold === "number"
           ? parsed.data.stockLowThreshold
@@ -599,6 +782,20 @@ export async function adminUpdateProductAction(
       leadTimeUnit: parsed.data.leadTimeUnit,
       certifications: parseCerts(parsed.data.certifications),
       images: storedUrls,
+      // Upsert on the way in, delete on the way out: a listing edited from
+      // VEHICLE to another category must not keep a mileage reading attached.
+      ...(vehicle.data
+        ? {
+            vehicle: {
+              upsert: { create: vehicle.data, update: vehicle.data },
+            },
+          }
+        : existing.vehicle
+          ? { vehicle: { delete: true } }
+          : {}),
+      // Variants describe interchangeable units; a unique item has none. Drop
+      // them here so the flag can't be set with orphans left behind.
+      ...(isUniqueItem ? { variants: { deleteMany: {} } } : {}),
       // Admin edits don't trigger re-review — admin is authoritative.
     },
   });
@@ -775,10 +972,20 @@ export async function adminCreateProductAction(
     samplePriceEur: formData.get("samplePriceEur") ?? "",
     compareAtEur: formData.get("compareAtEur") ?? "",
     flashSaleEndsAt: formData.get("flashSaleEndsAt") ?? "",
+    isUniqueItem: formData.get("isUniqueItem") ?? "",
   });
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
+
+  const vehicle = parseVehicle(formData, parsed.data.category);
+  if ("error" in vehicle) return { error: vehicle.error };
+
+  const isUniqueItem =
+    parsed.data.isUniqueItem === "on" || parsed.data.isUniqueItem === "true";
+  // A one-of-a-kind listing has a quantity of exactly one by definition, so we
+  // set it rather than ask the seller to keep two answers consistent.
+  const stockAvailable = isUniqueItem ? 1 : parsed.data.stockAvailable;
 
   const priceCentsFactory = Math.round(parsed.data.priceEur * 100);
   const priceCentsClient = computeClientPriceCents(priceCentsFactory);
@@ -815,7 +1022,8 @@ export async function adminCreateProductAction(
           ? Math.round(parsed.data.samplePriceEur * 100)
           : null,
       moq: parsed.data.moq,
-      stockAvailable: parsed.data.stockAvailable,
+      stockAvailable,
+      isUniqueItem,
       stockLowThreshold:
         typeof parsed.data.stockLowThreshold === "number"
           ? parsed.data.stockLowThreshold
@@ -830,6 +1038,7 @@ export async function adminCreateProductAction(
       // still need to be approved, but that's an explicit admin click —
       // we don't auto-publish even when admin authored, to keep the
       // audit trail clean.
+      ...(vehicle.data ? { vehicle: { create: vehicle.data } } : {}),
       status: MarketplaceProductStatus.PENDING_REVIEW,
     },
     select: { id: true },

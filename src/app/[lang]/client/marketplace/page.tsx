@@ -22,6 +22,12 @@ import { MarketplaceBannerRail } from "@/components/marketplace/banner-rail";
 import { MarketplaceInDevelopmentBanner } from "@/components/marketplace/in-development-banner";
 import { AuctionTeaserRail } from "@/components/auctions/teaser-rail";
 import { MarketplaceFilters } from "./_components/filters";
+import { RatingStars } from "@/components/marketplace/rating-stars";
+import { averageRating } from "@/lib/marketplace/variants";
+import {
+  readVehicleFacets,
+  vehicleWhere,
+} from "@/lib/marketplace/vehicle-filter";
 
 export async function generateMetadata({
   params,
@@ -58,6 +64,31 @@ export default async function ClientMarketplacePage({
     ? (rawCondition as MarketplaceCondition)
     : undefined;
 
+  // Car facets are read for every request but only bite when set, so a
+  // non-vehicle search pays nothing for them.
+  const facets = readVehicleFacets(search);
+  const vehicleFilter = vehicleWhere(facets);
+
+  /**
+   * Makes on offer, not makes that exist. Derived from published vehicle
+   * listings so the dropdown can't promise a brand we don't carry.
+   */
+  const makeRows =
+    category === Category.VEHICLE
+      ? await prisma.vehicleDetail.findMany({
+          where: {
+            product: {
+              status: MarketplaceProductStatus.PUBLISHED,
+              testedAndApprovedAt: { not: null },
+            },
+          },
+          select: { makeName: true },
+          distinct: ["makeName"],
+          orderBy: { makeName: "asc" },
+        })
+      : [];
+  const makes = makeRows.map((m) => m.makeName);
+
   const products = await prisma.marketplaceProduct.findMany({
     where: {
       status: MarketplaceProductStatus.PUBLISHED,
@@ -70,6 +101,7 @@ export default async function ClientMarketplacePage({
       testedAndApprovedAt: { not: null },
       ...(category ? { category } : {}),
       ...(condition ? { condition } : {}),
+      ...vehicleFilter,
       // See marketing/marketplace/page.tsx for the AND-of-ORs rationale.
       AND: [
         ...(dealsOnly
@@ -104,6 +136,8 @@ export default async function ClientMarketplacePage({
     select: {
       id: true,
       reference: true,
+      ratingCount: true,
+      ratingSum: true,
       name: true,
       category: true,
       priceCentsClient: true,
@@ -142,6 +176,14 @@ export default async function ClientMarketplacePage({
         condition={condition}
         deals={dealsOnly}
         query={rawQuery}
+        makes={makes}
+        vehicle={{
+          make: facets.make,
+          fuel: facets.fuel ?? "",
+          transmission: facets.transmission ?? "",
+          yearMin: facets.yearMin ? String(facets.yearMin) : "",
+          kmMax: facets.kmMax ? String(facets.kmMax) : "",
+        }}
       />
 
       <DeliveryEtaNotice dict={dict} />
@@ -196,6 +238,14 @@ export default async function ClientMarketplacePage({
                     <p className="text-xs text-muted mt-0.5">
                       {p.factoryOrg.displayName} · {p.factoryOrg.country}
                     </p>
+                    {/* Renders nothing when a listing has no reviews — five
+                        empty stars would read as "rated zero". */}
+                    <RatingStars
+                      average={averageRating(p.ratingSum, p.ratingCount)}
+                      count={p.ratingCount}
+                      countLabel={dict.publicMarketplace.reviewsCount}
+                      className="mt-1.5"
+                    />
                   </div>
                   <div className="flex items-end justify-between gap-2 pt-2 border-t border-line-subtle">
                     <ListingPrice

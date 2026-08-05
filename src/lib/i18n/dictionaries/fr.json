@@ -627,7 +627,10 @@
       "unitLabel": "Facturer par",
       "quantityLabel": "Quantité",
       "amountLabel": "Frais",
-      "units": { "DAY": "Jour", "WEEK": "Semaine" },
+      "units": {
+        "DAY": "Jour",
+        "WEEK": "Semaine"
+      },
       "quoteCta": "Facturer",
       "requoteCta": "Mettre à jour",
       "waiveCta": "Offrir",
@@ -856,6 +859,45 @@
   },
   "publicMarketplace": {
     "loadMoreTitle": "Plus de 20 produits disponibles",
+    "reviewsTitle": "Avis",
+    "reviewsEmpty": "Pas encore d'avis sur ce produit.",
+    "reviewsCount": "avis",
+    "verifiedPurchase": "Achat vérifié",
+    "writeReview": "Laisser un avis",
+    "reviewRating": "Note",
+    "reviewTitleField": "Titre (facultatif)",
+    "reviewBody": "Votre avis",
+    "reviewSubmit": "Publier",
+    "reviewPending": "Merci — votre avis sera publié après vérification.",
+    "reviewLoginPrompt": "Connectez-vous pour laisser un avis.",
+    "variantsTitle": "Options",
+    "variantFrom": "À partir de",
+    "vehicleTitle": "Fiche véhicule",
+    "vehicleYear": "Année",
+    "vehicleMileage": "Kilométrage",
+    "vehicleFuel": "Carburant",
+    "vehicleTransmission": "Boîte",
+    "vehicleDrivetrain": "Transmission",
+    "vehicleColour": "Couleur",
+    "vehicleEngine": "Cylindrée",
+    "vehiclePower": "Puissance",
+    "vehicleVin": "VIN",
+    "vehicleCoc": "Certificat de conformité (CoC)",
+    "vehicleCocYes": "Fourni",
+    "vehicleCocNo": "Non fourni — immatriculation UE impossible sans ce document",
+    "moderationTitle": "Avis à modérer",
+    "moderationEmpty": "Aucun avis en attente.",
+    "moderationPublish": "Publier",
+    "moderationReject": "Rejeter",
+    "moderationNote": "Motif (obligatoire pour un rejet)",
+    "rvErr_invalid_rating": "La note doit être comprise entre 1 et 5.",
+    "rvErr_body_too_short": "Votre avis est trop court.",
+    "rvErr_body_too_long": "Votre avis est trop long.",
+    "rvErr_already_reviewed": "Vous avez déjà laissé un avis sur ce produit.",
+    "rvErr_own_product": "Vous ne pouvez pas évaluer votre propre produit.",
+    "rvErr_not_found": "Produit introuvable.",
+    "rvErr_missing_note": "Un rejet doit être motivé.",
+    "rvErr_generic": "Une erreur est survenue.",
     "loadMoreBody": "Créez un compte client pour parcourir l'intégralité du catalogue et passer commande en un clic.",
     "endOfPreviewTitle": "Vous avez fait le tour",
     "endOfPreviewBody": "Créez un compte pour suivre vos commandes, échanger avec nos agents et accéder aux exclusivités.",
@@ -863,7 +905,29 @@
     "loginCta": "Se connecter",
     "orderTitle": "Commander ce produit",
     "orderBody": "Connectez-vous ou créez un compte pour finaliser votre commande avec acompte sécurisé.",
-    "signupToBuyCta": "S'inscrire pour commander"
+    "signupToBuyCta": "S'inscrire pour commander",
+    "rvErr_missing_product": "Produit introuvable.",
+    "rvErr_invalid_decision": "Décision invalide.",
+    "fuels": {
+      "PETROL": "Essence",
+      "DIESEL": "Diesel",
+      "HYBRID": "Hybride",
+      "PLUGIN_HYBRID": "Hybride rechargeable",
+      "ELECTRIC": "Électrique",
+      "LPG": "GPL",
+      "OTHER": "Autre"
+    },
+    "transmissions": {
+      "MANUAL": "Manuelle",
+      "AUTOMATIC": "Automatique"
+    },
+    "drivetrains": {
+      "FWD": "Traction avant",
+      "RWD": "Propulsion",
+      "AWD": "Quatre roues motrices"
+    },
+    "vehicleYearFrom": "Année min.",
+    "vehicleKmUpTo": "Km max."
   },
   "notifications": {
     "bellLabel": "Notifications",
@@ -1097,7 +1161,47 @@
         "REJECTED": "Refusé",
         "OUT_OF_STOCK": "Rupture",
         "ARCHIVED": "Archivé"
-      }
+      },
+      "uniqueItemLabel": "Pièce unique",
+      "uniqueItemHint": "Un exemplaire précis — un véhicule d'occasion, une machine. La quantité passe à 1 et l'annonce se retire dès qu'elle est vendue.",
+      "uniqueItemToggle": "Cette annonce porte sur un exemplaire unique",
+      "vehicleSectionTitle": "Détails du véhicule",
+      "vehicleSectionHint": "Obligatoire pour la catégorie Véhicules — un acheteur ne peut pas évaluer une voiture sans ces informations.",
+      "vinLabel": "VIN",
+      "vinHint": "17 caractères, sans I, O ni Q. À laisser vide si vous ne l'avez pas.",
+      "makeLabel": "Marque",
+      "modelLabel": "Modèle",
+      "yearLabel": "Année",
+      "mileageLabel": "Kilométrage (km)",
+      "fuelLabel": "Carburant",
+      "transmissionLabel": "Boîte de vitesses",
+      "drivetrainLabel": "Transmission",
+      "colourLabel": "Couleur",
+      "engineCcLabel": "Cylindrée (cm³)",
+      "powerKwLabel": "Puissance (kW)",
+      "cocLabel": "Certificat de conformité",
+      "cocHint": "Sans CoC, le véhicule ne peut pas être immatriculé dans l'UE.",
+      "cocToggle": "Un certificat de conformité est disponible",
+      "cocReferenceLabel": "Référence du CoC",
+      "variantsTitle": "Déclinaisons",
+      "variantsHint": "Couleurs, tailles, configurations. Dès qu'il existe des déclinaisons, ce sont elles qui portent le stock.",
+      "variantOptionsLabel": "Options",
+      "variantOptionsPlaceholder": "Couleur : Rouge, Taille : M",
+      "variantNameLabel": "Nom affiché",
+      "variantNameHint": "Vide = généré à partir des options.",
+      "variantSkuLabel": "SKU",
+      "variantPriceLabel": "Prix usine (€)",
+      "variantPriceHint": "Vide = même prix que l'annonce.",
+      "variantStockLabel": "Stock",
+      "variantAdd": "Ajouter une déclinaison",
+      "variantRemove": "Retirer",
+      "variantsSave": "Enregistrer les déclinaisons",
+      "variantsSaved": "Déclinaisons enregistrées.",
+      "variantsEmpty": "Aucune déclinaison — l'annonce se vend telle quelle.",
+      "variantsUniqueBlocked": "Une pièce unique n'a pas de déclinaisons.",
+      "variantsStockNote": "Le stock de l'annonce devient la somme des déclinaisons.",
+      "variantImageLabel": "Photo de la déclinaison",
+      "variantImageRemove": "Retirer la photo"
     },
     "certification": {
       "eyebrow": "Programme certification",
@@ -1447,7 +1551,11 @@
       "colActor": "Acteur",
       "colTarget": "Cible",
       "colIp": "IP",
-      "levels": { "INFO": "Info", "WARN": "Avertissement", "ALERT": "Alerte" }
+      "levels": {
+        "INFO": "Info",
+        "WARN": "Avertissement",
+        "ALERT": "Alerte"
+      }
     },
     "finance": {
       "eyebrow": "Finance",
@@ -1846,7 +1954,11 @@
       "rejectReasonLabel": "Motif de refus (visible dans l'audit)",
       "rejectReasonPlaceholder": "Décrivez ce qui doit être corrigé…",
       "confirmReject": "Confirmer le refus",
-      "back": "Retour"
+      "back": "Retour",
+      "searchPlaceholder": "Rechercher par référence, nom ou vendeur…",
+      "searchCta": "Rechercher",
+      "searchClear": "Effacer",
+      "searchEmpty": "Aucune annonce ne correspond à cette recherche."
     },
     "auctions": {
       "eyebrow": "Enchères",
@@ -2124,6 +2236,7 @@
     }
   },
   "categories": {
+    "VEHICLE": "Véhicules",
     "TEXTILE": "Textile",
     "HOME": "Articles de maison",
     "STATIONERY": "Papeterie",
@@ -2295,7 +2408,9 @@
       "signupCtaTitle": "Créer un compte gratuit",
       "signupCtaBody": "Ouvrez un ticket support en quelques clics depuis votre espace.",
       "emailCtaTitle": "Nous écrire un e-mail",
-      "emailCtaBody": "Notre équipe répond sous 24 h ouvrées."
+      "emailCtaBody": "Notre équipe répond sous 24 h ouvrées.",
+      "chatSoundOn": "Son activé",
+      "chatSoundOff": "Son coupé"
     },
     "hero": {
       "eyebrow": "Sourcing · Marketplace · Certification",

@@ -18,6 +18,7 @@ import type { Locale } from "@/lib/i18n/config";
 import { MediaGrid } from "@/components/attachments/media-grid";
 import { ProductForm } from "../_components/product-form";
 import { ProductActions } from "./_components/product-actions";
+import { VariantsEditor } from "./_components/variants-editor";
 import { PromotionForm } from "./_components/promotion-form";
 
 export async function generateMetadata({
@@ -65,8 +66,38 @@ export default async function FactoryProductDetailPage({
       incoterm: true,
       sampleAvailable: true,
       samplePriceCentsClient: true,
+      isUniqueItem: true,
+      vehicle: {
+        select: {
+          vin: true,
+          makeName: true,
+          modelName: true,
+          year: true,
+          mileageKm: true,
+          fuel: true,
+          transmission: true,
+          drivetrain: true,
+          colour: true,
+          engineCc: true,
+          powerKw: true,
+          hasCoc: true,
+          cocReference: true,
+        },
+      },
       images: true,
       status: true,
+      variants: {
+        select: {
+          id: true,
+          label: true,
+          sku: true,
+          options: true,
+          priceCentsFactory: true,
+          stockAvailable: true,
+          imageUrl: true,
+        },
+        orderBy: { position: "asc" },
+      },
       publishedAt: true,
       blockedAt: true,
       blockReason: true,
@@ -229,6 +260,8 @@ export default async function FactoryProductDetailPage({
               incoterm: product.incoterm,
               sampleAvailable: product.sampleAvailable,
               samplePriceCentsClient: product.samplePriceCentsClient,
+              isUniqueItem: product.isUniqueItem,
+              vehicle: product.vehicle,
               existingImages: imageUrls,
             }}
           />
@@ -242,6 +275,15 @@ export default async function FactoryProductDetailPage({
           lang={lang}
         />
       )}
+
+      {/* Variants live outside the product form: they are their own table
+          with its own save, and folding them into the listing form would mean
+          one submit that either saves everything or nothing. */}
+      <VariantsEditor
+        productId={product.id}
+        variants={product.variants}
+        isUniqueItem={product.isUniqueItem}
+      />
 
       {/* Factory curates this listing's video/file attachments. Renders
           nothing when there are none. canManage → delete controls; the

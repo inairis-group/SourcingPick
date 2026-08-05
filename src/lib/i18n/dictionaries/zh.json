@@ -627,7 +627,10 @@
       "unitLabel": "计费单位",
       "quantityLabel": "数量",
       "amountLabel": "费用",
-      "units": { "DAY": "天", "WEEK": "周" },
+      "units": {
+        "DAY": "天",
+        "WEEK": "周"
+      },
       "quoteCta": "报价",
       "requoteCta": "更新费用",
       "waiveCta": "免除",
@@ -856,6 +859,45 @@
   },
   "publicMarketplace": {
     "loadMoreTitle": "超过 20 件产品可供浏览",
+    "reviewsTitle": "评价",
+    "reviewsEmpty": "该产品暂无评价。",
+    "reviewsCount": "条评价",
+    "verifiedPurchase": "已验证购买",
+    "writeReview": "撰写评价",
+    "reviewRating": "评分",
+    "reviewTitleField": "标题(选填)",
+    "reviewBody": "您的评价",
+    "reviewSubmit": "发布",
+    "reviewPending": "感谢——审核通过后将展示您的评价。",
+    "reviewLoginPrompt": "登录后可发表评价。",
+    "variantsTitle": "规格",
+    "variantFrom": "起售价",
+    "vehicleTitle": "车辆信息",
+    "vehicleYear": "年份",
+    "vehicleMileage": "里程",
+    "vehicleFuel": "燃料",
+    "vehicleTransmission": "变速箱",
+    "vehicleDrivetrain": "驱动",
+    "vehicleColour": "颜色",
+    "vehicleEngine": "排量",
+    "vehiclePower": "功率",
+    "vehicleVin": "车架号",
+    "vehicleCoc": "欧盟符合性证书(CoC)",
+    "vehicleCocYes": "已提供",
+    "vehicleCocNo": "未提供——缺少该文件无法在欧盟上牌",
+    "moderationTitle": "待审核评价",
+    "moderationEmpty": "暂无待审核评价。",
+    "moderationPublish": "发布",
+    "moderationReject": "驳回",
+    "moderationNote": "理由(驳回时必填)",
+    "rvErr_invalid_rating": "评分须为 1 至 5。",
+    "rvErr_body_too_short": "评价内容过短。",
+    "rvErr_body_too_long": "评价内容过长。",
+    "rvErr_already_reviewed": "您已评价过该产品。",
+    "rvErr_own_product": "不能评价自己的产品。",
+    "rvErr_not_found": "未找到产品。",
+    "rvErr_missing_note": "驳回须填写理由。",
+    "rvErr_generic": "发生错误。",
     "loadMoreBody": "创建客户账户即可浏览完整目录并一键下单。",
     "endOfPreviewTitle": "您已浏览完预览",
     "endOfPreviewBody": "创建账户以跟踪订单、与代理沟通,并获取独家产品。",
@@ -863,7 +905,29 @@
     "loginCta": "登录",
     "orderTitle": "购买此产品",
     "orderBody": "登录或创建账户即可完成下单(含安全定金)。",
-    "signupToBuyCta": "注册以下单"
+    "signupToBuyCta": "注册以下单",
+    "rvErr_missing_product": "未找到该商品。",
+    "rvErr_invalid_decision": "操作无效。",
+    "fuels": {
+      "PETROL": "汽油",
+      "DIESEL": "柴油",
+      "HYBRID": "混合动力",
+      "PLUGIN_HYBRID": "插电式混合动力",
+      "ELECTRIC": "纯电动",
+      "LPG": "液化石油气",
+      "OTHER": "其他"
+    },
+    "transmissions": {
+      "MANUAL": "手动",
+      "AUTOMATIC": "自动"
+    },
+    "drivetrains": {
+      "FWD": "前轮驱动",
+      "RWD": "后轮驱动",
+      "AWD": "四轮驱动"
+    },
+    "vehicleYearFrom": "最早年份",
+    "vehicleKmUpTo": "最高里程"
   },
   "notifications": {
     "bellLabel": "通知",
@@ -1097,7 +1161,47 @@
         "REJECTED": "已拒绝",
         "OUT_OF_STOCK": "缺货",
         "ARCHIVED": "已归档"
-      }
+      },
+      "uniqueItemLabel": "独件商品",
+      "uniqueItemHint": "指某一台具体的实物——二手车、单台机器。数量固定为 1，售出后自动下架。",
+      "uniqueItemToggle": "本条商品为独一无二的单件",
+      "vehicleSectionTitle": "车辆信息",
+      "vehicleSectionHint": "车辆类目必填——缺少这些信息，买家无法判断车况。",
+      "vinLabel": "车架号（VIN）",
+      "vinHint": "17 位字符，不含 I、O、Q。没有可留空。",
+      "makeLabel": "品牌",
+      "modelLabel": "车型",
+      "yearLabel": "年份",
+      "mileageLabel": "里程（公里）",
+      "fuelLabel": "燃料",
+      "transmissionLabel": "变速箱",
+      "drivetrainLabel": "驱动方式",
+      "colourLabel": "颜色",
+      "engineCcLabel": "排量（cc）",
+      "powerKwLabel": "功率（kW）",
+      "cocLabel": "符合性证书（CoC）",
+      "cocHint": "没有 CoC，车辆无法在欧盟上牌。",
+      "cocToggle": "可提供符合性证书",
+      "cocReferenceLabel": "CoC 编号",
+      "variantsTitle": "规格",
+      "variantsHint": "颜色、尺寸、配置。一旦设置规格，库存以规格为准。",
+      "variantOptionsLabel": "选项",
+      "variantOptionsPlaceholder": "颜色: 红色, 尺码: M",
+      "variantNameLabel": "显示名称",
+      "variantNameHint": "留空则由选项自动生成。",
+      "variantSkuLabel": "SKU",
+      "variantPriceLabel": "工厂价（€）",
+      "variantPriceHint": "留空则与商品价格相同。",
+      "variantStockLabel": "库存",
+      "variantAdd": "添加规格",
+      "variantRemove": "删除",
+      "variantsSave": "保存规格",
+      "variantsSaved": "规格已保存。",
+      "variantsEmpty": "暂无规格——按商品本身销售。",
+      "variantsUniqueBlocked": "独件商品不能设置规格。",
+      "variantsStockNote": "商品库存将变为各规格库存之和。",
+      "variantImageLabel": "规格图片",
+      "variantImageRemove": "移除图片"
     },
     "certification": {
       "eyebrow": "认证项目",
@@ -1447,7 +1551,11 @@
       "colActor": "执行者",
       "colTarget": "目标",
       "colIp": "IP",
-      "levels": { "INFO": "信息", "WARN": "警告", "ALERT": "警报" }
+      "levels": {
+        "INFO": "信息",
+        "WARN": "警告",
+        "ALERT": "警报"
+      }
     },
     "finance": {
       "eyebrow": "财务",
@@ -1846,7 +1954,11 @@
       "rejectReasonLabel": "拒绝原因(可在审计中查看)",
       "rejectReasonPlaceholder": "描述需要修改的内容…",
       "confirmReject": "确认拒绝",
-      "back": "返回"
+      "back": "返回",
+      "searchPlaceholder": "按编号、名称或卖家搜索…",
+      "searchCta": "搜索",
+      "searchClear": "清除",
+      "searchEmpty": "没有符合条件的商品。"
     },
     "auctions": {
       "eyebrow": "拍卖",
@@ -2124,6 +2236,7 @@
     }
   },
   "categories": {
+    "VEHICLE": "车辆",
     "TEXTILE": "纺织品",
     "HOME": "家居用品",
     "STATIONERY": "文具",
@@ -2295,7 +2408,9 @@
       "signupCtaTitle": "免费注册",
       "signupCtaBody": "在仪表盘内快速提交支持工单。",
       "emailCtaTitle": "发邮件联系",
-      "emailCtaBody": "我们将在 24 个工作小时内回复。"
+      "emailCtaBody": "我们将在 24 个工作小时内回复。",
+      "chatSoundOn": "提示音开",
+      "chatSoundOff": "提示音关"
     },
     "hero": {
       "eyebrow": "采购 · 市场 · 认证",

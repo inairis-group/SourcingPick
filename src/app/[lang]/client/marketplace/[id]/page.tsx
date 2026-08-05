@@ -22,6 +22,15 @@ import { MediaGrid } from "@/components/attachments/media-grid";
 import { ProductImageGallery } from "@/components/marketplace/product-image-gallery";
 import { OrgAvatar } from "@/components/org/org-avatar";
 import { MarkdownDisplay } from "@/components/ui/markdown-display";
+import { RatingStars } from "@/components/marketplace/rating-stars";
+import { ReviewList } from "@/components/marketplace/review-list";
+import { VehicleSpecs } from "@/components/marketplace/vehicle-specs";
+import { ReviewForm } from "@/app/[lang]/(marketing)/marketplace/[id]/_components/review-form";
+import { averageRating } from "@/lib/marketplace/variants";
+import {
+  canReviewProduct,
+  getPublishedReviews,
+} from "@/lib/marketplace/reviews";
 import { BuyForm } from "./_components/buy-form";
 import { SampleForm } from "./_components/sample-form";
 import { getOrTranslateProductCopy } from "@/lib/marketplace/translation";
@@ -71,6 +80,20 @@ export default async function ClientMarketplaceProductPage({
       incoterm: true,
       sampleAvailable: true,
       samplePriceCentsClient: true,
+      isUniqueItem: true,
+      variants: {
+        select: {
+          id: true,
+          label: true,
+          priceCentsClient: true,
+          stockAvailable: true,
+          imageUrl: true,
+        },
+        orderBy: { position: "asc" },
+      },
+      vehicle: true,
+      ratingCount: true,
+      ratingSum: true,
       factoryOrg: {
         select: {
           id: true,
@@ -88,6 +111,10 @@ export default async function ClientMarketplaceProductPage({
     },
   });
   if (!product) notFound();
+
+  const mkt = dict.publicMarketplace as unknown as Record<string, string>;
+  const reviews = await getPublishedReviews(product.id);
+  const mayReview = await canReviewProduct(product.id);
 
   // Best-effort view counter — fire and forget; failure shouldn't block render.
   prisma.marketplaceProduct
@@ -275,6 +302,7 @@ export default async function ClientMarketplaceProductPage({
               // buyer-side choice.
               defaultIncoterm={product.incoterm}
               unitPriceCentsClient={product.priceCentsClient}
+              variants={product.variants}
               lang={lang}
             />
           </div>
@@ -297,11 +325,43 @@ export default async function ClientMarketplaceProductPage({
                     product.samplePriceCentsClient / 100,
                     lang,
                   )}
+                  variants={product.variants}
                 />
               </div>
             )}
         </div>
       </div>
+
+      {product.vehicle && (
+        <VehicleSpecs vehicle={product.vehicle} lang={lang} dict={dict} />
+      )}
+
+      <section className="border-line bg-surface mt-8 rounded-lg border p-5">
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          <h2 className="text-headline text-sm font-semibold">
+            {mkt.reviewsTitle}
+          </h2>
+          <RatingStars
+            average={averageRating(product.ratingSum, product.ratingCount)}
+            count={product.ratingCount}
+            countLabel={mkt.reviewsCount}
+            size="md"
+          />
+        </div>
+
+        <ReviewList reviews={reviews} lang={lang} copy={mkt} />
+
+        {/* Only shown to a buyer who is actually entitled to review — the
+            action re-checks, so this is presentation, not the guard. */}
+        {mayReview && (
+          <div className="border-line-subtle mt-6 border-t pt-5">
+            <h3 className="text-headline mb-3 text-sm font-semibold">
+              {mkt.writeReview}
+            </h3>
+            <ReviewForm productId={product.id} copy={mkt} />
+          </div>
+        )}
+      </section>
 
       <MediaGrid
         contextType={AttachmentContext.MARKETPLACE_PRODUCT}

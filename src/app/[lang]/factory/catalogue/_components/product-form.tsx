@@ -15,6 +15,9 @@ import {
   Incoterm,
   LeadTimeUnit,
   MarketplaceCondition,
+  VehicleDrivetrain,
+  VehicleFuel,
+  VehicleTransmission,
 } from "@prisma/client";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ImageUpload01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
@@ -39,6 +42,9 @@ import { cn } from "@/lib/utils";
 
 const CATEGORIES = Object.values(Category);
 const CONDITIONS = Object.values(MarketplaceCondition);
+const FUELS = Object.values(VehicleFuel);
+const TRANSMISSIONS = Object.values(VehicleTransmission);
+const DRIVETRAINS = Object.values(VehicleDrivetrain);
 const INITIAL: ProductActionState = {};
 
 export type ProductDefaults = {
@@ -65,7 +71,28 @@ export type ProductDefaults = {
   incoterm: Incoterm;
   sampleAvailable: boolean;
   samplePriceCentsClient: number | null;
+  /// One specific unit rather than a stock line. Drives the quantity field
+  /// and rules variants out.
+  isUniqueItem: boolean;
+  /// Present only on Category.VEHICLE listings.
+  vehicle: VehicleDefaults | null;
   existingImages: string[]; // URLs (built from product id + index)
+};
+
+export type VehicleDefaults = {
+  vin: string | null;
+  makeName: string;
+  modelName: string;
+  year: number;
+  mileageKm: number | null;
+  fuel: VehicleFuel;
+  transmission: VehicleTransmission;
+  drivetrain: VehicleDrivetrain | null;
+  colour: string | null;
+  engineCc: number | null;
+  powerKw: number | null;
+  hasCoc: boolean;
+  cocReference: string | null;
 };
 
 export function ProductForm({
@@ -86,6 +113,21 @@ export function ProductForm({
   const dict = useDictionary();
   const router = useRouter();
   const isEdit = Boolean(defaults);
+
+  /**
+   * The vehicle block is required for VEHICLE listings and meaningless for
+   * everything else, so it follows the category live rather than after a save.
+   * The inputs are unmounted, not hidden — a hidden required field is a form
+   * that can't be submitted and won't say why.
+   */
+  const [category, setCategory] = useState<string>(defaults?.category ?? "");
+  const isVehicle = category === Category.VEHICLE;
+
+  /// Quantity is fixed at 1 for a unique item, so the stock input follows the
+  /// checkbox instead of leaving two contradictory answers on screen.
+  const [isUniqueItem, setIsUniqueItem] = useState(
+    Boolean(defaults?.isUniqueItem),
+  );
 
   const editAction =
     actorVariant === "admin" ? adminUpdateProductAction : updateProductAction;
@@ -204,6 +246,7 @@ export function ProductForm({
           name="category"
           required
           defaultValue={defaults?.category ?? ""}
+          onChange={setCategory}
           placeholder={dict.client.requests.categoryPlaceholder}
           options={CATEGORIES.map((c) => ({
             value: c,
@@ -331,6 +374,23 @@ export function ProductForm({
             }))}
           />
         </Field>
+        <Field
+          label={dict.factory.catalogue.uniqueItemLabel}
+          hint={dict.factory.catalogue.uniqueItemHint}
+        >
+          <label className="inline-flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              name="isUniqueItem"
+              checked={isUniqueItem}
+              onChange={(e) => setIsUniqueItem(e.target.checked)}
+              className="h-4 w-4 rounded border-line text-brand-700 focus:ring-focus"
+            />
+            <span className="text-fg">
+              {dict.factory.catalogue.uniqueItemToggle}
+            </span>
+          </label>
+        </Field>
         {/* Partner #31: sample-purchase toggle + price. */}
         <Field
           label={dict.factory.catalogue.sampleAvailableLabel}
@@ -415,13 +475,23 @@ export function ProductForm({
             defaultValue={defaults?.moq ?? "0"}
           />
         </Field>
-        <Field label={dict.factory.catalogue.stockLabel}>
+        <Field
+          label={dict.factory.catalogue.stockLabel}
+          hint={isUniqueItem ? dict.factory.catalogue.uniqueItemHint : undefined}
+        >
           <Input
             name="stockAvailable"
             type="number"
             inputMode="numeric"
             min="0"
-            defaultValue={defaults?.stockAvailable ?? "0"}
+            // `key` forces a remount so the value actually resets when the
+            // checkbox flips — defaultValue alone is read once and ignored on
+            // every later render.
+            key={isUniqueItem ? "unique" : "stocked"}
+            readOnly={isUniqueItem}
+            defaultValue={
+              isUniqueItem ? "1" : (defaults?.stockAvailable ?? "0")
+            }
           />
         </Field>
         <Field
@@ -437,6 +507,158 @@ export function ProductForm({
           />
         </Field>
       </div>
+
+      {/* Vehicle facts. Mounted only for Category.VEHICLE — the required
+          attributes below would otherwise block every other listing. */}
+      {isVehicle && (
+        <fieldset className="border-line rounded-lg border p-4">
+          <legend className="text-fg px-2 text-sm font-medium">
+            {dict.factory.catalogue.vehicleSectionTitle}
+          </legend>
+          <p className="text-faint mb-4 text-xs">
+            {dict.factory.catalogue.vehicleSectionHint}
+          </p>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <Field label={dict.factory.catalogue.makeLabel} required>
+              <Input
+                name="makeName"
+                required
+                maxLength={60}
+                defaultValue={defaults?.vehicle?.makeName ?? ""}
+              />
+            </Field>
+            <Field label={dict.factory.catalogue.modelLabel} required>
+              <Input
+                name="modelName"
+                required
+                maxLength={80}
+                defaultValue={defaults?.vehicle?.modelName ?? ""}
+              />
+            </Field>
+            <Field label={dict.factory.catalogue.yearLabel} required>
+              <Input
+                name="year"
+                type="number"
+                inputMode="numeric"
+                min="1900"
+                required
+                defaultValue={defaults?.vehicle?.year ?? ""}
+              />
+            </Field>
+            <Field label={dict.factory.catalogue.mileageLabel} required>
+              <Input
+                name="mileageKm"
+                type="number"
+                inputMode="numeric"
+                min="0"
+                required
+                defaultValue={defaults?.vehicle?.mileageKm ?? ""}
+              />
+            </Field>
+            <Field label={dict.factory.catalogue.fuelLabel} required>
+              <Select
+                name="fuel"
+                required
+                defaultValue={defaults?.vehicle?.fuel ?? VehicleFuel.PETROL}
+                options={FUELS.map((f) => ({
+                  value: f,
+                  label: dict.publicMarketplace.fuels[f],
+                }))}
+              />
+            </Field>
+            <Field label={dict.factory.catalogue.transmissionLabel} required>
+              <Select
+                name="transmission"
+                required
+                defaultValue={
+                  defaults?.vehicle?.transmission ?? VehicleTransmission.MANUAL
+                }
+                options={TRANSMISSIONS.map((tr) => ({
+                  value: tr,
+                  label: dict.publicMarketplace.transmissions[tr],
+                }))}
+              />
+            </Field>
+            <Field label={dict.factory.catalogue.drivetrainLabel}>
+              <Select
+                name="drivetrain"
+                defaultValue={defaults?.vehicle?.drivetrain ?? ""}
+                placeholder="—"
+                options={DRIVETRAINS.map((d) => ({
+                  value: d,
+                  label: dict.publicMarketplace.drivetrains[d],
+                }))}
+              />
+            </Field>
+            <Field label={dict.factory.catalogue.colourLabel}>
+              <Input
+                name="colour"
+                maxLength={40}
+                defaultValue={defaults?.vehicle?.colour ?? ""}
+              />
+            </Field>
+            <Field label={dict.factory.catalogue.engineCcLabel}>
+              <Input
+                name="engineCc"
+                type="number"
+                inputMode="numeric"
+                min="1"
+                defaultValue={defaults?.vehicle?.engineCc ?? ""}
+              />
+            </Field>
+            <Field label={dict.factory.catalogue.powerKwLabel}>
+              <Input
+                name="powerKw"
+                type="number"
+                inputMode="numeric"
+                min="1"
+                defaultValue={defaults?.vehicle?.powerKw ?? ""}
+              />
+            </Field>
+            <Field
+              label={dict.factory.catalogue.vinLabel}
+              hint={dict.factory.catalogue.vinHint}
+              className="sm:col-span-2"
+            >
+              <Input
+                name="vin"
+                maxLength={17}
+                defaultValue={defaults?.vehicle?.vin ?? ""}
+                placeholder="WVWZZZ1JZXW000001"
+              />
+            </Field>
+          </div>
+
+          {/* The CoC is the one that decides whether the car can be
+              registered at all, so it sits apart from the spec grid. */}
+          <div className="border-line-subtle mt-4 grid grid-cols-1 gap-4 border-t pt-4 sm:grid-cols-2">
+            <Field
+              label={dict.factory.catalogue.cocLabel}
+              hint={dict.factory.catalogue.cocHint}
+            >
+              <label className="inline-flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  name="hasCoc"
+                  defaultChecked={Boolean(defaults?.vehicle?.hasCoc)}
+                  className="h-4 w-4 rounded border-line text-brand-700 focus:ring-focus"
+                />
+                <span className="text-fg">
+                  {dict.factory.catalogue.cocToggle}
+                </span>
+              </label>
+            </Field>
+            <Field label={dict.factory.catalogue.cocReferenceLabel}>
+              <Input
+                name="cocReference"
+                maxLength={60}
+                defaultValue={defaults?.vehicle?.cocReference ?? ""}
+              />
+            </Field>
+          </div>
+        </fieldset>
+      )}
 
       <Field
         label={dict.client.requests.certsLabel}
