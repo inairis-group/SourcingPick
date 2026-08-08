@@ -31,6 +31,7 @@ export type InvoicePdfPayload = {
     | "RESEARCH_FEE"
     | "SOURCING_FEE"
     | "CERT_FEE"
+    | "SHIPPING"
     | "ADMIN_CUSTOM";
   issuedAt: Date;
   dueAt: Date;
@@ -314,6 +315,7 @@ const TYPE_LABEL: Record<InvoicePdfPayload["type"], string> = {
   RESEARCH_FEE: "Frais de recherche / Research fee",
   SOURCING_FEE: "Frais de sourcing / Sourcing fee",
   CERT_FEE: "Frais de certification / Certification fee",
+  SHIPPING: "Transport / Freight",
   ADMIN_CUSTOM: "Facture / Invoice",
 };
 

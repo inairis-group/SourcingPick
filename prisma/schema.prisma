@@ -401,6 +401,11 @@ enum InvoiceType {
   // Legacy from spec §1.1 (sourcing-side commission). Kept until commission wiring lands in Phase 3.
   SOURCING_FEE
   CERT_FEE
+  /// Freight, quoted by the shipper and accepted by the buyer. Deliberately
+  /// its own line rather than folded into BALANCE: customs and accounting
+  /// both need goods and freight separated, and a dispute about a late
+  /// delivery must not put the payment for the goods in dispute with it.
+  SHIPPING
   /// Partner round 4 — admin-issued ad-hoc invoice. Used for one-off
   /// billing the standard order/research/cert paths don't cover
   /// (commission true-ups, manual platform fees, bespoke services).
@@ -1965,9 +1970,36 @@ model Shipment {
   destPostalCode String
   destCountry    String
 
-  /// Currently accepted quote, if any. History lives in ShipmentQuote.
-  acceptedQuoteId String?        @unique
-  acceptedQuote   ShipmentQuote? @relation("ShipmentAcceptedQuote", fields: [acceptedQuoteId], references: [id], onDelete: SetNull)
+  /// The shipper's current fixed price. Set when they submit or revise —
+  /// this is the shipper committing to a number, NOT the buyer agreeing to
+  /// pay it. Buyer agreement is `buyerAcceptedQuoteId` below.
+  acceptedQuoteId      String?        @unique
+  /// ---- Buyer acceptance of the freight price ----
+  ///
+  /// Separate from the shipper's own quote because they are different acts by
+  /// different parties. Billing someone for a number they never saw is how
+  /// chargebacks start, so nothing is invoiced until this is set.
+  buyerAcceptedQuoteId String?        @unique
+  buyerAcceptedQuote   ShipmentQuote? @relation("ShipmentBuyerAcceptedQuote", fields: [buyerAcceptedQuoteId], references: [id], onDelete: SetNull)
+  buyerAcceptedAt      DateTime?
+  buyerDeclinedAt      DateTime?
+  /// Why the buyer refused — the shipper needs it to revise sensibly.
+  buyerDeclineReason   String?
+
+  /// The conversion, frozen at the moment the buyer accepted.
+  ///
+  /// Shippers quote in CNY and buyers pay in EUR. Recomputing the rate later
+  /// would mean invoicing a different number than the one they agreed to, so
+  /// all three are stored: what was quoted, the rate used, and what we
+  /// actually billed. An auditor can re-derive the arithmetic years later.
+  quotedAmountCents    Int?
+  quotedCurrency       String?
+  /// Rate in basis points: EUR cents per 1 unit of quoted currency × 10 000.
+  fxRateBps            Int?
+  billedAmountCentsEur Int?
+  shippingInvoiceId    String? @unique
+
+  acceptedQuote ShipmentQuote? @relation("ShipmentAcceptedQuote", fields: [acceptedQuoteId], references: [id], onDelete: SetNull)
 
   /// §3.2 — set when the brief changes (weight, dimensions, method, address
   /// or composition) after a quote was accepted. The fixed price no longer
@@ -2026,7 +2058,8 @@ model ShipmentQuote {
   author         User?    @relation("ShipmentQuoteAuthor", fields: [authorId], references: [id], onDelete: SetNull)
   createdAt      DateTime @default(now())
 
-  acceptedFor Shipment? @relation("ShipmentAcceptedQuote")
+  acceptedFor        Shipment? @relation("ShipmentAcceptedQuote")
+  acceptedByBuyerFor Shipment? @relation("ShipmentBuyerAcceptedQuote")
 
   @@index([shipmentId, createdAt])
 }

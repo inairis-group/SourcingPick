@@ -395,7 +395,28 @@
       "confirmReceiptCta": "تأكيد الاستلام",
       "payBalanceCta": "ادفع المبلغ المتبقي وأكّد الاستلام",
       "payBalanceBody": "حوّل المبلغ المتبقي بنسبة 70٪ باستخدام البيانات المصرفية أعلاه. يُطلَق صرف المبلغ للمصنع تلقائيًا فور وصول التحويل.",
-      "waitingForFactory": "بانتظار الإجراء التالي من المصنع."
+      "waitingForFactory": "بانتظار الإجراء التالي من المصنع.",
+      "freightTitle": "عرض سعر الشحن",
+      "freightValidUntil": "صالح حتى",
+      "freightConditions": "الشروط",
+      "freightNotes": "ملاحظات",
+      "freightAccept": "القبول وإصدار الفاتورة",
+      "freightDecline": "رفض",
+      "freightDeclineReason": "ما الذي لا يناسبك في هذا العرض؟",
+      "freightDeclineSubmit": "إرسال الرفض",
+      "freightExpired": "انتهت صلاحية هذا العرض. على الناقل إصدار عرض جديد.",
+      "freightNoRate": "لم يُضبط سعر الصرف",
+      "freightAcceptedTitle": "تم قبول عرض الشحن",
+      "freightAcceptedBody": "صدرت فاتورة شحن بقيمة",
+      "freightPreviouslyDeclined": "سبب الرفض السابق:",
+      "fqErr_not_found": "الشحنة غير موجودة.",
+      "fqErr_already_accepted": "سبق قبول هذا العرض.",
+      "fqErr_no_quote": "لا يوجد عرض لقبوله.",
+      "fqErr_quote_expired": "انتهت صلاحية هذا العرض.",
+      "fqErr_no_fx_rate": "لم يُضبط سعر صرف — يرجى التواصل معنا.",
+      "fqErr_invalid_amount": "مبلغ غير صالح.",
+      "fqErr_reason_required": "اذكر سببًا (5 أحرف على الأقل).",
+      "fqErr_generic": "حدث خطأ ما."
     }
   },
   "onboarding": {
@@ -1647,7 +1668,8 @@
         "RESEARCH_FEE": "رسوم بحث",
         "SOURCING_FEE": "عمولة توريد",
         "CERT_FEE": "شهادات",
-        "ADMIN_CUSTOM": "مخصصة"
+        "ADMIN_CUSTOM": "مخصصة",
+        "SHIPPING": "الشحن"
       },
       "statuses": {
         "DRAFT": "مسوّدة",

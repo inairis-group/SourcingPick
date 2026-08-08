@@ -460,6 +460,26 @@ export async function advanceOrderStatusAction(
     await closeOrderOnCompletion(order.id);
   }
 
+  /**
+   * "Goods ready" is the trigger for freight pricing.
+   *
+   * QC is the point where the factory has finished and the shipment's weights
+   * and dimensions are finally real — quoting earlier means quoting a guess.
+   * Asking the shipper here is what stops freight from being an afterthought
+   * discovered at dispatch.
+   *
+   * Fire-and-forget: the status change is what the factory is waiting on, and
+   * a notification hiccup must not roll it back.
+   */
+  if (effectiveNextStatus === OrderStatus.QC) {
+    const { requestFreightQuoteForOrder } = await import(
+      "@/lib/shipments/freight-request"
+    );
+    void requestFreightQuoteForOrder(order.id).catch(() => {
+      /* the order moved; the queue badge still surfaces the missing quote */
+    });
+  }
+
   // Pick the right notification for the new status, and the right audience.
   if (!deferredForBalance) {
     await notifyOnOrderTransition(order.id, effectiveNextStatus);

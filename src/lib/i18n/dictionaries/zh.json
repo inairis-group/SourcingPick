@@ -395,7 +395,28 @@
       "confirmReceiptCta": "确认收货",
       "payBalanceCta": "支付尾款并确认收货",
       "payBalanceBody": "请使用上方银行信息电汇 70% 尾款。资金到账后自动向工厂释放付款。",
-      "waitingForFactory": "等待工厂的下一步操作。"
+      "waitingForFactory": "等待工厂的下一步操作。",
+      "freightTitle": "运费报价",
+      "freightValidUntil": "有效期至",
+      "freightConditions": "条款",
+      "freightNotes": "备注",
+      "freightAccept": "接受并开票",
+      "freightDecline": "拒绝",
+      "freightDeclineReason": "该报价哪里不合适？",
+      "freightDeclineSubmit": "提交拒绝",
+      "freightExpired": "该报价已过期，需由物流方重新出具。",
+      "freightNoRate": "未配置汇率",
+      "freightAcceptedTitle": "运费报价已接受",
+      "freightAcceptedBody": "已开具运费发票，金额为",
+      "freightPreviouslyDeclined": "此前拒绝原因：",
+      "fqErr_not_found": "未找到该运单。",
+      "fqErr_already_accepted": "该报价已被接受。",
+      "fqErr_no_quote": "暂无可接受的报价。",
+      "fqErr_quote_expired": "该报价已过期。",
+      "fqErr_no_fx_rate": "尚未配置汇率，请与我们联系。",
+      "fqErr_invalid_amount": "金额无效。",
+      "fqErr_reason_required": "请填写原因（至少 5 个字符）。",
+      "fqErr_generic": "发生错误。"
     }
   },
   "onboarding": {
@@ -1647,7 +1668,8 @@
         "RESEARCH_FEE": "调研费",
         "SOURCING_FEE": "采购佣金",
         "CERT_FEE": "认证费",
-        "ADMIN_CUSTOM": "自定义"
+        "ADMIN_CUSTOM": "自定义",
+        "SHIPPING": "运费"
       },
       "statuses": {
         "DRAFT": "草稿",

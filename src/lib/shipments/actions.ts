@@ -108,6 +108,11 @@ export async function submitShipmentQuote(_prev: unknown, formData: FormData) {
 
   // Submitting a quote moves the leg to "devis validé (prix fixe)" (§4.3) and
   // makes this revision the one the internal team acts on.
+  //
+  // `acceptedQuoteId` records the SHIPPER fixing their price — it is not the
+  // buyer agreeing to pay it. That is `buyerAcceptedQuoteId`, set only by
+  // `acceptShippingQuoteAction`. A new revision clears any prior buyer
+  // acceptance: they agreed to the old number, not this one.
   await prisma.shipment.update({
     where: { id: shipment.id },
     data: {
@@ -115,6 +120,14 @@ export async function submitShipmentQuote(_prev: unknown, formData: FormData) {
       acceptedQuoteId: quote.id,
       // The revision the stale flag was asking for has arrived.
       quoteStale: false,
+      ...(isRevision
+        ? {
+            buyerAcceptedQuoteId: null,
+            buyerAcceptedAt: null,
+            buyerDeclinedAt: null,
+            buyerDeclineReason: null,
+          }
+        : {}),
     },
   });
 

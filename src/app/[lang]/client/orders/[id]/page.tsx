@@ -9,6 +9,8 @@ import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { OrderTimeline } from "@/components/orders/timeline";
 import { ClientShipmentProgress } from "@/components/shipments/client-progress";
 import { getClientVisibleShipmentEvents } from "@/lib/shipments/queries";
+import { getShippingQuoteForBuyer } from "@/lib/shipments/quote-acceptance";
+import { FreightQuotePanel } from "./_components/freight-quote-panel";
 import { ContextThread } from "@/components/messaging/context-thread";
 import { MediaGrid } from "@/components/attachments/media-grid";
 import { OrderActions } from "./_components/order-actions";
@@ -104,6 +106,9 @@ export default async function ClientOrderDetailPage({
   // Only the events flagged clientVisible; the query selects no shipper
   // identity and no logistics price (§1.2).
   const shipmentEvents = await getClientVisibleShipmentEvents(order.id, user.organizationId);
+  // Null unless a shipper has actually priced this leg — the panel is not a
+  // placeholder for freight that hasn't been quoted yet.
+  const freight = await getShippingQuoteForBuyer(order.id);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
@@ -169,6 +174,20 @@ export default async function ClientOrderDetailPage({
 
       {/* §7.1 — logistics progress the internal team allows to auto-surface.
           Renders nothing for orders with no shipper leg. */}
+      {freight?.acceptedQuote && (
+        <FreightQuotePanel
+          shipmentId={freight.id}
+          reference={freight.reference}
+          quote={freight.acceptedQuote}
+          previewEurCents={freight.previewEurCents}
+          acceptedAt={freight.buyerAcceptedAt}
+          billedAmountCentsEur={freight.billedAmountCentsEur}
+          declineReason={freight.buyerDeclineReason}
+          lang={lang}
+          copy={dict.client.orders as unknown as Record<string, string>}
+        />
+      )}
+
       <ClientShipmentProgress events={shipmentEvents} lang={lang} dict={dict} />
 
       <div className="border-line bg-surface mb-6 rounded-lg border p-5">

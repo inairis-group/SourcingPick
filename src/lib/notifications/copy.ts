@@ -40,6 +40,8 @@ export type NotificationVars = {
     | "forwarder_proof_uploaded"
     | "support_ticket_created"
     | "guest_chat_reply"
+    | "freight_brief_needed"
+    | "freight_quote_accepted"
     | "support_ticket_resolved"
     | "marketplace_re_review_requested"
     | "marketplace_listing_blocked"
@@ -145,6 +147,18 @@ const SYSTEM_TITLES: Record<
     en: "Forwarder uploaded shipment proofs",
     zh: "货运代理已上传发货证明",
     ar: "حمّل وكيل الشحن إثباتات الشحنة",
+  },
+  freight_brief_needed: {
+    fr: "Marchandise prête — brief transporteur à créer",
+    en: "Goods ready — freight brief needed",
+    zh: "货物已就绪——待创建物流委托单",
+    ar: "البضاعة جاهزة — يلزم إعداد بيان الشحن",
+  },
+  freight_quote_accepted: {
+    fr: "Devis transport accepté par l'acheteur",
+    en: "Buyer accepted the freight quote",
+    zh: "买家已接受运费报价",
+    ar: "قبل المشتري عرض سعر الشحن",
   },
   guest_chat_reply: {
     fr: "Réponse par e-mail sur le chat public",

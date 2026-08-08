@@ -395,7 +395,28 @@
       "confirmReceiptCta": "Confirmer la réception",
       "payBalanceCta": "Régler le solde et confirmer la réception",
       "payBalanceBody": "Virez le solde de 70% via les coordonnées bancaires ci-dessus. Le paiement de l'usine est libéré automatiquement à la réception.",
-      "waitingForFactory": "En attente d'une action de l'usine."
+      "waitingForFactory": "En attente d'une action de l'usine.",
+      "freightTitle": "Devis transport",
+      "freightValidUntil": "Valable jusqu'au",
+      "freightConditions": "Conditions",
+      "freightNotes": "Remarques",
+      "freightAccept": "Accepter et facturer",
+      "freightDecline": "Refuser",
+      "freightDeclineReason": "Pourquoi ce devis ne convient pas ?",
+      "freightDeclineSubmit": "Envoyer le refus",
+      "freightExpired": "Ce devis a expiré. Le transporteur doit en émettre un nouveau.",
+      "freightNoRate": "Taux de change non configuré",
+      "freightAcceptedTitle": "Devis transport accepté",
+      "freightAcceptedBody": "Une facture de transport a été émise pour",
+      "freightPreviouslyDeclined": "Refus précédent :",
+      "fqErr_not_found": "Expédition introuvable.",
+      "fqErr_already_accepted": "Ce devis a déjà été accepté.",
+      "fqErr_no_quote": "Aucun devis à accepter.",
+      "fqErr_quote_expired": "Ce devis a expiré.",
+      "fqErr_no_fx_rate": "Aucun taux de change n'est configuré — contactez-nous.",
+      "fqErr_invalid_amount": "Montant invalide.",
+      "fqErr_reason_required": "Indiquez un motif (5 caractères minimum).",
+      "fqErr_generic": "Une erreur est survenue."
     }
   },
   "onboarding": {
@@ -1647,7 +1668,8 @@
         "RESEARCH_FEE": "Frais de recherche",
         "SOURCING_FEE": "Commission sourcing",
         "CERT_FEE": "Certification",
-        "ADMIN_CUSTOM": "Personnalisée"
+        "ADMIN_CUSTOM": "Personnalisée",
+        "SHIPPING": "Transport"
       },
       "statuses": {
         "DRAFT": "Brouillon",

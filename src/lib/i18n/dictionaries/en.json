@@ -395,7 +395,28 @@
       "confirmReceiptCta": "Confirm receipt",
       "payBalanceCta": "Pay balance and confirm receipt",
       "payBalanceBody": "Wire the 70% balance using the bank details above. The factory's payout releases automatically when we see it arrive.",
-      "waitingForFactory": "Waiting on the factory's next action."
+      "waitingForFactory": "Waiting on the factory's next action.",
+      "freightTitle": "Freight quote",
+      "freightValidUntil": "Valid until",
+      "freightConditions": "Conditions",
+      "freightNotes": "Notes",
+      "freightAccept": "Accept and invoice",
+      "freightDecline": "Decline",
+      "freightDeclineReason": "What doesn't work about this quote?",
+      "freightDeclineSubmit": "Send decline",
+      "freightExpired": "This quote has expired. The shipper needs to issue a new one.",
+      "freightNoRate": "No exchange rate configured",
+      "freightAcceptedTitle": "Freight quote accepted",
+      "freightAcceptedBody": "A freight invoice has been issued for",
+      "freightPreviouslyDeclined": "Previously declined:",
+      "fqErr_not_found": "Shipment not found.",
+      "fqErr_already_accepted": "This quote has already been accepted.",
+      "fqErr_no_quote": "There's no quote to accept.",
+      "fqErr_quote_expired": "This quote has expired.",
+      "fqErr_no_fx_rate": "No exchange rate is configured — please get in touch.",
+      "fqErr_invalid_amount": "Invalid amount.",
+      "fqErr_reason_required": "Give a reason (at least 5 characters).",
+      "fqErr_generic": "Something went wrong."
     }
   },
   "onboarding": {
@@ -1647,7 +1668,8 @@
         "RESEARCH_FEE": "Research fee",
         "SOURCING_FEE": "Sourcing commission",
         "CERT_FEE": "Certification",
-        "ADMIN_CUSTOM": "Custom"
+        "ADMIN_CUSTOM": "Custom",
+        "SHIPPING": "Freight"
       },
       "statuses": {
         "DRAFT": "Draft",
