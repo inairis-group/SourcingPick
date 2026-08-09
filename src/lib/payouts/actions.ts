@@ -43,10 +43,16 @@ export async function startPayoutOnboardingAction(
   provider: PayoutProvider,
 ): Promise<StartOnboardingResult> {
   const user = await requireAuth();
-  if (user.role !== Role.FACTORY && user.role !== Role.AGENT) {
+  // Shippers were added 2026-08: we collect freight from the buyer and settle
+  // the carrier, so they need a payout account exactly like a factory does.
+  if (
+    user.role !== Role.FACTORY &&
+    user.role !== Role.AGENT &&
+    user.role !== Role.SHIPPER
+  ) {
     return {
       ok: false,
-      error: "Only factories and agents can onboard with a payout provider.",
+      error: "Only factories, agents and shippers can onboard with a payout provider.",
     };
   }
 

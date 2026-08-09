@@ -213,3 +213,90 @@ test("an expired quote is not acceptable", async () => {
     "the guard the action applies before invoicing — a price the shipper no longer stands behind",
   );
 });
+
+// -------------------------------------------------------------- settlement
+
+test("the shipper is settled the amount they quoted, in their own currency", async () => {
+  const { PayoutKind, PayoutStatus } = await import("@prisma/client");
+  const { shipmentId } = await seedShipmentWithQuote(500_000, "CNY");
+
+  const shipperOrg = await prisma.organization.create({
+    data: {
+      type: "SHIPPER", legalName: "Lianyun Logistics", displayName: "Lianyun",
+      country: "CN", city: "Shenzhen", address: "1 Test Rd",
+      payoutProvider: "PINGPONG", payoutAccountId: "pp-shipper-1", payoutStatus: "ACTIVE",
+    },
+    select: { id: true },
+  });
+  await prisma.shipment.update({
+    where: { id: shipmentId },
+    data: {
+      shipperOrgId: shipperOrg.id,
+      quotedAmountCents: 500_000, quotedCurrency: "CNY",
+      fxRateBps: 1280, billedAmountCentsEur: 64_000,
+    },
+  });
+
+  const payout = await prisma.payout.create({
+    data: {
+      reference: `PAY-${randomUUID().slice(0, 6)}`,
+      kind: PayoutKind.FREIGHT,
+      payeeOrgId: shipperOrg.id,
+      factoryOrgId: shipperOrg.id,
+      shipmentId,
+      amountCents: 500_000,
+      supplierFeeCents: 0,
+      method: "PINGPONG",
+      status: PayoutStatus.SENT,
+      sentAt: new Date(),
+    },
+    select: { id: true, amountCents: true, escrowId: true, supplierFeeCents: true },
+  });
+
+  // We bill the buyer €640 and owe the carrier ¥5,000 — the FX drift between
+  // the two is ours by design, so the payout must not be the euro figure.
+  assert.equal(payout.amountCents, 500_000, "settle what was quoted, not what was billed");
+  assert.equal(payout.escrowId, null, "freight never passes through escrow");
+  assert.equal(payout.supplierFeeCents, 0, "we take our margin on goods, not on moving them");
+
+  // Unique on shipmentId: a replayed payment webhook cannot pay twice.
+  await assert.rejects(
+    prisma.payout.create({
+      data: {
+        reference: `PAY-${randomUUID().slice(0, 6)}`,
+        kind: PayoutKind.FREIGHT,
+        payeeOrgId: shipperOrg.id, factoryOrgId: shipperOrg.id,
+        shipmentId, amountCents: 500_000, supplierFeeCents: 0, method: "PINGPONG",
+      },
+    }),
+    "a second freight payout for the same shipment must be refused",
+  );
+});
+
+test("a balance sums by payee and survives the legacy factory column", async () => {
+  const { PayoutKind, PayoutStatus } = await import("@prisma/client");
+  const orgId = base.factoryOrg.id;
+
+  await prisma.payout.createMany({
+    data: [
+      { reference: `PAY-${randomUUID().slice(0, 6)}`, kind: PayoutKind.FREIGHT,
+        payeeOrgId: orgId, factoryOrgId: orgId, amountCents: 10_000,
+        supplierFeeCents: 0, method: "PINGPONG", status: PayoutStatus.SENT },
+      { reference: `PAY-${randomUUID().slice(0, 6)}`, kind: PayoutKind.FREIGHT,
+        payeeOrgId: orgId, factoryOrgId: orgId, amountCents: 2_500,
+        supplierFeeCents: 0, method: "PINGPONG", status: PayoutStatus.PENDING,
+        failureReason: "shipper_payout_not_set_up" },
+    ],
+  });
+
+  const grouped = await prisma.payout.groupBy({
+    by: ["status"],
+    where: { OR: [{ payeeOrgId: orgId }, { factoryOrgId: orgId }] },
+    _sum: { amountCents: true },
+  });
+  const sumFor = (s: string) =>
+    grouped.find((g) => g.status === s)?._sum.amountCents ?? 0;
+
+  assert.equal(sumFor("SENT"), 10_000);
+  assert.equal(sumFor("PENDING"), 2_500, "money owed but undispatched is still owed");
+});

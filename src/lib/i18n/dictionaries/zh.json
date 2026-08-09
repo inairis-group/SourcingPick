@@ -3486,5 +3486,26 @@
     "fr": "Français",
     "en": "English",
     "zh": "中文"
+  },
+  "payouts": {
+    "balanceTitle": "余额与打款",
+    "balanceDescription": "已发放、待发放，以及失败的款项。",
+    "balanceSent": "已发放",
+    "balancePending": "待发放",
+    "balanceFailed": "失败",
+    "balanceHistory": "记录",
+    "balanceEmpty": "暂无打款记录。",
+    "balanceFee": "佣金",
+    "balanceSentOn": "发放于",
+    "balanceRecordedOn": "记录于",
+    "balanceBlocked_payout_account_missing": "有款项待发放，但尚未设置收款账户。",
+    "balanceBlocked_generic": "有一笔打款被阻塞。",
+    "payoutKind_ESCROW_RELEASE": "订单结算",
+    "payoutKind_FREIGHT": "运费结算",
+    "payoutStatus_PENDING": "待处理",
+    "payoutStatus_SENT": "已发放",
+    "payoutStatus_FAILED": "失败",
+    "payoutFail_factory_payout_not_set_up": "尚未设置收款账户。",
+    "payoutFail_shipper_payout_not_set_up": "尚未设置收款账户。"
   }
 }

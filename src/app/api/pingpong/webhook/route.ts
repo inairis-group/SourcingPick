@@ -68,6 +68,24 @@ export async function POST(req: NextRequest) {
   }
 
   const d = event.data;
+
+  /**
+   * Freight is settled, not escrowed: the buyer pays the carrier's invoice and
+   * we pass it on. It therefore skips `finalizeBuyerOrderPayment` entirely —
+   * that function is escrow-shaped, and forcing freight through it would park
+   * a carrier's fee behind delivery confirmation.
+   */
+  const invoiceId = typeof d.invoiceId === "string" ? d.invoiceId : null;
+  if (invoiceId) {
+    const { markFreightInvoicePaid } = await import(
+      "@/lib/shipments/settlement"
+    );
+    const outcome = await markFreightInvoicePaid(invoiceId, event.id);
+    if (outcome.handled) {
+      return NextResponse.json({ ok: true, freight: true, settled: outcome.settled });
+    }
+  }
+
   const orderId = typeof d.orderId === "string" ? d.orderId : null;
   const providerRef = typeof d.transactionId === "string" ? d.transactionId : event.id;
   const amountCents = typeof d.amountCents === "number" ? d.amountCents : null;

@@ -14,6 +14,8 @@ import { formatDate, formatEUR } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
 import { ConnectOnboardingButton } from "./_components/onboarding-button";
 import { pingpongIsConfigured } from "@/lib/payments/pingpong/config";
+import { getPayoutBalance } from "@/lib/payouts/balance";
+import { PayoutBalanceView } from "@/components/payouts/balance-view";
 
 export async function generateMetadata({
   params,
@@ -48,6 +50,9 @@ export default async function FactoryPayoutsPage({
     },
   });
   const railReady = pingpongIsConfigured();
+  // Same three figures every earning role sees. The bespoke history list
+  // below predates it; this replaces the guesswork of reading status pills.
+  const balance = await getPayoutBalance();
 
   const payouts = await prisma.payout.findMany({
     where: { factoryOrgId: user.organizationId },
@@ -88,6 +93,16 @@ export default async function FactoryPayoutsPage({
           {dict.factory.payouts.description}
         </p>
       </header>
+
+      {balance && (
+        <div className="mb-6">
+          <PayoutBalanceView
+            balance={balance}
+            lang={lang}
+            copy={dict.payouts as unknown as Record<string, string>}
+          />
+        </div>
+      )}
 
       <PayoutAccountCard
         accountId={org?.payoutAccountId ?? null}

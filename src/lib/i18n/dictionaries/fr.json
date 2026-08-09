@@ -3486,5 +3486,26 @@
     "fr": "Français",
     "en": "English",
     "zh": "中文"
+  },
+  "payouts": {
+    "balanceTitle": "Solde et versements",
+    "balanceDescription": "Ce qui vous a été envoyé, ce qui reste dû, et ce qui a échoué.",
+    "balanceSent": "Envoyé",
+    "balancePending": "En attente",
+    "balanceFailed": "Échoué",
+    "balanceHistory": "Historique",
+    "balanceEmpty": "Aucun versement pour le moment.",
+    "balanceFee": "commission",
+    "balanceSentOn": "envoyé le",
+    "balanceRecordedOn": "enregistré le",
+    "balanceBlocked_payout_account_missing": "Des montants vous sont dus mais aucun compte de versement n'est configuré.",
+    "balanceBlocked_generic": "Un versement est bloqué.",
+    "payoutKind_ESCROW_RELEASE": "Règlement de commande",
+    "payoutKind_FREIGHT": "Règlement transport",
+    "payoutStatus_PENDING": "En attente",
+    "payoutStatus_SENT": "Envoyé",
+    "payoutStatus_FAILED": "Échoué",
+    "payoutFail_factory_payout_not_set_up": "Compte de versement à configurer.",
+    "payoutFail_shipper_payout_not_set_up": "Compte de versement à configurer."
   }
 }

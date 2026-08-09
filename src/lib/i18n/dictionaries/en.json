@@ -3486,5 +3486,26 @@
     "fr": "Français",
     "en": "English",
     "zh": "中文"
+  },
+  "payouts": {
+    "balanceTitle": "Balance and payouts",
+    "balanceDescription": "What's been sent to you, what's still owed, and what failed.",
+    "balanceSent": "Sent",
+    "balancePending": "Pending",
+    "balanceFailed": "Failed",
+    "balanceHistory": "History",
+    "balanceEmpty": "No payouts yet.",
+    "balanceFee": "fee",
+    "balanceSentOn": "sent",
+    "balanceRecordedOn": "recorded",
+    "balanceBlocked_payout_account_missing": "You're owed money but no payout account is set up.",
+    "balanceBlocked_generic": "A payout is blocked.",
+    "payoutKind_ESCROW_RELEASE": "Order settlement",
+    "payoutKind_FREIGHT": "Freight settlement",
+    "payoutStatus_PENDING": "Pending",
+    "payoutStatus_SENT": "Sent",
+    "payoutStatus_FAILED": "Failed",
+    "payoutFail_factory_payout_not_set_up": "Payout account not set up.",
+    "payoutFail_shipper_payout_not_set_up": "Payout account not set up."
   }
 }

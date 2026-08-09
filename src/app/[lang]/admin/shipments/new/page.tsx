@@ -44,7 +44,12 @@ export default async function NewShipmentPage({
           lang={lang}
           orders={orders.map((o) => ({
             id: o.id,
-            label: `${o.reference} · ${o.clientOrg.displayName}`,
+            // Origin and status matter when choosing: a marketplace order and
+            // a custom build move differently, and briefing freight before
+            // payment lands is legitimate but should be a visible choice.
+            label: `${o.reference} · ${o.clientOrg.displayName} · ${
+              o.request?.origin ?? "—"
+            } · ${o.status}`,
           }))}
           shippers={shippers.map((s) => ({ id: s.id, label: s.displayName }))}
           copy={t as unknown as Record<string, string>}

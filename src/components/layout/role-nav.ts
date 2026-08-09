@@ -23,6 +23,7 @@ import {
   AlertCircleIcon,
   GlobalIcon,
   ScrollIcon,
+  BankIcon,
 } from "@hugeicons/core-free-icons";
 import type { Role } from "@prisma/client";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
@@ -247,6 +248,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               icon: ChartLineData01Icon,
             },
             {
+              href: `${base}/agent/payouts`,
+              label: dict.nav.payouts,
+              icon: BankIcon,
+            },
+            {
               href: `${base}/agent/settings`,
               label: dict.nav.settings,
               icon: Settings01Icon,
@@ -430,6 +436,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               label: dict.nav.messages,
               icon: Message01Icon,
               primary: true,
+            },
+            {
+              href: `${base}/shipper/payouts`,
+              label: dict.nav.payouts,
+              icon: BankIcon,
             },
             {
               href: `${base}/shipper/settings`,

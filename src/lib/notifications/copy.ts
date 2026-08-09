@@ -42,6 +42,8 @@ export type NotificationVars = {
     | "guest_chat_reply"
     | "freight_brief_needed"
     | "freight_quote_accepted"
+    | "freight_settled"
+    | "freight_settlement_pending"
     | "support_ticket_resolved"
     | "marketplace_re_review_requested"
     | "marketplace_listing_blocked"
@@ -159,6 +161,18 @@ const SYSTEM_TITLES: Record<
     en: "Buyer accepted the freight quote",
     zh: "买家已接受运费报价",
     ar: "قبل المشتري عرض سعر الشحن",
+  },
+  freight_settled: {
+    fr: "Règlement transport envoyé",
+    en: "Freight settlement sent",
+    zh: "运费结算已发出",
+    ar: "أُرسلت تسوية الشحن",
+  },
+  freight_settlement_pending: {
+    fr: "Règlement transport en attente — compte de versement à configurer",
+    en: "Freight settlement pending — payout account not set up",
+    zh: "运费结算待处理——收款账户未设置",
+    ar: "تسوية الشحن معلّقة — لم يُضبط حساب التحويلات",
   },
   guest_chat_reply: {
     fr: "Réponse par e-mail sur le chat public",

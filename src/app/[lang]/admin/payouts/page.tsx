@@ -72,6 +72,7 @@ export default async function AdminPayoutsPage({
             order: { select: { reference: true } },
           },
         },
+        shipment: { select: { reference: true } },
       },
     }),
   ]);
@@ -147,7 +148,9 @@ export default async function AdminPayoutsPage({
                       {p.factoryOrg.displayName}
                     </td>
                     <td className="px-5 py-2 text-xs font-mono text-muted">
-                      {p.escrow.order?.reference ?? "—"}
+                      {/* Freight payouts have no escrow — they settle a
+                          shipment, not a released order leg. */}
+                      {p.escrow?.order?.reference ?? p.shipment?.reference ?? "—"}
                     </td>
                     <td className="px-5 py-2 text-sm font-semibold text-headline text-end">
                       {formatEUR(p.amountCents / 100, lang)}

@@ -910,6 +910,8 @@ model Organization {
   shipmentsAsShipper Shipment[]          @relation("ShipmentShipperOrg")
   marketplaceReviews MarketplaceReview[] @relation("ReviewAuthorOrg")
 
+  payoutsReceived Payout[] @relation("PayoutPayeeOrg")
+
   @@index([type, kycStatus, deletedAt])
   @@index([type, country])
 }
@@ -1475,13 +1477,37 @@ model EscrowTransaction {
   @@index([provider, providerRef])
 }
 
+/// What a payout is settling. Money leaves the platform for more than one
+/// reason now, and they behave differently: an escrow release is gated on
+/// delivery confirmation, freight is owed as soon as the buyer has paid the
+/// carrier's invoice.
+enum PayoutKind {
+  /// Factory payout on delivery-confirmed escrow release.
+  ESCROW_RELEASE
+  /// Settlement to a shipper for an accepted freight quote. Never escrowed —
+  /// we collect from the buyer and settle the carrier.
+  FREIGHT
+}
+
 model Payout {
-  id               String            @id @default(cuid(2))
-  reference        String            @unique // PAY-YYYY-NNNN
+  id               String             @id @default(cuid(2))
+  reference        String             @unique // PAY-YYYY-NNNN
+  kind             PayoutKind         @default(ESCROW_RELEASE)
+  /// Organisation being paid. Added 2026-08 when shippers became payees;
+  /// `factoryOrgId` predates it and is retained because existing rows and
+  /// finance reports reference it. For ESCROW_RELEASE the two are the same
+  /// org — new code should read `payeeOrg`.
+  payeeOrgId       String?
+  payeeOrg         Organization?      @relation("PayoutPayeeOrg", fields: [payeeOrgId], references: [id], onDelete: Restrict)
   factoryOrgId     String
-  factoryOrg       Organization      @relation(fields: [factoryOrgId], references: [id], onDelete: Restrict)
-  escrowId         String            @unique
-  escrow           EscrowTransaction @relation(fields: [escrowId], references: [id], onDelete: Restrict)
+  factoryOrg       Organization       @relation(fields: [factoryOrgId], references: [id], onDelete: Restrict)
+  /// Null for payouts that never pass through escrow — freight is collected
+  /// from the buyer and settled straight to the carrier.
+  escrowId         String?            @unique
+  escrow           EscrowTransaction? @relation(fields: [escrowId], references: [id], onDelete: Restrict)
+  /// Set on FREIGHT payouts: the shipment being settled.
+  shipmentId       String?            @unique
+  shipment         Shipment?          @relation("ShipmentFreightPayout", fields: [shipmentId], references: [id], onDelete: SetNull)
   amountCents      Int // net paid to the factory (gross − supplier fee)
   /// 3% supplier-side fee retained by the platform on a payout. Renamed
   /// from `commissionCents` (CTO audit F3) because `Order.commissionCents`
@@ -1490,15 +1516,16 @@ model Payout {
   /// drift.
   supplierFeeCents Int
   method           PayoutMethod
-  status           PayoutStatus      @default(PENDING)
+  status           PayoutStatus       @default(PENDING)
   scheduledAt      DateTime?
   sentAt           DateTime?
   providerRef      String?
   failureReason    String?
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
   @@index([factoryOrgId, status])
+  @@index([payeeOrgId, status])
   @@index([status, scheduledAt])
 }
 
@@ -2013,6 +2040,8 @@ model Shipment {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  freightPayout Payout? @relation("ShipmentFreightPayout")
 
   @@index([shipperOrgId, status])
   @@index([status, updatedAt])

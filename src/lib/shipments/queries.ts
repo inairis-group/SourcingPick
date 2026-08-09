@@ -1,4 +1,5 @@
 import "server-only";
+import { OrderStatus } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 
 /**
@@ -121,15 +122,28 @@ export async function listShipmentsForInternal() {
 }
 
 /** Orders that could still be handed to a shipper — i.e. have no leg yet. */
+/**
+ * Orders that can be handed to a shipper.
+ *
+ * Sourcing and marketplace orders are equally eligible — an order is an order
+ * once it exists, and a marketplace purchase needs moving just as much as a
+ * custom build. What differs is how ready it is, so the origin and status come
+ * back with it: briefing a PAYMENT_PENDING order is legitimate (you may want
+ * the freight priced early) but the admin should see they're doing it.
+ *
+ * Cancelled orders are excluded — nothing is going to move.
+ */
 export async function listShippableOrders() {
   return prisma.order.findMany({
-    where: { shipment: null },
-    orderBy: { createdAt: "desc" },
+    where: { shipment: null, status: { not: OrderStatus.CANCELLED }, deletedAt: null },
+    orderBy: [{ status: "asc" }, { createdAt: "desc" }],
     take: 50,
     select: {
       id: true,
       reference: true,
+      status: true,
       clientOrg: { select: { displayName: true } },
+      request: { select: { origin: true, title: true } },
     },
   });
 }

@@ -3486,5 +3486,26 @@
     "fr": "Français",
     "en": "English",
     "zh": "中文"
+  },
+  "payouts": {
+    "balanceTitle": "الرصيد والتحويلات",
+    "balanceDescription": "ما أُرسل إليك، وما لا يزال مستحقًا، وما أخفق.",
+    "balanceSent": "مُرسل",
+    "balancePending": "معلّق",
+    "balanceFailed": "أخفق",
+    "balanceHistory": "السجل",
+    "balanceEmpty": "لا توجد تحويلات بعد.",
+    "balanceFee": "عمولة",
+    "balanceSentOn": "أُرسل في",
+    "balanceRecordedOn": "سُجّل في",
+    "balanceBlocked_payout_account_missing": "لك مستحقات لكن لم يُضبط حساب تحويلات.",
+    "balanceBlocked_generic": "هناك تحويل متوقف.",
+    "payoutKind_ESCROW_RELEASE": "تسوية طلب",
+    "payoutKind_FREIGHT": "تسوية شحن",
+    "payoutStatus_PENDING": "معلّق",
+    "payoutStatus_SENT": "مُرسل",
+    "payoutStatus_FAILED": "أخفق",
+    "payoutFail_factory_payout_not_set_up": "لم يُضبط حساب التحويلات.",
+    "payoutFail_shipper_payout_not_set_up": "لم يُضبط حساب التحويلات."
   }
 }
