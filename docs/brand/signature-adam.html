@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Signature e-mail — Adam Fernandez</title>
+<style>
+  :root { color-scheme: light; }
+  body {
+    margin: 0; padding: 32px 20px;
+    background: #f6f7f9; color: #0b1220;
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 4px; letter-spacing: -0.3px; }
+  .sub { color: #6b7280; font-size: 13px; margin: 0 0 24px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 24px; }
+  .label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #9ca3af; margin: 0 0 12px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 20px; }
+  button {
+    font: inherit; font-size: 14px; font-weight: 600;
+    border-radius: 7px; padding: 10px 16px; cursor: pointer;
+    border: 1px solid transparent; transition: background-color .12s ease;
+  }
+  .primary { background: #155dfc; color: #fff; }
+  .primary:hover { background: #0a48d6; }
+  .ghost { background: #fff; color: #374151; border-color: #d1d5db; }
+  .ghost:hover { background: #f3f4f6; }
+  .status { font-size: 13px; font-weight: 600; min-height: 20px; }
+  .ok { color: #047857; } .err { color: #b91c1c; }
+  ol { margin: 20px 0 0; padding-left: 20px; color: #4b5563; font-size: 13px; }
+  li { margin-bottom: 5px; }
+  code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+  .note { margin-top: 22px; padding: 12px 14px; border-radius: 8px;
+          background: #fffbeb; border: 1px solid #fde68a; color: #92400e; font-size: 13px; }
+  textarea { width: 100%; height: 200px; margin-top: 14px; font-family: ui-monospace, monospace;
+             font-size: 12px; border: 1px solid #d1d5db; border-radius: 7px; padding: 10px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Signature e-mail — Adam Fernandez</h1>
+  <p class="sub">Cliquer sur « Copier la signature », puis coller directement dans le client mail.</p>
+
+  <div class="card">
+    <p class="label">Aperçu</p>
+
+    <!-- ===================================================================
+         SOURCE DE VÉRITÉ. La signature vit ici et nulle part ailleurs :
+         l'aperçu, le bouton de copie et l'export HTML lisent tous ce même
+         <template>. Deux copies du markup divergeraient dès la première
+         retouche.
+
+         Contraintes e-mail respectées, à ne pas « moderniser » :
+           - tableaux, pas de flex/grid — Outlook rend avec le moteur Word
+           - styles en ligne — Gmail supprime les <style> d'une signature
+           - PNG et non SVG — le SVG ne s'affiche pas dans Outlook/Gmail
+           - padding sur les <td>, jamais de margin — Outlook les ignore
+           - lisible images bloquées : le bloc garde bgcolor + alt
+         =================================================================== -->
+    <template id="sig">
+      <table cellpadding="0" cellspacing="0" border="0" role="presentation"
+             style="border-collapse:collapse;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;max-width:540px;">
+
+        <!-- Ligne 1 : bandeau marque + coordonnées -->
+        <tr>
+
+          <!-- Bandeau bleu pleine hauteur. bgcolor ET style : Outlook ignore
+               souvent le CSS seul. Le logo reste calé en haut (valign). -->
+          <td bgcolor="#155dfc" valign="top" width="150"
+              style="background-color:#155dfc;width:150px;padding:18px 18px 20px;">
+            <img src="https://sourcingpick.com/logo-white.png"
+                 width="114" height="30" alt="SourcingPick"
+                 style="display:block;border:0;outline:none;text-decoration:none;width:114px;height:30px;">
+            <div style="font-size:10px;line-height:15px;color:#b9cdff;padding-top:12px;letter-spacing:.04em;">
+              Sourcing &amp; contrôle<br>qualité en Chine
+            </div>
+          </td>
+
+          <td valign="top" style="padding:18px 0 18px 20px;">
+
+            <!-- Nom -->
+            <div style="font-size:18px;line-height:23px;font-weight:700;color:#0b1220;letter-spacing:-0.3px;">
+              Adam Fernandez
+            </div>
+
+            <!-- Filet d'accent : une cellule colorée, pas une bordure —
+                 Outlook rend les bordures fines de façon inégale. -->
+            <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;">
+              <tr><td bgcolor="#155dfc" width="32" height="3"
+                      style="background-color:#155dfc;width:32px;height:3px;font-size:0;line-height:0;">&nbsp;</td></tr>
+            </table>
+
+            <!-- Rôle : deux niveaux plutôt qu'une ligne à rallonge -->
+            <div style="font-size:11px;line-height:16px;color:#0738ab;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding-top:9px;">
+              Fondateur du projet
+            </div>
+            <div style="font-size:12px;line-height:17px;color:#6b7280;padding-top:2px;">
+              Vérificateur des commandes
+            </div>
+
+            <!-- Coordonnées libellées. Lettres plutôt qu'icônes : une icône veut
+                 dire une image de plus, bloquée par défaut chez beaucoup de gens. -->
+            <div style="height:12px;line-height:12px;font-size:0;">&nbsp;</div>
+            <table cellpadding="0" cellspacing="0" border="0" role="presentation"
+                   style="border-collapse:collapse;">
+              <tr>
+                <td width="16" valign="top"
+                    style="width:16px;padding:11px 0 0;font-size:10px;line-height:18px;font-weight:700;color:#b9cdff;">E</td>
+                <td style="padding:11px 0 0;font-size:13px;line-height:18px;">
+                  <a href="mailto:admin@inairis.fr" style="color:#374151;text-decoration:none;">admin@inairis.fr</a>
+                </td>
+              </tr>
+              <tr>
+                <td width="16" valign="top"
+                    style="width:16px;padding:3px 0 0;font-size:10px;line-height:18px;font-weight:700;color:#b9cdff;">T</td>
+                <td style="padding:3px 0 0;font-size:13px;line-height:18px;">
+                  <a href="tel:+33656800238" style="color:#374151;text-decoration:none;">+33 6 56 80 02 38</a>
+                </td>
+              </tr>
+              <tr>
+                <td width="16" valign="top"
+                    style="width:16px;padding:3px 0 0;font-size:10px;line-height:18px;font-weight:700;color:#b9cdff;">W</td>
+                <td style="padding:3px 0 0;font-size:13px;line-height:18px;">
+                  <a href="https://sourcingpick.com" style="color:#155dfc;text-decoration:none;font-weight:600;">sourcingpick.com</a>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Bouton : fond sur le <td>, padding sur le <a>. C'est la forme qui
+                 survit à Outlook, qui ignore border-radius (le bouton devient
+                 carré, ce qui reste correct). -->
+            <div style="height:16px;line-height:16px;font-size:0;">&nbsp;</div>
+            <table cellpadding="0" cellspacing="0" border="0" role="presentation"
+                   style="border-collapse:collapse;">
+              <tr>
+                <td bgcolor="#155dfc" style="background-color:#155dfc;border-radius:6px;">
+                  <a href="https://sourcingpick.com"
+                     style="display:inline-block;padding:9px 17px;font-size:12px;line-height:16px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:6px;">
+                    Démarrer un sourcing
+                  </a>
+                </td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+
+        <!-- Ligne 2 : bandeau de pied, sur toute la largeur -->
+        <tr>
+          <td colspan="2" bgcolor="#eff4ff"
+              style="background-color:#eff4ff;padding:9px 18px;border-top:1px solid #dce6ff;">
+            <div style="font-size:11px;line-height:16px;color:#0738ab;font-weight:600;">
+              Le sourcing en Chine, industrialisé.
+            </div>
+          </td>
+        </tr>
+
+      </table>
+    </template>
+
+    <div id="preview"></div>
+
+    <div class="actions">
+      <button class="primary" id="copy" type="button">Copier la signature</button>
+      <button class="ghost" id="copyHtml" type="button">Copier le code HTML</button>
+      <button class="ghost" id="toggle" type="button">Voir le code</button>
+      <span class="status" id="status" role="status" aria-live="polite"></span>
+    </div>
+
+    <textarea id="raw" hidden readonly spellcheck="false"></textarea>
+  </div>
+
+  <ol>
+    <li><strong>Gmail</strong> — Paramètres → Général → Signature → coller</li>
+    <li><strong>Outlook</strong> — Fichier → Options → Courrier → Signatures → coller</li>
+    <li><strong>Apple&nbsp;Mail</strong> — Réglages → Signatures → décocher « Toujours utiliser la police par défaut », puis coller</li>
+  </ol>
+
+  <div class="note">
+    Coordonnées reprises telles quelles : <code>admin@inairis.fr</code> et
+    <code>+33&nbsp;6&nbsp;56&nbsp;80&nbsp;02&nbsp;38</code>. Pour les changer, modifier le
+    <code>&lt;template id="sig"&gt;</code> de ce fichier — l'aperçu, le bouton de copie et
+    l'export HTML lisent tous la même source.
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var tpl     = document.getElementById('sig');
+  var preview = document.getElementById('preview');
+  var raw     = document.getElementById('raw');
+  var status  = document.getElementById('status');
+
+  /**
+   * Build the markup that actually gets copied.
+   *
+   * The maintenance comments in the template are for whoever edits this file,
+   * not for the recipient — without stripping them, every e-mail Adam sends
+   * carries our notes about Outlook quirks in its HTML source.
+   *
+   * Outlook conditional comments (`<!--[if mso]>`) are deliberately spared:
+   * they are instructions to the renderer, not documentation, and removing
+   * them would silently break any Outlook-specific fix added later.
+   */
+  var html = tpl.innerHTML
+    .replace(/<!--(?!\[if)[\s\S]*?-->/g, '')
+    .replace(/^[ \t]*\n/gm, '')
+    .replace(/^\s*\n/, '')
+    .replace(/\s+$/, '');
+  preview.innerHTML = html;
+  raw.value = html;
+
+  function say(msg, ok) {
+    status.textContent = msg;
+    status.className = 'status ' + (ok ? 'ok' : 'err');
+    if (ok) setTimeout(function () { status.textContent = ''; }, 4000);
+  }
+
+  /**
+   * Copy the signature as rich content.
+   *
+   * Two mechanisms, because neither works everywhere:
+   *
+   *  1. The async Clipboard API with an explicit `text/html` flavour. This is
+   *     the correct one — it states the format rather than hoping the browser
+   *     infers it, and it carries a plain-text alternative for clients that
+   *     refuse HTML. It needs a secure context, which a page opened from
+   *     file:// often is not.
+   *  2. Selecting the rendered node and running execCommand('copy'). Deprecated,
+   *     but it is what actually works from file:// — and opening this file
+   *     directly is the normal way to use it. It copies the live selection, so
+   *     the formatting comes along.
+   *
+   * The fallback is not decoration: without it the button fails for the most
+   * likely way this page gets opened.
+   */
+  async function copySignature() {
+    var text = preview.innerText.replace(/\n{3,}/g, '\n\n').trim();
+
+    if (navigator.clipboard && window.ClipboardItem && window.isSecureContext) {
+      try {
+        await navigator.clipboard.write([new ClipboardItem({
+          'text/html':  new Blob([html], { type: 'text/html' }),
+          'text/plain': new Blob([text], { type: 'text/plain' })
+        })]);
+        say('Signature copiée — coller dans le client mail.', true);
+        return;
+      } catch (e) {
+        // Permission denied or unsupported flavour: fall through.
+      }
+    }
+
+    try {
+      var range = document.createRange();
+      range.selectNodeContents(preview);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      var ok = document.execCommand('copy');
+      sel.removeAllRanges();
+      if (ok) { say('Signature copiée — coller dans le client mail.', true); return; }
+      throw new Error('execCommand refused');
+    } catch (e) {
+      // Never claim success we cannot verify — tell them what to do instead.
+      say('Copie automatique refusée par le navigateur. Sélectionner l’aperçu à la main, puis Ctrl/Cmd+C.', false);
+    }
+  }
+
+  async function copyPlain(value, okMsg) {
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+      try { await navigator.clipboard.writeText(value); say(okMsg, true); return; } catch (e) {}
+    }
+    raw.hidden = false;
+    raw.focus();
+    raw.select();
+    try {
+      if (document.execCommand('copy')) { say(okMsg, true); return; }
+      throw new Error('refused');
+    } catch (e) {
+      say('Copie refusée — le code est affiché ci-dessous, copier à la main.', false);
+    }
+  }
+
+  document.getElementById('copy').addEventListener('click', copySignature);
+  document.getElementById('copyHtml').addEventListener('click', function () {
+    copyPlain(html, 'Code HTML copié.');
+  });
+  document.getElementById('toggle').addEventListener('click', function () {
+    raw.hidden = !raw.hidden;
+    this.textContent = raw.hidden ? 'Voir le code' : 'Masquer le code';
+  });
+})();
+</script>
+</body>
+</html>

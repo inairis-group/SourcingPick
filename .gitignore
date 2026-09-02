@@ -41,3 +41,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /uploads
+
+# Large downloadable assets are served by nginx from /var/www/sourcingpick-assets,
+# not committed. Git keeps every version of a binary forever, so a 76 MB
+# catalogue would quintuple the repo permanently — and everyone who ever clones
+# it would pay for that, including after the file is replaced.
+# See docs/brand/assets.md.
+/public/catalogue_*.pdf
