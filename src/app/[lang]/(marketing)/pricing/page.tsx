@@ -1,28 +1,23 @@
 import { notFound } from "next/navigation";
-import { PricingHero } from "@/components/marketing/pricing-hero";
-import { PricingTiers } from "@/components/marketing/pricing-tiers";
-import { CtaSection } from "@/components/marketing/cta-section";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
+import { PricingBoard } from "../_design/boards/pricing";
+import { pricing as content } from "../_design/content/pricing";
 
+/**
+ * Route for the canvas's “Tarifs” artboard.
+ *
+ * The page itself is `pricing.tsx`, transcribed from Site-Tarifs.dc.html. This file
+ * only resolves the locale and hands it over; anything added here should be
+ * behaviour, never markup, or the next re-port will silently drop it.
+ */
 export async function generateMetadata({ params }: PageProps<"/[lang]/pricing">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  const dict = await getDictionary(lang);
-  return { title: dict.pricing.title };
+  return { title: content.title[lang], description: content.description[lang] };
 }
 
 export default async function PricingPage({ params }: PageProps<"/[lang]/pricing">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-
-  const dict = await getDictionary(lang);
-
-  return (
-    <>
-      <PricingHero dict={dict} />
-      <PricingTiers dict={dict} locale={lang} />
-      <CtaSection dict={dict} locale={lang} hidePricingLink />
-    </>
-  );
+  return <PricingBoard lang={lang} />;
 }

@@ -1,19 +1,23 @@
 import { notFound } from "next/navigation";
-import { LegalLayout, legalProps } from "@/components/marketing/legal-layout";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
+import { PrivacyBoard } from "../../_design/boards/privacy";
+import { privacy as content } from "../../_design/content/privacy";
 
+/**
+ * Route for the canvas's “Confidentialite” artboard.
+ *
+ * The page itself is `privacy.tsx`, transcribed from Site-Confidentialite.dc.html. This file
+ * only resolves the locale and hands it over; anything added here should be
+ * behaviour, never markup, or the next re-port will silently drop it.
+ */
 export async function generateMetadata({ params }: PageProps<"/[lang]/legal/privacy">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  const dict = await getDictionary(lang);
-  return { title: dict.legal.privacy.title };
+  return { title: content.title[lang], description: content.description[lang] };
 }
 
 export default async function PrivacyPage({ params }: PageProps<"/[lang]/legal/privacy">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  const dict = await getDictionary(lang);
-
-  return <LegalLayout {...legalProps(dict, dict.legal.privacy)} />;
+  return <PrivacyBoard lang={lang} />;
 }

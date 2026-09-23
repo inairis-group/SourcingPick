@@ -1,43 +1,40 @@
-import { SiteNav } from "@/components/site/site-nav";
-import { SiteFooter } from "@/components/site/site-footer";
+import { notFound } from "next/navigation";
+import { SiteHeader } from "./_design/site-header";
+import { SiteFooter } from "./_design/site-footer";
 import { PublicContactButton } from "@/components/marketing/public-contact-button";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { getCurrentUser } from "@/lib/auth/session";
-import { dashboardPathForRole } from "@/lib/auth/redirects";
-import { notFound } from "next/navigation";
+import styles from "./_design/board.module.css";
 
-export default async function MarketingLayout({
-  children,
-  params,
-}: LayoutProps<"/[lang]">) {
+/**
+ * Chrome for every public page, transcribed from the canvas.
+ *
+ * The artboards are 1440px frames: a near-white column holding the
+ * announcement strip, the header and the page, sitting on the navy the footer
+ * is painted in. That is reproduced here rather than approximated — the frame
+ * is centred and capped at the canvas width, and `board.module.css` is the
+ * only thing that reflows it, because the design has no tablet artboards and
+ * inventing them is exactly the drift we are trying to avoid.
+ *
+ * The header and footer are generated once: all thirteen artboards draw them
+ * identically, which the porter checks rather than assumes.
+ */
+export default async function MarketingLayout({ children, params }: LayoutProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
 
-  const [dict, user] = await Promise.all([
-    getDictionary(lang),
-    getCurrentUser(),
-  ]);
-  const dashboardHref = user ? dashboardPathForRole(user.role, lang) : null;
+  const user = await getCurrentUser();
 
   return (
-    /* `theme-light` pins every marketing surface to the light palette
-       regardless of the user's theme cookie — see the token block in
-       globals.css. Light/dark is a dashboard affordance only, so the marketing
-       navbar carries no theme toggle. `bg-page` is repeated here because the
-       <body> background is painted outside this wrapper and would otherwise
-       show through as dark behind an overscroll. */
-    <div className="theme-light bg-page flex min-h-dvh flex-col">
-      <SiteNav
-        lang={lang}
-        dict={dict}
-        signedIn={Boolean(user)}
-        dashboardHref={dashboardHref}
-      />
-      <main className="flex-1">{children}</main>
-      <SiteFooter lang={lang} dict={dict} />
-      {/* Partner #17: lightweight pre-signup contact dock. Replace
-          with a vendor live-chat widget when ops is ready to staff it. */}
+    <div className={`theme-light ${styles.frame}`}>
+      <div className={styles.page}>
+        <SiteHeader lang={lang} />
+        <main>{children}</main>
+      </div>
+      <SiteFooter lang={lang} />
+      {/* Partner #17: lightweight pre-signup contact dock. Not part of the
+          canvas — it is an operations affordance, and it hides itself once
+          somebody has an account to message us from. */}
       {!user && <PublicContactButton />}
     </div>
   );

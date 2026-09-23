@@ -34,6 +34,17 @@ const eslintConfig = defineConfig([
       "react/no-unescaped-entities": "off",
     },
   },
+  {
+    // Every image on the ported marketing site is an SVG illustration drawn
+    // in the canvas. `next/image` does not optimise SVG — it would add a
+    // wrapper, a layout pass and a loader round-trip for no smaller byte —
+    // and these files are generated, so a suppression comment would be
+    // rewritten on the next re-port anyway.
+    files: ["**/_design/**/*.tsx"],
+    rules: {
+      "@next/next/no-img-element": "off",
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
