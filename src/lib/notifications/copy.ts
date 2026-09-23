@@ -53,13 +53,20 @@ export type NotificationVars = {
     | "marketplace_sample_ordered"
     | "quote_relance"
     | "research_fee_refunded"
-    | "account_deletion_rejected";
+    | "account_deletion_rejected"
+    | "quote_request_received";
 };
 
 const SYSTEM_TITLES: Record<
   NonNullable<NotificationVars["systemKey"]>,
   Record<AppLocale, string>
 > = {
+  quote_request_received: {
+    fr: "Nouvelle demande de devis depuis le site",
+    en: "New quote request from the website",
+    zh: "网站收到新的报价请求",
+    ar: "طلب عرض سعر جديد من الموقع",
+  },
   tender_invited: {
     fr: "Nouvel appel d'offres reçu",
     en: "New tender invitation",

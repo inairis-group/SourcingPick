@@ -12,6 +12,7 @@ import { prisma } from "@/lib/db/client";
  *   CERT-YYYY-NNN (certifications)
  *   MKT-XXX     (marketplace products)
  *   SHP-XXXXX   (shipments — Expéditeur logistics leg)
+ *   QRQ-XXXXXX  (public quote requests, from /devis)
  *
  * v1 strategy: random + uniqueness retry. For high-throughput phases we'd
  * switch to a sequence-per-prefix model or use Postgres SEQUENCES.
@@ -31,7 +32,8 @@ export async function generateUniqueReference<
     | "AUC"
     | "TKT"
     | "DSP"
-    | "SHP",
+    | "SHP"
+    | "QRQ",
 >(prefix: T): Promise<string> {
   // Year-scoped serials for finance + certification: INV-2026-NNNN, etc.
   // Random + retry serial scheme for the rest: REQ-XXXXXX, ORD-XXXXX, MKT-XXX.
@@ -79,6 +81,13 @@ export async function generateUniqueReference<
 
 async function referenceExists(prefix: string, candidate: string): Promise<boolean> {
   switch (prefix) {
+    case "QRQ": {
+      const row = await prisma.quoteRequest.findUnique({
+        where: { reference: candidate },
+        select: { id: true },
+      });
+      return row !== null;
+    }
     case "REQ": {
       const row = await prisma.sourcingRequest.findUnique({
         where: { reference: candidate },

@@ -1,12 +1,5 @@
 import "server-only";
-import {
-  renderToBuffer,
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-} from "@react-pdf/renderer";
+import { renderToBuffer, Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
 /**
  * SourcingPick quote PDF — partner #22.
@@ -102,9 +95,7 @@ export async function renderQuotePdf(payload: QuotePdfPayload): Promise<Buffer> 
             <Text style={S.sectionTitle}>Usine / Factory</Text>
             <Text style={S.bold}>{payload.factory.displayName}</Text>
             <Text>{payload.factory.country}</Text>
-            {payload.agentName && (
-              <Text style={S.muted}>Agent: {payload.agentName}</Text>
-            )}
+            {payload.agentName && <Text style={S.muted}>Agent: {payload.agentName}</Text>}
           </View>
         </View>
 
@@ -112,9 +103,7 @@ export async function renderQuotePdf(payload: QuotePdfPayload): Promise<Buffer> 
         <View style={S.pricingBlock}>
           <View style={S.pricingRow}>
             <Text style={S.pricingLabel}>Prix unitaire / Unit price</Text>
-            <Text style={S.pricingValue}>
-              {formatEur(payload.unitPriceCentsClient)}
-            </Text>
+            <Text style={S.pricingValue}>{formatEur(payload.unitPriceCentsClient)}</Text>
           </View>
           <View style={S.pricingRow}>
             <Text style={S.pricingLabel}>Quantité / Quantity</Text>
@@ -134,9 +123,7 @@ export async function renderQuotePdf(payload: QuotePdfPayload): Promise<Buffer> 
           </View>
           <View style={[S.pricingRow, S.pricingTotal]}>
             <Text style={S.pricingLabelBold}>Total TTC</Text>
-            <Text style={S.pricingValueBold}>
-              {formatEur(payload.totalCentsClient)}
-            </Text>
+            <Text style={S.pricingValueBold}>{formatEur(payload.totalCentsClient)}</Text>
           </View>
         </View>
 
@@ -144,9 +131,7 @@ export async function renderQuotePdf(payload: QuotePdfPayload): Promise<Buffer> 
         <View style={S.paymentBlock}>
           <Text style={S.sectionTitle}>Modalités de paiement / Payment terms</Text>
           <View style={S.paymentRow}>
-            <Text>
-              Acompte / Deposit ({payload.depositPercentageBps / 100} %)
-            </Text>
+            <Text>Acompte / Deposit ({payload.depositPercentageBps / 100} %)</Text>
             <Text style={S.bold}>{formatEur(depositCents)}</Text>
           </View>
           <View style={S.paymentRow}>
@@ -157,10 +142,9 @@ export async function renderQuotePdf(payload: QuotePdfPayload): Promise<Buffer> 
             <Text style={S.bold}>{formatEur(balanceCents)}</Text>
           </View>
           <Text style={S.paymentFootnote}>
-            Paiements en virement bancaire vers le compte séquestre SourcingPick.
-            L'usine n'est payée qu'après confirmation de livraison. Toute
-            ouverture de litige sous 7 jours après réception suspend le paiement
-            de l'usine jusqu'à arbitrage.
+            Paiements en virement bancaire vers le compte séquestre SourcingPick. L'usine n'est
+            payée qu'après confirmation de livraison. Toute ouverture de litige sous 7 jours après
+            réception suspend le paiement de l'usine jusqu'à arbitrage.
           </Text>
         </View>
 
@@ -175,9 +159,9 @@ export async function renderQuotePdf(payload: QuotePdfPayload): Promise<Buffer> 
         {/* Footer */}
         <View style={S.footer}>
           <Text style={S.footerNote}>
-            Ce devis est valable jusqu'au {payload.validUntil.toISOString().slice(0, 10)}.
-            Pour accepter, connectez-vous à votre espace SourcingPick et cliquez
-            sur « Accepter le devis » sur cette demande.
+            Ce devis est valable jusqu'au {payload.validUntil.toISOString().slice(0, 10)}. Pour
+            accepter, connectez-vous à votre espace SourcingPick et cliquez sur « Accepter le devis
+            » sur cette demande.
           </Text>
         </View>
       </Page>

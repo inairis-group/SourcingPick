@@ -2283,6 +2283,35 @@
         }
       },
       "templatesPicker": "Insert a template"
+    },
+    "quoteRequests": {
+      "title": "Quote requests",
+      "subtitle": "Requests from the public form. Every one is from someone without an account.",
+      "empty": "No requests yet.",
+      "kpiNew": "New",
+      "kpiWeek": "Last 7 days",
+      "kpiTotal": "Total",
+      "colRef": "Reference",
+      "colWho": "Requester",
+      "colWhat": "Goods",
+      "colWhere": "Destination",
+      "colService": "Service",
+      "colWhen": "Received",
+      "serviceLogistics": "Logistics",
+      "serviceSourcing": "Sourcing + logistics",
+      "kindBusiness": "Business",
+      "kindIndividual": "Individual",
+      "hasAccount": "Existing account",
+      "details": "Details",
+      "quantity": "Quantity",
+      "volume": "Volume / weight",
+      "value": "Value",
+      "suppliers": "Suppliers",
+      "cities": "Cities",
+      "arrival": "Preferred arrival",
+      "message": "Further details",
+      "phone": "Phone",
+      "files": "Attachments"
     }
   },
   "attachments": {

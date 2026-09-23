@@ -23,6 +23,27 @@
 .frame {
   background: #0b1433;
   min-height: 100dvh;
+  /* The header's drawn height. Named because three other things have to keep
+     out from under it once it stops scrolling away. */
+  --sp-header-h: 84px;
+}
+
+/* The canvas draws the header as part of the page, so it scrolls off. Asked
+   for as sticky instead: on a page eight thousand pixels tall, the quote CTA
+   should not be something you scroll back up to find.
+   The translucency is the design's own — `rgba(245,247,252,0.92)` — and only
+   reads as deliberate once there is something moving behind it, which is what
+   the blur is for. */
+.frame :global(header) {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  backdrop-filter: blur(12px);
+}
+
+/* An in-page anchor would now land behind the header. */
+.frame :global(section[id]) {
+  scroll-margin-top: calc(var(--sp-header-h) + 12px);
 }
 
 .page {

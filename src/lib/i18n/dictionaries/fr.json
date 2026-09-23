@@ -2283,6 +2283,35 @@
         }
       },
       "templatesPicker": "Insérer un modèle"
+    },
+    "quoteRequests": {
+      "title": "Demandes de devis",
+      "subtitle": "Demandes reçues depuis le formulaire public. Chacune vient de quelqu’un sans compte.",
+      "empty": "Aucune demande pour l’instant.",
+      "kpiNew": "Nouvelles",
+      "kpiWeek": "7 derniers jours",
+      "kpiTotal": "Total",
+      "colRef": "Référence",
+      "colWho": "Demandeur",
+      "colWhat": "Marchandise",
+      "colWhere": "Destination",
+      "colService": "Prestation",
+      "colWhen": "Reçue le",
+      "serviceLogistics": "Logistique",
+      "serviceSourcing": "Sourcing + logistique",
+      "kindBusiness": "Entreprise",
+      "kindIndividual": "Particulier",
+      "hasAccount": "Compte existant",
+      "details": "Détails",
+      "quantity": "Quantité",
+      "volume": "Volume / poids",
+      "value": "Valeur",
+      "suppliers": "Fournisseurs",
+      "cities": "Villes",
+      "arrival": "Arrivée souhaitée",
+      "message": "Précisions",
+      "phone": "Téléphone",
+      "files": "Pièces jointes"
     }
   },
   "attachments": {

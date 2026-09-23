@@ -2283,6 +2283,35 @@
         }
       },
       "templatesPicker": "插入模板"
+    },
+    "quoteRequests": {
+      "title": "报价请求",
+      "subtitle": "来自公开表单的请求，提交人均无账户。",
+      "empty": "暂无请求。",
+      "kpiNew": "新请求",
+      "kpiWeek": "近 7 天",
+      "kpiTotal": "合计",
+      "colRef": "编号",
+      "colWho": "申请人",
+      "colWhat": "货物",
+      "colWhere": "目的地",
+      "colService": "服务",
+      "colWhen": "接收时间",
+      "serviceLogistics": "物流",
+      "serviceSourcing": "采购 + 物流",
+      "kindBusiness": "企业",
+      "kindIndividual": "个人",
+      "hasAccount": "已有账户",
+      "details": "详情",
+      "quantity": "数量",
+      "volume": "体积 / 重量",
+      "value": "货值",
+      "suppliers": "供应商数量",
+      "cities": "城市",
+      "arrival": "期望到达",
+      "message": "补充说明",
+      "phone": "电话",
+      "files": "附件"
     }
   },
   "attachments": {

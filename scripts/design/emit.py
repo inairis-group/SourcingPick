@@ -74,6 +74,29 @@ def css_prop(name: str) -> str:
     return out[:1].upper() + out[1:] if lead_upper else out
 
 
+# The artboards ship no CSS reset, so the canvas authored them against the
+# browser default — content-box — and writes `box-sizing: border-box` inline on
+# the elements that want it. Our app has Tailwind's preflight, which makes
+# everything border-box. That silently narrows any element setting both a pixel
+# width and a padding: the quote page's heading column is drawn 900px wide and
+# was rendering at 660.
+#
+# Restored per element rather than with a descendant reset on the frame. A
+# reset would also catch the hand-written controls in _design/, which were
+# written against border-box and break under content-box — which is how the
+# language menu ended up with its selected row overflowing the menu.
+_WIDTH = re.compile(r"\b(max-)?width\s*:\s*\d")
+_PADDING = re.compile(r"\bpadding(-inline|-left|-right)?\s*:")
+
+
+def needs_content_box(css: str) -> str:
+    if "box-sizing" in css:
+        return css  # the canvas already said which model it wants
+    if _WIDTH.search(css) and _PADDING.search(css):
+        return css.rstrip().rstrip(";") + "; box-sizing: content-box"
+    return css
+
+
 def style_object(css: str) -> str:
     decls = split_decls(css)
     if not decls:
@@ -158,6 +181,23 @@ BOOLEAN_ATTRS = {"checked", "disabled", "required", "selected", "readonly", "mul
 # --- emitter -----------------------------------------------------------------
 
 
+def _is_disclosure(node) -> bool:
+    """An element whose header says whether it is open.
+
+    `aria-expanded` is the canvas's own way of drawing a question as open. It
+    is also exactly the contract a disclosure needs, so no page has to be
+    named here: the FAQ, the home page and the pricing page all light up.
+    """
+    if isinstance(node, str):
+        return False
+    return any(
+        not isinstance(c, str)
+        and c.tag == "button"
+        and c.attr("aria-expanded") is not None
+        for c in node.children
+    )
+
+
 class Emitter:
     """Walks the tree, producing TSX lines.
 
@@ -186,6 +226,8 @@ class Emitter:
         slot_expr=lambda i: f"t[{i}]",
         replace=None,
         decorate=None,
+        retag=None,
+        name_for=None,
     ) -> None:
         self.assets = assets
         self.resolve_href = resolve_href
@@ -201,6 +243,16 @@ class Emitter:
         # way behaviour is attached to transcribed markup. See DECORATIONS in
         # port.py.
         self.decorate = decorate or (lambda el: None)
+        # Swaps the element's tag for a component while keeping its attributes
+        # and its children, which stay server-rendered. This is how a
+        # transcribed <form> gets an action without the fields it contains
+        # being pulled into the client bundle.
+        self.retag = retag or (lambda el: None)
+        # Names a control the canvas left without an id.
+        self.name_for = name_for or (lambda el: None)
+        self.components: set[str] = set()
+        # Radio groups, so each input can be given the index of its option.
+        self._radio: dict[str, int] = {}
         self.i = 0
         self.a = 0
         self.k = 0
@@ -222,6 +274,26 @@ class Emitter:
             return 1 if node.strip() else 0
         n = sum(1 for name in L10N_ATTRS if node.attr(name))
         return n + sum(self.count_slots(c) for c in node.children)
+
+    def _generic_class(self, node) -> str | None:
+        """Classes that follow from the markup, not from which page it is on.
+
+        A label wrapping a radio is a choice chip. The canvas can only draw one
+        state, so it hard-codes the selected outline onto whichever option the
+        designer left checked; `.sp-choice` makes that outline follow the radio
+        instead. The rule is structural, so it holds for any such control the
+        canvas ever draws.
+        """
+        if node.tag != "label":
+            return None
+        radios = [
+            c
+            for c in node.children
+            if not isinstance(c, str)
+            and c.tag == "input"
+            and c.attr("type") == "radio"
+        ]
+        return "sp-choice" if radios else None
 
     def count_anchors(self, node) -> int:
         if isinstance(node, str):
@@ -283,7 +355,7 @@ class Emitter:
                 if var:
                     attrs.append(f"style={{s[{var[1]}][lang]}}")
                 elif value:
-                    obj = style_object(value)
+                    obj = style_object(needs_content_box(value))
                     if obj:
                         attrs.append(f"style={{{obj}}}")
                 continue
@@ -308,11 +380,60 @@ class Emitter:
                 continue
             attrs.append(f"{jsx_attr_name(tag, name)}={json.dumps(value)}")
 
-        css_class = self.decorate(node)
+        css_class = self.decorate(node) or self._generic_class(node)
         if css_class:
             attrs.insert(0, f'className="{css_class}"')
 
-        tag_out = "Link" if (tag == "a" and is_link) else tag
+        # -- form plumbing, all of it derived rather than declared ------------
+        #
+        # The canvas draws a form; it does not submit one. Three rules turn the
+        # drawing into something a browser can post, and none of them needs to
+        # know what page they are on:
+
+        if tag in ("input", "select", "textarea"):
+            # 1. A control the designer gave an id but no name. The id is the
+            #    design's own, so the field names are too.
+            el_id, el_name = node.attr("id"), node.attr("name")
+            if el_id and not el_name:
+                attrs.append(f'name="{el_id}"')
+            elif not el_id and not el_name:
+                declared = self.name_for(node)
+                if declared:
+                    attrs.append(f'name="{declared}"')
+            # 2. Radios in a group carry no value, so a checked one would post
+            #    "on" and say nothing about which option it was. Numbering them
+            #    by position is the same contract the rest of this port runs
+            #    on; the server maps index to meaning.
+            if node.attr("type") == "radio" and el_name:
+                idx = self._radio.get(el_name, 0)
+                self._radio[el_name] = idx + 1
+                attrs.append(f'value="{idx}"')
+
+        # Asked once and reused: the hook counts its matches so a re-export
+        # that changes the markup fails the port, and calling it twice would
+        # make every match look like two.
+        retagged = self.retag(node)
+
+        if not retagged and _is_disclosure(node):
+            self.components.add("Disclosure")
+            head = f"Disclosure{'' if not attrs else ' ' + ' '.join(attrs)}"
+            inner = self.children(node, indent + 1)
+            return [f"{pad}<{head}>", *inner, f"{pad}</Disclosure>"]
+
+        if retagged:
+            component, extra = retagged
+            self.components.add(component)
+            attrs.extend(extra)
+            tag_out = component
+        elif tag == "a" and not is_link and not any(
+            a.startswith("href=") for a in attrs
+        ):
+            # 3. An anchor the route map resolved to nothing is a submit
+            #    control the canvas had no way to draw as one.
+            tag_out = "SubmitButton"
+            self.components.add("SubmitButton")
+        else:
+            tag_out = "Link" if (tag == "a" and is_link) else tag
         if tag_out == "Link":
             self.needs_link = True
 

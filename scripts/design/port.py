@@ -36,7 +36,7 @@ from dcparse import (
     slots,
     text_of,
 )
-from emit import Emitter, css_prop, split_decls
+from emit import Emitter, css_prop, needs_content_box, split_decls
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 CANVAS = os.environ.get(
@@ -342,7 +342,9 @@ def variant_tables(per_locale: dict[str, list[Element]]):
 
 
 def css_object(css: str) -> list[tuple[str, str]]:
-    return [(css_prop(k), v) for k, v in split_decls(css)]
+    # Same box-model restoration as the inlined styles take — a style that
+    # varies by locale is no less subject to Tailwind's preflight.
+    return [(css_prop(k), v) for k, v in split_decls(needs_content_box(css))]
 
 
 # --- behaviour attached to transcribed markup ---------------------------------
@@ -359,6 +361,122 @@ def css_object(css: str) -> list[tuple[str, str]]:
 
 def _is_step_card(el: Element) -> bool:
     return el.tag == "article" and "border-radius: 26px" in (el.attr("style") or "")
+
+
+# Components that stand in for a transcribed element, keeping its attributes
+# and its children. The children stay server-rendered, so wrapping the quote
+# form in a client component costs nothing in the browser bundle.
+
+
+def _is_quote_form(el: Element) -> bool:
+    return el.tag == "form"
+
+
+def _is_country_select(el: Element) -> bool:
+    return el.tag == "select" and el.attr("id") == "q-country"
+
+
+def _is_file_drop(el: Element) -> bool:
+    """The dashed panel the canvas draws for attachments.
+
+    Matched on the dashed border, which is the only one on the page — the
+    count check below is what stops that quietly becoming untrue.
+    """
+    return el.tag == "div" and "dashed" in (el.attr("style") or "")
+
+
+COMPONENTS: dict[str, list[tuple]] = {
+    "Devis": [
+        # Owns the action and the pending/error state.
+        (_is_quote_form, "QuoteForm", "../../quote-form", 1, True),
+        # The canvas draws one placeholder option. A real select needs the
+        # list, which is the app's existing ISO 3166 one rather than a new
+        # invention; the designer's placeholder text is passed through.
+        (_is_country_select, "CountrySelect", "../../form-controls", 1, True),
+        # The canvas cannot draw a file having been chosen, so the previews,
+        # sizes and remove buttons are added around the box it did draw.
+        (_is_file_drop, "FileDrop", "../../file-drop", 1, True),
+    ],
+}
+
+# Controls the canvas drew without an id, so the generic "name from id" rule
+# has nothing to work from. One entry, and the count is checked: the consent
+# tick has to post or the form cannot record that it was given.
+FIELD_NAMES: dict[str, list[tuple]] = {
+    "Devis": [
+        (lambda el: el.tag == "input" and el.attr("type") == "checkbox",
+         "consent", 1),
+    ],
+}
+
+
+def field_namer(stem: str):
+    rules = FIELD_NAMES.get(stem, [])
+    seen = [0] * len(rules)
+
+    def name_for(el: Element) -> str | None:
+        for i, (pred, name, _n) in enumerate(rules):
+            if pred(el):
+                seen[i] += 1
+                return name
+        return None
+
+    def check() -> None:
+        for (_p, name, expected), got in zip(rules, seen):
+            if got != expected:
+                raise SystemExit(
+                    f"{stem}: expected {expected} unnamed control(s) for "
+                    f'name="{name}", matched {got}. Update FIELD_NAMES.'
+                )
+
+    return name_for, check
+
+
+# Stand-ins produced by generic rules in the emitter rather than by a page
+# entry above, so they can turn up on any board.
+GENERIC_IMPORTS = {
+    # An anchor the route map resolved to nothing is a submit control.
+    "SubmitButton": "../../form-controls",
+    # An element wrapping a button with aria-expanded is a disclosure.
+    "Disclosure": "../../disclosure",
+}
+
+
+def component_for(stem: str):
+    rules = COMPONENTS.get(stem, [])
+    seen = [0] * len(rules)
+
+    def retag(el: Element):
+        """-> (component, extra attributes) for a matching element."""
+        for i, (pred, name, _mod, _n, needs_lang) in enumerate(rules):
+            if pred(el):
+                seen[i] += 1
+                # Only the stand-ins that render copy or a localised list are
+                # handed the locale; the generic submit button has no use for
+                # it and should not be asked to accept one.
+                return name, (["lang={lang}"] if needs_lang else [])
+        return None
+
+    def check() -> None:
+        for (pred, name, _mod, expected, _l), got in zip(rules, seen):
+            if got != expected:
+                raise SystemExit(
+                    f"{stem}: expected {expected} element(s) for <{name}>, "
+                    f"matched {got}. The artboard changed — update COMPONENTS."
+                )
+
+    return retag, check
+
+
+def component_imports(stem: str, used: set[str]) -> list[str]:
+    """Import lines for whichever stand-ins the emitter actually produced."""
+    table = {name: mod for _p, name, mod, _n, _l in COMPONENTS.get(stem, [])}
+    table.update(GENERIC_IMPORTS)
+    return [
+        f'import {{ {name} }} from "{table[name]}";'
+        for name in sorted(used)
+        if name in table
+    ]
 
 
 DECORATIONS: dict[str, list[tuple]] = {
@@ -495,7 +613,7 @@ def aligned(stem: str):
 
 
 def emit_part(nodes, *, per_locale_nodes, start_i, start_a, offset, hrefs,
-              replacer=None, decorate=None):
+              replacer=None, decorate=None, retag=None, name_for=None):
     """Emit `nodes` as JSX whose slot reads are shifted by `offset`."""
     variants, styles, values = variant_tables(per_locale_nodes)
     em = Emitter(
@@ -506,6 +624,8 @@ def emit_part(nodes, *, per_locale_nodes, start_i, start_a, offset, hrefs,
         slot_expr=lambda i: f"t[{i - offset}]",
         replace=replacer,
         decorate=decorate,
+        retag=retag,
+        name_for=name_for,
     )
     em.i, em.a = start_i, start_a
     lines = [ln for n in nodes for ln in em.emit(n, 3)]
@@ -669,6 +789,8 @@ def port_page(stem: str) -> None:
     variants = []
     for locs, nodes in groups:
         decorate, check_decorations = decorator_for(stem)
+        retag, check_components = component_for(stem)
+        name_for, check_names = field_namer(stem)
         tag = locs[0]
         primary = nodes[tag]
         sections = {loc: n[2:-1] for loc, n in nodes.items()}
@@ -680,14 +802,19 @@ def port_page(stem: str) -> None:
             start_i=start_i, start_a=start_a, offset=start_i,
             hrefs=routes[len(anchors(primary[:2])):],
             decorate=decorate,
+            retag=retag,
+            name_for=name_for,
         )
         check_decorations()
+        check_components()
+        check_names()
         variants.append((tag, locs, lines, em, styles, values))
 
     write(f"{BOARD_DIR}/boards/{page.key}/index.tsx", board_index(page, variants))
     for tag, locs, lines, em, styles, values in variants:
         write(f"{BOARD_DIR}/boards/{page.key}/{tag}.tsx",
-              board_variant(page, tag, locs, lines, em, styles, values))
+              board_variant(page, tag, locs, lines, em, styles, values,
+                            imports=component_imports(stem, em.components)))
 
     body = {}
     for tag, locs, *_ in variants:
@@ -737,13 +864,15 @@ def board_index(page, variants) -> str:
     )
 
 
-def board_variant(page, tag, locs, lines, em, styles, values) -> str:
+def board_variant(page, tag, locs, lines, em, styles, values, *, imports=()) -> str:
     name = page.comp if len(locs) == len(LOCALES) else f"{page.comp}{tag.upper()}"
+    extra = list(imports)
     imports = []
     if em.needs_link:
         imports.append('import Link from "next/link";')
     imports.append('import type { Locale } from "@/lib/i18n/config";')
     imports.append(f'import {{ {page.key} as content }} from "../../content/{page.key}";')
+    imports.extend(extra)
     reads = ["  const t = content.text[lang];"]
     if styles:
         reads.append(f"  const s = content.{tag}Styles;")

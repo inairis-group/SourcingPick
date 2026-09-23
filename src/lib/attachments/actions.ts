@@ -83,6 +83,10 @@ async function canManage(
   if (att.uploaderId && att.uploaderId === user.id) return true;
 
   switch (att.contextType) {
+    // Uploaded by somebody with no account, against a lead nobody owns. The
+    // ADMIN short-circuit above is the only way these come off.
+    case AttachmentContext.QUOTE_REQUEST:
+      return false;
     // Shipment documents are part of the brief the internal team is obliged
     // to supply (§2), and the shipper quotes against them. Neither the shipper
     // nor an agent may prune them after the fact — the ADMIN and uploader

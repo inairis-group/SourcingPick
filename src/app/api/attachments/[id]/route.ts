@@ -92,6 +92,13 @@ async function canRead(att: {
   contextId: string;
 }): Promise<boolean> {
   switch (att.contextType) {
+    case AttachmentContext.QUOTE_REQUEST: {
+      // A quote request is a lead from a stranger. Whatever they attached is
+      // for the team answering it and nobody else — including the visitor,
+      // who has no account to be recognised by.
+      const session = await auth();
+      return session?.user?.role === Role.ADMIN;
+    }
     case AttachmentContext.MARKETPLACE_BANNER:
       // Banner media is public marketing content shown on the storefront.
       return true;

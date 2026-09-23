@@ -590,7 +590,10 @@
    * --------------------------------------------------------- */
   .sp-step-card {
     position: sticky;
-    top: calc(4.5rem + var(--step-index, 0) * 1.25rem);
+    /* Clears the sticky header, which the cards would otherwise park behind.
+       The fallback is the drawn header height, for anywhere the variable is
+       not in scope. */
+    top: calc(var(--sp-header-h, 84px) + 1rem + var(--step-index, 0) * 1.25rem);
     box-shadow: 0 10px 24px -12px rgba(14, 26, 61, 0.35);
   }
 
@@ -628,6 +631,58 @@
       position: static;
       box-shadow: none;
     }
+  }
+
+  /* ---------------------------------------------------------
+   * .sp-choice — a radio drawn as a card.
+   *
+   * The canvas can only draw one state, so it writes the selected outline
+   * onto whichever option the designer left checked. Rendered literally, the
+   * first option stays outlined however the visitor answers. These two rules
+   * take the outline off the markup and hang it on the radio instead; both
+   * values are the design's own, lifted from the two chips it drew.
+   *
+   * `!important` because it is competing with an inline style, and the states
+   * are also given a focus ring — the canvas draws no focus state at all, and
+   * a card-shaped radio that shows nothing on keyboard focus is unusable.
+   * --------------------------------------------------------- */
+  .sp-choice {
+    border-color: #dce3f2 !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast) var(--ease-default),
+      box-shadow var(--duration-fast) var(--ease-default);
+  }
+
+  .sp-choice:hover {
+    border-color: #9facd3 !important;
+  }
+
+  .sp-choice:has(input:checked) {
+    border-color: #155dfc !important;
+    box-shadow: 0 0 0 3px #eaf1ff !important;
+  }
+
+  .sp-choice:has(input:focus-visible) {
+    outline: 2px solid #155dfc;
+    outline-offset: 2px;
+  }
+
+  /* ---------------------------------------------------------
+   * .sp-disclosure-head — the header of a question that opens.
+   *
+   * The canvas draws every disclosure open, so the only icon it gives us is
+   * the cross that closes one. Turned 45° it is the plus that opens one: the
+   * designer's own glyph doing the other half of its job, rather than a
+   * second icon invented here.
+   * --------------------------------------------------------- */
+  .sp-disclosure-head svg {
+    transition: transform var(--duration-base) var(--ease-emphasize);
+  }
+
+  .sp-disclosure-head[data-open="false"] svg {
+    transform: rotate(45deg);
   }
 
   /* ---------------------------------------------------------

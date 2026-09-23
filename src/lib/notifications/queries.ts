@@ -116,6 +116,10 @@ export async function notificationHref(
             : null;
     case "Organization":
       return r === "admin" ? `/${lang}/admin/kyc` : `/${lang}/factory/settings`;
+    case "QuoteRequest":
+      // A lead from the public form. Nobody but the internal team ever has
+      // one of these in context.
+      return r === "admin" ? `/${lang}/admin/quote-requests` : null;
     case "SupportTicket":
     case "SUPPORT":
       // Both forms point at the same place — the support ticket detail.

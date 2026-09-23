@@ -266,6 +266,10 @@ model DeliveryRate {
 }
 
 enum AttachmentContext {
+  /// Pro forma invoices, spec sheets and photos attached to a quote asked for
+  /// from the public site. The uploader is nobody — a visitor has no account —
+  /// so these are readable by the internal team only.
+  QUOTE_REQUEST
   MESSAGE
   SOURCING_REQUEST
   /// §2.2.1 — the order invoice handed to the expéditeur. One invoice may
@@ -753,6 +757,7 @@ model User {
   deletionRequests          AccountDeletionRequest[] @relation("DeletionRequester")
   deletionRequestsReviewed  AccountDeletionRequest[] @relation("DeletionReviewer")
   guestConversations        GuestConversation[]      @relation("GuestChatLinkedUser")
+  quoteRequests             QuoteRequest[]           @relation("QuoteRequestLinkedUser")
 
   @@index([organizationId])
   @@index([role, deletedAt])
@@ -2452,4 +2457,83 @@ model VehicleDetail {
 
   @@index([makeName, modelName, year])
   @@index([vin])
+}
+
+/// What the visitor asked for on the public quote form (/devis).
+enum QuoteRequestService {
+  /// They already have suppliers; they need the goods moved.
+  LOGISTICS
+  /// They have no supplier yet and want one found first.
+  SOURCING_LOGISTICS
+}
+
+enum QuoteRequestKind {
+  BUSINESS
+  INDIVIDUAL
+}
+
+enum QuoteRequestStatus {
+  NEW
+  IN_REVIEW
+  ANSWERED
+  /// Turned into a real SourcingRequest once the asker had an account.
+  CONVERTED
+  ARCHIVED
+}
+
+/// A quote asked for from the public site, by someone who has no account.
+///
+/// Deliberately not a SourcingRequest: that model requires a clientOrgId, and
+/// a visitor has no organisation. This is the lead that precedes one — ops
+/// answers it, and it converts once the asker signs up. Same shape of
+/// unauthenticated intake as GuestConversation, down to the hashed IP.
+///
+/// Every measurement is free text because the form collects free text: the
+/// canvas prompts "e.g. 12 m³ or 1,800 kg", so parsing it into a number would
+/// be inventing precision the visitor never gave.
+model QuoteRequest {
+  id        String              @id @default(cuid(2))
+  reference String              @unique
+  service   QuoteRequestService
+  status    QuoteRequestStatus  @default(NEW)
+
+  // 2. Your goods
+  products       String
+  quantity       String?
+  volume         String?
+  goodsValue     String?
+  supplierCount  String?
+  supplierCities String?
+
+  // 3. Destination
+  destinationCountry String
+  destinationCity    String?
+  arrivalDate        String?
+
+  // 4. Your details
+  kind    QuoteRequestKind
+  name    String
+  company String?
+  email   String
+  phone   String?
+  message String?
+
+  /// The language the form was filled in, so the answer goes back in it.
+  locale Locale @default(fr)
+
+  /// An account matching the e-mail, if one exists. The bridge to converting
+  /// this into a SourcingRequest without inventing an organisation.
+  linkedUserId String?
+  linkedUser   User?   @relation("QuoteRequestLinkedUser", fields: [linkedUserId], references: [id], onDelete: SetNull)
+
+  /// Salted SHA-256 of the client IP — a rate-limit key, not a record of who
+  /// visited. Same reasoning as GuestConversation.ipHash.
+  ipHash String?
+
+  handledAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([status, createdAt])
+  @@index([email])
 }

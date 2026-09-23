@@ -1,9 +1,5 @@
 import "server-only";
-import {
-  NotificationType,
-  QuoteStatus,
-  Role,
-} from "@prisma/client";
+import { NotificationType, QuoteStatus, Role } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { emitNotificationToMany } from "@/lib/notifications/emit";
 import { writeAuditLog } from "@/lib/audit/log";

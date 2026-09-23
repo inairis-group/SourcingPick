@@ -1,15 +1,15 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { localeLabels, localeTags, locales, type Locale } from "@/lib/i18n/config";
 
 /**
- * The one place the port departs from the canvas.
+ * The language menu, and the strip along the foot of every page.
  *
- * The design draws twelve languages in the header dropdown and again along the
- * foot of every page. We ship four. Rendering the drawing literally would mean
- * eleven links to dictionaries that do not exist, so the list comes from
+ * The canvas draws twelve languages in both, and the site now speaks all
+ * twelve — so the only thing here that departs from the drawing is the open
+ * state, which a picture cannot have. The list comes from
  * `locales` while the styling — every border, radius and hex below — is lifted
  * from the artboard unchanged.
  *
@@ -58,6 +58,17 @@ export function LocaleSwitch({ lang }: { lang: Locale }) {
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  // Escape closes the menu. A control that opens from the keyboard has to
+  // close from it too, and the click-away layer only catches pointers.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
   const swap = (next: Locale) => {
     // The locale is the first path segment. Replacing it keeps the reader on
@@ -115,49 +126,129 @@ export function LocaleSwitch({ lang }: { lang: Locale }) {
               cursor: "default",
             }}
           />
+          {/* Two columns, because twelve of anything in one column is a list
+              you scroll rather than a menu you read. Six rows fits under the
+              header on a laptop without the menu needing its own scrollbar,
+              and the pairs stay in the canvas's own order. */}
           <ul
             role="menu"
+            aria-label={localeLabels[lang]}
             style={{
               position: "absolute",
               insetInlineEnd: 0,
-              top: "calc(100% + 8px)",
+              top: "calc(100% + 10px)",
               zIndex: 50,
               margin: 0,
-              padding: "6px",
+              padding: "8px",
               listStyle: "none",
-              minWidth: "180px",
+              display: "grid",
+              // An explicit width, because `1fr` tracks inside an
+              // absolutely-positioned box with no width resolve against a
+              // width that does not exist yet — which is what put a
+              // horizontal scrollbar inside the menu.
+              width: "min(calc(100vw - 32px), 420px)",
+              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              gap: "2px",
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
-              borderRadius: "14px",
+              borderRadius: "16px",
               boxShadow: "0 18px 40px -20px rgba(14,26,61,0.45)",
+              // No max-height and no scrolling: six rows of 40px is 266px
+              // with the padding, which fits any window tall enough to have
+              // shown the header that opened it. A menu you have to scroll to
+              // find your own language in is not a menu.
             }}
           >
-            {locales.map((l) => (
-              <li key={l}>
-                <button
-                  type="button"
-                  role="menuitem"
-                  lang={localeTags[l]}
-                  onClick={() => swap(l)}
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    padding: "10px 12px",
-                    border: 0,
-                    borderRadius: "10px",
-                    background: l === lang ? "#EEF3FF" : "transparent",
-                    color: l === lang ? "#155DFC" : "#0E1A3D",
-                    font: "inherit",
-                    fontSize: "14px",
-                    fontWeight: l === lang ? 600 : 500,
-                    textAlign: "start",
-                    cursor: "pointer",
-                  }}
-                >
-                  {localeLabels[l]}
-                </button>
-              </li>
-            ))}
+            {locales.map((l) => {
+              const current = l === lang;
+              return (
+                <li key={l}>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    lang={localeTags[l]}
+                    aria-current={current ? "true" : undefined}
+                    onClick={() => swap(l)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      width: "100%",
+                      minHeight: "40px",
+                      padding: "0 10px",
+                      border: 0,
+                      borderRadius: "10px",
+                      background: current ? "#EEF3FF" : "transparent",
+                      color: current ? "#155DFC" : "#0E1A3D",
+                      font: "inherit",
+                      fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
+                      fontSize: "14.5px",
+                      fontWeight: current ? 600 : 500,
+                      textAlign: "start",
+                      cursor: "pointer",
+                      transition: "background var(--duration-fast) var(--ease-default)",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!current) e.currentTarget.style.background = "#F5F7FC";
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!current) e.currentTarget.style.background = "transparent";
+                    }}
+                  >
+                    {/* The code carries the eye down the column when the
+                        endonyms are in four different scripts. Always LTR:
+                        "AR" is a code, not Arabic text. */}
+                    <span
+                      dir="ltr"
+                      style={{
+                        flexShrink: 0,
+                        minWidth: "26px",
+                        fontFamily: "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace",
+                        fontSize: "11.5px",
+                        fontWeight: 600,
+                        letterSpacing: "0.04em",
+                        color: current ? "#155DFC" : "#9FACD3",
+                      }}
+                    >
+                      {l.toUpperCase()}
+                    </span>
+                    {/* `dir="auto"` renders the Arabic endonym correctly
+                        without turning the whole row round, which would move
+                        its code to the other side of the column. */}
+                    <span
+                      dir="auto"
+                      style={{
+                        flex: 1,
+                        // Without this a flex item refuses to shrink below its
+                        // content, and the ellipsis never engages.
+                        minWidth: 0,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {localeLabels[l]}
+                    </span>
+                    {current && (
+                      <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#155DFC"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                        style={{ flexShrink: 0 }}
+                      >
+                        <path d="M5 12.5l4.5 4.5L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </>
       )}

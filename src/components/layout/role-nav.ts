@@ -278,6 +278,11 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
               primary: true,
             },
             {
+              href: `${base}/admin/quote-requests`,
+              label: dict.admin.quoteRequests.title,
+              icon: ShoppingBag01Icon,
+            },
+            {
               href: `${base}/admin/kyc`,
               label: dict.admin.kyc.title,
               icon: AlertCircleIcon,

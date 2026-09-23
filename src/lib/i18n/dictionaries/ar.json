@@ -2283,6 +2283,35 @@
         }
       },
       "templatesPicker": "إدراج قالب"
+    },
+    "quoteRequests": {
+      "title": "طلبات عروض الأسعار",
+      "subtitle": "طلبات واردة من النموذج العام، وكل واحد منها من شخص بلا حساب.",
+      "empty": "لا توجد طلبات بعد.",
+      "kpiNew": "جديدة",
+      "kpiWeek": "آخر 7 أيام",
+      "kpiTotal": "الإجمالي",
+      "colRef": "المرجع",
+      "colWho": "مقدّم الطلب",
+      "colWhat": "البضائع",
+      "colWhere": "الوجهة",
+      "colService": "الخدمة",
+      "colWhen": "تاريخ الاستلام",
+      "serviceLogistics": "الخدمات اللوجستية",
+      "serviceSourcing": "التوريد + اللوجستيات",
+      "kindBusiness": "شركة",
+      "kindIndividual": "فرد",
+      "hasAccount": "حساب قائم",
+      "details": "التفاصيل",
+      "quantity": "الكمية",
+      "volume": "الحجم / الوزن",
+      "value": "القيمة",
+      "suppliers": "المورّدون",
+      "cities": "المدن",
+      "arrival": "الوصول المطلوب",
+      "message": "تفاصيل إضافية",
+      "phone": "الهاتف",
+      "files": "المرفقات"
     }
   },
   "attachments": {
