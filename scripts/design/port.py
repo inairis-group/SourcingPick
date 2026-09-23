@@ -345,6 +345,53 @@ def css_object(css: str) -> list[tuple[str, str]]:
     return [(css_prop(k), v) for k, v in split_decls(css)]
 
 
+# --- behaviour attached to transcribed markup ---------------------------------
+#
+# The boards are a transcription and must stay one, so nothing is hand-edited
+# into them. Where a page needs behaviour the canvas cannot draw — a scroll
+# interaction, say — the porter adds a class and nothing else. The styling
+# lives in globals.css beside the rest of the motion vocabulary.
+#
+# Each entry is (predicate, class, how many elements it must match). The count
+# is checked on every run: if a re-export changes these cards, the port fails
+# instead of quietly dropping the behaviour.
+
+
+def _is_step_card(el: Element) -> bool:
+    return el.tag == "article" and "border-radius: 26px" in (el.attr("style") or "")
+
+
+DECORATIONS: dict[str, list[tuple]] = {
+    # The six operations read as one sequence, so they park and stack as you
+    # scroll instead of scrolling past as six separate blocks.
+    "Services": [(_is_step_card, "sp-step-card", 6)],
+}
+
+
+def decorator_for(stem: str):
+    """A decorate hook for one page, plus the tally it must satisfy."""
+    rules = DECORATIONS.get(stem, [])
+    seen = [0] * len(rules)
+
+    def decorate(el: Element) -> str | None:
+        for i, (pred, cls, _) in enumerate(rules):
+            if pred(el):
+                seen[i] += 1
+                return cls
+        return None
+
+    def check() -> None:
+        for (pred, cls, expected), got in zip(rules, seen):
+            if got != expected:
+                raise SystemExit(
+                    f"{stem}: expected {expected} element(s) for .{cls}, matched "
+                    f"{got}. The artboard changed — update DECORATIONS rather "
+                    "than shipping the page without its behaviour."
+                )
+
+    return decorate, check
+
+
 # --- emission ----------------------------------------------------------------
 
 BANNER = """// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
@@ -448,7 +495,7 @@ def aligned(stem: str):
 
 
 def emit_part(nodes, *, per_locale_nodes, start_i, start_a, offset, hrefs,
-              replacer=None):
+              replacer=None, decorate=None):
     """Emit `nodes` as JSX whose slot reads are shifted by `offset`."""
     variants, styles, values = variant_tables(per_locale_nodes)
     em = Emitter(
@@ -458,6 +505,7 @@ def emit_part(nodes, *, per_locale_nodes, start_i, start_a, offset, hrefs,
         variants={k + start_a: v for k, v in variants.items()},
         slot_expr=lambda i: f"t[{i - offset}]",
         replace=replacer,
+        decorate=decorate,
     )
     em.i, em.a = start_i, start_a
     lines = [ln for n in nodes for ln in em.emit(n, 3)]
@@ -620,6 +668,7 @@ def port_page(stem: str) -> None:
 
     variants = []
     for locs, nodes in groups:
+        decorate, check_decorations = decorator_for(stem)
         tag = locs[0]
         primary = nodes[tag]
         sections = {loc: n[2:-1] for loc, n in nodes.items()}
@@ -630,7 +679,9 @@ def port_page(stem: str) -> None:
             sections[tag], per_locale_nodes=sections,
             start_i=start_i, start_a=start_a, offset=start_i,
             hrefs=routes[len(anchors(primary[:2])):],
+            decorate=decorate,
         )
+        check_decorations()
         variants.append((tag, locs, lines, em, styles, values))
 
     write(f"{BOARD_DIR}/boards/{page.key}/index.tsx", board_index(page, variants))

@@ -116,13 +116,12 @@
    * nor Onest ships Arabic or Chinese glyphs, and ar/zh must fall through to a
    * face that has them rather than render tofu. */
   --font-sans:
-    var(--font-onest), "Segoe UI", system-ui, -apple-system, "Noto Sans SC",
-    "Noto Sans Arabic", sans-serif;
+    var(--font-onest), "Segoe UI", system-ui, -apple-system, "Noto Sans SC", "Noto Sans Arabic",
+    sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
   /* Display face — marketing headlines and the oversized wordmarks only.
    * App UI never uses this. */
-  --font-display:
-    var(--font-unbounded), var(--font-onest), "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-unbounded), var(--font-onest), "Segoe UI", system-ui, sans-serif;
 
   --text-xs: 0.6875rem; /* 11px */
   --text-xs--line-height: 1rem;
@@ -167,12 +166,9 @@
 
   /* ---------- Shadows: restrained, neutral-tinted ---------- */
   --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
-  --shadow-sm:
-    0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-md:
-    0 4px 12px rgba(15, 23, 42, 0.1), 0 2px 4px rgba(15, 23, 42, 0.04);
-  --shadow-lg:
-    0 12px 32px rgba(15, 23, 42, 0.14), 0 4px 8px rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.1), 0 2px 4px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.14), 0 4px 8px rgba(15, 23, 42, 0.05);
 
   /* ---------- Motion ---------- */
   --duration-fast: 120ms;
@@ -445,7 +441,11 @@
   }
 
   html {
-    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    font-family:
+      var(--font-sans),
+      system-ui,
+      -apple-system,
+      sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -562,6 +562,75 @@
   }
 
   /* ---------------------------------------------------------
+   * .sp-step-card — the six operations on /services.
+   *
+   * Same technique as .panel-stack-item above, different geometry: those
+   * panels are 90vh and park under a fixed navbar, these are content-height
+   * cards under a static header, so they park higher and stagger wider. The
+   * class is put on by the porter (DECORATIONS in scripts/design/port.py),
+   * never by hand — the boards are a transcription of the canvas.
+   *
+   * Two behaviours, both of which fail in the safe direction:
+   *
+   *   Parking is plain `position: sticky`. No scroll listener, no observer.
+   *   Where sticky is unsupported the cards are simply six stacked cards,
+   *   which is what the artboard draws anyway.
+   *
+   *   The entrance reuses the `fade-up` keyframe on a view() timeline rather
+   *   than IntersectionObserver, because <Reveal> wraps its children and
+   *   these elements cannot be wrapped from outside a generated file. The
+   *   whole thing sits behind @supports, so a browser without scroll-driven
+   *   animations renders the cards visible rather than stuck at zero opacity.
+   *   The range closes well before a card reaches its parking offset: a
+   *   parked element's box stops moving, which stalls a view() timeline.
+   *
+   * The shadow is the canvas's own elevation value, lifted from the hero's
+   * floating labels. The artboard draws these cards flat because it never
+   * draws them overlapping; once they do, they need the separation.
+   * --------------------------------------------------------- */
+  .sp-step-card {
+    position: sticky;
+    top: calc(4.5rem + var(--step-index, 0) * 1.25rem);
+    box-shadow: 0 10px 24px -12px rgba(14, 26, 61, 0.35);
+  }
+
+  .sp-step-card:nth-of-type(2) {
+    --step-index: 1;
+  }
+  .sp-step-card:nth-of-type(3) {
+    --step-index: 2;
+  }
+  .sp-step-card:nth-of-type(4) {
+    --step-index: 3;
+  }
+  .sp-step-card:nth-of-type(5) {
+    --step-index: 4;
+  }
+  .sp-step-card:nth-of-type(6) {
+    --step-index: 5;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .sp-step-card {
+        animation: fade-up linear both;
+        animation-timeline: view();
+        animation-range: entry 5% entry 60%;
+      }
+    }
+  }
+
+  /* Below the point where a card plus its parking offset stops fitting on
+     screen, parking would clip the bottom of the card with no way to scroll
+     it into view. Back to ordinary flow. */
+  @media (max-width: 900px), (max-height: 720px) {
+    .sp-step-card {
+      position: static;
+      box-shadow: none;
+    }
+  }
+
+  /* ---------------------------------------------------------
    * Home intro overlay (components/marketing/home-intro.tsx).
    *
    * Server-rendered at 0% so it is present in the first paint,
@@ -650,13 +719,7 @@
       black 80%,
       black 100%
     );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      transparent 35%,
-      black 80%,
-      black 100%
-    );
+    mask-image: linear-gradient(to right, transparent 0%, transparent 35%, black 80%, black 100%);
     animation: cta-dots-drift 40s linear infinite;
   }
 
@@ -814,11 +877,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(
-      180deg,
-      var(--color-brand-500) 0%,
-      transparent 55%
-    );
+    background: linear-gradient(180deg, var(--color-brand-500) 0%, transparent 55%);
     opacity: 0.08;
   }
 

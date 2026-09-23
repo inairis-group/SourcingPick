@@ -36,7 +36,7 @@ export function ServicesBoardTR({ lang }: { lang: Locale }) {
               </div>
             </section>
             <section style={{ "padding": "8px 120px 96px", "display": "flex", "flexDirection": "column", "gap": "28px" }}>
-              <article style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
+              <article className="sp-step-card" style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
                 <div style={{ "borderRadius": "20px", "background": "#EEF3FF", "display": "flex", "alignItems": "center", "justifyContent": "center", "minHeight": "300px" }}>
                   <img src="/design/truck-unloading.svg" alt={t[4]} style={{ "width": "300px", "height": "285px" }} />
                 </div>
@@ -123,7 +123,7 @@ export function ServicesBoardTR({ lang }: { lang: Locale }) {
                   </div>
                 </div>
               </article>
-              <article style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
+              <article className="sp-step-card" style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
                 <div style={{ "borderRadius": "20px", "background": "#EEF3FF", "display": "flex", "alignItems": "center", "justifyContent": "center", "minHeight": "300px" }}>
                   <img src="/design/carton-inspection.svg" alt={t[17]} style={{ "width": "300px", "height": "285px" }} />
                 </div>
@@ -205,7 +205,7 @@ export function ServicesBoardTR({ lang }: { lang: Locale }) {
                   </div>
                 </div>
               </article>
-              <article style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
+              <article className="sp-step-card" style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
                 <div style={{ "borderRadius": "20px", "background": "#EEF3FF", "display": "flex", "alignItems": "center", "justifyContent": "center", "minHeight": "300px" }}>
                   <img src="/design/consolidated-pallet.svg" alt={t[29]} style={{ "width": "300px", "height": "285px" }} />
                 </div>
@@ -292,7 +292,7 @@ export function ServicesBoardTR({ lang }: { lang: Locale }) {
                   </div>
                 </div>
               </article>
-              <article style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
+              <article className="sp-step-card" style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
                 <div style={{ "borderRadius": "20px", "background": "#EEF3FF", "display": "flex", "alignItems": "center", "justifyContent": "center", "minHeight": "300px" }}>
                   <img src="/design/wooden-crate.svg" alt={t[42]} style={{ "width": "300px", "height": "285px" }} />
                 </div>
@@ -379,7 +379,7 @@ export function ServicesBoardTR({ lang }: { lang: Locale }) {
                   </div>
                 </div>
               </article>
-              <article style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
+              <article className="sp-step-card" style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
                 <div style={{ "borderRadius": "20px", "background": "#EEF3FF", "display": "flex", "alignItems": "center", "justifyContent": "center", "minHeight": "300px" }}>
                   <img src="/design/forklift-loading.svg" alt={t[55]} style={{ "width": "300px", "height": "285px" }} />
                 </div>
@@ -461,7 +461,7 @@ export function ServicesBoardTR({ lang }: { lang: Locale }) {
                   </div>
                 </div>
               </article>
-              <article style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
+              <article className="sp-step-card" style={{ "display": "grid", "gridTemplateColumns": "400px minmax(0, 1fr)", "gap": "48px", "alignItems": "stretch", "padding": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px" }}>
                 <div style={{ "borderRadius": "20px", "background": "#EEF3FF", "display": "flex", "alignItems": "center", "justifyContent": "center", "minHeight": "300px" }}>
                   <img src="/design/container-ship.svg" alt={t[67]} style={{ "width": "300px", "height": "285px" }} />
                 </div>

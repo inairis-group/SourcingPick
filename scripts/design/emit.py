@@ -185,6 +185,7 @@ class Emitter:
         variants: dict[int, tuple[str, int]] | None = None,
         slot_expr=lambda i: f"t[{i}]",
         replace=None,
+        decorate=None,
     ) -> None:
         self.assets = assets
         self.resolve_href = resolve_href
@@ -196,6 +197,10 @@ class Emitter:
         self.variants = variants or {}
         self.slot_expr = slot_expr
         self.replace = replace or (lambda el, em: None)
+        # Adds a class to an element without otherwise touching it — the one
+        # way behaviour is attached to transcribed markup. See DECORATIONS in
+        # port.py.
+        self.decorate = decorate or (lambda el: None)
         self.i = 0
         self.a = 0
         self.k = 0
@@ -302,6 +307,10 @@ class Emitter:
                 attrs.append(f"{jsx_attr_name(tag, name)}")
                 continue
             attrs.append(f"{jsx_attr_name(tag, name)}={json.dumps(value)}")
+
+        css_class = self.decorate(node)
+        if css_class:
+            attrs.insert(0, f'className="{css_class}"')
 
         tag_out = "Link" if (tag == "a" and is_link) else tag
         if tag_out == "Link":
