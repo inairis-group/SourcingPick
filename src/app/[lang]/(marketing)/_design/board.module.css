@@ -1,15 +1,20 @@
 /* The only stylesheet the ported design has.
  *
  * Everything else is inline, exactly as the canvas exported it. This file does
- * two jobs the artboards cannot do for themselves:
+ * two jobs the artboards cannot do for themselves: centre the 1440px frame in
+ * a window of any width, and keep the page usable below that width.
  *
- *   1. centre the 1440px frame in a browser window of any width;
- *   2. keep the page usable below that width. The canvas has one narrow
- *      artboard — the home page at 390px — and none in between, so what
- *      follows is deliberately the smallest set of rules that stops a
- *      1440px-wide composition from overflowing a laptop: columns collapse,
- *      the generous gutters tighten. No section is re-composed, nothing is
- *      re-ordered, and above 1440px the rendering is the drawing.
+ * The canvas has one narrow artboard — the home page at 390px — and nothing in
+ * between, so what follows is deliberately the smallest set of rules that
+ * stops a 1440px composition from overflowing a laptop. Above 1440px nothing
+ * here applies and the rendering is the drawing. Between 1100 and 1440 the
+ * design's own gutters are left alone, because a six-per-cent squeeze is
+ * something flex and grid absorb without help; only the hero illustration is
+ * touched, and only so it is not sliced off. Below 1100 the composition has to
+ * give, and it gives by stacking — never by re-ordering.
+ *
+ * Note the selectors match React's serialisation of the inline styles, which
+ * writes `width:800px` with no space after the colon.
  */
 
 .frame {
@@ -26,13 +31,42 @@
   margin-inline: auto;
 }
 
-/* Below the canvas width the fixed 120px gutters eat the content. Scale them
-   with the viewport instead, down to a thumb-friendly 20px. */
-@media (max-width: 1440px) {
+/* The hero illustration is pinned at left:612px inside a 1440px section. Below
+   that width its right edge falls outside and `overflow:hidden` slices the
+   ship off. Anchoring it to the inline end instead shifts it a few dozen
+   pixels — far less visible than the cut, and the logical property keeps it
+   mirrored on the Arabic pages, which pin it from the other side. */
+@media (max-width: 1439.98px) {
+  .frame :global([style*="position:absolute"][style*="width:800px"]) {
+    inset-inline-end: 0;
+    inset-inline-start: auto;
+  }
+}
+
+@media (max-width: 1100px) {
   .frame :global(section),
   .frame :global(header),
   .frame :global(footer) {
-    padding-inline: clamp(20px, 8.33vw, 120px) !important;
+    padding-inline: clamp(20px, 7vw, 96px) !important;
+  }
+  /* Past this point the text column is the whole page and the illustration
+     has nowhere left to sit. The canvas's own phone artboard drops it too. */
+  .frame :global([style*="position:absolute"][style*="width:800px"]) {
+    display: none;
+  }
+  .frame :global(img) {
+    max-width: 100%;
+    height: auto;
+  }
+  .frame :global([style*="width:580px"]),
+  .frame :global([style*="width:500px"]),
+  .frame :global([style*="width:440px"]),
+  .frame :global([style*="width:420px"]),
+  .frame :global([style*="width:340px"]),
+  .frame :global([style*="width:330px"]),
+  .frame :global([style*="width:300px"]) {
+    width: 100% !important;
+    max-width: 100%;
   }
 }
 
@@ -42,35 +76,14 @@
   .frame :global([style*="grid-template-columns"]) {
     grid-template-columns: minmax(0, 1fr) !important;
   }
-  .frame :global([style*="grid-column"]) {
+  .frame :global([style*="grid-column:"]) {
     grid-column: auto !important;
-  }
-  /* Hero art and the floating labels pinned to it are positioned against a
-     580px text column that no longer exists at this width. */
-  .frame :global([style*="position: absolute"][style*="width: 800px"]) {
-    display: none;
   }
   .frame :global(h1) {
     font-size: clamp(34px, 8vw, 62px) !important;
   }
   .frame :global(h2) {
     font-size: clamp(28px, 6.5vw, 46px) !important;
-  }
-}
-
-/* Fixed pixel widths inside a column that is now narrower than they are. */
-@media (max-width: 900px) {
-  .frame :global([style*="width: 580px"]),
-  .frame :global([style*="width: 500px"]),
-  .frame :global([style*="width: 420px"]),
-  .frame :global([style*="width: 340px"]),
-  .frame :global([style*="width: 330px"]) {
-    width: 100% !important;
-    max-width: 100%;
-  }
-  .frame :global(img) {
-    max-width: 100%;
-    height: auto;
   }
 }
 
