@@ -20,10 +20,11 @@ export function NotFoundBoard({ lang }: { lang: Locale }) {
     <>
       <section
         style={{
-          padding: "96px 120px 120px",
+          padding:
+            "calc(96px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(120px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) 440px",
-          gap: "48px",
+          gridTemplateColumns: "var(--sp-grid-fr-440, minmax(0, 1fr) 440px)",
+          gap: "var(--sp-gap-48, 48px)",
           alignItems: "center",
         }}
       >
@@ -39,7 +40,14 @@ export function NotFoundBoard({ lang }: { lang: Locale }) {
             {t[0]}
           </span>
           <h1 style={s[0][lang]}>{t[1]}</h1>
-          <p style={{ margin: "0", fontSize: "19px", lineHeight: "1.6", color: "#4A5578" }}>
+          <p
+            style={{
+              margin: "0",
+              fontSize: "var(--sp-fs-19, 19px)",
+              lineHeight: "1.6",
+              color: "#4A5578",
+            }}
+          >
             {t[2]}
           </p>
           <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
@@ -68,6 +76,7 @@ export function NotFoundBoard({ lang }: { lang: Locale }) {
           </div>
         </div>
         <div
+          className="sp-hero-figure"
           style={{
             position: "relative",
             width: "440px",
@@ -79,11 +88,13 @@ export function NotFoundBoard({ lang }: { lang: Locale }) {
             justifyContent: "center",
           }}
         >
-          <span style={s[3][lang]}>{t[5]}</span>
+          <span className="sp-404-numeral" style={s[3][lang]}>
+            {t[5]}
+          </span>
           <img
             src="/design/picky-loupe.svg"
             alt={t[6]}
-            style={{ width: "340px", height: "340px" }}
+            style={{ width: "340px", height: "auto", maxWidth: "100%" }}
           />
         </div>
       </section>

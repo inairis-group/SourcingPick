@@ -79,7 +79,9 @@ export function CountrySelect({
     : children;
 
   return (
-    <select {...rest} style={style} defaultValue="">
+    // A select is as wide as its longest option — in German that is wider
+    // than a phone. Capped at its column; the browser ellipsises the text.
+    <select {...rest} style={{ ...style, maxWidth: "100%", minWidth: 0 }} defaultValue="">
       {placeholder}
       {countriesFor(lang).map((c) => (
         <option key={c.code} value={c.code}>

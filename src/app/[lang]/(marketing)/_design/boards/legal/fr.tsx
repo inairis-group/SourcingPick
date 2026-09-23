@@ -21,10 +21,11 @@ export function LegalBoard({ lang }: { lang: Locale }) {
     <>
       <section
         style={{
-          padding: "72px 120px 104px",
+          padding:
+            "calc(72px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "300px minmax(0, 1fr)",
-          gap: "64px",
+          gridTemplateColumns: "var(--sp-grid-300-fr, 300px minmax(0, 1fr))",
+          gap: "var(--sp-gap-64, 64px)",
           alignItems: "start",
         }}
       >
@@ -49,7 +50,7 @@ export function LegalBoard({ lang }: { lang: Locale }) {
               minHeight: "48px",
               padding: "0 16px",
               borderRadius: "12px",
-              fontSize: "15.5px",
+              fontSize: "var(--sp-fs-15_5, 15.5px)",
               fontWeight: "600",
               background: "#0E1A3D",
               color: "#FFFFFF",
@@ -79,7 +80,7 @@ export function LegalBoard({ lang }: { lang: Locale }) {
               minHeight: "48px",
               padding: "0 16px",
               borderRadius: "12px",
-              fontSize: "15.5px",
+              fontSize: "var(--sp-fs-15_5, 15.5px)",
               fontWeight: "600",
               background: "transparent",
               color: "#0E1A3D",
@@ -109,7 +110,7 @@ export function LegalBoard({ lang }: { lang: Locale }) {
               minHeight: "48px",
               padding: "0 16px",
               borderRadius: "12px",
-              fontSize: "15.5px",
+              fontSize: "var(--sp-fs-15_5, 15.5px)",
               fontWeight: "600",
               background: "transparent",
               color: "#0E1A3D",
@@ -139,7 +140,7 @@ export function LegalBoard({ lang }: { lang: Locale }) {
               minHeight: "48px",
               padding: "0 16px",
               borderRadius: "12px",
-              fontSize: "15.5px",
+              fontSize: "var(--sp-fs-15_5, 15.5px)",
               fontWeight: "600",
               background: "transparent",
               color: "#0E1A3D",
@@ -165,10 +166,15 @@ export function LegalBoard({ lang }: { lang: Locale }) {
           style={{ display: "flex", flexDirection: "column", gap: "30px", maxWidth: "820px" }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-            <span style={s[0][lang]}>{t[5]}</span>
+            <span className="sp-placeholder" style={s[0][lang]}>
+              {t[5]}
+            </span>
             <h1 style={s[1][lang]}>{t[6]}</h1>
             <p style={{ margin: "0", fontSize: "15px", color: "#4A5578" }}>
-              {t[7]} <span style={s[2][lang]}>{t[8]}</span>
+              {t[7]}{" "}
+              <span className="sp-placeholder" style={s[2][lang]}>
+                {t[8]}
+              </span>
             </p>
           </div>
           <div
@@ -190,19 +196,63 @@ export function LegalBoard({ lang }: { lang: Locale }) {
                 gap: "8px",
               }}
             >
-              <li style={{ fontSize: "16.5px", lineHeight: "1.7", color: "#0E1A3D" }}>
-                {t[10]} <span style={s[4][lang]}>{t[11]}</span>
+              <li
+                style={{
+                  fontSize: "var(--sp-fs-16_5, 16.5px)",
+                  lineHeight: "1.7",
+                  color: "#0E1A3D",
+                }}
+              >
+                {t[10]}{" "}
+                <span className="sp-placeholder" style={s[4][lang]}>
+                  {t[11]}
+                </span>
               </li>
-              <li style={{ fontSize: "16.5px", lineHeight: "1.7", color: "#0E1A3D" }}>
-                {t[12]} <span style={s[5][lang]}>{t[13]}</span>
+              <li
+                style={{
+                  fontSize: "var(--sp-fs-16_5, 16.5px)",
+                  lineHeight: "1.7",
+                  color: "#0E1A3D",
+                }}
+              >
+                {t[12]}{" "}
+                <span className="sp-placeholder" style={s[5][lang]}>
+                  {t[13]}
+                </span>
               </li>
-              <li style={{ fontSize: "16.5px", lineHeight: "1.7", color: "#0E1A3D" }}>
-                {t[14]} <span style={s[6][lang]}>{t[15]}</span>
+              <li
+                style={{
+                  fontSize: "var(--sp-fs-16_5, 16.5px)",
+                  lineHeight: "1.7",
+                  color: "#0E1A3D",
+                }}
+              >
+                {t[14]}{" "}
+                <span className="sp-placeholder" style={s[6][lang]}>
+                  {t[15]}
+                </span>
               </li>
-              <li style={{ fontSize: "16.5px", lineHeight: "1.7", color: "#0E1A3D" }}>
-                {t[16]} <span style={s[7][lang]}>{t[17]}</span>
+              <li
+                style={{
+                  fontSize: "var(--sp-fs-16_5, 16.5px)",
+                  lineHeight: "1.7",
+                  color: "#0E1A3D",
+                }}
+              >
+                {t[16]}{" "}
+                <span className="sp-placeholder" style={s[7][lang]}>
+                  {t[17]}
+                </span>
               </li>
-              <li style={{ fontSize: "16.5px", lineHeight: "1.7", color: "#0E1A3D" }}>{t[18]}</li>
+              <li
+                style={{
+                  fontSize: "var(--sp-fs-16_5, 16.5px)",
+                  lineHeight: "1.7",
+                  color: "#0E1A3D",
+                }}
+              >
+                {t[18]}
+              </li>
             </ul>
           </div>
           <div
@@ -224,8 +274,17 @@ export function LegalBoard({ lang }: { lang: Locale }) {
                 gap: "8px",
               }}
             >
-              <li style={{ fontSize: "16.5px", lineHeight: "1.7", color: "#0E1A3D" }}>
-                {t[20]} <span style={s[9][lang]}>{t[21]}</span>
+              <li
+                style={{
+                  fontSize: "var(--sp-fs-16_5, 16.5px)",
+                  lineHeight: "1.7",
+                  color: "#0E1A3D",
+                }}
+              >
+                {t[20]}{" "}
+                <span className="sp-placeholder" style={s[9][lang]}>
+                  {t[21]}
+                </span>
               </li>
             </ul>
           </div>
@@ -248,7 +307,15 @@ export function LegalBoard({ lang }: { lang: Locale }) {
                 gap: "8px",
               }}
             >
-              <li style={{ fontSize: "16.5px", lineHeight: "1.7", color: "#0E1A3D" }}>{t[23]}</li>
+              <li
+                style={{
+                  fontSize: "var(--sp-fs-16_5, 16.5px)",
+                  lineHeight: "1.7",
+                  color: "#0E1A3D",
+                }}
+              >
+                {t[23]}
+              </li>
             </ul>
           </div>
           <div
@@ -270,7 +337,13 @@ export function LegalBoard({ lang }: { lang: Locale }) {
                 gap: "8px",
               }}
             >
-              <li style={{ fontSize: "16.5px", lineHeight: "1.7", color: "#0E1A3D" }}>
+              <li
+                style={{
+                  fontSize: "var(--sp-fs-16_5, 16.5px)",
+                  lineHeight: "1.7",
+                  color: "#0E1A3D",
+                }}
+              >
                 {t[25]}{" "}
                 <Link href={`/${lang}/legal/privacy`} style={{ fontWeight: "600" }}>
                   {t[26]}
@@ -298,7 +371,13 @@ export function LegalBoard({ lang }: { lang: Locale }) {
                 gap: "8px",
               }}
             >
-              <li style={{ fontSize: "16.5px", lineHeight: "1.7", color: "#0E1A3D" }}>
+              <li
+                style={{
+                  fontSize: "var(--sp-fs-16_5, 16.5px)",
+                  lineHeight: "1.7",
+                  color: "#0E1A3D",
+                }}
+              >
                 {t[29]}{" "}
                 <Link href={`/${lang}/legal/cookies`} style={{ fontWeight: "600" }}>
                   {t[30]}

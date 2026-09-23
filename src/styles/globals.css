@@ -634,6 +634,30 @@
   }
 
   /* ---------------------------------------------------------
+   * .sp-announce-dot — the amber dot on the announcement strip.
+   *
+   * A slow pulse: the strip says the company is live, and the dot
+   * is what says it is happening now. One period is five page
+   * beats, on the default ease, so it sits inside the vocabulary
+   * rather than beside it. The class is put on by the porter
+   * (CHROME_DECORATIONS). Under prefers-reduced-motion the global
+   * rule at the foot of this file stops it after one frame.
+   * --------------------------------------------------------- */
+  @keyframes sp-announce-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 194, 71, 0.55);
+    }
+    60% {
+      box-shadow: 0 0 0 6px rgba(255, 194, 71, 0);
+    }
+  }
+
+  .sp-announce-dot {
+    animation: sp-announce-pulse calc(var(--duration-pageish) * 5) var(--ease-default) infinite;
+  }
+
+  /* ---------------------------------------------------------
    * .sp-choice — a radio drawn as a card.
    *
    * The canvas can only draw one state, so it writes the selected outline

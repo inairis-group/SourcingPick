@@ -22,12 +22,14 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
   return (
     <>
       <section
+        className="sp-two-track"
         style={{
-          padding: "88px 120px 72px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: "64px",
+          gap: "var(--sp-gap-64, 64px)",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "22px", maxWidth: "760px" }}>
@@ -36,7 +38,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
           <p
             style={{
               margin: "0",
-              fontSize: "19px",
+              fontSize: "var(--sp-fs-19, 19px)",
               lineHeight: "1.6",
               color: "#4A5578",
               maxWidth: "680px",
@@ -47,6 +49,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
           </p>
         </div>
         <div
+          className="sp-hero-figure"
           style={{
             flexShrink: "0",
             width: "440px",
@@ -63,21 +66,27 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
           <img
             src="/design/consolidated-pallet.svg"
             alt={t[3]}
-            style={{ width: "400px", height: "340px", objectFit: "contain" }}
+            style={{ width: "400px", height: "340px", objectFit: "contain", maxWidth: "100%" }}
           />
         </div>
       </section>
       <section
-        style={{ padding: "8px 120px 96px", display: "flex", flexDirection: "column", gap: "28px" }}
+        style={{
+          padding:
+            "calc(8px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(96px * var(--sp-vs, 1))",
+          display: "flex",
+          flexDirection: "column",
+          gap: "28px",
+        }}
       >
         <article
           className="sp-step-card"
           style={{
             display: "grid",
-            gridTemplateColumns: "400px minmax(0, 1fr)",
-            gap: "48px",
+            gridTemplateColumns: "var(--sp-grid-400-fr, 400px minmax(0, 1fr))",
+            gap: "var(--sp-gap-48, 48px)",
             alignItems: "stretch",
-            padding: "32px",
+            padding: "var(--sp-pad-32, 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "26px",
@@ -96,7 +105,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
             <img
               src="/design/truck-unloading.svg"
               alt={t[4]}
-              style={{ width: "300px", height: "285px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
           <div
@@ -123,13 +132,20 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
               <span style={s[2][lang]}>{t[6]}</span>
             </div>
             <h2 style={s[3][lang]}>{t[7]}</h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.55", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.55",
+                color: "#4A5578",
+              }}
+            >
               {t[8]}
             </p>
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "28px",
                 paddingTop: "6px",
               }}
@@ -151,7 +167,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -190,7 +206,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -229,7 +245,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -282,7 +298,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -321,7 +337,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -356,7 +372,10 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       </svg>
                     </span>
                     <span>
-                      {t[15]} <span style={s[6][lang]}>{t[16]}</span>
+                      {t[15]}{" "}
+                      <span className="sp-placeholder" style={s[6][lang]}>
+                        {t[16]}
+                      </span>
                     </span>
                   </li>
                 </ul>
@@ -368,10 +387,10 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
           className="sp-step-card"
           style={{
             display: "grid",
-            gridTemplateColumns: "400px minmax(0, 1fr)",
-            gap: "48px",
+            gridTemplateColumns: "var(--sp-grid-400-fr, 400px minmax(0, 1fr))",
+            gap: "var(--sp-gap-48, 48px)",
             alignItems: "stretch",
-            padding: "32px",
+            padding: "var(--sp-pad-32, 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "26px",
@@ -390,7 +409,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
             <img
               src="/design/carton-inspection.svg"
               alt={t[17]}
-              style={{ width: "300px", height: "285px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
           <div
@@ -417,13 +436,20 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
               <span style={s[7][lang]}>{t[19]}</span>
             </div>
             <h2 style={s[8][lang]}>{t[20]}</h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.55", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.55",
+                color: "#4A5578",
+              }}
+            >
               {t[21]}
             </p>
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "28px",
                 paddingTop: "6px",
               }}
@@ -445,7 +471,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -484,7 +510,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -523,7 +549,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -576,7 +602,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -615,7 +641,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -660,10 +686,10 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
           className="sp-step-card"
           style={{
             display: "grid",
-            gridTemplateColumns: "400px minmax(0, 1fr)",
-            gap: "48px",
+            gridTemplateColumns: "var(--sp-grid-400-fr, 400px minmax(0, 1fr))",
+            gap: "var(--sp-gap-48, 48px)",
             alignItems: "stretch",
-            padding: "32px",
+            padding: "var(--sp-pad-32, 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "26px",
@@ -682,7 +708,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
             <img
               src="/design/consolidated-pallet.svg"
               alt={t[29]}
-              style={{ width: "300px", height: "285px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
           <div
@@ -709,13 +735,20 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
               <span style={s[11][lang]}>{t[31]}</span>
             </div>
             <h2 style={s[12][lang]}>{t[32]}</h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.55", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.55",
+                color: "#4A5578",
+              }}
+            >
               {t[33]}
             </p>
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "28px",
                 paddingTop: "6px",
               }}
@@ -737,7 +770,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -776,7 +809,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -815,7 +848,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -868,7 +901,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -907,7 +940,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -942,7 +975,10 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       </svg>
                     </span>
                     <span>
-                      {t[40]} <span style={s[15][lang]}>{t[41]}</span>
+                      {t[40]}{" "}
+                      <span className="sp-placeholder" style={s[15][lang]}>
+                        {t[41]}
+                      </span>
                     </span>
                   </li>
                 </ul>
@@ -954,10 +990,10 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
           className="sp-step-card"
           style={{
             display: "grid",
-            gridTemplateColumns: "400px minmax(0, 1fr)",
-            gap: "48px",
+            gridTemplateColumns: "var(--sp-grid-400-fr, 400px minmax(0, 1fr))",
+            gap: "var(--sp-gap-48, 48px)",
             alignItems: "stretch",
-            padding: "32px",
+            padding: "var(--sp-pad-32, 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "26px",
@@ -976,7 +1012,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
             <img
               src="/design/wooden-crate.svg"
               alt={t[42]}
-              style={{ width: "300px", height: "285px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
           <div
@@ -1003,13 +1039,20 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
               <span style={s[16][lang]}>{t[44]}</span>
             </div>
             <h2 style={s[17][lang]}>{t[45]}</h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.55", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.55",
+                color: "#4A5578",
+              }}
+            >
               {t[46]}
             </p>
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "28px",
                 paddingTop: "6px",
               }}
@@ -1031,7 +1074,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1070,7 +1113,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1109,7 +1152,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1142,7 +1185,10 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       </svg>
                     </span>
                     <span>
-                      {t[50]} <span style={s[19][lang]}>{t[51]}</span>
+                      {t[50]}{" "}
+                      <span className="sp-placeholder" style={s[19][lang]}>
+                        {t[51]}
+                      </span>
                     </span>
                   </li>
                 </ul>
@@ -1164,7 +1210,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1203,7 +1249,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1248,10 +1294,10 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
           className="sp-step-card"
           style={{
             display: "grid",
-            gridTemplateColumns: "400px minmax(0, 1fr)",
-            gap: "48px",
+            gridTemplateColumns: "var(--sp-grid-400-fr, 400px minmax(0, 1fr))",
+            gap: "var(--sp-gap-48, 48px)",
             alignItems: "stretch",
-            padding: "32px",
+            padding: "var(--sp-pad-32, 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "26px",
@@ -1270,7 +1316,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
             <img
               src="/design/forklift-loading.svg"
               alt={t[55]}
-              style={{ width: "300px", height: "285px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
           <div
@@ -1297,13 +1343,20 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
               <span style={s[21][lang]}>{t[57]}</span>
             </div>
             <h2 style={s[22][lang]}>{t[58]}</h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.55", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.55",
+                color: "#4A5578",
+              }}
+            >
               {t[59]}
             </p>
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "28px",
                 paddingTop: "6px",
               }}
@@ -1325,7 +1378,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1364,7 +1417,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1403,7 +1456,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1456,7 +1509,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1495,7 +1548,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1540,10 +1593,10 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
           className="sp-step-card"
           style={{
             display: "grid",
-            gridTemplateColumns: "400px minmax(0, 1fr)",
-            gap: "48px",
+            gridTemplateColumns: "var(--sp-grid-400-fr, 400px minmax(0, 1fr))",
+            gap: "var(--sp-gap-48, 48px)",
             alignItems: "stretch",
-            padding: "32px",
+            padding: "var(--sp-pad-32, 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "26px",
@@ -1562,7 +1615,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
             <img
               src="/design/container-ship.svg"
               alt={t[67]}
-              style={{ width: "300px", height: "285px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
           <div
@@ -1589,13 +1642,20 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
               <span style={s[25][lang]}>{t[69]}</span>
             </div>
             <h2 style={s[26][lang]}>{t[70]}</h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.55", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.55",
+                color: "#4A5578",
+              }}
+            >
               {t[71]}
             </p>
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "28px",
                 paddingTop: "6px",
               }}
@@ -1617,7 +1677,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1656,7 +1716,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1689,7 +1749,10 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       </svg>
                     </span>
                     <span>
-                      {t[74]} <span style={s[28][lang]}>{t[75]}</span>
+                      {t[74]}{" "}
+                      <span className="sp-placeholder" style={s[28][lang]}>
+                        {t[75]}
+                      </span>
                     </span>
                   </li>
                   <li
@@ -1697,7 +1760,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1750,7 +1813,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1789,7 +1852,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       gap: "12px",
                       alignItems: "flex-start",
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       lineHeight: "1.55",
                       color: "#0E1A3D",
                     }}
@@ -1850,7 +1913,10 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
                     <path d="M5 21V4" />
                     <path d="M5 4h11l-2 4 2 4H5" />
                   </svg>
-                  {t[80]} <span style={s[30][lang]}>{t[81]}</span>
+                  {t[80]}{" "}
+                  <span className="sp-placeholder" style={s[30][lang]}>
+                    {t[81]}
+                  </span>
                 </div>
               </div>
             </div>
@@ -1860,42 +1926,55 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
       <section
         style={{
           background: "#0B1433",
-          padding: "96px 120px",
+          padding:
+            "calc(96px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(96px * var(--sp-vs, 1))",
           display: "flex",
           flexDirection: "column",
-          gap: "40px",
+          gap: "var(--sp-gap-40, 40px)",
         }}
       >
         <div
+          className="sp-two-track"
           style={{
             display: "flex",
             alignItems: "flex-end",
             justifyContent: "space-between",
-            gap: "48px",
+            gap: "var(--sp-gap-48, 48px)",
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "18px", maxWidth: "760px" }}>
             <div style={s[31][lang]}>{t[82]}</div>
             <h2 style={s[32][lang]}>{t[83]}</h2>
-            <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", color: "#B8C4E6" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-17, 17px)",
+                lineHeight: "1.6",
+                color: "#B8C4E6",
+              }}
+            >
               {t[84]}
             </p>
           </div>
           <img
             src="/design/picky-factory-visit.svg"
             alt=""
-            style={{ width: "240px", height: "228px", flexShrink: "0" }}
+            style={{ width: "240px", height: "auto", flexShrink: "0", maxWidth: "100%" }}
           />
         </div>
         <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: "18px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "var(--sp-grid-r4, repeat(4, minmax(0, 1fr)))",
+            gap: "18px",
+          }}
         >
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               gap: "10px",
-              padding: "24px",
+              padding: "var(--sp-pad-24, 24px)",
               borderRadius: "20px",
               background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.12)",
@@ -1928,7 +2007,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
               display: "flex",
               flexDirection: "column",
               gap: "10px",
-              padding: "24px",
+              padding: "var(--sp-pad-24, 24px)",
               borderRadius: "20px",
               background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.12)",
@@ -1961,7 +2040,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
               display: "flex",
               flexDirection: "column",
               gap: "10px",
-              padding: "24px",
+              padding: "var(--sp-pad-24, 24px)",
               borderRadius: "20px",
               background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.12)",
@@ -1994,7 +2073,7 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
               display: "flex",
               flexDirection: "column",
               gap: "10px",
-              padding: "24px",
+              padding: "var(--sp-pad-24, 24px)",
               borderRadius: "20px",
               background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.12)",
@@ -2045,13 +2124,18 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
           </Link>
         </div>
       </section>
-      <section style={{ padding: "72px 120px 40px" }}>
+      <section
+        style={{
+          padding:
+            "calc(72px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(40px * var(--sp-vs, 1))",
+        }}
+      >
         <div
           style={{
             display: "flex",
             alignItems: "center",
             gap: "32px",
-            padding: "28px 32px",
+            padding: "var(--sp-pad-28-32, 28px 32px)",
             border: "1.5px dashed #B7C5E6",
             borderRadius: "24px",
           }}
@@ -2059,28 +2143,41 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
           <img
             src="/design/train-plane-sketch.svg"
             alt={t[98]}
-            style={{ width: "150px", height: "143px", flexShrink: "0" }}
+            style={{ width: "150px", height: "auto", flexShrink: "0", maxWidth: "100%" }}
           />
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <h3 style={s[38][lang]}>{t[99]}</h3>
-            <p style={{ margin: "0", fontSize: "16px", lineHeight: "1.6", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-16, 16px)",
+                lineHeight: "1.6",
+                color: "#4A5578",
+              }}
+            >
               {t[100]}
             </p>
           </div>
         </div>
       </section>
-      <section style={{ padding: "64px 120px 104px" }}>
+      <section
+        style={{
+          padding:
+            "calc(64px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
+        }}
+      >
         <div
+          className="sp-cta-band"
           style={{
             position: "relative",
             overflow: "hidden",
             borderRadius: "32px",
             background: "#155DFC",
-            padding: "72px",
+            padding: "var(--sp-pad-72, 72px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "40px",
+            gap: "var(--sp-gap-40, 40px)",
             color: "#FFFFFF",
           }}
         >
@@ -2103,8 +2200,18 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
             }}
           >
             <h2 style={s[39][lang]}>{t[101]}</h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#E3EBFF" }}>
-              {t[102]} <span style={s[40][lang]}>{t[103]}</span>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.6",
+                color: "#E3EBFF",
+              }}
+            >
+              {t[102]}{" "}
+              <span className="sp-placeholder" style={s[40][lang]}>
+                {t[103]}
+              </span>
               {t[104]}
             </p>
             <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
@@ -2134,12 +2241,15 @@ export function ServicesBoardFR({ lang }: { lang: Locale }) {
               </a>
             </div>
           </div>
-          <div style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}>
+          <div
+            className="sp-cta-mascot"
+            style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}
+          >
             <div style={s[43][lang]}>{t[107]}</div>
             <img
               src="/design/picky-arms-up.svg"
               alt={t[108]}
-              style={{ width: "300px", height: "300px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
         </div>

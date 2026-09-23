@@ -20,11 +20,12 @@ export function ContactBoard({ lang }: { lang: Locale }) {
     <>
       <section
         style={{
-          padding: "88px 120px 72px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: "64px",
+          gap: "var(--sp-gap-64, 64px)",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "22px", maxWidth: "760px" }}>
@@ -33,7 +34,7 @@ export function ContactBoard({ lang }: { lang: Locale }) {
           <p
             style={{
               margin: "0",
-              fontSize: "19px",
+              fontSize: "var(--sp-fs-19, 19px)",
               lineHeight: "1.6",
               color: "#4A5578",
               maxWidth: "680px",
@@ -46,10 +47,10 @@ export function ContactBoard({ lang }: { lang: Locale }) {
       </section>
       <section
         style={{
-          padding: "0 120px 104px",
+          padding: "0 var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "440px minmax(0, 1fr)",
-          gap: "40px",
+          gridTemplateColumns: "var(--sp-grid-440-fr, 440px minmax(0, 1fr))",
+          gap: "var(--sp-gap-40, 40px)",
           alignItems: "start",
         }}
       >
@@ -94,7 +95,9 @@ export function ContactBoard({ lang }: { lang: Locale }) {
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
               <span style={s[2][lang]}>{t[3]}</span>
-              <span style={{ fontSize: "16px", fontWeight: "600", lineHeight: "1.5" }}>
+              <span
+                style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", lineHeight: "1.5" }}
+              >
                 <a href="mailto:contact@sourcingpick.com" dir="ltr">
                   {t[4]}
                 </a>
@@ -141,7 +144,9 @@ export function ContactBoard({ lang }: { lang: Locale }) {
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
               <span style={s[3][lang]}>{t[5]}</span>
-              <span style={{ fontSize: "16px", fontWeight: "600", lineHeight: "1.5" }}>
+              <span
+                style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", lineHeight: "1.5" }}
+              >
                 <span
                   lang="zh-Hans"
                   style={{
@@ -197,8 +202,12 @@ export function ContactBoard({ lang }: { lang: Locale }) {
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
               <span style={s[4][lang]}>{t[8]}</span>
-              <span style={{ fontSize: "16px", fontWeight: "600", lineHeight: "1.5" }}>
-                <span style={s[5][lang]}>{t[9]}</span>
+              <span
+                style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", lineHeight: "1.5" }}
+              >
+                <span className="sp-placeholder" style={s[5][lang]}>
+                  {t[9]}
+                </span>
               </span>
             </div>
           </div>
@@ -241,8 +250,12 @@ export function ContactBoard({ lang }: { lang: Locale }) {
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
               <span style={s[6][lang]}>{t[10]}</span>
-              <span style={{ fontSize: "16px", fontWeight: "600", lineHeight: "1.5" }}>
-                <span style={s[7][lang]}>{t[11]}</span>
+              <span
+                style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", lineHeight: "1.5" }}
+              >
+                <span className="sp-placeholder" style={s[7][lang]}>
+                  {t[11]}
+                </span>
               </span>
             </div>
           </div>
@@ -288,8 +301,12 @@ export function ContactBoard({ lang }: { lang: Locale }) {
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
               <span style={s[8][lang]}>{t[12]}</span>
-              <span style={{ fontSize: "16px", fontWeight: "600", lineHeight: "1.5" }}>
-                <span style={s[9][lang]}>{t[13]}</span>
+              <span
+                style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", lineHeight: "1.5" }}
+              >
+                <span className="sp-placeholder" style={s[9][lang]}>
+                  {t[13]}
+                </span>
               </span>
             </div>
           </div>
@@ -300,7 +317,7 @@ export function ContactBoard({ lang }: { lang: Locale }) {
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "26px",
-            padding: "40px",
+            padding: "var(--sp-pad-40, 40px)",
             display: "flex",
             flexDirection: "column",
             gap: "20px",
@@ -310,7 +327,7 @@ export function ContactBoard({ lang }: { lang: Locale }) {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
               gap: "16px",
             }}
           >
@@ -451,8 +468,10 @@ export function ContactBoard({ lang }: { lang: Locale }) {
               </span>
             </SubmitButton>
           </div>
-          <img src="/design/spot-2.svg" alt="" style={s[15][lang]} />
-          <div style={s[16][lang]}>{t[25]}</div>
+          <img className="sp-contact-art" src="/design/spot-2.svg" alt="" style={s[15][lang]} />
+          <div className="sp-contact-art" style={s[16][lang]}>
+            {t[25]}
+          </div>
         </div>
       </section>
     </>

@@ -20,12 +20,14 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
   return (
     <>
       <section
+        className="sp-two-track"
         style={{
-          padding: "88px 120px 72px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: "64px",
+          gap: "var(--sp-gap-64, 64px)",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "22px", maxWidth: "760px" }}>
@@ -53,7 +55,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "56px",
+              fontSize: "var(--sp-fs-56, 56px)",
               lineHeight: "1.06",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -66,7 +68,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
           <p
             style={{
               margin: "0",
-              fontSize: "19px",
+              fontSize: "var(--sp-fs-19, 19px)",
               lineHeight: "1.6",
               color: "#4A5578",
               maxWidth: "680px",
@@ -77,6 +79,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
           </p>
         </div>
         <div
+          className="sp-hero-figure"
           style={{
             flexShrink: "0",
             width: "380px",
@@ -93,16 +96,17 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
           <img
             src="/design/spot-2.svg"
             alt=""
-            style={{ width: "340px", height: "340px", objectFit: "contain" }}
+            style={{ width: "340px", height: "auto", objectFit: "contain", maxWidth: "100%" }}
           />
         </div>
       </section>
       <section
         style={{
-          padding: "16px 120px 88px",
+          padding:
+            "calc(16px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) 560px",
-          gap: "64px",
+          gridTemplateColumns: "var(--sp-grid-fr-560, minmax(0, 1fr) 560px)",
+          gap: "var(--sp-gap-64, 64px)",
           alignItems: "center",
         }}
       >
@@ -111,7 +115,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "40px",
+              fontSize: "var(--sp-fs-40, 40px)",
               lineHeight: "1.1",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -121,42 +125,57 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
           >
             {t[3]}
           </h2>
-          <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.65", color: "#0E1A3D" }}>
+          <p
+            style={{
+              margin: "0",
+              fontSize: "var(--sp-fs-18, 18px)",
+              lineHeight: "1.65",
+              color: "#0E1A3D",
+            }}
+          >
             {t[4]}
           </p>
-          <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.65", color: "#4A5578" }}>
+          <p
+            style={{
+              margin: "0",
+              fontSize: "var(--sp-fs-18, 18px)",
+              lineHeight: "1.65",
+              color: "#4A5578",
+            }}
+          >
             {t[5]}
           </p>
         </div>
-        <div dir="ltr" style={{ width: "560px", height: "412px" }}>
+        <div dir="ltr" style={{ width: "560px", height: "auto", maxWidth: "100%" }}>
           <img
             src="/design/hero-warehouse-quay-ship.svg"
             alt={t[6]}
-            style={{ width: "560px", height: "412px" }}
+            style={{ width: "560px", height: "auto", maxWidth: "100%" }}
           />
         </div>
       </section>
       <section
         style={{
           background: "#0B1433",
-          padding: "88px 120px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "260px minmax(0, 1fr)",
-          gap: "56px",
+          gridTemplateColumns: "var(--sp-grid-260-fr, 260px minmax(0, 1fr))",
+          gap: "var(--sp-gap-56, 56px)",
           alignItems: "center",
         }}
       >
         <img
           src="/design/picky-verified-badge.svg"
           alt=""
-          style={{ width: "240px", height: "240px" }}
+          style={{ width: "240px", height: "auto", maxWidth: "100%" }}
         />
         <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
           <h2
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "36.9px",
+              fontSize: "calc(var(--sp-fs-36, 36px) * 1.0250)",
               lineHeight: "1.1",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -169,7 +188,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
           <p
             style={{
               margin: "0",
-              fontSize: "19px",
+              fontSize: "var(--sp-fs-19, 19px)",
               lineHeight: "1.65",
               color: "#C3CDEB",
               maxWidth: "820px",
@@ -181,7 +200,8 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
       </section>
       <section
         style={{
-          padding: "88px 120px 40px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(40px * var(--sp-vs, 1))",
           display: "flex",
           flexDirection: "column",
           gap: "28px",
@@ -191,7 +211,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
           style={{
             margin: "0",
             fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-            fontSize: "40px",
+            fontSize: "var(--sp-fs-40, 40px)",
             lineHeight: "1.1",
             fontWeight: "600",
             letterSpacing: "-0.03em",
@@ -202,14 +222,18 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
           {t[9]}
         </h2>
         <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "20px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "var(--sp-grid-r3, repeat(3, minmax(0, 1fr)))",
+            gap: "20px",
+          }}
         >
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               gap: "14px",
-              padding: "30px",
+              padding: "var(--sp-pad-30, 30px)",
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
@@ -226,7 +250,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
                 alignItems: "center",
                 justifyContent: "center",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "26px",
+                fontSize: "var(--sp-fs-26, 26px)",
                 fontWeight: "600",
               }}
             >
@@ -236,7 +260,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "22px",
+                fontSize: "var(--sp-fs-22, 22px)",
                 lineHeight: "1.2",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -246,14 +270,18 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
             >
               {t[11]}
             </span>
-            <span style={{ fontSize: "15.5px", lineHeight: "1.5", color: "#4A5578" }}>{t[12]}</span>
+            <span
+              style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", lineHeight: "1.5", color: "#4A5578" }}
+            >
+              {t[12]}
+            </span>
           </div>
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               gap: "14px",
-              padding: "30px",
+              padding: "var(--sp-pad-30, 30px)",
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
@@ -270,7 +298,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
                 alignItems: "center",
                 justifyContent: "center",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "26px",
+                fontSize: "var(--sp-fs-26, 26px)",
                 fontWeight: "600",
               }}
             >
@@ -280,7 +308,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "22px",
+                fontSize: "var(--sp-fs-22, 22px)",
                 lineHeight: "1.2",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -290,25 +318,33 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
             >
               {t[14]}
             </span>
-            <span style={{ fontSize: "15.5px", lineHeight: "1.5", color: "#4A5578" }}>{t[15]}</span>
+            <span
+              style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", lineHeight: "1.5", color: "#4A5578" }}
+            >
+              {t[15]}
+            </span>
           </div>
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               gap: "14px",
-              padding: "30px",
+              padding: "var(--sp-pad-30, 30px)",
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
             }}
           >
-            <img src="/design/spot-5.svg" alt="" style={{ width: "72px", height: "72px" }} />
+            <img
+              src="/design/spot-5.svg"
+              alt=""
+              style={{ width: "72px", height: "auto", maxWidth: "100%" }}
+            />
             <span
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "22px",
+                fontSize: "var(--sp-fs-22, 22px)",
                 lineHeight: "1.2",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -318,13 +354,18 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
             >
               {t[16]}
             </span>
-            <span style={{ fontSize: "15.5px", lineHeight: "1.5", color: "#4A5578" }}>{t[17]}</span>
+            <span
+              style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", lineHeight: "1.5", color: "#4A5578" }}
+            >
+              {t[17]}
+            </span>
           </div>
         </div>
       </section>
       <section
         style={{
-          padding: "48px 120px 40px",
+          padding:
+            "calc(48px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(40px * var(--sp-vs, 1))",
           display: "flex",
           flexDirection: "column",
           gap: "28px",
@@ -334,7 +375,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
           style={{
             margin: "0",
             fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-            fontSize: "40px",
+            fontSize: "var(--sp-fs-40, 40px)",
             lineHeight: "1.1",
             fontWeight: "600",
             letterSpacing: "-0.03em",
@@ -345,14 +386,18 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
           {t[18]}
         </h2>
         <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "20px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "var(--sp-grid-r3, repeat(3, minmax(0, 1fr)))",
+            gap: "20px",
+          }}
         >
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               gap: "12px",
-              padding: "30px",
+              padding: "var(--sp-pad-30, 30px)",
               borderRadius: "24px",
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
@@ -388,7 +433,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "20px",
+                fontSize: "var(--sp-fs-20, 20px)",
                 lineHeight: "1.25",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -398,7 +443,14 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
             >
               {t[19]}
             </h3>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.55", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.55",
+                color: "#4A5578",
+              }}
+            >
               {t[20]}
             </p>
           </div>
@@ -407,7 +459,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
               display: "flex",
               flexDirection: "column",
               gap: "12px",
-              padding: "30px",
+              padding: "var(--sp-pad-30, 30px)",
               borderRadius: "24px",
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
@@ -445,7 +497,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "20px",
+                fontSize: "var(--sp-fs-20, 20px)",
                 lineHeight: "1.25",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -455,7 +507,14 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
             >
               {t[21]}
             </h3>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.55", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.55",
+                color: "#4A5578",
+              }}
+            >
               {t[22]}
             </p>
           </div>
@@ -464,7 +523,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
               display: "flex",
               flexDirection: "column",
               gap: "12px",
-              padding: "30px",
+              padding: "var(--sp-pad-30, 30px)",
               borderRadius: "24px",
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
@@ -500,7 +559,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "20px",
+                fontSize: "var(--sp-fs-20, 20px)",
                 lineHeight: "1.25",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -510,24 +569,37 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
             >
               {t[23]}
             </h3>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.55", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.55",
+                color: "#4A5578",
+              }}
+            >
               {t[24]}
             </p>
           </div>
         </div>
       </section>
-      <section style={{ padding: "64px 120px 104px" }}>
+      <section
+        style={{
+          padding:
+            "calc(64px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
+        }}
+      >
         <div
+          className="sp-cta-band"
           style={{
             position: "relative",
             overflow: "hidden",
             borderRadius: "32px",
             background: "#155DFC",
-            padding: "72px",
+            padding: "var(--sp-pad-72, 72px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "40px",
+            gap: "var(--sp-gap-40, 40px)",
             color: "#FFFFFF",
           }}
         >
@@ -553,7 +625,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "48px",
+                fontSize: "var(--sp-fs-48, 48px)",
                 lineHeight: "1.08",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -563,8 +635,16 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
             >
               {t[25]}
             </h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#E3EBFF" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.6",
+                color: "#E3EBFF",
+              }}
+            >
               <span
+                className="sp-placeholder"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -596,7 +676,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
                   borderRadius: "12px",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
                   fontWeight: "600",
-                  fontSize: "17px",
+                  fontSize: "var(--sp-fs-17, 17px)",
                   background: "#FFFFFF",
                   color: "#0E1A3D",
                   border: "1.5px solid #FFFFFF",
@@ -633,7 +713,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
                   borderRadius: "12px",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
                   fontWeight: "600",
-                  fontSize: "17px",
+                  fontSize: "var(--sp-fs-17, 17px)",
                   background: "transparent",
                   color: "#FFFFFF",
                   border: "1.5px solid rgba(255,255,255,0.28)",
@@ -646,7 +726,10 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
               </a>
             </div>
           </div>
-          <div style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}>
+          <div
+            className="sp-cta-mascot"
+            style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}
+          >
             <div
               style={{
                 position: "absolute",
@@ -668,7 +751,7 @@ export function AboutBoardTR({ lang }: { lang: Locale }) {
             <img
               src="/design/picky-arms-up.svg"
               alt={t[31]}
-              style={{ width: "300px", height: "300px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
         </div>

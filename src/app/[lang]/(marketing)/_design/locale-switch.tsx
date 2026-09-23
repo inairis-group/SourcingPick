@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { localeLabels, localeTags, locales, type Locale } from "@/lib/i18n/config";
+import styles from "./board.module.css";
 
 /**
  * The language menu, and the strip along the foot of every page.
@@ -17,21 +18,10 @@ import { localeLabels, localeTags, locales, type Locale } from "@/lib/i18n/confi
  * without having to make it do anything, and we cannot.
  */
 
-const BUTTON: React.CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  gap: "8px",
-  minHeight: "44px",
-  padding: "0 14px",
-  border: "1.5px solid #DCE3F2",
-  borderRadius: "12px",
-  background: "#FFFFFF",
-  color: "#0E1A3D",
-  fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-  fontSize: "14px",
-  fontWeight: "600",
-  cursor: "pointer",
-};
+// The button's styling — the artboard's border, radius and hexes — lives in
+// board.module.css as `.localeButton`, because the phone artboard draws the
+// same control without its border or chevron and a class can change under a
+// media query where an inline style cannot.
 
 function Globe({ size, stroke }: { size: number; stroke: string }) {
   return (
@@ -78,14 +68,14 @@ export function LocaleSwitch({ lang }: { lang: Locale }) {
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div className={styles.localeRoot}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={localeLabels[lang]}
-        style={BUTTON}
+        className={styles.localeButton}
       >
         <Globe size={18} stroke="#155DFC" />
         <span>{lang.toUpperCase()}</span>
@@ -129,36 +119,12 @@ export function LocaleSwitch({ lang }: { lang: Locale }) {
           {/* Two columns, because twelve of anything in one column is a list
               you scroll rather than a menu you read. Six rows fits under the
               header on a laptop without the menu needing its own scrollbar,
-              and the pairs stay in the canvas's own order. */}
-          <ul
-            role="menu"
-            aria-label={localeLabels[lang]}
-            style={{
-              position: "absolute",
-              insetInlineEnd: 0,
-              top: "calc(100% + 10px)",
-              zIndex: 50,
-              margin: 0,
-              padding: "8px",
-              listStyle: "none",
-              display: "grid",
-              // An explicit width, because `1fr` tracks inside an
-              // absolutely-positioned box with no width resolve against a
-              // width that does not exist yet — which is what put a
-              // horizontal scrollbar inside the menu.
-              width: "min(calc(100vw - 32px), 420px)",
-              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-              gap: "2px",
-              background: "#FFFFFF",
-              border: "1px solid #DCE3F2",
-              borderRadius: "16px",
-              boxShadow: "0 18px 40px -20px rgba(14,26,61,0.45)",
-              // No max-height and no scrolling: six rows of 40px is 266px
-              // with the padding, which fits any window tall enough to have
-              // shown the header that opened it. A menu you have to scroll to
-              // find your own language in is not a menu.
-            }}
-          >
+              and the pairs stay in the canvas's own order. The box itself is
+              styled in board.module.css (`.localeMenu`): anchored to the
+              button on a wide window, centred in the viewport on a phone,
+              where a 358px menu hung from a top-right button would run off
+              the left edge. */}
+          <ul role="menu" aria-label={localeLabels[lang]} className={styles.localeMenu}>
             {locales.map((l) => {
               const current = l === lang;
               return (

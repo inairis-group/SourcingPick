@@ -23,12 +23,14 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
   return (
     <>
       <section
+        className="sp-two-track"
         style={{
-          padding: "88px 120px 72px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: "64px",
+          gap: "var(--sp-gap-64, 64px)",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "22px", maxWidth: "760px" }}>
@@ -37,7 +39,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
           <p
             style={{
               margin: "0",
-              fontSize: "19px",
+              fontSize: "var(--sp-fs-19, 19px)",
               lineHeight: "1.6",
               color: "#4A5578",
               maxWidth: "680px",
@@ -48,6 +50,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
           </p>
         </div>
         <div
+          className="sp-hero-figure"
           style={{
             flexShrink: "0",
             width: "400px",
@@ -64,20 +67,24 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
           <img
             src="/design/container-ship.svg"
             alt={t[3]}
-            style={{ width: "360px", height: "300px", objectFit: "contain" }}
+            style={{ width: "360px", height: "300px", objectFit: "contain", maxWidth: "100%" }}
           />
         </div>
       </section>
-      <section style={{ padding: "0 120px 72px" }}>
+      <section style={{ padding: "0 var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))" }}>
         <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "24px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
+            gap: "24px",
+          }}
         >
           <article
             style={{
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
-              padding: "40px",
+              padding: "var(--sp-pad-40, 40px)",
               display: "flex",
               flexDirection: "column",
               gap: "22px",
@@ -133,8 +140,10 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[6]}</span>
-                <span style={s[4][lang]}>{t[7]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[6]}</span>
+                <span className="sp-placeholder" style={s[4][lang]}>
+                  {t[7]}
+                </span>
               </div>
               <div
                 style={{
@@ -146,8 +155,10 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[8]}</span>
-                <span style={s[5][lang]}>{t[9]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[8]}</span>
+                <span className="sp-placeholder" style={s[5][lang]}>
+                  {t[9]}
+                </span>
               </div>
               <div
                 style={{
@@ -159,8 +170,10 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[10]}</span>
-                <span style={s[6][lang]}>{t[11]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[10]}</span>
+                <span className="sp-placeholder" style={s[6][lang]}>
+                  {t[11]}
+                </span>
               </div>
               <div
                 style={{
@@ -172,8 +185,10 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[12]}</span>
-                <span style={s[7][lang]}>{t[13]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[12]}</span>
+                <span className="sp-placeholder" style={s[7][lang]}>
+                  {t[13]}
+                </span>
               </div>
               <div
                 style={{
@@ -185,8 +200,10 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[14]}</span>
-                <span style={s[8][lang]}>{t[15]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[14]}</span>
+                <span className="sp-placeholder" style={s[8][lang]}>
+                  {t[15]}
+                </span>
               </div>
               <div
                 style={{
@@ -198,7 +215,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[16]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[16]}</span>
                 <span style={{ fontSize: "14px", color: "#4A5578", textAlign: "end" }}>
                   {t[17]}
                 </span>
@@ -230,7 +247,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
             style={{
               background: "#162456",
               borderRadius: "24px",
-              padding: "40px",
+              padding: "var(--sp-pad-40, 40px)",
               display: "flex",
               flexDirection: "column",
               gap: "22px",
@@ -287,10 +304,12 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
               >
                 <span style={s[12][lang]}>{t[21]}</span>
                 <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
-                  <span style={{ fontSize: "15.5px", color: "#FFFFFF" }}>{t[22]}</span>
+                  <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", color: "#FFFFFF" }}>
+                    {t[22]}
+                  </span>
                   <span
                     style={{
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       fontWeight: "600",
                       color: "#FFFFFF",
                       textAlign: "end",
@@ -311,10 +330,12 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
               >
                 <span style={s[13][lang]}>{t[24]}</span>
                 <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
-                  <span style={{ fontSize: "15.5px", color: "#FFFFFF" }}>{t[25]}</span>
+                  <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", color: "#FFFFFF" }}>
+                    {t[25]}
+                  </span>
                   <span
                     style={{
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       fontWeight: "600",
                       color: "#FFFFFF",
                       textAlign: "end",
@@ -335,10 +356,12 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
               >
                 <span style={s[14][lang]}>{t[27]}</span>
                 <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
-                  <span style={{ fontSize: "15.5px", color: "#FFFFFF" }}>{t[28]}</span>
+                  <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", color: "#FFFFFF" }}>
+                    {t[28]}
+                  </span>
                   <span
                     style={{
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       fontWeight: "600",
                       color: "#FFFFFF",
                       textAlign: "end",
@@ -350,7 +373,10 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
               </div>
             </div>
             <p style={{ margin: "0", fontSize: "13.5px", color: "#B8C4E6" }}>
-              {t[30]} <span style={s[15][lang]}>{t[31]}</span>
+              {t[30]}{" "}
+              <span className="sp-placeholder" style={s[15][lang]}>
+                {t[31]}
+              </span>
             </p>
             <div>
               <Link href={`/${lang}/devis`} style={s[16][lang]}>
@@ -378,9 +404,9 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
       </section>
       <section
         style={{
-          padding: "0 120px 72px",
+          padding: "0 var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+          gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
           gap: "24px",
         }}
       >
@@ -389,7 +415,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "24px",
-            padding: "36px 40px",
+            padding: "var(--sp-pad-36-40, 36px 40px)",
             display: "flex",
             flexDirection: "column",
             gap: "20px",
@@ -411,7 +437,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -450,7 +476,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -489,7 +515,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -528,7 +554,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -567,7 +593,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -608,7 +634,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "24px",
-            padding: "36px 40px",
+            padding: "var(--sp-pad-36-40, 36px 40px)",
             display: "flex",
             flexDirection: "column",
             gap: "20px",
@@ -630,7 +656,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -669,7 +695,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -708,7 +734,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -747,7 +773,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -780,19 +806,22 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <span>
-                {t[43]} <span style={s[19][lang]}>{t[44]}</span>
+                {t[43]}{" "}
+                <span className="sp-placeholder" style={s[19][lang]}>
+                  {t[44]}
+                </span>
               </span>
             </li>
           </ul>
         </div>
       </section>
-      <section style={{ padding: "0 120px 72px" }}>
+      <section style={{ padding: "0 var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))" }}>
         <div
           style={{
             display: "flex",
             gap: "24px",
             alignItems: "center",
-            padding: "32px 36px",
+            padding: "var(--sp-pad-32-36, 32px 36px)",
             borderRadius: "24px",
             background: "#EAF1FF",
           }}
@@ -826,8 +855,18 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
           </span>
           <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
             <h2 style={s[20][lang]}>{t[45]}</h2>
-            <p style={{ margin: "0", fontSize: "16.5px", lineHeight: "1.55", color: "#0E1A3D" }}>
-              {t[46]} <span style={s[21][lang]}>{t[47]}</span>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-16_5, 16.5px)",
+                lineHeight: "1.55",
+                color: "#0E1A3D",
+              }}
+            >
+              {t[46]}{" "}
+              <span className="sp-placeholder" style={s[21][lang]}>
+                {t[47]}
+              </span>
               {t[48]}
             </p>
             <p style={{ margin: "0", fontSize: "15px", color: "#4A5578" }}>{t[49]}</p>
@@ -836,10 +875,10 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
       </section>
       <section
         style={{
-          padding: "0 120px 40px",
+          padding: "0 var(--sp-gutter, 120px) calc(40px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "380px minmax(0, 1fr)",
-          gap: "64px",
+          gridTemplateColumns: "var(--sp-grid-380-fr, 380px minmax(0, 1fr))",
+          gap: "var(--sp-gap-64, 64px)",
         }}
       >
         <h2 style={s[22][lang]}>{t[50]}</h2>
@@ -888,7 +927,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 maxWidth: "680px",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.65",
                 color: "#4A5578",
               }}
@@ -940,12 +979,14 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 maxWidth: "680px",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.65",
                 color: "#4A5578",
               }}
             >
-              <span style={s[25][lang]}>{t[54]}</span>
+              <span className="sp-placeholder" style={s[25][lang]}>
+                {t[54]}
+              </span>
             </p>
           </Disclosure>
           <Disclosure
@@ -992,29 +1033,38 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 maxWidth: "680px",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.65",
                 color: "#4A5578",
               }}
             >
-              {t[56]} <span style={s[27][lang]}>{t[57]}</span>
+              {t[56]}{" "}
+              <span className="sp-placeholder" style={s[27][lang]}>
+                {t[57]}
+              </span>
               {t[58]}
             </p>
           </Disclosure>
         </div>
       </section>
-      <section style={{ padding: "64px 120px 104px" }}>
+      <section
+        style={{
+          padding:
+            "calc(64px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
+        }}
+      >
         <div
+          className="sp-cta-band"
           style={{
             position: "relative",
             overflow: "hidden",
             borderRadius: "32px",
             background: "#155DFC",
-            padding: "72px",
+            padding: "var(--sp-pad-72, 72px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "40px",
+            gap: "var(--sp-gap-40, 40px)",
             color: "#FFFFFF",
           }}
         >
@@ -1037,8 +1087,18 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
             }}
           >
             <h2 style={s[28][lang]}>{t[59]}</h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#E3EBFF" }}>
-              {t[60]} <span style={s[29][lang]}>{t[61]}</span>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.6",
+                color: "#E3EBFF",
+              }}
+            >
+              {t[60]}{" "}
+              <span className="sp-placeholder" style={s[29][lang]}>
+                {t[61]}
+              </span>
               {t[62]}
             </p>
             <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
@@ -1068,12 +1128,15 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
               </a>
             </div>
           </div>
-          <div style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}>
+          <div
+            className="sp-cta-mascot"
+            style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}
+          >
             <div style={s[32][lang]}>{t[65]}</div>
             <img
               src="/design/picky-arms-up.svg"
               alt={t[66]}
-              style={{ width: "300px", height: "300px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
         </div>

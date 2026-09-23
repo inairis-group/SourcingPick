@@ -20,12 +20,14 @@ export function FaqBoard({ lang }: { lang: Locale }) {
   return (
     <>
       <section
+        className="sp-two-track"
         style={{
-          padding: "88px 120px 72px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: "64px",
+          gap: "var(--sp-gap-64, 64px)",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "22px", maxWidth: "760px" }}>
@@ -34,7 +36,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
           <p
             style={{
               margin: "0",
-              fontSize: "19px",
+              fontSize: "var(--sp-fs-19, 19px)",
               lineHeight: "1.6",
               color: "#4A5578",
               maxWidth: "680px",
@@ -45,6 +47,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
           </p>
         </div>
         <div
+          className="sp-hero-figure"
           style={{
             flexShrink: "0",
             width: "300px",
@@ -61,11 +64,18 @@ export function FaqBoard({ lang }: { lang: Locale }) {
           <img
             src="/design/picky-loupe.svg"
             alt=""
-            style={{ width: "260px", height: "260px", objectFit: "contain" }}
+            style={{ width: "260px", height: "auto", objectFit: "contain", maxWidth: "100%" }}
           />
         </div>
       </section>
-      <section style={{ padding: "0 120px 24px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
+      <section
+        style={{
+          padding: "0 var(--sp-gutter, 120px) calc(24px * var(--sp-vs, 1))",
+          display: "flex",
+          gap: "10px",
+          flexWrap: "wrap",
+        }}
+      >
         <a
           href="#faq-general"
           style={{
@@ -175,13 +185,18 @@ export function FaqBoard({ lang }: { lang: Locale }) {
           {t[8]}
         </Link>
       </section>
-      <section style={{ padding: "16px 120px 40px" }}>
+      <section
+        style={{
+          padding:
+            "calc(16px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(40px * var(--sp-vs, 1))",
+        }}
+      >
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "300px minmax(0, 1fr)",
-            gap: "56px",
-            padding: "40px 0",
+            gridTemplateColumns: "var(--sp-grid-300-fr, 300px minmax(0, 1fr))",
+            gap: "var(--sp-gap-56, 56px)",
+            padding: "var(--sp-pad-40-0, 40px 0)",
             borderTop: "1px solid #DCE3F2",
           }}
         >
@@ -231,7 +246,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
@@ -283,7 +298,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
@@ -335,7 +350,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
@@ -387,12 +402,15 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
               >
-                {t[17]} <span style={s[7][lang]}>{t[18]}</span>
+                {t[17]}{" "}
+                <span className="sp-placeholder" style={s[7][lang]}>
+                  {t[18]}
+                </span>
               </p>
             </Disclosure>
           </div>
@@ -400,9 +418,9 @@ export function FaqBoard({ lang }: { lang: Locale }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "300px minmax(0, 1fr)",
-            gap: "56px",
-            padding: "40px 0",
+            gridTemplateColumns: "var(--sp-grid-300-fr, 300px minmax(0, 1fr))",
+            gap: "var(--sp-gap-56, 56px)",
+            padding: "var(--sp-pad-40-0, 40px 0)",
             borderTop: "1px solid #DCE3F2",
           }}
         >
@@ -452,12 +470,15 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
               >
-                {t[21]} <span style={s[10][lang]}>{t[22]}</span>
+                {t[21]}{" "}
+                <span className="sp-placeholder" style={s[10][lang]}>
+                  {t[22]}
+                </span>
                 {t[23]}
               </p>
             </Disclosure>
@@ -505,12 +526,14 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
               >
-                <span style={s[12][lang]}>{t[25]}</span>
+                <span className="sp-placeholder" style={s[12][lang]}>
+                  {t[25]}
+                </span>
               </p>
             </Disclosure>
             <Disclosure
@@ -557,12 +580,14 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
               >
-                <span style={s[14][lang]}>{t[27]}</span>
+                <span className="sp-placeholder" style={s[14][lang]}>
+                  {t[27]}
+                </span>
               </p>
             </Disclosure>
             <Disclosure
@@ -609,12 +634,14 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
               >
-                <span style={s[16][lang]}>{t[29]}</span>
+                <span className="sp-placeholder" style={s[16][lang]}>
+                  {t[29]}
+                </span>
               </p>
             </Disclosure>
             <Disclosure
@@ -661,7 +688,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
@@ -674,9 +701,9 @@ export function FaqBoard({ lang }: { lang: Locale }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "300px minmax(0, 1fr)",
-            gap: "56px",
-            padding: "40px 0",
+            gridTemplateColumns: "var(--sp-grid-300-fr, 300px minmax(0, 1fr))",
+            gap: "var(--sp-gap-56, 56px)",
+            padding: "var(--sp-pad-40-0, 40px 0)",
             borderTop: "1px solid #DCE3F2",
           }}
         >
@@ -726,7 +753,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
@@ -778,7 +805,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
@@ -791,9 +818,9 @@ export function FaqBoard({ lang }: { lang: Locale }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "300px minmax(0, 1fr)",
-            gap: "56px",
-            padding: "40px 0",
+            gridTemplateColumns: "var(--sp-grid-300-fr, 300px minmax(0, 1fr))",
+            gap: "var(--sp-gap-56, 56px)",
+            padding: "var(--sp-pad-40-0, 40px 0)",
             borderTop: "1px solid #DCE3F2",
           }}
         >
@@ -843,7 +870,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
@@ -895,7 +922,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
@@ -908,9 +935,9 @@ export function FaqBoard({ lang }: { lang: Locale }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "300px minmax(0, 1fr)",
-            gap: "56px",
-            padding: "40px 0",
+            gridTemplateColumns: "var(--sp-grid-300-fr, 300px minmax(0, 1fr))",
+            gap: "var(--sp-gap-56, 56px)",
+            padding: "var(--sp-pad-40-0, 40px 0)",
             borderTop: "1px solid #DCE3F2",
           }}
         >
@@ -960,12 +987,15 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
               >
-                {t[44]} <span style={s[26][lang]}>{t[45]}</span>
+                {t[44]}{" "}
+                <span className="sp-placeholder" style={s[26][lang]}>
+                  {t[45]}
+                </span>
                 {t[46]}
               </p>
             </Disclosure>
@@ -1013,12 +1043,15 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
               >
-                {t[48]} <span style={s[28][lang]}>{t[49]}</span>
+                {t[48]}{" "}
+                <span className="sp-placeholder" style={s[28][lang]}>
+                  {t[49]}
+                </span>
                 {t[50]}
               </p>
             </Disclosure>
@@ -1027,9 +1060,9 @@ export function FaqBoard({ lang }: { lang: Locale }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "300px minmax(0, 1fr)",
-            gap: "56px",
-            padding: "40px 0",
+            gridTemplateColumns: "var(--sp-grid-300-fr, 300px minmax(0, 1fr))",
+            gap: "var(--sp-gap-56, 56px)",
+            padding: "var(--sp-pad-40-0, 40px 0)",
             borderTop: "1px solid #DCE3F2",
           }}
         >
@@ -1079,7 +1112,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
@@ -1131,26 +1164,29 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   maxWidth: "680px",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.65",
                   color: "#4A5578",
                 }}
               >
-                <span style={s[32][lang]}>{t[55]}</span>
+                <span className="sp-placeholder" style={s[32][lang]}>
+                  {t[55]}
+                </span>
                 {t[56]}
               </p>
             </Disclosure>
           </div>
         </div>
       </section>
-      <section style={{ padding: "0 120px 104px" }}>
+      <section style={{ padding: "0 var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))" }}>
         <div
+          className="sp-two-track"
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             gap: "24px",
-            padding: "32px 36px",
+            padding: "var(--sp-pad-32-36, 32px 36px)",
             borderRadius: "24px",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
@@ -1158,7 +1194,9 @@ export function FaqBoard({ lang }: { lang: Locale }) {
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
             <h2 style={s[33][lang]}>{t[57]}</h2>
-            <p style={{ margin: "0", fontSize: "16px", color: "#4A5578" }}>{t[58]}</p>
+            <p style={{ margin: "0", fontSize: "var(--sp-fs-16, 16px)", color: "#4A5578" }}>
+              {t[58]}
+            </p>
           </div>
           <a href="mailto:contact@sourcingpick.com" style={s[34][lang]}>
             <span>

@@ -2,9 +2,12 @@
 
 Everything the canvas wrote — every padding, every hex, every stroke width —
 is carried across unchanged. The only things this pass is allowed to alter are
-the four that cannot survive a copy: text (becomes a slot lookup so the four
+the five that cannot survive a copy: text (becomes a slot lookup so the four
 locales share one component), blob URLs (become files we serve), `href="#"`
-(becomes a route), and JSX's own spelling rules for attributes.
+(becomes a route), JSX's own spelling rules for attributes, and the handful of
+pixel values that cannot survive a window narrower than the artboard — see
+`responsive()` below, which wraps those in a custom property whose fallback
+is the artboard's own value, so that at 1440px nothing has changed.
 """
 
 from __future__ import annotations
@@ -95,6 +98,197 @@ def needs_content_box(css: str) -> str:
     if _WIDTH.search(css) and _PADDING.search(css):
         return css.rstrip().rstrip(";") + "; box-sizing: content-box"
     return css
+
+
+# --- responsive seams ----------------------------------------------------------
+#
+# The artboards are 1440px wide and say nothing about 390. A stylesheet cannot
+# override an inline value without `!important`, and a file full of
+# `[style*="font-size:62px"] { … !important }` is what this replaces. Instead
+# the emitter wraps the few *system-level* values — type sizes, grid tracks,
+# section gutters and rhythm, the large gaps — in a custom property whose
+# fallback is the artboard's own value:
+#
+#     font-size: 62px      ->  font-size: var(--sp-fs-62, 62px)
+#
+# At desktop the property is undefined and the fallback renders: byte for byte
+# the design. `board.module.css` defines each property under a media query and
+# the cascade does the rest, with no `!important` and no attribute selectors.
+# The names are keyed on the artboard's value, which is what makes them a type
+# scale rather than a list of elements: every 46px heading on the site becomes
+# the same size on a phone. The porter checks every name it emits against the
+# names the stylesheet defines, so a re-export that introduces a new size fails
+# the port instead of silently rendering at desktop size on a phone.
+#
+# Element-specific recomposition (the hero illustration, the phone mockups)
+# is not done here — that is what DECORATIONS in port.py is for.
+
+_PX = re.compile(r"^(\d+(?:\.\d+)?)px$")
+_GUTTERS = {"section": "120px", "footer": "120px", "header": "96px"}
+
+
+def _slug(v: str) -> str:
+    return v.replace(".", "_")
+
+
+def _grid_slug(value: str) -> str:
+    """`340px repeat(4, minmax(0, 1fr))` -> `340-r4`; `minmax(0, 1fr) 640px` -> `fr-640`."""
+    out: list[str] = []
+    for tok in re.findall(r"repeat\([^)]*\)\)?|minmax\([^)]*\)|\S+", value):
+        m = re.match(r"repeat\((\d+),\s*minmax\(0,\s*1fr\)\)", tok)
+        if m:
+            out.append(f"r{m.group(1)}")
+            continue
+        m = re.match(r"minmax\(0,\s*([\d.]+)fr\)", tok)
+        if m:
+            out.append("fr" if m.group(1) == "1" else f"{_slug(m.group(1))}fr")
+            continue
+        m = _PX.match(tok)
+        if m:
+            out.append(_slug(m.group(1)))
+            continue
+        raise SystemExit(f"grid track the porter does not know how to name: {tok!r} in {value!r}")
+    return "-".join(out)
+
+
+def _padding_parts(value: str) -> tuple[str, str, str, str] | None:
+    parts = value.split()
+    if not 1 <= len(parts) <= 4:
+        return None
+    t = parts[0]
+    r = parts[1] if len(parts) > 1 else t
+    b = parts[2] if len(parts) > 2 else t
+    l = parts[3] if len(parts) > 3 else r
+    return t, r, b, l
+
+
+def _scaled(v: str) -> str:
+    """A vertical padding, scaled by the rhythm factor; zero stays zero."""
+    if v in ("0", "0px"):
+        return "0"
+    if not _PX.match(v):
+        raise SystemExit(f"section padding the porter cannot scale: {v!r}")
+    return f"calc({v} * var(--sp-vs, 1))"
+
+
+def _font_size_base(base_css: str | None) -> float | None:
+    if not base_css:
+        return None
+    for name, value in split_decls(base_css):
+        if name == "font-size" and (m := _PX.match(value)):
+            return float(m.group(1))
+    return None
+
+
+def responsive(
+    css: str,
+    tag: str,
+    tokens: set[str] | None = None,
+    base_css: str | None = None,
+    known_sizes: set[float] = frozenset(),
+) -> str:
+    """Wrap the system-level values of one style attribute in custom properties.
+
+    `base_css` is the French style for an element whose style varies by
+    locale. Arabic and Chinese retune the display font's size — 59.9px where
+    French has 62 — and that retuning is a ratio, not a size of its own: it is
+    emitted as `calc(var(--sp-fs-62, 62px) * 0.9661)`, which is 59.9px at
+    desktop and follows the French token everywhere else.
+    """
+    out: list[str] = []
+    decls = split_decls(css)
+    base_fs = _font_size_base(base_css)
+    for name, value in decls:
+        m = _PX.match(value)
+        if name == "font-size" and m and base_fs and base_fs >= 15.5:
+            ratio = float(m.group(1)) / base_fs
+            token = f"--sp-fs-{_slug(str(base_fs).removesuffix('.0'))}"
+            base_px = f"{str(base_fs).removesuffix('.0')}px"
+            if abs(ratio - 1) < 1e-6:
+                value = f"var({token}, {value})"
+            else:
+                value = f"calc(var({token}, {base_px}) * {ratio:.4f})"
+        elif name == "font-size" and m and float(m.group(1)) >= 15.5:
+            size = float(m.group(1))
+            if known_sizes and size not in known_sizes:
+                # A retuned size in a shape with no French twin (the Turkish
+                # boards): read as a ratio of the nearest size the stylesheet
+                # knows, which is how the designer arrived at it.
+                base = min(known_sizes, key=lambda k: abs(size / k - 1))
+                if abs(size / base - 1) <= 0.1:
+                    token = f"--sp-fs-{_slug(str(base).removesuffix('.0'))}"
+                    value = f"calc(var({token}, {str(base).removesuffix('.0')}px) * {size / base:.4f})"
+                    if tokens is not None:
+                        tokens.add(token)
+                    out.append(f"{name}: {value}")
+                    continue
+            token = f"--sp-fs-{_slug(str(size).removesuffix('.0'))}"
+            value = f"var({token}, {value})"
+        elif name == "gap" and m and float(m.group(1)) >= 40:
+            token = f"--sp-gap-{_slug(m.group(1))}"
+            value = f"var({token}, {value})"
+        elif name == "height" and tag == "header" and m:
+            # The one height the sticky offset and the drawer both depend on.
+            token = "--sp-header-h"
+            value = f"var({token}, {value})"
+        elif name == "height" and tag == "img" and m and "width: auto" in css:
+            # The wordmark is the only image drawn by its height.
+            token = "--sp-logo-h"
+            value = f"var({token}, {value})"
+        elif (
+            name == "padding"
+            and tag not in _GUTTERS
+            and (parts := _padding_parts(value))
+            and all(_PX.match(v) or v == "0" for v in value.split())
+            and (top := _PX.match(parts[0]))
+            and float(top.group(1)) >= 24
+        ):
+            # A card's inner padding — 40px on a phone is a third of the card.
+            token = "--sp-pad-" + "-".join(_slug(v.replace("px", "")) for v in value.split())
+            value = f"var({token}, {value})"
+        elif name == "grid-template-columns":
+            token = f"--sp-grid-{_grid_slug(value)}"
+            value = f"var({token}, {value})"
+        elif name == "grid-column" and value.startswith("span "):
+            token = "--sp-span"
+            value = f"var({token}, {value})"
+        elif name == "padding" and tag in _GUTTERS:
+            parts = _padding_parts(value)
+            if parts is None:
+                raise SystemExit(f"<{tag}> padding the porter cannot read: {value!r}")
+            t, r, b, l = parts
+            gutter = _GUTTERS[tag]
+            if r != gutter or l != gutter:
+                raise SystemExit(
+                    f"<{tag}> is drawn with {r}/{l} gutters, not the {gutter} the "
+                    "stylesheet reflows; teach emit.responsive about it"
+                )
+            token = "--sp-gutter" if tag != "header" else "--sp-gutter-header"
+            value = f"{_scaled(t)} var({token}, {gutter}) {_scaled(b)}"
+        else:
+            token = None
+        if token is not None and tokens is not None:
+            tokens.add(token)
+        out.append(f"{name}: {value}")
+    return "; ".join(out)
+
+
+def fluid_image(css: str, ratio_matches: bool) -> str:
+    """Let a drawn image shrink with its column.
+
+    `max-width: 100%` alone would squash an image whose height is fixed, so
+    the height is released too — but only when the porter has checked, against
+    the file we serve, that the drawn box has the image's own aspect ratio. In
+    that case `height: auto` computes to exactly the drawn height at desktop,
+    so nothing moves. An image drawn at another ratio carries `object-fit:
+    contain` in the artboard and letterboxes itself; only its width is capped.
+    """
+    if "max-width" in css or not (_WIDTH.search(css)):
+        return css
+    if ratio_matches:
+        # Rewritten in place: a style object cannot hold two `height`s.
+        css = re.sub(r"(?<![-\w])height:\s*[\d.]+px", "height: auto", css)
+    return css.rstrip().rstrip(";") + "; max-width: 100%"
 
 
 def style_object(css: str) -> str:
@@ -228,8 +422,17 @@ class Emitter:
         decorate=None,
         retag=None,
         name_for=None,
+        image_ratio=None,
+        known_sizes: set[float] = frozenset(),
     ) -> None:
+        self.known_sizes = known_sizes
         self.assets = assets
+        # Given an element's `src`, says whether the drawn box keeps the
+        # image's own aspect ratio — see `fluid_image`. None: never fluid.
+        self.image_ratio = image_ratio or (lambda src, css: False)
+        # Every custom property the emitted styles read, for the port to
+        # check against the ones the stylesheet defines.
+        self.tokens: set[str] = set()
         self.resolve_href = resolve_href
         # One entry per <a> in document order — see the note on routes in
         # port.py. Anchors are resolved by position because text is ambiguous:
@@ -284,6 +487,10 @@ class Emitter:
         instead. The rule is structural, so it holds for any such control the
         canvas ever draws.
         """
+        if node.tag == "span" and "border: 1px dashed #D99A00" in (node.attr("style") or ""):
+            # The amber "to be confirmed" chip. Drawn `white-space: nowrap`,
+            # which a Russian placeholder cannot honour on a phone.
+            return "sp-placeholder"
         if node.tag != "label":
             return None
         radios = [
@@ -294,6 +501,27 @@ class Emitter:
             and c.attr("type") == "radio"
         ]
         return "sp-choice" if radios else None
+
+    def _is_figure(self, node) -> bool:
+        """A box drawn to the exact size of the one image it holds.
+
+        The warehouse and about pages wrap their illustration in a
+        `<div dir="ltr" style="width: 640px; height: 471px">`. The image
+        inside is made fluid; this lets the box follow it, under the same
+        ratio check, so `height: auto` is again the drawn height at desktop.
+        """
+        if node.tag != "div":
+            return False
+        kids = [c for c in node.children if not isinstance(c, str) or c.strip()]
+        if len(kids) != 1 or isinstance(kids[0], str) or kids[0].tag != "img":
+            return False
+        img = kids[0]
+        box, pic = node.attr("style") or "", img.attr("style") or ""
+        bw = re.search(r"(?<![-\w])width:\s*(\d+)px", box)
+        iw = re.search(r"(?<![-\w])width:\s*(\d+)px", pic)
+        return bool(bw and iw and bw.group(1) == iw.group(1)) and self.image_ratio(
+            img.attr("src") or "", pic
+        )
 
     def count_anchors(self, node) -> int:
         if isinstance(node, str):
@@ -355,7 +583,14 @@ class Emitter:
                 if var:
                     attrs.append(f"style={{s[{var[1]}][lang]}}")
                 elif value:
-                    obj = style_object(needs_content_box(value))
+                    css = needs_content_box(value)
+                    if tag == "img":
+                        css = fluid_image(css, self.image_ratio(node.attr("src") or "", css))
+                    elif self._is_figure(node):
+                        css = fluid_image(css, True)
+                    obj = style_object(
+                        responsive(css, tag, self.tokens, known_sizes=self.known_sizes)
+                    )
                     if obj:
                         attrs.append(f"style={{{obj}}}")
                 continue

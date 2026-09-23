@@ -22,12 +22,14 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
   return (
     <>
       <section
+        className="sp-two-track"
         style={{
-          padding: "88px 120px 72px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: "64px",
+          gap: "var(--sp-gap-64, 64px)",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "22px", maxWidth: "760px" }}>
@@ -36,7 +38,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           <p
             style={{
               margin: "0",
-              fontSize: "19px",
+              fontSize: "var(--sp-fs-19, 19px)",
               lineHeight: "1.6",
               color: "#4A5578",
               maxWidth: "680px",
@@ -47,6 +49,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           </p>
         </div>
         <div
+          className="sp-hero-figure"
           style={{
             flexShrink: "0",
             width: "420px",
@@ -63,20 +66,28 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           <img
             src="/design/forklift-loading.svg"
             alt={t[3]}
-            style={{ width: "380px", height: "320px", objectFit: "contain" }}
+            style={{ width: "380px", height: "320px", objectFit: "contain", maxWidth: "100%" }}
           />
         </div>
       </section>
       <section
-        style={{ padding: "8px 120px 72px", display: "flex", flexDirection: "column", gap: "18px" }}
+        style={{
+          padding:
+            "calc(8px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
+          display: "flex",
+          flexDirection: "column",
+          gap: "18px",
+        }}
       >
         <article
+          className="sp-how-row"
           style={{
             display: "grid",
-            gridTemplateColumns: "76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px",
+            gridTemplateColumns:
+              "var(--sp-grid-76-1_1fr-fr-fr-230, 76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px)",
             gap: "28px",
             alignItems: "start",
-            padding: "30px 32px",
+            padding: "var(--sp-pad-30-32, 30px 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "22px",
@@ -93,7 +104,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
               alignItems: "center",
               justifyContent: "center",
               fontFamily: "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace",
-              fontSize: "20px",
+              fontSize: "var(--sp-fs-20, 20px)",
               fontWeight: "600",
             }}
           >
@@ -102,13 +113,27 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           <h2 style={s[2][lang]}>{t[5]}</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[3][lang]}>{t[6]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#0E1A3D" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#0E1A3D",
+              }}
+            >
               {t[7]}
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[4][lang]}>{t[8]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#4A5578",
+              }}
+            >
               {t[9]}
             </p>
           </div>
@@ -143,12 +168,14 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           </div>
         </article>
         <article
+          className="sp-how-row"
           style={{
             display: "grid",
-            gridTemplateColumns: "76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px",
+            gridTemplateColumns:
+              "var(--sp-grid-76-1_1fr-fr-fr-230, 76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px)",
             gap: "28px",
             alignItems: "start",
-            padding: "30px 32px",
+            padding: "var(--sp-pad-30-32, 30px 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "22px",
@@ -165,7 +192,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
               alignItems: "center",
               justifyContent: "center",
               fontFamily: "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace",
-              fontSize: "20px",
+              fontSize: "var(--sp-fs-20, 20px)",
               fontWeight: "600",
             }}
           >
@@ -174,13 +201,27 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           <h2 style={s[7][lang]}>{t[13]}</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[8][lang]}>{t[14]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#0E1A3D" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#0E1A3D",
+              }}
+            >
               {t[15]}
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[9][lang]}>{t[16]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#4A5578",
+              }}
+            >
               {t[17]}
             </p>
           </div>
@@ -215,12 +256,14 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           </div>
         </article>
         <article
+          className="sp-how-row"
           style={{
             display: "grid",
-            gridTemplateColumns: "76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px",
+            gridTemplateColumns:
+              "var(--sp-grid-76-1_1fr-fr-fr-230, 76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px)",
             gap: "28px",
             alignItems: "start",
-            padding: "30px 32px",
+            padding: "var(--sp-pad-30-32, 30px 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "22px",
@@ -237,7 +280,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
               alignItems: "center",
               justifyContent: "center",
               fontFamily: "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace",
-              fontSize: "20px",
+              fontSize: "var(--sp-fs-20, 20px)",
               fontWeight: "600",
             }}
           >
@@ -246,13 +289,27 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           <h2 style={s[12][lang]}>{t[21]}</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[13][lang]}>{t[22]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#0E1A3D" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#0E1A3D",
+              }}
+            >
               {t[23]}
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[14][lang]}>{t[24]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#4A5578",
+              }}
+            >
               {t[25]}
             </p>
           </div>
@@ -287,12 +344,14 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           </div>
         </article>
         <article
+          className="sp-how-row"
           style={{
             display: "grid",
-            gridTemplateColumns: "76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px",
+            gridTemplateColumns:
+              "var(--sp-grid-76-1_1fr-fr-fr-230, 76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px)",
             gap: "28px",
             alignItems: "start",
-            padding: "30px 32px",
+            padding: "var(--sp-pad-30-32, 30px 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "22px",
@@ -309,7 +368,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
               alignItems: "center",
               justifyContent: "center",
               fontFamily: "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace",
-              fontSize: "20px",
+              fontSize: "var(--sp-fs-20, 20px)",
               fontWeight: "600",
             }}
           >
@@ -318,13 +377,27 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           <h2 style={s[17][lang]}>{t[29]}</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[18][lang]}>{t[30]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#0E1A3D" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#0E1A3D",
+              }}
+            >
               {t[31]}
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[19][lang]}>{t[32]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#4A5578",
+              }}
+            >
               {t[33]}
             </p>
           </div>
@@ -359,12 +432,14 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           </div>
         </article>
         <article
+          className="sp-how-row"
           style={{
             display: "grid",
-            gridTemplateColumns: "76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px",
+            gridTemplateColumns:
+              "var(--sp-grid-76-1_1fr-fr-fr-230, 76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px)",
             gap: "28px",
             alignItems: "start",
-            padding: "30px 32px",
+            padding: "var(--sp-pad-30-32, 30px 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "22px",
@@ -381,7 +456,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
               alignItems: "center",
               justifyContent: "center",
               fontFamily: "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace",
-              fontSize: "20px",
+              fontSize: "var(--sp-fs-20, 20px)",
               fontWeight: "600",
             }}
           >
@@ -390,13 +465,27 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           <h2 style={s[22][lang]}>{t[37]}</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[23][lang]}>{t[38]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#0E1A3D" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#0E1A3D",
+              }}
+            >
               {t[39]}
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[24][lang]}>{t[40]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#4A5578",
+              }}
+            >
               {t[41]}
             </p>
           </div>
@@ -431,12 +520,14 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           </div>
         </article>
         <article
+          className="sp-how-row"
           style={{
             display: "grid",
-            gridTemplateColumns: "76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px",
+            gridTemplateColumns:
+              "var(--sp-grid-76-1_1fr-fr-fr-230, 76px minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr) 230px)",
             gap: "28px",
             alignItems: "start",
-            padding: "30px 32px",
+            padding: "var(--sp-pad-30-32, 30px 32px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "22px",
@@ -453,7 +544,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
               alignItems: "center",
               justifyContent: "center",
               fontFamily: "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace",
-              fontSize: "20px",
+              fontSize: "var(--sp-fs-20, 20px)",
               fontWeight: "600",
             }}
           >
@@ -462,13 +553,27 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           <h2 style={s[27][lang]}>{t[45]}</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[28][lang]}>{t[46]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#0E1A3D" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#0E1A3D",
+              }}
+            >
               {t[47]}
             </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <span style={s[29][lang]}>{t[48]}</span>
-            <p style={{ margin: "0", fontSize: "15.5px", lineHeight: "1.6", color: "#4A5578" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-15_5, 15.5px)",
+                lineHeight: "1.6",
+                color: "#4A5578",
+              }}
+            >
               {t[49]}
             </p>
           </div>
@@ -505,9 +610,9 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
       </section>
       <section
         style={{
-          padding: "0 120px 40px",
+          padding: "0 var(--sp-gutter, 120px) calc(40px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+          gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
           gap: "24px",
         }}
       >
@@ -516,7 +621,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "24px",
-            padding: "36px 40px",
+            padding: "var(--sp-pad-36-40, 36px 40px)",
             display: "flex",
             flexDirection: "column",
             gap: "22px",
@@ -538,7 +643,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -577,7 +682,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -616,7 +721,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -655,7 +760,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -694,7 +799,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -734,7 +839,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
           style={{
             background: "#162456",
             borderRadius: "24px",
-            padding: "36px 40px",
+            padding: "var(--sp-pad-36-40, 36px 40px)",
             display: "flex",
             flexDirection: "column",
             gap: "22px",
@@ -757,7 +862,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#FFFFFF",
               }}
@@ -796,7 +901,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#FFFFFF",
               }}
@@ -836,7 +941,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#FFFFFF",
               }}
@@ -869,29 +974,38 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <span>
-                {t[61]} <span style={s[34][lang]}>{t[62]}</span>
+                {t[61]}{" "}
+                <span className="sp-placeholder" style={s[34][lang]}>
+                  {t[62]}
+                </span>
               </span>
             </li>
           </ul>
           <img
             src="/design/spot-5.svg"
             alt=""
-            style={{ width: "150px", height: "150px", alignSelf: "flex-end" }}
+            style={{ width: "150px", height: "auto", alignSelf: "flex-end", maxWidth: "100%" }}
           />
         </div>
       </section>
-      <section style={{ padding: "64px 120px 104px" }}>
+      <section
+        style={{
+          padding:
+            "calc(64px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
+        }}
+      >
         <div
+          className="sp-cta-band"
           style={{
             position: "relative",
             overflow: "hidden",
             borderRadius: "32px",
             background: "#155DFC",
-            padding: "72px",
+            padding: "var(--sp-pad-72, 72px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "40px",
+            gap: "var(--sp-gap-40, 40px)",
             color: "#FFFFFF",
           }}
         >
@@ -914,8 +1028,18 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
             }}
           >
             <h2 style={s[35][lang]}>{t[63]}</h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#E3EBFF" }}>
-              {t[64]} <span style={s[36][lang]}>{t[65]}</span>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.6",
+                color: "#E3EBFF",
+              }}
+            >
+              {t[64]}{" "}
+              <span className="sp-placeholder" style={s[36][lang]}>
+                {t[65]}
+              </span>
               {t[66]}
             </p>
             <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
@@ -945,12 +1069,15 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
               </a>
             </div>
           </div>
-          <div style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}>
+          <div
+            className="sp-cta-mascot"
+            style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}
+          >
             <div style={s[39][lang]}>{t[69]}</div>
             <img
               src="/design/picky-arms-up.svg"
               alt={t[70]}
-              style={{ width: "300px", height: "300px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
         </div>

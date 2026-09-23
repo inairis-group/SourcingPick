@@ -23,24 +23,26 @@ export function SiteFooter({ lang }: { lang: Locale }) {
         style={{
           background: "#0B1433",
           color: "#FFFFFF",
-          padding: "80px 120px 40px",
+          padding:
+            "calc(80px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(40px * var(--sp-vs, 1))",
           display: "flex",
           flexDirection: "column",
-          gap: "56px",
+          gap: "var(--sp-gap-56, 56px)",
         }}
       >
         <div
+          className="sp-footer-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "340px repeat(4, minmax(0, 1fr))",
-            gap: "40px",
+            gridTemplateColumns: "var(--sp-grid-340-r4, 340px repeat(4, minmax(0, 1fr)))",
+            gap: "var(--sp-gap-40, 40px)",
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
             <img
               src="/design/logo-white.svg"
               alt={t[0]}
-              style={{ height: "34px", width: "auto", alignSelf: "flex-start" }}
+              style={{ height: "var(--sp-logo-h, 34px)", width: "auto", alignSelf: "flex-start" }}
             />
             <p style={{ margin: "0", fontSize: "15px", lineHeight: "1.6", color: "#B8C4E6" }}>
               {t[1]}
@@ -149,6 +151,7 @@ export function SiteFooter({ lang }: { lang: Locale }) {
         </div>
         <LocaleRow lang={lang} label={t[26]} />
         <div
+          className="sp-footer-meta"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -158,7 +161,10 @@ export function SiteFooter({ lang }: { lang: Locale }) {
           }}
         >
           <span>
-            {t[39]} <span style={s[4][lang]}>{t[40]}</span>
+            {t[39]}{" "}
+            <span className="sp-placeholder" style={s[4][lang]}>
+              {t[40]}
+            </span>
           </span>
           <span>{t[41]}</span>
         </div>

@@ -21,12 +21,14 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
   return (
     <>
       <section
+        className="sp-two-track"
         style={{
-          padding: "88px 120px 72px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: "64px",
+          gap: "var(--sp-gap-64, 64px)",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "22px", maxWidth: "760px" }}>
@@ -54,7 +56,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "52.9px",
+              fontSize: "calc(var(--sp-fs-54, 54px) * 0.9796)",
               lineHeight: "1.06",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -67,7 +69,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
           <p
             style={{
               margin: "0",
-              fontSize: "19px",
+              fontSize: "var(--sp-fs-19, 19px)",
               lineHeight: "1.6",
               color: "#4A5578",
               maxWidth: "680px",
@@ -78,6 +80,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
           </p>
         </div>
         <div
+          className="sp-hero-figure"
           style={{
             flexShrink: "0",
             width: "400px",
@@ -94,20 +97,24 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
           <img
             src="/design/container-ship.svg"
             alt={t[3]}
-            style={{ width: "360px", height: "300px", objectFit: "contain" }}
+            style={{ width: "360px", height: "300px", objectFit: "contain", maxWidth: "100%" }}
           />
         </div>
       </section>
-      <section style={{ padding: "0 120px 72px" }}>
+      <section style={{ padding: "0 var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))" }}>
         <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "24px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
+            gap: "24px",
+          }}
         >
           <article
             style={{
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
-              padding: "40px",
+              padding: "var(--sp-pad-40, 40px)",
               display: "flex",
               flexDirection: "column",
               gap: "22px",
@@ -125,7 +132,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                  fontSize: "22px",
+                  fontSize: "var(--sp-fs-22, 22px)",
                   lineHeight: "1.25",
                   fontWeight: "600",
                   letterSpacing: "-0.03em",
@@ -168,7 +175,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "34.6px",
+                fontSize: "calc(var(--sp-fs-34, 34px) * 1.0176)",
                 lineHeight: "1.1",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -189,8 +196,9 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[6]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[6]}</span>
                 <span
+                  className="sp-placeholder"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -218,8 +226,9 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[8]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[8]}</span>
                 <span
+                  className="sp-placeholder"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -247,8 +256,9 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[10]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[10]}</span>
                 <span
+                  className="sp-placeholder"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -276,8 +286,9 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[12]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[12]}</span>
                 <span
+                  className="sp-placeholder"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -305,8 +316,9 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[14]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[14]}</span>
                 <span
+                  className="sp-placeholder"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -334,7 +346,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[16]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>{t[16]}</span>
                 <span style={{ fontSize: "14px", color: "#4A5578", textAlign: "end" }}>
                   {t[17]}
                 </span>
@@ -353,7 +365,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   borderRadius: "12px",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
                   fontWeight: "600",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   background: "#155DFC",
                   color: "#FFFFFF",
                   border: "1.5px solid #155DFC",
@@ -384,7 +396,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
             style={{
               background: "#162456",
               borderRadius: "24px",
-              padding: "40px",
+              padding: "var(--sp-pad-40, 40px)",
               display: "flex",
               flexDirection: "column",
               gap: "22px",
@@ -403,7 +415,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 style={{
                   margin: "0",
                   fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                  fontSize: "22px",
+                  fontSize: "var(--sp-fs-22, 22px)",
                   lineHeight: "1.25",
                   fontWeight: "600",
                   letterSpacing: "-0.03em",
@@ -445,7 +457,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "34px",
+                fontSize: "var(--sp-fs-34, 34px)",
                 lineHeight: "1.15",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -476,10 +488,12 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   {t[21]}
                 </span>
                 <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
-                  <span style={{ fontSize: "15.5px", color: "#FFFFFF" }}>{t[22]}</span>
+                  <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", color: "#FFFFFF" }}>
+                    {t[22]}
+                  </span>
                   <span
                     style={{
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       fontWeight: "600",
                       color: "#FFFFFF",
                       textAlign: "end",
@@ -509,10 +523,12 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   {t[24]}
                 </span>
                 <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
-                  <span style={{ fontSize: "15.5px", color: "#FFFFFF" }}>{t[25]}</span>
+                  <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", color: "#FFFFFF" }}>
+                    {t[25]}
+                  </span>
                   <span
                     style={{
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       fontWeight: "600",
                       color: "#FFFFFF",
                       textAlign: "end",
@@ -542,10 +558,12 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   {t[27]}
                 </span>
                 <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
-                  <span style={{ fontSize: "15.5px", color: "#FFFFFF" }}>{t[28]}</span>
+                  <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", color: "#FFFFFF" }}>
+                    {t[28]}
+                  </span>
                   <span
                     style={{
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       fontWeight: "600",
                       color: "#FFFFFF",
                       textAlign: "end",
@@ -559,6 +577,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
             <p style={{ margin: "0", fontSize: "13.5px", color: "#B8C4E6" }}>
               {t[30]}{" "}
               <span
+                className="sp-placeholder"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -589,7 +608,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   borderRadius: "12px",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
                   fontWeight: "600",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   background: "#FFFFFF",
                   color: "#0E1A3D",
                   border: "1.5px solid #FFFFFF",
@@ -620,9 +639,9 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
       </section>
       <section
         style={{
-          padding: "0 120px 72px",
+          padding: "0 var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+          gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
           gap: "24px",
         }}
       >
@@ -631,7 +650,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "24px",
-            padding: "36px 40px",
+            padding: "var(--sp-pad-36-40, 36px 40px)",
             display: "flex",
             flexDirection: "column",
             gap: "20px",
@@ -641,7 +660,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "23.2px",
+              fontSize: "calc(var(--sp-fs-24, 24px) * 0.9667)",
               lineHeight: "1.2",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -666,7 +685,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -705,7 +724,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -744,7 +763,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -783,7 +802,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -822,7 +841,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -863,7 +882,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "24px",
-            padding: "36px 40px",
+            padding: "var(--sp-pad-36-40, 36px 40px)",
             display: "flex",
             flexDirection: "column",
             gap: "20px",
@@ -873,7 +892,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "26px",
+              fontSize: "var(--sp-fs-26, 26px)",
               lineHeight: "1.2",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -898,7 +917,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -937,7 +956,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -976,7 +995,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -1015,7 +1034,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.55",
                 color: "#0E1A3D",
               }}
@@ -1050,6 +1069,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
               <span>
                 {t[43]}{" "}
                 <span
+                  className="sp-placeholder"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -1071,13 +1091,13 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
           </ul>
         </div>
       </section>
-      <section style={{ padding: "0 120px 72px" }}>
+      <section style={{ padding: "0 var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))" }}>
         <div
           style={{
             display: "flex",
             gap: "24px",
             alignItems: "center",
-            padding: "32px 36px",
+            padding: "var(--sp-pad-32-36, 32px 36px)",
             borderRadius: "24px",
             background: "#EAF1FF",
           }}
@@ -1114,7 +1134,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "24px",
+                fontSize: "var(--sp-fs-24, 24px)",
                 lineHeight: "1.2",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -1124,9 +1144,17 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
             >
               {t[45]}
             </h2>
-            <p style={{ margin: "0", fontSize: "16.5px", lineHeight: "1.55", color: "#0E1A3D" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-16_5, 16.5px)",
+                lineHeight: "1.55",
+                color: "#0E1A3D",
+              }}
+            >
               {t[46]}{" "}
               <span
+                className="sp-placeholder"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -1151,17 +1179,17 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
       </section>
       <section
         style={{
-          padding: "0 120px 40px",
+          padding: "0 var(--sp-gutter, 120px) calc(40px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "380px minmax(0, 1fr)",
-          gap: "64px",
+          gridTemplateColumns: "var(--sp-grid-380-fr, 380px minmax(0, 1fr))",
+          gap: "var(--sp-gap-64, 64px)",
         }}
       >
         <h2
           style={{
             margin: "0",
             fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-            fontSize: "33.8px",
+            fontSize: "calc(var(--sp-fs-34, 34px) * 0.9941)",
             lineHeight: "1.15",
             fontWeight: "600",
             letterSpacing: "-0.03em",
@@ -1196,7 +1224,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 cursor: "pointer",
                 textAlign: "start",
                 fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                fontSize: "17px",
+                fontSize: "var(--sp-fs-17, 17px)",
                 fontWeight: "600",
                 color: "#0E1A3D",
                 boxSizing: "content-box",
@@ -1237,7 +1265,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 maxWidth: "680px",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.65",
                 color: "#4A5578",
               }}
@@ -1269,7 +1297,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 cursor: "pointer",
                 textAlign: "start",
                 fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                fontSize: "17px",
+                fontSize: "var(--sp-fs-17, 17px)",
                 fontWeight: "600",
                 color: "#0E1A3D",
                 boxSizing: "content-box",
@@ -1310,12 +1338,13 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 maxWidth: "680px",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.65",
                 color: "#4A5578",
               }}
             >
               <span
+                className="sp-placeholder"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -1358,7 +1387,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                 cursor: "pointer",
                 textAlign: "start",
                 fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                fontSize: "17px",
+                fontSize: "var(--sp-fs-17, 17px)",
                 fontWeight: "600",
                 color: "#0E1A3D",
                 boxSizing: "content-box",
@@ -1399,13 +1428,14 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 maxWidth: "680px",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.65",
                 color: "#4A5578",
               }}
             >
               {t[56]}{" "}
               <span
+                className="sp-placeholder"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -1427,18 +1457,24 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
           </Disclosure>
         </div>
       </section>
-      <section style={{ padding: "64px 120px 104px" }}>
+      <section
+        style={{
+          padding:
+            "calc(64px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
+        }}
+      >
         <div
+          className="sp-cta-band"
           style={{
             position: "relative",
             overflow: "hidden",
             borderRadius: "32px",
             background: "#155DFC",
-            padding: "72px",
+            padding: "var(--sp-pad-72, 72px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "40px",
+            gap: "var(--sp-gap-40, 40px)",
             color: "#FFFFFF",
           }}
         >
@@ -1464,7 +1500,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "48px",
+                fontSize: "var(--sp-fs-48, 48px)",
                 lineHeight: "1.08",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -1474,8 +1510,16 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
             >
               {t[59]}
             </h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#E3EBFF" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.6",
+                color: "#E3EBFF",
+              }}
+            >
               <span
+                className="sp-placeholder"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -1507,7 +1551,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   borderRadius: "12px",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
                   fontWeight: "600",
-                  fontSize: "17px",
+                  fontSize: "var(--sp-fs-17, 17px)",
                   background: "#FFFFFF",
                   color: "#0E1A3D",
                   border: "1.5px solid #FFFFFF",
@@ -1544,7 +1588,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
                   borderRadius: "12px",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
                   fontWeight: "600",
-                  fontSize: "17px",
+                  fontSize: "var(--sp-fs-17, 17px)",
                   background: "transparent",
                   color: "#FFFFFF",
                   border: "1.5px solid rgba(255,255,255,0.28)",
@@ -1557,7 +1601,10 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
               </a>
             </div>
           </div>
-          <div style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}>
+          <div
+            className="sp-cta-mascot"
+            style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}
+          >
             <div
               style={{
                 position: "absolute",
@@ -1579,7 +1626,7 @@ export function PricingBoardTR({ lang }: { lang: Locale }) {
             <img
               src="/design/picky-arms-up.svg"
               alt={t[65]}
-              style={{ width: "300px", height: "300px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
         </div>

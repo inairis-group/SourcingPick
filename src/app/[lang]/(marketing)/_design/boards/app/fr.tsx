@@ -21,17 +21,25 @@ export function AppBoard({ lang }: { lang: Locale }) {
     <>
       <section
         style={{
-          padding: "72px 120px 24px",
+          padding:
+            "calc(72px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(24px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) 640px",
-          gap: "40px",
+          gridTemplateColumns: "var(--sp-grid-fr-640, minmax(0, 1fr) 640px)",
+          gap: "var(--sp-gap-40, 40px)",
           alignItems: "center",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           <div style={s[0][lang]}>{t[0]}</div>
           <h1 style={s[1][lang]}>{t[1]}</h1>
-          <p style={{ margin: "0", fontSize: "19px", lineHeight: "1.6", color: "#4A5578" }}>
+          <p
+            style={{
+              margin: "0",
+              fontSize: "var(--sp-fs-19, 19px)",
+              lineHeight: "1.6",
+              color: "#4A5578",
+            }}
+          >
             {t[2]}
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
@@ -65,7 +73,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
               </svg>
               <span style={{ display: "flex", flexDirection: "column" }}>
                 <span style={{ fontSize: "11.5px", color: "#B8C4E6" }}>{t[3]}</span>
-                <span style={{ fontSize: "16px", fontWeight: "600" }} dir="ltr">
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600" }} dir="ltr">
                   {t[4]}
                 </span>
               </span>
@@ -100,17 +108,21 @@ export function AppBoard({ lang }: { lang: Locale }) {
               </svg>
               <span style={{ display: "flex", flexDirection: "column" }}>
                 <span style={{ fontSize: "11.5px", color: "#B8C4E6" }}>{t[5]}</span>
-                <span style={{ fontSize: "16px", fontWeight: "600" }} dir="ltr">
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600" }} dir="ltr">
                   {t[6]}
                 </span>
               </span>
             </Link>
             <span style={{ fontSize: "14px", color: "#4A5578" }}>
-              {t[7]} <span style={s[2][lang]}>{t[8]}</span> {t[9]} <span dir="ltr">{t[10]}</span>
+              {t[7]}{" "}
+              <span className="sp-placeholder" style={s[2][lang]}>
+                {t[8]}
+              </span>{" "}
+              {t[9]} <span dir="ltr">{t[10]}</span>
             </span>
           </div>
         </div>
-        <div style={{ position: "relative", height: "700px" }}>
+        <div className="sp-phone-stage" style={{ position: "relative", height: "700px" }}>
           <div style={s[3][lang]}>
             <div
               style={{
@@ -136,7 +148,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
               >
                 <div
                   style={{
-                    padding: "44px 20px 0",
+                    padding: "var(--sp-pad-44-20-0, 44px 20px 0)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
@@ -486,7 +498,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
               >
                 <div
                   style={{
-                    padding: "44px 20px 0",
+                    padding: "var(--sp-pad-44-20-0, 44px 20px 0)",
                     display: "flex",
                     flexDirection: "column",
                     gap: "4px",
@@ -499,7 +511,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
                   style={{
                     padding: "14px 20px 0",
                     display: "grid",
-                    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                    gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                     gap: "8px",
                   }}
                 >
@@ -518,7 +530,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
                     <img
                       src="/design/truck-unloading.svg"
                       alt=""
-                      style={{ width: "132px", height: "126px" }}
+                      style={{ width: "132px", height: "auto", maxWidth: "100%" }}
                     />
                     <span style={s[10][lang]}>
                       <svg
@@ -553,7 +565,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
                     <img
                       src="/design/carton-inspection.svg"
                       alt=""
-                      style={{ width: "132px", height: "126px" }}
+                      style={{ width: "132px", height: "auto", maxWidth: "100%" }}
                     />
                     <span style={s[11][lang]}>
                       <svg
@@ -588,7 +600,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
                     <img
                       src="/design/wooden-crate.svg"
                       alt=""
-                      style={{ width: "132px", height: "126px" }}
+                      style={{ width: "132px", height: "auto", maxWidth: "100%" }}
                     />
                     <span style={s[12][lang]}>
                       <svg
@@ -623,7 +635,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
                     <img
                       src="/design/forklift-loading.svg"
                       alt=""
-                      style={{ width: "132px", height: "126px" }}
+                      style={{ width: "132px", height: "auto", maxWidth: "100%" }}
                     />
                     <span style={s[13][lang]}>
                       <svg
@@ -779,7 +791,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
                     <img
                       src="/design/spot-1.svg"
                       alt=""
-                      style={{ width: "34px", height: "34px", flexShrink: "0" }}
+                      style={{ width: "34px", height: "auto", flexShrink: "0", maxWidth: "100%" }}
                     />
                     <span style={{ fontSize: "12.5px", lineHeight: "1.4", color: "#4A5578" }}>
                       {t[34]}
@@ -797,19 +809,26 @@ export function AppBoard({ lang }: { lang: Locale }) {
               left: "238px",
               top: "548px",
               width: "150px",
-              height: "150px",
+              height: "auto",
+              maxWidth: "100%",
             }}
           />
         </div>
       </section>
       <section
-        style={{ padding: "72px 120px", display: "flex", flexDirection: "column", gap: "32px" }}
+        style={{
+          padding:
+            "calc(72px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
+          display: "flex",
+          flexDirection: "column",
+          gap: "32px",
+        }}
       >
         <h2 style={s[14][lang]}>{t[35]}</h2>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+            gridTemplateColumns: "var(--sp-grid-r3, repeat(3, minmax(0, 1fr)))",
             gap: "22px 28px",
           }}
         >
@@ -845,7 +864,11 @@ export function AppBoard({ lang }: { lang: Locale }) {
               </svg>
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-              <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>{t[36]}</span>
+              <span
+                style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+              >
+                {t[36]}
+              </span>
               <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
                 {t[37]}
               </span>
@@ -881,7 +904,11 @@ export function AppBoard({ lang }: { lang: Locale }) {
               </svg>
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-              <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>{t[38]}</span>
+              <span
+                style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+              >
+                {t[38]}
+              </span>
               <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
                 {t[39]}
               </span>
@@ -918,7 +945,11 @@ export function AppBoard({ lang }: { lang: Locale }) {
               </svg>
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-              <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>{t[40]}</span>
+              <span
+                style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+              >
+                {t[40]}
+              </span>
               <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
                 {t[41]}
               </span>
@@ -954,7 +985,11 @@ export function AppBoard({ lang }: { lang: Locale }) {
               </svg>
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-              <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>{t[42]}</span>
+              <span
+                style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+              >
+                {t[42]}
+              </span>
               <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
                 {t[43]}
               </span>
@@ -989,7 +1024,11 @@ export function AppBoard({ lang }: { lang: Locale }) {
               </svg>
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-              <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>{t[44]}</span>
+              <span
+                style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+              >
+                {t[44]}
+              </span>
               <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
                 {t[45]}
               </span>
@@ -1025,7 +1064,11 @@ export function AppBoard({ lang }: { lang: Locale }) {
               </svg>
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-              <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>{t[46]}</span>
+              <span
+                style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+              >
+                {t[46]}
+              </span>
               <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
                 {t[47]}
               </span>
@@ -1033,10 +1076,10 @@ export function AppBoard({ lang }: { lang: Locale }) {
           </div>
         </div>
       </section>
-      <section style={{ padding: "0 120px 72px" }}>
+      <section style={{ padding: "0 var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))" }}>
         <div
           style={{
-            padding: "44px",
+            padding: "var(--sp-pad-44, 44px)",
             borderRadius: "28px",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
@@ -1049,7 +1092,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+              gridTemplateColumns: "var(--sp-grid-r4, repeat(4, minmax(0, 1fr)))",
               gap: "22px 28px",
             }}
           >
@@ -1087,7 +1130,9 @@ export function AppBoard({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>
+                <span
+                  style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+                >
                   {t[49]}
                 </span>
                 <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
@@ -1126,7 +1171,9 @@ export function AppBoard({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>
+                <span
+                  style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+                >
                   {t[51]}
                 </span>
                 <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
@@ -1166,7 +1213,9 @@ export function AppBoard({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>
+                <span
+                  style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+                >
                   {t[53]}
                 </span>
                 <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
@@ -1204,7 +1253,9 @@ export function AppBoard({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>
+                <span
+                  style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+                >
                   {t[55]}
                 </span>
                 <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
@@ -1218,20 +1269,32 @@ export function AppBoard({ lang }: { lang: Locale }) {
       <section
         style={{
           background: "#155DFC",
-          padding: "88px 120px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) 520px",
-          gap: "56px",
+          gridTemplateColumns: "var(--sp-grid-fr-520, minmax(0, 1fr) 520px)",
+          gap: "var(--sp-gap-56, 56px)",
           alignItems: "center",
           color: "#FFFFFF",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
           <h2 style={s[16][lang]}>{t[57]}</h2>
-          <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#E3EBFF" }}>
+          <p
+            style={{
+              margin: "0",
+              fontSize: "var(--sp-fs-18, 18px)",
+              lineHeight: "1.6",
+              color: "#E3EBFF",
+            }}
+          >
             {t[58]}
           </p>
-          <img src="/design/spot-3.svg" alt="" style={{ width: "200px", height: "200px" }} />
+          <img
+            src="/design/spot-3.svg"
+            alt=""
+            style={{ width: "200px", height: "auto", maxWidth: "100%" }}
+          />
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           <div
@@ -1248,7 +1311,13 @@ export function AppBoard({ lang }: { lang: Locale }) {
             <img
               src="/design/spot-4.svg"
               alt=""
-              style={{ width: "40px", height: "40px", borderRadius: "10px", flexShrink: "0" }}
+              style={{
+                width: "40px",
+                height: "auto",
+                borderRadius: "10px",
+                flexShrink: "0",
+                maxWidth: "100%",
+              }}
             />
             <div
               style={{
@@ -1285,7 +1354,13 @@ export function AppBoard({ lang }: { lang: Locale }) {
             <img
               src="/design/spot-4.svg"
               alt=""
-              style={{ width: "40px", height: "40px", borderRadius: "10px", flexShrink: "0" }}
+              style={{
+                width: "40px",
+                height: "auto",
+                borderRadius: "10px",
+                flexShrink: "0",
+                maxWidth: "100%",
+              }}
             />
             <div
               style={{
@@ -1322,7 +1397,13 @@ export function AppBoard({ lang }: { lang: Locale }) {
             <img
               src="/design/spot-4.svg"
               alt=""
-              style={{ width: "40px", height: "40px", borderRadius: "10px", flexShrink: "0" }}
+              style={{
+                width: "40px",
+                height: "auto",
+                borderRadius: "10px",
+                flexShrink: "0",
+                maxWidth: "100%",
+              }}
             />
             <div
               style={{
@@ -1359,7 +1440,13 @@ export function AppBoard({ lang }: { lang: Locale }) {
             <img
               src="/design/spot-4.svg"
               alt=""
-              style={{ width: "40px", height: "40px", borderRadius: "10px", flexShrink: "0" }}
+              style={{
+                width: "40px",
+                height: "auto",
+                borderRadius: "10px",
+                flexShrink: "0",
+                maxWidth: "100%",
+              }}
             />
             <div
               style={{
@@ -1384,14 +1471,20 @@ export function AppBoard({ lang }: { lang: Locale }) {
           </div>
         </div>
       </section>
-      <section style={{ padding: "88px 120px 104px" }}>
+      <section
+        style={{
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
+        }}
+      >
         <div
+          className="sp-two-track"
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             gap: "32px",
-            padding: "40px 44px",
+            padding: "var(--sp-pad-40-44, 40px 44px)",
             borderRadius: "28px",
             background: "#EAF1FF",
           }}
@@ -1400,14 +1493,17 @@ export function AppBoard({ lang }: { lang: Locale }) {
             <img
               src="/design/spot-4.svg"
               alt=""
-              style={{ width: "96px", height: "96px", flexShrink: "0" }}
+              style={{ width: "96px", height: "auto", flexShrink: "0", maxWidth: "100%" }}
             />
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
               <h2 style={s[17][lang]}>{t[75]}</h2>
-              <p style={{ margin: "0", fontSize: "16.5px", color: "#4A5578" }}>{t[76]}</p>
+              <p style={{ margin: "0", fontSize: "var(--sp-fs-16_5, 16.5px)", color: "#4A5578" }}>
+                {t[76]}
+              </p>
             </div>
           </div>
           <div
+            className="sp-two-track-tail"
             style={{
               display: "flex",
               alignItems: "center",
@@ -1447,7 +1543,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
               </svg>
               <span style={{ display: "flex", flexDirection: "column" }}>
                 <span style={{ fontSize: "11.5px", color: "#B8C4E6" }}>{t[77]}</span>
-                <span style={{ fontSize: "16px", fontWeight: "600" }} dir="ltr">
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600" }} dir="ltr">
                   {t[78]}
                 </span>
               </span>
@@ -1482,14 +1578,17 @@ export function AppBoard({ lang }: { lang: Locale }) {
               </svg>
               <span style={{ display: "flex", flexDirection: "column" }}>
                 <span style={{ fontSize: "11.5px", color: "#B8C4E6" }}>{t[79]}</span>
-                <span style={{ fontSize: "16px", fontWeight: "600" }} dir="ltr">
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600" }} dir="ltr">
                   {t[80]}
                 </span>
               </span>
             </Link>
             <span style={{ fontSize: "14px", color: "#4A5578" }}>
-              {t[81]} <span style={s[18][lang]}>{t[82]}</span> {t[83]}{" "}
-              <span dir="ltr">{t[84]}</span>
+              {t[81]}{" "}
+              <span className="sp-placeholder" style={s[18][lang]}>
+                {t[82]}
+              </span>{" "}
+              {t[83]} <span dir="ltr">{t[84]}</span>
             </span>
           </div>
         </div>

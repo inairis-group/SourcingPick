@@ -23,16 +23,18 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
   return (
     <>
       <section
+        className="sp-hero"
         style={{
           position: "relative",
           minHeight: "740px",
-          padding: "0 120px 60px",
+          padding: "0 var(--sp-gutter, 120px) calc(60px * var(--sp-vs, 1))",
           boxSizing: "border-box",
           overflow: "hidden",
         }}
       >
         <div style={s[0][lang]} />
         <div
+          className="sp-hero-copy"
           style={{
             position: "relative",
             zIndex: "2",
@@ -59,7 +61,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
           <p
             style={{
               margin: "0",
-              fontSize: "19px",
+              fontSize: "var(--sp-fs-19, 19px)",
               lineHeight: "1.6",
               color: "#4A5578",
               maxWidth: "540px",
@@ -214,13 +216,14 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             </div>
           </div>
         </div>
-        <div dir="ltr" style={s[5][lang]}>
+        <div className="sp-hero-art" dir="ltr" style={s[5][lang]}>
           <img
             src="/design/hero-warehouse-quay-ship.svg"
             alt={t[10]}
-            style={{ width: "800px", height: "589px", display: "block" }}
+            style={{ width: "800px", height: "auto", display: "block", maxWidth: "100%" }}
           />
           <div
+            className="sp-hero-label"
             dir={v[2][lang]}
             style={{
               position: "absolute",
@@ -270,6 +273,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             {t[11]}
           </div>
           <div
+            className="sp-hero-label"
             dir={v[3][lang]}
             style={{
               position: "absolute",
@@ -319,6 +323,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             {t[12]}
           </div>
           <div
+            className="sp-hero-label"
             dir={v[4][lang]}
             style={{
               position: "absolute",
@@ -370,14 +375,21 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
       </section>
       <section
         id="services"
-        style={{ padding: "104px 120px", display: "flex", flexDirection: "column", gap: "56px" }}
+        style={{
+          padding:
+            "calc(104px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--sp-gap-56, 56px)",
+        }}
       >
         <div
+          className="sp-two-track"
           style={{
             display: "flex",
             alignItems: "flex-end",
             justifyContent: "space-between",
-            gap: "64px",
+            gap: "var(--sp-gap-64, 64px)",
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "20px", maxWidth: "760px" }}>
@@ -388,7 +400,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               maxWidth: "400px",
-              fontSize: "17px",
+              fontSize: "var(--sp-fs-17, 17px)",
               lineHeight: "1.6",
               color: "#4A5578",
             }}
@@ -397,9 +409,14 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
           </p>
         </div>
         <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "24px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "var(--sp-grid-r3, repeat(3, minmax(0, 1fr)))",
+            gap: "24px",
+          }}
         >
           <article
+            className="sp-op-card"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -422,12 +439,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <img
                 src="/design/truck-unloading.svg"
                 alt={t[17]}
-                style={{ width: "220px", height: "210px", display: "block" }}
+                style={{ width: "220px", height: "auto", display: "block", maxWidth: "100%" }}
               />
             </div>
             <div
               style={{
-                padding: "26px 28px 30px",
+                padding: "var(--sp-pad-26-28-30, 26px 28px 30px)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "12px",
@@ -447,7 +464,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <p
                 style={{
                   margin: "0",
-                  fontSize: "15.5px",
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
                   lineHeight: "1.6",
                   color: "#4A5578",
                   textWrap: "pretty",
@@ -458,6 +475,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             </div>
           </article>
           <article
+            className="sp-op-card"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -480,12 +498,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <img
                 src="/design/carton-inspection.svg"
                 alt={t[21]}
-                style={{ width: "220px", height: "210px", display: "block" }}
+                style={{ width: "220px", height: "auto", display: "block", maxWidth: "100%" }}
               />
             </div>
             <div
               style={{
-                padding: "26px 28px 30px",
+                padding: "var(--sp-pad-26-28-30, 26px 28px 30px)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "12px",
@@ -505,7 +523,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <p
                 style={{
                   margin: "0",
-                  fontSize: "15.5px",
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
                   lineHeight: "1.6",
                   color: "#4A5578",
                   textWrap: "pretty",
@@ -516,6 +534,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             </div>
           </article>
           <article
+            className="sp-op-card"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -538,12 +557,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <img
                 src="/design/consolidated-pallet.svg"
                 alt={t[25]}
-                style={{ width: "220px", height: "210px", display: "block" }}
+                style={{ width: "220px", height: "auto", display: "block", maxWidth: "100%" }}
               />
             </div>
             <div
               style={{
-                padding: "26px 28px 30px",
+                padding: "var(--sp-pad-26-28-30, 26px 28px 30px)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "12px",
@@ -563,7 +582,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <p
                 style={{
                   margin: "0",
-                  fontSize: "15.5px",
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
                   lineHeight: "1.6",
                   color: "#4A5578",
                   textWrap: "pretty",
@@ -574,6 +593,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             </div>
           </article>
           <article
+            className="sp-op-card"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -596,12 +616,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <img
                 src="/design/wooden-crate.svg"
                 alt={t[29]}
-                style={{ width: "220px", height: "210px", display: "block" }}
+                style={{ width: "220px", height: "auto", display: "block", maxWidth: "100%" }}
               />
             </div>
             <div
               style={{
-                padding: "26px 28px 30px",
+                padding: "var(--sp-pad-26-28-30, 26px 28px 30px)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "12px",
@@ -621,7 +641,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <p
                 style={{
                   margin: "0",
-                  fontSize: "15.5px",
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
                   lineHeight: "1.6",
                   color: "#4A5578",
                   textWrap: "pretty",
@@ -632,6 +652,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             </div>
           </article>
           <article
+            className="sp-op-card"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -654,12 +675,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <img
                 src="/design/forklift-loading.svg"
                 alt={t[33]}
-                style={{ width: "220px", height: "210px", display: "block" }}
+                style={{ width: "220px", height: "auto", display: "block", maxWidth: "100%" }}
               />
             </div>
             <div
               style={{
-                padding: "26px 28px 30px",
+                padding: "var(--sp-pad-26-28-30, 26px 28px 30px)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "12px",
@@ -679,7 +700,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <p
                 style={{
                   margin: "0",
-                  fontSize: "15.5px",
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
                   lineHeight: "1.6",
                   color: "#4A5578",
                   textWrap: "pretty",
@@ -690,6 +711,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             </div>
           </article>
           <article
+            className="sp-op-card"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -712,12 +734,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <img
                 src="/design/container-ship.svg"
                 alt={t[37]}
-                style={{ width: "220px", height: "210px", display: "block" }}
+                style={{ width: "220px", height: "auto", display: "block", maxWidth: "100%" }}
               />
             </div>
             <div
               style={{
-                padding: "26px 28px 30px",
+                padding: "var(--sp-pad-26-28-30, 26px 28px 30px)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "12px",
@@ -737,7 +759,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <p
                 style={{
                   margin: "0",
-                  fontSize: "15.5px",
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
                   lineHeight: "1.6",
                   color: "#4A5578",
                   textWrap: "pretty",
@@ -749,11 +771,16 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
           </article>
         </div>
         <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "24px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "var(--sp-grid-r3, repeat(3, minmax(0, 1fr)))",
+            gap: "24px",
+          }}
         >
           <article
+            className="sp-two-track"
             style={{
-              gridColumn: "span 2",
+              gridColumn: "var(--sp-span, span 2)",
               display: "flex",
               alignItems: "stretch",
               background: "#162456",
@@ -765,7 +792,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             <div
               style={{
                 flex: "1",
-                padding: "40px 44px",
+                padding: "var(--sp-pad-40-44, 40px 44px)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "16px",
@@ -777,7 +804,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <p
                 style={{
                   margin: "0",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.6",
                   color: "#C3CDEB",
                   maxWidth: "470px",
@@ -820,7 +847,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <img
                 src="/design/picky-factory-visit.svg"
                 alt={t[45]}
-                style={{ width: "290px", height: "276px" }}
+                style={{ width: "290px", height: "auto", maxWidth: "100%" }}
               />
             </div>
           </article>
@@ -844,7 +871,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <img
                 src="/design/train-plane-sketch.svg"
                 alt={t[46]}
-                style={{ width: "210px", height: "200px", opacity: "0.9" }}
+                style={{ width: "210px", height: "auto", opacity: "0.9", maxWidth: "100%" }}
               />
             </div>
             <div
@@ -868,19 +895,21 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
         id="etapes"
         style={{
           background: "#0B1433",
-          padding: "104px 120px",
+          padding:
+            "calc(104px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
           color: "#FFFFFF",
           display: "flex",
           flexDirection: "column",
-          gap: "48px",
+          gap: "var(--sp-gap-48, 48px)",
         }}
       >
         <div
+          className="sp-two-track"
           style={{
             display: "flex",
             alignItems: "flex-end",
             justifyContent: "space-between",
-            gap: "64px",
+            gap: "var(--sp-gap-64, 64px)",
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "20px", maxWidth: "760px" }}>
@@ -891,7 +920,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               maxWidth: "400px",
-              fontSize: "17px",
+              fontSize: "var(--sp-fs-17, 17px)",
               lineHeight: "1.6",
               color: "#B8C4E6",
             }}
@@ -900,7 +929,13 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
           </p>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          <svg width="1200" height="120" viewBox="0 0 1200 120" aria-hidden="true">
+          <svg
+            className="sp-steps-rail"
+            width="1200"
+            height="120"
+            viewBox="0 0 1200 120"
+            aria-hidden="true"
+          >
             <path
               d="M20 60 Q 70 20, 120 60 Q 170 100, 220 60 Q 270 20, 320 60 Q 370 100, 420 60 Q 470 20, 520 60 Q 570 100, 620 60 Q 670 20, 720 60 Q 770 100, 820 60 Q 870 20, 920 60 Q 970 100, 1020 60 Q 1070 20, 1120 60 Q 1150 100, 1180 60"
               fill="none"
@@ -1025,7 +1060,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             </text>
           </svg>
           <div
-            style={{ display: "grid", gridTemplateColumns: "repeat(6, minmax(0, 1fr))", gap: "0" }}
+            className="sp-steps"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "var(--sp-grid-r6, repeat(6, minmax(0, 1fr)))",
+              gap: "0",
+            }}
           >
             <div
               style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "0 14px" }}
@@ -1183,10 +1223,11 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
       <section
         id="verite"
         style={{
-          padding: "104px 120px",
+          padding:
+            "calc(104px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "500px minmax(0, 1fr)",
-          gap: "72px",
+          gridTemplateColumns: "var(--sp-grid-500-fr, 500px minmax(0, 1fr))",
+          gap: "var(--sp-gap-72, 72px)",
           alignItems: "start",
         }}
       >
@@ -1196,7 +1237,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
           <p
             style={{
               margin: "0",
-              fontSize: "17.5px",
+              fontSize: "var(--sp-fs-17_5, 17.5px)",
               lineHeight: "1.65",
               color: "#4A5578",
               textWrap: "pretty",
@@ -1248,7 +1289,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                 lang="zh-Hans"
                 style={{
                   fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   fontWeight: "600",
                   color: "#0E1A3D",
                 }}
@@ -1261,7 +1302,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
           <img
             src="/design/picky-verified-badge.svg"
             alt={t[83]}
-            style={{ width: "230px", height: "230px" }}
+            style={{ width: "230px", height: "auto", maxWidth: "100%" }}
           />
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -1270,7 +1311,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
-              padding: "36px 40px",
+              padding: "var(--sp-pad-36-40, 36px 40px)",
               display: "flex",
               flexDirection: "column",
               gap: "22px",
@@ -1292,7 +1333,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   display: "flex",
                   gap: "12px",
                   alignItems: "flex-start",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.55",
                   color: "#0E1A3D",
                 }}
@@ -1331,7 +1372,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   display: "flex",
                   gap: "12px",
                   alignItems: "flex-start",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.55",
                   color: "#0E1A3D",
                 }}
@@ -1370,7 +1411,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   display: "flex",
                   gap: "12px",
                   alignItems: "flex-start",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.55",
                   color: "#0E1A3D",
                 }}
@@ -1409,7 +1450,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   display: "flex",
                   gap: "12px",
                   alignItems: "flex-start",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.55",
                   color: "#0E1A3D",
                 }}
@@ -1448,7 +1489,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   display: "flex",
                   gap: "12px",
                   alignItems: "flex-start",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.55",
                   color: "#0E1A3D",
                 }}
@@ -1488,7 +1529,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             style={{
               border: "1.5px dashed #C9D3EA",
               borderRadius: "24px",
-              padding: "36px 40px",
+              padding: "var(--sp-pad-36-40, 36px 40px)",
               display: "flex",
               flexDirection: "column",
               gap: "22px",
@@ -1510,7 +1551,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   display: "flex",
                   gap: "12px",
                   alignItems: "flex-start",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.55",
                   color: "#0E1A3D",
                 }}
@@ -1550,7 +1591,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   display: "flex",
                   gap: "12px",
                   alignItems: "flex-start",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.55",
                   color: "#0E1A3D",
                 }}
@@ -1590,7 +1631,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   display: "flex",
                   gap: "12px",
                   alignItems: "flex-start",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.55",
                   color: "#0E1A3D",
                 }}
@@ -1630,7 +1671,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   display: "flex",
                   gap: "12px",
                   alignItems: "flex-start",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   lineHeight: "1.55",
                   color: "#0E1A3D",
                 }}
@@ -1673,10 +1714,11 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
         id="app"
         style={{
           background: "#EAF1FF",
-          padding: "104px 120px",
+          padding:
+            "calc(104px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) 640px",
-          gap: "40px",
+          gridTemplateColumns: "var(--sp-grid-fr-640, minmax(0, 1fr) 640px)",
+          gap: "var(--sp-gap-40, 40px)",
           alignItems: "center",
           overflow: "hidden",
         }}
@@ -1687,7 +1729,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
           <p
             style={{
               margin: "0",
-              fontSize: "17.5px",
+              fontSize: "var(--sp-fs-17_5, 17.5px)",
               lineHeight: "1.6",
               color: "#4A5578",
               maxWidth: "560px",
@@ -1698,7 +1740,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
               gap: "22px 28px",
             }}
           >
@@ -1734,7 +1776,9 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>
+                <span
+                  style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+                >
                   {t[98]}
                 </span>
                 <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
@@ -1772,7 +1816,9 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>
+                <span
+                  style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+                >
                   {t[100]}
                 </span>
                 <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
@@ -1811,7 +1857,9 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>
+                <span
+                  style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+                >
                   {t[102]}
                 </span>
                 <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
@@ -1849,7 +1897,9 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>
+                <span
+                  style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+                >
                   {t[104]}
                 </span>
                 <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
@@ -1886,7 +1936,9 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>
+                <span
+                  style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+                >
                   {t[106]}
                 </span>
                 <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
@@ -1924,7 +1976,9 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                 </svg>
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                <span style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A3D" }}>
+                <span
+                  style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600", color: "#0E1A3D" }}
+                >
                   {t[108]}
                 </span>
                 <span style={{ fontSize: "14.5px", lineHeight: "1.5", color: "#4A5578" }}>
@@ -1964,7 +2018,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               </svg>
               <span style={{ display: "flex", flexDirection: "column" }}>
                 <span style={{ fontSize: "11.5px", color: "#B8C4E6" }}>{t[110]}</span>
-                <span style={{ fontSize: "16px", fontWeight: "600" }} dir="ltr">
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600" }} dir="ltr">
                   {t[111]}
                 </span>
               </span>
@@ -1999,18 +2053,21 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               </svg>
               <span style={{ display: "flex", flexDirection: "column" }}>
                 <span style={{ fontSize: "11.5px", color: "#B8C4E6" }}>{t[112]}</span>
-                <span style={{ fontSize: "16px", fontWeight: "600" }} dir="ltr">
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600" }} dir="ltr">
                   {t[113]}
                 </span>
               </span>
             </Link>
             <span style={{ fontSize: "14px", color: "#4A5578" }}>
-              {t[114]} <span style={s[40][lang]}>{t[115]}</span> {t[116]}{" "}
-              <span dir="ltr">{t[117]}</span>
+              {t[114]}{" "}
+              <span className="sp-placeholder" style={s[40][lang]}>
+                {t[115]}
+              </span>{" "}
+              {t[116]} <span dir="ltr">{t[117]}</span>
             </span>
           </div>
         </div>
-        <div style={{ position: "relative", height: "700px" }}>
+        <div className="sp-phone-stage" style={{ position: "relative", height: "700px" }}>
           <div style={s[41][lang]}>
             <div
               style={{
@@ -2036,7 +2093,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               >
                 <div
                   style={{
-                    padding: "44px 20px 0",
+                    padding: "var(--sp-pad-44-20-0, 44px 20px 0)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
@@ -2386,7 +2443,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               >
                 <div
                   style={{
-                    padding: "44px 20px 0",
+                    padding: "var(--sp-pad-44-20-0, 44px 20px 0)",
                     display: "flex",
                     flexDirection: "column",
                     gap: "4px",
@@ -2399,7 +2456,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   style={{
                     padding: "14px 20px 0",
                     display: "grid",
-                    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                    gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                     gap: "8px",
                   }}
                 >
@@ -2418,7 +2475,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                     <img
                       src="/design/truck-unloading.svg"
                       alt=""
-                      style={{ width: "132px", height: "126px" }}
+                      style={{ width: "132px", height: "auto", maxWidth: "100%" }}
                     />
                     <span style={s[48][lang]}>
                       <svg
@@ -2453,7 +2510,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                     <img
                       src="/design/carton-inspection.svg"
                       alt=""
-                      style={{ width: "132px", height: "126px" }}
+                      style={{ width: "132px", height: "auto", maxWidth: "100%" }}
                     />
                     <span style={s[49][lang]}>
                       <svg
@@ -2488,7 +2545,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                     <img
                       src="/design/wooden-crate.svg"
                       alt=""
-                      style={{ width: "132px", height: "126px" }}
+                      style={{ width: "132px", height: "auto", maxWidth: "100%" }}
                     />
                     <span style={s[50][lang]}>
                       <svg
@@ -2523,7 +2580,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                     <img
                       src="/design/forklift-loading.svg"
                       alt=""
-                      style={{ width: "132px", height: "126px" }}
+                      style={{ width: "132px", height: "auto", maxWidth: "100%" }}
                     />
                     <span style={s[51][lang]}>
                       <svg
@@ -2679,7 +2736,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                     <img
                       src="/design/spot-1.svg"
                       alt=""
-                      style={{ width: "34px", height: "34px", flexShrink: "0" }}
+                      style={{ width: "34px", height: "auto", flexShrink: "0", maxWidth: "100%" }}
                     />
                     <span style={{ fontSize: "12.5px", lineHeight: "1.4", color: "#4A5578" }}>
                       {t[141]}
@@ -2697,31 +2754,49 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               left: "238px",
               top: "548px",
               width: "150px",
-              height: "150px",
+              height: "auto",
+              maxWidth: "100%",
             }}
           />
         </div>
       </section>
       <section
         id="tarifs"
-        style={{ padding: "104px 120px", display: "flex", flexDirection: "column", gap: "52px" }}
+        style={{
+          padding:
+            "calc(104px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--sp-gap-52, 52px)",
+        }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "20px", maxWidth: "820px" }}>
           <div style={s[52][lang]}>{t[142]}</div>
           <h2 style={s[53][lang]}>{t[143]}</h2>
-          <p style={{ margin: "0", fontSize: "17.5px", lineHeight: "1.6", color: "#4A5578" }}>
+          <p
+            style={{
+              margin: "0",
+              fontSize: "var(--sp-fs-17_5, 17.5px)",
+              lineHeight: "1.6",
+              color: "#4A5578",
+            }}
+          >
             {t[144]}
           </p>
         </div>
         <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "24px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
+            gap: "24px",
+          }}
         >
           <article
             style={{
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
-              padding: "40px",
+              padding: "var(--sp-pad-40, 40px)",
               display: "flex",
               flexDirection: "column",
               gap: "22px",
@@ -2777,8 +2852,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[147]}</span>
-                <span style={s[56][lang]}>{t[148]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>
+                  {t[147]}
+                </span>
+                <span className="sp-placeholder" style={s[56][lang]}>
+                  {t[148]}
+                </span>
               </div>
               <div
                 style={{
@@ -2790,8 +2869,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[149]}</span>
-                <span style={s[57][lang]}>{t[150]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>
+                  {t[149]}
+                </span>
+                <span className="sp-placeholder" style={s[57][lang]}>
+                  {t[150]}
+                </span>
               </div>
               <div
                 style={{
@@ -2803,8 +2886,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[151]}</span>
-                <span style={s[58][lang]}>{t[152]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>
+                  {t[151]}
+                </span>
+                <span className="sp-placeholder" style={s[58][lang]}>
+                  {t[152]}
+                </span>
               </div>
               <div
                 style={{
@@ -2816,8 +2903,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[153]}</span>
-                <span style={s[59][lang]}>{t[154]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>
+                  {t[153]}
+                </span>
+                <span className="sp-placeholder" style={s[59][lang]}>
+                  {t[154]}
+                </span>
               </div>
               <div
                 style={{
@@ -2829,8 +2920,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[155]}</span>
-                <span style={s[60][lang]}>{t[156]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>
+                  {t[155]}
+                </span>
+                <span className="sp-placeholder" style={s[60][lang]}>
+                  {t[156]}
+                </span>
               </div>
               <div
                 style={{
@@ -2842,7 +2937,9 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   borderBottom: "1px solid #DCE3F2",
                 }}
               >
-                <span style={{ fontSize: "16px", color: "#0E1A3D" }}>{t[157]}</span>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#0E1A3D" }}>
+                  {t[157]}
+                </span>
                 <span style={{ fontSize: "14px", color: "#4A5578", textAlign: "end" }}>
                   {t[158]}
                 </span>
@@ -2874,7 +2971,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             style={{
               background: "#162456",
               borderRadius: "24px",
-              padding: "40px",
+              padding: "var(--sp-pad-40, 40px)",
               display: "flex",
               flexDirection: "column",
               gap: "22px",
@@ -2931,10 +3028,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               >
                 <span style={s[64][lang]}>{t[162]}</span>
                 <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
-                  <span style={{ fontSize: "15.5px", color: "#FFFFFF" }}>{t[163]}</span>
+                  <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", color: "#FFFFFF" }}>
+                    {t[163]}
+                  </span>
                   <span
                     style={{
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       fontWeight: "600",
                       color: "#FFFFFF",
                       textAlign: "end",
@@ -2955,10 +3054,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               >
                 <span style={s[65][lang]}>{t[165]}</span>
                 <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
-                  <span style={{ fontSize: "15.5px", color: "#FFFFFF" }}>{t[166]}</span>
+                  <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", color: "#FFFFFF" }}>
+                    {t[166]}
+                  </span>
                   <span
                     style={{
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       fontWeight: "600",
                       color: "#FFFFFF",
                       textAlign: "end",
@@ -2979,10 +3080,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               >
                 <span style={s[66][lang]}>{t[168]}</span>
                 <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
-                  <span style={{ fontSize: "15.5px", color: "#FFFFFF" }}>{t[169]}</span>
+                  <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", color: "#FFFFFF" }}>
+                    {t[169]}
+                  </span>
                   <span
                     style={{
-                      fontSize: "15.5px",
+                      fontSize: "var(--sp-fs-15_5, 15.5px)",
                       fontWeight: "600",
                       color: "#FFFFFF",
                       textAlign: "end",
@@ -2994,7 +3097,10 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               </div>
             </div>
             <p style={{ margin: "0", fontSize: "13.5px", color: "#B8C4E6" }}>
-              {t[171]} <span style={s[67][lang]}>{t[172]}</span>
+              {t[171]}{" "}
+              <span className="sp-placeholder" style={s[67][lang]}>
+                {t[172]}
+              </span>
             </p>
             <div>
               <Link href={`/${lang}/devis`} style={s[68][lang]}>
@@ -3049,7 +3155,10 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             </svg>
           </span>
           <span>
-            {t[174]} <span style={s[69][lang]}>{t[175]}</span>
+            {t[174]}{" "}
+            <span className="sp-placeholder" style={s[69][lang]}>
+              {t[175]}
+            </span>
             {t[176]}
           </span>
         </div>
@@ -3057,18 +3166,23 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
       <section
         id="faq"
         style={{
-          padding: "24px 120px 104px",
+          padding:
+            "calc(24px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "420px minmax(0, 1fr)",
-          gap: "80px",
+          gridTemplateColumns: "var(--sp-grid-420-fr, 420px minmax(0, 1fr))",
+          gap: "var(--sp-gap-80, 80px)",
           alignItems: "start",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "22px" }}>
           <div style={s[70][lang]}>{t[177]}</div>
           <h2 style={s[71][lang]}>{t[178]}</h2>
-          <img src="/design/picky-loupe.svg" alt="" style={{ width: "220px", height: "220px" }} />
-          <p style={{ margin: "0", fontSize: "16px", color: "#4A5578" }}>
+          <img
+            src="/design/picky-loupe.svg"
+            alt=""
+            style={{ width: "220px", height: "auto", maxWidth: "100%" }}
+          />
+          <p style={{ margin: "0", fontSize: "var(--sp-fs-16, 16px)", color: "#4A5578" }}>
             {t[179]}{" "}
             <a href="mailto:contact@sourcingpick.com" style={{ fontWeight: "600" }} dir="ltr">
               {t[180]}
@@ -3120,7 +3234,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 maxWidth: "680px",
-                fontSize: "16px",
+                fontSize: "var(--sp-fs-16, 16px)",
                 lineHeight: "1.65",
                 color: "#4A5578",
               }}
@@ -3294,18 +3408,19 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
           </Disclosure>
         </div>
       </section>
-      <section style={{ padding: "0px 120px 104px" }}>
+      <section style={{ padding: "0 var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))" }}>
         <div
+          className="sp-cta-band"
           style={{
             position: "relative",
             overflow: "hidden",
             borderRadius: "32px",
             background: "#155DFC",
-            padding: "72px",
+            padding: "var(--sp-pad-72, 72px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "40px",
+            gap: "var(--sp-gap-40, 40px)",
             color: "#FFFFFF",
           }}
         >
@@ -3328,8 +3443,18 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
             }}
           >
             <h2 style={s[77][lang]}>{t[187]}</h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#E3EBFF" }}>
-              {t[188]} <span style={s[78][lang]}>{t[189]}</span>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.6",
+                color: "#E3EBFF",
+              }}
+            >
+              {t[188]}{" "}
+              <span className="sp-placeholder" style={s[78][lang]}>
+                {t[189]}
+              </span>
               {t[190]}
             </p>
             <div style={{ display: "flex", gap: "14px", alignItems: "center", flexWrap: "wrap" }}>
@@ -3359,12 +3484,15 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               </a>
             </div>
           </div>
-          <div style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}>
+          <div
+            className="sp-cta-mascot"
+            style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}
+          >
             <div style={s[81][lang]}>{t[193]}</div>
             <img
               src="/design/picky-arms-up.svg"
               alt={t[194]}
-              style={{ width: "300px", height: "300px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
         </div>

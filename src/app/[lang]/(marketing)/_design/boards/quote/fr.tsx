@@ -26,7 +26,8 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
     <>
       <section
         style={{
-          padding: "72px 120px 40px",
+          padding:
+            "calc(72px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(40px * var(--sp-vs, 1))",
           display: "flex",
           flexDirection: "column",
           gap: "18px",
@@ -36,14 +37,23 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
       >
         <div style={s[0][lang]}>{t[0]}</div>
         <h1 style={s[1][lang]}>{t[1]}</h1>
-        <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#4A5578" }}>{t[2]}</p>
+        <p
+          style={{
+            margin: "0",
+            fontSize: "var(--sp-fs-18, 18px)",
+            lineHeight: "1.6",
+            color: "#4A5578",
+          }}
+        >
+          {t[2]}
+        </p>
       </section>
       <section
         style={{
-          padding: "0 120px 104px",
+          padding: "0 var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) 380px",
-          gap: "40px",
+          gridTemplateColumns: "var(--sp-grid-fr-380, minmax(0, 1fr) 380px)",
+          gap: "var(--sp-gap-40, 40px)",
           alignItems: "start",
         }}
       >
@@ -51,7 +61,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
           <fieldset
             style={{
               margin: "0",
-              padding: "32px",
+              padding: "var(--sp-pad-32, 32px)",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
               background: "#F5F7FC",
@@ -65,7 +75,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
               role="radiogroup"
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "14px",
               }}
             >
@@ -100,7 +110,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       alignItems: "center",
                       gap: "8px",
-                      fontSize: "16.5px",
+                      fontSize: "var(--sp-fs-16_5, 16.5px)",
                       fontWeight: "600",
                     }}
                   >
@@ -153,7 +163,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
                       display: "flex",
                       alignItems: "center",
                       gap: "8px",
-                      fontSize: "16.5px",
+                      fontSize: "var(--sp-fs-16_5, 16.5px)",
                       fontWeight: "600",
                     }}
                   >
@@ -181,7 +191,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
           <fieldset
             style={{
               margin: "0",
-              padding: "32px",
+              padding: "var(--sp-pad-32, 32px)",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
               background: "#F5F7FC",
@@ -209,7 +219,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "16px",
               }}
             >
@@ -247,7 +257,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "16px",
               }}
             >
@@ -301,7 +311,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
           <fieldset
             style={{
               margin: "0",
-              padding: "32px",
+              padding: "var(--sp-pad-32, 32px)",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
               background: "#F5F7FC",
@@ -314,7 +324,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "16px",
               }}
             >
@@ -390,7 +400,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
           <fieldset
             style={{
               margin: "0",
-              padding: "32px",
+              padding: "var(--sp-pad-32, 32px)",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
               background: "#F5F7FC",
@@ -452,7 +462,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "16px",
               }}
             >
@@ -490,7 +500,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "16px",
               }}
             >
@@ -634,7 +644,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
             style={{
               background: "#162456",
               borderRadius: "24px",
-              padding: "32px",
+              padding: "var(--sp-pad-32, 32px)",
               display: "flex",
               flexDirection: "column",
               gap: "20px",
@@ -660,7 +670,13 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
               >
                 {t[45]}
               </span>
-              <span style={{ fontSize: "15.5px", lineHeight: "1.55", color: "#FFFFFF" }}>
+              <span
+                style={{
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
+                  lineHeight: "1.55",
+                  color: "#FFFFFF",
+                }}
+              >
                 {t[46]}
               </span>
             </div>
@@ -683,8 +699,17 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
               >
                 {t[47]}
               </span>
-              <span style={{ fontSize: "15.5px", lineHeight: "1.55", color: "#FFFFFF" }}>
-                {t[48]} <span style={s[22][lang]}>{t[49]}</span>
+              <span
+                style={{
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
+                  lineHeight: "1.55",
+                  color: "#FFFFFF",
+                }}
+              >
+                {t[48]}{" "}
+                <span className="sp-placeholder" style={s[22][lang]}>
+                  {t[49]}
+                </span>
                 {t[50]}
               </span>
             </div>
@@ -707,7 +732,13 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
               >
                 {t[51]}
               </span>
-              <span style={{ fontSize: "15.5px", lineHeight: "1.55", color: "#FFFFFF" }}>
+              <span
+                style={{
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
+                  lineHeight: "1.55",
+                  color: "#FFFFFF",
+                }}
+              >
                 {t[52]}
               </span>
             </div>
@@ -717,13 +748,15 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
-              padding: "26px",
+              padding: "var(--sp-pad-26, 26px)",
               display: "flex",
               flexDirection: "column",
               gap: "10px",
             }}
           >
-            <span style={{ fontSize: "15.5px", fontWeight: "600" }}>{t[53]}</span>
+            <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", fontWeight: "600" }}>
+              {t[53]}
+            </span>
             <a href="mailto:contact@sourcingpick.com" style={{ fontWeight: "600" }} dir="ltr">
               {t[54]}
             </a>
@@ -760,7 +793,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
           <img
             src="/design/spot-5.svg"
             alt=""
-            style={{ width: "200px", height: "200px", alignSelf: "center" }}
+            style={{ width: "200px", height: "auto", alignSelf: "center", maxWidth: "100%" }}
           />
         </aside>
       </section>

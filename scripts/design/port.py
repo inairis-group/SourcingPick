@@ -36,7 +36,14 @@ from dcparse import (
     slots,
     text_of,
 )
-from emit import Emitter, css_prop, needs_content_box, split_decls
+from emit import (
+    Emitter,
+    css_prop,
+    fluid_image,
+    needs_content_box,
+    responsive,
+    split_decls,
+)
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 CANVAS = os.environ.get(
@@ -310,7 +317,7 @@ def attr_stream(nodes: list[Element]) -> list[tuple[str, str, str | None]]:
     return out
 
 
-def variant_tables(per_locale: dict[str, list[Element]]):
+def variant_tables(per_locale: dict[str, list[Element]], tokens: set[str]):
     """Split attributes into "same everywhere" and "depends on the locale".
 
     Arabic mirrors the arrow glyphs and the absolute offsets of the hero's
@@ -332,8 +339,9 @@ def variant_tables(per_locale: dict[str, list[Element]]):
             continue
         if name == "style":
             variants[idx] = ("style", len(styles))
+            base = vals["fr"] if "fr" in vals else vals[locales[0]]
             styles.append(
-                {loc: dict(css_object(vals[loc] or "")) for loc in locales}
+                {loc: dict(css_object(vals[loc] or "", tag, tokens, base)) for loc in locales}
             )
         else:
             variants[idx] = ("attr", len(values))
@@ -341,10 +349,98 @@ def variant_tables(per_locale: dict[str, list[Element]]):
     return variants, styles, values
 
 
-def css_object(css: str) -> list[tuple[str, str]]:
-    # Same box-model restoration as the inlined styles take — a style that
-    # varies by locale is no less subject to Tailwind's preflight.
-    return [(css_prop(k), v) for k, v in split_decls(needs_content_box(css))]
+def css_object(
+    css: str, tag: str, tokens: set[str], base_css: str | None = None
+) -> list[tuple[str, str]]:
+    # Same box-model restoration and responsive seams as the inlined styles
+    # take — a style that varies by locale is no less subject to Tailwind's
+    # preflight, and the Arabic hero heading has to shrink on a phone too.
+    css = responsive(needs_content_box(css), tag, tokens, base_css, _SIZES)
+    return [(css_prop(k), v) for k, v in split_decls(css)]
+
+
+# --- responsive tokens ---------------------------------------------------------
+#
+# The emitter wraps system-level values in `var(--sp-…, <artboard value>)` (see
+# emit.responsive). The stylesheet is the one place those properties are
+# defined, so it is also the list of values the design is known to use. Every
+# token a board reads must be defined there: a re-export that introduces a
+# 50px heading would otherwise render at 50px on a phone with nobody noticing.
+
+STYLESHEET = "src/app/[lang]/(marketing)/_design/board.module.css"
+
+
+def declared_tokens() -> set[str]:
+    css = open(os.path.join(ROOT, STYLESHEET), encoding="utf-8").read()
+    return set(re.findall(r"(--sp-[\w-]+)\s*:", css))
+
+
+def declared_sizes() -> set[float]:
+    """The type sizes the stylesheet has a phone value for."""
+    return {
+        float(t.removeprefix("--sp-fs-").replace("_", "."))
+        for t in declared_tokens()
+        if t.startswith("--sp-fs-")
+    }
+
+
+def check_tokens(used: set[str]) -> None:
+    missing = sorted(used - declared_tokens())
+    if missing:
+        raise SystemExit(
+            "the boards read custom properties the stylesheet never defines — "
+            "a size, gap or grid the responsive tables do not know about:\n  "
+            + "\n  ".join(missing)
+            + f"\nDefine each one in {STYLESHEET} (every breakpoint that "
+            "changes it) and port again."
+        )
+
+
+# --- fluid images ---------------------------------------------------------------
+
+
+def _intrinsic(path: str) -> tuple[float, float] | None:
+    full = os.path.join(ROOT, "public", path.lstrip("/"))
+    if path.endswith(".svg"):
+        head = open(full, encoding="utf-8").read(4000)
+        m = re.search(r'viewBox="([\d.\s-]+)"', head)
+        if m:
+            _x, _y, w, h = (float(v) for v in m.group(1).split())
+            return w, h
+        return None
+    if path.endswith(".png"):
+        import struct
+        with open(full, "rb") as fh:
+            head = fh.read(24)
+        return struct.unpack(">II", head[16:24])
+    return None
+
+
+_SIZES = declared_sizes()
+
+
+_DRAWN_W = re.compile(r"(?<![-\w])width:\s*([\d.]+)px")
+_DRAWN_H = re.compile(r"(?<![-\w])height:\s*([\d.]+)px")
+
+
+def image_ratio_matches(src: str, css: str) -> bool:
+    """Is the drawn box the image's own shape? See emit.fluid_image.
+
+    Checked against the file we actually serve rather than trusted: the
+    canvas draws the container-ship illustration at 360×300 on the pricing
+    page and at 220×210 on the home page, and only one of those is its shape.
+    """
+    if not src.startswith("/_blob/"):
+        return False
+    w, h = _DRAWN_W.search(css), _DRAWN_H.search(css)
+    if not (w and h):
+        return False
+    size = _intrinsic(ASSETS[src.rsplit("/", 1)[1]])
+    if not size:
+        return False
+    drawn = float(w.group(1)) / float(h.group(1))
+    real = size[0] / size[1]
+    return abs(drawn - real) / real < 0.01
 
 
 # --- behaviour attached to transcribed markup ---------------------------------
@@ -479,16 +575,188 @@ def component_imports(stem: str, used: set[str]) -> list[str]:
     ]
 
 
+# -- the seams the responsive stylesheet hangs on ------------------------------
+#
+# The artboards are drawn once, at 1440px. The compositions that cannot merely
+# shrink — an illustration pinned by a pixel offset, two phones fanned across a
+# 700px stage, a closing band with a mascot leaning out of it — are named here
+# so `board.module.css` can recompose them by class instead of by guessing at
+# their inline styles. Each predicate reads the design's own values; when the
+# designer moves something the count fails and this table is updated, which is
+# the only way a class here ever changes.
+
+
+def _style(el: Element) -> str:
+    return el.attr("style") or ""
+
+
+def _has(el: Element, *frags: str) -> bool:
+    st = _style(el)
+    return all(f in st for f in frags)
+
+
+def _is_cta_band(el: Element) -> bool:
+    """The closing "Parlez-nous…" band: a 32px-radius blue box padded 72px."""
+    return el.tag == "div" and _has(el, "border-radius: 32px", "background: #155DFC", "padding: 72px")
+
+
+def _is_cta_mascot(el: Element) -> bool:
+    """The 300px box the mascot and her speech bubble sit in, inside the band."""
+    return el.tag == "div" and _has(el, "position: relative; width: 300px; height: 300px; flex-shrink: 0")
+
+
+def _is_two_track(el: Element) -> bool:
+    """A row of two blocks that the artboard never collapses.
+
+    Four drawings share the fault on a phone: a section head with its
+    caption beside it (heading column + paragraph, 64px apart), a sub-page
+    hero with its figure beside it, the navy sourcing card with its 330px
+    image panel, and the FAQ's closing card with its mail button. All are a
+    row flex of a text column and one other block, set apart by a wide gap,
+    a fixed-width panel or a call to action. Icon rows and button rows are
+    not matched: they start with a span, or have small gaps.
+    """
+    if el.tag not in ("div", "article", "section"):
+        return False
+    st = _style(el)
+    if "display: flex" not in st or "flex-direction: column" in st or "flex-wrap" in st:
+        return False
+    ch = [c for c in el.children if isinstance(c, Element)]
+    if len(ch) != 2 or any(c.tag in ("svg", "span", "button", "input") for c in ch):
+        return False
+    # The first block is a column of text — an eyebrow, a heading and a
+    # paragraph — or an illustration beside one (the app page's download
+    # card). Icon-and-label rows start with a span and are not this.
+    def is_text_column(c: Element) -> bool:
+        return c.tag == "div" and "flex-direction: column" in _style(c)
+
+    first = ch[0]
+    if first.tag != "div" or not (
+        is_text_column(first)
+        or any(is_text_column(c) for c in first.children if isinstance(c, Element))
+    ):
+        return False
+    panel = any(
+        re.search(r"(?<![-\w])width: [3-9]\d\dpx", _style(c)) and "flex-shrink: 0" in _style(c)
+        for c in ch
+    )
+    # A call to action beside the text — the FAQ's "Didn't find your answer?"
+    # card — is the fourth drawing of the same row.
+    cta = ch[1].tag == "a"
+    gap = re.search(r"gap: (\d+)px", st)
+    return panel or cta or bool(gap and int(gap.group(1)) >= 24)
+
+
+def _is_hero_figure(el: Element) -> bool:
+    """The pale-blue rounded box a sub-page hero draws its illustration in."""
+    if el.tag != "div" or not _has(el, "background: #EEF3FF"):
+        return False
+    st = _style(el)
+    return bool(re.search(r"(?<![-\w])width: \d+px; height: \d+px", st)) and (
+        "flex-shrink: 0" in st or "position: relative" in st
+    )
+
+
+def _is_phone_stage(el: Element) -> bool:
+    return el.tag == "div" and _has(el, "position: relative; height: 700px")
+
+
+def _is_home_hero(el: Element) -> bool:
+    return el.tag == "section" and _has(el, "min-height: 740px")
+
+
+def _is_home_hero_copy(el: Element) -> bool:
+    return el.tag == "div" and _has(el, "width: 580px; padding-top: 92px")
+
+
+def _is_home_hero_art(el: Element) -> bool:
+    return el.tag == "div" and _has(el, "position: absolute; z-index: 1", "width: 800px")
+
+
+def _is_home_hero_label(el: Element) -> bool:
+    """The three floating labels pinned over the hero illustration."""
+    return el.tag == "div" and _has(el, "position: absolute", "white-space: nowrap", "box-shadow")
+
+
+def _is_op_card(el: Element) -> bool:
+    """The six operation cards on the home page: an article whose first child
+    is the 210px illustration box."""
+    if el.tag != "article":
+        return False
+    first = next((c for c in el.children if isinstance(c, Element)), None)
+    return first is not None and first.tag == "div" and _has(first, "height: 210px")
+
+
+def _is_steps_rail(el: Element) -> bool:
+    return el.tag == "svg" and el.attr("width") == "1200"
+
+
+def _is_steps_grid(el: Element) -> bool:
+    return el.tag == "div" and _has(el, "grid-template-columns: repeat(6, minmax(0, 1fr))")
+
+
+def _is_how_row(el: Element) -> bool:
+    return el.tag == "article" and _has(el, "grid-template-columns: 76px")
+
+
+def _is_contact_aside_art(el: Element) -> bool:
+    """The mascot and bubble pinned to the corner of the contact page's aside."""
+    return _has(el, "position: absolute", "bottom:") and el.tag in ("img", "div")
+
+
+def _is_not_found_numeral(el: Element) -> bool:
+    return el.tag == "span" and _has(el, "position: absolute", "font-size: 72px")
+
+
+# Rules that hold on every page, with the pages each is expected on. Checked
+# per page shape like the page rules: a page that gains or loses a closing
+# band fails the port until this says so.
+_CTA_PAGES = {"Accueil": 1, "Services": 1, "Comment-ca-marche": 1, "Entrepot": 1,
+              "Tarifs": 1, "A-propos": 1}
+_TWO_TRACK_PAGES = {"Accueil": 3, "Services": 2, "Comment-ca-marche": 1, "Tarifs": 1,
+                    "FAQ": 2, "A-propos": 1, "Application": 1}
+
+
+def _is_two_track_tail(el: Element) -> bool:
+    """The store badges at the end of the app page's download card: a
+    wrapping row pushed to the far end, which under its text on a phone
+    should sit at the start."""
+    return el.tag == "div" and _has(el, "flex-wrap: wrap; justify-content: flex-end")
+_HERO_FIGURE_PAGES = {"Services": 1, "Comment-ca-marche": 1, "Tarifs": 1, "FAQ": 1,
+                      "A-propos": 1, "404": 1}
+SITE_DECORATIONS: list[tuple] = [
+    (_is_cta_band, "sp-cta-band", _CTA_PAGES),
+    (_is_cta_mascot, "sp-cta-mascot", _CTA_PAGES),
+    (_is_two_track, "sp-two-track", _TWO_TRACK_PAGES),
+    (_is_two_track_tail, "sp-two-track-tail", {"Application": 1}),
+    (_is_hero_figure, "sp-hero-figure", _HERO_FIGURE_PAGES),
+    (_is_phone_stage, "sp-phone-stage", {"Accueil": 1, "Application": 1}),
+]
+
 DECORATIONS: dict[str, list[tuple]] = {
     # The six operations read as one sequence, so they park and stack as you
     # scroll instead of scrolling past as six separate blocks.
     "Services": [(_is_step_card, "sp-step-card", 6)],
+    "Accueil": [
+        (_is_home_hero, "sp-hero", 1),
+        (_is_home_hero_copy, "sp-hero-copy", 1),
+        (_is_home_hero_art, "sp-hero-art", 1),
+        (_is_home_hero_label, "sp-hero-label", 3),
+        (_is_op_card, "sp-op-card", 6),
+        (_is_steps_rail, "sp-steps-rail", 1),
+        (_is_steps_grid, "sp-steps", 1),
+    ],
+    "Comment-ca-marche": [(_is_how_row, "sp-how-row", 6)],
+    "Contact": [(_is_contact_aside_art, "sp-contact-art", 2)],
+    "404": [(_is_not_found_numeral, "sp-404-numeral", 1)],
 }
-
 
 def decorator_for(stem: str):
     """A decorate hook for one page, plus the tally it must satisfy."""
-    rules = DECORATIONS.get(stem, [])
+    rules = [
+        *DECORATIONS.get(stem, []),
+        *((pred, cls, pages.get(stem, 0)) for pred, cls, pages in SITE_DECORATIONS),
+    ]
     seen = [0] * len(rules)
 
     def decorate(el: Element) -> str | None:
@@ -508,6 +776,80 @@ def decorator_for(stem: str):
                 )
 
     return decorate, check
+
+
+# -- chrome ---------------------------------------------------------------------
+
+
+def _is_announce(el: Element) -> bool:
+    return el.tag == "div" and _has(el, "min-height: 44px", "background: #0E1A3D")
+
+
+def _is_announce_dot(el: Element) -> bool:
+    return el.tag == "span" and _has(el, "width: 8px; height: 8px; border-radius: 50%")
+
+
+def _is_footer_grid(el: Element) -> bool:
+    return el.tag == "div" and _has(el, "grid-template-columns: 340px repeat(4, minmax(0, 1fr))")
+
+
+def _is_footer_meta(el: Element) -> bool:
+    return el.tag == "div" and _has(el, "justify-content: space-between", "font-size: 13.5px")
+
+
+CHROME_DECORATIONS: list[tuple] = [
+    (_is_announce, "sp-announce", 1),
+    (_is_announce_dot, "sp-announce-dot", 1),
+    (_is_footer_grid, "sp-footer-grid", 1),
+    (_is_footer_meta, "sp-footer-meta", 1),
+]
+
+
+def chrome_decorator():
+    seen = [0] * len(CHROME_DECORATIONS)
+
+    def decorate(el: Element) -> str | None:
+        for i, (pred, cls, _) in enumerate(CHROME_DECORATIONS):
+            if pred(el):
+                seen[i] += 1
+                return cls
+        return None
+
+    def check() -> None:
+        for (pred, cls, expected), got in zip(CHROME_DECORATIONS, seen):
+            if got != expected:
+                raise SystemExit(
+                    f"chrome: expected {expected} element(s) for .{cls}, matched {got}."
+                )
+
+    return decorate, check
+
+
+def header_retag(el: Element):
+    """The header becomes a client shell so a phone can have a menu.
+
+    The canvas draws the header once, at 1440px, with five links in a row;
+    its phone artboard draws a hamburger and no drawer. `HeaderShell` keeps
+    the transcribed header — every attribute and child stays server-rendered
+    — and adds the button and the drawer around them. It relies on the
+    header's shape (logo, nav, actions) which `port_chrome` asserts.
+    """
+    if el.tag == "header":
+        return "HeaderShell", ["lang={lang}"]
+    return None
+
+
+def assert_header_shape(header: Element) -> None:
+    ch = [c for c in header.children if isinstance(c, Element)]
+    tags = [c.tag for c in ch]
+    if tags != ["a", "nav", "div"]:
+        raise SystemExit(f"header is drawn as {tags}; HeaderShell expects [a, nav, div]")
+    actions = [c.tag for c in ch[2].children if isinstance(c, Element)]
+    if actions != ["button", "a", "a"]:
+        raise SystemExit(
+            f"header actions are drawn as {actions}; HeaderShell expects "
+            "[language button, client-area link, quote link]"
+        )
 
 
 # --- emission ----------------------------------------------------------------
@@ -613,9 +955,11 @@ def aligned(stem: str):
 
 
 def emit_part(nodes, *, per_locale_nodes, start_i, start_a, offset, hrefs,
-              replacer=None, decorate=None, retag=None, name_for=None):
+              replacer=None, decorate=None, retag=None, name_for=None,
+              tokens: set[str] | None = None):
     """Emit `nodes` as JSX whose slot reads are shifted by `offset`."""
-    variants, styles, values = variant_tables(per_locale_nodes)
+    tokens = tokens if tokens is not None else set()
+    variants, styles, values = variant_tables(per_locale_nodes, tokens)
     em = Emitter(
         assets=ASSETS,
         resolve_href=resolve_href,
@@ -626,7 +970,10 @@ def emit_part(nodes, *, per_locale_nodes, start_i, start_a, offset, hrefs,
         decorate=decorate,
         retag=retag,
         name_for=name_for,
+        image_ratio=image_ratio_matches,
+        known_sizes=_SIZES,
     )
+    em.tokens = tokens
     em.i, em.a = start_i, start_a
     lines = [ln for n in nodes for ln in em.emit(n, 3)]
     return lines, em, styles, values
@@ -663,7 +1010,7 @@ BOARD_DIR = "src/app/[lang]/(marketing)/_design"
 # --- chrome ------------------------------------------------------------------
 
 
-def port_chrome() -> None:
+def port_chrome(tokens: set[str]) -> None:
     """Header and footer — one pair for the whole site.
 
     All thirteen artboards draw them identically in all twelve languages, which
@@ -697,14 +1044,18 @@ def port_chrome() -> None:
                                parts["fr"][3]]))
 
     routes = page_routes("Accueil")
+    assert_header_shape(fr[1])
+    decorate, check_chrome = chrome_decorator()
     lines, em, styles, values = emit_part(
         fr, per_locale_nodes=head, start_i=0, start_a=0, offset=0,
-        hrefs=routes, replacer=chrome_replacer,
+        hrefs=routes, replacer=chrome_replacer, decorate=decorate,
+        retag=header_retag, tokens=tokens,
     )
     n_head_anchors = em.k
     write(f"{BOARD_DIR}/site-header.tsx", chrome_component(
         "SiteHeader", "chrome", lines, em, styles, values,
-        extra='import { LocaleSwitch } from "./locale-switch";',
+        extra='import { LocaleSwitch } from "./locale-switch";\n'
+        'import { HeaderShell } from "./header-shell";',
         src="Main.dc.html — header; identical on every artboard",
     ))
 
@@ -714,8 +1065,9 @@ def port_chrome() -> None:
         start_i=foot_i, start_a=a_total - len(attr_stream(foot["fr"])),
         offset=foot_i,
         hrefs=routes[len(routes) - len(anchors(foot["fr"])):],
-        replacer=chrome_replacer,
+        replacer=chrome_replacer, decorate=decorate, tokens=tokens,
     )
+    check_chrome()
     write(f"{BOARD_DIR}/site-footer.tsx", chrome_component(
         "SiteFooter", "chromeFooter", flines, fem, fstyles, fvalues,
         extra='import { LocaleRow } from "./locale-switch";',
@@ -781,7 +1133,7 @@ def chrome_component(name, key, lines, em, styles, values, *, extra, src) -> str
 # --- pages -------------------------------------------------------------------
 
 
-def port_page(stem: str) -> None:
+def port_page(stem: str, tokens: set[str]) -> None:
     page = PAGES[stem]
     groups, text, titles = aligned(stem)
     routes = page_routes(stem)
@@ -804,6 +1156,7 @@ def port_page(stem: str) -> None:
             decorate=decorate,
             retag=retag,
             name_for=name_for,
+            tokens=tokens,
         )
         check_decorations()
         check_components()
@@ -933,8 +1286,11 @@ def page_content(page, body, titles, variants) -> str:
 
 if __name__ == "__main__":
     targets = sys.argv[1:] or list(PAGES)
-    port_chrome()
+    tokens: set[str] = set()
+    port_chrome(tokens)
     for stem in targets:
         if stem not in PAGES:
             raise SystemExit(f"unknown page {stem!r}; known: {', '.join(PAGES)}")
-        port_page(stem)
+        port_page(stem, tokens)
+    check_tokens(tokens)
+    print(f"  {len(tokens)} responsive tokens, all defined in {STYLESHEET}")

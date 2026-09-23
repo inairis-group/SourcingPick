@@ -12,6 +12,7 @@ import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
 import { chrome as content } from "./content/chrome";
 import { LocaleSwitch } from "./locale-switch";
+import { HeaderShell } from "./header-shell";
 
 export function SiteHeader({ lang }: { lang: Locale }) {
   const t = content.text[lang];
@@ -21,6 +22,7 @@ export function SiteHeader({ lang }: { lang: Locale }) {
   return (
     <>
       <div
+        className="sp-announce"
         style={{
           minHeight: "44px",
           padding: "10px 24px",
@@ -36,6 +38,7 @@ export function SiteHeader({ lang }: { lang: Locale }) {
         }}
       >
         <span
+          className="sp-announce-dot"
           style={{
             flexShrink: "0",
             width: "8px",
@@ -73,10 +76,10 @@ export function SiteHeader({ lang }: { lang: Locale }) {
           </svg>
         </Link>
       </div>
-      <header
+      <HeaderShell
         style={{
-          height: "84px",
-          padding: "0 96px",
+          height: "var(--sp-header-h, 84px)",
+          padding: "0 var(--sp-gutter-header, 96px) 0",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -84,13 +87,18 @@ export function SiteHeader({ lang }: { lang: Locale }) {
           borderBottom: "1px solid #DCE3F2",
           background: "rgba(245,247,252,0.92)",
         }}
+        lang={lang}
       >
         <Link
           href={`/${lang}`}
           style={{ display: "flex", alignItems: "center", flexShrink: "0" }}
           aria-label={t[2]}
         >
-          <img src="/design/logo.svg" alt={t[3]} style={{ height: "34px", width: "auto" }} />
+          <img
+            src="/design/logo.svg"
+            alt={t[3]}
+            style={{ height: "var(--sp-logo-h, 34px)", width: "auto" }}
+          />
         </Link>
         <nav style={{ display: "flex", alignItems: "center", gap: "32px" }} aria-label={t[4]}>
           <Link
@@ -181,7 +189,7 @@ export function SiteHeader({ lang }: { lang: Locale }) {
             </span>
           </Link>
         </div>
-      </header>
+      </HeaderShell>
     </>
   );
 }

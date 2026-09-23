@@ -21,10 +21,11 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
     <>
       <section
         style={{
-          padding: "88px 120px 64px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(64px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) 640px",
-          gap: "48px",
+          gridTemplateColumns: "var(--sp-grid-fr-640, minmax(0, 1fr) 640px)",
+          gap: "var(--sp-gap-48, 48px)",
           alignItems: "center",
         }}
       >
@@ -53,7 +54,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "54px",
+              fontSize: "var(--sp-fs-54, 54px)",
               lineHeight: "1.06",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -63,23 +64,30 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
           >
             {t[1]}
           </h1>
-          <p style={{ margin: "0", fontSize: "19px", lineHeight: "1.6", color: "#4A5578" }}>
+          <p
+            style={{
+              margin: "0",
+              fontSize: "var(--sp-fs-19, 19px)",
+              lineHeight: "1.6",
+              color: "#4A5578",
+            }}
+          >
             {t[2]}
           </p>
         </div>
-        <div dir="ltr" style={{ width: "640px", height: "471px" }}>
+        <div dir="ltr" style={{ width: "640px", height: "auto", maxWidth: "100%" }}>
           <img
             src="/design/hero-warehouse-quay-ship.svg"
             alt={t[3]}
-            style={{ width: "640px", height: "471px" }}
+            style={{ width: "640px", height: "auto", maxWidth: "100%" }}
           />
         </div>
       </section>
       <section
         style={{
-          padding: "0 120px",
+          padding: "0 var(--sp-gutter, 120px) 0",
           display: "grid",
-          gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+          gridTemplateColumns: "var(--sp-grid-r4, repeat(4, minmax(0, 1fr)))",
           gap: "18px",
         }}
       >
@@ -88,7 +96,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             display: "flex",
             flexDirection: "column",
             gap: "6px",
-            padding: "28px",
+            padding: "var(--sp-pad-28, 28px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "22px",
@@ -98,7 +106,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "40px",
+              fontSize: "var(--sp-fs-40, 40px)",
               lineHeight: "1.1",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -109,14 +117,18 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
           >
             {t[4]}
           </span>
-          <span style={{ fontSize: "15.5px", lineHeight: "1.5", color: "#4A5578" }}>{t[5]}</span>
+          <span
+            style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", lineHeight: "1.5", color: "#4A5578" }}
+          >
+            {t[5]}
+          </span>
         </div>
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             gap: "6px",
-            padding: "28px",
+            padding: "var(--sp-pad-28, 28px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "22px",
@@ -126,7 +138,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "40px",
+              fontSize: "var(--sp-fs-40, 40px)",
               lineHeight: "1.1",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -137,14 +149,18 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
           >
             {t[6]}
           </span>
-          <span style={{ fontSize: "15.5px", lineHeight: "1.5", color: "#4A5578" }}>{t[7]}</span>
+          <span
+            style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", lineHeight: "1.5", color: "#4A5578" }}
+          >
+            {t[7]}
+          </span>
         </div>
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             gap: "6px",
-            padding: "28px",
+            padding: "var(--sp-pad-28, 28px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "22px",
@@ -154,7 +170,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "40px",
+              fontSize: "var(--sp-fs-40, 40px)",
               lineHeight: "1.1",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -165,14 +181,18 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
           >
             {t[8]}
           </span>
-          <span style={{ fontSize: "15.5px", lineHeight: "1.5", color: "#4A5578" }}>{t[9]}</span>
+          <span
+            style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", lineHeight: "1.5", color: "#4A5578" }}
+          >
+            {t[9]}
+          </span>
         </div>
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             gap: "6px",
-            padding: "28px",
+            padding: "var(--sp-pad-28, 28px)",
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "22px",
@@ -182,7 +202,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "40px",
+              fontSize: "var(--sp-fs-40, 40px)",
               lineHeight: "1.1",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -193,14 +213,19 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
           >
             {t[10]}
           </span>
-          <span style={{ fontSize: "15.5px", lineHeight: "1.5", color: "#4A5578" }}>{t[11]}</span>
+          <span
+            style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", lineHeight: "1.5", color: "#4A5578" }}
+          >
+            {t[11]}
+          </span>
         </div>
       </section>
       <section
         style={{
-          padding: "72px 120px",
+          padding:
+            "calc(72px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
+          gridTemplateColumns: "var(--sp-grid-fr-fr, minmax(0, 1fr) minmax(0, 1fr))",
           gap: "24px",
         }}
       >
@@ -209,7 +234,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             background: "#FFFFFF",
             border: "1px solid #DCE3F2",
             borderRadius: "24px",
-            padding: "36px 40px",
+            padding: "var(--sp-pad-36-40, 36px 40px)",
             display: "flex",
             flexDirection: "column",
             gap: "10px",
@@ -219,7 +244,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "28px",
+              fontSize: "var(--sp-fs-28, 28px)",
               lineHeight: "1.2",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -233,14 +258,14 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             lang="zh-Hans"
             style={{
               fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-              fontSize: "20px",
+              fontSize: "var(--sp-fs-20, 20px)",
               fontWeight: "600",
               paddingTop: "8px",
             }}
           >
             {t[13]}
           </span>
-          <span style={{ fontSize: "15.5px", color: "#4A5578" }}>{t[14]}</span>
+          <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", color: "#4A5578" }}>{t[14]}</span>
           <div style={{ display: "flex", flexDirection: "column", paddingTop: "8px" }}>
             <div
               style={{
@@ -280,8 +305,9 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                 <span style={{ fontSize: "13px", color: "#4A5578" }}>{t[15]}</span>
-                <span style={{ fontSize: "16px", fontWeight: "600" }}>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600" }}>
                   <span
+                    className="sp-placeholder"
                     style={{
                       display: "inline-flex",
                       alignItems: "center",
@@ -338,8 +364,9 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                 <span style={{ fontSize: "13px", color: "#4A5578" }}>{t[17]}</span>
-                <span style={{ fontSize: "16px", fontWeight: "600" }}>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600" }}>
                   <span
+                    className="sp-placeholder"
                     style={{
                       display: "inline-flex",
                       alignItems: "center",
@@ -397,7 +424,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
               </span>
               <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                 <span style={{ fontSize: "13px", color: "#4A5578" }}>{t[19]}</span>
-                <span style={{ fontSize: "16px", fontWeight: "600" }}>
+                <span style={{ fontSize: "var(--sp-fs-16, 16px)", fontWeight: "600" }}>
                   <span dir="ltr">{t[20]}</span>
                 </span>
               </div>
@@ -453,6 +480,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
               </svg>
             </span>
             <span
+              className="sp-placeholder"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -474,7 +502,8 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
       </section>
       <section
         style={{
-          padding: "24px 120px 88px",
+          padding:
+            "calc(24px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))",
           display: "flex",
           flexDirection: "column",
           gap: "28px",
@@ -484,7 +513,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
           style={{
             margin: "0",
             fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-            fontSize: "40px",
+            fontSize: "var(--sp-fs-40, 40px)",
             lineHeight: "1.1",
             fontWeight: "600",
             letterSpacing: "-0.03em",
@@ -495,14 +524,18 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
           {t[23]}
         </h2>
         <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "18px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "var(--sp-grid-r3, repeat(3, minmax(0, 1fr)))",
+            gap: "18px",
+          }}
         >
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               gap: "12px",
-              padding: "28px",
+              padding: "var(--sp-pad-28, 28px)",
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "22px",
@@ -525,7 +558,14 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             >
               {t[24]}
             </span>
-            <p style={{ margin: "0", fontSize: "16.5px", lineHeight: "1.55", color: "#0E1A3D" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-16_5, 16.5px)",
+                lineHeight: "1.55",
+                color: "#0E1A3D",
+              }}
+            >
               {t[25]}
             </p>
           </div>
@@ -534,7 +574,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
               display: "flex",
               flexDirection: "column",
               gap: "12px",
-              padding: "28px",
+              padding: "var(--sp-pad-28, 28px)",
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "22px",
@@ -557,7 +597,14 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             >
               {t[26]}
             </span>
-            <p style={{ margin: "0", fontSize: "16.5px", lineHeight: "1.55", color: "#0E1A3D" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-16_5, 16.5px)",
+                lineHeight: "1.55",
+                color: "#0E1A3D",
+              }}
+            >
               {t[27]}
             </p>
           </div>
@@ -566,7 +613,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
               display: "flex",
               flexDirection: "column",
               gap: "12px",
-              padding: "28px",
+              padding: "var(--sp-pad-28, 28px)",
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "22px",
@@ -589,7 +636,14 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             >
               {t[28]}
             </span>
-            <p style={{ margin: "0", fontSize: "16.5px", lineHeight: "1.55", color: "#0E1A3D" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-16_5, 16.5px)",
+                lineHeight: "1.55",
+                color: "#0E1A3D",
+              }}
+            >
               {t[29]}
             </p>
           </div>
@@ -598,10 +652,11 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
       <section
         style={{
           background: "#0B1433",
-          padding: "88px 120px",
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "420px minmax(0, 1fr)",
-          gap: "56px",
+          gridTemplateColumns: "var(--sp-grid-420-fr, 420px minmax(0, 1fr))",
+          gap: "var(--sp-gap-56, 56px)",
           alignItems: "center",
         }}
       >
@@ -610,7 +665,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             style={{
               margin: "0",
               fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-              fontSize: "40px",
+              fontSize: "var(--sp-fs-40, 40px)",
               lineHeight: "1.1",
               fontWeight: "600",
               letterSpacing: "-0.03em",
@@ -620,10 +675,18 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
           >
             {t[30]}
           </h2>
-          <img src="/design/picky-loupe.svg" alt="" style={{ width: "220px", height: "220px" }} />
+          <img
+            src="/design/picky-loupe.svg"
+            alt=""
+            style={{ width: "220px", height: "auto", maxWidth: "100%" }}
+          />
         </div>
         <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "14px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
+            gap: "14px",
+          }}
         >
           <div
             style={{
@@ -665,7 +728,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
                 <circle cx="17" cy="18" r="2" />
               </svg>
             </span>
-            <span style={{ fontSize: "16px", color: "#FFFFFF" }}>{t[31]}</span>
+            <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#FFFFFF" }}>{t[31]}</span>
           </div>
           <div
             style={{
@@ -706,7 +769,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
                 <path d="M12 12v9" />
               </svg>
             </span>
-            <span style={{ fontSize: "16px", color: "#FFFFFF" }}>{t[32]}</span>
+            <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#FFFFFF" }}>{t[32]}</span>
           </div>
           <div
             style={{
@@ -749,7 +812,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
                 <path d="M4 12h16" />
               </svg>
             </span>
-            <span style={{ fontSize: "16px", color: "#FFFFFF" }}>{t[33]}</span>
+            <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#FFFFFF" }}>{t[33]}</span>
           </div>
           <div
             style={{
@@ -791,7 +854,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
                 <rect x="13" y="13" width="7" height="7" rx="1" />
               </svg>
             </span>
-            <span style={{ fontSize: "16px", color: "#FFFFFF" }}>{t[34]}</span>
+            <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#FFFFFF" }}>{t[34]}</span>
           </div>
           <div
             style={{
@@ -831,7 +894,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
                 <circle cx="12" cy="13" r="3.5" />
               </svg>
             </span>
-            <span style={{ fontSize: "16px", color: "#FFFFFF" }}>{t[35]}</span>
+            <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#FFFFFF" }}>{t[35]}</span>
           </div>
           <div
             style={{
@@ -871,22 +934,28 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
                 <path d="M8 11V8a4 4 0 018 0v3" />
               </svg>
             </span>
-            <span style={{ fontSize: "16px", color: "#FFFFFF" }}>{t[36]}</span>
+            <span style={{ fontSize: "var(--sp-fs-16, 16px)", color: "#FFFFFF" }}>{t[36]}</span>
           </div>
         </div>
       </section>
-      <section style={{ padding: "88px 120px 104px" }}>
+      <section
+        style={{
+          padding:
+            "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
+        }}
+      >
         <div
+          className="sp-cta-band"
           style={{
             position: "relative",
             overflow: "hidden",
             borderRadius: "32px",
             background: "#155DFC",
-            padding: "72px",
+            padding: "var(--sp-pad-72, 72px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "40px",
+            gap: "var(--sp-gap-40, 40px)",
             color: "#FFFFFF",
           }}
         >
@@ -912,7 +981,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "48px",
+                fontSize: "var(--sp-fs-48, 48px)",
                 lineHeight: "1.08",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -922,8 +991,16 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             >
               {t[37]}
             </h2>
-            <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#E3EBFF" }}>
+            <p
+              style={{
+                margin: "0",
+                fontSize: "var(--sp-fs-18, 18px)",
+                lineHeight: "1.6",
+                color: "#E3EBFF",
+              }}
+            >
               <span
+                className="sp-placeholder"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -955,7 +1032,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
                   borderRadius: "12px",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
                   fontWeight: "600",
-                  fontSize: "17px",
+                  fontSize: "var(--sp-fs-17, 17px)",
                   background: "#FFFFFF",
                   color: "#0E1A3D",
                   border: "1.5px solid #FFFFFF",
@@ -992,7 +1069,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
                   borderRadius: "12px",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
                   fontWeight: "600",
-                  fontSize: "17px",
+                  fontSize: "var(--sp-fs-17, 17px)",
                   background: "transparent",
                   color: "#FFFFFF",
                   border: "1.5px solid rgba(255,255,255,0.28)",
@@ -1005,7 +1082,10 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
               </a>
             </div>
           </div>
-          <div style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}>
+          <div
+            className="sp-cta-mascot"
+            style={{ position: "relative", width: "300px", height: "300px", flexShrink: "0" }}
+          >
             <div
               style={{
                 position: "absolute",
@@ -1027,7 +1107,7 @@ export function WarehouseBoardTR({ lang }: { lang: Locale }) {
             <img
               src="/design/picky-arms-up.svg"
               alt={t[43]}
-              style={{ width: "300px", height: "300px" }}
+              style={{ width: "300px", height: "auto", maxWidth: "100%" }}
             />
           </div>
         </div>

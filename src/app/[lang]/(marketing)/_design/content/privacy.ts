@@ -669,7 +669,7 @@ export const privacy = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -679,7 +679,7 @@ export const privacy = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -689,7 +689,7 @@ export const privacy = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -699,7 +699,7 @@ export const privacy = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -709,7 +709,7 @@ export const privacy = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -719,7 +719,7 @@ export const privacy = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -729,7 +729,7 @@ export const privacy = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -739,7 +739,7 @@ export const privacy = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -749,7 +749,7 @@ export const privacy = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -759,7 +759,7 @@ export const privacy = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -769,7 +769,7 @@ export const privacy = {
       tr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -779,7 +779,7 @@ export const privacy = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -949,7 +949,7 @@ export const privacy = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -959,7 +959,7 @@ export const privacy = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -969,7 +969,7 @@ export const privacy = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -979,7 +979,7 @@ export const privacy = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -989,7 +989,7 @@ export const privacy = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -999,7 +999,7 @@ export const privacy = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1009,7 +1009,7 @@ export const privacy = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1019,7 +1019,7 @@ export const privacy = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1029,7 +1029,7 @@ export const privacy = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -1039,7 +1039,7 @@ export const privacy = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1049,7 +1049,7 @@ export const privacy = {
       tr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1059,7 +1059,7 @@ export const privacy = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1387,7 +1387,7 @@ export const privacy = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1397,7 +1397,7 @@ export const privacy = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1407,7 +1407,7 @@ export const privacy = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -1417,7 +1417,7 @@ export const privacy = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1427,7 +1427,7 @@ export const privacy = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1437,7 +1437,7 @@ export const privacy = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1447,7 +1447,7 @@ export const privacy = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1457,7 +1457,7 @@ export const privacy = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1467,7 +1467,7 @@ export const privacy = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -1477,7 +1477,7 @@ export const privacy = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1487,7 +1487,7 @@ export const privacy = {
       tr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1497,7 +1497,7 @@ export const privacy = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1509,7 +1509,7 @@ export const privacy = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1519,7 +1519,7 @@ export const privacy = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1529,7 +1529,7 @@ export const privacy = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -1539,7 +1539,7 @@ export const privacy = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1549,7 +1549,7 @@ export const privacy = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1559,7 +1559,7 @@ export const privacy = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1569,7 +1569,7 @@ export const privacy = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1579,7 +1579,7 @@ export const privacy = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1589,7 +1589,7 @@ export const privacy = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -1599,7 +1599,7 @@ export const privacy = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1609,7 +1609,7 @@ export const privacy = {
       tr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1619,7 +1619,7 @@ export const privacy = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1631,7 +1631,7 @@ export const privacy = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1641,7 +1641,7 @@ export const privacy = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1651,7 +1651,7 @@ export const privacy = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -1661,7 +1661,7 @@ export const privacy = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1671,7 +1671,7 @@ export const privacy = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1681,7 +1681,7 @@ export const privacy = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1691,7 +1691,7 @@ export const privacy = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1701,7 +1701,7 @@ export const privacy = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1711,7 +1711,7 @@ export const privacy = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -1721,7 +1721,7 @@ export const privacy = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1731,7 +1731,7 @@ export const privacy = {
       tr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1741,7 +1741,7 @@ export const privacy = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1911,7 +1911,7 @@ export const privacy = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1921,7 +1921,7 @@ export const privacy = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1931,7 +1931,7 @@ export const privacy = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -1941,7 +1941,7 @@ export const privacy = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1951,7 +1951,7 @@ export const privacy = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1961,7 +1961,7 @@ export const privacy = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1971,7 +1971,7 @@ export const privacy = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1981,7 +1981,7 @@ export const privacy = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1991,7 +1991,7 @@ export const privacy = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -2001,7 +2001,7 @@ export const privacy = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2011,7 +2011,7 @@ export const privacy = {
       tr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2021,7 +2021,7 @@ export const privacy = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2191,7 +2191,7 @@ export const privacy = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2201,7 +2201,7 @@ export const privacy = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2211,7 +2211,7 @@ export const privacy = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -2221,7 +2221,7 @@ export const privacy = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2231,7 +2231,7 @@ export const privacy = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2241,7 +2241,7 @@ export const privacy = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2251,7 +2251,7 @@ export const privacy = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2261,7 +2261,7 @@ export const privacy = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2271,7 +2271,7 @@ export const privacy = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -2281,7 +2281,7 @@ export const privacy = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2291,7 +2291,7 @@ export const privacy = {
       tr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2301,7 +2301,7 @@ export const privacy = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2471,7 +2471,7 @@ export const privacy = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2481,7 +2481,7 @@ export const privacy = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2491,7 +2491,7 @@ export const privacy = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -2501,7 +2501,7 @@ export const privacy = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2511,7 +2511,7 @@ export const privacy = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2521,7 +2521,7 @@ export const privacy = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2531,7 +2531,7 @@ export const privacy = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2541,7 +2541,7 @@ export const privacy = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2551,7 +2551,7 @@ export const privacy = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -2561,7 +2561,7 @@ export const privacy = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2571,7 +2571,7 @@ export const privacy = {
       tr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2581,7 +2581,7 @@ export const privacy = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",

@@ -4,37 +4,53 @@
  * the one thing the artboards cannot do for themselves: survive a window that
  * is not 1440px wide.
  *
- * The canvas is a 1440px frame, and the first attempt took that literally —
- * capped the page at 1440 and centred it, which put navy bands down both sides
- * of every desktop monitor. A frame is how a design is drawn, not how it is
- * built. So the frame width is treated as a *measure* instead: backgrounds run
- * edge to edge, and each band keeps the content column the designer drew by
- * growing its gutter rather than its column. At exactly 1440 the result is the
- * artboard, pixel for pixel; wider, it is the artboard with more air beside it.
+ * How it gets a say over inline styles without `!important`: the porter wraps
+ * the system-level values — type sizes, grid tracks, gutters, section rhythm,
+ * card paddings, the large gaps — in a custom property whose fallback is the
+ * artboard's own value (`font-size: var(--sp-fs-62, 62px)`; see
+ * `responsive()` in scripts/design/emit.py). Above 1200px none of those
+ * properties is defined and the artboard renders untouched. Below, this file
+ * defines them, and the cascade does the rest. The property names are keyed
+ * on the artboard's values, so the tables below read as a design system: "a
+ * 46px heading is 26px on a phone" is stated once and holds site-wide. The
+ * porter refuses to emit a name this file does not define.
  *
- * The canvas has one narrow artboard — the home page at 390px — and nothing in
- * between, so the rules below 1100px are deliberately the smallest set that
- * stops the composition overflowing. Nothing is re-ordered or re-composed.
+ * The values come from the canvas's one narrow artboard — the home page at
+ * 390px (Site-Mobile.dc.html) — which fixes the phone system: 20px gutters,
+ * a 64px header with a 26px wordmark, section padding roughly halved, h1 34,
+ * h2 26, h3 16, body 16, buttons full-width, everything in one column, the
+ * closing band inset by 20px with a 24px radius. Between 390 and 1200 the
+ * type is interpolated; there is no tablet artboard, so the tablet grids
+ * (two columns where the desktop has three or four) are a judgement, marked
+ * as such below.
  *
- * Selectors match React's serialisation of the inline styles, which writes
- * `width:800px` with no space after the colon.
+ * `!important` survives only inside the few class-scoped rules that
+ * recompose one element the artboard pins with pixel offsets (the hero art,
+ * the phones, the closing band's mascot). Each says why.
  */
 
 .frame {
   background: #0b1433;
   min-height: 100dvh;
-  /* The header's drawn height. Named because three other things have to keep
-     out from under it once it stops scrolling away. */
+  /* The header's drawn height. The sticky offsets and the drawer hang off
+     it, and the header itself reads it. */
   --sp-header-h: 84px;
+  /* A section drawn with 120px gutters inside a 1440px frame has a 1200px
+     content column; the header's 96px gutters give it 1248. Past 1440 the
+     gutter takes the extra width and the column does not move. The first
+     attempt capped the page at 1440 and centred it, which put navy bands down
+     both sides of every desktop monitor: a frame is how a design is drawn,
+     not how it is built. */
+  --sp-gutter: max(120px, calc((100% - 1200px) / 2));
+  --sp-gutter-header: max(96px, calc((100% - 1248px) / 2));
 }
 
 /* The canvas draws the header as part of the page, so it scrolls off. Asked
    for as sticky instead: on a page eight thousand pixels tall, the quote CTA
-   should not be something you scroll back up to find.
-   The translucency is the design's own — `rgba(245,247,252,0.92)` — and only
-   reads as deliberate once there is something moving behind it, which is what
-   the blur is for. */
-.frame :global(header) {
+   should not be something you scroll back up to find. The translucency is the
+   design's own — `rgba(245,247,252,0.92)` — and only reads as deliberate once
+   there is something moving behind it, which is what the blur is for. */
+.header {
   position: sticky;
   top: 0;
   z-index: 30;
@@ -50,103 +66,697 @@
   background: #f5f7fc;
 }
 
-/* A section drawn with 120px gutters inside a 1440px frame has a 1200px
-   content column; the header's 96px gutters give it 1248. Past 1440 the gutter
-   takes the extra width and the column does not move. */
-.frame :global(section),
-.frame :global(footer) {
-  padding-inline: max(120px, calc((100% - 1200px) / 2)) !important;
+/* The steps rail on the home page is an SVG drawn 1200px wide — the content
+   column at 1440. Scaled with its column it is unchanged there; narrower, the
+   six numbered stops still land over the six columns. */
+.frame :global(.sp-steps-rail) {
+  width: 100%;
+  height: auto;
 }
 
-.frame :global(header) {
-  padding-inline: max(96px, calc((100% - 1248px) / 2)) !important;
+/* ---------------------------------------------------------------------------
+ * Laptop: 1100–1439. The composition is the artboard's; only the gutters give.
+ * ------------------------------------------------------------------------- */
+
+@media (max-width: 1439.98px) {
+  .frame {
+    /* 120/1440 and 96/1440, so the gutter shrinks with the window and the
+       content column keeps the artboard's proportion. */
+    --sp-gutter: clamp(64px, 8.33vw, 120px);
+    --sp-gutter-header: clamp(48px, 6.67vw, 96px);
+  }
+
+  /* The hero illustration is pinned at left:612px — an offset measured from
+     the edge of the 1440px frame, which no longer exists. The artboard sets
+     it 28px from the frame's edge, so holding it 28px from the viewport's
+     keeps the relationship the designer drew; it is the text column that
+     gets closer, not the art that moves away. (Arabic mirrors the pin
+     itself; the logical property is what keeps both honest.) Inline
+     `left:612px` has to be beaten, hence the `!important`. */
+  .frame :global(.sp-hero-art) {
+    inset-inline-end: 28px !important;
+    inset-inline-start: auto !important;
+  }
+
+  /* The sub-page hero figure: a fixed 440×380 box beside the heading, drawn
+     `flex-shrink: 0`. Below the artboard's width it gives way to the text —
+     a Russian headline has a single 700px word at 56px, and breaking a
+     heading mid-word is worse than a smaller picture. The image inside
+     letterboxes itself (`object-fit: contain` is the artboard's). Inline
+     width, height and flex-shrink are beaten. */
+  .frame :global(.sp-hero-figure) {
+    flex: 0 1 440px !important;
+    width: min(100%, 440px) !important;
+    min-width: 200px;
+    max-width: 440px;
+    height: auto !important;
+    aspect-ratio: 1.15;
+    max-height: 380px;
+  }
+  .frame :global(.sp-hero-figure) > :global(img) {
+    width: 84% !important;
+    height: 84% !important;
+  }
+
+  /* The amber "to be confirmed" chips are drawn `white-space: nowrap`; the
+     Russian ones are wider than a phone, and one in the pricing hero pushes
+     that page sideways at 1280. Below the artboard's width they wrap. */
+  .frame :global(.sp-placeholder) {
+    white-space: normal !important;
+  }
 }
 
-/* The hero illustration is pinned at left:612px — an offset measured from the
-   edge of the 1440px frame, which no longer exists. Percentage margins on an
-   absolutely positioned box resolve against its containing block, so this
-   slides it back to where the frame would have started. The Arabic artboard
-   mirrors the pin itself (left:28px), so the same shift is correct there and
-   a physical margin is what keeps both honest. */
+/* Past 1440 the pin's frame is centred, so the art is shifted to where the
+   frame would have started. Percentage margins on an absolutely positioned
+   box resolve against its containing block. */
 @media (min-width: 1440px) {
-  .frame :global([style*="position:absolute"][style*="width:800px"]) {
+  .frame :global(.sp-hero-art) {
     margin-left: calc((100% - 1440px) / 2);
   }
 }
 
-/* Below the canvas width the pin runs the art off the right-hand edge, where
-   the section's `overflow:hidden` slices the ship off. The artboard already
-   sets it 28px from the frame's edge, so holding it 28px from the viewport's
-   keeps the relationship the designer drew; it is the text column that gets
-   closer, not the art that moves away.
-   `!important` throughout this file is not decoration: every one of these
-   properties is competing with an inline style, and an inline style wins. */
-@media (max-width: 1439.98px) {
-  .frame :global([style*="position:absolute"][style*="width:800px"]) {
-    inset-inline-end: 28px !important;
-    inset-inline-start: auto !important;
-  }
-}
+/* ---------------------------------------------------------------------------
+ * Fluid type: 390 → 1200.
+ *
+ * Each line is (artboard size → phone size), interpolated linearly across the
+ * 810px between the phone artboard and the point where the desktop size is
+ * reached. The pairs that both artboards draw: 62→34 (h1), 46→26 (h2), 22→16
+ * (card h3), 19→16 (hero lead), 15.5→13.5 (card text; 14.5 site-wide, 13.5
+ * inside the operation cards below), 16→15 (the app banner title). The rest
+ * are placed on the same curve — a judgement the design does not cover.
+ * ------------------------------------------------------------------------- */
 
-/* Past this point the illustration would sit behind the headline rather than
-   beside it — the artboard overlaps them by 88px, and by 1200 that has grown
-   past the point where the text is still the thing you read first. The
-   canvas's own phone artboard drops the illustration too. */
-@media (max-width: 1200px) {
-  .frame :global([style*="position:absolute"][style*="width:800px"]) {
-    display: none !important;
+@media (max-width: 1199.98px) {
+  .frame {
+    --sp-fs-72: clamp(40px, calc(24.593px + 3.951vw), 72px);
+    --sp-fs-64: clamp(34px, calc(19.556px + 3.704vw), 64px);
+    --sp-fs-62: clamp(34px, calc(20.519px + 3.457vw), 62px);
+    --sp-fs-56: clamp(32px, calc(20.444px + 2.963vw), 56px);
+    --sp-fs-54: clamp(31px, calc(19.926px + 2.84vw), 54px);
+    --sp-fs-48: clamp(28px, calc(18.37px + 2.469vw), 48px);
+    --sp-fs-46: clamp(26px, calc(16.37px + 2.469vw), 46px);
+    --sp-fs-44: clamp(26px, calc(17.333px + 2.222vw), 44px);
+    --sp-fs-40: clamp(24px, calc(16.296px + 1.975vw), 40px);
+    --sp-fs-36: clamp(22px, calc(15.259px + 1.728vw), 36px);
+    --sp-fs-34: clamp(22px, calc(16.222px + 1.481vw), 34px);
+    --sp-fs-32: clamp(21px, calc(15.704px + 1.358vw), 32px);
+    --sp-fs-30: clamp(20px, calc(15.185px + 1.235vw), 30px);
+    --sp-fs-28: clamp(19px, calc(14.667px + 1.111vw), 28px);
+    --sp-fs-26: clamp(18px, calc(14.148px + 0.988vw), 26px);
+    --sp-fs-24: clamp(17px, calc(13.63px + 0.864vw), 24px);
+    --sp-fs-22: clamp(16px, calc(13.111px + 0.741vw), 22px);
+    --sp-fs-20: clamp(16px, calc(14.074px + 0.494vw), 20px);
+    --sp-fs-19: clamp(16px, calc(14.556px + 0.37vw), 19px);
+    --sp-fs-18: clamp(16px, calc(15.037px + 0.247vw), 18px);
+    --sp-fs-17_5: clamp(16px, calc(15.278px + 0.185vw), 17.5px);
+    --sp-fs-17: clamp(16px, calc(15.519px + 0.123vw), 17px);
+    --sp-fs-16_5: clamp(16px, calc(15.759px + 0.062vw), 16.5px);
+    --sp-fs-16: clamp(15px, calc(14.519px + 0.123vw), 16px);
+    --sp-fs-15_5: clamp(14.5px, calc(14.019px + 0.123vw), 15.5px);
   }
-}
 
-@media (max-width: 1100px) {
-  .frame :global(section),
-  .frame :global(footer),
-  .frame :global(header) {
-    padding-inline: clamp(20px, 7vw, 96px) !important;
+  /* The closing band's 48px heading is drawn at 24px on the phone artboard,
+     while a 48px page title (quote, legal) has no phone drawing and stays on
+     the general curve (→ 28). Scoped, so only the band reads the smaller. */
+  .frame :global(.sp-cta-band) {
+    --sp-fs-48: clamp(24px, calc(12.444px + 2.963vw), 48px);
   }
-  .frame :global(img) {
-    max-width: 100% !important;
-    height: auto !important;
-  }
-  .frame :global([style*="width:580px"]),
-  .frame :global([style*="width:500px"]),
-  .frame :global([style*="width:440px"]),
-  .frame :global([style*="width:420px"]),
-  .frame :global([style*="width:340px"]),
-  .frame :global([style*="width:330px"]),
-  .frame :global([style*="width:300px"]) {
-    width: 100% !important;
-    max-width: 100%;
-  }
-}
 
-/* One column. Multi-column grids are the only thing that genuinely cannot
-   survive a phone, and the canvas's own mobile artboard stacks them too. */
-@media (max-width: 900px) {
-  .frame :global([style*="grid-template-columns"]) {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
-  .frame :global([style*="grid-column:"]) {
-    grid-column: auto !important;
-  }
-  .frame :global(h1) {
-    font-size: clamp(34px, 8vw, 62px) !important;
-  }
-  .frame :global(h2) {
-    font-size: clamp(28px, 6.5vw, 46px) !important;
-  }
-  .frame :global([style*="min-height:740px"]) {
+  /* Below the artboard's width the illustration would sit behind the
+     headline rather than beside it — the artboard already overlaps them by
+     88px. The phone artboard puts it under the text instead, in a 300px-tall
+     strip, and drops the three floating labels; that composition is used all
+     the way up to 1200. Inline position/left/top/width/height are beaten. */
+  .frame :global(.sp-hero) {
+    display: flex;
+    flex-direction: column;
     min-height: 0 !important;
   }
-}
-
-@media (max-width: 640px) {
-  .frame :global(nav) {
+  .frame :global(.sp-hero-copy) {
+    width: auto !important;
+    padding-top: calc(92px * var(--sp-vs, 1)) !important;
+  }
+  .frame :global(.sp-hero-art) {
+    position: static !important;
+    width: auto !important;
+    height: clamp(300px, 36vw, 440px) !important;
+    margin-top: 24px;
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .frame :global(.sp-hero-art) > :global(img) {
+    width: auto !important;
+    height: 100% !important;
+    max-width: none !important;
+  }
+  .frame :global(.sp-hero-label) {
     display: none !important;
   }
-  .frame :global(header) {
-    height: auto !important;
-    padding-block: 12px !important;
+}
+
+/* ---------------------------------------------------------------------------
+ * Tablet: 768–1099. No artboard. Gutters 40, rhythm at ¾, and the wide grids
+ * lose a column. Two-column pairs with a fixed track keep two columns as a
+ * ratio instead of a pixel width.
+ * ------------------------------------------------------------------------- */
+
+@media (max-width: 1099.98px) {
+  .frame {
+    --sp-gutter: 40px;
+    --sp-gutter-header: 32px;
+    --sp-vs: 0.75;
+
+    --sp-gap-40: 28px;
+    --sp-gap-48: 32px;
+    --sp-gap-52: 32px;
+    --sp-gap-56: 36px;
+    --sp-gap-64: 40px;
+    --sp-gap-72: 40px;
+    --sp-gap-80: 40px;
+
+    --sp-grid-r3: repeat(2, minmax(0, 1fr));
+    --sp-grid-r4: repeat(2, minmax(0, 1fr));
+    --sp-grid-r6: repeat(3, minmax(0, 1fr));
+    --sp-grid-340-r4: repeat(3, minmax(0, 1fr));
+    --sp-grid-500-fr: minmax(0, 1fr) minmax(0, 1fr);
+    --sp-grid-440-fr: minmax(0, 2fr) minmax(0, 3fr);
+    --sp-grid-420-fr: minmax(0, 2fr) minmax(0, 3fr);
+    --sp-grid-400-fr: minmax(0, 1fr) minmax(0, 2fr);
+    --sp-grid-380-fr: minmax(0, 2fr) minmax(0, 3fr);
+    --sp-grid-300-fr: minmax(0, 1fr) minmax(0, 2fr);
+    --sp-grid-260-fr: 260px minmax(0, 1fr);
+    --sp-grid-fr-380: minmax(0, 3fr) minmax(0, 2fr);
+    --sp-grid-fr-440: minmax(0, 1fr) minmax(0, 1fr);
+    --sp-grid-fr-520: minmax(0, 1fr) minmax(0, 1fr);
+    --sp-grid-fr-560: minmax(0, 1fr) minmax(0, 1fr);
+    /* Two phones fanned across a 700px stage need 640px: one column. */
+    --sp-grid-fr-640: minmax(0, 1fr);
+    --sp-grid-fr-fr: minmax(0, 1fr) minmax(0, 1fr);
+    --sp-grid-r2: repeat(2, minmax(0, 1fr));
+    /* How-it-works rows: the number keeps a rail on the left, the three
+       columns stack beside it (with .sp-how-row below). */
+    --sp-grid-76-1_1fr-fr-fr-230: 76px minmax(0, 1fr);
+  }
+
+  .frame :global(.sp-how-row) > :nth-child(n + 3) {
+    grid-column: 2;
+  }
+
+  /* German compounds, Russian headings and e-mail addresses are longer than
+     a phone column; `anywhere` also lets a flex or grid track shrink past
+     the word instead of pushing the page sideways. Spans are the exception:
+     they are labels and values sitting beside each other in a row ("2%
+     commission", the amber chips), and a sibling must not be allowed to
+     squeeze one below its longest word — `break-word` keeps the word whole
+     and lets the row wrap at spaces instead. */
+  .frame {
+    overflow-wrap: anywhere;
+  }
+  .frame :global(span),
+  .frame :global(a) {
+    overflow-wrap: break-word;
+  }
+
+  /* The rail's six stops no longer line up with a three-column grid, so the
+     steps number themselves (see .sp-steps below). */
+  .frame :global(.sp-steps-rail) {
+    display: none;
+  }
+  .frame :global(.sp-steps) {
+    counter-reset: sp-step;
+  }
+  .frame :global(.sp-steps) > * {
+    counter-increment: sp-step;
+  }
+  .frame :global(.sp-steps) > *::before {
+    /* The phone artboard's stop: a 30px blue disc with a mono numeral. */
+    content: counter(sp-step);
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #155dfc;
+    color: #ffffff;
+    align-items: center;
+    justify-content: center;
+    font-family: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Phone: ≤ 767. The phone artboard's system.
+ * ------------------------------------------------------------------------- */
+
+@media (max-width: 767.98px) {
+  .frame {
+    --sp-header-h: 64px;
+    --sp-logo-h: 26px;
+    --sp-gutter: 20px;
+    --sp-gutter-header: 20px;
+    /* 104 → 52; the artboard's sections run 32–56. */
+    --sp-vs: 0.5;
+
+    /* Section-level gaps: the artboard's 18/22/16 between eyebrow, heading
+       and body. */
+    --sp-gap-40: 20px;
+    --sp-gap-48: 22px;
+    --sp-gap-52: 18px;
+    --sp-gap-56: 18px;
+    --sp-gap-64: 24px;
+    --sp-gap-72: 24px;
+    --sp-gap-80: 24px;
+
+    /* One column, everywhere. */
+    --sp-grid-r2: minmax(0, 1fr);
+    --sp-grid-r3: minmax(0, 1fr);
+    --sp-grid-r4: minmax(0, 1fr);
+    --sp-grid-r6: minmax(0, 1fr);
+    --sp-grid-500-fr: minmax(0, 1fr);
+    --sp-grid-440-fr: minmax(0, 1fr);
+    --sp-grid-420-fr: minmax(0, 1fr);
+    --sp-grid-400-fr: minmax(0, 1fr);
+    --sp-grid-380-fr: minmax(0, 1fr);
+    --sp-grid-300-fr: minmax(0, 1fr);
+    --sp-grid-260-fr: minmax(0, 1fr);
+    --sp-grid-fr-380: minmax(0, 1fr);
+    --sp-grid-fr-440: minmax(0, 1fr);
+    --sp-grid-fr-520: minmax(0, 1fr);
+    --sp-grid-fr-560: minmax(0, 1fr);
+    --sp-grid-fr-640: minmax(0, 1fr);
+    --sp-grid-fr-fr: minmax(0, 1fr);
+    --sp-grid-76-1_1fr-fr-fr-230: minmax(0, 1fr);
+    /* The footer keeps its link columns, two abreast; the brand block spans
+       both (below). The phone artboard's footer drops the columns entirely,
+       which would leave the legal pages reachable only through the footer of
+       a page nobody can reach — a legal-notice link has to be one tap away,
+       so that part of the artboard is deliberately not followed. */
+    --sp-grid-340-r4: repeat(2, minmax(0, 1fr));
+    --sp-span: auto;
+
+    /* Card paddings: the artboard's cards are padded 16; the closing band
+       28×22. */
+    --sp-pad-24: 16px;
+    --sp-pad-26: 16px;
+    --sp-pad-28: 18px;
+    --sp-pad-30: 18px;
+    --sp-pad-32: 20px;
+    --sp-pad-40: 22px;
+    --sp-pad-44: 22px;
+    --sp-pad-72: 28px 22px;
+    --sp-pad-36-40: 22px 20px;
+    --sp-pad-30-32: 18px 20px;
+    --sp-pad-28-32: 18px 20px;
+    --sp-pad-32-36: 20px 22px;
+    --sp-pad-40-44: 24px 22px;
+    --sp-pad-26-28-30: 18px 20px 22px;
+    --sp-pad-40-0: 24px 0;
+    --sp-pad-44-20-0: 44px 20px 0;
+  }
+
+  /* -- chrome ------------------------------------------------------------ */
+
+  /* The announcement strip, as the phone artboard draws it: a centred block
+     of running text in 12.5px with the link inline at the end. The desktop
+     strip is a flex row, which on a phone wraps its three items — dot,
+     sentence, link — onto separate lines and strands the dot above the
+     text. As running text the dot (inline-block) stays glued to the first
+     word, and the link wraps like any other word. Inline display, padding
+     and size are beaten. */
+  .frame :global(.sp-announce) {
+    display: block !important;
+    padding: 10px 20px !important;
+    font-size: 12.5px !important;
+    line-height: 1.4;
+  }
+  .frame :global(.sp-announce-dot) {
+    display: inline-block;
+    vertical-align: middle;
+    margin-inline-end: 8px;
+  }
+  .frame :global(.sp-announce) > :global(a) {
+    margin-inline-start: 6px;
+    vertical-align: baseline;
+  }
+
+  /* The artboard pads the header 20px on the wordmark side and 16px on the
+     button side, the hamburger's own inner whitespace making up the rest. */
+  .burger {
+    margin-inline-end: -4px;
+  }
+
+  /* The footer's brand block runs the full width above the two link columns. */
+  .frame :global(.sp-footer-grid) > :first-child {
+    grid-column: 1 / -1;
+  }
+  .frame :global(.sp-footer-meta) {
     flex-wrap: wrap;
+  }
+
+  /* -- home ---------------------------------------------------------------- */
+
+  /* The hero's three facts and two buttons stack; the buttons go full-width
+     as the artboard draws them (`width: 100%; justify-content: center`). */
+  .frame :global(.sp-hero-copy) > :global(div) > :global(a) {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  /* The six operation cards, as the phone artboard redraws them: a row with a
+     92×88 thumbnail on the left and the text beside it, 12px padding, 18px
+     radius. Inline flex-direction, radius and the thumbnail's fixed height
+     are beaten; the illustration is drawn 100×95 inside the thumbnail. */
+  .frame :global(.sp-op-card) {
+    flex-direction: row !important;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    border-radius: 18px !important;
+  }
+  .frame :global(.sp-op-card) > :global(div):first-child {
+    flex-shrink: 0;
+    width: 92px;
+    height: 88px !important;
+    border-radius: 12px;
+    border-bottom: 0 !important;
+    align-items: center !important;
+  }
+  .frame :global(.sp-op-card) > :global(div):first-child > :global(img) {
+    width: 100px !important;
+    height: 95px !important;
+    max-width: none !important;
+  }
+  .frame :global(.sp-op-card) > :global(div):last-child {
+    min-width: 0;
+    --sp-pad-26-28-30: 0;
+    --sp-fs-15_5: 13.5px;
+    gap: 4px !important;
+  }
+
+  /* The six steps become the artboard's vertical stepper: the numbered disc
+     on a rail, a dashed line joining each to the next. */
+  .frame :global(.sp-steps) {
+    gap: 0 !important;
+  }
+  .frame :global(.sp-steps) > * {
+    position: relative;
+    margin-inline-start: 44px;
+    padding: 4px 0 22px !important;
+  }
+  .frame :global(.sp-steps) > *::before {
+    position: absolute;
+    inset-inline-start: -44px;
+    top: 0;
+    margin: 0;
+  }
+  .frame :global(.sp-steps) > *::after {
+    content: "";
+    position: absolute;
+    inset-inline-start: -30px;
+    top: 34px;
+    bottom: 4px;
+    border-inline-start: 2px dashed #3a57b8;
+  }
+  .frame :global(.sp-steps) > *:last-child::after {
+    display: none;
+  }
+
+  /* The phone mockups. Inside them the design is a device screen and does
+     not reflow — its tokens are pinned back to the artboard's values. The
+     stage is a 700px canvas with two phones at pixel offsets; on a phone the
+     first is shown in flow and the second (and the mascot) dropped. The
+     home artboard shows no phone at all, but /application is about the app
+     and a phoneless app page would be odd; one phone on both is the
+     judgement. */
+  .frame :global(.sp-phone-stage) {
+    --sp-grid-r2: repeat(2, minmax(0, 1fr));
+    --sp-fs-16: 16px;
+    --sp-fs-18: 18px;
+    --sp-pad-44-20-0: 44px 20px 0;
+    height: auto !important;
+    display: flex;
+    justify-content: center;
+    padding-top: 12px;
+  }
+  .frame :global(.sp-phone-stage) > :first-child {
+    position: static !important;
+  }
+  .frame :global(.sp-phone-stage) > :not(:first-child) {
+    display: none !important;
+  }
+
+  /* The closing band. The artboard insets it 20px with a 24px radius and
+     leans the mascot out of the top corner at 150px, without her bubble. */
+  .frame :global(.sp-cta-band) {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 24px !important;
+  }
+  .frame :global(.sp-cta-band) :global(a) {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+  .frame :global(.sp-cta-mascot) {
+    position: absolute !important;
+    inset-inline-end: -24px;
+    top: -18px;
+    width: 150px !important;
+    height: 150px !important;
+    pointer-events: none;
+  }
+  .frame :global(.sp-cta-mascot) > :global(img) {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  .frame :global(.sp-cta-mascot) > :global(div) {
+    display: none;
+  }
+  /* Room for the mascot: the heading gives way to her on the phone
+     artboard (`max-width: 220px`). */
+  .frame :global(.sp-cta-band) :global(h2) {
+    max-width: calc(100% - 96px);
+  }
+
+  /* -- two-track rows ------------------------------------------------------ */
+
+  /* A row of two blocks the artboard never collapses — a section head with
+     its caption beside it, a sub-page hero beside its figure, the navy
+     sourcing card beside its image panel — becomes a column: text first,
+     the caption or picture below. The porter marks the pattern
+     (`_is_two_track`); inline `align-items` is beaten so the blocks stretch
+     rather than hang off one edge, and a panel's drawn width gives way to
+     the column's. */
+  .frame :global(.sp-two-track) {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .frame :global(.sp-two-track) > :global(div) {
+    width: auto !important;
+  }
+  /* The store badges, drawn pushed to the far end of their row, sit at the
+     start once they are under the text. Inline justify-content beaten. */
+  .frame :global(.sp-two-track-tail) {
+    justify-content: flex-start !important;
+  }
+  /* The call to action under its text takes the full width, as every
+     button on the phone artboard does. */
+  .frame :global(.sp-two-track) > :global(a) {
+    width: 100%;
+    justify-content: center;
+  }
+  .frame :global(.sp-two-track) > :global(img),
+  .frame :global(.sp-hero-figure) {
+    align-self: center;
+  }
+  /* In the column the figure's flex-basis would become its height. */
+  .frame :global(.sp-hero-figure) {
+    flex-basis: auto !important;
+  }
+
+  /* The quote page's "You are" radio row: label plus two chips in a flex
+     row that is wider than a phone in every language but Chinese. */
+  .frame :global([role="radiogroup"]) {
+    flex-wrap: wrap;
+  }
+
+  /* The phone mockup is drawn 300px wide; at 320 that leaves no gutter. It
+     has no inline max-width, so this needs no override. */
+  .frame :global(.sp-phone-stage) > :first-child > :global(div) {
+    max-width: 100%;
+  }
+
+  /* Contact: the mascot and bubble are pinned to the aside's corner with
+     right/bottom offsets that assume a 400px-wide aside. */
+  .frame :global(.sp-contact-art) {
+    display: none !important;
+  }
+
+  /* 404: the big numeral is pinned 50px from the right of a 440px disc. */
+  .frame :global(.sp-404-numeral) {
+    inset-inline-end: 16px !important;
+    top: 16px !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * The header shell: nav in a row on wide windows, a drawer below 1100.
+ *
+ * 1100 rather than 768 because the five links, the language button, the
+ * client-area link and the quote button do not fit a 1024px header in German
+ * or Russian; hiding a link's label to squeeze them in is worse than a menu.
+ * ------------------------------------------------------------------------- */
+
+.burger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #0e1a3d;
+  cursor: pointer;
+}
+.burger:focus-visible {
+  outline: 2px solid #155dfc;
+  outline-offset: 2px;
+}
+
+@media (max-width: 1099.98px) {
+  /* The transcribed nav and the two action links carry an inline `display`
+     from the artboard; on a narrow window they live in the drawer instead. */
+  .nav,
+  .headerAction {
+    display: none !important;
+  }
+  .burger {
+    display: inline-flex;
+  }
+
+  .scrim {
+    position: absolute;
+    top: 100%;
+    inset-inline: 0;
+    height: 100vh;
+    border: 0;
+    padding: 0;
+    background: rgba(11, 20, 51, 0.4);
+    cursor: default;
+  }
+
+  .drawer {
+    position: absolute;
+    top: 100%;
+    inset-inline: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: calc(100dvh - var(--sp-header-h));
+    overflow-y: auto;
+    padding: 8px var(--sp-gutter-header, 20px) 24px;
+    background: #f5f7fc;
+    border-bottom: 1px solid #dce3f2;
+    box-shadow: 0 18px 40px -20px rgba(14, 26, 61, 0.45);
+    animation: sp-drawer-in var(--duration-base, 200ms) var(--ease-emphasize, ease-out) both;
+  }
+  .drawerNav {
+    display: flex;
+    flex-direction: column;
+  }
+  .drawerLink {
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    padding: 12px 0;
+    border-bottom: 1px solid #dce3f2;
+  }
+  .drawerActions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@keyframes sp-drawer-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The language menu. Anchored under its button on a wide window. On a phone
+   the button sits at the top-right and a 358px menu hung from it runs off the
+   left edge, so the root stops being the containing block (the sticky header
+   is) and the menu spans the viewport, 16px in from each side. */
+.localeRoot {
+  position: relative;
+}
+.localeMenu {
+  position: absolute;
+  inset-inline-end: 0;
+  top: calc(100% + 10px);
+  z-index: 50;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  display: grid;
+  /* An explicit width: `1fr` tracks inside an absolutely positioned box
+     with no width resolve against a width that does not exist yet, which
+     is what once put a horizontal scrollbar inside the menu. */
+  width: min(calc(100vw - 32px), 420px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px;
+  background: #ffffff;
+  border: 1px solid #dce3f2;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px -20px rgba(14, 26, 61, 0.45);
+}
+@media (max-width: 767.98px) {
+  .localeRoot {
+    position: static;
+  }
+  .localeMenu {
+    inset-inline: 16px;
+    top: calc(100% + 8px);
+    width: auto;
+  }
+}
+
+/* The language button on a phone: the artboard draws it without its border
+   or chevron — a bare globe and code, 44px tall. */
+.localeButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid #dce3f2;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0e1a3d;
+  font-family: "Onest", "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+@media (max-width: 767.98px) {
+  .localeButton {
+    gap: 6px;
+    min-width: 44px;
+    padding: 0 10px;
+    border: 0;
+    background: transparent;
+  }
+  .localeButton > :global(svg):last-child {
+    display: none;
   }
 }

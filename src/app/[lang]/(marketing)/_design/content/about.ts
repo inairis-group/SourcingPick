@@ -640,7 +640,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "56px",
+        fontSize: "var(--sp-fs-56, 56px)",
         lineHeight: "1.06",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -650,7 +650,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "56px",
+        fontSize: "var(--sp-fs-56, 56px)",
         lineHeight: "1.06",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -660,7 +660,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "56px",
+        fontSize: "var(--sp-fs-56, 56px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -670,7 +670,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "54.5px",
+        fontSize: "calc(var(--sp-fs-56, 56px) * 0.9732)",
         lineHeight: "1.06",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -680,7 +680,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "56px",
+        fontSize: "var(--sp-fs-56, 56px)",
         lineHeight: "1.06",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -690,7 +690,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "56px",
+        fontSize: "var(--sp-fs-56, 56px)",
         lineHeight: "1.06",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -700,7 +700,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "56px",
+        fontSize: "var(--sp-fs-56, 56px)",
         lineHeight: "1.06",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -710,7 +710,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "56px",
+        fontSize: "var(--sp-fs-56, 56px)",
         lineHeight: "1.06",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -720,7 +720,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "56px",
+        fontSize: "var(--sp-fs-56, 56px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -730,7 +730,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "56px",
+        fontSize: "var(--sp-fs-56, 56px)",
         lineHeight: "1.06",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -740,7 +740,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "56px",
+        fontSize: "var(--sp-fs-56, 56px)",
         lineHeight: "1.06",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -752,7 +752,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -762,7 +762,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -772,7 +772,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -782,7 +782,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "37.4px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9350)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -792,7 +792,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "36.3px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9075)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -802,7 +802,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "37.4px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9350)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -812,7 +812,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "37.4px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9350)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -822,7 +822,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -832,7 +832,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -842,7 +842,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -852,7 +852,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -864,7 +864,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -874,7 +874,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -884,7 +884,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -894,7 +894,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "38.4px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9600)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -904,7 +904,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -914,7 +914,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -924,7 +924,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "36.9px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9225)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -934,7 +934,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "37.6px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9400)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -944,7 +944,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -954,7 +954,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "39.2px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9800)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -964,7 +964,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "36.3px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9075)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -976,7 +976,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -986,7 +986,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -996,7 +996,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -1006,7 +1006,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1016,7 +1016,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1026,7 +1026,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1036,7 +1036,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1046,7 +1046,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1056,7 +1056,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -1066,7 +1066,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1076,7 +1076,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1095,7 +1095,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       en: {
@@ -1108,7 +1108,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       zh: {
@@ -1121,7 +1121,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       es: {
@@ -1134,7 +1134,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       de: {
@@ -1147,7 +1147,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       it: {
@@ -1160,7 +1160,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       pt: {
@@ -1173,7 +1173,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       nl: {
@@ -1186,7 +1186,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       ar: {
@@ -1199,7 +1199,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       ru: {
@@ -1212,7 +1212,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       pl: {
@@ -1225,7 +1225,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
     },
@@ -1233,7 +1233,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1243,7 +1243,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1253,7 +1253,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -1263,7 +1263,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1273,7 +1273,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1283,7 +1283,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1293,7 +1293,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1303,7 +1303,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1313,7 +1313,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -1323,7 +1323,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1333,7 +1333,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1352,7 +1352,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       en: {
@@ -1365,7 +1365,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       zh: {
@@ -1378,7 +1378,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       es: {
@@ -1391,7 +1391,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       de: {
@@ -1404,7 +1404,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       it: {
@@ -1417,7 +1417,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       pt: {
@@ -1430,7 +1430,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       nl: {
@@ -1443,7 +1443,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       ar: {
@@ -1456,7 +1456,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       ru: {
@@ -1469,7 +1469,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
       pl: {
@@ -1482,7 +1482,7 @@ export const about = {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "26px",
+        fontSize: "var(--sp-fs-26, 26px)",
         fontWeight: "600",
       },
     },
@@ -1490,7 +1490,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1500,7 +1500,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1510,7 +1510,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -1520,7 +1520,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1530,7 +1530,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1540,7 +1540,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1550,7 +1550,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1560,7 +1560,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1570,7 +1570,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -1580,7 +1580,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1590,7 +1590,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1602,7 +1602,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1612,7 +1612,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1622,7 +1622,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -1632,7 +1632,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1642,7 +1642,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1652,7 +1652,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1662,7 +1662,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1672,7 +1672,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1682,7 +1682,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -1692,7 +1692,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1702,7 +1702,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "22px",
+        fontSize: "var(--sp-fs-22, 22px)",
         lineHeight: "1.2",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1714,7 +1714,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1724,7 +1724,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1734,7 +1734,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -1744,7 +1744,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "34.6px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.8650)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1754,7 +1754,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "37.6px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9400)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1764,7 +1764,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "38.7px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9675)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1774,7 +1774,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "33.0px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.8250)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1784,7 +1784,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "37.6px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9400)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1794,7 +1794,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "40px",
+        fontSize: "var(--sp-fs-40, 40px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -1804,7 +1804,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "36.5px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9125)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1814,7 +1814,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "36.5px",
+        fontSize: "calc(var(--sp-fs-40, 40px) * 0.9125)",
         lineHeight: "1.1",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1826,7 +1826,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1836,7 +1836,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1846,7 +1846,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -1856,7 +1856,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1866,7 +1866,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1876,7 +1876,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1886,7 +1886,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1896,7 +1896,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1906,7 +1906,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -1916,7 +1916,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1926,7 +1926,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1938,7 +1938,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1948,7 +1948,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1958,7 +1958,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -1968,7 +1968,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1978,7 +1978,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1988,7 +1988,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -1998,7 +1998,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2008,7 +2008,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2018,7 +2018,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -2028,7 +2028,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2038,7 +2038,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2050,7 +2050,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2060,7 +2060,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2070,7 +2070,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -2080,7 +2080,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2090,7 +2090,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2100,7 +2100,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2110,7 +2110,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2120,7 +2120,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2130,7 +2130,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -2140,7 +2140,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2150,7 +2150,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "20px",
+        fontSize: "var(--sp-fs-20, 20px)",
         lineHeight: "1.25",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2162,7 +2162,7 @@ export const about = {
       fr: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2172,7 +2172,7 @@ export const about = {
       en: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2182,7 +2182,7 @@ export const about = {
       zh: {
         margin: "0",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.3",
         fontWeight: "700",
         letterSpacing: "0",
@@ -2192,7 +2192,7 @@ export const about = {
       es: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2202,7 +2202,7 @@ export const about = {
       de: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "44.3px",
+        fontSize: "calc(var(--sp-fs-48, 48px) * 0.9229)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2212,7 +2212,7 @@ export const about = {
       it: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2222,7 +2222,7 @@ export const about = {
       pt: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2232,7 +2232,7 @@ export const about = {
       nl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2242,7 +2242,7 @@ export const about = {
       ar: {
         margin: "0",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.3",
         fontWeight: "600",
         letterSpacing: "0",
@@ -2252,7 +2252,7 @@ export const about = {
       ru: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "48px",
+        fontSize: "var(--sp-fs-48, 48px)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2262,7 +2262,7 @@ export const about = {
       pl: {
         margin: "0",
         fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-        fontSize: "45.8px",
+        fontSize: "calc(var(--sp-fs-48, 48px) * 0.9542)",
         lineHeight: "1.08",
         fontWeight: "600",
         letterSpacing: "-0.03em",
@@ -2426,7 +2426,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "#FFFFFF",
         color: "#0E1A3D",
         border: "1.5px solid #FFFFFF",
@@ -2442,7 +2442,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "#FFFFFF",
         color: "#0E1A3D",
         border: "1.5px solid #FFFFFF",
@@ -2458,7 +2458,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "#FFFFFF",
         color: "#0E1A3D",
         border: "1.5px solid #FFFFFF",
@@ -2474,7 +2474,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "#FFFFFF",
         color: "#0E1A3D",
         border: "1.5px solid #FFFFFF",
@@ -2490,7 +2490,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "#FFFFFF",
         color: "#0E1A3D",
         border: "1.5px solid #FFFFFF",
@@ -2506,7 +2506,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "#FFFFFF",
         color: "#0E1A3D",
         border: "1.5px solid #FFFFFF",
@@ -2522,7 +2522,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "#FFFFFF",
         color: "#0E1A3D",
         border: "1.5px solid #FFFFFF",
@@ -2538,7 +2538,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "#FFFFFF",
         color: "#0E1A3D",
         border: "1.5px solid #FFFFFF",
@@ -2554,7 +2554,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "#FFFFFF",
         color: "#0E1A3D",
         border: "1.5px solid #FFFFFF",
@@ -2570,7 +2570,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "#FFFFFF",
         color: "#0E1A3D",
         border: "1.5px solid #FFFFFF",
@@ -2586,7 +2586,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "#FFFFFF",
         color: "#0E1A3D",
         border: "1.5px solid #FFFFFF",
@@ -2604,7 +2604,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "transparent",
         color: "#FFFFFF",
         border: "1.5px solid rgba(255,255,255,0.28)",
@@ -2620,7 +2620,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "transparent",
         color: "#FFFFFF",
         border: "1.5px solid rgba(255,255,255,0.28)",
@@ -2636,7 +2636,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "transparent",
         color: "#FFFFFF",
         border: "1.5px solid rgba(255,255,255,0.28)",
@@ -2652,7 +2652,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "transparent",
         color: "#FFFFFF",
         border: "1.5px solid rgba(255,255,255,0.28)",
@@ -2668,7 +2668,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "transparent",
         color: "#FFFFFF",
         border: "1.5px solid rgba(255,255,255,0.28)",
@@ -2684,7 +2684,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "transparent",
         color: "#FFFFFF",
         border: "1.5px solid rgba(255,255,255,0.28)",
@@ -2700,7 +2700,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "transparent",
         color: "#FFFFFF",
         border: "1.5px solid rgba(255,255,255,0.28)",
@@ -2716,7 +2716,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "transparent",
         color: "#FFFFFF",
         border: "1.5px solid rgba(255,255,255,0.28)",
@@ -2732,7 +2732,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Readex Pro', 'Segoe UI', Tahoma, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "transparent",
         color: "#FFFFFF",
         border: "1.5px solid rgba(255,255,255,0.28)",
@@ -2748,7 +2748,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "transparent",
         color: "#FFFFFF",
         border: "1.5px solid rgba(255,255,255,0.28)",
@@ -2764,7 +2764,7 @@ export const about = {
         borderRadius: "12px",
         fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
         fontWeight: "600",
-        fontSize: "17px",
+        fontSize: "var(--sp-fs-17, 17px)",
         background: "transparent",
         color: "#FFFFFF",
         border: "1.5px solid rgba(255,255,255,0.28)",

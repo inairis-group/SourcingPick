@@ -25,7 +25,8 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
     <>
       <section
         style={{
-          padding: "72px 120px 40px",
+          padding:
+            "calc(72px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(40px * var(--sp-vs, 1))",
           display: "flex",
           flexDirection: "column",
           gap: "18px",
@@ -57,7 +58,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
           style={{
             margin: "0",
             fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-            fontSize: "45.0px",
+            fontSize: "calc(var(--sp-fs-46, 46px) * 0.9783)",
             lineHeight: "1.08",
             fontWeight: "600",
             letterSpacing: "-0.03em",
@@ -67,14 +68,23 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
         >
           {t[1]}
         </h1>
-        <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#4A5578" }}>{t[2]}</p>
+        <p
+          style={{
+            margin: "0",
+            fontSize: "var(--sp-fs-18, 18px)",
+            lineHeight: "1.6",
+            color: "#4A5578",
+          }}
+        >
+          {t[2]}
+        </p>
       </section>
       <section
         style={{
-          padding: "0 120px 104px",
+          padding: "0 var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))",
           display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) 380px",
-          gap: "40px",
+          gridTemplateColumns: "var(--sp-grid-fr-380, minmax(0, 1fr) 380px)",
+          gap: "var(--sp-gap-40, 40px)",
           alignItems: "start",
         }}
       >
@@ -82,7 +92,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
           <fieldset
             style={{
               margin: "0",
-              padding: "32px",
+              padding: "var(--sp-pad-32, 32px)",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
               background: "#F5F7FC",
@@ -95,7 +105,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
               style={{
                 padding: "0 8px",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "20px",
+                fontSize: "var(--sp-fs-20, 20px)",
                 fontWeight: "600",
                 letterSpacing: "-0.01em",
                 color: "#0E1A3D",
@@ -107,7 +117,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
               role="radiogroup"
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "14px",
               }}
             >
@@ -142,7 +152,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                       display: "flex",
                       alignItems: "center",
                       gap: "8px",
-                      fontSize: "16.5px",
+                      fontSize: "var(--sp-fs-16_5, 16.5px)",
                       fontWeight: "600",
                     }}
                   >
@@ -195,7 +205,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                       display: "flex",
                       alignItems: "center",
                       gap: "8px",
-                      fontSize: "16.5px",
+                      fontSize: "var(--sp-fs-16_5, 16.5px)",
                       fontWeight: "600",
                     }}
                   >
@@ -223,7 +233,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
           <fieldset
             style={{
               margin: "0",
-              padding: "32px",
+              padding: "var(--sp-pad-32, 32px)",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
               background: "#F5F7FC",
@@ -236,7 +246,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
               style={{
                 padding: "0 8px",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "20px",
+                fontSize: "var(--sp-fs-20, 20px)",
                 fontWeight: "600",
                 letterSpacing: "-0.01em",
                 color: "#0E1A3D",
@@ -262,7 +272,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                   border: "1.5px solid #DCE3F2",
                   background: "#FFFFFF",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   color: "#0E1A3D",
                   outline: "0",
                 }}
@@ -272,7 +282,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "16px",
               }}
             >
@@ -294,7 +304,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                     border: "1.5px solid #DCE3F2",
                     background: "#FFFFFF",
                     fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "var(--sp-fs-16, 16px)",
                     color: "#0E1A3D",
                     outline: "0",
                   }}
@@ -319,7 +329,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                     border: "1.5px solid #DCE3F2",
                     background: "#FFFFFF",
                     fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "var(--sp-fs-16, 16px)",
                     color: "#0E1A3D",
                     outline: "0",
                   }}
@@ -330,7 +340,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "16px",
               }}
             >
@@ -352,7 +362,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                     border: "1.5px solid #DCE3F2",
                     background: "#FFFFFF",
                     fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "var(--sp-fs-16, 16px)",
                     color: "#0E1A3D",
                     outline: "0",
                   }}
@@ -377,7 +387,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                     border: "1.5px solid #DCE3F2",
                     background: "#FFFFFF",
                     fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "var(--sp-fs-16, 16px)",
                     color: "#0E1A3D",
                     outline: "0",
                   }}
@@ -403,7 +413,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                   border: "1.5px solid #DCE3F2",
                   background: "#FFFFFF",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   color: "#0E1A3D",
                   outline: "0",
                 }}
@@ -414,7 +424,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
           <fieldset
             style={{
               margin: "0",
-              padding: "32px",
+              padding: "var(--sp-pad-32, 32px)",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
               background: "#F5F7FC",
@@ -427,7 +437,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
               style={{
                 padding: "0 8px",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "20px",
+                fontSize: "var(--sp-fs-20, 20px)",
                 fontWeight: "600",
                 letterSpacing: "-0.01em",
                 color: "#0E1A3D",
@@ -438,7 +448,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "16px",
               }}
             >
@@ -468,7 +478,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                       border: "0",
                       background: "transparent",
                       fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                      fontSize: "16px",
+                      fontSize: "var(--sp-fs-16, 16px)",
                       color: "#6B7596",
                       outline: "0",
                       appearance: "none",
@@ -511,7 +521,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                     border: "1.5px solid #DCE3F2",
                     background: "#FFFFFF",
                     fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "var(--sp-fs-16, 16px)",
                     color: "#0E1A3D",
                     outline: "0",
                   }}
@@ -537,7 +547,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                   border: "1.5px solid #DCE3F2",
                   background: "#FFFFFF",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   color: "#0E1A3D",
                   outline: "0",
                 }}
@@ -548,7 +558,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
           <fieldset
             style={{
               margin: "0",
-              padding: "32px",
+              padding: "var(--sp-pad-32, 32px)",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
               background: "#F5F7FC",
@@ -561,7 +571,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
               style={{
                 padding: "0 8px",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "20px",
+                fontSize: "var(--sp-fs-20, 20px)",
                 fontWeight: "600",
                 letterSpacing: "-0.01em",
                 color: "#0E1A3D",
@@ -621,7 +631,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "16px",
               }}
             >
@@ -643,7 +653,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                     border: "1.5px solid #DCE3F2",
                     background: "#FFFFFF",
                     fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "var(--sp-fs-16, 16px)",
                     color: "#0E1A3D",
                     outline: "0",
                   }}
@@ -668,7 +678,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                     border: "1.5px solid #DCE3F2",
                     background: "#FFFFFF",
                     fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "var(--sp-fs-16, 16px)",
                     color: "#0E1A3D",
                     outline: "0",
                   }}
@@ -679,7 +689,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gridTemplateColumns: "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))",
                 gap: "16px",
               }}
             >
@@ -701,7 +711,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                     border: "1.5px solid #DCE3F2",
                     background: "#FFFFFF",
                     fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "var(--sp-fs-16, 16px)",
                     color: "#0E1A3D",
                     outline: "0",
                   }}
@@ -726,7 +736,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                     border: "1.5px solid #DCE3F2",
                     background: "#FFFFFF",
                     fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "var(--sp-fs-16, 16px)",
                     color: "#0E1A3D",
                     outline: "0",
                   }}
@@ -796,7 +806,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                   border: "1.5px solid #DCE3F2",
                   background: "#FFFFFF",
                   fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
-                  fontSize: "16px",
+                  fontSize: "var(--sp-fs-16, 16px)",
                   color: "#0E1A3D",
                   resize: "none",
                   outline: "0",
@@ -845,7 +855,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
                 borderRadius: "12px",
                 fontFamily: "'Onest', 'Segoe UI', system-ui, sans-serif",
                 fontWeight: "600",
-                fontSize: "17px",
+                fontSize: "var(--sp-fs-17, 17px)",
                 background: "#155DFC",
                 color: "#FFFFFF",
                 border: "1.5px solid #155DFC",
@@ -876,7 +886,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
             style={{
               background: "#162456",
               borderRadius: "24px",
-              padding: "32px",
+              padding: "var(--sp-pad-32, 32px)",
               display: "flex",
               flexDirection: "column",
               gap: "20px",
@@ -886,7 +896,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
               style={{
                 margin: "0",
                 fontFamily: "'Unbounded', 'Trebuchet MS', sans-serif",
-                fontSize: "22px",
+                fontSize: "var(--sp-fs-22, 22px)",
                 lineHeight: "1.2",
                 fontWeight: "600",
                 letterSpacing: "-0.03em",
@@ -915,7 +925,13 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
               >
                 {t[45]}
               </span>
-              <span style={{ fontSize: "15.5px", lineHeight: "1.55", color: "#FFFFFF" }}>
+              <span
+                style={{
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
+                  lineHeight: "1.55",
+                  color: "#FFFFFF",
+                }}
+              >
                 {t[46]}
               </span>
             </div>
@@ -938,8 +954,15 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
               >
                 {t[47]}
               </span>
-              <span style={{ fontSize: "15.5px", lineHeight: "1.55", color: "#FFFFFF" }}>
+              <span
+                style={{
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
+                  lineHeight: "1.55",
+                  color: "#FFFFFF",
+                }}
+              >
                 <span
+                  className="sp-placeholder"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -978,7 +1001,13 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
               >
                 {t[50]}
               </span>
-              <span style={{ fontSize: "15.5px", lineHeight: "1.55", color: "#FFFFFF" }}>
+              <span
+                style={{
+                  fontSize: "var(--sp-fs-15_5, 15.5px)",
+                  lineHeight: "1.55",
+                  color: "#FFFFFF",
+                }}
+              >
                 {t[51]}
               </span>
             </div>
@@ -988,13 +1017,15 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
               background: "#FFFFFF",
               border: "1px solid #DCE3F2",
               borderRadius: "24px",
-              padding: "26px",
+              padding: "var(--sp-pad-26, 26px)",
               display: "flex",
               flexDirection: "column",
               gap: "10px",
             }}
           >
-            <span style={{ fontSize: "15.5px", fontWeight: "600" }}>{t[52]}</span>
+            <span style={{ fontSize: "var(--sp-fs-15_5, 15.5px)", fontWeight: "600" }}>
+              {t[52]}
+            </span>
             <a href="mailto:contact@sourcingpick.com" style={{ fontWeight: "600" }} dir="ltr">
               {t[53]}
             </a>
@@ -1031,7 +1062,7 @@ export function QuoteBoardTR({ lang }: { lang: Locale }) {
           <img
             src="/design/spot-5.svg"
             alt=""
-            style={{ width: "200px", height: "200px", alignSelf: "center" }}
+            style={{ width: "200px", height: "auto", alignSelf: "center", maxWidth: "100%" }}
           />
         </aside>
       </section>
