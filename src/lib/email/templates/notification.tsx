@@ -1,15 +1,5 @@
-import {
-  Body,
-  Button,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Preview,
-  Section,
-  Text,
-} from "react-email";
-import { directionFor, type Locale } from "@/lib/i18n/config";
+import { Body, Button, Container, Head, Heading, Html, Preview, Section, Text } from "react-email";
+import { appLocaleFor, directionFor, type AppLocale, type Locale } from "@/lib/i18n/config";
 
 type NotificationEmailProps = {
   title: string;
@@ -19,7 +9,10 @@ type NotificationEmailProps = {
   locale: Locale;
 };
 
-const FOOTER: Record<Locale, string> = {
+// Product copy, so it is keyed by the four languages the product speaks —
+// see `appLocaleFor`. The reader's own language still sets <html lang> and the
+// text direction, which is what a mail client needs for hyphenation and voice.
+const FOOTER: Record<AppLocale, string> = {
   fr: "SourcingPick · le sourcing international, industrialisé.",
   en: "SourcingPick · international sourcing, industrialised.",
   zh: "SourcingPick · 工业化的国际采购平台。",
@@ -40,8 +33,7 @@ export default function NotificationEmail({
       <Body
         style={{
           backgroundColor: "#f8fafc",
-          fontFamily:
-            'Geist, ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
+          fontFamily: 'Geist, ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
           color: "#1e293b",
           margin: 0,
           padding: "32px 16px",
@@ -109,7 +101,7 @@ export default function NotificationEmail({
             margin: "24px 0 0 0",
           }}
         >
-          {FOOTER[locale]}
+          {FOOTER[appLocaleFor(locale)]}
         </Text>
       </Body>
     </Html>

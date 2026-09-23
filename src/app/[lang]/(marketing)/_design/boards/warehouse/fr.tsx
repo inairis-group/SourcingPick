@@ -1,21 +1,23 @@
 // GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
-// Source: Site-Entrepot.dc.html
+// Source: fr-Entrepot.dc.html (and 10 more)
 // Regenerate: npm run design:port
 /*
  * Markup, spacing and colour are the design's own, transcribed rather than
- * interpreted. Copy lives in ../content/warehouse.ts as four arrays zipped by
- * position, which is sound because the four artboards were checked to have
- * identical tag-and-attribute structure before anything was written.
+ * interpreted. Copy lives in ../../content/warehouse.ts, one array per locale, zipped by
+ * position — sound because the artboards behind this file were checked to
+ * have identical tag-and-attribute structure before anything was written.
+ *
+ * Locales using this shape: fr, en, zh, es, de, it, pt, nl, ar, ru, pl.
  */
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
-import { warehouse as content } from "../content/warehouse";
+import { warehouse as content } from "../../content/warehouse";
 
-export function WarehouseBoard({ lang }: { lang: Locale }) {
+export function WarehouseBoardFR({ lang }: { lang: Locale }) {
   const t = content.text[lang];
-  const s = content.styles;
-  const v = content.values;
+  const s = content.frStyles;
+  const v = content.frValues;
 
   return (
     <>

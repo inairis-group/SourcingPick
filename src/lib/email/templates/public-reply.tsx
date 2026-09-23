@@ -1,14 +1,5 @@
-import {
-  Body,
-  Container,
-  Head,
-  Hr,
-  Html,
-  Preview,
-  Section,
-  Text,
-} from "react-email";
-import { directionFor, type Locale } from "@/lib/i18n/config";
+import { Body, Container, Head, Hr, Html, Preview, Section, Text } from "react-email";
+import { appLocaleFor, directionFor, type AppLocale, type Locale } from "@/lib/i18n/config";
 
 /**
  * The team's answer to a public-chat visitor, delivered to their inbox.
@@ -29,7 +20,7 @@ import { directionFor, type Locale } from "@/lib/i18n/config";
  */
 
 const COPY: Record<
-  Locale,
+  AppLocale,
   { heading: string; replyHint: string; replyByMail: string; footer: string }
 > = {
   fr: {
@@ -44,8 +35,7 @@ const COPY: Record<
     heading: "A reply from the SourcingPick team",
     replyHint:
       "To continue, pick the conversation back up in the chat on our site — the whole history is waiting there.",
-    replyByMail:
-      "Just reply to this email — your answer lands straight back in our conversation.",
+    replyByMail: "Just reply to this email — your answer lands straight back in our conversation.",
     footer: "SourcingPick — sourcing from China",
   },
   zh: {
@@ -58,8 +48,7 @@ const COPY: Record<
     heading: "رد من فريق SourcingPick",
     replyHint:
       "لمتابعة الحديث، عُد إلى نافذة الدردشة على موقعنا — سجلّ المحادثة كاملًا محفوظ هناك.",
-    replyByMail:
-      "يكفي أن ترد على هذا البريد — سيصل ردك مباشرة إلى محادثتنا.",
+    replyByMail: "يكفي أن ترد على هذا البريد — سيصل ردك مباشرة إلى محادثتنا.",
     footer: "SourcingPick — التوريد من الصين",
   },
 };
@@ -80,7 +69,7 @@ export default function PublicReplyEmail({
    */
   canReplyByEmail?: boolean;
 }) {
-  const t = COPY[locale];
+  const t = COPY[appLocaleFor(locale)];
   const dir = directionFor(locale);
 
   return (
@@ -90,8 +79,7 @@ export default function PublicReplyEmail({
       <Body
         style={{
           backgroundColor: "#f6f7f9",
-          fontFamily:
-            "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
           margin: 0,
           padding: "24px 0",
         }}
@@ -152,9 +140,7 @@ export default function PublicReplyEmail({
           <Text style={{ color: "#6b7280", fontSize: "12px", margin: "0 0 4px" }}>
             {canReplyByEmail ? t.replyByMail : t.replyHint}
           </Text>
-          <Text style={{ color: "#9ca3af", fontSize: "11px", margin: 0 }}>
-            {t.footer}
-          </Text>
+          <Text style={{ color: "#9ca3af", fontSize: "11px", margin: 0 }}>{t.footer}</Text>
         </Container>
       </Body>
     </Html>

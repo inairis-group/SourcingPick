@@ -47,7 +47,11 @@ CANVAS = os.environ.get(
 )
 ASSETS = json.load(open(os.path.join(os.path.dirname(__file__), "asset-map.json")))
 
-LOCALES = ("fr", "en", "zh", "ar")
+# The canvas ships twelve. French is its base layer and the one the porter
+# reads structure from; the rest follow it.
+LOCALES = (
+    "fr", "en", "zh", "es", "de", "it", "pt", "nl", "ar", "ru", "tr", "pl",
+)
 
 class Page:
     """One artboard and where it lands.
@@ -168,28 +172,88 @@ IN_PAGE = {
 SUBMITS = {"Envoyer", "Envoyer ma demande"}
 
 
-def resolve_href(node: Element, raw: str):
-    """-> (jsx value, is_internal_route) | None"""
+# Structure is read from one artboard per shape, and for the Turkish shape that
+# artboard is Turkish — so its anchors say "Teklif isteyin", not "Demander un
+# devis". Routes are therefore carried across by *position*: the nth anchor of a
+# page is the nth anchor in every language. Position rather than text, because
+# text is ambiguous — in English the FAQ's "Contrôle" tab and the footer's
+# "Vérification" link both read "Inspection" and go to different places.
+
+
+def anchors(nodes: list[Element]) -> list[Element]:
+    out: list[Element] = []
+
+    def walk(n):
+        if isinstance(n, str):
+            return
+        if n.tag == "a":
+            out.append(n)
+        for c in n.children:
+            walk(c)
+
+    for n in nodes:
+        walk(n)
+    return out
+
+
+def french_route(node: Element, label: str, raw: str) -> str | None:
+    """Where a French anchor points, or None when we do not emit it as a link."""
+    if node.attr("lang"):
+        # One of the twelve language links along the foot of the page. Our own
+        # LocaleRow stands in for the whole strip, so these are never emitted.
+        return None
     if raw.startswith("mailto:") or raw.startswith("http"):
-        return json.dumps(raw), False
-    label = text_of(node)
+        return raw
     if not label:
-        # The only text-free anchor in the canvas is the wordmark.
-        return "{`/${lang}`}", True
+        return "@home"  # the wordmark, the only anchor with no text
     if label in IN_PAGE:
-        return fragment(IN_PAGE[label])
+        return IN_PAGE[label]
     if raw.startswith("#") and raw != "#":
-        return fragment(raw)
+        return raw
     if label in SUBMITS:
         return None
     if label in ROUTES:
-        path = ROUTES[label]
-        if path == "/":
-            return "{`/${lang}`}", True
-        if path.startswith("/#"):
-            return "{`/${lang}" + path[1:] + "`}", True
-        return "{`/${lang}" + path + "`}", True
+        return ROUTES[label]
     raise SystemExit(f"unmapped link: {label!r} (href={raw!r})")
+
+
+def page_routes(stem: str) -> list[str | None]:
+    """One destination per anchor of the page, in document order.
+
+    Read from French and checked against every other language: a mismatch in
+    link count would mean the positions no longer correspond, and silently
+    shifting them is how a footer ends up linking to the wrong page.
+    """
+    fr = anchors(_whole(stem, "fr"))
+    routes = [french_route(a, text_of(a), a.attr("href") or "") for a in fr]
+    for loc in LOCALES:
+        n = len(anchors(_whole(stem, loc)))
+        if n != len(fr):
+            raise SystemExit(
+                f"{stem}: the {loc} artboard has {n} links where French has "
+                f"{len(fr)}; routes cannot be carried across by position"
+            )
+    return routes
+
+
+def _whole(stem: str, loc: str) -> list[Element]:
+    a, h, secs, f = board_parts(os.path.join(CANVAS, locale_file(stem, loc)))
+    return [a, h, *secs, f]
+
+
+def resolve_href(path: str | None, raw: str):
+    """-> (jsx value, is_internal_route) | None"""
+    if path is None:
+        return None
+    if path.startswith("mailto:") or path.startswith("http"):
+        return json.dumps(path), False
+    if path in ("@home", "/"):
+        return "{`/${lang}`}", True
+    if path.startswith("/#"):
+        return "{`/${lang}" + path[1:] + "`}", True
+    if path.startswith("#"):
+        return fragment(path)
+    return "{`/${lang}" + path + "`}", True
 
 
 # --- locale-switching chrome -------------------------------------------------
@@ -254,25 +318,26 @@ def variant_tables(per_locale: dict[str, list[Element]]):
     tracking, which is a real typographic decision and not noise. Those values
     travel per locale; everything else is inlined once.
     """
-    streams = {loc: attr_stream(per_locale[loc]) for loc in LOCALES}
-    n = len(streams["fr"])
+    locales = list(per_locale)
+    streams = {loc: attr_stream(per_locale[loc]) for loc in locales}
+    n = len(streams[locales[0]])
     variants: dict[int, tuple[str, int]] = {}
     styles: list[dict[str, dict[str, str]]] = []
     values: list[dict[str, str]] = []
 
     for idx in range(n):
-        tag, name, _ = streams["fr"][idx]
-        vals = {loc: streams[loc][idx][2] for loc in LOCALES}
+        tag, name, _ = streams[locales[0]][idx]
+        vals = {loc: streams[loc][idx][2] for loc in locales}
         if len({v or "" for v in vals.values()}) == 1:
             continue
         if name == "style":
             variants[idx] = ("style", len(styles))
             styles.append(
-                {loc: dict(css_object(vals[loc] or "")) for loc in LOCALES}
+                {loc: dict(css_object(vals[loc] or "")) for loc in locales}
             )
         else:
             variants[idx] = ("attr", len(values))
-            values.append({loc: vals[loc] or "" for loc in LOCALES})
+            values.append({loc: vals[loc] or "" for loc in locales})
     return variants, styles, values
 
 
@@ -295,33 +360,6 @@ BOARD_DOC = """/*
  */"""
 
 
-def board_component(page, lines: list[str], *, needs_link: bool, has_styles: bool,
-                    has_values: bool) -> str:
-    imports = []
-    if needs_link:
-        imports.append('import Link from "next/link";')
-    imports.append('import type { Locale } from "@/lib/i18n/config";')
-    imports.append(f'import {{ {page.key} as content }} from "../content/{page.key}";')
-    reads = ["  const t = content.text[lang];"]
-    if has_styles:
-        reads.append("  const s = content.styles;")
-    if has_values:
-        reads.append("  const v = content.values;")
-    body = "\n".join("      " + ln for ln in lines)
-    return (
-        BANNER.format(src=page.board)
-        + BOARD_DOC.format(key=page.key)
-        + "\n\n"
-        + "\n".join(imports)
-        + "\n\n"
-        + f"export function {page.comp}({{ lang }}: {{ lang: Locale }}) {{\n"
-        + "\n".join(reads)
-        + "\n\n  return (\n    <>\n"
-        + body
-        + "\n    </>\n  );\n}\n"
-    )
-
-
 def js(value) -> str:
     return json.dumps(value, ensure_ascii=False)
 
@@ -338,68 +376,17 @@ def lead_paragraph(strings: list[str]) -> str:
     return strings[1] if len(strings) > 1 else ""
 
 
-def content_module(page_key: str, src: str, text: dict[str, list[str]],
-                   styles: list, values: list, *, titles: dict[str, str] | None = None) -> str:
-    def text_block() -> str:
-        rows = []
-        for loc in LOCALES:
-            items = ",\n      ".join(js(x) for x in text[loc])
-            rows.append(f"    {loc}: [\n      {items},\n    ],")
-        return "  text: {\n" + "\n".join(rows) + "\n  },"
+BANNER = """// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// Source: {src}
+// Regenerate: npm run design:port
+"""
 
-    def style_block() -> str:
-        if not styles:
-            return "  styles: [] as Record<Locale, CSSProperties>[],"
-        rows = []
-        for entry in styles:
-            per = ", ".join(
-                f"{loc}: {{ "
-                + ", ".join(f"{js(k)}: {js(v)}" for k, v in entry[loc].items())
-                + " }"
-                for loc in LOCALES
-            )
-            rows.append("    { " + per + " },")
-        return "  styles: [\n" + "\n".join(rows) + "\n  ] as Record<Locale, CSSProperties>[],"
-
-    def value_block() -> str:
-        if not values:
-            return "  values: [] as Record<Locale, string>[],"
-        rows = [
-            "    { " + ", ".join(f"{loc}: {js(e[loc])}" for loc in LOCALES) + " },"
-            for e in values
-        ]
-        return "  values: [\n" + "\n".join(rows) + "\n  ] as Record<Locale, string>[],"
-
-    title_block = ""
-    if titles:
-        title_block = (
-            "  title: { "
-            + ", ".join(f"{loc}: {js(titles[loc])}" for loc in LOCALES)
-            + " } as Record<Locale, string>,\n"
-            + "  description: { "
-            + ", ".join(f"{loc}: {js(lead_paragraph(text[loc]))}" for loc in LOCALES)
-            + " } as Record<Locale, string>,\n"
-        )
-
-    return (
-        BANNER.format(src=src)
-        + "//\n"
-        + "// Position is the contract: index n names the same slot in all four\n"
-        + "// locales, proved against the artboards' structural signatures.\n"
-        + 'import type { CSSProperties } from "react";\n'
-        + 'import type { Locale } from "@/lib/i18n/config";\n\n'
-        + f"export const {page_key} = {{\n"
-        + title_block
-        + text_block()
-        + "\n"
-        + style_block()
-        + "\n"
-        + value_block()
-        + "\n};\n"
-    )
-
-
-BOARD_DIR = "src/app/[lang]/(marketing)/_design"
+BOARD_DOC = """/*
+ * Markup, spacing and colour are the design's own, transcribed rather than
+ * interpreted. Copy lives in {content}, one array per locale, zipped by
+ * position — sound because the artboards behind this file were checked to
+ * have identical tag-and-attribute structure before anything was written.
+ */"""
 
 
 def write(path: str, body: str) -> None:
@@ -423,7 +410,19 @@ def page_title(path: str) -> str:
 
 
 def aligned(stem: str):
-    """Parse all four locales of a page and prove they can be zipped."""
+    """Parse all twelve locales and group them by structure.
+
+    Most pages come out of the canvas with one shape shared by every language,
+    and their strings can be zipped by position. Some do not: Turkish puts the
+    "to be confirmed" placeholder at the head of a sentence that French ends
+    with, which moves a <span> and shifts every slot after it. Forcing those
+    into one component is precisely how a translation ends up under the wrong
+    heading, so each distinct shape gets its own transcription and the locales
+    that share it.
+
+    Returns (groups, text, titles) where a group is (locales, nodes-by-locale)
+    and `text` holds every locale's own slot stream, whatever its length.
+    """
     parts = {
         loc: board_parts(os.path.join(CANVAS, locale_file(stem, loc)))
         for loc in LOCALES
@@ -432,31 +431,30 @@ def aligned(stem: str):
         loc: [parts[loc][0], parts[loc][1], *parts[loc][2], parts[loc][3]]
         for loc in LOCALES
     }
-    base = [x for n in whole["fr"] for x in signature(n)]
-    for loc in LOCALES[1:]:
-        other = [x for n in whole[loc] for x in signature(n)]
-        if other != base:
-            at = next(
-                (i for i, (a, b) in enumerate(zip(base, other)) if a != b), len(base)
-            )
-            raise SystemExit(
-                f"{stem}: the {loc} artboard diverges from fr at node {at} "
-                f"({base[at:at+1]} vs {other[at:at+1]}). Strings cannot be "
-                "zipped by position — re-export the canvas."
-            )
+
+    shapes: dict[tuple, list[str]] = {}
+    for loc in LOCALES:
+        sig = tuple(x for n in whole[loc] for x in signature(n))
+        shapes.setdefault(sig, []).append(loc)
+    # French's group first, so it stays the default variant.
+    groups = sorted(shapes.values(), key=lambda g: 0 if "fr" in g else 1)
+
     text = {loc: [x for n in whole[loc] for x in slots(n)] for loc in LOCALES}
     titles = {
         loc: page_title(os.path.join(CANVAS, locale_file(stem, loc)))
         for loc in LOCALES
     }
-    return whole, text, titles
+    return [(g, {loc: whole[loc] for loc in g}) for g in groups], text, titles
 
 
-def emit_part(nodes, *, per_locale_nodes, start_i, start_a, offset, replacer=None):
+def emit_part(nodes, *, per_locale_nodes, start_i, start_a, offset, hrefs,
+              replacer=None):
+    """Emit `nodes` as JSX whose slot reads are shifted by `offset`."""
     variants, styles, values = variant_tables(per_locale_nodes)
     em = Emitter(
         assets=ASSETS,
         resolve_href=resolve_href,
+        hrefs=hrefs,
         variants={k + start_a: v for k, v in variants.items()},
         slot_expr=lambda i: f"t[{i - offset}]",
         replace=replacer,
@@ -466,47 +464,124 @@ def emit_part(nodes, *, per_locale_nodes, start_i, start_a, offset, replacer=Non
     return lines, em, styles, values
 
 
-def port_chrome() -> None:
-    """Header and footer — byte-identical on all thirteen artboards."""
-    whole, text, _ = aligned("Accueil")
-    n_head = sum(len(slots(n)) for n in whole["fr"][:2])
-    a_head = len(attr_stream(whole["fr"][:2]))
-    n_foot = len(slots(whole["fr"][-1]))
-    total = len(text["fr"])
-    total_a = len(attr_stream(whole["fr"]))
-    a_foot = len(attr_stream([whole["fr"][-1]]))
+def style_rows(styles: list) -> str:
+    if not styles:
+        return "[]"
+    rows = [
+        "    { "
+        + ", ".join(
+            f"{loc}: {{ " + ", ".join(f"{js(k)}: {js(v)}" for k, v in e[loc].items()) + " }"
+            for loc in e
+        )
+        + " },"
+        for e in styles
+    ]
+    return "[\n" + "\n".join(rows) + "\n  ]"
 
+
+def value_rows(values: list) -> str:
+    if not values:
+        return "[]"
+    rows = [
+        "    { " + ", ".join(f"{loc}: {js(e[loc])}" for loc in e) + " },"
+        for e in values
+    ]
+    return "[\n" + "\n".join(rows) + "\n  ]"
+
+
+BOARD_DIR = "src/app/[lang]/(marketing)/_design"
+
+
+# --- chrome ------------------------------------------------------------------
+
+
+def port_chrome() -> None:
+    """Header and footer — one pair for the whole site.
+
+    All thirteen artboards draw them identically in all twelve languages, which
+    is asserted rather than assumed: if a language ever moved something in the
+    header, two headers would be needed and this would say so.
+    """
+    parts = {
+        loc: board_parts(os.path.join(CANVAS, locale_file("Accueil", loc)))
+        for loc in LOCALES
+    }
+    head = {loc: [p[0], p[1]] for loc, p in parts.items()}
+    foot = {loc: [p[3]] for loc, p in parts.items()}
+    for label, group in (("header", head), ("footer", foot)):
+        shapes = {
+            tuple(x for n in v for x in signature(n)) for v in group.values()
+        }
+        if len(shapes) != 1:
+            raise SystemExit(
+                f"the {label} is not the same shape in every locale; it can no "
+                "longer be a single component"
+            )
+
+    fr = head["fr"]
+    n_head = sum(len(slots(n)) for n in fr)
+    n_foot = len(slots(foot["fr"][0]))
+    text = {
+        loc: [x for n in [p[0], p[1], *p[2], p[3]] for x in slots(n)]
+        for loc, p in parts.items()
+    }
+    a_total = len(attr_stream([parts["fr"][0], parts["fr"][1], *parts["fr"][2],
+                               parts["fr"][3]]))
+
+    routes = page_routes("Accueil")
     lines, em, styles, values = emit_part(
-        whole["fr"][:2],
-        per_locale_nodes={loc: whole[loc][:2] for loc in LOCALES},
-        start_i=0, start_a=0, offset=0, replacer=chrome_replacer,
+        fr, per_locale_nodes=head, start_i=0, start_a=0, offset=0,
+        hrefs=routes, replacer=chrome_replacer,
     )
+    n_head_anchors = em.k
     write(f"{BOARD_DIR}/site-header.tsx", chrome_component(
         "SiteHeader", "chrome", lines, em, styles, values,
         extra='import { LocaleSwitch } from "./locale-switch";',
         src="Main.dc.html — header; identical on every artboard",
     ))
-    write(f"{BOARD_DIR}/content/chrome.ts", content_module(
-        "chrome", "*-Accueil.dc.html (header)",
-        {loc: text[loc][:n_head] for loc in LOCALES}, styles, values,
-    ))
 
+    foot_i = len(text["fr"]) - n_foot
     flines, fem, fstyles, fvalues = emit_part(
-        [whole["fr"][-1]],
-        per_locale_nodes={loc: [whole[loc][-1]] for loc in LOCALES},
-        start_i=total - n_foot, start_a=total_a - a_foot,
-        offset=total - n_foot, replacer=chrome_replacer,
+        foot["fr"], per_locale_nodes=foot,
+        start_i=foot_i, start_a=a_total - len(attr_stream(foot["fr"])),
+        offset=foot_i,
+        hrefs=routes[len(routes) - len(anchors(foot["fr"])):],
+        replacer=chrome_replacer,
     )
     write(f"{BOARD_DIR}/site-footer.tsx", chrome_component(
         "SiteFooter", "chromeFooter", flines, fem, fstyles, fvalues,
         extra='import { LocaleRow } from "./locale-switch";',
         src="Main.dc.html — footer; identical on every artboard",
     ))
-    write(f"{BOARD_DIR}/content/chromeFooter.ts", content_module(
-        "chromeFooter", "*-Accueil.dc.html (footer)",
-        {loc: text[loc][total - n_foot:] for loc in LOCALES}, fstyles, fvalues,
+
+    write(f"{BOARD_DIR}/content/chrome.ts", chrome_content(
+        "chrome", "*-Accueil.dc.html (header)",
+        {loc: text[loc][:n_head] for loc in LOCALES}, styles, values,
     ))
-    print(f"  chrome: header {n_head} strings, footer {n_foot} strings")
+    write(f"{BOARD_DIR}/content/chromeFooter.ts", chrome_content(
+        "chromeFooter", "*-Accueil.dc.html (footer)",
+        {loc: text[loc][len(text[loc]) - n_foot:] for loc in LOCALES},
+        fstyles, fvalues,
+    ))
+    print(f"  chrome: header {n_head} strings, footer {n_foot} strings, "
+          f"{len(LOCALES)} locales")
+
+
+def chrome_content(name, src, text, styles, values) -> str:
+    rows = "\n".join(
+        f"    {loc}: [\n      " + ",\n      ".join(js(x) for x in text[loc]) + ",\n    ],"
+        for loc in LOCALES
+    )
+    return (
+        BANNER.format(src=src)
+        + 'import type { CSSProperties } from "react";\n'
+        + 'import type { Locale } from "@/lib/i18n/config";\n\n'
+        + f"export const {name} = {{\n"
+        + "  text: {\n" + rows + "\n  } as Record<Locale, readonly string[]>,\n"
+        + "  styles: " + style_rows(styles) + " as Record<Locale, CSSProperties>[],\n"
+        + "  values: " + value_rows(values) + " as Record<Locale, string>[],\n"
+        + "};\n"
+    )
 
 
 def chrome_component(name, key, lines, em, styles, values, *, extra, src) -> str:
@@ -521,44 +596,159 @@ def chrome_component(name, key, lines, em, styles, values, *, extra, src) -> str
         reads.append("  const s = content.styles;")
     if values:
         reads.append("  const v = content.values;")
-    body = "\n".join("      " + ln for ln in lines)
     return (
         BANNER.format(src=src)
-        + BOARD_DOC.format(key=key)
+        + BOARD_DOC.format(content=f"./content/{key}.ts")
         + "\n\n"
         + "\n".join(imports)
         + "\n\n"
         + f"export function {name}({{ lang }}: {{ lang: Locale }}) {{\n"
         + "\n".join(reads)
         + "\n\n  return (\n    <>\n"
-        + body
+        + "\n".join("      " + ln for ln in lines)
         + "\n    </>\n  );\n}\n"
     )
 
 
+# --- pages -------------------------------------------------------------------
+
+
 def port_page(stem: str) -> None:
     page = PAGES[stem]
-    whole, text, titles = aligned(stem)
-    sections = {loc: whole[loc][2:-1] for loc in LOCALES}
-    start_i = sum(len(slots(n)) for n in whole["fr"][:2])
-    start_a = len(attr_stream(whole["fr"][:2]))
-    end_i = len(text["fr"]) - len(slots(whole["fr"][-1]))
+    groups, text, titles = aligned(stem)
+    routes = page_routes(stem)
 
-    lines, em, styles, values = emit_part(
-        sections["fr"], per_locale_nodes=sections,
-        start_i=start_i, start_a=start_a, offset=start_i,
+    variants = []
+    for locs, nodes in groups:
+        tag = locs[0]
+        primary = nodes[tag]
+        sections = {loc: n[2:-1] for loc, n in nodes.items()}
+        start_i = sum(len(slots(n)) for n in primary[:2])
+        start_a = len(attr_stream(primary[:2]))
+
+        lines, em, styles, values = emit_part(
+            sections[tag], per_locale_nodes=sections,
+            start_i=start_i, start_a=start_a, offset=start_i,
+            hrefs=routes[len(anchors(primary[:2])):],
+        )
+        variants.append((tag, locs, lines, em, styles, values))
+
+    write(f"{BOARD_DIR}/boards/{page.key}/index.tsx", board_index(page, variants))
+    for tag, locs, lines, em, styles, values in variants:
+        write(f"{BOARD_DIR}/boards/{page.key}/{tag}.tsx",
+              board_variant(page, tag, locs, lines, em, styles, values))
+
+    body = {}
+    for tag, locs, *_ in variants:
+        primary = groups[[g[0] for g in groups].index(locs)][1][tag]
+        start_i = sum(len(slots(n)) for n in primary[:2])
+        for loc in locs:
+            end_i = len(text[loc]) - len(slots(groups[[g[0] for g in groups].index(locs)][1][loc][-1]))
+            body[loc] = text[loc][start_i:end_i]
+
+    write(f"{BOARD_DIR}/content/{page.key}.ts",
+          page_content(page, body, titles, variants))
+
+    shapes = " + ".join(f"{tag}({len(locs)})" for tag, locs, *_ in variants)
+    print(f"  {stem:<18} -> {page.key:<10} {len(variants)} shape(s) [{shapes}], "
+          f"{len(body['fr'])} strings")
+
+
+def board_index(page, variants) -> str:
+    if len(variants) == 1:
+        tag = variants[0][0]
+        return (
+            BANNER.format(src=page.board)
+            + f'export {{ {page.comp} }} from "./{tag}";\n'
+        )
+    others = [v for v in variants if v[0] != variants[0][0]]
+    imports = "\n".join(
+        f'import {{ {page.comp}{v[0].upper()} }} from "./{v[0]}";' for v in variants
     )
-    write(f"{BOARD_DIR}/boards/{page.key}.tsx", board_component(
-        page, lines, needs_link=em.needs_link,
-        has_styles=bool(styles), has_values=bool(values),
-    ))
-    write(f"{BOARD_DIR}/content/{page.key}.ts", content_module(
-        page.key, page.board,
-        {loc: text[loc][start_i:end_i] for loc in LOCALES}, styles, values,
-        titles=titles,
-    ))
-    print(f"  {stem:<18} -> {page.key:<10} {end_i - start_i:>3} strings, "
-          f"{len(styles):>3} locale styles, {len(lines):>4} lines")
+    table = ", ".join(
+        f"{loc}: {page.comp}{v[0].upper()}" for v in others for loc in v[1]
+    )
+    return (
+        BANNER.format(src=page.board)
+        + "/*\n"
+        + " * Some languages do not have the same shape as French. Turkish puts\n"
+        + " * the placeholder at the head of a sentence French ends with, which\n"
+        + " * moves a <span> and shifts every string after it, so it is\n"
+        + " * transcribed separately rather than bent into one component.\n"
+        + " */\n\n"
+        + 'import type { Locale } from "@/lib/i18n/config";\n'
+        + imports
+        + "\n\nconst BY_LOCALE: Partial<Record<Locale, typeof "
+        + f"{page.comp}{variants[0][0].upper()}>> = {{ {table} }};\n\n"
+        + f"export function {page.comp}({{ lang }}: {{ lang: Locale }}) {{\n"
+        + f"  const Board = BY_LOCALE[lang] ?? {page.comp}{variants[0][0].upper()};\n"
+        + "  return <Board lang={lang} />;\n}\n"
+    )
+
+
+def board_variant(page, tag, locs, lines, em, styles, values) -> str:
+    name = page.comp if len(locs) == len(LOCALES) else f"{page.comp}{tag.upper()}"
+    imports = []
+    if em.needs_link:
+        imports.append('import Link from "next/link";')
+    imports.append('import type { Locale } from "@/lib/i18n/config";')
+    imports.append(f'import {{ {page.key} as content }} from "../../content/{page.key}";')
+    reads = ["  const t = content.text[lang];"]
+    if styles:
+        reads.append(f"  const s = content.{tag}Styles;")
+    if values:
+        reads.append(f"  const v = content.{tag}Values;")
+    note = (
+        ""
+        if len(locs) == len(LOCALES)
+        else f" *\n * Locales using this shape: {', '.join(locs)}.\n"
+    )
+    return (
+        BANNER.format(src=f"{tag}-{page.stem}.dc.html (and {len(locs) - 1} more)")
+        + BOARD_DOC.format(content=f"../../content/{page.key}.ts")[:-3]
+        + note
+        + " */\n\n"
+        + "\n".join(imports)
+        + "\n\n"
+        + f"export function {name}({{ lang }}: {{ lang: Locale }}) {{\n"
+        + "\n".join(reads)
+        + "\n\n  return (\n    <>\n"
+        + "\n".join("      " + ln for ln in lines)
+        + "\n    </>\n  );\n}\n"
+    )
+
+
+def page_content(page, body, titles, variants) -> str:
+    rows = "\n".join(
+        f"    {loc}: [\n      " + ",\n      ".join(js(x) for x in body[loc]) + ",\n    ],"
+        for loc in LOCALES
+    )
+    extra = ""
+    for tag, locs, lines, em, styles, values in variants:
+        extra += (
+            f"  {tag}Styles: " + style_rows(styles)
+            + " as Record<Locale, CSSProperties>[],\n"
+            + f"  {tag}Values: " + value_rows(values)
+            + " as Record<Locale, string>[],\n"
+        )
+    return (
+        BANNER.format(src=page.board)
+        + "//\n"
+        + "// Position is the contract: within one locale, index n names the\n"
+        + "// same slot as it does in every other locale that shares its shape.\n"
+        + 'import type { CSSProperties } from "react";\n'
+        + 'import type { Locale } from "@/lib/i18n/config";\n\n'
+        + f"export const {page.key} = {{\n"
+        + "  title: { "
+        + ", ".join(f"{loc}: {js(titles[loc])}" for loc in LOCALES)
+        + " } as Record<Locale, string>,\n"
+        + "  description: { "
+        + ", ".join(f"{loc}: {js(lead_paragraph(body[loc]))}" for loc in LOCALES)
+        + " } as Record<Locale, string>,\n"
+        + "  text: {\n" + rows + "\n  } as Record<Locale, readonly string[]>,\n"
+        + extra
+        + "};\n"
+    )
 
 
 if __name__ == "__main__":

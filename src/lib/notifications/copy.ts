@@ -1,6 +1,6 @@
 import "server-only";
 import { NotificationType } from "@prisma/client";
-import type { Locale } from "@/lib/i18n/config";
+import { appLocaleFor, type AppLocale, type Locale } from "@/lib/i18n/config";
 
 /**
  * Notification copy is rendered at *emit* time using the recipient's
@@ -58,7 +58,7 @@ export type NotificationVars = {
 
 const SYSTEM_TITLES: Record<
   NonNullable<NotificationVars["systemKey"]>,
-  Record<Locale, string>
+  Record<AppLocale, string>
 > = {
   tender_invited: {
     fr: "Nouvel appel d'offres reçu",
@@ -271,8 +271,7 @@ const FR: Pack = {
   }),
   PAYMENT_RECEIVED: ({ reference }) => ({
     title: `Paiement reçu · ${reference ?? ""}`.trim(),
-    description:
-      "Le paiement est confirmé. Vous pouvez démarrer la production.",
+    description: "Le paiement est confirmé. Vous pouvez démarrer la production.",
   }),
   SHIPMENT: ({ reference, factoryName }) => ({
     title: `Commande expédiée · ${reference ?? ""}`.trim(),
@@ -305,13 +304,11 @@ const FR: Pack = {
   }),
   SUPPORT_REPLY: ({ reference }) => ({
     title: `Réponse du support · ${reference ?? ""}`.trim(),
-    description:
-      "Notre équipe a répondu à votre demande. Répondez depuis votre espace.",
+    description: "Notre équipe a répondu à votre demande. Répondez depuis votre espace.",
   }),
   SHIPMENT_QUOTE: ({ reference }) => ({
     title: `Devis logistique · ${reference ?? ""}`.trim(),
-    description:
-      "L'expéditeur a transmis un prix fixe avec sa date de validité.",
+    description: "L'expéditeur a transmis un prix fixe avec sa date de validité.",
   }),
   SHIPMENT_STATUS: ({ reference }) => ({
     title: `Expédition · ${reference ?? ""}`.trim(),
@@ -319,8 +316,7 @@ const FR: Pack = {
   }),
   SHIPMENT_INCIDENT: ({ reference }) => ({
     title: `Incident expédition · ${reference ?? ""}`.trim(),
-    description:
-      "L'expéditeur signale un incident : retard, blocage, surcoût ou douane.",
+    description: "L'expéditeur signale un incident : retard, blocage, surcoût ou douane.",
   }),
   SYSTEM: ({ title, systemKey }) => ({
     title: (systemKey && SYSTEM_TITLES[systemKey]?.fr) ?? title ?? "Notification",
@@ -347,9 +343,7 @@ const EN: Pack = {
   }),
   SHIPMENT: ({ reference, factoryName }) => ({
     title: `Order shipped · ${reference ?? ""}`.trim(),
-    description: factoryName
-      ? `${factoryName} shipped your order.`
-      : "Your order has shipped.",
+    description: factoryName ? `${factoryName} shipped your order.` : "Your order has shipped.",
   }),
   INVOICE_DUE: ({ reference }) => ({
     title: `Invoice due · ${reference ?? ""}`.trim(),
@@ -388,8 +382,7 @@ const EN: Pack = {
   }),
   SHIPMENT_INCIDENT: ({ reference }) => ({
     title: `Shipment incident · ${reference ?? ""}`.trim(),
-    description:
-      "The shipper reported an incident: delay, blockage, surcharge or customs.",
+    description: "The shipper reported an incident: delay, blockage, surcharge or customs.",
   }),
   SYSTEM: ({ title, systemKey }) => ({
     title: (systemKey && SYSTEM_TITLES[systemKey]?.en) ?? title ?? "Notification",
@@ -400,9 +393,7 @@ const EN: Pack = {
 const ZH: Pack = {
   QUOTE_RECEIVED: ({ factoryName, reference }) => ({
     title: `新报价 · ${reference ?? ""}`.trim(),
-    description: factoryName
-      ? `${factoryName} 已对您的需求提交报价。`
-      : "工厂已提交报价。",
+    description: factoryName ? `${factoryName} 已对您的需求提交报价。` : "工厂已提交报价。",
   }),
   QUOTE_ACCEPTED: ({ clientName, reference }) => ({
     title: `报价已接受 · ${reference ?? ""}`.trim(),
@@ -482,9 +473,7 @@ const AR: Pack = {
   }),
   SHIPMENT: ({ reference, factoryName }) => ({
     title: `تم شحن الطلب · ${reference ?? ""}`.trim(),
-    description: factoryName
-      ? `${factoryName} شحن طلبك.`
-      : "تم شحن طلبك.",
+    description: factoryName ? `${factoryName} شحن طلبك.` : "تم شحن طلبك.",
   }),
   INVOICE_DUE: ({ reference }) => ({
     title: `فاتورة مستحقة · ${reference ?? ""}`.trim(),
@@ -531,14 +520,14 @@ const AR: Pack = {
   }),
 };
 
-const PACKS: Record<Locale, Pack> = { fr: FR, en: EN, zh: ZH, ar: AR };
+const PACKS: Record<AppLocale, Pack> = { fr: FR, en: EN, zh: ZH, ar: AR };
 
 export function renderNotification(
   type: NotificationType,
   locale: Locale,
   vars: NotificationVars,
 ): NotificationCopy {
-  return PACKS[locale][type](vars);
+  return PACKS[appLocaleFor(locale)][type](vars);
 }
 
 /**

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Role } from "@prisma/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
-import { isLocale } from "@/lib/i18n/config";
+import { isLocale, type Locale } from "@/lib/i18n/config";
 import { formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { DashboardHeader, KpiCard } from "@/components/dashboard/primitives";
 import { agentAnalytics } from "@/lib/analytics/queries";
@@ -99,7 +99,7 @@ function FunnelRow({
 }: {
   label: string;
   value: number;
-  lang: "fr" | "en" | "zh" | "ar";
+  lang: Locale;
   last?: boolean;
 }) {
   return (

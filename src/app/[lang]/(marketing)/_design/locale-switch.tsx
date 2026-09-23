@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { localeLabels, locales, type Locale } from "@/lib/i18n/config";
+import { localeLabels, localeTags, locales, type Locale } from "@/lib/i18n/config";
 
 /**
  * The one place the port departs from the canvas.
@@ -16,14 +16,6 @@ import { localeLabels, locales, type Locale } from "@/lib/i18n/config";
  * The header control is a real menu because the canvas can draw a chevron
  * without having to make it do anything, and we cannot.
  */
-
-/** BCP 47 tags as the canvas spells them, for the `lang` attribute. */
-const BCP47: Record<Locale, string> = {
-  fr: "fr",
-  en: "en-GB",
-  zh: "zh-Hans",
-  ar: "ar",
-};
 
 const BUTTON: React.CSSProperties = {
   display: "inline-flex",
@@ -145,7 +137,7 @@ export function LocaleSwitch({ lang }: { lang: Locale }) {
                 <button
                   type="button"
                   role="menuitem"
-                  lang={BCP47[l]}
+                  lang={localeTags[l]}
                   onClick={() => swap(l)}
                   style={{
                     display: "block",
@@ -213,7 +205,7 @@ export function LocaleRow({ lang, label }: { lang: Locale; label: string }) {
         <a
           key={l}
           href={`/${l}`}
-          lang={BCP47[l]}
+          lang={localeTags[l]}
           style={{
             color: l === lang ? "#FFFFFF" : "#9FACD3",
             fontSize: "14px",

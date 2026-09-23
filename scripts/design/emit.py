@@ -181,17 +181,24 @@ class Emitter:
         *,
         assets: dict[str, str],
         resolve_href,
+        hrefs: list | None = None,
         variants: dict[int, tuple[str, int]] | None = None,
         slot_expr=lambda i: f"t[{i}]",
         replace=None,
     ) -> None:
         self.assets = assets
         self.resolve_href = resolve_href
+        # One entry per <a> in document order — see the note on routes in
+        # port.py. Anchors are resolved by position because text is ambiguous:
+        # in English the FAQ's "Contrôle" tab and the footer's "Vérification"
+        # link are both "Inspection", going to different places.
+        self.hrefs = hrefs or []
         self.variants = variants or {}
         self.slot_expr = slot_expr
         self.replace = replace or (lambda el, em: None)
         self.i = 0
         self.a = 0
+        self.k = 0
         self.needs_link = False
 
     def emit(self, el: Element, indent: int = 0) -> list[str]:
@@ -211,6 +218,12 @@ class Emitter:
         n = sum(1 for name in L10N_ATTRS if node.attr(name))
         return n + sum(self.count_slots(c) for c in node.children)
 
+    def count_anchors(self, node) -> int:
+        if isinstance(node, str):
+            return 0
+        n = 1 if node.tag == "a" else 0
+        return n + sum(self.count_anchors(c) for c in node.children)
+
     def count_attrs(self, node) -> int:
         if isinstance(node, str):
             return 0
@@ -220,6 +233,7 @@ class Emitter:
     def skip(self, node) -> None:
         self.i += self.count_slots(node)
         self.a += self.count_attrs(node)
+        self.k += self.count_anchors(node)
 
     # -- internals
 
@@ -272,7 +286,8 @@ class Emitter:
                 attrs.append(f'src="{self.assets[value.rsplit("/", 1)[1]]}"')
                 continue
             if name == "href" and tag == "a":
-                resolved = self.resolve_href(node, value or "")
+                resolved = self.resolve_href(self.hrefs[self.k], value or "")
+                self.k += 1
                 if resolved is None:
                     continue
                 href, is_link = resolved

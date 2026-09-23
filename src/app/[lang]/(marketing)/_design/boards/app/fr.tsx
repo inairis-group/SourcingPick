@@ -1,21 +1,21 @@
 // GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
-// Source: Site-Application.dc.html
+// Source: fr-Application.dc.html (and 11 more)
 // Regenerate: npm run design:port
 /*
  * Markup, spacing and colour are the design's own, transcribed rather than
- * interpreted. Copy lives in ../content/app.ts as four arrays zipped by
- * position, which is sound because the four artboards were checked to have
- * identical tag-and-attribute structure before anything was written.
+ * interpreted. Copy lives in ../../content/app.ts, one array per locale, zipped by
+ * position — sound because the artboards behind this file were checked to
+ * have identical tag-and-attribute structure before anything was written.
  */
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
-import { app as content } from "../content/app";
+import { app as content } from "../../content/app";
 
 export function AppBoard({ lang }: { lang: Locale }) {
   const t = content.text[lang];
-  const s = content.styles;
-  const v = content.values;
+  const s = content.frStyles;
+  const v = content.frValues;
 
   return (
     <>

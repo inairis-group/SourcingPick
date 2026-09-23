@@ -1,15 +1,5 @@
-import {
-  Body,
-  Button,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Preview,
-  Section,
-  Text,
-} from "react-email";
-import { directionFor, type Locale } from "@/lib/i18n/config";
+import { Body, Button, Container, Head, Heading, Html, Preview, Section, Text } from "react-email";
+import { appLocaleFor, directionFor, type AppLocale, type Locale } from "@/lib/i18n/config";
 
 type Props = {
   resetUrl: string;
@@ -18,7 +8,7 @@ type Props = {
 };
 
 const COPY: Record<
-  Locale,
+  AppLocale,
   {
     preview: string;
     heading: string;
@@ -35,8 +25,7 @@ const COPY: Record<
     intro: "Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe.",
     cta: "Choisir un nouveau mot de passe",
     expires: (m) => `Ce lien expire dans ${m} minutes.`,
-    ifNotYou:
-      "Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.",
+    ifNotYou: "Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.",
     footer: "SourcingPick · le sourcing international, industrialisé.",
   },
   en: {
@@ -63,14 +52,13 @@ const COPY: Record<
     intro: "اضغط الزر أدناه لاختيار كلمة مرور جديدة.",
     cta: "اختيار كلمة مرور جديدة",
     expires: (m) => `تنتهي صلاحية هذا الرابط خلال ${m} دقيقة.`,
-    ifNotYou:
-      "إذا لم تطلب هذا، يمكنك تجاهل هذه الرسالة بأمان.",
+    ifNotYou: "إذا لم تطلب هذا، يمكنك تجاهل هذه الرسالة بأمان.",
     footer: "SourcingPick · التوريد الدولي، بمعايير صناعية.",
   },
 };
 
 export default function PasswordResetEmail({ resetUrl, locale, expiresInMinutes }: Props) {
-  const t = COPY[locale];
+  const t = COPY[appLocaleFor(locale)];
 
   return (
     <Html lang={locale} dir={directionFor(locale)}>
@@ -125,7 +113,14 @@ export default function PasswordResetEmail({ resetUrl, locale, expiresInMinutes 
             >
               {t.cta}
             </Button>
-            <Text style={{ fontSize: "13px", lineHeight: "18px", color: "#475569", margin: "0 0 16px 0" }}>
+            <Text
+              style={{
+                fontSize: "13px",
+                lineHeight: "18px",
+                color: "#475569",
+                margin: "0 0 16px 0",
+              }}
+            >
               {t.expires(expiresInMinutes)}
             </Text>
             <Text style={{ fontSize: "13px", lineHeight: "18px", color: "#64748b", margin: 0 }}>

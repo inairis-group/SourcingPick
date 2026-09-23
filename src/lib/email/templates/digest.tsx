@@ -1,14 +1,5 @@
-import {
-  Body,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Preview,
-  Section,
-  Text,
-} from "react-email";
-import { directionFor, type Locale } from "@/lib/i18n/config";
+import { Body, Container, Head, Heading, Html, Preview, Section, Text } from "react-email";
+import { appLocaleFor, directionFor, type AppLocale, type Locale } from "@/lib/i18n/config";
 
 type DigestItem = {
   title: string;
@@ -23,7 +14,7 @@ type DigestEmailProps = {
 };
 
 const COPY: Record<
-  Locale,
+  AppLocale,
   {
     preview: (n: number) => string;
     heading: (n: number) => string;
@@ -34,18 +25,13 @@ const COPY: Record<
   fr: {
     preview: (n) =>
       `${n} ${n === 1 ? "nouvelle notification" : "nouvelles notifications"} SourcingPick`,
-    heading: (n) =>
-      n === 1
-        ? "1 nouvelle notification"
-        : `${n} nouvelles notifications`,
+    heading: (n) => (n === 1 ? "1 nouvelle notification" : `${n} nouvelles notifications`),
     intro: "Voici un récapitulatif depuis hier.",
     footer: "SourcingPick · le sourcing international, industrialisé.",
   },
   en: {
-    preview: (n) =>
-      `${n} new SourcingPick ${n === 1 ? "notification" : "notifications"}`,
-    heading: (n) =>
-      n === 1 ? "1 new notification" : `${n} new notifications`,
+    preview: (n) => `${n} new SourcingPick ${n === 1 ? "notification" : "notifications"}`,
+    heading: (n) => (n === 1 ? "1 new notification" : `${n} new notifications`),
     intro: "Here's what happened since yesterday.",
     footer: "SourcingPick · international sourcing, industrialised.",
   },
@@ -56,10 +42,8 @@ const COPY: Record<
     footer: "SourcingPick · 工业化的国际采购平台。",
   },
   ar: {
-    preview: (n) =>
-      `${n} إشعار${n === 1 ? "" : "ات"} جديدة من SourcingPick`,
-    heading: (n) =>
-      n === 1 ? "إشعار جديد واحد" : `${n} إشعارات جديدة`,
+    preview: (n) => `${n} إشعار${n === 1 ? "" : "ات"} جديدة من SourcingPick`,
+    heading: (n) => (n === 1 ? "إشعار جديد واحد" : `${n} إشعارات جديدة`),
     intro: "هذا ما حدث منذ الأمس.",
     footer: "SourcingPick · التوريد الدولي، بمعايير صناعية.",
   },
@@ -70,12 +54,8 @@ const COPY: Record<
  * = DAILY. Lists every undigested in-app notification in chronological
  * order so the recipient can scan the day in one read.
  */
-export default function DigestEmail({
-  recipientName,
-  items,
-  locale,
-}: DigestEmailProps) {
-  const t = COPY[locale];
+export default function DigestEmail({ recipientName, items, locale }: DigestEmailProps) {
+  const t = COPY[appLocaleFor(locale)];
   const heading = t.heading(items.length);
   return (
     <Html lang={locale} dir={directionFor(locale)}>
@@ -84,8 +64,7 @@ export default function DigestEmail({
       <Body
         style={{
           backgroundColor: "#f8fafc",
-          fontFamily:
-            'Geist, ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
+          fontFamily: 'Geist, ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
           color: "#1e293b",
           margin: 0,
           padding: "32px 16px",

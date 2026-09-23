@@ -95,8 +95,14 @@ def main() -> int:
 
 
 def text_slots(stem: str, locale: str) -> list[str]:
-    """Slots that are text nodes, in document order — no alt/aria attributes."""
-    whole, _, _ = aligned(stem)
+    """Slots that are text nodes, in document order — no alt/aria attributes.
+
+    `aligned` now returns one entry per distinct page shape, because a few
+    languages genuinely differ; the locale's own nodes come from whichever
+    group claims it.
+    """
+    groups, _, _ = aligned(stem)
+    nodes = next(n[locale] for locs, n in groups if locale in locs)
     out: list[str] = []
 
     def walk(n):
@@ -113,7 +119,7 @@ def text_slots(stem: str, locale: str) -> list[str]:
         for c in n.children:
             walk(c)
 
-    for n in whole[locale][2:-1]:
+    for n in nodes[2:-1]:
         walk(n)
     return out
 

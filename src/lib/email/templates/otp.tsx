@@ -1,14 +1,5 @@
-import {
-  Body,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Preview,
-  Section,
-  Text,
-} from "react-email";
-import { directionFor, type Locale } from "@/lib/i18n/config";
+import { Body, Container, Head, Heading, Html, Preview, Section, Text } from "react-email";
+import { appLocaleFor, directionFor, type AppLocale, type Locale } from "@/lib/i18n/config";
 
 type OtpEmailProps = {
   code: string;
@@ -16,14 +7,17 @@ type OtpEmailProps = {
   expiresInMinutes: number;
 };
 
-const COPY: Record<Locale, {
-  preview: string;
-  heading: string;
-  intro: string;
-  expires: (m: number) => string;
-  ifNotYou: string;
-  footer: string;
-}> = {
+const COPY: Record<
+  AppLocale,
+  {
+    preview: string;
+    heading: string;
+    intro: string;
+    expires: (m: number) => string;
+    ifNotYou: string;
+    footer: string;
+  }
+> = {
   fr: {
     preview: "Votre code de vérification SourcingPick",
     heading: "Votre code de vérification",
@@ -38,8 +32,7 @@ const COPY: Record<Locale, {
     heading: "Your verification code",
     intro: "Enter this 6-digit code to complete your sign-in.",
     expires: (m) => `This code expires in ${m} minutes.`,
-    ifNotYou:
-      "If you didn't request this, you can safely ignore this email.",
+    ifNotYou: "If you didn't request this, you can safely ignore this email.",
     footer: "SourcingPick · international sourcing, industrialised.",
   },
   zh: {
@@ -55,14 +48,13 @@ const COPY: Record<Locale, {
     heading: "رمز التحقق الخاص بك",
     intro: "أدخل هذا الرمز المؤلف من 6 أرقام لإكمال تسجيل الدخول.",
     expires: (m) => `تنتهي صلاحية هذا الرمز خلال ${m} دقيقة.`,
-    ifNotYou:
-      "إذا لم تطلب هذا، يمكنك تجاهل هذه الرسالة بأمان.",
+    ifNotYou: "إذا لم تطلب هذا، يمكنك تجاهل هذه الرسالة بأمان.",
     footer: "SourcingPick · التوريد الدولي، بمعايير صناعية.",
   },
 };
 
 export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailProps) {
-  const t = COPY[locale];
+  const t = COPY[appLocaleFor(locale)];
 
   return (
     <Html lang={locale} dir={directionFor(locale)}>
@@ -71,8 +63,7 @@ export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailPro
       <Body
         style={{
           backgroundColor: "#f8fafc",
-          fontFamily:
-            'Geist, ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
+          fontFamily: 'Geist, ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
           color: "#1e293b",
           margin: 0,
           padding: "32px 16px",

@@ -3,9 +3,9 @@
 // Regenerate: npm run design:port
 /*
  * Markup, spacing and colour are the design's own, transcribed rather than
- * interpreted. Copy lives in ../content/chromeFooter.ts as four arrays zipped by
- * position, which is sound because the four artboards were checked to have
- * identical tag-and-attribute structure before anything was written.
+ * interpreted. Copy lives in ./content/chromeFooter.ts, one array per locale, zipped by
+ * position — sound because the artboards behind this file were checked to
+ * have identical tag-and-attribute structure before anything was written.
  */
 
 import Link from "next/link";

@@ -1,16 +1,17 @@
 "use server";
 
 import { createHash, randomBytes } from "node:crypto";
-import {
-  GuestChatTeam,
-  GuestConversationStatus,
-  NotificationType,
-  Role,
-} from "@prisma/client";
+import { GuestChatTeam, GuestConversationStatus, NotificationType, Role } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { emitNotificationToMany } from "@/lib/notifications/emit";
 import { headers } from "next/headers";
-import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
+import {
+  appLocaleFor,
+  defaultLocale,
+  isLocale,
+  type AppLocale,
+  type Locale,
+} from "@/lib/i18n/config";
 
 /**
  * Public live chat for logged-out visitors.
@@ -41,9 +42,7 @@ const MAX_PER_IP_PER_HOUR = 5;
  */
 async function clientIpHash(): Promise<string | null> {
   const h = await headers();
-  const ip =
-    h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    h.get("x-real-ip")?.trim();
+  const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip")?.trim();
   if (!ip) return null;
   return createHash("sha256")
     .update(`${process.env.AUTH_SECRET ?? "unsalted"}:${ip}`)
@@ -63,7 +62,9 @@ async function currentLocale(): Promise<Locale> {
 
 export async function startGuestConversation(_prev: unknown, formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
-  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const email = String(formData.get("email") ?? "")
+    .trim()
+    .toLowerCase();
   const body = String(formData.get("message") ?? "").trim();
 
   if (name.length < 2) return { ok: false as const, error: "missing_name" };
@@ -99,7 +100,8 @@ export async function startGuestConversation(_prev: unknown, formData: FormData)
       token: randomBytes(24).toString("base64url"),
       name,
       email,
-      locale,
+      // Same four-value column as User.locale — see appLocaleFor.
+      locale: appLocaleFor(locale),
       ipHash,
       messages: { create: { body, fromTeam: false } },
     },
@@ -181,7 +183,7 @@ export async function getGuestConversation(token: string) {
 }
 
 /** Team reply. Authenticated — admins only. */
-const REPLY_SUBJECT: Record<Locale, string> = {
+const REPLY_SUBJECT: Record<AppLocale, string> = {
   fr: "Réponse de l'équipe SourcingPick",
   en: "A reply from the SourcingPick team",
   zh: "SourcingPick 团队回复",
@@ -223,9 +225,7 @@ export async function replyToGuest(_prev: unknown, formData: FormData) {
    * an SMTP outage must not cost the operator their message.
    */
   const { sendEmail } = await import("@/lib/email/send");
-  const { default: PublicReplyEmail } = await import(
-    "@/lib/email/templates/public-reply"
-  );
+  const { default: PublicReplyEmail } = await import("@/lib/email/templates/public-reply");
   const { inboundReplyAddress } = await import("@/lib/email/inbound-address");
   const replyTo = inboundReplyAddress({ kind: "g", id: conversation.id });
   void sendEmail({
@@ -250,7 +250,6 @@ export async function replyToGuest(_prev: unknown, formData: FormData) {
   return { ok: true as const };
 }
 
-
 /**
  * Admin queue. Unhandled conversations first, then most recently active.
  * Returns full transcripts — these are short, and the team needs the context
@@ -264,9 +263,7 @@ export async function listGuestConversations(filters?: {
   const { requireRole: guard } = await import("@/lib/permissions/guards");
   await guard(Role.ADMIN);
 
-  const team = (Object.values(GuestChatTeam) as string[]).includes(
-    filters?.team ?? "",
-  )
+  const team = (Object.values(GuestChatTeam) as string[]).includes(filters?.team ?? "")
     ? (filters?.team as GuestChatTeam)
     : undefined;
   // "unrouted" is the queue that matters most — nobody owns those yet.

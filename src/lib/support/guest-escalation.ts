@@ -17,7 +17,7 @@ import { generateUniqueReference } from "@/lib/sourcing/reference";
 import { sendEmail } from "@/lib/email/send";
 import NotificationEmail from "@/lib/email/templates/notification";
 import { appUrl } from "@/lib/urls";
-import type { Locale } from "@/lib/i18n/config";
+import type { AppLocale } from "@/lib/i18n/config";
 
 /**
  * Copy for the one email that has to reach the visitor regardless of any
@@ -29,7 +29,7 @@ import type { Locale } from "@/lib/i18n/config";
  * why it bypasses `emitNotification` and its digest settings.
  */
 const ESCALATION_EMAIL: Record<
-  Locale,
+  AppLocale,
   { subject: string; title: string; body: string; cta: string }
 > = {
   fr: {
@@ -64,7 +64,7 @@ const ESCALATION_EMAIL: Record<
  * The thread stays open — we don't strand anyone — but leaving it silent
  * would have the visitor typing into a channel nobody is watching any more.
  */
-const HANDOFF_MESSAGE: Record<Locale, string> = {
+const HANDOFF_MESSAGE: Record<AppLocale, string> = {
   fr: "Nous reprenons votre demande depuis votre espace client. Vous venez de recevoir un e-mail : la suite de nos échanges s'y trouvera.",
   en: "We're picking this up from your account. You've just been emailed — that's where the rest of this conversation will happen.",
   zh: "我们将在您的账户后台继续处理此请求。刚刚已向您发送邮件，后续沟通将在那里进行。",
@@ -273,8 +273,10 @@ export async function escalateGuestToTicket(
   // First line of the visitor's opening message, which is the closest thing a
   // chat has to a subject.
   const subject =
-    convo.messages.find((m) => !m.fromTeam)?.body.split("\n")[0]?.slice(0, 120) ??
-    `Public chat — ${convo.name}`;
+    convo.messages
+      .find((m) => !m.fromTeam)
+      ?.body.split("\n")[0]
+      ?.slice(0, 120) ?? `Public chat — ${convo.name}`;
 
   const ticketId = await prisma.$transaction(async (tx) => {
     const ticket = await tx.supportTicket.create({

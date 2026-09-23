@@ -1,28 +1,32 @@
 // GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
-// Source: Site-Comment-ca-marche.dc.html
+// Source: tr-Comment-ca-marche.dc.html (and 0 more)
 // Regenerate: npm run design:port
 /*
  * Markup, spacing and colour are the design's own, transcribed rather than
- * interpreted. Copy lives in ../content/howItWorks.ts as four arrays zipped by
- * position, which is sound because the four artboards were checked to have
- * identical tag-and-attribute structure before anything was written.
+ * interpreted. Copy lives in ../../content/howItWorks.ts, one array per locale, zipped by
+ * position — sound because the artboards behind this file were checked to
+ * have identical tag-and-attribute structure before anything was written.
+ *
+ * Locales using this shape: tr.
  */
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
-import { howItWorks as content } from "../content/howItWorks";
+import { howItWorks as content } from "../../content/howItWorks";
 
-export function HowItWorksBoard({ lang }: { lang: Locale }) {
+export function HowItWorksBoardTR({ lang }: { lang: Locale }) {
   const t = content.text[lang];
-  const s = content.styles;
-  const v = content.values;
 
   return (
     <>
             <section style={{ "padding": "88px 120px 72px", "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "64px" }}>
               <div style={{ "display": "flex", "flexDirection": "column", "gap": "22px", "maxWidth": "760px" }}>
-                <div style={s[0][lang]}>{t[0]}</div>
-                <h1 style={s[1][lang]}>{t[1]}</h1>
+                <div style={{ "display": "inline-flex", "alignSelf": "flex-start", "alignItems": "center", "gap": "8px", "background": "#FFFFFF", "padding": "6px 12px", "borderRadius": "999px", "border": "1px solid #DCE3F2", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                  {t[0]}
+                </div>
+                <h1 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "56px", "lineHeight": "1.06", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
+                  {t[1]}
+                </h1>
                 <p style={{ "margin": "0", "fontSize": "19px", "lineHeight": "1.6", "color": "#4A5578", "maxWidth": "680px", "textWrap": "pretty" }}>
                   {t[2]}
                 </p>
@@ -36,22 +40,30 @@ export function HowItWorksBoard({ lang }: { lang: Locale }) {
                 <span style={{ "display": "inline-flex", "width": "56px", "height": "56px", "borderRadius": "18px", "background": "#155DFC", "color": "#FFFFFF", "alignItems": "center", "justifyContent": "center", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "20px", "fontWeight": "600" }}>
                   {t[4]}
                 </span>
-                <h2 style={s[2][lang]}>{t[5]}</h2>
+                <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "24px", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance", "paddingTop": "12px" }}>
+                  {t[5]}
+                </h2>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[3][lang]}>{t[6]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[6]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#0E1A3D" }}>
                     {t[7]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[4][lang]}>{t[8]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[8]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#4A5578" }}>
                     {t[9]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "10px", "padding": "16px", "borderRadius": "16px", "background": "#F5F7FC" }}>
-                  <span style={s[5][lang]}>{t[10]}</span>
-                  <span style={s[6][lang]}>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#4A5578" }}>
+                    {t[10]}
+                  </span>
+                  <span style={{ "alignSelf": "flex-start", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 10px", "borderRadius": "8px", "background": "#EAF1FF", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "color": "#0F47C9" }}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F47C9" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M6 16V11a6 6 0 0112 0v5l2 2H4z" />
                       <path d="M10 20a2 2 0 004 0" />
@@ -64,22 +76,30 @@ export function HowItWorksBoard({ lang }: { lang: Locale }) {
                 <span style={{ "display": "inline-flex", "width": "56px", "height": "56px", "borderRadius": "18px", "background": "#155DFC", "color": "#FFFFFF", "alignItems": "center", "justifyContent": "center", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "20px", "fontWeight": "600" }}>
                   {t[12]}
                 </span>
-                <h2 style={s[7][lang]}>{t[13]}</h2>
+                <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "18.8px", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance", "paddingTop": "12px" }}>
+                  {t[13]}
+                </h2>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[8][lang]}>{t[14]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[14]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#0E1A3D" }}>
                     {t[15]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[9][lang]}>{t[16]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[16]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#4A5578" }}>
                     {t[17]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "10px", "padding": "16px", "borderRadius": "16px", "background": "#F5F7FC" }}>
-                  <span style={s[10][lang]}>{t[18]}</span>
-                  <span style={s[11][lang]}>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#4A5578" }}>
+                    {t[18]}
+                  </span>
+                  <span style={{ "alignSelf": "flex-start", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 10px", "borderRadius": "8px", "background": "#EAF1FF", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "color": "#0F47C9" }}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F47C9" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M6 16V11a6 6 0 0112 0v5l2 2H4z" />
                       <path d="M10 20a2 2 0 004 0" />
@@ -92,22 +112,30 @@ export function HowItWorksBoard({ lang }: { lang: Locale }) {
                 <span style={{ "display": "inline-flex", "width": "56px", "height": "56px", "borderRadius": "18px", "background": "#155DFC", "color": "#FFFFFF", "alignItems": "center", "justifyContent": "center", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "20px", "fontWeight": "600" }}>
                   {t[20]}
                 </span>
-                <h2 style={s[12][lang]}>{t[21]}</h2>
+                <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "24px", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance", "paddingTop": "12px" }}>
+                  {t[21]}
+                </h2>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[13][lang]}>{t[22]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[22]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#0E1A3D" }}>
                     {t[23]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[14][lang]}>{t[24]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[24]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#4A5578" }}>
                     {t[25]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "10px", "padding": "16px", "borderRadius": "16px", "background": "#F5F7FC" }}>
-                  <span style={s[15][lang]}>{t[26]}</span>
-                  <span style={s[16][lang]}>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#4A5578" }}>
+                    {t[26]}
+                  </span>
+                  <span style={{ "alignSelf": "flex-start", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 10px", "borderRadius": "8px", "background": "#EAF1FF", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "color": "#0F47C9" }}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F47C9" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M6 16V11a6 6 0 0112 0v5l2 2H4z" />
                       <path d="M10 20a2 2 0 004 0" />
@@ -120,22 +148,30 @@ export function HowItWorksBoard({ lang }: { lang: Locale }) {
                 <span style={{ "display": "inline-flex", "width": "56px", "height": "56px", "borderRadius": "18px", "background": "#155DFC", "color": "#FFFFFF", "alignItems": "center", "justifyContent": "center", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "20px", "fontWeight": "600" }}>
                   {t[28]}
                 </span>
-                <h2 style={s[17][lang]}>{t[29]}</h2>
+                <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "24px", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance", "paddingTop": "12px" }}>
+                  {t[29]}
+                </h2>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[18][lang]}>{t[30]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[30]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#0E1A3D" }}>
                     {t[31]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[19][lang]}>{t[32]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[32]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#4A5578" }}>
                     {t[33]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "10px", "padding": "16px", "borderRadius": "16px", "background": "#F5F7FC" }}>
-                  <span style={s[20][lang]}>{t[34]}</span>
-                  <span style={s[21][lang]}>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#4A5578" }}>
+                    {t[34]}
+                  </span>
+                  <span style={{ "alignSelf": "flex-start", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 10px", "borderRadius": "8px", "background": "#EAF1FF", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "color": "#0F47C9" }}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F47C9" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M6 16V11a6 6 0 0112 0v5l2 2H4z" />
                       <path d="M10 20a2 2 0 004 0" />
@@ -148,22 +184,30 @@ export function HowItWorksBoard({ lang }: { lang: Locale }) {
                 <span style={{ "display": "inline-flex", "width": "56px", "height": "56px", "borderRadius": "18px", "background": "#155DFC", "color": "#FFFFFF", "alignItems": "center", "justifyContent": "center", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "20px", "fontWeight": "600" }}>
                   {t[36]}
                 </span>
-                <h2 style={s[22][lang]}>{t[37]}</h2>
+                <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "23.4px", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance", "paddingTop": "12px" }}>
+                  {t[37]}
+                </h2>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[23][lang]}>{t[38]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[38]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#0E1A3D" }}>
                     {t[39]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[24][lang]}>{t[40]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[40]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#4A5578" }}>
                     {t[41]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "10px", "padding": "16px", "borderRadius": "16px", "background": "#F5F7FC" }}>
-                  <span style={s[25][lang]}>{t[42]}</span>
-                  <span style={s[26][lang]}>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#4A5578" }}>
+                    {t[42]}
+                  </span>
+                  <span style={{ "alignSelf": "flex-start", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 10px", "borderRadius": "8px", "background": "#EAF1FF", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "color": "#0F47C9" }}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F47C9" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M6 16V11a6 6 0 0112 0v5l2 2H4z" />
                       <path d="M10 20a2 2 0 004 0" />
@@ -176,22 +220,30 @@ export function HowItWorksBoard({ lang }: { lang: Locale }) {
                 <span style={{ "display": "inline-flex", "width": "56px", "height": "56px", "borderRadius": "18px", "background": "#162456", "color": "#FFFFFF", "alignItems": "center", "justifyContent": "center", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "20px", "fontWeight": "600" }}>
                   {t[44]}
                 </span>
-                <h2 style={s[27][lang]}>{t[45]}</h2>
+                <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "24px", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance", "paddingTop": "12px" }}>
+                  {t[45]}
+                </h2>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[28][lang]}>{t[46]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[46]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#0E1A3D" }}>
                     {t[47]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                  <span style={s[29][lang]}>{t[48]}</span>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[48]}
+                  </span>
                   <p style={{ "margin": "0", "fontSize": "15.5px", "lineHeight": "1.6", "color": "#4A5578" }}>
                     {t[49]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "10px", "padding": "16px", "borderRadius": "16px", "background": "#F5F7FC" }}>
-                  <span style={s[30][lang]}>{t[50]}</span>
-                  <span style={s[31][lang]}>
+                  <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#4A5578" }}>
+                    {t[50]}
+                  </span>
+                  <span style={{ "alignSelf": "flex-start", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 10px", "borderRadius": "8px", "background": "#EAF1FF", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "color": "#0F47C9" }}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F47C9" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M6 16V11a6 6 0 0112 0v5l2 2H4z" />
                       <path d="M10 20a2 2 0 004 0" />
@@ -203,7 +255,9 @@ export function HowItWorksBoard({ lang }: { lang: Locale }) {
             </section>
             <section style={{ "padding": "0 120px 40px", "display": "grid", "gridTemplateColumns": "repeat(2, minmax(0, 1fr))", "gap": "24px" }}>
               <div style={{ "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "24px", "padding": "36px 40px", "display": "flex", "flexDirection": "column", "gap": "22px" }}>
-                <h2 style={s[32][lang]}>{t[52]}</h2>
+                <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "26px", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
+                  {t[52]}
+                </h2>
                 <ul style={{ "margin": "0", "padding": "0", "listStyle": "none", "display": "flex", "flexDirection": "column", "gap": "14px" }}>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "16px", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#E3F6EC", "marginTop": "1px" }}>
@@ -248,7 +302,9 @@ export function HowItWorksBoard({ lang }: { lang: Locale }) {
                 </ul>
               </div>
               <div style={{ "background": "#162456", "borderRadius": "24px", "padding": "36px 40px", "display": "flex", "flexDirection": "column", "gap": "22px", "color": "#FFFFFF" }}>
-                <h2 style={s[33][lang]}>{t[58]}</h2>
+                <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "26px", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#FFFFFF", "textWrap": "balance" }}>
+                  {t[58]}
+                </h2>
                 <ul style={{ "margin": "0", "padding": "0", "listStyle": "none", "display": "flex", "flexDirection": "column", "gap": "14px" }}>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "16px", "lineHeight": "1.55", "color": "#FFFFFF" }}>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "8px", "alignItems": "center", "justifyContent": "center", "background": "#EAF1FF" }}>
@@ -278,7 +334,9 @@ export function HowItWorksBoard({ lang }: { lang: Locale }) {
                     </span>
                     <span>
                       {t[61]}{" "}
-                      <span style={s[34][lang]}>{t[62]}</span>
+                      <span style={{ "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }}>
+                        {t[62]}
+                      </span>
                     </span>
                   </li>
                 </ul>
@@ -289,30 +347,35 @@ export function HowItWorksBoard({ lang }: { lang: Locale }) {
               <div style={{ "position": "relative", "overflow": "hidden", "borderRadius": "32px", "background": "#155DFC", "padding": "72px", "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "40px", "color": "#FFFFFF" }}>
                 <div style={{ "position": "absolute", "inset": "0", "backgroundImage": "linear-gradient(30deg, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(150deg, rgba(255,255,255,0.08) 1px, transparent 1px)", "backgroundSize": "44px 25.4px" }} />
                 <div style={{ "position": "relative", "display": "flex", "flexDirection": "column", "gap": "22px", "maxWidth": "700px" }}>
-                  <h2 style={s[35][lang]}>{t[63]}</h2>
+                  <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "48px", "lineHeight": "1.08", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#FFFFFF", "textWrap": "balance" }}>
+                    {t[63]}
+                  </h2>
                   <p style={{ "margin": "0", "fontSize": "18px", "lineHeight": "1.6", "color": "#E3EBFF" }}>
-                    {t[64]}{" "}
-                    <span style={s[36][lang]}>{t[65]}</span>
-                    {t[66]}
+                    <span style={{ "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }}>
+                      {t[64]}
+                    </span>
+                    {" "}{t[65]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
-                    <Link href={`/${lang}/devis`} style={s[37][lang]}>
-                      <span>{t[67]}</span>
+                    <Link href={`/${lang}/devis`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #FFFFFF", "textAlign": "center" }}>
+                      <span>{t[66]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d={v[0][lang]} />
-                          <path d={v[1][lang]} />
+                          <path d="M5 12h14" />
+                          <path d="M13 6l6 6-6 6" />
                         </svg>
                       </span>
                     </Link>
-                    <a href="mailto:contact@sourcingpick.com" style={s[38][lang]}>
-                      <span><span dir="ltr">{t[68]}</span></span>
+                    <a href="mailto:contact@sourcingpick.com" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#FFFFFF", "border": "1.5px solid rgba(255,255,255,0.28)", "textAlign": "center" }}>
+                      <span><span dir="ltr">{t[67]}</span></span>
                     </a>
                   </div>
                 </div>
                 <div style={{ "position": "relative", "width": "300px", "height": "300px", "flexShrink": "0" }}>
-                  <div style={s[39][lang]}>{t[69]}</div>
-                  <img src="/design/picky-arms-up.svg" alt={t[70]} style={{ "width": "300px", "height": "300px" }} />
+                  <div style={{ "position": "absolute", "left": "-60px", "top": "6px", "maxWidth": "220px", "padding": "12px 16px", "borderRadius": "18px 18px 4px 18px", "background": "#FFFFFF", "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "600", "boxShadow": "0 16px 32px -16px rgba(14,26,61,0.5)" }}>
+                    {t[68]}
+                  </div>
+                  <img src="/design/picky-arms-up.svg" alt={t[69]} style={{ "width": "300px", "height": "300px" }} />
                 </div>
               </div>
             </section>

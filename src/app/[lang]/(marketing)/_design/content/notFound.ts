@@ -2,14 +2,14 @@
 // Source: Site-404.dc.html
 // Regenerate: npm run design:port
 //
-// Position is the contract: index n names the same slot in all four
-// locales, proved against the artboards' structural signatures.
+// Position is the contract: within one locale, index n names the
+// same slot as it does in every other locale that shares its shape.
 import type { CSSProperties } from "react";
 import type { Locale } from "@/lib/i18n/config";
 
 export const notFound = {
-  title: { fr: "Sourcing Pick — page introuvable", en: "Sourcing Pick — Page not found", zh: "Sourcing Pick — 页面未找到", ar: "Sourcing Pick — الصفحة غير موجودة" } as Record<Locale, string>,
-  description: { fr: "Ce colis s’est égaré.", en: "This package has gone astray.", zh: "这个包裹走丢了。", ar: "هذا الطرد ضلّ طريقه." } as Record<Locale, string>,
+  title: { fr: "Sourcing Pick — page introuvable", en: "Sourcing Pick — Page not found", zh: "Sourcing Pick — 页面未找到", es: "Sourcing Pick — página no encontrada", de: "Sourcing Pick – Seite nicht gefunden", it: "Sourcing Pick — pagina non trovata", pt: "Sourcing Pick — página não encontrada", nl: "Sourcing Pick — pagina niet gevonden", ar: "Sourcing Pick — الصفحة غير موجودة", ru: "Sourcing Pick — страница не найдена", tr: "Sourcing Pick — sayfa bulunamadı", pl: "Sourcing Pick – nie znaleziono strony" } as Record<Locale, string>,
+  description: { fr: "Ce colis s’est égaré.", en: "This package has gone astray.", zh: "这个包裹走丢了。", es: "Este paquete se ha extraviado.", de: "Dieses Paket hat sich verirrt.", it: "Questo collo si è smarrito.", pt: "Esta encomenda extraviou-se.", nl: "Dit pakket is zoekgeraakt.", ar: "هذا الطرد ضلّ طريقه.", ru: "Эта посылка потерялась.", tr: "Bu koli yolunu kaybetti.", pl: "Ta paczka się zgubiła." } as Record<Locale, string>,
   text: {
     fr: [
       "Erreur 404",
@@ -38,6 +38,51 @@ export const notFound = {
       "?",
       "Sourcing Pick 吉祥物拿着放大镜四处寻找",
     ],
+    es: [
+      "Error 404",
+      "Este paquete se ha extraviado.",
+      "La página que busca no existe o se ha movido.",
+      "Volver al inicio",
+      "Solicitar presupuesto",
+      "?",
+      "La mascota de Sourcing Pick buscando con una lupa",
+    ],
+    de: [
+      "Fehler 404",
+      "Dieses Paket hat sich verirrt.",
+      "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+      "Zur Startseite",
+      "Angebot anfordern",
+      "?",
+      "Das Maskottchen von Sourcing Pick sucht mit der Lupe",
+    ],
+    it: [
+      "Errore 404",
+      "Questo collo si è smarrito.",
+      "La pagina che cercate non esiste o è stata spostata.",
+      "Torna alla home",
+      "Richiedi un preventivo",
+      "?",
+      "La mascotte di Sourcing Pick cerca con la lente d’ingrandimento",
+    ],
+    pt: [
+      "Erro 404",
+      "Esta encomenda extraviou-se.",
+      "A página que procura não existe ou foi movida.",
+      "Voltar à página inicial",
+      "Pedir orçamento",
+      "?",
+      "A mascote da Sourcing Pick procura com uma lupa",
+    ],
+    nl: [
+      "Fout 404",
+      "Dit pakket is zoekgeraakt.",
+      "De pagina die u zoekt, bestaat niet of is verplaatst.",
+      "Naar de startpagina",
+      "Offerte aanvragen",
+      "?",
+      "De mascotte van Sourcing Pick zoekt met een loep",
+    ],
     ar: [
       "خطأ 404",
       "هذا الطرد ضلّ طريقه.",
@@ -47,12 +92,39 @@ export const notFound = {
       "?",
       "تميمة Sourcing Pick تبحث بعدسة مكبّرة",
     ],
-  },
-  styles: [
-    { fr: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "64px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }, en: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "54.5px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }, zh: { "margin": "0", "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif", "fontSize": "64px", "lineHeight": "1.3", "fontWeight": "700", "letterSpacing": "0", "color": "#0E1A3D", "textWrap": "balance" }, ar: { "margin": "0", "fontFamily": "'Readex Pro', 'Segoe UI', Tahoma, sans-serif", "fontSize": "64px", "lineHeight": "1.3", "fontWeight": "600", "letterSpacing": "0", "color": "#0E1A3D", "textWrap": "balance" } },
-    { fr: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, en: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, zh: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, ar: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Readex Pro', 'Segoe UI', Tahoma, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" } },
-    { fr: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, en: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, zh: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, ar: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Readex Pro', 'Segoe UI', Tahoma, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" } },
-    { fr: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, en: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, zh: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, ar: { "position": "absolute", "top": "40px", "left": "50px", "fontFamily": "'Readex Pro', 'Segoe UI', Tahoma, sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" } },
+    ru: [
+      "Ошибка 404",
+      "Эта посылка потерялась.",
+      "Страница, которую вы ищете, не существует или была перемещена.",
+      "На главную",
+      "Запросить расчёт",
+      "?",
+      "Талисман Sourcing Pick что-то ищет с лупой",
+    ],
+    tr: [
+      "Hata 404",
+      "Bu koli yolunu kaybetti.",
+      "Aradığınız sayfa mevcut değil veya taşınmış.",
+      "Ana sayfaya dönün",
+      "Teklif isteyin",
+      "?",
+      "Büyüteçle arama yapan Sourcing Pick maskotu",
+    ],
+    pl: [
+      "Błąd 404",
+      "Ta paczka się zgubiła.",
+      "Szukana strona nie istnieje lub została przeniesiona.",
+      "Wróć na stronę główną",
+      "Poproś o wycenę",
+      "?",
+      "Maskotka Sourcing Pick szuka z lupą",
+    ],
+  } as Record<Locale, readonly string[]>,
+  frStyles: [
+    { fr: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "64px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }, en: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "54.5px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }, zh: { "margin": "0", "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif", "fontSize": "64px", "lineHeight": "1.3", "fontWeight": "700", "letterSpacing": "0", "color": "#0E1A3D", "textWrap": "balance" }, es: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "53.5px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }, de: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "53.5px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }, it: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "56.4px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }, pt: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "55.4px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }, nl: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "57.5px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }, ar: { "margin": "0", "fontFamily": "'Readex Pro', 'Segoe UI', Tahoma, sans-serif", "fontSize": "64px", "lineHeight": "1.3", "fontWeight": "600", "letterSpacing": "0", "color": "#0E1A3D", "textWrap": "balance" }, ru: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "61.2px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }, tr: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "59.9px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }, pl: { "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "62.5px", "lineHeight": "1.04", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" } },
+    { fr: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, en: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, zh: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, es: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, de: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, it: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, pt: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, nl: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, ar: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Readex Pro', 'Segoe UI', Tahoma, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, ru: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, tr: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }, pl: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" } },
+    { fr: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, en: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, zh: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, es: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, de: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, it: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, pt: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, nl: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, ar: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Readex Pro', 'Segoe UI', Tahoma, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, ru: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, tr: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }, pl: { "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "17px", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" } },
+    { fr: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, en: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, zh: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, es: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, de: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, it: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, pt: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, nl: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, ar: { "position": "absolute", "top": "40px", "left": "50px", "fontFamily": "'Readex Pro', 'Segoe UI', Tahoma, sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, ru: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, tr: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" }, pl: { "position": "absolute", "top": "40px", "right": "50px", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "72px", "fontWeight": "700", "color": "#C9D6F5" } },
   ] as Record<Locale, CSSProperties>[],
-  values: [] as Record<Locale, string>[],
+  frValues: [] as Record<Locale, string>[],
 };

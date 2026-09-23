@@ -4,20 +4,13 @@ import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { z } from "zod";
-import {
-  Category,
-  KycDocumentKind,
-  KycStatus,
-  OrgType,
-  Role,
-  SubRole,
-} from "@prisma/client";
+import { Category, KycDocumentKind, KycStatus, OrgType, Role, SubRole } from "@prisma/client";
 import { signIn } from "@/lib/auth";
 import { prisma } from "@/lib/db/client";
 import { hashPassword } from "@/lib/auth/password";
 import { writeAuditLog } from "@/lib/audit/log";
 import { dashboardPathForRole } from "@/lib/auth/redirects";
-import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
+import { appLocaleFor, defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
 import { storeFile, StorageError } from "@/lib/storage/local";
 
 const ClientSignupSchema = z.object({
@@ -115,7 +108,10 @@ export async function signupClientAction(
           role: Role.CLIENT,
           subRole: SubRole.OWNER,
           organizationId: org.id,
-          locale,
+          // The column's enum holds the four languages the product
+          // speaks; a visitor who signed up from the Polish site is
+          // recorded as the nearest one we can actually write to them in.
+          locale: appLocaleFor(locale),
           hasOnboarded: false,
         },
       });
@@ -309,7 +305,7 @@ export async function signupFactoryAction(
           role: Role.FACTORY,
           subRole: SubRole.OWNER,
           organizationId: org.id,
-          locale,
+          locale: appLocaleFor(locale),
           hasOnboarded: false,
         },
       });
@@ -323,7 +319,10 @@ export async function signupFactoryAction(
     // On failure we attempt cleanup of the org row to avoid an orphaned
     // KYC-less factory account.
     try {
-      const stored: Array<{ kind: KycDocumentKind; file: import("@/lib/storage/local").StoredFile }> = [];
+      const stored: Array<{
+        kind: KycDocumentKind;
+        file: import("@/lib/storage/local").StoredFile;
+      }> = [];
 
       stored.push({
         kind: KycDocumentKind.BUSINESS_LICENSE,
@@ -347,9 +346,7 @@ export async function signupFactoryAction(
       });
     } catch (e) {
       // Roll back the org + user
-      await prisma.organization
-        .delete({ where: { id: created.org.id } })
-        .catch(() => {});
+      await prisma.organization.delete({ where: { id: created.org.id } }).catch(() => {});
       if (e instanceof StorageError) {
         return { error: e.message };
       }

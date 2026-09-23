@@ -1,20 +1,23 @@
 /* The only stylesheet the ported design has.
  *
  * Everything else is inline, exactly as the canvas exported it. This file does
- * two jobs the artboards cannot do for themselves: centre the 1440px frame in
- * a window of any width, and keep the page usable below that width.
+ * the one thing the artboards cannot do for themselves: survive a window that
+ * is not 1440px wide.
+ *
+ * The canvas is a 1440px frame, and the first attempt took that literally —
+ * capped the page at 1440 and centred it, which put navy bands down both sides
+ * of every desktop monitor. A frame is how a design is drawn, not how it is
+ * built. So the frame width is treated as a *measure* instead: backgrounds run
+ * edge to edge, and each band keeps the content column the designer drew by
+ * growing its gutter rather than its column. At exactly 1440 the result is the
+ * artboard, pixel for pixel; wider, it is the artboard with more air beside it.
  *
  * The canvas has one narrow artboard — the home page at 390px — and nothing in
- * between, so what follows is deliberately the smallest set of rules that
- * stops a 1440px composition from overflowing a laptop. Above 1440px nothing
- * here applies and the rendering is the drawing. Between 1100 and 1440 the
- * design's own gutters are left alone, because a six-per-cent squeeze is
- * something flex and grid absorb without help; only the hero illustration is
- * touched, and only so it is not sliced off. Below 1100 the composition has to
- * give, and it gives by stacking — never by re-ordering.
+ * between, so the rules below 1100px are deliberately the smallest set that
+ * stops the composition overflowing. Nothing is re-ordered or re-composed.
  *
- * Note the selectors match React's serialisation of the inline styles, which
- * writes `width:800px` with no space after the colon.
+ * Selectors match React's serialisation of the inline styles, which writes
+ * `width:800px` with no space after the colon.
  */
 
 .frame {
@@ -26,37 +29,63 @@
   background: #f5f7fc;
 }
 
-.frame > * {
-  max-width: 1440px;
-  margin-inline: auto;
+/* A section drawn with 120px gutters inside a 1440px frame has a 1200px
+   content column; the header's 96px gutters give it 1248. Past 1440 the gutter
+   takes the extra width and the column does not move. */
+.frame :global(section),
+.frame :global(footer) {
+  padding-inline: max(120px, calc((100% - 1200px) / 2)) !important;
 }
 
-/* The hero illustration is pinned at left:612px inside a 1440px section. Below
-   that width its right edge falls outside and `overflow:hidden` slices the
-   ship off. Anchoring it to the inline end instead shifts it a few dozen
-   pixels — far less visible than the cut, and the logical property keeps it
-   mirrored on the Arabic pages, which pin it from the other side. */
+.frame :global(header) {
+  padding-inline: max(96px, calc((100% - 1248px) / 2)) !important;
+}
+
+/* The hero illustration is pinned at left:612px — an offset measured from the
+   edge of the 1440px frame, which no longer exists. Percentage margins on an
+   absolutely positioned box resolve against its containing block, so this
+   slides it back to where the frame would have started. The Arabic artboard
+   mirrors the pin itself (left:28px), so the same shift is correct there and
+   a physical margin is what keeps both honest. */
+@media (min-width: 1440px) {
+  .frame :global([style*="position:absolute"][style*="width:800px"]) {
+    margin-left: calc((100% - 1440px) / 2);
+  }
+}
+
+/* Below the canvas width the pin runs the art off the right-hand edge, where
+   the section's `overflow:hidden` slices the ship off. The artboard already
+   sets it 28px from the frame's edge, so holding it 28px from the viewport's
+   keeps the relationship the designer drew; it is the text column that gets
+   closer, not the art that moves away.
+   `!important` throughout this file is not decoration: every one of these
+   properties is competing with an inline style, and an inline style wins. */
 @media (max-width: 1439.98px) {
   .frame :global([style*="position:absolute"][style*="width:800px"]) {
-    inset-inline-end: 0;
-    inset-inline-start: auto;
+    inset-inline-end: 28px !important;
+    inset-inline-start: auto !important;
+  }
+}
+
+/* Past this point the illustration would sit behind the headline rather than
+   beside it — the artboard overlaps them by 88px, and by 1200 that has grown
+   past the point where the text is still the thing you read first. The
+   canvas's own phone artboard drops the illustration too. */
+@media (max-width: 1200px) {
+  .frame :global([style*="position:absolute"][style*="width:800px"]) {
+    display: none !important;
   }
 }
 
 @media (max-width: 1100px) {
   .frame :global(section),
-  .frame :global(header),
-  .frame :global(footer) {
+  .frame :global(footer),
+  .frame :global(header) {
     padding-inline: clamp(20px, 7vw, 96px) !important;
   }
-  /* Past this point the text column is the whole page and the illustration
-     has nowhere left to sit. The canvas's own phone artboard drops it too. */
-  .frame :global([style*="position:absolute"][style*="width:800px"]) {
-    display: none;
-  }
   .frame :global(img) {
-    max-width: 100%;
-    height: auto;
+    max-width: 100% !important;
+    height: auto !important;
   }
   .frame :global([style*="width:580px"]),
   .frame :global([style*="width:500px"]),
@@ -84,6 +113,9 @@
   }
   .frame :global(h2) {
     font-size: clamp(28px, 6.5vw, 46px) !important;
+  }
+  .frame :global([style*="min-height:740px"]) {
+    min-height: 0 !important;
   }
 }
 

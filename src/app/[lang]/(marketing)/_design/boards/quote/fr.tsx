@@ -1,20 +1,22 @@
 // GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
-// Source: Site-Devis.dc.html
+// Source: fr-Devis.dc.html (and 10 more)
 // Regenerate: npm run design:port
 /*
  * Markup, spacing and colour are the design's own, transcribed rather than
- * interpreted. Copy lives in ../content/quote.ts as four arrays zipped by
- * position, which is sound because the four artboards were checked to have
- * identical tag-and-attribute structure before anything was written.
+ * interpreted. Copy lives in ../../content/quote.ts, one array per locale, zipped by
+ * position — sound because the artboards behind this file were checked to
+ * have identical tag-and-attribute structure before anything was written.
+ *
+ * Locales using this shape: fr, en, zh, es, de, it, pt, nl, ar, ru, pl.
  */
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
-import { quote as content } from "../content/quote";
+import { quote as content } from "../../content/quote";
 
-export function QuoteBoard({ lang }: { lang: Locale }) {
+export function QuoteBoardFR({ lang }: { lang: Locale }) {
   const t = content.text[lang];
-  const s = content.styles;
+  const s = content.frStyles;
 
   return (
     <>

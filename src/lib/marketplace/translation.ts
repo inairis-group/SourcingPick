@@ -132,11 +132,21 @@ export async function getOrTranslateProductCopy(args: {
   };
 }
 
+// Named for the model in the prompt, so every site language is listed — a
+// listing can be translated into Polish without the dashboard being.
 const LANGUAGE_NAME: Record<Locale, string> = {
   fr: "French",
   en: "English",
   zh: "Mandarin Chinese",
+  es: "Spanish",
+  de: "German",
+  it: "Italian",
+  pt: "European Portuguese",
+  nl: "Dutch",
   ar: "Arabic",
+  ru: "Russian",
+  tr: "Turkish",
+  pl: "Polish",
 };
 
 function stripFences(text: string): string {

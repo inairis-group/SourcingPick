@@ -3,12 +3,24 @@ import type { Locale } from "./config";
 /**
  * BCP-47 mapping for Intl.* APIs. Our internal locales are short codes;
  * the Intl APIs want richer tags for sensible defaults.
+ *
+ * This covers all twelve site languages, not just the four the application is
+ * translated into: formatting a price needs no translation, and a Polish
+ * reader on the public site should still see "1 250,00 €" the Polish way.
  */
 const intlLocale: Record<Locale, string> = {
   fr: "fr-FR",
   en: "en-GB",
   zh: "zh-Hans-CN",
+  es: "es-ES",
+  de: "de-DE",
+  it: "it-IT",
+  pt: "pt-PT",
+  nl: "nl-NL",
   ar: "ar-AE",
+  ru: "ru-RU",
+  tr: "tr-TR",
+  pl: "pl-PL",
 };
 
 /**
@@ -24,7 +36,11 @@ export function formatEUR(amount: number, locale: Locale): string {
 /**
  * Plain number — used for quantities, counts, percentages.
  */
-export function formatNumber(value: number, locale: Locale, options?: Intl.NumberFormatOptions): string {
+export function formatNumber(
+  value: number,
+  locale: Locale,
+  options?: Intl.NumberFormatOptions,
+): string {
   return new Intl.NumberFormat(intlLocale[locale], options).format(value);
 }
 

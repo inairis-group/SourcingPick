@@ -16,7 +16,7 @@ import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { requiresPreTenderApproval } from "@/lib/sourcing/pre-tender-gate";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
-import { isLocale } from "@/lib/i18n/config";
+import { isLocale, type Locale } from "@/lib/i18n/config";
 import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { OrderTimeline } from "@/components/orders/timeline";
 import { ContextThread } from "@/components/messaging/context-thread";
@@ -448,7 +448,7 @@ function PreTenderGate({
   rejectedAt: Date | null;
   rejectionReason: string | null;
   dict: Awaited<ReturnType<typeof getDictionary>>;
-  lang: "fr" | "en" | "zh" | "ar";
+  lang: Locale;
 }) {
   const t = dict.agent.requests.preTender;
   if (approvedAt) {

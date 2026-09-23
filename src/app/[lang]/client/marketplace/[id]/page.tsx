@@ -8,7 +8,7 @@ import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
-import { isLocale } from "@/lib/i18n/config";
+import { isLocale, type AppLocale } from "@/lib/i18n/config";
 import { formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { formatLeadTime } from "@/lib/marketplace/lead-time";
 import { estimateDeliveryFee } from "@/lib/delivery/calculator";
@@ -131,7 +131,7 @@ export default async function ClientMarketplaceProductPage({
   const sourceLocale = product.factoryOrg.users[0]?.locale ?? "en";
   const translated = await getOrTranslateProductCopy({
     productId: product.id,
-    sourceLocale: sourceLocale as "fr" | "en" | "zh" | "ar",
+    sourceLocale: sourceLocale as AppLocale,
     targetLocale: lang,
     name: product.name,
     description: product.description,

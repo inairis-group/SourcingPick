@@ -18,7 +18,7 @@ import { FilterTab } from "@/components/ui/filter-tab";
 import { prisma } from "@/lib/db/client";
 import { requireAuth } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
-import { isLocale } from "@/lib/i18n/config";
+import { isLocale, type Locale } from "@/lib/i18n/config";
 import { formatDate } from "@/lib/i18n/formatters";
 import { cn } from "@/lib/utils";
 
@@ -487,7 +487,7 @@ function ThreadRow({
     previewAuthor: string | null;
   };
   Icon: typeof Message01Icon;
-  lang: "fr" | "en" | "zh" | "ar";
+  lang: Locale;
   dict: Awaited<ReturnType<typeof getDictionary>>;
 }) {
   return (
