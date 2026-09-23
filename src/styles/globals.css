@@ -710,6 +710,51 @@
   }
 
   /* ---------------------------------------------------------
+   * .sp-faq-chip — the FAQ's category chips.
+   *
+   * Same problem as .sp-choice: the canvas can draw only one state, so it
+   * writes the filled style onto the first chip and the outlined style onto
+   * the other five. Rendered literally the first chip stays filled however
+   * far you read. Both values below are the design's own, taken from the two
+   * chips it drew; `aria-current` is what moves between them.
+   *
+   * `!important` because each is competing with the inline style it came
+   * with. The focus ring is added — the canvas draws no focus state, and a
+   * row of links that shows nothing on Tab is not navigable.
+   * --------------------------------------------------------- */
+  .sp-faq-chip {
+    background: #ffffff !important;
+    color: #0e1a3d !important;
+    border-color: #dce3f2 !important;
+    transition:
+      background var(--duration-fast) var(--ease-default),
+      color var(--duration-fast) var(--ease-default),
+      border-color var(--duration-fast) var(--ease-default);
+  }
+
+  .sp-faq-chip:hover {
+    border-color: #9facd3 !important;
+  }
+
+  .sp-faq-chip[aria-current="true"] {
+    background: #0e1a3d !important;
+    color: #ffffff !important;
+    border-color: #0e1a3d !important;
+  }
+
+  .sp-faq-chip:focus-visible {
+    outline: 2px solid #155dfc;
+    outline-offset: 3px;
+  }
+
+  /* A chip jumps to its group; the sticky header must not then cover the
+     heading it jumped to. Mirrors the rule board.module.css applies to
+     `section[id]`. */
+  .sp-faq-group {
+    scroll-margin-top: calc(var(--sp-header-h, 84px) + 16px);
+  }
+
+  /* ---------------------------------------------------------
    * Home intro overlay (components/marketing/home-intro.tsx).
    *
    * Server-rendered at 0% so it is present in the first paint,

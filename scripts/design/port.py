@@ -231,8 +231,16 @@ def page_routes(stem: str) -> list[str | None]:
     link count would mean the positions no longer correspond, and silently
     shifting them is how a footer ends up linking to the wrong page.
     """
-    fr = anchors(_whole(stem, "fr"))
+    whole_fr = _whole(stem, "fr")
+    fr = anchors(whole_fr)
     routes = [french_route(a, text_of(a), a.attr("href") or "") for a in fr]
+
+    # The category chips are a table of contents for this page, not navigation.
+    # Resolved by text they went badly wrong: "Sourcing" and "App" matched the
+    # site-wide route map and took the reader off the FAQ entirely.
+    chips = faq_chip_anchors(whole_fr)
+    for n, chip in enumerate(chips, start=1):
+        routes[next(i for i, a in enumerate(fr) if a is chip)] = f"#faq-group-{n}"
     for loc in LOCALES:
         n = len(anchors(_whole(stem, loc)))
         if n != len(fr):
@@ -241,6 +249,54 @@ def page_routes(stem: str) -> list[str | None]:
                 f"{len(fr)}; routes cannot be carried across by position"
             )
     return routes
+
+
+def element_ids(nodes: list[Element]) -> set[str]:
+    found: set[str] = set()
+
+    def walk(n):
+        if isinstance(n, str):
+            return
+        got = n.attr("id")
+        if got:
+            found.add(got)
+        for c in n.children:
+            walk(c)
+
+    for n in nodes:
+        walk(n)
+    return found
+
+
+def check_fragments(stem: str, routes: list[str | None], page_ids: set[str],
+                    home_ids: set[str]) -> None:
+    """A link to `#thing` has to have a `thing` to land on.
+
+    The existing guard catches an anchor with no mapping at all. It did not
+    catch one mapped to a fragment that exists nowhere, which is how the FAQ
+    shipped four chips that did nothing. Ids the porter adds itself count —
+    they are collected from the decorated tree, not from the raw artboard.
+    """
+    for route in routes:
+        if not route or not isinstance(route, str):
+            continue
+        if route in HOME_FRAGMENTS:
+            # Mirrors `fragment()`: these name home-page sections and are
+            # emitted as `/<lang>#…`, so they are checked against the home
+            # page. The header carries one on every page.
+            target, scope = route[1:], home_ids
+        elif route.startswith("#"):
+            target, scope = route[1:], page_ids
+        elif route.startswith("/#"):
+            target, scope = route[2:], home_ids
+        else:
+            continue
+        if target not in scope:
+            raise SystemExit(
+                f"{stem}: a link points at #{target}, which nothing on the "
+                f"{'home page' if scope is home_ids else 'page'} has as an id. "
+                "Give the target an id in DECORATIONS, or change the route."
+            )
 
 
 def _whole(stem: str, loc: str) -> list[Element]:
@@ -472,6 +528,63 @@ def _is_country_select(el: Element) -> bool:
     return el.tag == "select" and el.attr("id") == "q-country"
 
 
+def _faq_group_counter():
+    """Each FAQ category group, numbered, so a chip has somewhere to land.
+
+    The canvas draws six groups — a heading beside its questions — and six
+    chips above them, but gives the groups no ids, so the chips it draws point
+    at nothing. The ids are added here rather than invented in the route map,
+    which is what shipped four dead anchors.
+    """
+    n = [0]
+
+    def decorate(el: Element):
+        if not _is_faq_group(el):
+            return None
+        n[0] += 1
+        return {"id": f"faq-group-{n[0]}", "className": "sp-faq-group"}
+
+    return decorate
+
+
+def _is_faq_group(el: Element) -> bool:
+    if el.tag != "div" or "grid" not in (el.attr("style") or ""):
+        return False
+    first = next((c for c in el.children if not isinstance(c, str)), None)
+    return first is not None and first.tag == "h2"
+
+
+def _is_faq_chip_row(el: Element) -> bool:
+    """The row of category chips: a wrapping flex of pill-shaped anchors."""
+    if el.tag != "section":
+        return False
+    pills = [
+        c
+        for c in el.children
+        if not isinstance(c, str)
+        and c.tag == "a"
+        and "border-radius: 999px" in (c.attr("style") or "")
+    ]
+    return len(pills) >= 6
+
+
+def faq_chip_anchors(nodes: list[Element]) -> list[Element]:
+    rows = []
+
+    def walk(n):
+        if isinstance(n, str):
+            return
+        if _is_faq_chip_row(n):
+            rows.append(n)
+            return
+        for c in n.children:
+            walk(c)
+
+    for n in nodes:
+        walk(n)
+    return [c for r in rows for c in r.children if not isinstance(c, str) and c.tag == "a"]
+
+
 def _is_file_drop(el: Element) -> bool:
     """The dashed panel the canvas draws for attachments.
 
@@ -492,6 +605,11 @@ COMPONENTS: dict[str, list[tuple]] = {
         # The canvas cannot draw a file having been chosen, so the previews,
         # sizes and remove buttons are added around the box it did draw.
         (_is_file_drop, "FileDrop", "../../file-drop", 1, True),
+    ],
+    "FAQ": [
+        # The chips work as plain anchors with no JavaScript; this adds the
+        # moving active state the canvas can only draw one frame of.
+        (_is_faq_chip_row, "FaqCategories", "../../faq-categories", 1, False),
     ],
 }
 
@@ -734,6 +852,10 @@ SITE_DECORATIONS: list[tuple] = [
 ]
 
 DECORATIONS: dict[str, list[tuple]] = {
+    # Six category groups, numbered so the six chips above them have
+    # somewhere to land. Count-checked: if the canvas ever draws a
+    # seventh category, the port stops rather than orphaning a chip.
+    "FAQ": [(_is_faq_group, _faq_group_counter(), 6)],
     # The six operations read as one sequence, so they park and stack as you
     # scroll instead of scrolling past as six separate blocks.
     "Services": [(_is_step_card, "sp-step-card", 6)],
@@ -759,18 +881,22 @@ def decorator_for(stem: str):
     ]
     seen = [0] * len(rules)
 
-    def decorate(el: Element) -> str | None:
-        for i, (pred, cls, _) in enumerate(rules):
+    def decorate(el: Element):
+        """-> a class name, or a dict of attributes, or None."""
+        for i, (pred, what, _) in enumerate(rules):
             if pred(el):
                 seen[i] += 1
-                return cls
+                # A callable decoration numbers itself as it goes, which is how
+                # six sibling groups get six distinct ids.
+                return what(el) if callable(what) else what
         return None
 
     def check() -> None:
-        for (pred, cls, expected), got in zip(rules, seen):
+        for (pred, what, expected), got in zip(rules, seen):
+            cls = getattr(what, "__name__", what)
             if got != expected:
                 raise SystemExit(
-                    f"{stem}: expected {expected} element(s) for .{cls}, matched "
+                    f"{stem}: expected {expected} element(s) for {cls}, matched "
                     f"{got}. The artboard changed — update DECORATIONS rather "
                     "than shipping the page without its behaviour."
                 )
@@ -1161,6 +1287,16 @@ def port_page(stem: str, tokens: set[str]) -> None:
         check_decorations()
         check_components()
         check_names()
+        # Ids are read back out of what was actually emitted, not out of the
+        # artboard: several of them are added by the decorations above, and a
+        # guard that checked the input rather than the output would pass while
+        # shipping a link to nothing.
+        check_fragments(
+            stem,
+            routes,
+            set(re.findall(r'id="([^"]+)"', "\n".join(lines))),
+            element_ids(_whole("Accueil", "fr")),
+        )
         variants.append((tag, locs, lines, em, styles, values))
 
     write(f"{BOARD_DIR}/boards/{page.key}/index.tsx", board_index(page, variants))

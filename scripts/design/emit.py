@@ -615,9 +615,15 @@ class Emitter:
                 continue
             attrs.append(f"{jsx_attr_name(tag, name)}={json.dumps(value)}")
 
-        css_class = self.decorate(node) or self._generic_class(node)
-        if css_class:
-            attrs.insert(0, f'className="{css_class}"')
+        # A decoration is either a class or a set of attributes. Ids matter
+        # here: an in-page anchor needs something to land on, and the canvas
+        # draws the target without giving it one.
+        decoration = self.decorate(node) or self._generic_class(node)
+        if isinstance(decoration, str):
+            decoration = {"className": decoration}
+        if decoration:
+            for k, v in decoration.items():
+                attrs.insert(0, f'{k}="{v}"')
 
         # -- form plumbing, all of it derived rather than declared ------------
         #

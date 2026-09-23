@@ -57,6 +57,15 @@
   backdrop-filter: blur(12px);
 }
 
+/* While the drawer is open the header is a modal, and nothing may paint over
+   it — the cookie banner is `fixed` at the toast tier (60) and was sitting on
+   top of the scrim. The header creates a stacking context, so raising it
+   carries the scrim and the drawer with it. 65 is between toast and the home
+   intro overlay (110), which is documented as outranking everything. */
+.frame :global(header[data-menu="open"]) {
+  z-index: 65;
+}
+
 /* An in-page anchor would now land behind the header. */
 .frame :global(section[id]) {
   scroll-margin-top: calc(var(--sp-header-h) + 12px);
