@@ -3507,5 +3507,287 @@
     "payoutStatus_FAILED": "Échoué",
     "payoutFail_factory_payout_not_set_up": "Compte de versement à configurer.",
     "payoutFail_shipper_payout_not_set_up": "Compte de versement à configurer."
+  },
+  "site": {
+    "home": {
+      "nav": {
+        "announce": "Sourcing Pick démarre. Nous préférons vous montrer notre entrepôt plutôt que d’inventer des avis clients.",
+        "announceLink": "Ce qui est vrai aujourd’hui",
+        "link1": "Services",
+        "link2": "Comment ça marche",
+        "link3": "Entrepôt",
+        "link4": "Tarifs",
+        "link5": "FAQ",
+        "locale": "FR",
+        "login": "Espace client",
+        "quote": "Demander un devis"
+      },
+      "hero": {
+        "eyebrow": "Guangzhou → Nansha → Europe",
+        "title1": "Vos marchandises de Chine,",
+        "title2": "vérifiées",
+        "title3": "avant d’embarquer.",
+        "body": "Sourcing Pick réceptionne vos commandes dans son entrepôt de Guangzhou, contrôle chaque colis, consolide, renforce, charge le conteneur et l’expédie depuis le port de Nansha vers l’Europe. Des photos à chaque étape, le suivi dans l’application.",
+        "ctaPrimary": "Demander un devis",
+        "ctaSecondary": "Voir les 6 étapes",
+        "stat1": "Entrepôt de 200 m² · Baiyun, Guangzhou",
+        "stat2": "4 techniciens sur place",
+        "stat3": "Société chinoise depuis 2023",
+        "caption1": "Entrepôt Sourcing Pick · Guangzhou",
+        "caption2": "Quai · port de Nansha",
+        "caption3": "Vers l’Europe",
+        "caption4": "À Guangzhou, pour vous"
+      },
+      "ops": {
+        "title": "Tout ce qui arrive à vos marchandises entre l’usine et le navire.",
+        "intro": "Pour les PME d’achat-revente qui importent par conteneur, et les particuliers. La France d’abord, puis le reste de l’Europe et l’Afrique francophone.",
+        "step1": {
+          "num": "01",
+          "title": "Réception",
+          "body": "Vos fournisseurs livrent à notre entrepôt de Baiyun. Chaque colis est enregistré à l’arrivée : nombre, poids, état."
+        },
+        "step2": {
+          "num": "02",
+          "title": "Vérification",
+          "body": "Ouverture, comptage et contrôle visuel selon vos consignes. Les photos et vidéos arrivent dans l’app."
+        },
+        "step3": {
+          "num": "03",
+          "title": "Consolidation",
+          "body": "Plusieurs fournisseurs, un seul envoi. Nous regroupons vos marchandises pour remplir le conteneur."
+        },
+        "step4": {
+          "num": "04",
+          "title": "Renforcement bois",
+          "body": "Caisses en bois et cerclage pour les produits lourds ou fragiles, avant le chargement."
+        },
+        "step5": {
+          "num": "05",
+          "title": "Chargement conteneur",
+          "body": "Notre équipe charge le conteneur et le photographie, du premier carton à la fermeture des portes."
+        },
+        "step6": {
+          "num": "06",
+          "title": "Expédition maritime",
+          "body": "Départ du port de Nansha, à Guangzhou, vers l’Europe. Vous suivez le conteneur dans l’application."
+        },
+        "sourcing": {
+          "tag": "En option · Sourcing",
+          "title": "Pas encore de fournisseur ? Nos agents le trouvent.",
+          "body": "Recherche, comparaison et négociation auprès des usines. Vous recevez un devis détaillé ligne par ligne et vous validez avant toute commande.",
+          "cta": "Décrire mon besoin"
+        },
+        "future": {
+          "tag": "À l’étude",
+          "title": "Ferroviaire et aérien",
+          "body": "Pas encore proposés. Nous ne les vendrons qu’une fois testés sur de vrais envois."
+        }
+      },
+      "flow": {
+        "eyebrow": "Comment ça marche",
+        "title": "Six étapes. Toutes visibles dans l’application.",
+        "intro": "Chaque étape correspond à un statut qui change en direct sur votre téléphone, avec une notification.",
+        "step1": {
+          "title": "Votre demande",
+          "body": "Dans l’app ou via le formulaire : marchandises, fournisseurs, volumes, destination.",
+          "status": "Demande reçue"
+        },
+        "step2": {
+          "title": "Devis détaillé",
+          "body": "Chaque ligne chiffrée. Vous acceptez et signez électroniquement.",
+          "status": "Devis envoyé"
+        },
+        "step3": {
+          "title": "Acompte",
+          "body": "Le paiement de l’acompte lance les opérations.",
+          "status": "Paiement reçu"
+        },
+        "step4": {
+          "title": "Réception & contrôle",
+          "body": "Vos fournisseurs livrent à Guangzhou. Vérification, photos, consolidation.",
+          "status": "Préparation terminée"
+        },
+        "step5": {
+          "title": "Chargement & départ",
+          "body": "Conteneur chargé par notre équipe, départ du port de Nansha.",
+          "status": "Expédié"
+        },
+        "step6": {
+          "title": "En mer, jusqu’à l’arrivée",
+          "body": "Suivi du conteneur et documents dans l’app jusqu’à destination.",
+          "status": "En transit"
+        }
+      },
+      "trust": {
+        "eyebrow": "Transparence",
+        "title": "On démarre. Alors on vous montre tout.",
+        "intro": "Sourcing Pick est une jeune entreprise. Plutôt que d’afficher des chiffres flatteurs ou des témoignages invérifiables, nous publions ce que vous pouvez contrôler vous-même.",
+        "addressLabel": "Notre entrepôt",
+        "addressZh": "广东省广州市白云区钟落潭镇长腰岭康海北路113号",
+        "addressLatin": "113 Kanghai Beilu, Changyaoling, Zhongluotan, district de Baiyun, Guangzhou",
+        "trueTitle": "Vrai aujourd’hui",
+        "true1": "Société enregistrée à Guangzhou depuis février 2023",
+        "true2": "Entrepôt de 200 m² à Baiyun, Guangzhou",
+        "true3": "4 techniciens sur place pour recevoir, contrôler et charger",
+        "true4": "Départs maritimes depuis le port de Nansha",
+        "true5": "Photos de vos marchandises à chaque étape",
+        "wontTitle": "Ce que vous ne verrez pas ici",
+        "wont1": "Pas de faux avis, ni de logos de clients que nous n’avons pas",
+        "wont2": "Pas de prix de fret affichés : ils changent chaque semaine, vous recevez un devis réel",
+        "wont3": "Pas de délai promis avant d’avoir votre devis",
+        "wont4": "Pas de train ni d’avion tant que ce n’est pas testé"
+      },
+      "app": {
+        "eyebrow": "Application Sourcing Pick",
+        "title": "Votre commande quitte le navigateur. Elle tient dans votre poche.",
+        "intro": "L’espace client devient une application iOS et Android. Tout ce qui concerne vos commandes s’y trouve, et vous êtes prévenu dès qu’une étape change.",
+        "feature1": {
+          "title": "Demandes et devis",
+          "body": "Détail ligne par ligne, historique complet."
+        },
+        "feature2": {
+          "title": "Signature électronique",
+          "body": "Acceptez et signez le devis depuis le téléphone."
+        },
+        "feature3": {
+          "title": "Acompte",
+          "body": "Payez l’acompte et retrouvez vos factures."
+        },
+        "feature4": {
+          "title": "Photos et vidéos",
+          "body": "Réception, contrôle, chargement : tout est visible."
+        },
+        "feature5": {
+          "title": "Messagerie",
+          "body": "Un fil de discussion par commande avec votre agent."
+        },
+        "feature6": {
+          "title": "Notifications",
+          "body": "À chaque changement de statut."
+        },
+        "storeSoon1": "Bientôt sur",
+        "storeApple": "App Store",
+        "storeSoon2": "Bientôt sur",
+        "storeGoogle": "Google Play",
+        "releaseLabel": "Sortie :",
+        "releaseDate": "DATE DE SORTIE",
+        "releaseSep": "·",
+        "releaseLangs": "Français, English, 中文",
+        "demo": {
+          "title": "Ma commande",
+          "subtitle": "Exemple · 3 fournisseurs",
+          "product": "Lampes de bureau LED",
+          "volume": "42 cartons · 1 conteneur 20’",
+          "status1": "Demande reçue",
+          "status2": "Devis signé",
+          "status3": "Acompte payé",
+          "status4": "Contrôle à Guangzhou",
+          "status5": "Chargement du conteneur",
+          "inProgress": "En cours",
+          "status6b": "En mer vers l’Europe",
+          "photosCta": "Voir les photos du chargement",
+          "checkLabel": "Contrôle · Guangzhou",
+          "checkKind": "Vérification",
+          "photoTag": "Photo",
+          "check1": "Quantité : 42 / 42 cartons",
+          "check2": "Emballages intacts",
+          "check3": "2 étiquettes à refaire",
+          "agentNote": "Votre agent : « Les 2 étiquettes seront refaites avant chargement. »"
+        }
+      },
+      "pricing": {
+        "eyebrow": "Tarifs",
+        "title": "Des devis réels, pas des prix d’appel.",
+        "intro": "Le fret maritime change chaque semaine. Nous préférons vous envoyer un devis juste plutôt qu’afficher un tarif qui ne tiendra pas.",
+        "logistics": {
+          "title": "Logistique Chine → Europe",
+          "note": "Sur devis",
+          "row1": "Réception et stockage à Guangzhou",
+          "row1Value": "TARIF",
+          "row2": "Vérification et photos",
+          "row2Value": "TARIF",
+          "row3": "Consolidation",
+          "row3Value": "TARIF",
+          "row4": "Renforcement bois",
+          "row4Value": "SUR MESURE",
+          "row5": "Chargement du conteneur",
+          "row5Value": "TARIF",
+          "row6": "Fret maritime Nansha → Europe",
+          "row6Value": "au prix du marché, détaillé",
+          "cta": "Demander un devis logistique"
+        },
+        "sourcing": {
+          "title": "Sourcing de fournisseurs",
+          "note": "Selon le montant de la commande",
+          "tier1": "Commande < 15 000 €",
+          "tier1Fee": "150 € de recherche",
+          "tier1Rate": "0 % de commission",
+          "tier2": "15 000 à 250 000 €",
+          "tier2Fee": "450 € de dossier + 150 € / jour de recherche",
+          "tier2Rate": "2% de commission",
+          "tier3": "> 250 000 €",
+          "tier3Fee": "450 € de dossier + recherche au besoin",
+          "tier3Rate": "1.50% jusqu’à 250 000 €, puis 5 %",
+          "source": "Grille reprise du moteur de prix actuel de la plateforme :",
+          "sourceTbc": "À CONFIRMER",
+          "cta": "Décrire mon besoin"
+        },
+        "payment": "Paiement : acompte à la commande, solde avant expédition",
+        "paymentTbc": "À CONFIRMER",
+        "paymentTail": ". Virement ou carte bancaire."
+      },
+      "faq": {
+        "eyebrow": "Questions fréquentes",
+        "title": "Les questions qu’on nous pose le plus.",
+        "more": "Une autre question ?",
+        "email": "contact@sourcingpick.com",
+        "q1": "Vous êtes une nouvelle entreprise. Pourquoi vous faire confiance ?",
+        "a1": "Parce que tout est vérifiable : l’adresse de l’entrepôt est publique, chaque étape est photographiée et chaque document reste dans l’application. Vous jugez sur pièces, pas sur des promesses.",
+        "q2": "Je n’ai pas encore de fournisseur. Pouvez-vous m’aider ?",
+        "q3": "Quels sont les délais ?",
+        "q4": "Gérez-vous le dédouanement à l’arrivée en Europe ?",
+        "q5": "Acceptez-vous les particuliers ?"
+      },
+      "cta": {
+        "title": "Parlez-nous de votre prochaine commande.",
+        "body1": "Vous recevez un devis détaillé sous",
+        "delay": "DÉLAI DE RÉPONSE",
+        "body2": ", en français, en anglais ou en chinois.",
+        "primary": "Demander un devis",
+        "email": "contact@sourcingpick.com"
+      },
+      "footer": {
+        "tagline": "On s’occupe du reste !",
+        "body": "Réception, contrôle, consolidation et expédition de vos marchandises, de Guangzhou vers l’Europe.",
+        "email": "contact@sourcingpick.com",
+        "colServices": "Services",
+        "service1": "Réception",
+        "service2": "Vérification",
+        "service3": "Consolidation",
+        "service4": "Renforcement bois",
+        "service5": "Chargement",
+        "service6": "Expédition maritime",
+        "service7": "Sourcing",
+        "colCompany": "Entreprise",
+        "company1": "À propos",
+        "company2": "Notre entrepôt",
+        "company3": "Transparence",
+        "company4": "Contact",
+        "colHelp": "Aide",
+        "help1": "FAQ",
+        "help2": "Application",
+        "help3": "Espace client",
+        "help4": "Demander un devis",
+        "colLegal": "Légal",
+        "legal1": "Mentions légales",
+        "legal2": "Confidentialité",
+        "legal3": "Cookies",
+        "legal4": "Conditions générales",
+        "langsLabel": "12 langues",
+        "copyright": "© 2026 Sourcing Pick ·",
+        "entity": "RAISON SOCIALE ET SIÈGE",
+        "place": "Guangzhou · Chine"
+      }
+    }
   }
 }

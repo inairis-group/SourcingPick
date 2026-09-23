@@ -1,5 +1,5 @@
 import { cookies, headers } from "next/headers";
-import { Geist, Geist_Mono } from "next/font/google";
+import { JetBrains_Mono, Onest, Unbounded } from "next/font/google";
 import { Link } from "@/components/ui/link";
 import { buttonClass } from "@/components/ui/button";
 import { Logo } from "@/components/marketing/logo";
@@ -14,8 +14,28 @@ import { THEME_COOKIE, isStoredTheme } from "@/lib/theme/config";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+// Owns its own <html>, so it must load the type system itself — the
+// [lang] layout never runs for a truly off-route URL. Same three faces as
+// the rest of the app; loading Geist here would ship a fourth family for
+// one page.
+const display = Unbounded({
+  variable: "--font-unbounded",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+});
+const body = Onest({
+  variable: "--font-onest",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+const mono = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  display: "swap",
+});
 
 /**
  * Root not-found — catches URLs that don't match any route at all (the
@@ -43,7 +63,7 @@ export default async function GlobalNotFound() {
     <html
       lang={lang}
       dir={directionFor(lang)}
-      className={`${geistSans.variable} ${geistMono.variable}${themeClass}`}
+      className={`${display.variable} ${body.variable} ${mono.variable}${themeClass}`}
       suppressHydrationWarning
     >
       <body className="bg-page text-fg">

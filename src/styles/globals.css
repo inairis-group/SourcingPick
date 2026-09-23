@@ -67,19 +67,62 @@
   --color-info-soft: var(--color-brand-50);
   --color-info-edge: var(--color-brand-200);
 
-  /* ---------- Typography ---------- */
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  /* Display face — marketing headlines and the oversized wordmarks only.
-   * App UI never uses this.
+  /* ---------- Redesign 2026-09: palette from the approved canvas ----------
    *
-   * DECIDED 2026-08-01: stays aliased to Geist. The slot exists so
-   * `font-display` (referenced by footer.tsx, the home intro and every
-   * marketing headline) resolves to a real family rather than silently doing
-   * nothing, and so a distinctive face can be swapped in later by changing
-   * this one line plus the loader in app/[lang]/layout.tsx. No such swap is
-   * planned — the headlines are Geist Bold by choice, not by omission. */
-  --font-display: var(--font-geist-sans);
+   * Read straight off the design's artboards, not eyeballed. The brand blue
+   * #155DFC already matched `--color-brand-500`, which is why the existing
+   * brand ramp survives untouched — the redesign changes the surfaces around
+   * it, not the blue itself.
+   *
+   * The navy family is the substantive change: the design sits marketing on a
+   * deep navy ground (#0B1433) rather than white, with a cooler, bluer grey
+   * ramp than the slate neutrals the app uses today. Both scales coexist
+   * during the migration; semantic tokens decide which a surface gets.
+   */
+  --color-navy-950: #0b1433; /* marketing page ground */
+  --color-navy-900: #0e1a3d; /* primary text on light, panels on dark */
+  --color-navy-800: #162456; /* raised panel on the navy ground */
+  --color-navy-600: #4a5578; /* muted text on light */
+  --color-navy-400: #9facd3;
+  --color-navy-300: #b8c4e6;
+  --color-navy-200: #c3cdeb;
+  --color-navy-100: #dce3f2; /* hairlines on light */
+  --color-navy-50: #eef3ff;
+  --color-navy-25: #f5f7fc;
+
+  /* Light blue used for text and accents ON the navy ground, where
+   * brand-500 is too dark to clear 4.5:1. */
+  --color-brand-onnavy: #8db2ff;
+
+  /* Status pairs, as drawn. Each is a soft fill + a text/edge tone that
+   * actually passes contrast on it — the design's own pairings. */
+  --color-amber-soft: #fff1cc;
+  --color-amber: #d99a00;
+  --color-amber-ink: #7a4e00;
+  --color-amber-edge: #ffc247;
+  --color-emerald-soft: #e3f6ec;
+  --color-emerald: #1f8f55;
+  --color-rose-soft: #fbe7eb;
+  --color-rose: #c8364f;
+
+  /* ---------- Typography ----------
+   *
+   * SUPERSEDES the 2026-08-01 "stays aliased to Geist" decision: the 2026-09
+   * redesign approved by Adam specifies Unbounded / Onest / JetBrains Mono.
+   * This is the swap that slot was left open for — loader lives in
+   * app/[lang]/layout.tsx.
+   *
+   * The system fallbacks are load-bearing, not boilerplate: neither Unbounded
+   * nor Onest ships Arabic or Chinese glyphs, and ar/zh must fall through to a
+   * face that has them rather than render tofu. */
+  --font-sans:
+    var(--font-onest), "Segoe UI", system-ui, -apple-system, "Noto Sans SC",
+    "Noto Sans Arabic", sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  /* Display face — marketing headlines and the oversized wordmarks only.
+   * App UI never uses this. */
+  --font-display:
+    var(--font-unbounded), var(--font-onest), "Segoe UI", system-ui, sans-serif;
 
   --text-xs: 0.6875rem; /* 11px */
   --text-xs--line-height: 1rem;

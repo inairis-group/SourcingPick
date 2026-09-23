@@ -1,46 +1,44 @@
-import { cookies } from "next/headers";
-import { Hero } from "@/components/marketing/hero";
-import { HomeIntro, INTRO_COOKIE } from "@/components/marketing/home-intro";
-import { ProductPanels } from "@/components/marketing/product-panels";
-import { HowItWorks } from "@/components/marketing/how-it-works";
-import { CtaSection } from "@/components/marketing/cta-section";
+import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
-import { notFound } from "next/navigation";
+import { Hero, Operations, Flow, Transparency } from "./_home/sections";
+import { AppSection, Pricing, Faq, ClosingCta } from "./_home/sections-2";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   const dict = await getDictionary(lang);
-  const title = dict.brand.tagline;
-  const description = dict.marketing.hero.subtitle;
+  const h = dict.site.home.hero;
   return {
-    title,
-    description,
-    openGraph: { title, description },
-    twitter: { title, description },
+    title: `${h.title1} ${h.title2} ${h.title3}`.replace(/\s+/g, " ").trim(),
+    description: h.body,
   };
 }
 
-export default async function LandingPage({ params }: PageProps<"/[lang]">) {
+/**
+ * Home page — the 2026-09 redesign approved by Adam.
+ *
+ * Section order is the canvas's own: hero, warehouse operations, the six
+ * statuses, transparency, the app, pricing, FAQ, closing CTA. Every string
+ * comes from `site.home.*`, generated directly from the artboards, so all
+ * four locales carry the designer's copy rather than a translation of it.
+ */
+export default async function HomePage({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-
-  const [dict, cookieStore] = await Promise.all([getDictionary(lang), cookies()]);
-
-  // Decide server-side whether the intro plays, so repeat visitors never get
-  // the markup at all — no flash, no hydration mismatch. Session cookie, so
-  // it resets when the browser closes. (This page is already dynamic: the
-  // marketing layout reads the session for the navbar.)
-  const showIntro = !cookieStore.has(INTRO_COOKIE);
+  const dict = await getDictionary(lang);
+  const t = dict.site.home;
 
   return (
     <>
-      {showIntro && <HomeIntro locale={lang} />}
-      <Hero dict={dict} locale={lang} />
-      <ProductPanels dict={dict} />
-      <HowItWorks dict={dict} />
-      <CtaSection dict={dict} locale={lang} />
+      <Hero t={t} lang={lang} />
+      <Operations t={t} lang={lang} />
+      <Flow t={t} />
+      <Transparency t={t} />
+      <AppSection t={t} />
+      <Pricing t={t} lang={lang} />
+      <Faq t={t} />
+      <ClosingCta t={t} lang={lang} />
     </>
   );
 }

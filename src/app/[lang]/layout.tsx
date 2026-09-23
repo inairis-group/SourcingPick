@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
-import { Geist, Geist_Mono } from "next/font/google";
+import { JetBrains_Mono, Onest, Unbounded } from "next/font/google";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { CookieBanner } from "@/components/layout/cookie-banner";
@@ -14,8 +14,38 @@ import { THEME_COOKIE, isStoredTheme } from "@/lib/theme/config";
 import { getSiteUrl } from "@/lib/seo/site";
 import "@/styles/globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+/**
+ * The approved 2026-09 redesign's type system.
+ *
+ * Unbounded carries the headlines, Onest the body, JetBrains Mono the
+ * references and figures. Weights are pinned to the ones the design actually
+ * uses — shipping the full variable range would cost bytes nothing renders.
+ *
+ * `next/font/google` self-hosts these, so the design's Google Fonts <link>
+ * becomes no external request and no layout shift.
+ *
+ * The Latin subset only: Arabic and Chinese fall through to the system stack
+ * set on `--font-sans` below, which is correct — neither face covers those
+ * scripts, and forcing them would render tofu.
+ */
+const display = Unbounded({
+  variable: "--font-unbounded",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+});
+const body = Onest({
+  variable: "--font-onest",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+const mono = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  display: "swap",
+});
 
 const DESCRIPTION =
   "Sourcing international industrialisé avec séquestre intégré.";
@@ -79,7 +109,7 @@ export default async function RootLayout({
     <html
       lang={lang}
       dir={directionFor(lang)}
-      className={`${geistSans.variable} ${geistMono.variable}${themeClass}`}
+      className={`${display.variable} ${body.variable} ${mono.variable}${themeClass}`}
       suppressHydrationWarning
     >
       <head>
