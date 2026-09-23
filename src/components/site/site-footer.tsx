@@ -57,11 +57,11 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: Dictionary }) {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.3fr_repeat(4,1fr)]">
           <div>
             <Image
-              src="/logo-white.png"
+              src="/design/logo-white.svg"
               alt="Sourcing Pick"
-              width={152}
-              height={40}
-              className="h-9 w-auto"
+              width={168}
+              height={34}
+              className="h-[34px] w-auto"
             />
             <p className="font-display mt-5 text-lg font-semibold text-white">
               {f.tagline}

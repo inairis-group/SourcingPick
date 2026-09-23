@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Link } from "@/components/ui/link";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 import type { Locale } from "@/lib/i18n/config";
@@ -78,7 +79,23 @@ export function Hero({ t, lang }: { t: T; lang: Locale }) {
   const h = t.hero;
   return (
     <section className="bg-navy-950 relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 pt-16 pb-20 lg:px-24 lg:pt-24 lg:pb-28">
+      {/* The design's key illustration: warehouse, quay and the ship to
+          Europe. Decorative — the hero states the same thing in words — so it
+          carries an empty alt and sits behind the copy on narrow screens. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 end-0 hidden w-[62%] opacity-90 lg:block"
+      >
+        <Image
+          src="/design/hero-warehouse-quay-ship.svg"
+          alt=""
+          fill
+          priority
+          className="object-contain object-right"
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pt-16 pb-20 lg:px-24 lg:pt-24 lg:pb-28">
         <div className="max-w-2xl">
           <Eyebrow>{h.eyebrow}</Eyebrow>
 

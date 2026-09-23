@@ -62,13 +62,15 @@ def extract(path):
     m = re.search(r"<x-dc>(.*?)</x-dc>", src, re.S)
     body = m.group(1) if m else src
     p = Extract(); p.feed(body); p.flush()
-    # Collapse runs of identical adjacent text (the mockups repeat labels).
-    seen, items = None, []
-    for it in p.out:
-        if it["text"] != seen:
-            items.append(it)
-        seen = it["text"]
-    return items
+    # Deliberately NO de-duplication of adjacent identical text.
+    #
+    # An earlier version collapsed runs of the same string, on the theory that
+    # the mockups repeat labels. They do not: a contact row is a label plus a
+    # placeholder, and in Chinese both read 工作时间. Collapsing dropped the
+    # placeholder, which knocked zh two nodes out of alignment with fr and
+    # would have shifted every later key in that locale. Repetition here is
+    # content, not noise.
+    return p.out
 
 if __name__ == "__main__":
     items = extract(sys.argv[1])

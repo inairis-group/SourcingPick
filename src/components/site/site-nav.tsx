@@ -69,7 +69,14 @@ export function SiteNav({
 
       <header className="border-navy-100 bg-navy-25/92 flex h-21 items-center justify-between gap-6 border-b px-6 backdrop-blur-md lg:px-24">
         <Link href={base} aria-label="Sourcing Pick" className="flex shrink-0 items-center">
-          <Image src="/logo.svg" alt="Sourcing Pick" width={168} height={34} className="h-[34px] w-auto" priority />
+          <Image
+            src="/design/logo.svg"
+            alt="Sourcing Pick"
+            width={168}
+            height={34}
+            className="h-[34px] w-auto"
+            priority
+          />
         </Link>
 
         <nav aria-label={t.link1} className="hidden items-center gap-8 lg:flex">

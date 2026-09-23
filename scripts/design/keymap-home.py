@@ -48,37 +48,42 @@ put(104, ["app.storeSoon1", "app.storeApple", "app.storeSoon2", "app.storeGoogle
           "app.releaseLabel", "app.releaseDate", "app.releaseSep", "app.releaseLangs"])
 put(112, ["app.demo.title", "app.demo.subtitle", "app.demo.product", "app.demo.volume"])
 put(116, [f"app.demo.status{i}" for i in range(1, 7)])
+# The demo card carries FOUR "Photo" thumbnail labels, not one. An earlier
+# extractor collapsed the identical run and shifted every key after this point
+# by three — see the note in extract.py.
 put(121, ["app.demo.inProgress", "app.demo.status6b", "app.demo.photosCta",
-          "app.demo.checkLabel", "app.demo.checkKind", "app.demo.photoTag",
-          "app.demo.check1", "app.demo.check2", "app.demo.check3", "app.demo.agentNote"])
+          "app.demo.checkLabel", "app.demo.checkKind"])
+put(126, [f"app.demo.photoTag{i}" for i in range(1, 5)])
+put(130, ["app.demo.check1", "app.demo.check2", "app.demo.check3",
+          "app.demo.agentNote"])
 
-put(131, ["pricing.eyebrow", "pricing.title", "pricing.intro",
+put(134, ["pricing.eyebrow", "pricing.title", "pricing.intro",
           "pricing.logistics.title", "pricing.logistics.note"])
-put(136, ["pricing.logistics.row1", "pricing.logistics.row1Value",
+put(139, ["pricing.logistics.row1", "pricing.logistics.row1Value",
           "pricing.logistics.row2", "pricing.logistics.row2Value",
           "pricing.logistics.row3", "pricing.logistics.row3Value",
           "pricing.logistics.row4", "pricing.logistics.row4Value",
           "pricing.logistics.row5", "pricing.logistics.row5Value",
           "pricing.logistics.row6", "pricing.logistics.row6Value",
           "pricing.logistics.cta"])
-put(149, ["pricing.sourcing.title", "pricing.sourcing.note",
+put(152, ["pricing.sourcing.title", "pricing.sourcing.note",
           "pricing.sourcing.tier1", "pricing.sourcing.tier1Fee", "pricing.sourcing.tier1Rate",
           "pricing.sourcing.tier2", "pricing.sourcing.tier2Fee", "pricing.sourcing.tier2Rate",
           "pricing.sourcing.tier3", "pricing.sourcing.tier3Fee", "pricing.sourcing.tier3Rate",
           "pricing.sourcing.source", "pricing.sourcing.sourceTbc", "pricing.sourcing.cta"])
-put(163, ["pricing.payment", "pricing.paymentTbc", "pricing.paymentTail"])
+put(166, ["pricing.payment", "pricing.paymentTbc", "pricing.paymentTail"])
 
-put(166, ["faq.eyebrow", "faq.title", "faq.more", "faq.email"])
-put(170, ["faq.q1", "faq.a1", "faq.q2", "faq.q3", "faq.q4", "faq.q5"])
+put(169, ["faq.eyebrow", "faq.title", "faq.more", "faq.email"])
+put(173, ["faq.q1", "faq.a1", "faq.q2", "faq.q3", "faq.q4", "faq.q5"])
 
-put(176, ["cta.title", "cta.body1", "cta.delay", "cta.body2", "cta.primary", "cta.email"])
+put(179, ["cta.title", "cta.body1", "cta.delay", "cta.body2", "cta.primary", "cta.email"])
 
-put(182, ["footer.tagline", "footer.body", "footer.email"])
-put(185, ["footer.colServices"])
-put(186, [f"footer.service{i}" for i in range(1, 8)])
-put(193, ["footer.colCompany", "footer.company1", "footer.company2",
+put(185, ["footer.tagline", "footer.body", "footer.email"])
+put(188, ["footer.colServices"])
+put(189, [f"footer.service{i}" for i in range(1, 8)])
+put(196, ["footer.colCompany", "footer.company1", "footer.company2",
           "footer.company3", "footer.company4"])
-put(198, ["footer.colHelp", "footer.help1", "footer.help2", "footer.help3", "footer.help4"])
-put(203, ["footer.colLegal", "footer.legal1", "footer.legal2", "footer.legal3", "footer.legal4"])
-put(208, ["footer.langsLabel"])
-put(221, ["footer.copyright", "footer.entity", "footer.place"])
+put(201, ["footer.colHelp", "footer.help1", "footer.help2", "footer.help3", "footer.help4"])
+put(206, ["footer.colLegal", "footer.legal1", "footer.legal2", "footer.legal3", "footer.legal4"])
+put(211, ["footer.langsLabel"])
+put(224, ["footer.copyright", "footer.entity", "footer.place"])
