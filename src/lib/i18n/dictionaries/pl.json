@@ -238,6 +238,36 @@
       "filterClosed": "Zamknięte",
       "unassigned": "Nieprzypisany",
       "empty": "Brak zapytań."
+    },
+    "dashboard": {
+      "greeting": "Dzień dobry, {name}",
+      "body": "Oto stan Państwa zapytań i zamówień.",
+      "kpiOpenRequests": "Zapytania w toku",
+      "kpiQuotesToSign": "Wyceny do podpisu",
+      "kpiInTransit": "Zamówienia w transporcie",
+      "kpiDocsThisWeek": "Dokumenty dodane w tym tygodniu",
+      "todoTitle": "Czego od Państwa potrzebujemy",
+      "todoEmpty": "Nic nie wymaga teraz uwagi.",
+      "signQuote": "Podpisz wycenę {ref}",
+      "payDeposit": "Zapłać zaliczkę za zamówienie {ref}",
+      "openOrdersTitle": "Zamówienia w toku",
+      "seeAll": "Wszystkie",
+      "colReference": "Numer",
+      "colProduct": "Produkt",
+      "colState": "Status",
+      "colAmount": "Kwota",
+      "open": "Otwórz",
+      "ordersEmpty": "Brak zamówień w toku."
     }
+  },
+  "orders": {
+    "timelineTitle": "Przebieg zapytania",
+    "nextStep": "Następny krok",
+    "tabTracking": "Przebieg",
+    "tabPhotos": "Zdjęcia",
+    "tabDocuments": "Dokumenty",
+    "tabMessages": "Wiadomości",
+    "tabInvoices": "Faktury",
+    "noTimeline": "Przebieg zaczyna się od pierwszego kroku."
   }
 }

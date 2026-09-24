@@ -238,6 +238,36 @@
       "filterClosed": "Kapanan",
       "unassigned": "Atanmadı",
       "empty": "Henüz talep yok."
+    },
+    "dashboard": {
+      "greeting": "Merhaba {name}",
+      "body": "Talepleriniz ve siparişlerinizin durumu.",
+      "kpiOpenRequests": "Devam eden talepler",
+      "kpiQuotesToSign": "İmzalanacak teklifler",
+      "kpiInTransit": "Yoldaki siparişler",
+      "kpiDocsThisWeek": "Bu hafta eklenen belgeler",
+      "todoTitle": "Sizden beklediklerimiz",
+      "todoEmpty": "Şu an yapılacak bir şey yok.",
+      "signQuote": "{ref} teklifini imzala",
+      "payDeposit": "{ref} siparişinin ön ödemesini yap",
+      "openOrdersTitle": "Devam eden siparişler",
+      "seeAll": "Tümü",
+      "colReference": "Referans",
+      "colProduct": "Ürün",
+      "colState": "Durum",
+      "colAmount": "Tutar",
+      "open": "Aç",
+      "ordersEmpty": "Devam eden sipariş yok."
     }
+  },
+  "orders": {
+    "timelineTitle": "Talep takibi",
+    "nextStep": "Sonraki adım",
+    "tabTracking": "Takip",
+    "tabPhotos": "Fotoğraflar",
+    "tabDocuments": "Belgeler",
+    "tabMessages": "Mesajlar",
+    "tabInvoices": "Faturalar",
+    "noTimeline": "Takip ilk adımla başlar."
   }
 }

@@ -238,6 +238,36 @@
       "filterClosed": "Abgeschlossen",
       "unassigned": "Nicht zugewiesen",
       "empty": "Noch keine Anfragen."
+    },
+    "dashboard": {
+      "greeting": "Hallo {name}",
+      "body": "So stehen Ihre Anfragen und Aufträge.",
+      "kpiOpenRequests": "Laufende Anfragen",
+      "kpiQuotesToSign": "Angebote zu unterzeichnen",
+      "kpiInTransit": "Aufträge unterwegs",
+      "kpiDocsThisWeek": "Diese Woche hinzugefügte Dokumente",
+      "todoTitle": "Was wir von Ihnen brauchen",
+      "todoEmpty": "Derzeit nichts zu tun.",
+      "signQuote": "Angebot {ref} unterzeichnen",
+      "payDeposit": "Anzahlung für Auftrag {ref} leisten",
+      "openOrdersTitle": "Laufende Aufträge",
+      "seeAll": "Alle",
+      "colReference": "Referenz",
+      "colProduct": "Produkt",
+      "colState": "Status",
+      "colAmount": "Betrag",
+      "open": "Öffnen",
+      "ordersEmpty": "Keine laufenden Aufträge."
     }
+  },
+  "orders": {
+    "timelineTitle": "Verlauf der Anfrage",
+    "nextStep": "Nächster Schritt",
+    "tabTracking": "Verlauf",
+    "tabPhotos": "Fotos",
+    "tabDocuments": "Dokumente",
+    "tabMessages": "Nachrichten",
+    "tabInvoices": "Rechnungen",
+    "noTimeline": "Der Verlauf beginnt mit dem ersten Schritt."
   }
 }

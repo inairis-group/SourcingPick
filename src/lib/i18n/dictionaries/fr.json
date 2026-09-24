@@ -65,7 +65,7 @@
       "eyebrow": "Tableau de bord",
       "title": "Vue d'ensemble",
       "description": "Vos demandes, devis et commandes en un coup d'œil.",
-      "kpiOpenRequests": "Demandes ouvertes",
+      "kpiOpenRequests": "Demandes en cours",
       "kpiActiveOrders": "Commandes actives",
       "kpiAwaitingPayment": "Paiements en attente",
       "kpiTotalSpent": "Dépensé (commandes livrées)",
@@ -82,7 +82,23 @@
       "recentOrdersEmpty": "Aucune commande pour l'instant.",
       "recentRequestsTitle": "Demandes récentes",
       "recentRequestsEmpty": "Aucune demande pour l'instant.",
-      "seeAll": "Tout voir"
+      "seeAll": "Tous",
+      "greeting": "Bonjour {name}",
+      "body": "Voici où en sont vos demandes et vos commandes.",
+      "kpiQuotesToSign": "Devis à signer",
+      "kpiInTransit": "Commandes en transit",
+      "kpiDocsThisWeek": "Documents ajoutés cette semaine",
+      "todoTitle": "Ce qu’on attend de vous",
+      "todoEmpty": "Rien à faire pour l’instant.",
+      "signQuote": "Signer le devis {ref}",
+      "payDeposit": "Payer l’acompte de la commande {ref}",
+      "openOrdersTitle": "Commandes en cours",
+      "colReference": "Référence",
+      "colProduct": "Produit",
+      "colState": "État",
+      "colAmount": "Montant",
+      "open": "Ouvrir",
+      "ordersEmpty": "Aucune commande en cours."
     },
     "requests": {
       "eyebrow": "Sourcing à la demande",
@@ -887,7 +903,15 @@
     "insurance": {
       "label": "Assurée",
       "tooltip": "L'assurance spécifique à la catégorie est incluse sans surcoût. La couverture s'étend de l'expédition usine à la réception confirmée."
-    }
+    },
+    "timelineTitle": "Suivi de la demande",
+    "nextStep": "Prochaine étape",
+    "tabTracking": "Suivi",
+    "tabPhotos": "Photos",
+    "tabDocuments": "Documents",
+    "tabMessages": "Messages",
+    "tabInvoices": "Factures",
+    "noTimeline": "Le suivi commencera dès la première étape."
   },
   "publicMarketplace": {
     "loadMoreTitle": "Plus de 20 produits disponibles",

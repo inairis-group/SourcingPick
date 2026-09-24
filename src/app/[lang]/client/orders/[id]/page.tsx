@@ -4,7 +4,16 @@ import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
-import { isLocale } from "@/lib/i18n/config";
+import { Panel, EmptyLine } from "@/components/saas/panel";
+// Aliased: this page already shows a shipment-event feed called
+// OrderTimeline. The two answer different questions — that one lists what
+// the carrier reported, this one is the canvas's ten-rung ladder.
+import {
+  OrderTimeline as StageLadder,
+  toTimelineSteps,
+} from "@/components/saas/order-timeline";
+import { orderTimeline } from "@/lib/orders/stage";
+import { localeTags, isLocale } from "@/lib/i18n/config";
 import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
 import { OrderTimeline } from "@/components/orders/timeline";
 import { ClientShipmentProgress } from "@/components/shipments/client-progress";
@@ -109,6 +118,9 @@ export default async function ClientOrderDetailPage({
   // Null unless a shipper has actually priced this leg — the panel is not a
   // placeholder for freight that hasn't been quoted yet.
   const freight = await getShippingQuoteForBuyer(order.id);
+  // `true` is the access control: the internal sub-states are dropped in the
+  // query, so nothing downstream has to remember to hide them.
+  const stageEvents = await orderTimeline(order.id, true);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
@@ -137,6 +149,29 @@ export default async function ClientOrderDetailPage({
           </span>
         </div>
       </header>
+
+      {/* The canvas's ladder — all ten states, the reached ones dated. Added
+          here ahead of the full rebuild of this page, because the timeline is
+          the one thing a client opening an order is looking for and the
+          database only started recording it today. */}
+      <div className="mb-6">
+        <Panel title={dict.orders.timelineTitle}>
+          {stageEvents.length === 0 ? (
+            <EmptyLine>{dict.orders.noTimeline}</EmptyLine>
+          ) : (
+            <StageLadder
+              steps={toTimelineSteps(stageEvents)}
+              dict={dict}
+              formatDay={(d) =>
+                new Intl.DateTimeFormat(localeTags[lang], {
+                  day: "2-digit",
+                  month: "2-digit",
+                }).format(d)
+              }
+            />
+          )}
+        </Panel>
+      </div>
 
       {paymentStatus === "success" && (
         <div className="border-success-edge bg-success-soft/40 mb-6 rounded-md border p-4">

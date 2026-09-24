@@ -82,7 +82,23 @@
       "recentOrdersEmpty": "No orders yet.",
       "recentRequestsTitle": "Recent requests",
       "recentRequestsEmpty": "No requests yet.",
-      "seeAll": "See all"
+      "seeAll": "All",
+      "greeting": "Hello {name}",
+      "body": "Here is where your requests and your orders stand.",
+      "kpiQuotesToSign": "Quotations to sign",
+      "kpiInTransit": "Orders in transit",
+      "kpiDocsThisWeek": "Documents added this week",
+      "todoTitle": "What we need from you",
+      "todoEmpty": "Nothing needs you right now.",
+      "signQuote": "Sign quotation {ref}",
+      "payDeposit": "Pay the deposit on order {ref}",
+      "openOrdersTitle": "Open orders",
+      "colReference": "Reference",
+      "colProduct": "Product",
+      "colState": "Status",
+      "colAmount": "Amount",
+      "open": "Open",
+      "ordersEmpty": "No open orders."
     },
     "requests": {
       "eyebrow": "Sourcing on demand",
@@ -887,7 +903,15 @@
     "insurance": {
       "label": "Insured",
       "tooltip": "Category-specific insurance is included at no extra cost. Coverage spans the full transit window from factory dispatch to confirmed delivery."
-    }
+    },
+    "timelineTitle": "Request timeline",
+    "nextStep": "Next step",
+    "tabTracking": "Tracking",
+    "tabPhotos": "Photos",
+    "tabDocuments": "Documents",
+    "tabMessages": "Messages",
+    "tabInvoices": "Invoices",
+    "noTimeline": "Tracking begins with the first step."
   },
   "publicMarketplace": {
     "loadMoreTitle": "More than 20 products available",

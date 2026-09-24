@@ -65,7 +65,7 @@
       "eyebrow": "لوحة التحكم",
       "title": "نظرة عامة",
       "description": "طلباتك وعروض الأسعار والطلبيات في لمحة واحدة.",
-      "kpiOpenRequests": "الطلبات المفتوحة",
+      "kpiOpenRequests": "طلبات قيد التنفيذ",
       "kpiActiveOrders": "الطلبيات النشطة",
       "kpiAwaitingPayment": "في انتظار الدفع",
       "kpiTotalSpent": "إجمالي المصروف (طلبيات مكتملة)",
@@ -82,7 +82,23 @@
       "recentOrdersEmpty": "لا توجد طلبيات بعد.",
       "recentRequestsTitle": "الطلبات الأخيرة",
       "recentRequestsEmpty": "لا توجد طلبات بعد.",
-      "seeAll": "عرض الكل"
+      "seeAll": "الكل",
+      "greeting": "مرحبًا {name}",
+      "body": "إليك حالة طلباتك وأوامرك.",
+      "kpiQuotesToSign": "عروض بانتظار التوقيع",
+      "kpiInTransit": "أوامر قيد النقل",
+      "kpiDocsThisWeek": "مستندات أُضيفت هذا الأسبوع",
+      "todoTitle": "ما ننتظره منك",
+      "todoEmpty": "لا شيء مطلوب منك حاليًا.",
+      "signQuote": "توقيع العرض {ref}",
+      "payDeposit": "دفع عربون الأمر {ref}",
+      "openOrdersTitle": "أوامر قيد التنفيذ",
+      "colReference": "المرجع",
+      "colProduct": "المنتج",
+      "colState": "الحالة",
+      "colAmount": "المبلغ",
+      "open": "فتح",
+      "ordersEmpty": "لا توجد أوامر قيد التنفيذ."
     },
     "requests": {
       "eyebrow": "توريد عند الطلب",
@@ -887,7 +903,15 @@
     "insurance": {
       "label": "مؤمَّنة",
       "tooltip": "يشمل العرض تأميناً خاصاً بالفئة دون تكلفة إضافية. تمتد التغطية من إرسال المصنع حتى تأكيد الاستلام."
-    }
+    },
+    "timelineTitle": "تتبّع الطلب",
+    "nextStep": "الخطوة التالية",
+    "tabTracking": "التتبّع",
+    "tabPhotos": "الصور",
+    "tabDocuments": "المستندات",
+    "tabMessages": "الرسائل",
+    "tabInvoices": "الفواتير",
+    "noTimeline": "يبدأ التتبّع مع أول خطوة."
   },
   "publicMarketplace": {
     "loadMoreTitle": "أكثر من 20 منتجاً متاحاً",

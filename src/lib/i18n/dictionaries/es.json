@@ -238,6 +238,36 @@
       "filterClosed": "Cerradas",
       "unassigned": "Sin asignar",
       "empty": "Todavía no hay solicitudes."
+    },
+    "dashboard": {
+      "greeting": "Hola {name}",
+      "body": "Aquí está el estado de sus solicitudes y pedidos.",
+      "kpiOpenRequests": "Solicitudes en curso",
+      "kpiQuotesToSign": "Presupuestos por firmar",
+      "kpiInTransit": "Pedidos en tránsito",
+      "kpiDocsThisWeek": "Documentos añadidos esta semana",
+      "todoTitle": "Lo que esperamos de usted",
+      "todoEmpty": "Nada pendiente por ahora.",
+      "signQuote": "Firmar el presupuesto {ref}",
+      "payDeposit": "Pagar el anticipo del pedido {ref}",
+      "openOrdersTitle": "Pedidos en curso",
+      "seeAll": "Todos",
+      "colReference": "Referencia",
+      "colProduct": "Producto",
+      "colState": "Estado",
+      "colAmount": "Importe",
+      "open": "Abrir",
+      "ordersEmpty": "No hay pedidos en curso."
     }
+  },
+  "orders": {
+    "timelineTitle": "Seguimiento de la solicitud",
+    "nextStep": "Siguiente paso",
+    "tabTracking": "Seguimiento",
+    "tabPhotos": "Fotos",
+    "tabDocuments": "Documentos",
+    "tabMessages": "Mensajes",
+    "tabInvoices": "Facturas",
+    "noTimeline": "El seguimiento empieza con el primer paso."
   }
 }

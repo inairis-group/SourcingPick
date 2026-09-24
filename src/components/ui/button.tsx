@@ -1,7 +1,7 @@
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "ghost" | "danger";
+type Variant = "primary" | "secondary" | "ghost" | "danger" | "onNavy" | "onNavyGhost";
 type Size = "sm" | "md" | "lg";
 
 /**
@@ -24,6 +24,16 @@ const variantClasses: Record<Variant, string> = {
     "bg-transparent text-fg border-[1.5px] border-transparent hover:bg-ghost-hover hover:text-link-hover active:bg-sunken disabled:text-disabled",
   danger:
     "bg-danger text-inverse border-[1.5px] border-danger hover:bg-danger active:bg-danger disabled:bg-disabled disabled:border-disabled",
+  /**
+   * The pair the canvas draws on a navy ground — the dashboard hero, and the
+   * dark toolbar over a document. White fill for the action you are meant to
+   * take, a 28%-white hairline for the one beside it. They exist as variants
+   * rather than as overrides on `secondary` because `!important` on a colour
+   * is a thing you end up unpicking later.
+   */
+  onNavy: "bg-white text-navy-900 border-[1.5px] border-white hover:bg-navy-50 hover:text-navy-900",
+  onNavyGhost:
+    "bg-transparent text-white border-[1.5px] border-white/28 hover:bg-white/10 hover:text-white",
 };
 
 const sizeClasses: Record<Size, string> = {

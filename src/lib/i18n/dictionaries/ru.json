@@ -238,6 +238,36 @@
       "filterClosed": "Закрытые",
       "unassigned": "Не назначен",
       "empty": "Заявок пока нет."
+    },
+    "dashboard": {
+      "greeting": "Здравствуйте, {name}",
+      "body": "Вот в каком состоянии ваши заявки и заказы.",
+      "kpiOpenRequests": "Заявки в работе",
+      "kpiQuotesToSign": "Предложения к подписанию",
+      "kpiInTransit": "Заказы в пути",
+      "kpiDocsThisWeek": "Документов за неделю",
+      "todoTitle": "Что нужно от вас",
+      "todoEmpty": "Сейчас ничего не требуется.",
+      "signQuote": "Подписать предложение {ref}",
+      "payDeposit": "Оплатить аванс по заказу {ref}",
+      "openOrdersTitle": "Активные заказы",
+      "seeAll": "Все",
+      "colReference": "Номер",
+      "colProduct": "Товар",
+      "colState": "Статус",
+      "colAmount": "Сумма",
+      "open": "Открыть",
+      "ordersEmpty": "Активных заказов нет."
     }
+  },
+  "orders": {
+    "timelineTitle": "Ход заявки",
+    "nextStep": "Следующий шаг",
+    "tabTracking": "Ход",
+    "tabPhotos": "Фото",
+    "tabDocuments": "Документы",
+    "tabMessages": "Сообщения",
+    "tabInvoices": "Счета",
+    "noTimeline": "Отслеживание начнётся с первого шага."
   }
 }

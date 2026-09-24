@@ -238,6 +238,36 @@
       "filterClosed": "Fechados",
       "unassigned": "Sem agente",
       "empty": "Ainda não há pedidos."
+    },
+    "dashboard": {
+      "greeting": "Olá {name}",
+      "body": "Eis o ponto de situação dos seus pedidos e encomendas.",
+      "kpiOpenRequests": "Pedidos em curso",
+      "kpiQuotesToSign": "Orçamentos por assinar",
+      "kpiInTransit": "Encomendas em trânsito",
+      "kpiDocsThisWeek": "Documentos adicionados esta semana",
+      "todoTitle": "O que esperamos de si",
+      "todoEmpty": "Nada pendente de momento.",
+      "signQuote": "Assinar o orçamento {ref}",
+      "payDeposit": "Pagar o adiantamento da encomenda {ref}",
+      "openOrdersTitle": "Encomendas em curso",
+      "seeAll": "Todas",
+      "colReference": "Referência",
+      "colProduct": "Produto",
+      "colState": "Estado",
+      "colAmount": "Montante",
+      "open": "Abrir",
+      "ordersEmpty": "Não há encomendas em curso."
     }
+  },
+  "orders": {
+    "timelineTitle": "Acompanhamento do pedido",
+    "nextStep": "Próximo passo",
+    "tabTracking": "Acompanhamento",
+    "tabPhotos": "Fotos",
+    "tabDocuments": "Documentos",
+    "tabMessages": "Mensagens",
+    "tabInvoices": "Faturas",
+    "noTimeline": "O acompanhamento começa no primeiro passo."
   }
 }

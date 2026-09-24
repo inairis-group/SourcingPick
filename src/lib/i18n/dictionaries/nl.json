@@ -238,6 +238,36 @@
       "filterClosed": "Afgesloten",
       "unassigned": "Niet toegewezen",
       "empty": "Nog geen aanvragen."
+    },
+    "dashboard": {
+      "greeting": "Hallo {name}",
+      "body": "Dit is de stand van uw aanvragen en orders.",
+      "kpiOpenRequests": "Lopende aanvragen",
+      "kpiQuotesToSign": "Te ondertekenen offertes",
+      "kpiInTransit": "Orders onderweg",
+      "kpiDocsThisWeek": "Deze week toegevoegde documenten",
+      "todoTitle": "Wat wij van u nodig hebben",
+      "todoEmpty": "Op dit moment niets te doen.",
+      "signQuote": "Offerte {ref} ondertekenen",
+      "payDeposit": "Aanbetaling voor order {ref} voldoen",
+      "openOrdersTitle": "Lopende orders",
+      "seeAll": "Alle",
+      "colReference": "Referentie",
+      "colProduct": "Product",
+      "colState": "Status",
+      "colAmount": "Bedrag",
+      "open": "Openen",
+      "ordersEmpty": "Geen lopende orders."
     }
+  },
+  "orders": {
+    "timelineTitle": "Verloop van de aanvraag",
+    "nextStep": "Volgende stap",
+    "tabTracking": "Verloop",
+    "tabPhotos": "Foto’s",
+    "tabDocuments": "Documenten",
+    "tabMessages": "Berichten",
+    "tabInvoices": "Facturen",
+    "noTimeline": "Het verloop begint bij de eerste stap."
   }
 }

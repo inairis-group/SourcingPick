@@ -1,59 +1,66 @@
 import { notFound } from "next/navigation";
 import {
+  AttachmentContext,
   OrderStatus,
   QuoteStatus,
   Role,
   SourcingRequestOrigin,
   SourcingStatus,
 } from "@prisma/client";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Add01Icon,
-  PackageIcon,
-  ShoppingBag01Icon,
-  Wallet01Icon,
-  InvoiceIcon,
-} from "@hugeicons/core-free-icons";
 import { Link } from "@/components/ui/link";
+import { Card } from "@/components/ui/card";
 import { buttonClass } from "@/components/ui/button";
-import { FirstOrderTutorial } from "@/components/client/first-order-tutorial";
+import { Hero } from "@/components/saas/hero";
+import { StatCard, StatRow } from "@/components/saas/stat-card";
+import { Panel, EmptyLine } from "@/components/saas/panel";
+import { DataTable, Ref, type Column } from "@/components/saas/data-table";
+import { StatusPill } from "@/components/saas/status-pill";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
-import { isLocale } from "@/lib/i18n/config";
-import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
-import { getOrgCreditBalanceCents } from "@/lib/credit/balance";
-import {
-  ActivityList,
-  DashboardHeader,
-  DashboardSection,
-  KpiCard,
-} from "@/components/dashboard/primitives";
-import { cn } from "@/lib/utils";
+import { getDictionary, type Dictionary } from "@/lib/i18n/get-dictionary";
+import { isLocale, type Locale } from "@/lib/i18n/config";
+import { formatEUR } from "@/lib/i18n/formatters";
+import { STATE_TONE, STAGES, type OrderStage, type OrderState } from "@/lib/orders/lifecycle";
 
-export async function generateMetadata({
-  params,
-}: PageProps<"/[lang]/client/dashboard">) {
+export async function generateMetadata({ params }: PageProps<"/[lang]/client/dashboard">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   const dict = await getDictionary(lang);
-  return { title: dict.client.dashboard.title };
+  return { title: dict.nav.dashboard };
 }
 
-const OPEN_REQ_STATUSES = [
-  SourcingStatus.DRAFT,
+const OPEN_REQUESTS = [
   SourcingStatus.REQUEST_RECEIVED,
   SourcingStatus.ASSIGNED,
   SourcingStatus.QUOTE_SENT,
-];
+] as const;
 
-const ACTIVE_ORDER_STATUSES = [
-  OrderStatus.PAYMENT_PENDING,
-  OrderStatus.PREPARATION,
-  OrderStatus.QC,
-  OrderStatus.SHIPPED,
-  OrderStatus.IN_TRANSIT,
-];
+/**
+ * How an order's stored status reads in the canvas's vocabulary.
+ *
+ * `Order.state` is the canvas's own column and is authoritative once set.
+ * Orders that predate the lifecycle have none, so `OrderStatus` stands in —
+ * which is the whole reason that column is nullable. See lifecycle.ts.
+ */
+const STATE_OF_ORDER: Record<OrderStatus, OrderState> = {
+  PAYMENT_PENDING: "PAYMENT_PENDING",
+  PREPARATION: "PREPARATION_COMPLETE",
+  QC: "PREPARATION_COMPLETE",
+  SHIPPED: "SHIPPED",
+  IN_TRANSIT: "IN_TRANSIT",
+  COMPLETED: "COMPLETED",
+  CANCELLED: "CANCELLED",
+};
+
+type OrderRow = {
+  id: string;
+  reference: string;
+  totalCents: number;
+  status: OrderStatus;
+  state: OrderState | null;
+  stage: OrderStage | null;
+  request: { title: string };
+};
 
 export default async function ClientDashboardPage({
   params,
@@ -62,345 +69,243 @@ export default async function ClientDashboardPage({
   if (!isLocale(lang)) notFound();
   const user = await requireRole(Role.CLIENT);
   const dict = await getDictionary(lang);
+  const t = dict.client.dashboard;
+  const org = user.organizationId;
 
-  const [
-    openRequestsCount,
-    activeOrdersCount,
-    pendingQuotes,
-    awaitingPaymentOrders,
-    recentOrders,
-    recentRequests,
-    completedOrdersAgg,
-    creditBalanceCents,
-  ] = await Promise.all([
-    prisma.sourcingRequest.count({
-      where: {
-        clientOrgId: user.organizationId,
-        origin: SourcingRequestOrigin.SOURCING_FLOW,
-        status: { in: OPEN_REQ_STATUSES },
-      },
-    }),
-    prisma.order.count({
-      where: {
-        clientOrgId: user.organizationId,
-        deletedAt: null,
-        status: { in: ACTIVE_ORDER_STATUSES },
-      },
-    }),
-    prisma.quote.findMany({
-      where: {
-        status: QuoteStatus.SENT_TO_CLIENT,
-        request: { clientOrgId: user.organizationId },
-      },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-      select: {
-        id: true,
-        totalCentsClient: true,
-        validUntil: true,
-        factoryOrg: { select: { displayName: true } },
-        request: { select: { id: true, reference: true, title: true } },
-      },
-    }),
-    prisma.order.findMany({
-      where: {
-        clientOrgId: user.organizationId,
-        status: OrderStatus.PAYMENT_PENDING,
-        deletedAt: null,
-      },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-      select: {
-        id: true,
-        reference: true,
-        depositCents: true,
-        request: { select: { title: true } },
-      },
-    }),
-    prisma.order.findMany({
-      where: { clientOrgId: user.organizationId, deletedAt: null },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-      select: {
-        id: true,
-        reference: true,
-        status: true,
-        totalCents: true,
-        estimatedEta: true,
-        request: { select: { title: true } },
-        factoryOrg: { select: { displayName: true } },
-      },
-    }),
-    prisma.sourcingRequest.findMany({
-      // Same filter as /client/requests — only real agent-led requests
-      // surface here. Marketplace synthetic requests show in /orders.
-      where: {
-        clientOrgId: user.organizationId,
-        origin: SourcingRequestOrigin.SOURCING_FLOW,
-      },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-      select: {
-        id: true,
-        reference: true,
-        title: true,
-        status: true,
-        createdAt: true,
-      },
-    }),
-    prisma.order.aggregate({
-      where: {
-        clientOrgId: user.organizationId,
-        status: OrderStatus.COMPLETED,
-        deletedAt: null,
-      },
-      _sum: { totalCents: true },
-      _count: true,
-    }),
-    getOrgCreditBalanceCents(user.organizationId),
-  ]);
+  const { openRequests, quotesToSign, inTransit, docsThisWeek, toPay, orders } =
+    await dashboardData(org);
+
+  // The canvas's "what we need from you" list: quotations waiting for a
+  // signature, then deposits waiting for a payment. Both are things only the
+  // client can unblock, which is what earns the panel its position.
+  const todo = [
+    ...quotesToSign.map((q) => ({
+      key: `q-${q.id}`,
+      title: t.signQuote.replace("{ref}", q.request.reference),
+      detail: `${q.request.title} · ${formatEUR(q.totalCentsClient, lang)}`,
+      href: `/${lang}/client/requests/${q.request.id}`,
+    })),
+    ...toPay.map((o) => ({
+      key: `o-${o.id}`,
+      title: t.payDeposit.replace("{ref}", o.reference),
+      detail: `${o.request.title} · ${formatEUR(o.depositCents, lang)}`,
+      href: `/${lang}/client/orders/${o.id}`,
+    })),
+  ];
+
+  const name = user.firstName || user.name || "";
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-      {/* Partner #16: first-order tutorial — dismissible coachmark
-          series. Renders only until the user clicks dismiss. */}
-      {!user.clientTutorialDismissedAt && <FirstOrderTutorial />}
-      <DashboardHeader
-        eyebrow={dict.client.dashboard.eyebrow}
-        title={dict.client.dashboard.title}
-        description={dict.client.dashboard.description}
+    <>
+      <Hero
+        badge={dict.nav.role.client}
+        title={t.greeting.replace("{name}", name).trim()}
+        body={t.body}
         actions={
-          <Link
-            href={`/${lang}/client/requests/new`}
-            data-tour="new-request"
-            className={`w-full md:w-auto ${cn(buttonClass({ variant: "primary", size: "sm" }))}`}
-          >
-            <HugeiconsIcon icon={Add01Icon} size={14} strokeWidth={1.5} />
-            <span className="ms-1.5">{dict.client.requests.newRequest}</span>
-          </Link>
+          <>
+            <Link
+              href={`/${lang}/client/requests/new`}
+              variant="muted"
+              className={buttonClass({ variant: "onNavy", size: "md" })}
+            >
+              {dict.client.requests.newRequest}
+            </Link>
+            <Link
+              href={`/${lang}/client/orders`}
+              variant="muted"
+              className={buttonClass({ variant: "onNavyGhost", size: "md" })}
+            >
+              {dict.nav.orders}
+            </Link>
+          </>
         }
       />
 
-      {creditBalanceCents > 0 && (
-        <div className="mb-6 rounded-lg border border-success-edge bg-success-soft/40 px-4 py-3 flex items-center gap-3">
-          <HugeiconsIcon
-            icon={Wallet01Icon}
-            size={18}
-            strokeWidth={1.5}
-            className="text-success shrink-0"
-          />
-          <p className="text-sm text-success">
-            {dict.client.dashboard.creditAvailable.replace(
-              "{amount}",
-              formatEUR(creditBalanceCents / 100, lang),
-            )}
-          </p>
+      <StatRow>
+        <StatCard label={t.kpiOpenRequests} value={openRequests} icon="list" tone="new" />
+        <StatCard label={t.kpiQuotesToSign} value={quotesToSign.length} icon="document" tone="quote" />
+        <StatCard label={t.kpiInTransit} value={inTransit} icon="cube" tone="moving" />
+        <StatCard
+          label={t.kpiDocsThisWeek}
+          value={docsThisWeek}
+          icon="paperclip"
+          tone="done"
+        />
+      </StatRow>
+
+      <Panel title={t.todoTitle}>
+        {todo.length === 0 ? (
+          <EmptyLine>{t.todoEmpty}</EmptyLine>
+        ) : (
+          <ul className="m-0 flex list-none flex-col p-0">
+            {todo.map((item, i) => (
+              <li
+                key={item.key}
+                className={
+                  "border-line flex flex-wrap items-center justify-between gap-3 py-3.5" +
+                  (i > 0 ? " border-t" : "")
+                }
+              >
+                <span className="flex min-w-0 flex-col gap-1">
+                  <span className="text-fg text-md font-semibold">{item.title}</span>
+                  <span className="text-muted text-base">{item.detail}</span>
+                </span>
+                <Link href={item.href} variant="inline" className="font-semibold">
+                  {t.open}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Panel>
+
+      <Card>
+        <div className="mb-3.5 flex items-start justify-between gap-4">
+          <h2 className="font-display text-headline m-0 text-lg leading-snug font-semibold tracking-[-0.02em]">
+            {t.openOrdersTitle}
+          </h2>
+          <Link href={`/${lang}/client/orders`} variant="inline" className="font-semibold">
+            {t.seeAll} <span aria-hidden="true">→</span>
+          </Link>
         </div>
-      )}
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <KpiCard
-          label={dict.client.dashboard.kpiOpenRequests}
-          value={formatNumber(openRequestsCount, lang)}
-          icon={ShoppingBag01Icon}
-          href={`/${lang}/client/requests`}
-          index={0}
+        <DataTable<OrderRow>
+          caption={t.openOrdersTitle}
+          columns={orderColumns(lang, dict)}
+          rows={orders}
+          rowKey={(o) => o.id}
+          rowHref={(o) => `/${lang}/client/orders/${o.id}`}
+          empty={<EmptyLine>{t.ordersEmpty}</EmptyLine>}
         />
-        <KpiCard
-          label={dict.client.dashboard.kpiActiveOrders}
-          value={formatNumber(activeOrdersCount, lang)}
-          icon={PackageIcon}
-          href={`/${lang}/client/orders`}
-          tourId="active-orders"
-          index={1}
-        />
-        <KpiCard
-          label={dict.client.dashboard.kpiAwaitingPayment}
-          value={formatNumber(awaitingPaymentOrders.length, lang)}
-          tone={awaitingPaymentOrders.length > 0 ? "warning" : "neutral"}
-          icon={Wallet01Icon}
-          tourId="awaiting-payment"
-          index={2}
-        />
-        <KpiCard
-          label={dict.client.dashboard.kpiTotalSpent}
-          value={formatEUR(
-            (completedOrdersAgg._sum.totalCents ?? 0) / 100,
-            lang,
-          )}
-          hint={dict.client.dashboard.kpiTotalSpentHint.replace(
-            "{n}",
-            String(completedOrdersAgg._count),
-          )}
-          icon={InvoiceIcon}
-          index={3}
-        />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
-        <DashboardSection
-          title={dict.client.dashboard.quotesAwaitingTitle}
-          description={dict.client.dashboard.quotesAwaitingDesc}
-          className="lg:col-span-2"
-          index={0}
-        >
-          <ActivityList
-            items={pendingQuotes}
-            empty={dict.client.dashboard.quotesEmpty}
-            render={(q) => (
-              <Link
-                href={`/${lang}/client/requests/${q.request.id}`}
-                variant="muted"
-                className="block"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-headline truncate">
-                      {q.request.title}
-                    </p>
-                    <p className="text-xs text-muted">
-                      {q.factoryOrg.displayName} ·{" "}
-                      <span className="font-mono">{q.request.reference}</span>
-                    </p>
-                  </div>
-                  <div className="text-end shrink-0">
-                    <p className="text-sm font-semibold text-headline">
-                      {formatEUR(q.totalCentsClient / 100, lang)}
-                    </p>
-                    <p className="text-[11px] text-faint">
-                      {dict.client.dashboard.quoteValidUntil}{" "}
-                      {formatDate(q.validUntil, lang, "short")}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            )}
-          />
-        </DashboardSection>
-
-        <DashboardSection
-          title={dict.client.dashboard.awaitingPaymentTitle}
-          description={dict.client.dashboard.awaitingPaymentDesc}
-          index={1}
-        >
-          <ActivityList
-            items={awaitingPaymentOrders}
-            empty={dict.client.dashboard.awaitingPaymentEmpty}
-            render={(o) => (
-              <Link
-                href={`/${lang}/client/orders/${o.id}`}
-                variant="muted"
-                className="block"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-fg truncate">
-                      {o.request.title}
-                    </p>
-                    <p className="text-xs font-mono text-faint">{o.reference}</p>
-                  </div>
-                  <p className="text-sm font-semibold text-warning whitespace-nowrap">
-                    {formatEUR(o.depositCents / 100, lang)}
-                  </p>
-                </div>
-              </Link>
-            )}
-          />
-        </DashboardSection>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <DashboardSection
-          title={dict.client.dashboard.recentOrdersTitle}
-          index={2}
-          action={
-            <Link
-              href={`/${lang}/client/orders`}
-              variant="default"
-              className="text-xs font-medium"
-            >
-              {dict.client.dashboard.seeAll} →
-            </Link>
-          }
-        >
-          <ActivityList
-            items={recentOrders}
-            empty={dict.client.dashboard.recentOrdersEmpty}
-            render={(o) => (
-              <Link
-                href={`/${lang}/client/orders/${o.id}`}
-                variant="muted"
-                className="block"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-fg truncate">
-                      {o.request.title}
-                    </p>
-                    <p className="text-[11px] text-muted">
-                      <span className="font-mono">{o.reference}</span> ·{" "}
-                      {o.factoryOrg.displayName}
-                    </p>
-                  </div>
-                  <div className="text-end shrink-0">
-                    <p className="text-xs text-fg">
-                      {dict.orders.statuses[o.status]}
-                    </p>
-                    <p className="text-[11px] text-faint">
-                      {formatEUR(o.totalCents / 100, lang)}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            )}
-          />
-        </DashboardSection>
-
-        <DashboardSection
-          title={dict.client.dashboard.recentRequestsTitle}
-          index={3}
-          action={
-            <Link
-              href={`/${lang}/client/requests`}
-              variant="default"
-              className="text-xs font-medium"
-            >
-              {dict.client.dashboard.seeAll} →
-            </Link>
-          }
-        >
-          <ActivityList
-            items={recentRequests}
-            empty={dict.client.dashboard.recentRequestsEmpty}
-            render={(r) => (
-              <Link
-                href={`/${lang}/client/requests/${r.id}`}
-                variant="muted"
-                className="block"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-fg truncate">
-                      {r.title}
-                    </p>
-                    <p className="text-[11px] font-mono text-faint">
-                      {r.reference}
-                    </p>
-                  </div>
-                  <div className="text-end shrink-0">
-                    <p className="text-xs text-fg">
-                      {dict.client.requests.statuses[r.status]}
-                    </p>
-                    <p className="text-[11px] text-faint">
-                      {formatDate(r.createdAt, lang, "short")}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            )}
-          />
-        </DashboardSection>
-      </div>
-    </div >
+      </Card>
+    </>
   );
+}
+
+
+function orderColumns(lang: Locale, dict: Dictionary): Column<OrderRow>[] {
+  const t = dict.client.dashboard;
+  return [
+    {
+      key: "reference",
+      header: t.colReference,
+      width: "18%",
+      primary: true,
+      cell: (o) => <Ref>{o.reference}</Ref>,
+    },
+    { key: "product", header: t.colProduct, width: "30%", cell: (o) => o.request.title },
+    {
+      key: "state",
+      header: t.colState,
+      width: "26%",
+      // The canvas shows both: the pill carries the main state, and the
+      // sub-state sits under it in plain text. That pairing is the point of
+      // the lifecycle — "In transit" is a category, "At sea" is an answer.
+      cell: (o) => {
+        const state = o.state ?? STATE_OF_ORDER[o.status];
+        const stage = o.stage && STAGES[o.stage].state === state ? o.stage : null;
+        return (
+          <span className="flex flex-col items-start gap-1">
+            <StatusPill tone={STATE_TONE[state]}>{dict.lifecycle.state[state]}</StatusPill>
+            {stage && <span className="text-muted text-sm">{dict.lifecycle.stage[stage]}</span>}
+          </span>
+        );
+      },
+    },
+    {
+      key: "amount",
+      header: t.colAmount,
+      width: "18%",
+      align: "end",
+      cell: (o) => <span className="font-mono font-semibold">{formatEUR(o.totalCents, lang)}</span>,
+    },
+    {
+      key: "open",
+      header: "",
+      width: "8%",
+      hideOnCard: true,
+      cell: (o) => (
+        <Link href={`/${lang}/client/orders/${o.id}`} variant="inline" className="font-semibold">
+          {t.open}
+        </Link>
+      ),
+    },
+  ];
+}
+
+/**
+ * Everything the dashboard shows, in one round trip.
+ *
+ * Lifted out of the component body because these queries need the current
+ * time, and a component is supposed to be pure — the rule is right even
+ * though an async server component gets away with it in practice.
+ */
+async function dashboardData(org: string) {
+  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  // Needed before the attachment count can be scoped to this client's file.
+  const orderIds = (
+    await prisma.order.findMany({
+      where: { clientOrgId: org, deletedAt: null },
+      select: { id: true },
+    })
+  ).map((o) => o.id);
+
+  const [openRequests, quotesToSign, inTransit, docsThisWeek, toPay, orders] =
+    await Promise.all([
+
+      prisma.sourcingRequest.count({
+        where: {
+          clientOrgId: org,
+          origin: SourcingRequestOrigin.SOURCING_FLOW,
+          status: { in: [...OPEN_REQUESTS] },
+        },
+      }),
+      prisma.quote.findMany({
+        where: { status: QuoteStatus.SENT_TO_CLIENT, request: { clientOrgId: org } },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+        select: {
+          id: true,
+          totalCentsClient: true,
+          request: { select: { id: true, reference: true, title: true } },
+        },
+      }),
+      prisma.order.count({
+        where: { clientOrgId: org, deletedAt: null, status: OrderStatus.IN_TRANSIT },
+      }),
+      // "Documents added this week" — the canvas counts what landed in the
+      // client's own file, not everything the platform touched.
+      prisma.attachment.count({
+        where: {
+          createdAt: { gte: weekAgo },
+          contextType: AttachmentContext.ORDER,
+          contextId: { in: orderIds },
+        },
+      }),
+      prisma.order.findMany({
+        where: { clientOrgId: org, deletedAt: null, status: OrderStatus.PAYMENT_PENDING },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+        select: { id: true, reference: true, depositCents: true, request: { select: { title: true } } },
+      }),
+      prisma.order.findMany({
+        where: {
+          clientOrgId: org,
+          deletedAt: null,
+          status: { notIn: [OrderStatus.COMPLETED, OrderStatus.CANCELLED] },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 6,
+        select: {
+          id: true,
+          reference: true,
+          totalCents: true,
+          status: true,
+          state: true,
+          stage: true,
+          request: { select: { title: true } },
+        },
+      }),
+    ]);
+
+  return { openRequests, quotesToSign, inTransit, docsThisWeek, toPay, orders };
 }

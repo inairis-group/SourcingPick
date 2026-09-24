@@ -238,6 +238,36 @@
       "filterClosed": "Chiuse",
       "unassigned": "Non assegnato",
       "empty": "Nessuna richiesta per ora."
+    },
+    "dashboard": {
+      "greeting": "Ciao {name}",
+      "body": "Ecco a che punto sono le tue richieste e i tuoi ordini.",
+      "kpiOpenRequests": "Richieste in corso",
+      "kpiQuotesToSign": "Preventivi da firmare",
+      "kpiInTransit": "Ordini in transito",
+      "kpiDocsThisWeek": "Documenti aggiunti questa settimana",
+      "todoTitle": "Cosa aspettiamo da te",
+      "todoEmpty": "Niente da fare per ora.",
+      "signQuote": "Firma il preventivo {ref}",
+      "payDeposit": "Paga l’acconto dell’ordine {ref}",
+      "openOrdersTitle": "Ordini in corso",
+      "seeAll": "Tutti",
+      "colReference": "Riferimento",
+      "colProduct": "Prodotto",
+      "colState": "Stato",
+      "colAmount": "Importo",
+      "open": "Apri",
+      "ordersEmpty": "Nessun ordine in corso."
     }
+  },
+  "orders": {
+    "timelineTitle": "Avanzamento della richiesta",
+    "nextStep": "Prossimo passo",
+    "tabTracking": "Avanzamento",
+    "tabPhotos": "Foto",
+    "tabDocuments": "Documenti",
+    "tabMessages": "Messaggi",
+    "tabInvoices": "Fatture",
+    "noTimeline": "L’avanzamento parte dal primo passo."
   }
 }

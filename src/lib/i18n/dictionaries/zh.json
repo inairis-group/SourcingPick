@@ -65,7 +65,7 @@
       "eyebrow": "仪表盘",
       "title": "概览",
       "description": "一目了然查看您的需求、报价和订单。",
-      "kpiOpenRequests": "进行中需求",
+      "kpiOpenRequests": "进行中的需求",
       "kpiActiveOrders": "进行中订单",
       "kpiAwaitingPayment": "待付款",
       "kpiTotalSpent": "已完成订单支出",
@@ -82,7 +82,23 @@
       "recentOrdersEmpty": "暂无订单。",
       "recentRequestsTitle": "近期需求",
       "recentRequestsEmpty": "暂无需求。",
-      "seeAll": "查看全部"
+      "seeAll": "全部",
+      "greeting": "您好，{name}",
+      "body": "以下是您的需求与订单进展。",
+      "kpiQuotesToSign": "待签署报价",
+      "kpiInTransit": "运输中的订单",
+      "kpiDocsThisWeek": "本周新增单证",
+      "todoTitle": "需要您处理",
+      "todoEmpty": "暂无待办事项。",
+      "signQuote": "签署报价 {ref}",
+      "payDeposit": "支付订单 {ref} 的预付款",
+      "openOrdersTitle": "进行中的订单",
+      "colReference": "编号",
+      "colProduct": "产品",
+      "colState": "状态",
+      "colAmount": "金额",
+      "open": "打开",
+      "ordersEmpty": "暂无进行中的订单。"
     },
     "requests": {
       "eyebrow": "按需采购",
@@ -887,7 +903,15 @@
     "insurance": {
       "label": "已投保",
       "tooltip": "依品类提供的专属保险已包含在内,无额外费用。覆盖范围从工厂出货至确认收货整个运输阶段。"
-    }
+    },
+    "timelineTitle": "需求跟踪",
+    "nextStep": "下一步",
+    "tabTracking": "跟踪",
+    "tabPhotos": "照片",
+    "tabDocuments": "单证",
+    "tabMessages": "消息",
+    "tabInvoices": "发票",
+    "noTimeline": "第一步开始后即可跟踪。"
   },
   "publicMarketplace": {
     "loadMoreTitle": "超过 20 件产品可供浏览",
