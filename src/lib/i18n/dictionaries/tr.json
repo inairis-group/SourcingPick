@@ -1,0 +1,170 @@
+{
+  "auth": {
+    "forgot": {
+      "title": "Şifremi unuttum",
+      "description": "E-posta adresinizi girin. Bir hesap varsa sıfırlama bağlantısı alırsınız.",
+      "submit": "Bağlantıyı gönder",
+      "sentTitle": "Bağlantı gönderildi",
+      "sentBody": "Bu e-posta için bir SourcingPick hesabı varsa mesaj az önce gönderildi. Gelen kutunuzu (ve gereksiz klasörünüzü) kontrol edin.",
+      "backToLogin": "Girişe dön"
+    },
+    "reset": {
+      "title": "Yeni şifre",
+      "description": "Hesabınız için yeni bir şifre seçin.",
+      "newPasswordLabel": "Yeni şifre",
+      "confirmPasswordLabel": "Şifreyi doğrulayın",
+      "passwordHint": "En az 8 karakter, en az bir rakam içermeli.",
+      "submit": "Şifreyi sıfırla",
+      "missingTokenTitle": "Geçersiz bağlantı",
+      "missingTokenBody": "Bu sıfırlama bağlantısı eksik. Şifremi unuttum sayfasından yenisini isteyin.",
+      "requestNew": "Yeni bağlantı iste"
+    },
+    "otp": {
+      "title": "İki adımlı doğrulama",
+      "description": "E-postanıza gönderdiğimiz 6 haneli kodu girin.",
+      "codeLabel": "Doğrulama kodu",
+      "resend": "Kodu yeniden gönder",
+      "resentNotice": "Yeni bir kod gönderildi.",
+      "verify": "Doğrula"
+    },
+    "login": {
+      "title": "Hesabınıza giriş yapın",
+      "subtitle": "Taleplerinizi, tekliflerinizi ve konteynerlerinizi takip edin.",
+      "emailLabel": "E-posta",
+      "passwordLabel": "Şifre",
+      "passwordPlaceholder": "••••••••••",
+      "security": "Güvenlik",
+      "securityHint": "Her girişte tek kullanımlık kod gönder.",
+      "forgotPassword": "Şifrenizi mi unuttunuz?",
+      "submit": "Giriş yap",
+      "noAccount": "Henüz hesabınız yok mu?",
+      "signupLink": "Hesap oluştur",
+      "divider": "veya",
+      "google": "Google ile devam et"
+    },
+    "signup": {
+      "title": "Hesabınızı oluşturun",
+      "subtitle": "İki dakika, ve ilk talebinizi gönderebilirsiniz.",
+      "youAre": "Siz",
+      "business": "Kurumsal",
+      "individual": "Bireysel",
+      "fullNameLabel": "Ad ve soyad",
+      "companyLabel": "Firma",
+      "vatOrRegistrationLabel": "Vergi veya sicil numarası",
+      "deliveryCountryLabel": "Teslimat ülkesi",
+      "businessEmailLabel": "Kurumsal e-posta",
+      "passwordLabel": "Şifre",
+      "passwordHint": "En az 8 karakter, en az bir rakam içermeli.",
+      "submit": "Hesabımı oluştur",
+      "hasAccount": "Zaten hesabınız var mı?",
+      "loginLink": "Giriş yap"
+    },
+    "verify": {
+      "title": "E-postanızı doğrulayın",
+      "body": "{email} adresine altı haneli bir kod gönderdik. 15 dakika geçerlidir.",
+      "codeLabel": "Doğrulama kodu",
+      "submit": "Doğrula",
+      "resend": "Kodu yeniden gönder",
+      "spam": "Gereksiz klasörünüzü kontrol etmeyi unutmayın."
+    },
+    "panel": {
+      "headline": "Her aşama iz bırakır.",
+      "body": "Mal kabul fotoğrafları, kontrol, yükleme ve belgeler: hepsi alanınızda kalır.",
+      "note": "Mobil uygulama hâlâ geliştiriliyor. Web alanı her şeyi yapıyor."
+    }
+  },
+  "common": {
+    "actions": {
+      "continue": "Devam et",
+      "cancel": "İptal",
+      "save": "Kaydet",
+      "delete": "Sil",
+      "edit": "Düzenle",
+      "back": "Geri",
+      "next": "İleri",
+      "submit": "Gönder",
+      "close": "Kapat",
+      "search": "Ara",
+      "filter": "Filtrele",
+      "export": "Dışa aktar",
+      "loading": "Yükleniyor…"
+    },
+    "status": {
+      "pending": "Beklemede",
+      "active": "Aktif",
+      "verified": "Doğrulandı",
+      "flagged": "İşaretlendi",
+      "rejected": "Reddedildi",
+      "completed": "Tamamlandı",
+      "cancelled": "İptal edildi"
+    },
+    "roles": {
+      "client": "Müşteri",
+      "factory": "Fabrika",
+      "agent": "Ajan",
+      "admin": "Yönetici"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Sayfa bulunamadı",
+      "description": "Aradığınız sayfa mevcut değil veya taşınmış.",
+      "back": "Ana sayfaya dön"
+    },
+    "500": {
+      "title": "Bir şeyler ters gitti",
+      "description": "Bizim tarafımızda bir sorun oluştu. Lütfen tekrar deneyin.",
+      "retry": "Tekrar dene"
+    },
+    "notFound": {
+      "title": "O sayfayı kaybettik.",
+      "body": "Denediğiniz adres mevcut değil veya taşınmış. Sizi yeniden yola koyalım.",
+      "home": "Ana sayfaya dön",
+      "browse": "Pazar yerine göz at"
+    },
+    "systemError": {
+      "code": "Sistem hatası",
+      "title": "Bizim tarafımızda bir sorun oluştu.",
+      "body": "Bu sayfayı görüntüleyemedik. Ekip bilgilendirildi. Birazdan tekrar deneyin.",
+      "retry": "Tekrar dene"
+    }
+  },
+  "theme": {
+    "toggleLabel": "Temayı değiştir",
+    "light": "Açık",
+    "dark": "Koyu",
+    "system": "Sistem"
+  },
+  "locale": {
+    "switch": "Dil"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "requests": "Talepler",
+    "quotations": "Teklifler",
+    "orders": "Siparişler",
+    "billing": "Faturalandırma",
+    "invoices": "Faturalar",
+    "payments": "Ödemeler",
+    "users": "Kullanıcılar",
+    "agents": "Ajanlar",
+    "documents": "Belgeler",
+    "emails": "E-postalar",
+    "settings": "Ayarlar",
+    "log": "Günlük",
+    "help": "Yardım",
+    "messages": "Mesajlar",
+    "logout": "Çıkış yap",
+    "role": {
+      "client": "Müşteri",
+      "agent": "Ajan",
+      "admin": "Yönetim"
+    },
+    "topbar": {
+      "search": "Sipariş, müşteri veya referans ara…",
+      "notifications": "Bildirimler",
+      "openMenu": "Menüyü aç",
+      "closeMenu": "Menüyü kapat"
+    }
+  }
+}

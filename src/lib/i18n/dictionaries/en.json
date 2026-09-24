@@ -2482,7 +2482,27 @@
     "messages": "Messages",
     "shipments": "Shipments",
     "settings": "Settings",
-    "logout": "Log out"
+    "logout": "Log out",
+    "quotations": "Quotations",
+    "billing": "Billing",
+    "payments": "Payments",
+    "users": "Users",
+    "agents": "Agents",
+    "documents": "Documents",
+    "emails": "Emails",
+    "log": "Log",
+    "help": "Help",
+    "role": {
+      "client": "Client",
+      "agent": "Agent",
+      "admin": "Administration"
+    },
+    "topbar": {
+      "search": "Search for an order, a client, a reference…",
+      "notifications": "Notifications",
+      "openMenu": "Open the menu",
+      "closeMenu": "Close the menu"
+    }
   },
   "theme": {
     "toggleLabel": "Change theme",
@@ -2865,25 +2885,29 @@
   },
   "auth": {
     "login": {
-      "title": "Sign in",
-      "emailLabel": "Email address",
+      "title": "Log in to your client area",
+      "emailLabel": "Email",
       "passwordLabel": "Password",
-      "submit": "Sign in",
-      "forgotPassword": "Forgot password?",
-      "noAccount": "Don't have an account?",
+      "submit": "Log in",
+      "forgotPassword": "Forgotten your password?",
+      "noAccount": "Don’t have an account yet?",
       "signupLink": "Create an account",
       "google": "Continue with Google",
-      "divider": "or"
+      "divider": "or",
+      "subtitle": "Track your requests, your quotations and your containers.",
+      "passwordPlaceholder": "••••••••••",
+      "security": "Security",
+      "securityHint": "Send a one-time code every time I log in."
     },
     "signup": {
-      "title": "Create an account",
+      "title": "Create your account",
       "pickerDescription": "Choose the account type that matches your business.",
       "asClient": "I'm a buyer",
       "clientBody": "SME, brand, or larger company sourcing from vetted factories with a dedicated agent.",
       "asFactory": "I'm a factory",
       "factoryBody": "Manufacturer who wants to respond to tenders and list products.",
       "hasAccount": "Already have an account?",
-      "loginLink": "Sign in",
+      "loginLink": "Log in",
       "clientEyebrow": "Buyer account",
       "clientTitle": "Create your buyer account",
       "firstNameLabel": "First name",
@@ -2894,7 +2918,7 @@
       "countryPlaceholder": "France, Brazil, Japan…",
       "phoneLabel": "Phone",
       "phoneHint": "So your agent can reach you quickly when something time-sensitive comes up.",
-      "passwordHint": "At least 12 characters.",
+      "passwordHint": "At least 8 characters, including one number.",
       "termsAccept": "I accept the",
       "termsLink": "terms of service",
       "termsAnd": "and the",
@@ -2952,7 +2976,17 @@
       "usccLabel": "Unified Social Credit Code (统一社会信用代码)",
       "usccHint": "18 characters, exactly as printed on your business licence.",
       "errorUscc": "The Unified Social Credit Code must be 18 characters.",
-      "errorTerms": "You must accept the terms to continue."
+      "errorTerms": "You must accept the terms to continue.",
+      "subtitle": "Two minutes, and you can send your first request.",
+      "youAre": "You are",
+      "business": "Business",
+      "individual": "Individual",
+      "fullNameLabel": "Full name",
+      "companyLabel": "Company",
+      "vatOrRegistrationLabel": "VAT or registration number",
+      "deliveryCountryLabel": "Delivery country",
+      "businessEmailLabel": "Business email",
+      "passwordLabel": "Password"
     },
     "forgot": {
       "title": "Forgot password",
@@ -2967,7 +3001,7 @@
       "description": "Choose a new password for your account.",
       "newPasswordLabel": "New password",
       "confirmPasswordLabel": "Confirm password",
-      "passwordHint": "At least 12 characters.",
+      "passwordHint": "At least 8 characters, including one number.",
       "submit": "Reset password",
       "missingTokenTitle": "Invalid link",
       "missingTokenBody": "This reset link is incomplete. Request a new one from the forgot-password page.",
@@ -2980,6 +3014,19 @@
       "resend": "Resend code",
       "resentNotice": "A new code has been sent.",
       "verify": "Verify"
+    },
+    "verify": {
+      "title": "Verify your email",
+      "body": "We’ve sent a six-digit code to {email}. It is valid for 15 minutes.",
+      "codeLabel": "Verification code",
+      "submit": "Verify",
+      "resend": "Resend the code",
+      "spam": "Remember to check your spam folder."
+    },
+    "panel": {
+      "headline": "Every step leaves a trace.",
+      "body": "Receiving photos, inspection, loading and documents: everything stays in your client area.",
+      "note": "The mobile app is still being built. The web client area does everything."
     }
   },
   "cookies": {

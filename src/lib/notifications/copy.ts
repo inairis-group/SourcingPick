@@ -1,6 +1,7 @@
 import "server-only";
 import { NotificationType } from "@prisma/client";
-import { appLocaleFor, type AppLocale, type Locale } from "@/lib/i18n/config";
+import { type Locale } from "@/lib/i18n/config";
+import { pick, type Localized } from "@/lib/i18n/localized";
 
 /**
  * Notification copy is rendered at *emit* time using the recipient's
@@ -59,200 +60,200 @@ export type NotificationVars = {
 
 const SYSTEM_TITLES: Record<
   NonNullable<NotificationVars["systemKey"]>,
-  Record<AppLocale, string>
+  Localized<string>
 > = {
   quote_request_received: {
     fr: "Nouvelle demande de devis depuis le site",
     en: "New quote request from the website",
     zh: "网站收到新的报价请求",
-    ar: "طلب عرض سعر جديد من الموقع",
+    ar: "طلب عرض سعر جديد من الموقع"
   },
   tender_invited: {
     fr: "Nouvel appel d'offres reçu",
     en: "New tender invitation",
     zh: "收到新的招标邀请",
-    ar: "تمت دعوتك إلى مناقصة جديدة",
+    ar: "تمت دعوتك إلى مناقصة جديدة"
   },
   quote_rejected_by_client: {
     fr: "Votre devis a été refusé",
     en: "Your quote was rejected",
     zh: "您的报价被拒绝",
-    ar: "تم رفض عرض السعر الخاص بك",
+    ar: "تم رفض عرض السعر الخاص بك"
   },
   agent_assigned: {
     fr: "Une demande vous a été assignée",
     en: "A request was assigned to you",
     zh: "一项需求已分配给您",
-    ar: "تم تعيين طلب جديد لك",
+    ar: "تم تعيين طلب جديد لك"
   },
   order_cancelled: {
     fr: "Commande annulée",
     en: "Order cancelled",
     zh: "订单已取消",
-    ar: "تم إلغاء الطلب",
+    ar: "تم إلغاء الطلب"
   },
   order_completed: {
     fr: "Commande terminée",
     en: "Order completed",
     zh: "订单已完成",
-    ar: "اكتمل الطلب",
+    ar: "اكتمل الطلب"
   },
   order_disputed: {
     fr: "Commande en litige",
     en: "Order under dispute",
     zh: "订单进入争议",
-    ar: "الطلب قيد النزاع",
+    ar: "الطلب قيد النزاع"
   },
   dispute_responded: {
     fr: "Réponse de l'usine au litige",
     en: "Factory responded to the dispute",
     zh: "工厂已回复争议",
-    ar: "ردّ المصنع على النزاع",
+    ar: "ردّ المصنع على النزاع"
   },
   order_dispute_resolved: {
     fr: "Litige résolu",
     en: "Dispute resolved",
     zh: "争议已解决",
-    ar: "تم حل النزاع",
+    ar: "تم حل النزاع"
   },
   request_received: {
     fr: "Nouvelle demande de sourcing reçue",
     en: "New sourcing request received",
     zh: "收到新的采购需求",
-    ar: "تم استلام طلب توريد جديد",
+    ar: "تم استلام طلب توريد جديد"
   },
   auction_outbid: {
     fr: "Vous avez été surenchéri sur une enchère",
     en: "You've been outbid on an auction",
     zh: "您在拍卖中被超过出价",
-    ar: "تم تجاوز عرضك في المزاد",
+    ar: "تم تجاوز عرضك في المزاد"
   },
   auction_won: {
     fr: "Vous avez remporté une enchère",
     en: "You won an auction",
     zh: "您赢得了拍卖",
-    ar: "لقد ربحت المزاد",
+    ar: "لقد ربحت المزاد"
   },
   auction_sold: {
     fr: "Votre enchère a été remportée",
     en: "Your auction has sold",
     zh: "您的拍卖已成交",
-    ar: "تم بيع مزادك",
+    ar: "تم بيع مزادك"
   },
   pre_tender_approved: {
     fr: "Demande validée — vous pouvez lancer l'appel d'offres",
     en: "Request approved — you can dispatch the tender",
     zh: "需求已审核通过 — 可以发起招标",
-    ar: "تمت الموافقة على الطلب — يمكنك إطلاق المناقصة",
+    ar: "تمت الموافقة على الطلب — يمكنك إطلاق المناقصة"
   },
   pre_tender_rejected: {
     fr: "Demande renvoyée pour révision avant appel d'offres",
     en: "Request returned for revision before tendering",
     zh: "需求需修订后才能招标",
-    ar: "تمت إعادة الطلب للمراجعة قبل المناقصة",
+    ar: "تمت إعادة الطلب للمراجعة قبل المناقصة"
   },
   forwarder_proof_uploaded: {
     fr: "Le transitaire a déposé des preuves d'expédition",
     en: "Forwarder uploaded shipment proofs",
     zh: "货运代理已上传发货证明",
-    ar: "حمّل وكيل الشحن إثباتات الشحنة",
+    ar: "حمّل وكيل الشحن إثباتات الشحنة"
   },
   freight_brief_needed: {
     fr: "Marchandise prête — brief transporteur à créer",
     en: "Goods ready — freight brief needed",
     zh: "货物已就绪——待创建物流委托单",
-    ar: "البضاعة جاهزة — يلزم إعداد بيان الشحن",
+    ar: "البضاعة جاهزة — يلزم إعداد بيان الشحن"
   },
   freight_quote_accepted: {
     fr: "Devis transport accepté par l'acheteur",
     en: "Buyer accepted the freight quote",
     zh: "买家已接受运费报价",
-    ar: "قبل المشتري عرض سعر الشحن",
+    ar: "قبل المشتري عرض سعر الشحن"
   },
   freight_settled: {
     fr: "Règlement transport envoyé",
     en: "Freight settlement sent",
     zh: "运费结算已发出",
-    ar: "أُرسلت تسوية الشحن",
+    ar: "أُرسلت تسوية الشحن"
   },
   freight_settlement_pending: {
     fr: "Règlement transport en attente — compte de versement à configurer",
     en: "Freight settlement pending — payout account not set up",
     zh: "运费结算待处理——收款账户未设置",
-    ar: "تسوية الشحن معلّقة — لم يُضبط حساب التحويلات",
+    ar: "تسوية الشحن معلّقة — لم يُضبط حساب التحويلات"
   },
   guest_chat_reply: {
     fr: "Réponse par e-mail sur le chat public",
     en: "Email reply on a public chat",
     zh: "公开聊天收到邮件回复",
-    ar: "رد بالبريد على دردشة عامة",
+    ar: "رد بالبريد على دردشة عامة"
   },
   support_ticket_created: {
     fr: "Nouveau ticket support ouvert",
     en: "New support ticket opened",
     zh: "已创建新的支持工单",
-    ar: "تم فتح تذكرة دعم جديدة",
+    ar: "تم فتح تذكرة دعم جديدة"
   },
   support_ticket_resolved: {
     fr: "Ticket support marqué comme résolu",
     en: "Support ticket marked as resolved",
     zh: "支持工单已标记为已解决",
-    ar: "تم وضع تذكرة الدعم على أنها محلولة",
+    ar: "تم وضع تذكرة الدعم على أنها محلولة"
   },
   marketplace_re_review_requested: {
     fr: "Modification d'annonce — à réexaminer",
     en: "Listing edited — needs re-review",
     zh: "商品已修改 — 需要重新审核",
-    ar: "تم تعديل قائمة — يلزم إعادة المراجعة",
+    ar: "تم تعديل قائمة — يلزم إعادة المراجعة"
   },
   research_fee_refunded: {
     fr: "Frais de recherche remboursés en crédit",
     en: "Research fee refunded as credit",
     zh: "调研费已退款至账户",
-    ar: "تم استرداد رسوم البحث كرصيد",
+    ar: "تم استرداد رسوم البحث كرصيد"
   },
   account_deletion_rejected: {
     fr: "Votre demande de suppression de compte a été refusée",
     en: "Your account deletion request was declined",
     zh: "您的账户删除请求已被拒绝",
-    ar: "تم رفض طلب حذف حسابك",
+    ar: "تم رفض طلب حذف حسابك"
   },
   marketplace_listing_blocked: {
     fr: "Annonce temporairement bloquée par SourcingPick",
     en: "Listing temporarily blocked by SourcingPick",
     zh: "商品已被 SourcingPick 暂时下架",
-    ar: "تم حظر القائمة مؤقتًا من SourcingPick",
+    ar: "تم حظر القائمة مؤقتًا من SourcingPick"
   },
   marketplace_listing_unblocked: {
     fr: "Annonce débloquée — de retour en ligne",
     en: "Listing unblocked — back live",
     zh: "商品已解除封锁 — 已恢复上架",
-    ar: "تم رفع الحظر — عاد الإعلان مباشرًا",
+    ar: "تم رفع الحظر — عاد الإعلان مباشرًا"
   },
   marketplace_listing_archived_by_admin: {
     fr: "Annonce archivée par SourcingPick",
     en: "Listing archived by SourcingPick",
     zh: "商品已被 SourcingPick 归档",
-    ar: "تمت أرشفة القائمة من SourcingPick",
+    ar: "تمت أرشفة القائمة من SourcingPick"
   },
   marketplace_listing_edited_by_admin: {
     fr: "Annonce modifiée par SourcingPick",
     en: "Listing edited by SourcingPick",
     zh: "商品已被 SourcingPick 编辑",
-    ar: "تم تعديل القائمة من SourcingPick",
+    ar: "تم تعديل القائمة من SourcingPick"
   },
   marketplace_sample_ordered: {
     fr: "Commande d'échantillon reçue",
     en: "Sample order received",
     zh: "收到样品订单",
-    ar: "تم استلام طلب عيّنة",
+    ar: "تم استلام طلب عيّنة"
   },
   quote_relance: {
     fr: "Relance — devis en attente de décision",
     en: "Reminder — quote awaiting your decision",
     zh: "提醒 — 报价等待您决定",
-    ar: "تذكير — العرض بانتظار قرارك",
-  },
+    ar: "تذكير — العرض بانتظار قرارك"
+  }
 };
 
 export type NotificationCopy = {
@@ -268,31 +269,31 @@ const FR: Pack = {
     title: `Nouveau devis · ${reference ?? ""}`.trim(),
     description: factoryName
       ? `${factoryName} a soumis un devis pour votre demande.`
-      : "Une usine a soumis un devis.",
+      : "Une usine a soumis un devis."
   }),
   QUOTE_ACCEPTED: ({ clientName, reference }) => ({
     title: `Devis accepté · ${reference ?? ""}`.trim(),
     description: clientName
       ? `${clientName} a accepté votre devis. La commande est créée.`
-      : "Le client a accepté un devis et la commande est créée.",
+      : "Le client a accepté un devis et la commande est créée."
   }),
   PAYMENT_RECEIVED: ({ reference }) => ({
     title: `Paiement reçu · ${reference ?? ""}`.trim(),
-    description: "Le paiement est confirmé. Vous pouvez démarrer la production.",
+    description: "Le paiement est confirmé. Vous pouvez démarrer la production."
   }),
   SHIPMENT: ({ reference, factoryName }) => ({
     title: `Commande expédiée · ${reference ?? ""}`.trim(),
     description: factoryName
       ? `${factoryName} a expédié votre commande.`
-      : "Votre commande a été expédiée.",
+      : "Votre commande a été expédiée."
   }),
   INVOICE_DUE: ({ reference }) => ({
     title: `Facture à payer · ${reference ?? ""}`.trim(),
-    description: "Une facture est en attente de règlement.",
+    description: "Une facture est en attente de règlement."
   }),
   CERT_UPDATE: ({ title }) => ({
     title: title ?? "Mise à jour certification",
-    description: "Votre dossier de certification a évolué.",
+    description: "Votre dossier de certification a évolué."
   }),
   KYC_DECISION: ({ status }) => ({
     title: "Décision KYC",
@@ -303,32 +304,32 @@ const FR: Pack = {
           ? "Votre KYC a été refusé. Contactez kyc@sourcingpick.com."
           : status === "FLAGGED"
             ? "Votre KYC est signalé pour vérification additionnelle."
-            : "Votre dossier KYC a été mis à jour.",
+            : "Votre dossier KYC a été mis à jour."
   }),
   MESSAGE_MENTION: ({ title }) => ({
     title: title ? `Nouveau message · ${title}` : "Nouveau message",
-    description: "Vous avez reçu un nouveau message.",
+    description: "Vous avez reçu un nouveau message."
   }),
   SUPPORT_REPLY: ({ reference }) => ({
     title: `Réponse du support · ${reference ?? ""}`.trim(),
-    description: "Notre équipe a répondu à votre demande. Répondez depuis votre espace.",
+    description: "Notre équipe a répondu à votre demande. Répondez depuis votre espace."
   }),
   SHIPMENT_QUOTE: ({ reference }) => ({
     title: `Devis logistique · ${reference ?? ""}`.trim(),
-    description: "L'expéditeur a transmis un prix fixe avec sa date de validité.",
+    description: "L'expéditeur a transmis un prix fixe avec sa date de validité."
   }),
   SHIPMENT_STATUS: ({ reference }) => ({
     title: `Expédition · ${reference ?? ""}`.trim(),
-    description: "Le statut de l'expédition a changé.",
+    description: "Le statut de l'expédition a changé."
   }),
   SHIPMENT_INCIDENT: ({ reference }) => ({
     title: `Incident expédition · ${reference ?? ""}`.trim(),
-    description: "L'expéditeur signale un incident : retard, blocage, surcoût ou douane.",
+    description: "L'expéditeur signale un incident : retard, blocage, surcoût ou douane."
   }),
   SYSTEM: ({ title, systemKey }) => ({
     title: (systemKey && SYSTEM_TITLES[systemKey]?.fr) ?? title ?? "Notification",
-    description: "",
-  }),
+    description: ""
+  })
 };
 
 const EN: Pack = {
@@ -336,29 +337,29 @@ const EN: Pack = {
     title: `New quote · ${reference ?? ""}`.trim(),
     description: factoryName
       ? `${factoryName} submitted a quote on your request.`
-      : "A factory submitted a quote.",
+      : "A factory submitted a quote."
   }),
   QUOTE_ACCEPTED: ({ clientName, reference }) => ({
     title: `Quote accepted · ${reference ?? ""}`.trim(),
     description: clientName
       ? `${clientName} accepted your quote. The order is now open.`
-      : "The client accepted a quote and the order is open.",
+      : "The client accepted a quote and the order is open."
   }),
   PAYMENT_RECEIVED: ({ reference }) => ({
     title: `Payment received · ${reference ?? ""}`.trim(),
-    description: "Payment is confirmed. You can start production.",
+    description: "Payment is confirmed. You can start production."
   }),
   SHIPMENT: ({ reference, factoryName }) => ({
     title: `Order shipped · ${reference ?? ""}`.trim(),
-    description: factoryName ? `${factoryName} shipped your order.` : "Your order has shipped.",
+    description: factoryName ? `${factoryName} shipped your order.` : "Your order has shipped."
   }),
   INVOICE_DUE: ({ reference }) => ({
     title: `Invoice due · ${reference ?? ""}`.trim(),
-    description: "An invoice is awaiting payment.",
+    description: "An invoice is awaiting payment."
   }),
   CERT_UPDATE: ({ title }) => ({
     title: title ?? "Certification update",
-    description: "Your certification file has been updated.",
+    description: "Your certification file has been updated."
   }),
   KYC_DECISION: ({ status }) => ({
     title: "KYC decision",
@@ -369,60 +370,60 @@ const EN: Pack = {
           ? "Your KYC was rejected. Contact kyc@sourcingpick.com."
           : status === "FLAGGED"
             ? "Your KYC is flagged for additional review."
-            : "Your KYC file has been updated.",
+            : "Your KYC file has been updated."
   }),
   MESSAGE_MENTION: ({ title }) => ({
     title: title ? `New message · ${title}` : "New message",
-    description: "You have a new message.",
+    description: "You have a new message."
   }),
   SUPPORT_REPLY: ({ reference }) => ({
     title: `Support reply · ${reference ?? ""}`.trim(),
-    description: "Our team has answered your request. Reply from your dashboard.",
+    description: "Our team has answered your request. Reply from your dashboard."
   }),
   SHIPMENT_QUOTE: ({ reference }) => ({
     title: `Logistics quote · ${reference ?? ""}`.trim(),
-    description: "The shipper has sent a fixed price with its validity date.",
+    description: "The shipper has sent a fixed price with its validity date."
   }),
   SHIPMENT_STATUS: ({ reference }) => ({
     title: `Shipment · ${reference ?? ""}`.trim(),
-    description: "The shipment status has changed.",
+    description: "The shipment status has changed."
   }),
   SHIPMENT_INCIDENT: ({ reference }) => ({
     title: `Shipment incident · ${reference ?? ""}`.trim(),
-    description: "The shipper reported an incident: delay, blockage, surcharge or customs.",
+    description: "The shipper reported an incident: delay, blockage, surcharge or customs."
   }),
   SYSTEM: ({ title, systemKey }) => ({
     title: (systemKey && SYSTEM_TITLES[systemKey]?.en) ?? title ?? "Notification",
-    description: "",
-  }),
+    description: ""
+  })
 };
 
 const ZH: Pack = {
   QUOTE_RECEIVED: ({ factoryName, reference }) => ({
     title: `新报价 · ${reference ?? ""}`.trim(),
-    description: factoryName ? `${factoryName} 已对您的需求提交报价。` : "工厂已提交报价。",
+    description: factoryName ? `${factoryName} 已对您的需求提交报价。` : "工厂已提交报价。"
   }),
   QUOTE_ACCEPTED: ({ clientName, reference }) => ({
     title: `报价已接受 · ${reference ?? ""}`.trim(),
     description: clientName
       ? `${clientName} 已接受您的报价,订单已创建。`
-      : "客户已接受报价,订单已创建。",
+      : "客户已接受报价,订单已创建。"
   }),
   PAYMENT_RECEIVED: ({ reference }) => ({
     title: `已收到付款 · ${reference ?? ""}`.trim(),
-    description: "付款已确认,您可以开始生产。",
+    description: "付款已确认,您可以开始生产。"
   }),
   SHIPMENT: ({ reference, factoryName }) => ({
     title: `订单已发货 · ${reference ?? ""}`.trim(),
-    description: factoryName ? `${factoryName} 已发出您的订单。` : "您的订单已发货。",
+    description: factoryName ? `${factoryName} 已发出您的订单。` : "您的订单已发货。"
   }),
   INVOICE_DUE: ({ reference }) => ({
     title: `发票待支付 · ${reference ?? ""}`.trim(),
-    description: "一张发票等待支付。",
+    description: "一张发票等待支付。"
   }),
   CERT_UPDATE: ({ title }) => ({
     title: title ?? "认证更新",
-    description: "您的认证文件已更新。",
+    description: "您的认证文件已更新。"
   }),
   KYC_DECISION: ({ status }) => ({
     title: "KYC 决定",
@@ -433,32 +434,32 @@ const ZH: Pack = {
           ? "您的 KYC 被拒绝。请联系 kyc@sourcingpick.com。"
           : status === "FLAGGED"
             ? "您的 KYC 被标记需进一步审核。"
-            : "您的 KYC 文件已更新。",
+            : "您的 KYC 文件已更新。"
   }),
   MESSAGE_MENTION: ({ title }) => ({
     title: title ? `新消息 · ${title}` : "新消息",
-    description: "您有一条新消息。",
+    description: "您有一条新消息。"
   }),
   SUPPORT_REPLY: ({ reference }) => ({
     title: `客服回复 · ${reference ?? ""}`.trim(),
-    description: "我们的团队已回复您的请求。请在您的后台回复。",
+    description: "我们的团队已回复您的请求。请在您的后台回复。"
   }),
   SHIPMENT_QUOTE: ({ reference }) => ({
     title: `物流报价 · ${reference ?? ""}`.trim(),
-    description: "发货方已提交固定价格及有效期。",
+    description: "发货方已提交固定价格及有效期。"
   }),
   SHIPMENT_STATUS: ({ reference }) => ({
     title: `运单 · ${reference ?? ""}`.trim(),
-    description: "运单状态已更新。",
+    description: "运单状态已更新。"
   }),
   SHIPMENT_INCIDENT: ({ reference }) => ({
     title: `运单异常 · ${reference ?? ""}`.trim(),
-    description: "发货方报告异常：延误、滞留、附加费或海关问题。",
+    description: "发货方报告异常：延误、滞留、附加费或海关问题。"
   }),
   SYSTEM: ({ title, systemKey }) => ({
     title: (systemKey && SYSTEM_TITLES[systemKey]?.zh) ?? title ?? "通知",
-    description: "",
-  }),
+    description: ""
+  })
 };
 
 const AR: Pack = {
@@ -466,29 +467,29 @@ const AR: Pack = {
     title: `عرض سعر جديد · ${reference ?? ""}`.trim(),
     description: factoryName
       ? `${factoryName} قدّم عرض سعر على طلبك.`
-      : "قدّم أحد المصانع عرض سعر.",
+      : "قدّم أحد المصانع عرض سعر."
   }),
   QUOTE_ACCEPTED: ({ clientName, reference }) => ({
     title: `تم قبول عرض السعر · ${reference ?? ""}`.trim(),
     description: clientName
       ? `${clientName} قبل عرض السعر الخاص بك. تم فتح الطلب.`
-      : "قبل العميل عرض السعر وتم فتح الطلب.",
+      : "قبل العميل عرض السعر وتم فتح الطلب."
   }),
   PAYMENT_RECEIVED: ({ reference }) => ({
     title: `تم استلام الدفعة · ${reference ?? ""}`.trim(),
-    description: "تم تأكيد الدفع. يمكنك بدء الإنتاج.",
+    description: "تم تأكيد الدفع. يمكنك بدء الإنتاج."
   }),
   SHIPMENT: ({ reference, factoryName }) => ({
     title: `تم شحن الطلب · ${reference ?? ""}`.trim(),
-    description: factoryName ? `${factoryName} شحن طلبك.` : "تم شحن طلبك.",
+    description: factoryName ? `${factoryName} شحن طلبك.` : "تم شحن طلبك."
   }),
   INVOICE_DUE: ({ reference }) => ({
     title: `فاتورة مستحقة · ${reference ?? ""}`.trim(),
-    description: "هناك فاتورة بانتظار الدفع.",
+    description: "هناك فاتورة بانتظار الدفع."
   }),
   CERT_UPDATE: ({ title }) => ({
     title: title ?? "تحديث على الشهادة",
-    description: "تم تحديث ملف الشهادة الخاص بك.",
+    description: "تم تحديث ملف الشهادة الخاص بك."
   }),
   KYC_DECISION: ({ status }) => ({
     title: "قرار التحقق من الهوية",
@@ -499,42 +500,48 @@ const AR: Pack = {
           ? "تم رفض ملف KYC. تواصل مع kyc@sourcingpick.com."
           : status === "FLAGGED"
             ? "تم وضع ملف KYC قيد المراجعة الإضافية."
-            : "تم تحديث ملف KYC.",
+            : "تم تحديث ملف KYC."
   }),
   MESSAGE_MENTION: ({ title }) => ({
     title: title ? `رسالة جديدة · ${title}` : "رسالة جديدة",
-    description: "لديك رسالة جديدة.",
+    description: "لديك رسالة جديدة."
   }),
   SUPPORT_REPLY: ({ reference }) => ({
     title: `رد الدعم · ${reference ?? ""}`.trim(),
-    description: "أجاب فريقنا على طلبك. يمكنك الرد من لوحة التحكم.",
+    description: "أجاب فريقنا على طلبك. يمكنك الرد من لوحة التحكم."
   }),
   SHIPMENT_QUOTE: ({ reference }) => ({
     title: `عرض سعر الشحن · ${reference ?? ""}`.trim(),
-    description: "أرسل الشاحن سعراً ثابتاً مع تاريخ صلاحيته.",
+    description: "أرسل الشاحن سعراً ثابتاً مع تاريخ صلاحيته."
   }),
   SHIPMENT_STATUS: ({ reference }) => ({
     title: `الشحنة · ${reference ?? ""}`.trim(),
-    description: "تغيّرت حالة الشحنة.",
+    description: "تغيّرت حالة الشحنة."
   }),
   SHIPMENT_INCIDENT: ({ reference }) => ({
     title: `حادث شحن · ${reference ?? ""}`.trim(),
-    description: "أبلغ الشاحن عن حادث: تأخير أو توقف أو رسوم إضافية أو جمارك.",
+    description: "أبلغ الشاحن عن حادث: تأخير أو توقف أو رسوم إضافية أو جمارك."
   }),
   SYSTEM: ({ title, systemKey }) => ({
     title: (systemKey && SYSTEM_TITLES[systemKey]?.ar) ?? title ?? "إشعار",
-    description: "",
-  }),
+    description: ""
+  })
 };
 
-const PACKS: Record<AppLocale, Pack> = { fr: FR, en: EN, zh: ZH, ar: AR };
+/**
+ * The four languages notification copy has been written in. The other eight
+ * read these in English until they are written — see `Localized`. A pack is
+ * 40-odd sentences, so this is the gap that closes last, not the one that
+ * blocks the rest.
+ */
+const PACKS: Localized<Pack> = { fr: FR, en: EN, zh: ZH, ar: AR };
 
 export function renderNotification(
   type: NotificationType,
   locale: Locale,
   vars: NotificationVars,
 ): NotificationCopy {
-  return PACKS[appLocaleFor(locale)][type](vars);
+  return pick(PACKS, locale)[type](vars);
 }
 
 /**

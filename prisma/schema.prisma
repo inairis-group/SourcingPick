@@ -18,11 +18,22 @@ datasource db {
 // ENUMS
 // =============================================================
 
+/// The twelve the product speaks. Extended from four by the 2026-09 SaaS
+/// canvas — see src/lib/i18n/config.ts. Order matches `locales` there, which
+/// is the order the language menu lists them in.
 enum Locale {
   fr
   en
   zh
+  es
+  de
+  it
+  pt
+  nl
   ar
+  ru
+  tr
+  pl
 }
 
 enum Role {

@@ -1,100 +1,101 @@
 "use client";
 
-import { useActionState, useState } from "react";
-import { signIn } from "next-auth/react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { GoogleIcon } from "@hugeicons/core-free-icons";
+import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { EmailInput } from "@/components/ui/email-input";
 import { Field } from "@/components/ui/field";
+import { Checkbox } from "@/components/ui/checkbox";
 import { FormError } from "@/components/ui/form-error";
 import { Link } from "@/components/ui/link";
 import { loginAction, type LoginActionState } from "@/lib/auth/actions";
 import { useDictionary, useLocale } from "@/lib/i18n/client-provider";
+import { AuthHeading, AuthSubmitIcon, AuthWordmark } from "../../_design/auth-shell";
 
 const INITIAL: LoginActionState = {};
 
+/**
+ * Log in, as the SaaS canvas draws it: heading pair, two 46px fields, the
+ * security row, one 17px action, and the line to signup underneath.
+ *
+ * The canvas draws no Google button, so there is none: Caystone's rule is
+ * that anything the canvas does not draw is not a feature. Checked before
+ * removing it rather than after — the database holds no linked OAuth account
+ * and no user without a password, so this strands nobody. Were that ever
+ * untrue, password recovery would still be the way back in, since the reset
+ * flow sets a password on an account that has none.
+ *
+ * The artboard draws the email field pre-filled with a customer's address and
+ * the password as a row of bullets. Those are a screenshot of someone using
+ * the product, not copy, so the fields ship empty.
+ */
 export function LoginForm() {
   const dict = useDictionary();
+  const t = dict.auth.login;
   const locale = useLocale();
   const [state, formAction, pending] = useActionState(loginAction, INITIAL);
-  const [googlePending, setGooglePending] = useState(false);
 
   return (
-    // Self-constrain — the auth layout's wider `max-w-xl` exists for
-    // the signup wizards; login itself wants a tighter column.
-    <div className="flex flex-col gap-6 mx-auto w-full max-w-md">
-      <header className="flex flex-col gap-1.5">
-        <h1 className="text-2xl font-bold text-headline tracking-tight">
-          {dict.auth.login.title}
-        </h1>
-        <p className="text-sm text-muted">
-          {dict.auth.login.noAccount}{" "}
-          <Link href={`/${locale}/signup`} variant="inline" className="text-sm font-medium">
-            {dict.auth.login.signupLink}
-          </Link>
-        </p>
-      </header>
+    <>
+      <AuthWordmark href={`/${locale}`} alt={dict.brand.name} />
+      <AuthHeading title={t.title} body={t.subtitle} />
 
-      <Button
-        type="button"
-        variant="secondary"
-        size="md"
-        fullWidth
-        loading={googlePending}
-        leftIcon={<HugeiconsIcon icon={GoogleIcon} size={18} strokeWidth={1.5} />}
-        onClick={() => {
-          setGooglePending(true);
-          signIn("google", { callbackUrl: `/${locale}/dashboard` });
-        }}
-      >
-        {dict.auth.login.google}
-      </Button>
-
-      <div className="flex items-center gap-3">
-        <div className="flex-1 h-px bg-line" />
-        <span className="text-xs uppercase tracking-wide text-faint">
-          {dict.auth.login.divider}
-        </span>
-        <div className="flex-1 h-px bg-line" />
-      </div>
-
-      <form action={formAction} className="flex flex-col gap-4">
+      <form action={formAction} className="flex flex-col gap-[22px]">
         {state.error && <FormError>{state.error}</FormError>}
 
-        <Field label={dict.auth.login.emailLabel} required>
+        <Field label={t.emailLabel} required>
           <EmailInput
             name="email"
+            inputSize="lg"
             autoComplete="email"
             required
             autoFocus
-            placeholder="you@example.com"
             invalidMessage={dict.auth.signup.errorEmail}
           />
         </Field>
 
-        <Field
-          label={dict.auth.login.passwordLabel}
-          required
-          hint={
-            <Link
-              href={`/${locale}/forgot-password`}
-              variant="inline"
-              className="text-sm"
-            >
-              {dict.auth.login.forgotPassword}
-            </Link>
-          }
-        >
-          <PasswordInput name="password" autoComplete="current-password" required />
+        <Field label={t.passwordLabel} required>
+          <PasswordInput
+            name="password"
+            inputSize="lg"
+            autoComplete="current-password"
+            placeholder={t.passwordPlaceholder}
+            required
+          />
         </Field>
 
-        <Button type="submit" variant="primary" size="md" fullWidth loading={pending}>
-          {dict.auth.login.submit}
+        {/* The canvas puts a checkbox and the recovery link on one line. The
+            checkbox is labelled only "Security" there; what it governs is the
+            one-time code step, which is the screen the canvas draws next. */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Checkbox name="otp" defaultChecked label={t.security} title={t.securityHint} />
+          <Link
+            href={`/${locale}/forgot-password`}
+            variant="inline"
+            className="text-base font-semibold"
+          >
+            {t.forgotPassword}
+          </Link>
+        </div>
+
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          fullWidth
+          loading={pending}
+          rightIcon={<AuthSubmitIcon />}
+        >
+          {t.submit}
         </Button>
       </form>
-    </div>
+
+      <p className="text-muted m-0 text-center text-[14.5px]">
+        {t.noAccount}{" "}
+        <Link href={`/${locale}/signup`} variant="inline" className="font-semibold">
+          {t.signupLink}
+        </Link>
+      </p>
+    </>
   );
 }

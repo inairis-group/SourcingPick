@@ -5,11 +5,8 @@
  * and we ported its copy rather than translating it — every string on the
  * marketing pages is the designer's own in all twelve.
  *
- * The application behind the login is a different matter: it is designed in
- * three (French, English, Chinese) and hand-translated into Arabic. The other
- * eight fall back to English there, which `get-dictionary.ts` states plainly
- * rather than hiding. Adding a language here without a dictionary for it is a
- * compile error, by design.
+ * The application behind the login speaks the same twelve. Adding a language
+ * here without a dictionary for it is a compile error, by design.
  */
 export const locales = [
   "fr",
@@ -81,36 +78,41 @@ export const localeDirections: Record<Locale, "ltr" | "rtl"> = {
 };
 
 /**
- * The languages the *product* speaks, as opposed to the site.
+ * The languages the *product* speaks.
  *
- * These four are the ones with a full dictionary, hand-checked email copy, and
- * a value in the database's `Locale` enum. The canvas designs the application
- * in three of them; Arabic was added by hand.
+ * All twelve, since the 2026-09 SaaS canvas: the application is translated
+ * into the same set as the site, so nothing has to be downgraded on its way
+ * from a marketing page to a dashboard, an e-mail, or a database column.
  *
- * The site's other eight have no application copy at all, so anything that
- * reaches the dashboard, an e-mail, or a database column goes through
- * `appLocaleFor` first. Keeping the two sets distinct is what stops a Polish
- * visitor's signup from trying to write `pl` into a column that has no such
- * value — and what stops us pretending the dashboard is translated.
+ * SUPERSEDES the earlier four-language split (fr/en/zh/ar). That split
+ * existed because the other eight had no application copy at all; they have
+ * their own dictionaries now, filled section by section, with English
+ * standing in per key for whatever has not been reached yet — see
+ * `get-dictionary.ts`. The distinction between a site language and a product
+ * language no longer describes anything real, so `AppLocale` is `Locale` and
+ * `appLocaleFor` is the identity. Both are kept rather than deleted: they
+ * name an intent ("this value is about to be stored or sent") at roughly a
+ * hundred call sites, and that intent still reads well.
  */
-export const appLocales = ["fr", "en", "zh", "ar"] as const;
+export const appLocales = locales;
 
-export type AppLocale = (typeof appLocales)[number];
+export type AppLocale = Locale;
+
+export const defaultAppLocale: AppLocale = defaultLocale;
 
 export function isAppLocale(value: string): value is AppLocale {
-  return (appLocales as readonly string[]).includes(value);
+  return isLocale(value);
 }
 
 /**
  * The application language to use for a site language.
  *
- * English for the eight the product does not speak: it is the widest second
- * language among them, and a Dutch or Polish reader is better served by an
- * English dashboard than a French one. Replace an entry here the moment its
- * dictionary lands — nothing else has to change.
+ * Now the identity, and deliberately still here: it marks every point where a
+ * locale crosses from "what the reader is browsing in" to "what we store or
+ * send", which is where a future narrowing would have to go.
  */
 export function appLocaleFor(locale: Locale): AppLocale {
-  return isAppLocale(locale) ? locale : "en";
+  return locale;
 }
 
 export function isLocale(value: string): value is Locale {

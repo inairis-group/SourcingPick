@@ -17,11 +17,14 @@ import {
   type VerifyOtpState,
 } from "@/lib/auth/actions";
 import { useDictionary } from "@/lib/i18n/client-provider";
+import Image from "next/image";
+import { AuthHeading, AuthSubmitIcon } from "../../_design/auth-shell";
 
 const INITIAL: VerifyOtpState = {};
 
-export function OtpForm() {
+export function OtpForm({ email }: { email: string | null }) {
   const dict = useDictionary();
+  const t = dict.auth.verify;
   const [state, formAction, pending] = useActionState(verifyOtpAction, INITIAL);
   const [code, setCode] = useState("");
   const [resending, startResend] = useTransition();
@@ -64,17 +67,35 @@ export function OtpForm() {
     });
   };
 
-  return (
-    // OTP wants the same tight column as login.
-    <div className="flex flex-col gap-6 mx-auto w-full max-w-md">
-      <header className="flex flex-col gap-1.5">
-        <h1 className="text-2xl font-bold text-headline tracking-tight">
-          {dict.auth.otp.title}
-        </h1>
-        <p className="text-sm text-muted">{dict.auth.otp.description}</p>
-      </header>
+  // The canvas writes the address into the sentence. Without a pending
+  // cookie there is no address to write, so the generic line stands in
+  // rather than a sentence with a hole in it.
+  const [before, after] = t.body.split("{email}");
+  const body = email ? (
+    <>
+      {before}
+      <strong className="text-fg font-semibold">{email}</strong>
+      {after}
+    </>
+  ) : (
+    dict.auth.otp.description
+  );
 
-      <form action={formAction} className="flex flex-col gap-5">
+  return (
+    <>
+      {/* The canvas opens this screen with the envelope rather than the
+          wordmark — the only access screen it does that on. */}
+      <Image
+        src="/design/app/auth-verify-mail.svg"
+        alt=""
+        width={120}
+        height={120}
+        priority
+        className="size-30 self-start"
+      />
+      <AuthHeading title={t.title} body={body} />
+
+      <form action={formAction} className="flex flex-col gap-[22px]">
         {state.error && <FormError>{state.error}</FormError>}
         {resentNotice?.startsWith("ok:") && (
           <div
@@ -88,7 +109,7 @@ export function OtpForm() {
           <FormError>{resentNotice.slice(6)}</FormError>
         )}
 
-        <Field label={dict.auth.otp.codeLabel}>
+        <Field label={t.codeLabel}>
           <div>
             <PinInput
               length={6}
@@ -106,25 +127,30 @@ export function OtpForm() {
         <Button
           type="submit"
           variant="primary"
-          size="md"
+          size="lg"
           fullWidth
           loading={pending}
           disabled={code.length !== 6}
+          rightIcon={<AuthSubmitIcon />}
         >
-          {dict.auth.otp.verify}
+          {t.submit}
         </Button>
 
-        <div className="flex items-center justify-center">
+        {/* Resend on one side, the spam-folder reminder on the other — the
+            canvas's own pairing, and the reminder is where it stops people
+            asking for a third code. */}
+        <div className="flex flex-wrap items-center justify-between gap-3 text-base">
           <button
             type="button"
             onClick={onResend}
             disabled={resending || pending}
-            className="text-sm text-link hover:text-link-hover disabled:text-disabled transition-colors duration-fast"
+            className="text-link hover:text-link-hover disabled:text-disabled font-semibold transition-colors duration-fast"
           >
-            {resending ? dict.common.actions.loading : dict.auth.otp.resend}
+            {resending ? dict.common.actions.loading : t.resend}
           </button>
+          <span className="text-muted">{t.spam}</span>
         </div>
       </form>
-    </div>
+    </>
   );
 }

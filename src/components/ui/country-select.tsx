@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils";
  * pattern (controlled via `value` + `onChange` returning the code).
  */
 export function CountrySelect({
+  id,
   name,
   value,
   onChange,
@@ -35,6 +36,8 @@ export function CountrySelect({
   invalid,
   autoFocus,
 }: {
+  /** Bound by a <Label htmlFor>. Without it the label labels nothing. */
+  id?: string;
   name?: string;
   value?: string;
   onChange?: (code: string) => void;
@@ -83,13 +86,15 @@ export function CountrySelect({
       <Combobox value={code} onChange={(v) => setCode(v ?? "")} disabled={disabled}>
         <div
           className={cn(
-            "relative w-full rounded-sm border bg-surface transition-colors duration-fast",
+            // The canvas's control edge: 12px corner, 1.5px hairline.
+            "relative w-full rounded-xl border-[1.5px] bg-surface transition-colors duration-fast",
             "focus-within:border-focus focus-within:outline-2 focus-within:outline-focus focus-within:outline-offset-2",
             invalid ? "border-danger" : "border-line-strong",
             disabled && "bg-subtle cursor-not-allowed opacity-60",
           )}
         >
           <ComboboxInput
+            id={id}
             autoComplete="country-name"
             autoFocus={autoFocus}
             displayValue={() => selectedName}
@@ -97,7 +102,7 @@ export function CountrySelect({
             placeholder={placeholder}
             disabled={disabled}
             className={cn(
-              "w-full h-10 ps-3 pe-9 text-base rounded-sm bg-transparent text-fg placeholder:text-faint",
+              "w-full min-h-[46px] ps-3.5 pe-9 text-md rounded-xl bg-transparent text-fg placeholder:text-faint",
               "outline-none",
             )}
           />

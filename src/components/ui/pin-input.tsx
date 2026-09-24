@@ -93,7 +93,12 @@ export function PinInput({
   };
 
   return (
-    <div className="flex items-center gap-2" role="group" aria-label={ariaLabel}>
+    <div
+      className="flex w-full items-center gap-1.5 sm:gap-2.5"
+      role="group"
+      aria-label={ariaLabel}
+      dir="ltr"
+    >
       {Array.from({ length }).map((_, i) => (
         <input
           key={i}
@@ -114,7 +119,12 @@ export function PinInput({
           onKeyDown={(e) => handleKeyDown(i, e)}
           onPaste={handlePaste}
           className={cn(
-            "h-12 w-10 text-center font-mono text-xl font-semibold rounded-md border bg-surface text-fg",
+            // The canvas draws six 56x64 cells with a 14px corner and the
+            // digit in JetBrains Mono at 26px. Six 56px cells plus five 10px
+            // gaps is 386px, so at 320px they have to give: the row shares
+            // out whatever it has rather than each cell holding a guessed
+            // minimum, which is what left four pixels hanging off the edge.
+            "h-16 min-w-0 flex-1 basis-0 max-w-14 text-center font-mono text-[26px] font-semibold rounded-callout border-[1.5px] bg-surface text-fg",
             "transition-colors duration-fast",
             // Focus indicator as an inset ring (not an outline with
             // positive offset) so the focused cell stays exactly the

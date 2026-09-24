@@ -1,0 +1,170 @@
+{
+  "auth": {
+    "forgot": {
+      "title": "Passwort vergessen",
+      "description": "Geben Sie Ihre E-Mail-Adresse ein. Falls ein Konto besteht, erhalten Sie einen Link zum Zurücksetzen.",
+      "submit": "Link senden",
+      "sentTitle": "Link gesendet",
+      "sentBody": "Falls ein SourcingPick-Konto zu dieser Adresse besteht, ist gerade eine Nachricht rausgegangen. Prüfen Sie Ihren Posteingang (und den Spam-Ordner).",
+      "backToLogin": "Zurück zur Anmeldung"
+    },
+    "reset": {
+      "title": "Neues Passwort",
+      "description": "Wählen Sie ein neues Passwort für Ihr Konto.",
+      "newPasswordLabel": "Neues Passwort",
+      "confirmPasswordLabel": "Passwort bestätigen",
+      "passwordHint": "Mindestens 8 Zeichen, davon eine Ziffer.",
+      "submit": "Passwort zurücksetzen",
+      "missingTokenTitle": "Ungültiger Link",
+      "missingTokenBody": "Dieser Link ist unvollständig. Fordern Sie über die Seite „Passwort vergessen“ einen neuen an.",
+      "requestNew": "Neuen Link anfordern"
+    },
+    "otp": {
+      "title": "Zwei-Faktor-Bestätigung",
+      "description": "Geben Sie den 6-stelligen Code ein, den wir Ihnen per E-Mail geschickt haben.",
+      "codeLabel": "Bestätigungscode",
+      "resend": "Code erneut senden",
+      "resentNotice": "Ein neuer Code wurde gesendet.",
+      "verify": "Bestätigen"
+    },
+    "login": {
+      "title": "Anmeldung in Ihrem Bereich",
+      "subtitle": "Verfolgen Sie Ihre Anfragen, Ihre Angebote und Ihre Container.",
+      "emailLabel": "E-Mail",
+      "passwordLabel": "Passwort",
+      "passwordPlaceholder": "••••••••••",
+      "security": "Sicherheit",
+      "securityHint": "Bei jeder Anmeldung einen Einmalcode senden.",
+      "forgotPassword": "Passwort vergessen?",
+      "submit": "Anmelden",
+      "noAccount": "Noch kein Konto?",
+      "signupLink": "Konto erstellen",
+      "divider": "oder",
+      "google": "Mit Google fortfahren"
+    },
+    "signup": {
+      "title": "Erstellen Sie Ihr Konto",
+      "subtitle": "Zwei Minuten, und Sie können Ihre erste Anfrage senden.",
+      "youAre": "Sie sind",
+      "business": "Gewerblich",
+      "individual": "Privat",
+      "fullNameLabel": "Vor- und Nachname",
+      "companyLabel": "Unternehmen",
+      "vatOrRegistrationLabel": "USt-IdNr. oder Handelsregisternummer",
+      "deliveryCountryLabel": "Lieferland",
+      "businessEmailLabel": "Geschäftliche E-Mail",
+      "passwordLabel": "Passwort",
+      "passwordHint": "Mindestens 8 Zeichen, davon eine Ziffer.",
+      "submit": "Mein Konto erstellen",
+      "hasAccount": "Sie haben bereits ein Konto?",
+      "loginLink": "Anmelden"
+    },
+    "verify": {
+      "title": "Bestätigen Sie Ihre E-Mail",
+      "body": "Wir haben einen sechsstelligen Code an {email} gesendet. Er ist 15 Minuten gültig.",
+      "codeLabel": "Bestätigungscode",
+      "submit": "Bestätigen",
+      "resend": "Code erneut senden",
+      "spam": "Denken Sie daran, Ihren Spam-Ordner zu prüfen."
+    },
+    "panel": {
+      "headline": "Jeder Schritt hinterlässt eine Spur.",
+      "body": "Fotos vom Wareneingang, Prüfung, Verladung und Dokumente: alles bleibt in Ihrem Bereich.",
+      "note": "Die mobile App entsteht noch. Der Webbereich kann alles."
+    }
+  },
+  "common": {
+    "actions": {
+      "continue": "Weiter",
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "delete": "Löschen",
+      "edit": "Bearbeiten",
+      "back": "Zurück",
+      "next": "Weiter",
+      "submit": "Absenden",
+      "close": "Schließen",
+      "search": "Suchen",
+      "filter": "Filtern",
+      "export": "Exportieren",
+      "loading": "Wird geladen…"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "active": "Aktiv",
+      "verified": "Geprüft",
+      "flagged": "Markiert",
+      "rejected": "Abgelehnt",
+      "completed": "Abgeschlossen",
+      "cancelled": "Storniert"
+    },
+    "roles": {
+      "client": "Kunde",
+      "factory": "Fabrik",
+      "agent": "Agent",
+      "admin": "Administrator"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Seite nicht gefunden",
+      "description": "Die gesuchte Seite gibt es nicht oder sie wurde verschoben.",
+      "back": "Zurück zur Startseite"
+    },
+    "500": {
+      "title": "Etwas ist schiefgelaufen",
+      "description": "Bei uns ist etwas kaputtgegangen. Bitte versuchen Sie es erneut.",
+      "retry": "Erneut versuchen"
+    },
+    "notFound": {
+      "title": "Diese Seite haben wir verloren.",
+      "body": "Die Adresse, die Sie versucht haben, gibt es nicht oder sie wurde verschoben. Zurück auf den richtigen Weg.",
+      "home": "Zurück zur Startseite",
+      "browse": "Marktplatz durchsuchen"
+    },
+    "systemError": {
+      "code": "Systemfehler",
+      "title": "Bei uns ist etwas kaputtgegangen.",
+      "body": "Wir konnten diese Seite nicht darstellen. Das Team ist informiert. Versuchen Sie es gleich noch einmal.",
+      "retry": "Erneut versuchen"
+    }
+  },
+  "theme": {
+    "toggleLabel": "Design wechseln",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System"
+  },
+  "locale": {
+    "switch": "Sprache"
+  },
+  "nav": {
+    "dashboard": "Übersicht",
+    "requests": "Anfragen",
+    "quotations": "Angebote",
+    "orders": "Aufträge",
+    "billing": "Abrechnung",
+    "invoices": "Rechnungen",
+    "payments": "Zahlungen",
+    "users": "Benutzer",
+    "agents": "Agenten",
+    "documents": "Dokumente",
+    "emails": "E-Mails",
+    "settings": "Einstellungen",
+    "log": "Protokoll",
+    "help": "Hilfe",
+    "messages": "Nachrichten",
+    "logout": "Abmelden",
+    "role": {
+      "client": "Kunde",
+      "agent": "Agent",
+      "admin": "Administration"
+    },
+    "topbar": {
+      "search": "Auftrag, Kunde oder Referenz suchen…",
+      "notifications": "Benachrichtigungen",
+      "openMenu": "Menü öffnen",
+      "closeMenu": "Menü schließen"
+    }
+  }
+}

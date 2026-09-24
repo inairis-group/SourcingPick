@@ -4,21 +4,35 @@ import { cn } from "@/lib/utils";
 type Variant = "primary" | "secondary" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
 
+/**
+ * Variants and sizes are the 2026-09 SaaS canvas's, counted off the boards
+ * rather than chosen: three sizes appear across all 50 artboards and no
+ * others. Every one of them carries `min-height: 44px` — the canvas sets a
+ * touch-target floor even on a desktop-only board, so the small size stays
+ * tappable when these screens reach a phone.
+ *
+ * The 1.5px border is not a rounding of 1px. The canvas draws chrome
+ * hairlines at 1px and control edges at 1.5px, and a secondary button sitting
+ * next to a 1.5px field looks wrong at 1px.
+ */
 const variantClasses: Record<Variant, string> = {
   primary:
-    "bg-action text-on-action hover:bg-action-hover hover:text-white active:bg-action-active disabled:bg-disabled disabled:text-inverse",
+    "bg-action text-on-action border-[1.5px] border-action hover:bg-action-hover hover:border-action-hover hover:text-white active:bg-action-active disabled:bg-disabled disabled:border-disabled disabled:text-inverse",
   secondary:
-    "bg-surface text-fg border border-line-strong hover:bg-subtle active:bg-sunken disabled:text-disabled disabled:bg-subtle",
+    "bg-transparent text-fg border-[1.5px] border-line-strong hover:bg-subtle active:bg-sunken disabled:text-disabled disabled:bg-subtle",
   ghost:
-    "bg-transparent text-fg hover:bg-ghost-hover hover:text-link-hover active:bg-sunken disabled:text-disabled",
+    "bg-transparent text-fg border-[1.5px] border-transparent hover:bg-ghost-hover hover:text-link-hover active:bg-sunken disabled:text-disabled",
   danger:
-    "bg-danger text-inverse hover:bg-danger active:bg-danger disabled:bg-disabled",
+    "bg-danger text-inverse border-[1.5px] border-danger hover:bg-danger active:bg-danger disabled:bg-disabled disabled:border-disabled",
 };
 
 const sizeClasses: Record<Size, string> = {
-  sm: "h-8 px-3 text-sm gap-1.5",
-  md: "h-10 px-4 text-base gap-2",
-  lg: "h-12 px-5 text-md gap-2",
+  /** Toolbars, table rows, filter bars. 47 uses on the canvas. */
+  sm: "min-h-11 px-4 py-2.5 text-base gap-2",
+  /** The default. Secondary actions and most card footers. 56 uses. */
+  md: "min-h-11 px-[22px] py-3.5 text-md gap-2.5",
+  /** The one action a screen is about — sign, pay, submit. 16 uses. */
+  lg: "min-h-11 px-7 py-[18px] text-[17px] gap-2.5",
 };
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -40,7 +54,7 @@ export function buttonClass({
   fullWidth = false,
 }: { variant?: Variant; size?: Size; fullWidth?: boolean } = {}) {
   return cn(
-    "inline-flex items-center justify-center font-semibold rounded-md transition-colors duration-300 ease-default",
+    "inline-flex items-center justify-center font-semibold rounded-xl transition-colors duration-300 ease-default",
     "disabled:cursor-not-allowed",
     variantClasses[variant],
     sizeClasses[size],

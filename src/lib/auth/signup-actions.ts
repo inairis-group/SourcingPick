@@ -12,6 +12,7 @@ import { writeAuditLog } from "@/lib/audit/log";
 import { dashboardPathForRole } from "@/lib/auth/redirects";
 import { appLocaleFor, defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
 import { storeFile, StorageError } from "@/lib/storage/local";
+import { passwordSchema } from "@/lib/auth/password-policy";
 
 const ClientSignupSchema = z.object({
   firstName: z.string().trim().min(1, "First name is required.").max(80),
@@ -28,10 +29,7 @@ const ClientSignupSchema = z.object({
     .min(5, "Phone number is required.")
     .max(32, "Phone number is too long.")
     .regex(/^[0-9+\s()\-.]+$/, "Use digits, spaces, +, ( ), - or . only."),
-  password: z
-    .string()
-    .min(12, "Password must be at least 12 characters.")
-    .max(200, "Password is too long."),
+  password: passwordSchema,
   terms: z.literal("on", {
     error: () => ({ message: "You must accept the terms to continue." }),
   }),
@@ -108,9 +106,9 @@ export async function signupClientAction(
           role: Role.CLIENT,
           subRole: SubRole.OWNER,
           organizationId: org.id,
-          // The column's enum holds the four languages the product
-          // speaks; a visitor who signed up from the Polish site is
-          // recorded as the nearest one we can actually write to them in.
+          // The column holds all twelve now, so a visitor who signed up
+          // from the Polish site is recorded as Polish rather than as the
+          // nearest language we used to be able to write to them in.
           locale: appLocaleFor(locale),
           hasOnboarded: false,
         },
@@ -155,6 +153,155 @@ export async function signupClientAction(
 }
 
 // =============================================================
+// Signup, as the 2026-09 SaaS canvas draws it
+// =============================================================
+
+/**
+ * One screen, two kinds of account.
+ *
+ * The canvas replaces the old pick-a-role page and the multi-step wizard
+ * behind it with a single form: who you are, your details, your password.
+ * The "Business / Individual" pair is the only branch, and it governs two
+ * fields rather than two flows.
+ *
+ * An individual is still an organisation of one. The alternative — a
+ * nullable organisationId — would make every downstream query that walks
+ * from an order to its buyer handle an owner-less case, and none of them do.
+ * So the person's own name becomes the org's name and the two company fields
+ * simply go unasked.
+ */
+const AccountSignupSchema = z
+  .object({
+    accountType: z.enum(["business", "individual"]),
+    fullName: z.string().trim().min(2, "Please enter your full name.").max(160),
+    company: z.string().trim().max(200).optional(),
+    vatNumber: z.string().trim().max(64).optional(),
+    deliveryCountry: z.string().trim().min(2, "Please choose a delivery country.").max(80),
+    email: z.email("Please enter a valid email."),
+    password: passwordSchema,
+    terms: z.literal("on", {
+      error: () => ({ message: "You must accept the terms to continue." }),
+    }),
+  })
+  .refine((v) => v.accountType !== "business" || (v.company?.length ?? 0) >= 2, {
+    message: "Please enter your company name.",
+    path: ["company"],
+  });
+
+/**
+ * Create an account from the canvas's signup screen.
+ *
+ * Mirrors `signupClientAction` — same organisation, same owner user, same
+ * transaction, same auto-login — and differs only in what it asks for. The
+ * two exist side by side while the older wizard is still reachable.
+ */
+export async function signupAccountAction(
+  _prev: SignupActionState,
+  formData: FormData,
+): Promise<SignupActionState> {
+  const parsed = AccountSignupSchema.safeParse({
+    accountType: formData.get("accountType"),
+    fullName: formData.get("fullName"),
+    company: formData.get("company") ?? undefined,
+    vatNumber: formData.get("vatNumber") ?? undefined,
+    deliveryCountry: formData.get("deliveryCountry"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    terms: formData.get("terms"),
+  });
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
+  }
+  const data = parsed.data;
+
+  const locale = await currentLocale();
+
+  const existing = await prisma.user.findUnique({
+    where: { email: data.email },
+    select: { id: true },
+  });
+  if (existing) {
+    return { error: "An account with this email already exists." };
+  }
+
+  // The canvas asks for one name field. Splitting on the last space is a
+  // guess, and a bad one in plenty of languages, so the full string is kept
+  // intact in `name` and the parts are filled only well enough for the
+  // columns that require them.
+  const orgName = data.accountType === "business" ? (data.company ?? data.fullName) : data.fullName;
+  const [firstName, ...restOfName] = data.fullName.split(/\s+/);
+  const lastName = restOfName.join(" ");
+
+  const passwordHash = await hashPassword(data.password);
+
+  let userId: string;
+  try {
+    const created = await prisma.$transaction(async (tx) => {
+      const org = await tx.organization.create({
+        data: {
+          type: OrgType.CLIENT,
+          legalName: orgName,
+          displayName: orgName,
+          country: data.deliveryCountry,
+          city: "",
+          address: "",
+          vatNumber: data.vatNumber || null,
+          kycStatus: KycStatus.PENDING,
+        },
+      });
+      const user = await tx.user.create({
+        data: {
+          email: data.email,
+          firstName,
+          // Not nullable, and an individual with a one-word name has no
+          // second part to give it.
+          lastName: lastName || firstName,
+          name: data.fullName,
+          passwordHash,
+          role: Role.CLIENT,
+          subRole: SubRole.OWNER,
+          organizationId: org.id,
+          locale: appLocaleFor(locale),
+          hasOnboarded: false,
+        },
+      });
+      return { user, org };
+    });
+    userId = created.user.id;
+  } catch (e) {
+    await writeAuditLog({
+      action: "auth.signup_failed",
+      payload: { email: data.email, role: "CLIENT", message: String(e) },
+      level: "WARN",
+    });
+    return { error: "Something went wrong creating your account. Please try again." };
+  }
+
+  await writeAuditLog({
+    actorUserId: userId,
+    action: "auth.signup",
+    targetType: "User",
+    targetId: userId,
+    payload: { role: "CLIENT", accountType: data.accountType },
+  });
+
+  try {
+    await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+  } catch (e) {
+    if (e instanceof AuthError) {
+      redirect(`/${locale}/login`);
+    }
+    throw e;
+  }
+
+  redirect(dashboardPathForRole(Role.CLIENT, locale));
+}
+
+// =============================================================
 // Factory signup
 // =============================================================
 
@@ -168,10 +315,7 @@ const FactorySignupSchema = z.object({
     .min(5, "Phone number is required.")
     .max(32, "Phone number is too long.")
     .regex(/^[0-9+\s()\-.]+$/, "Use digits, spaces, +, ( ), - or . only."),
-  password: z
-    .string()
-    .min(12, "Password must be at least 12 characters.")
-    .max(200, "Password is too long."),
+  password: passwordSchema,
   legalName: z.string().trim().min(2, "Legal name is required.").max(200),
   displayName: z.string().trim().min(1, "Display name is required.").max(200),
   country: z.string().trim().min(2, "Country is required.").max(80),

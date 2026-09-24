@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { defaultLocale, isLocale, localeCookieName, locales } from "@/lib/i18n/config";
 import { resolveLocale } from "@/lib/i18n/match-locale";
+import { isHiddenRoute, withoutLocale } from "@/lib/permissions/hidden-routes";
 
 const PROTECTED_PREFIXES = ["/client", "/factory", "/agent", "/admin", "/shipper"] as const;
 const ONE_YEAR_SECONDS = 365 * 24 * 60 * 60;
@@ -38,6 +39,18 @@ export function proxy(request: NextRequest) {
   // Full role enforcement happens in role layouts via requireRole() —
   // do NOT trust the proxy for authorization.
   void PROTECTED_PREFIXES;
+
+  // Sections the SaaS canvas does not draw do not resolve. Rewriting rather
+  // than redirecting, so the address the visitor typed stays in the bar and
+  // the response is an honest 404 instead of a bounce to somewhere they did
+  // not ask for. This is presentation, not authorization: the route files
+  // still exist and their own `requireRole` guards still run, which is what
+  // keeps a rewrite from being the only thing between a bookmark and data.
+  if (isHiddenRoute(withoutLocale(pathname))) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/${pathname.split("/")[1] ?? defaultLocale}/not-found`;
+    return NextResponse.rewrite(url, { status: 404 });
+  }
 
   const urlLocale = pathname.split("/")[1] ?? defaultLocale;
   // Forward `x-locale` to RSC + server actions via the REQUEST

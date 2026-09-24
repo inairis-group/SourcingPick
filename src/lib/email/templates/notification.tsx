@@ -1,5 +1,6 @@
 import { Body, Button, Container, Head, Heading, Html, Preview, Section, Text } from "react-email";
-import { appLocaleFor, directionFor, type AppLocale, type Locale } from "@/lib/i18n/config";
+import { directionFor, type Locale } from "@/lib/i18n/config";
+import { pick, type Localized } from "@/lib/i18n/localized";
 
 type NotificationEmailProps = {
   title: string;
@@ -12,11 +13,11 @@ type NotificationEmailProps = {
 // Product copy, so it is keyed by the four languages the product speaks —
 // see `appLocaleFor`. The reader's own language still sets <html lang> and the
 // text direction, which is what a mail client needs for hyphenation and voice.
-const FOOTER: Record<AppLocale, string> = {
+const FOOTER: Localized<string> = {
   fr: "SourcingPick · le sourcing international, industrialisé.",
   en: "SourcingPick · international sourcing, industrialised.",
   zh: "SourcingPick · 工业化的国际采购平台。",
-  ar: "SourcingPick · التوريد الدولي، بمعايير صناعية.",
+  ar: "SourcingPick · التوريد الدولي، بمعايير صناعية."
 };
 
 export default function NotificationEmail({
@@ -24,7 +25,7 @@ export default function NotificationEmail({
   description,
   ctaLabel,
   ctaUrl,
-  locale,
+  locale
 }: NotificationEmailProps) {
   return (
     <Html lang={locale} dir={directionFor(locale)}>
@@ -36,7 +37,7 @@ export default function NotificationEmail({
           fontFamily: 'Geist, ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
           color: "#1e293b",
           margin: 0,
-          padding: "32px 16px",
+          padding: "32px 16px"
         }}
       >
         <Container
@@ -46,7 +47,7 @@ export default function NotificationEmail({
             backgroundColor: "#ffffff",
             border: "1px solid #e2e8f0",
             borderRadius: "8px",
-            padding: "32px",
+            padding: "32px"
           }}
         >
           <Section>
@@ -55,7 +56,7 @@ export default function NotificationEmail({
                 fontSize: "18px",
                 fontWeight: 600,
                 margin: "0 0 16px 0",
-                color: "#162456",
+                color: "#162456"
               }}
             >
               {title}
@@ -66,7 +67,7 @@ export default function NotificationEmail({
                   fontSize: "14px",
                   lineHeight: "22px",
                   margin: "0 0 24px 0",
-                  color: "#1e293b",
+                  color: "#1e293b"
                 }}
               >
                 {description}
@@ -84,7 +85,7 @@ export default function NotificationEmail({
                     padding: "10px 18px",
                     borderRadius: "6px",
                     textDecoration: "none",
-                    display: "inline-block",
+                    display: "inline-block"
                   }}
                 >
                   {ctaLabel}
@@ -98,10 +99,10 @@ export default function NotificationEmail({
             fontSize: "11px",
             color: "#94a3b8",
             textAlign: "center",
-            margin: "24px 0 0 0",
+            margin: "24px 0 0 0"
           }}
         >
-          {FOOTER[appLocaleFor(locale)]}
+          {pick(FOOTER, locale)}
         </Text>
       </Body>
     </Html>

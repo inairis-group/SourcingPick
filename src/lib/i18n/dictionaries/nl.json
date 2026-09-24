@@ -1,0 +1,170 @@
+{
+  "auth": {
+    "forgot": {
+      "title": "Wachtwoord vergeten",
+      "description": "Vul uw e-mailadres in. Als er een account bestaat, ontvangt u een herstellink.",
+      "submit": "Link versturen",
+      "sentTitle": "Link verstuurd",
+      "sentBody": "Als er een SourcingPick-account met dat adres bestaat, is er zojuist een bericht verstuurd. Kijk in uw inbox (en uw spammap).",
+      "backToLogin": "Terug naar inloggen"
+    },
+    "reset": {
+      "title": "Nieuw wachtwoord",
+      "description": "Kies een nieuw wachtwoord voor uw account.",
+      "newPasswordLabel": "Nieuw wachtwoord",
+      "confirmPasswordLabel": "Wachtwoord bevestigen",
+      "passwordHint": "Minimaal 8 tekens, waarvan één cijfer.",
+      "submit": "Wachtwoord herstellen",
+      "missingTokenTitle": "Ongeldige link",
+      "missingTokenBody": "Deze herstellink is onvolledig. Vraag een nieuwe aan via de pagina wachtwoord vergeten.",
+      "requestNew": "Nieuwe link aanvragen"
+    },
+    "otp": {
+      "title": "Verificatie in twee stappen",
+      "description": "Vul de 6-cijferige code in die we naar uw e-mailadres hebben gestuurd.",
+      "codeLabel": "Verificatiecode",
+      "resend": "Code opnieuw versturen",
+      "resentNotice": "Er is een nieuwe code verstuurd.",
+      "verify": "Bevestigen"
+    },
+    "login": {
+      "title": "Log in op uw omgeving",
+      "subtitle": "Volg uw aanvragen, uw offertes en uw containers.",
+      "emailLabel": "E-mail",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "••••••••••",
+      "security": "Beveiliging",
+      "securityHint": "Bij elke aanmelding een eenmalige code sturen.",
+      "forgotPassword": "Wachtwoord vergeten?",
+      "submit": "Inloggen",
+      "noAccount": "Nog geen account?",
+      "signupLink": "Account aanmaken",
+      "divider": "of",
+      "google": "Doorgaan met Google"
+    },
+    "signup": {
+      "title": "Maak uw account aan",
+      "subtitle": "Twee minuten, en u kunt uw eerste aanvraag versturen.",
+      "youAre": "U bent",
+      "business": "Zakelijk",
+      "individual": "Particulier",
+      "fullNameLabel": "Voor- en achternaam",
+      "companyLabel": "Bedrijf",
+      "vatOrRegistrationLabel": "Btw- of registratienummer",
+      "deliveryCountryLabel": "Land van levering",
+      "businessEmailLabel": "Zakelijk e-mailadres",
+      "passwordLabel": "Wachtwoord",
+      "passwordHint": "Minimaal 8 tekens, waarvan één cijfer.",
+      "submit": "Mijn account aanmaken",
+      "hasAccount": "Hebt u al een account?",
+      "loginLink": "Inloggen"
+    },
+    "verify": {
+      "title": "Bevestig uw e-mailadres",
+      "body": "We hebben een zescijferige code naar {email} gestuurd. Deze is 15 minuten geldig.",
+      "codeLabel": "Verificatiecode",
+      "submit": "Bevestigen",
+      "resend": "Code opnieuw versturen",
+      "spam": "Vergeet niet uw spammap te bekijken."
+    },
+    "panel": {
+      "headline": "Elke stap laat een spoor na.",
+      "body": "Ontvangstfoto’s, controle, belading en documenten: alles blijft in uw omgeving.",
+      "note": "De mobiele app wordt nog gebouwd. De webomgeving doet alles."
+    }
+  },
+  "common": {
+    "actions": {
+      "continue": "Doorgaan",
+      "cancel": "Annuleren",
+      "save": "Opslaan",
+      "delete": "Verwijderen",
+      "edit": "Bewerken",
+      "back": "Terug",
+      "next": "Volgende",
+      "submit": "Versturen",
+      "close": "Sluiten",
+      "search": "Zoeken",
+      "filter": "Filteren",
+      "export": "Exporteren",
+      "loading": "Laden…"
+    },
+    "status": {
+      "pending": "In afwachting",
+      "active": "Actief",
+      "verified": "Geverifieerd",
+      "flagged": "Gemarkeerd",
+      "rejected": "Afgewezen",
+      "completed": "Afgerond",
+      "cancelled": "Geannuleerd"
+    },
+    "roles": {
+      "client": "Klant",
+      "factory": "Fabriek",
+      "agent": "Agent",
+      "admin": "Beheerder"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Pagina niet gevonden",
+      "description": "De pagina die u zoekt bestaat niet of is verplaatst.",
+      "back": "Terug naar start"
+    },
+    "500": {
+      "title": "Er is iets misgegaan",
+      "description": "Er ging iets mis aan onze kant. Probeer het opnieuw.",
+      "retry": "Opnieuw proberen"
+    },
+    "notFound": {
+      "title": "Die pagina zijn we kwijt.",
+      "body": "Het adres dat u probeerde bestaat niet of is verplaatst. We helpen u weer op weg.",
+      "home": "Terug naar start",
+      "browse": "Marktplaats bekijken"
+    },
+    "systemError": {
+      "code": "Systeemfout",
+      "title": "Er ging iets mis aan onze kant.",
+      "body": "We konden deze pagina niet tonen. Het team is op de hoogte. Probeer het zo nog eens.",
+      "retry": "Opnieuw proberen"
+    }
+  },
+  "theme": {
+    "toggleLabel": "Thema wijzigen",
+    "light": "Licht",
+    "dark": "Donker",
+    "system": "Systeem"
+  },
+  "locale": {
+    "switch": "Taal"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "requests": "Aanvragen",
+    "quotations": "Offertes",
+    "orders": "Orders",
+    "billing": "Facturatie",
+    "invoices": "Facturen",
+    "payments": "Betalingen",
+    "users": "Gebruikers",
+    "agents": "Agenten",
+    "documents": "Documenten",
+    "emails": "E-mails",
+    "settings": "Instellingen",
+    "log": "Logboek",
+    "help": "Help",
+    "messages": "Berichten",
+    "logout": "Uitloggen",
+    "role": {
+      "client": "Klant",
+      "agent": "Agent",
+      "admin": "Administratie"
+    },
+    "topbar": {
+      "search": "Zoek een order, een klant, een referentie…",
+      "notifications": "Meldingen",
+      "openMenu": "Menu openen",
+      "closeMenu": "Menu sluiten"
+    }
+  }
+}

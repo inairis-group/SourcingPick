@@ -3,10 +3,16 @@ import { cn } from "@/lib/utils";
 
 type Size = "sm" | "md" | "lg";
 
+/**
+ * The canvas draws two fields and no others: a 46px one for forms and a 40px
+ * one for filter bars. `sm` and `md` are that compact field; `lg` is the form
+ * field. All three use the same 14px side padding, which is what keeps a
+ * filter row and a form column optically aligned when they share a screen.
+ */
 const sizeClasses: Record<Size, string> = {
-  sm: "h-8 px-2.5 text-sm",
-  md: "h-10 px-3 text-base",
-  lg: "h-11 px-3.5 text-md",
+  sm: "min-h-10 px-3.5 py-0 text-base",
+  md: "min-h-10 px-3.5 py-0 text-base",
+  lg: "min-h-[46px] px-3.5 py-0 text-md",
 };
 
 export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
@@ -24,7 +30,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     return (
       <div
         className={cn(
-          "flex items-center gap-2 rounded-sm border bg-surface transition-colors duration-fast",
+          "flex items-center gap-2.5 rounded-xl border-[1.5px] bg-surface transition-colors duration-fast",
           "focus-within:border-focus focus-within:outline-2 focus-within:outline-focus focus-within:outline-offset-2",
           invalid ? "border-danger" : "border-line-strong",
           disabled && "bg-subtle cursor-not-allowed",
@@ -51,7 +57,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       disabled={disabled}
       aria-invalid={invalid || undefined}
       className={cn(
-        "w-full rounded-sm border bg-surface text-fg placeholder:text-faint",
+        "w-full rounded-xl border-[1.5px] bg-surface text-fg placeholder:text-faint",
         "transition-colors duration-fast",
         "focus:outline-2 focus:outline-focus focus:outline-offset-2",
         invalid ? "border-danger focus:border-danger" : "border-line-strong focus:border-focus",

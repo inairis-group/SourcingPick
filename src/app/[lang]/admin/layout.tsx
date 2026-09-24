@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Role } from "@prisma/client";
-import { RoleShell } from "@/components/layout/role-shell";
+import { AppShell } from "@/components/layout/app-shell";
 import { requireRole } from "@/lib/permissions/guards";
 import { isLocale } from "@/lib/i18n/config";
 
@@ -13,8 +13,8 @@ export default async function AdminLayout({
   await requireRole(Role.ADMIN);
 
   return (
-    <RoleShell locale={lang} role={Role.ADMIN}>
+    <AppShell locale={lang} role={Role.ADMIN}>
       {children}
-    </RoleShell>
+    </AppShell>
   );
 }

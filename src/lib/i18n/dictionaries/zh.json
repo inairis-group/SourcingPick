@@ -2468,7 +2468,7 @@
     }
   },
   "nav": {
-    "dashboard": "仪表盘",
+    "dashboard": "仪表板",
     "requests": "需求",
     "marketplace": "市场",
     "orders": "订单",
@@ -2482,7 +2482,27 @@
     "messages": "消息",
     "shipments": "运单",
     "settings": "设置",
-    "logout": "退出登录"
+    "logout": "退出登录",
+    "quotations": "报价",
+    "billing": "账务",
+    "payments": "付款",
+    "users": "用户",
+    "agents": "业务员",
+    "documents": "单证",
+    "emails": "邮件",
+    "log": "日志",
+    "help": "帮助",
+    "role": {
+      "client": "客户",
+      "agent": "业务员",
+      "admin": "管理后台"
+    },
+    "topbar": {
+      "search": "搜索订单、客户或编号…",
+      "notifications": "通知",
+      "openMenu": "打开菜单",
+      "closeMenu": "关闭菜单"
+    }
   },
   "theme": {
     "toggleLabel": "切换主题",
@@ -2865,24 +2885,28 @@
   },
   "auth": {
     "login": {
-      "title": "登录",
-      "emailLabel": "电子邮箱",
+      "title": "登录您的账户",
+      "emailLabel": "邮箱",
       "passwordLabel": "密码",
       "submit": "登录",
-      "forgotPassword": "忘记密码?",
-      "noAccount": "还没有账户?",
+      "forgotPassword": "忘记密码？",
+      "noAccount": "还没有账户？",
       "signupLink": "创建账户",
       "google": "使用 Google 继续",
-      "divider": "或"
+      "divider": "或",
+      "subtitle": "随时跟踪您的需求、报价与货柜。",
+      "passwordPlaceholder": "••••••••••",
+      "security": "安全验证",
+      "securityHint": "每次登录时发送一次性验证码。"
     },
     "signup": {
-      "title": "创建账户",
+      "title": "创建您的账户",
       "pickerDescription": "选择与您业务相匹配的账户类型。",
       "asClient": "我是买家",
       "clientBody": "希望通过专属代理从经审核的工厂采购的中小企业、品牌或大型公司。",
       "asFactory": "我是工厂",
       "factoryBody": "希望回应招标并列出产品的制造商。",
-      "hasAccount": "已有账户?",
+      "hasAccount": "已有账户？",
       "loginLink": "登录",
       "clientEyebrow": "买家账户",
       "clientTitle": "创建您的买家账户",
@@ -2894,7 +2918,7 @@
       "countryPlaceholder": "法国、巴西、日本…",
       "phoneLabel": "电话",
       "phoneHint": "便于您的专属代理在紧急情况下快速联系您。",
-      "passwordHint": "至少 12 个字符。",
+      "passwordHint": "至少 8 个字符，且包含一个数字。",
       "termsAccept": "我接受",
       "termsLink": "服务条款",
       "termsAnd": "和",
@@ -2952,7 +2976,17 @@
       "usccLabel": "统一社会信用代码",
       "usccHint": "18 位字符,与营业执照上的完全一致。",
       "errorUscc": "统一社会信用代码须为 18 位字符。",
-      "errorTerms": "您必须接受条款才能继续。"
+      "errorTerms": "您必须接受条款才能继续。",
+      "subtitle": "两分钟即可提交您的第一个需求。",
+      "youAre": "您的身份",
+      "business": "企业",
+      "individual": "个人",
+      "fullNameLabel": "姓名",
+      "companyLabel": "公司",
+      "vatOrRegistrationLabel": "税号或工商注册号",
+      "deliveryCountryLabel": "收货国家",
+      "businessEmailLabel": "企业邮箱",
+      "passwordLabel": "密码"
     },
     "forgot": {
       "title": "忘记密码",
@@ -2967,7 +3001,7 @@
       "description": "为您的账户选择一个新密码。",
       "newPasswordLabel": "新密码",
       "confirmPasswordLabel": "确认密码",
-      "passwordHint": "至少 12 个字符。",
+      "passwordHint": "至少 8 个字符，且包含一个数字。",
       "submit": "重置密码",
       "missingTokenTitle": "无效链接",
       "missingTokenBody": "此重置链接不完整。请从忘记密码页面申请新的链接。",
@@ -2980,6 +3014,19 @@
       "resend": "重新发送",
       "resentNotice": "新验证码已发送。",
       "verify": "验证"
+    },
+    "verify": {
+      "title": "验证您的邮箱",
+      "body": "我们已向 {email} 发送了六位验证码，15 分钟内有效。",
+      "codeLabel": "验证码",
+      "submit": "验证",
+      "resend": "重新发送验证码",
+      "spam": "请记得查看垃圾邮件文件夹。"
+    },
+    "panel": {
+      "headline": "每一步，都有据可查。",
+      "body": "收货照片、验货、装柜与单证：全部保留在您的账户中。",
+      "note": "手机应用仍在开发中，网页端功能齐全。"
     }
   },
   "cookies": {

@@ -2482,7 +2482,27 @@
     "messages": "Messages",
     "shipments": "Expéditions",
     "settings": "Paramètres",
-    "logout": "Se déconnecter"
+    "logout": "Se déconnecter",
+    "quotations": "Devis",
+    "billing": "Facturation",
+    "payments": "Paiements",
+    "users": "Utilisateurs",
+    "agents": "Agents",
+    "documents": "Documents",
+    "emails": "Emails",
+    "log": "Journal",
+    "help": "Aide",
+    "role": {
+      "client": "Client",
+      "agent": "Agent",
+      "admin": "Administration"
+    },
+    "topbar": {
+      "search": "Rechercher une commande, un client, une référence…",
+      "notifications": "Notifications",
+      "openMenu": "Ouvrir le menu",
+      "closeMenu": "Fermer le menu"
+    }
   },
   "theme": {
     "toggleLabel": "Changer de thème",
@@ -2865,24 +2885,28 @@
   },
   "auth": {
     "login": {
-      "title": "Connexion",
-      "emailLabel": "Adresse e-mail",
+      "title": "Connexion à votre espace",
+      "emailLabel": "Email",
       "passwordLabel": "Mot de passe",
       "submit": "Se connecter",
       "forgotPassword": "Mot de passe oublié ?",
       "noAccount": "Pas encore de compte ?",
       "signupLink": "Créer un compte",
       "google": "Continuer avec Google",
-      "divider": "ou"
+      "divider": "ou",
+      "subtitle": "Suivez vos demandes, vos devis et vos conteneurs.",
+      "passwordPlaceholder": "••••••••••",
+      "security": "Sécurité",
+      "securityHint": "Recevoir un code à usage unique à chaque connexion."
     },
     "signup": {
-      "title": "Créer un compte",
+      "title": "Créer votre compte",
       "pickerDescription": "Choisissez le type de compte qui correspond à votre activité.",
       "asClient": "Je suis un acheteur",
       "clientBody": "PME, marque ou ETI qui veut sourcer auprès d'usines vérifiées avec un agent dédié.",
       "asFactory": "Je suis une usine",
       "factoryBody": "Fabricant qui souhaite répondre aux appels d'offres et lister des produits.",
-      "hasAccount": "Déjà inscrit ?",
+      "hasAccount": "Vous avez déjà un compte ?",
       "loginLink": "Se connecter",
       "clientEyebrow": "Compte acheteur",
       "clientTitle": "Créer votre compte acheteur",
@@ -2894,7 +2918,7 @@
       "countryPlaceholder": "France, Brésil, Japon…",
       "phoneLabel": "Téléphone",
       "phoneHint": "Pour que votre agent puisse vous joindre rapidement en cas de besoin.",
-      "passwordHint": "Au moins 12 caractères.",
+      "passwordHint": "8 caractères minimum, dont un chiffre.",
       "termsAccept": "J'accepte les",
       "termsLink": "conditions générales",
       "termsAnd": "et la",
@@ -2952,7 +2976,17 @@
       "usccLabel": "Code de crédit social unifié (统一社会信用代码)",
       "usccHint": "18 caractères, tels qu'imprimés sur votre licence d'exploitation.",
       "errorUscc": "Le code de crédit social unifié doit comporter 18 caractères.",
-      "errorTerms": "Vous devez accepter les conditions pour continuer."
+      "errorTerms": "Vous devez accepter les conditions pour continuer.",
+      "subtitle": "Deux minutes, et vous pouvez envoyer votre première demande.",
+      "youAre": "Vous êtes",
+      "business": "Professionnel",
+      "individual": "Particulier",
+      "fullNameLabel": "Nom et prénom",
+      "companyLabel": "Entreprise",
+      "vatOrRegistrationLabel": "N° de TVA ou d’immatriculation",
+      "deliveryCountryLabel": "Pays de livraison",
+      "businessEmailLabel": "Email professionnel",
+      "passwordLabel": "Mot de passe"
     },
     "forgot": {
       "title": "Mot de passe oublié",
@@ -2967,7 +3001,7 @@
       "description": "Choisissez un nouveau mot de passe pour votre compte.",
       "newPasswordLabel": "Nouveau mot de passe",
       "confirmPasswordLabel": "Confirmer le mot de passe",
-      "passwordHint": "Au moins 12 caractères.",
+      "passwordHint": "8 caractères minimum, dont un chiffre.",
       "submit": "Réinitialiser le mot de passe",
       "missingTokenTitle": "Lien invalide",
       "missingTokenBody": "Ce lien de réinitialisation est incomplet. Demandez-en un nouveau depuis la page mot de passe oublié.",
@@ -2980,6 +3014,19 @@
       "resend": "Renvoyer le code",
       "resentNotice": "Un nouveau code vient d'être envoyé.",
       "verify": "Vérifier"
+    },
+    "verify": {
+      "title": "Vérifiez votre email",
+      "body": "Nous avons envoyé un code à six chiffres à {email}. Il est valable 15 minutes.",
+      "codeLabel": "Code de vérification",
+      "submit": "Vérifier",
+      "resend": "Renvoyer le code",
+      "spam": "Pensez à regarder vos indésirables."
+    },
+    "panel": {
+      "headline": "Chaque étape, une trace.",
+      "body": "Photos de réception, contrôle, chargement et documents : tout reste dans votre espace.",
+      "note": "L’application mobile est en cours de construction. L’espace web fait tout."
     }
   },
   "cookies": {

@@ -9,6 +9,7 @@ import { getCurrentUser } from "@/lib/auth/session";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
 import { writeAuditLog } from "@/lib/audit/log";
 import { settingsPathForRole } from "@/lib/auth/redirects";
+import { passwordSchema } from "@/lib/auth/password-policy";
 
 // =============================================================
 // Profile
@@ -81,10 +82,7 @@ export async function updateProfileAction(
 const PasswordSchema = z
   .object({
     currentPassword: z.string().min(1, "Enter your current password."),
-    newPassword: z
-      .string()
-      .min(12, "New password must be at least 12 characters.")
-      .max(200),
+    newPassword: passwordSchema,
     confirm: z.string(),
   })
   .refine((d) => d.newPassword === d.confirm, {

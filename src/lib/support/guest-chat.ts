@@ -9,9 +9,9 @@ import {
   appLocaleFor,
   defaultLocale,
   isLocale,
-  type AppLocale,
-  type Locale,
+  type Locale
 } from "@/lib/i18n/config";
+import { pick, type Localized } from "@/lib/i18n/localized";
 
 /**
  * Public live chat for logged-out visitors.
@@ -75,7 +75,7 @@ export async function startGuestConversation(_prev: unknown, formData: FormData)
   if (body.length > 4000) return { ok: false as const, error: "message_too_long" };
 
   const open = await prisma.guestConversation.count({
-    where: { email, handledAt: null },
+    where: { email, handledAt: null }
   });
   if (open >= MAX_OPEN_PER_EMAIL) {
     return { ok: false as const, error: "too_many_open" };
@@ -86,8 +86,8 @@ export async function startGuestConversation(_prev: unknown, formData: FormData)
     const recent = await prisma.guestConversation.count({
       where: {
         ipHash,
-        createdAt: { gte: new Date(Date.now() - 60 * 60 * 1000) },
-      },
+        createdAt: { gte: new Date(Date.now() - 60 * 60 * 1000) }
+      }
     });
     if (recent >= MAX_PER_IP_PER_HOUR) {
       return { ok: false as const, error: "rate_limited" };
@@ -100,12 +100,12 @@ export async function startGuestConversation(_prev: unknown, formData: FormData)
       token: randomBytes(24).toString("base64url"),
       name,
       email,
-      // Same four-value column as User.locale — see appLocaleFor.
+      // Same twelve-value column as User.locale — see appLocaleFor.
       locale: appLocaleFor(locale),
       ipHash,
-      messages: { create: { body, fromTeam: false } },
+      messages: { create: { body, fromTeam: false } }
     },
-    select: { id: true, token: true },
+    select: { id: true, token: true }
   });
 
   // The team is notified in-app and by email. Deliberately every admin rather
@@ -113,7 +113,7 @@ export async function startGuestConversation(_prev: unknown, formData: FormData)
   // and routing to a single inbox would make that untrue the moment they're away.
   const admins = await prisma.user.findMany({
     where: { role: Role.ADMIN, deletedAt: null },
-    select: { id: true },
+    select: { id: true }
   });
   await emitNotificationToMany(
     admins.map((u) => u.id),
@@ -121,7 +121,7 @@ export async function startGuestConversation(_prev: unknown, formData: FormData)
       type: NotificationType.SYSTEM,
       vars: { title: `Live chat — ${name}` },
       contextType: "GuestConversation",
-      contextId: conversation.id,
+      contextId: conversation.id
     },
   );
 
@@ -137,22 +137,22 @@ export async function postGuestMessage(_prev: unknown, formData: FormData) {
 
   const conversation = await prisma.guestConversation.findUnique({
     where: { token },
-    select: { id: true, name: true },
+    select: { id: true, name: true }
   });
   if (!conversation) return { ok: false as const, error: "not_found" };
 
   await prisma.guestMessage.create({
-    data: { conversationId: conversation.id, body, fromTeam: false },
+    data: { conversationId: conversation.id, body, fromTeam: false }
   });
   // A visitor reply re-opens the conversation for the team.
   await prisma.guestConversation.update({
     where: { id: conversation.id },
-    data: { handledAt: null },
+    data: { handledAt: null }
   });
 
   const admins = await prisma.user.findMany({
     where: { role: Role.ADMIN, deletedAt: null },
-    select: { id: true },
+    select: { id: true }
   });
   await emitNotificationToMany(
     admins.map((u) => u.id),
@@ -160,7 +160,7 @@ export async function postGuestMessage(_prev: unknown, formData: FormData) {
       type: NotificationType.SYSTEM,
       vars: { title: `Live chat — ${conversation.name}` },
       contextType: "GuestConversation",
-      contextId: conversation.id,
+      contextId: conversation.id
     },
   );
 
@@ -176,18 +176,18 @@ export async function getGuestConversation(token: string) {
       name: true,
       messages: {
         orderBy: { createdAt: "asc" },
-        select: { id: true, body: true, fromTeam: true, createdAt: true },
-      },
-    },
+        select: { id: true, body: true, fromTeam: true, createdAt: true }
+      }
+    }
   });
 }
 
 /** Team reply. Authenticated — admins only. */
-const REPLY_SUBJECT: Record<AppLocale, string> = {
+const REPLY_SUBJECT: Localized<string> = {
   fr: "Réponse de l'équipe SourcingPick",
   en: "A reply from the SourcingPick team",
   zh: "SourcingPick 团队回复",
-  ar: "رد من فريق SourcingPick",
+  ar: "رد من فريق SourcingPick"
 };
 
 export async function replyToGuest(_prev: unknown, formData: FormData) {
@@ -201,16 +201,16 @@ export async function replyToGuest(_prev: unknown, formData: FormData) {
 
   const conversation = await prisma.guestConversation.findUnique({
     where: { id: conversationId },
-    select: { id: true, name: true, email: true, locale: true },
+    select: { id: true, name: true, email: true, locale: true }
   });
   if (!conversation) return { ok: false as const, error: "not_found" };
 
   await prisma.guestMessage.create({
-    data: { conversationId: conversation.id, body, fromTeam: true },
+    data: { conversationId: conversation.id, body, fromTeam: true }
   });
   await prisma.guestConversation.update({
     where: { id: conversation.id },
-    data: { handledAt: new Date() },
+    data: { handledAt: new Date() }
   });
 
   /**
@@ -230,7 +230,7 @@ export async function replyToGuest(_prev: unknown, formData: FormData) {
   const replyTo = inboundReplyAddress({ kind: "g", id: conversation.id });
   void sendEmail({
     to: conversation.email,
-    subject: REPLY_SUBJECT[conversation.locale],
+    subject: pick(REPLY_SUBJECT, conversation.locale),
     // Null when inbound email isn't configured, in which case we fall back to
     // EMAIL_REPLY_TO rather than advertising an address that routes nowhere.
     ...(replyTo ? { replyTo } : {}),
@@ -238,8 +238,8 @@ export async function replyToGuest(_prev: unknown, formData: FormData) {
       visitorName: conversation.name,
       body,
       locale: conversation.locale,
-      canReplyByEmail: replyTo !== null,
-    }),
+      canReplyByEmail: replyTo !== null
+    })
   }).catch(() => {
     /* the in-widget transcript still carries the reply */
   });
@@ -288,9 +288,9 @@ export async function listGuestConversations(filters?: {
               // Searching what was actually said matters more than searching
               // who said it — an operator remembers the problem, not the name.
               { messages: { some: { body: { contains: q, mode: "insensitive" as const } } } },
-            ],
+            ]
           }
-        : {}),
+        : {})
     },
     orderBy: [{ handledAt: "asc" }, { updatedAt: "desc" }],
     take: 100,
@@ -309,8 +309,8 @@ export async function listGuestConversations(filters?: {
       escalatedDispute: { select: { reference: true } },
       messages: {
         orderBy: { createdAt: "asc" },
-        select: { id: true, body: true, fromTeam: true, createdAt: true },
-      },
-    },
+        select: { id: true, body: true, fromTeam: true, createdAt: true }
+      }
+    }
   });
 }

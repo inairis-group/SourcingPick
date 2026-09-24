@@ -1,11 +1,11 @@
 import "server-only";
-import { Locale } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { issueEmailOtp } from "@/lib/auth/otp";
 import { sendEmail } from "@/lib/email/send";
 import OtpEmail from "@/lib/email/templates/otp";
+import { pick, type Localized } from "@/lib/i18n/localized";
 
-const SUBJECT: Record<Locale, string> = {
+const SUBJECT: Localized<string> = {
   fr: "Votre code de vérification SourcingPick",
   en: "Your SourcingPick verification code",
   zh: "您的 SourcingPick 验证码",
@@ -27,7 +27,7 @@ export async function sendOtpEmailToUser(userId: string): Promise<void> {
 
   await sendEmail({
     to: user.email,
-    subject: SUBJECT[user.locale],
+    subject: pick(SUBJECT, user.locale),
     react: OtpEmail({ code, locale: user.locale, expiresInMinutes: 10 }),
   });
 }

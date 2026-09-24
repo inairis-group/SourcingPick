@@ -7,7 +7,7 @@ import {
   NotificationType,
   Role,
   SupportTicketStatus,
-  ThreadContextType,
+  ThreadContextType
 } from "@prisma/client";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
@@ -17,7 +17,8 @@ import { generateUniqueReference } from "@/lib/sourcing/reference";
 import { sendEmail } from "@/lib/email/send";
 import NotificationEmail from "@/lib/email/templates/notification";
 import { appUrl } from "@/lib/urls";
-import type { AppLocale } from "@/lib/i18n/config";
+import type { } from "@/lib/i18n/config";
+import { pick, type Localized } from "@/lib/i18n/localized";
 
 /**
  * Copy for the one email that has to reach the visitor regardless of any
@@ -28,34 +29,31 @@ import type { AppLocale } from "@/lib/i18n/config";
  * That makes it a channel-change notice rather than a notification, which is
  * why it bypasses `emitNotification` and its digest settings.
  */
-const ESCALATION_EMAIL: Record<
-  AppLocale,
-  { subject: string; title: string; body: string; cta: string }
-> = {
+const ESCALATION_EMAIL: Localized<{ subject: string; title: string; body: string; cta: string }> = {
   fr: {
     subject: "Votre conversation a été transférée à notre support",
     title: "Nous reprenons votre demande",
     body: "Votre échange sur le chat a été transformé en demande de support. La suite se passe dans votre espace — c'est là que nous répondrons.",
-    cta: "Voir ma demande",
+    cta: "Voir ma demande"
   },
   en: {
     subject: "Your conversation moved to our support desk",
     title: "We've picked up your request",
     body: "Your chat has been turned into a support request. The conversation continues in your dashboard — that's where we'll reply.",
-    cta: "View my request",
+    cta: "View my request"
   },
   zh: {
     subject: "您的会话已转至客服工单",
     title: "我们已受理您的请求",
     body: "您的聊天已转为客服工单。后续沟通将在您的后台进行，我们会在那里回复您。",
-    cta: "查看我的工单",
+    cta: "查看我的工单"
   },
   ar: {
     subject: "تم تحويل محادثتك إلى فريق الدعم",
     title: "تسلّمنا طلبك",
     body: "تم تحويل محادثتك إلى طلب دعم. تكملة الحوار تجري في لوحة التحكم، وهناك سنرد عليك.",
-    cta: "عرض طلبي",
-  },
+    cta: "عرض طلبي"
+  }
 };
 
 /**
@@ -64,11 +62,11 @@ const ESCALATION_EMAIL: Record<
  * The thread stays open — we don't strand anyone — but leaving it silent
  * would have the visitor typing into a channel nobody is watching any more.
  */
-const HANDOFF_MESSAGE: Record<AppLocale, string> = {
+const HANDOFF_MESSAGE: Localized<string> = {
   fr: "Nous reprenons votre demande depuis votre espace client. Vous venez de recevoir un e-mail : la suite de nos échanges s'y trouvera.",
   en: "We're picking this up from your account. You've just been emailed — that's where the rest of this conversation will happen.",
   zh: "我们将在您的账户后台继续处理此请求。刚刚已向您发送邮件，后续沟通将在那里进行。",
-  ar: "سنتابع طلبك من حسابك. أرسلنا إليك بريدًا للتو، وهناك ستكمل هذه المحادثة.",
+  ar: "سنتابع طلبك من حسابك. أرسلنا إليك بريدًا للتو، وهناك ستكمل هذه المحادثة."
 };
 
 /**
@@ -119,8 +117,8 @@ export async function findGuestAccount(email: string) {
       lastName: true,
       role: true,
       organizationId: true,
-      organization: { select: { id: true, displayName: true, type: true } },
-    },
+      organization: { select: { id: true, displayName: true, type: true } }
+    }
   });
 }
 
@@ -129,13 +127,13 @@ export async function listDisputableOrders(conversationId: string) {
   await requireRole(Role.ADMIN);
   const convo = await prisma.guestConversation.findUnique({
     where: { id: conversationId },
-    select: { linkedUserId: true },
+    select: { linkedUserId: true }
   });
   if (!convo?.linkedUserId) return [];
 
   const user = await prisma.user.findUnique({
     where: { id: convo.linkedUserId },
-    select: { organizationId: true },
+    select: { organizationId: true }
   });
   if (!user) return [];
 
@@ -144,11 +142,11 @@ export async function listDisputableOrders(conversationId: string) {
       clientOrgId: user.organizationId,
       deletedAt: null,
       // An order already in dispute can't take a second one.
-      disputes: { none: { status: { not: "RESOLVED" } } },
+      disputes: { none: { status: { not: "RESOLVED" } } }
     },
     orderBy: { createdAt: "desc" },
     take: 20,
-    select: { id: true, reference: true, totalCents: true, status: true },
+    select: { id: true, reference: true, totalCents: true, status: true }
   });
 }
 
@@ -173,7 +171,7 @@ export async function assignGuestTeam(
 
   const updated = await prisma.guestConversation.updateMany({
     where: { id: conversationId },
-    data: { team },
+    data: { team }
   });
   if (updated.count === 0) return { ok: false, error: "not_found" };
 
@@ -182,7 +180,7 @@ export async function assignGuestTeam(
     action: "support.guest_chat_routed",
     targetType: "GuestConversation",
     targetId: conversationId,
-    payload: { team },
+    payload: { team }
   });
 
   revalidatePath("/[lang]/admin/support/chat", "page");
@@ -208,8 +206,8 @@ export async function setGuestConversationStatus(
     where: { id: conversationId },
     data: {
       status: raw,
-      closedAt: raw === GuestConversationStatus.CLOSED ? new Date() : null,
-    },
+      closedAt: raw === GuestConversationStatus.CLOSED ? new Date() : null
+    }
   });
   if (updated.count === 0) return { ok: false, error: "not_found" };
 
@@ -218,7 +216,7 @@ export async function setGuestConversationStatus(
     action: "support.guest_chat_status",
     targetType: "GuestConversation",
     targetId: conversationId,
-    payload: { status: raw },
+    payload: { status: raw }
   });
 
   revalidatePath("/[lang]/admin/support/chat", "page");
@@ -254,9 +252,9 @@ export async function escalateGuestToTicket(
       escalatedTicketId: true,
       messages: {
         orderBy: { createdAt: "asc" },
-        select: { body: true, fromTeam: true, createdAt: true },
-      },
-    },
+        select: { body: true, fromTeam: true, createdAt: true }
+      }
+    }
   });
   if (!convo) return { ok: false, error: "not_found" };
   if (convo.escalatedTicketId) return { ok: false, error: "already_escalated" };
@@ -264,7 +262,7 @@ export async function escalateGuestToTicket(
 
   const account = await prisma.user.findFirst({
     where: { email: { equals: convo.email, mode: "insensitive" }, deletedAt: null },
-    select: { id: true, organizationId: true },
+    select: { id: true, organizationId: true }
   });
   if (!account) return { ok: false, error: "no_account" };
 
@@ -286,23 +284,23 @@ export async function escalateGuestToTicket(
         status: SupportTicketStatus.OPEN,
         requesterUserId: account.id,
         requesterOrgId: account.organizationId,
-        openedAt: now,
+        openedAt: now
       },
-      select: { id: true },
+      select: { id: true }
     });
 
     const thread = await tx.thread.create({
       data: {
         contextType: ThreadContextType.SUPPORT,
         contextId: ticket.id,
-        lastMessageAt: now,
+        lastMessageAt: now
       },
-      select: { id: true },
+      select: { id: true }
     });
 
     const adminRows = await tx.user.findMany({
       where: { role: Role.ADMIN, deletedAt: null },
-      select: { id: true },
+      select: { id: true }
     });
     await tx.threadParticipant.createMany({
       data: [
@@ -310,26 +308,26 @@ export async function escalateGuestToTicket(
         ...adminRows.map((a) => ({
           threadId: thread.id,
           userId: a.id,
-          unreadCount: 1,
+          unreadCount: 1
         })),
       ],
-      skipDuplicates: true,
+      skipDuplicates: true
     });
 
     await tx.message.create({
       data: {
         threadId: thread.id,
         authorUserId: account.id,
-        body: renderTranscript(convo.messages, convo.name),
-      },
+        body: renderTranscript(convo.messages, convo.name)
+      }
     });
 
     await tx.guestMessage.create({
       data: {
         conversationId: convo.id,
-        body: HANDOFF_MESSAGE[convo.locale],
-        fromTeam: true,
-      },
+        body: pick(HANDOFF_MESSAGE, convo.locale),
+        fromTeam: true
+      }
     });
 
     await tx.guestConversation.update({
@@ -338,8 +336,8 @@ export async function escalateGuestToTicket(
         status: GuestConversationStatus.ESCALATED,
         escalatedTicketId: ticket.id,
         escalatedAt: now,
-        linkedUserId: account.id,
-      },
+        linkedUserId: account.id
+      }
     });
 
     return ticket.id;
@@ -350,7 +348,7 @@ export async function escalateGuestToTicket(
     action: "support.guest_chat_escalated_ticket",
     targetType: "GuestConversation",
     targetId: convo.id,
-    payload: { ticketId, reference, requesterUserId: account.id },
+    payload: { ticketId, reference, requesterUserId: account.id }
   });
 
   await emitNotificationToMany([account.id], {
@@ -358,16 +356,16 @@ export async function escalateGuestToTicket(
     vars: {
       systemKey: "support_ticket_created",
       reference,
-      title: subject.slice(0, 80),
+      title: subject.slice(0, 80)
     },
     contextType: "SupportTicket",
-    contextId: ticketId,
+    contextId: ticketId
   });
 
   // Tell them the channel changed, in the language they were browsing in.
   // Fire-and-forget: the ticket exists and is authoritative whether or not
   // SMTP is reachable.
-  const copy = ESCALATION_EMAIL[convo.locale];
+  const copy = pick(ESCALATION_EMAIL, convo.locale);
   void sendEmail({
     to: convo.email,
     subject: `${copy.subject} · ${reference}`,
@@ -376,8 +374,8 @@ export async function escalateGuestToTicket(
       description: copy.body,
       ctaLabel: copy.cta,
       ctaUrl: appUrl(`/${convo.locale}/support/${ticketId}`),
-      locale: convo.locale,
-    }),
+      locale: convo.locale
+    })
   }).catch(() => {
     /* the in-app notification above still lands */
   });
@@ -412,16 +410,16 @@ export async function escalateGuestToDispute(
       escalatedDisputeId: true,
       messages: {
         orderBy: { createdAt: "asc" },
-        select: { body: true, fromTeam: true, createdAt: true },
-      },
-    },
+        select: { body: true, fromTeam: true, createdAt: true }
+      }
+    }
   });
   if (!convo) return { ok: false, error: "not_found" };
   if (convo.escalatedDisputeId) return { ok: false, error: "already_escalated" };
 
   const account = await prisma.user.findFirst({
     where: { email: { equals: convo.email, mode: "insensitive" }, deletedAt: null },
-    select: { id: true, organizationId: true },
+    select: { id: true, organizationId: true }
   });
   if (!account) return { ok: false, error: "no_account" };
 
@@ -429,13 +427,13 @@ export async function escalateGuestToDispute(
   // would open a dispute on a stranger's order.
   const order = await prisma.order.findFirst({
     where: { id: orderId, clientOrgId: account.organizationId, deletedAt: null },
-    select: { id: true, reference: true },
+    select: { id: true, reference: true }
   });
   if (!order) return { ok: false, error: "order_not_found" };
 
   const openDispute = await prisma.dispute.findFirst({
     where: { orderId: order.id, status: { not: "RESOLVED" } },
-    select: { id: true },
+    select: { id: true }
   });
   if (openDispute) return { ok: false, error: "dispute_already_open" };
 
@@ -449,9 +447,9 @@ export async function escalateGuestToDispute(
         orderId: order.id,
         openedByUserId: account.id,
         buyerStatement: renderTranscript(convo.messages, convo.name),
-        openedAt: now,
+        openedAt: now
       },
-      select: { id: true },
+      select: { id: true }
     });
 
     await tx.guestConversation.update({
@@ -460,8 +458,8 @@ export async function escalateGuestToDispute(
         status: GuestConversationStatus.ESCALATED,
         escalatedDisputeId: dispute.id,
         escalatedAt: now,
-        linkedUserId: account.id,
-      },
+        linkedUserId: account.id
+      }
     });
 
     return dispute.id;
@@ -476,8 +474,8 @@ export async function escalateGuestToDispute(
       disputeId,
       reference,
       orderReference: order.reference,
-      openedByUserId: account.id,
-    },
+      openedByUserId: account.id
+    }
   });
 
   revalidatePath("/[lang]/admin/support/chat", "page");

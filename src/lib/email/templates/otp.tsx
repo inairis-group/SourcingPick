@@ -1,5 +1,6 @@
 import { Body, Container, Head, Heading, Html, Preview, Section, Text } from "react-email";
-import { appLocaleFor, directionFor, type AppLocale, type Locale } from "@/lib/i18n/config";
+import { directionFor, type Locale } from "@/lib/i18n/config";
+import { pick, type Localized } from "@/lib/i18n/localized";
 
 type OtpEmailProps = {
   code: string;
@@ -7,8 +8,7 @@ type OtpEmailProps = {
   expiresInMinutes: number;
 };
 
-const COPY: Record<
-  AppLocale,
+const COPY: Localized<
   {
     preview: string;
     heading: string;
@@ -25,7 +25,7 @@ const COPY: Record<
     expires: (m) => `Ce code expire dans ${m} minutes.`,
     ifNotYou:
       "Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail en toute sécurité.",
-    footer: "SourcingPick · le sourcing international, industrialisé.",
+    footer: "SourcingPick · le sourcing international, industrialisé."
   },
   en: {
     preview: "Your SourcingPick verification code",
@@ -33,7 +33,7 @@ const COPY: Record<
     intro: "Enter this 6-digit code to complete your sign-in.",
     expires: (m) => `This code expires in ${m} minutes.`,
     ifNotYou: "If you didn't request this, you can safely ignore this email.",
-    footer: "SourcingPick · international sourcing, industrialised.",
+    footer: "SourcingPick · international sourcing, industrialised."
   },
   zh: {
     preview: "您的 SourcingPick 验证码",
@@ -41,7 +41,7 @@ const COPY: Record<
     intro: "请输入此 6 位数验证码以完成登录。",
     expires: (m) => `此验证码将在 ${m} 分钟后失效。`,
     ifNotYou: "如果您没有发起此请求,可以安全地忽略此邮件。",
-    footer: "SourcingPick · 工业化的国际采购平台。",
+    footer: "SourcingPick · 工业化的国际采购平台。"
   },
   ar: {
     preview: "رمز التحقق الخاص بك في SourcingPick",
@@ -49,12 +49,12 @@ const COPY: Record<
     intro: "أدخل هذا الرمز المؤلف من 6 أرقام لإكمال تسجيل الدخول.",
     expires: (m) => `تنتهي صلاحية هذا الرمز خلال ${m} دقيقة.`,
     ifNotYou: "إذا لم تطلب هذا، يمكنك تجاهل هذه الرسالة بأمان.",
-    footer: "SourcingPick · التوريد الدولي، بمعايير صناعية.",
-  },
+    footer: "SourcingPick · التوريد الدولي، بمعايير صناعية."
+  }
 };
 
 export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailProps) {
-  const t = COPY[appLocaleFor(locale)];
+  const t = pick(COPY, locale);
 
   return (
     <Html lang={locale} dir={directionFor(locale)}>
@@ -66,7 +66,7 @@ export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailPro
           fontFamily: 'Geist, ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
           color: "#1e293b",
           margin: 0,
-          padding: "32px 16px",
+          padding: "32px 16px"
         }}
       >
         <Container
@@ -76,7 +76,7 @@ export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailPro
             backgroundColor: "#ffffff",
             border: "1px solid #e2e8f0",
             borderRadius: "8px",
-            padding: "32px",
+            padding: "32px"
           }}
         >
           <Section>
@@ -85,7 +85,7 @@ export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailPro
                 fontSize: "18px",
                 fontWeight: 600,
                 margin: "0 0 16px 0",
-                color: "#162456",
+                color: "#162456"
               }}
             >
               {t.heading}
@@ -99,7 +99,7 @@ export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailPro
                 backgroundColor: "#f1f5f9",
                 borderRadius: "5px",
                 padding: "20px",
-                margin: "0 0 24px 0",
+                margin: "0 0 24px 0"
               }}
             >
               <Text
@@ -109,7 +109,7 @@ export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailPro
                   letterSpacing: "0.4em",
                   fontFamily: '"Geist Mono", ui-monospace, monospace',
                   color: "#162456",
-                  margin: 0,
+                  margin: 0
                 }}
               >
                 {code}
@@ -120,7 +120,7 @@ export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailPro
                 fontSize: "13px",
                 lineHeight: "18px",
                 color: "#475569",
-                margin: "0 0 16px 0",
+                margin: "0 0 16px 0"
               }}
             >
               {t.expires(expiresInMinutes)}
@@ -130,7 +130,7 @@ export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailPro
                 fontSize: "13px",
                 lineHeight: "18px",
                 color: "#64748b",
-                margin: 0,
+                margin: 0
               }}
             >
               {t.ifNotYou}
@@ -142,7 +142,7 @@ export default function OtpEmail({ code, locale, expiresInMinutes }: OtpEmailPro
             fontSize: "11px",
             color: "#94a3b8",
             textAlign: "center",
-            margin: "24px 0 0 0",
+            margin: "24px 0 0 0"
           }}
         >
           {t.footer}

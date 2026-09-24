@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   appLocaleFor,
   appLocales,
@@ -21,27 +22,52 @@ test("the site speaks the canvas's twelve, French by default", () => {
   assert.equal(defaultLocale, "fr");
 });
 
-test("the product speaks the four it has a dictionary for", () => {
-  assert.deepEqual([...appLocales], ["fr", "en", "zh", "ar"]);
-  // Every product language must also be a site language, or a signed-in user
-  // could hold a locale the public site cannot render.
+test("the product speaks every language the site does", () => {
+  // These were four until the 2026-09 SaaS canvas. Nothing may now be
+  // downgraded on its way from a marketing page into the application, so the
+  // two sets are the same set.
+  assert.deepEqual([...appLocales], [...locales]);
   for (const l of appLocales) {
     assert.ok(isLocale(l), `${l} is an app locale but not a site locale`);
   }
 });
 
-test("appLocaleFor is total, and identity on the four", () => {
-  for (const l of appLocales) {
-    assert.equal(appLocaleFor(l), l);
-  }
+test("appLocaleFor is the identity, and stays total", () => {
   for (const l of locales) {
-    const mapped = appLocaleFor(l);
-    assert.ok(isAppLocale(mapped), `${l} mapped to a non-product locale`);
+    assert.equal(appLocaleFor(l), l, `${l} was not preserved`);
+    assert.ok(isAppLocale(appLocaleFor(l)), `${l} mapped to a non-product locale`);
   }
-  // The eight the product does not speak read the application in English.
-  assert.equal(appLocaleFor("pl"), "en");
-  assert.equal(appLocaleFor("tr"), "en");
-  assert.equal(appLocaleFor("pt"), "en");
+});
+
+test("the database enum holds every locale the site offers", () => {
+  // A visitor signing up from the Polish site writes `pl` into User.locale.
+  // If the schema and this list ever part company that write throws at
+  // runtime, on the one path where the account is already half-created.
+  const schema = readFileSync(
+    new URL("../prisma/schema.prisma", import.meta.url),
+    "utf8",
+  );
+  const block = /enum Locale \{([^}]*)\}/.exec(schema);
+  assert.ok(block, "no Locale enum in schema.prisma");
+  const values = block[1]
+    .split("\n")
+    .map((l) => l.replace(/\/\/.*/, "").trim())
+    .filter(Boolean);
+  assert.deepEqual(values, [...locales]);
+});
+
+test("every locale has a dictionary of its own", async () => {
+  // Not a loader that falls back — a file. The per-key merge in
+  // get-dictionary.ts is what makes a partial file safe, and it only runs for
+  // files that exist.
+  for (const l of locales) {
+    const path = new URL(`../src/lib/i18n/dictionaries/${l}.json`, import.meta.url);
+    const parsed: unknown = JSON.parse(readFileSync(path, "utf8"));
+    assert.ok(
+      parsed && typeof parsed === "object" && Object.keys(parsed).length > 0,
+      `${l}.json is missing or empty`,
+    );
+  }
 });
 
 test("isLocale accepts supported codes and rejects others", () => {

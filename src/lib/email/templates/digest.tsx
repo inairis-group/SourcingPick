@@ -1,5 +1,6 @@
 import { Body, Container, Head, Heading, Html, Preview, Section, Text } from "react-email";
-import { appLocaleFor, directionFor, type AppLocale, type Locale } from "@/lib/i18n/config";
+import { directionFor, type Locale } from "@/lib/i18n/config";
+import { pick, type Localized } from "@/lib/i18n/localized";
 
 type DigestItem = {
   title: string;
@@ -13,8 +14,7 @@ type DigestEmailProps = {
   locale: Locale;
 };
 
-const COPY: Record<
-  AppLocale,
+const COPY: Localized<
   {
     preview: (n: number) => string;
     heading: (n: number) => string;
@@ -27,26 +27,26 @@ const COPY: Record<
       `${n} ${n === 1 ? "nouvelle notification" : "nouvelles notifications"} SourcingPick`,
     heading: (n) => (n === 1 ? "1 nouvelle notification" : `${n} nouvelles notifications`),
     intro: "Voici un récapitulatif depuis hier.",
-    footer: "SourcingPick · le sourcing international, industrialisé.",
+    footer: "SourcingPick · le sourcing international, industrialisé."
   },
   en: {
     preview: (n) => `${n} new SourcingPick ${n === 1 ? "notification" : "notifications"}`,
     heading: (n) => (n === 1 ? "1 new notification" : `${n} new notifications`),
     intro: "Here's what happened since yesterday.",
-    footer: "SourcingPick · international sourcing, industrialised.",
+    footer: "SourcingPick · international sourcing, industrialised."
   },
   zh: {
     preview: (n) => `${n} 条 SourcingPick 新通知`,
     heading: (n) => `${n} 条新通知`,
     intro: "以下是自昨日以来的动态。",
-    footer: "SourcingPick · 工业化的国际采购平台。",
+    footer: "SourcingPick · 工业化的国际采购平台。"
   },
   ar: {
     preview: (n) => `${n} إشعار${n === 1 ? "" : "ات"} جديدة من SourcingPick`,
     heading: (n) => (n === 1 ? "إشعار جديد واحد" : `${n} إشعارات جديدة`),
     intro: "هذا ما حدث منذ الأمس.",
-    footer: "SourcingPick · التوريد الدولي، بمعايير صناعية.",
-  },
+    footer: "SourcingPick · التوريد الدولي، بمعايير صناعية."
+  }
 };
 
 /**
@@ -55,7 +55,7 @@ const COPY: Record<
  * order so the recipient can scan the day in one read.
  */
 export default function DigestEmail({ recipientName, items, locale }: DigestEmailProps) {
-  const t = COPY[appLocaleFor(locale)];
+  const t = pick(COPY, locale);
   const heading = t.heading(items.length);
   return (
     <Html lang={locale} dir={directionFor(locale)}>
@@ -67,7 +67,7 @@ export default function DigestEmail({ recipientName, items, locale }: DigestEmai
           fontFamily: 'Geist, ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
           color: "#1e293b",
           margin: 0,
-          padding: "32px 16px",
+          padding: "32px 16px"
         }}
       >
         <Container
@@ -77,7 +77,7 @@ export default function DigestEmail({ recipientName, items, locale }: DigestEmai
             backgroundColor: "#ffffff",
             border: "1px solid #e2e8f0",
             borderRadius: "8px",
-            padding: "32px",
+            padding: "32px"
           }}
         >
           <Heading
@@ -85,7 +85,7 @@ export default function DigestEmail({ recipientName, items, locale }: DigestEmai
               fontSize: "18px",
               fontWeight: 600,
               margin: "0 0 8px 0",
-              color: "#162456",
+              color: "#162456"
             }}
           >
             {heading}
@@ -95,7 +95,7 @@ export default function DigestEmail({ recipientName, items, locale }: DigestEmai
               fontSize: "13px",
               lineHeight: "18px",
               margin: "0 0 24px 0",
-              color: "#475569",
+              color: "#475569"
             }}
           >
             {recipientName}, {t.intro}
@@ -106,7 +106,7 @@ export default function DigestEmail({ recipientName, items, locale }: DigestEmai
                 key={i}
                 style={{
                   padding: "12px 0",
-                  borderTop: i === 0 ? "none" : "1px solid #e2e8f0",
+                  borderTop: i === 0 ? "none" : "1px solid #e2e8f0"
                 }}
               >
                 <Text
@@ -114,7 +114,7 @@ export default function DigestEmail({ recipientName, items, locale }: DigestEmai
                     fontSize: "14px",
                     fontWeight: 600,
                     margin: "0 0 4px 0",
-                    color: "#1e293b",
+                    color: "#1e293b"
                   }}
                 >
                   {item.title}
@@ -125,7 +125,7 @@ export default function DigestEmail({ recipientName, items, locale }: DigestEmai
                       fontSize: "13px",
                       lineHeight: "19px",
                       margin: "0 0 4px 0",
-                      color: "#475569",
+                      color: "#475569"
                     }}
                   >
                     {item.description}
@@ -135,7 +135,7 @@ export default function DigestEmail({ recipientName, items, locale }: DigestEmai
                   style={{
                     fontSize: "11px",
                     color: "#94a3b8",
-                    margin: 0,
+                    margin: 0
                   }}
                 >
                   {item.createdAtLabel}
@@ -149,7 +149,7 @@ export default function DigestEmail({ recipientName, items, locale }: DigestEmai
             fontSize: "11px",
             color: "#94a3b8",
             textAlign: "center",
-            margin: "24px 0 0 0",
+            margin: "24px 0 0 0"
           }}
         >
           {t.footer}

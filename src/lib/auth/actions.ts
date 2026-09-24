@@ -15,9 +15,12 @@ import { verifyEmailOtp } from "@/lib/auth/otp";
 import { sendOtpEmailToUser } from "@/lib/auth/otp-flow";
 import { sendEmail } from "@/lib/email/send";
 import PasswordResetEmail from "@/lib/email/templates/password-reset";
+import { AUTH_PENDING_COOKIE, AUTH_PENDING_TTL_S } from "./pending";
+import { pick, type Localized } from "@/lib/i18n/localized";
+import { passwordSchema } from "@/lib/auth/password-policy";
 
-const AUTH_PENDING_COOKIE = "sp_auth_pending";
-const AUTH_PENDING_TTL_S = 10 * 60;
+
+
 
 // =============================================================
 // Login + 2FA
@@ -26,6 +29,16 @@ const AUTH_PENDING_TTL_S = 10 * 60;
 const LoginSchema = z.object({
   email: z.email("Please enter a valid email."),
   password: z.string().min(1, "Password is required."),
+  /**
+   * The SaaS canvas's "Security" checkbox, checked by default.
+   *
+   * It can only ever ASK for a one-time code, never skip one: the branch
+   * below is `twoFactorEnabled || otp`, so an account that requires the
+   * second step still gets it with the box cleared. That asymmetry is the
+   * whole design — a control on an unauthenticated form must not be able to
+   * weaken the account it names, and this one cannot.
+   */
+  otp: z.coerce.boolean().default(false),
 });
 
 export type LoginActionState = {
@@ -34,9 +47,12 @@ export type LoginActionState = {
 
 /**
  * Login server action. Handles the 2FA branch:
- *  - 2FA NOT enabled → signs in via Auth.js Credentials, redirects to dashboard
- *  - 2FA enabled     → validates password, issues OTP, sets pending cookie,
+ *  - no code needed  → signs in via Auth.js Credentials, redirects to dashboard
+ *  - code needed     → validates password, issues OTP, sets pending cookie,
  *                      redirects to /verify-otp
+ *
+ * A code is needed when the account has 2FA switched on, or when this
+ * particular login asked for one via the form's "Security" checkbox.
  *
  * Generic error messages — never reveal whether email exists.
  */
@@ -47,6 +63,8 @@ export async function loginAction(
   const parsed = LoginSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
+    // An unchecked checkbox sends nothing at all, which coerces to false.
+    otp: formData.get("otp"),
   });
   if (!parsed.success) {
     return { error: "Please enter a valid email and password." };
@@ -74,7 +92,8 @@ export async function loginAction(
     return { error: "Invalid email or password." };
   }
 
-  if (user.twoFactorEnabled) {
+  // Either the account always requires a code, or this login asked for one.
+  if (user.twoFactorEnabled || parsed.data.otp) {
     // Validate password directly — don't go through Auth.js (that would
     // create a session without the 2FA gate).
     const ok = await verifyPassword(parsed.data.password, user.passwordHash);
@@ -115,12 +134,15 @@ export async function loginAction(
       action: "auth.otp_challenge_issued",
       targetType: "User",
       targetId: user.id,
+      // Which of the two reasons put this login behind a code, so the trail
+      // shows an account policy apart from a one-off request.
+      payload: { reason: user.twoFactorEnabled ? "account_2fa" : "requested" },
     });
 
     redirect(`/${locale}/verify-otp`);
   }
 
-  // No 2FA — sign in via the password Credentials provider
+  // No code needed — sign in via the password Credentials provider
   try {
     await signIn("credentials", {
       email: parsed.data.email,
@@ -317,12 +339,12 @@ export async function forgotPasswordAction(
       en: "Reset your SourcingPick password",
       zh: "重置您的 SourcingPick 密码",
       ar: "إعادة تعيين كلمة المرور الخاصة بك في SourcingPick",
-    } as const;
+    } satisfies Localized<string>;
 
     try {
       await sendEmail({
         to: parsed.data.email,
-        subject: subjectByLocale[user.locale],
+        subject: pick(subjectByLocale, user.locale),
         react: PasswordResetEmail({
           resetUrl,
           locale: user.locale,
@@ -357,10 +379,7 @@ export async function forgotPasswordAction(
 const ResetPasswordSchema = z
   .object({
     token: z.string().min(1, "Missing reset token."),
-    password: z
-      .string()
-      .min(12, "Password must be at least 12 characters.")
-      .max(200, "Password is too long."),
+    password: passwordSchema,
     confirm: z.string(),
   })
   .refine((d) => d.password === d.confirm, {

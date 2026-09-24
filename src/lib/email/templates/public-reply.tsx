@@ -1,5 +1,6 @@
 import { Body, Container, Head, Hr, Html, Preview, Section, Text } from "react-email";
-import { appLocaleFor, directionFor, type AppLocale, type Locale } from "@/lib/i18n/config";
+import { directionFor, type Locale } from "@/lib/i18n/config";
+import { pick, type Localized } from "@/lib/i18n/localized";
 
 /**
  * The team's answer to a public-chat visitor, delivered to their inbox.
@@ -19,8 +20,7 @@ import { appLocaleFor, directionFor, type AppLocale, type Locale } from "@/lib/i
  * and then discarding the answer is worse than not asking.
  */
 
-const COPY: Record<
-  AppLocale,
+const COPY: Localized<
   { heading: string; replyHint: string; replyByMail: string; footer: string }
 > = {
   fr: {
@@ -29,35 +29,35 @@ const COPY: Record<
       "Pour poursuivre, reprenez la conversation depuis le chat de notre site — nous y retrouverons tout l'historique.",
     replyByMail:
       "Répondez simplement à cet e-mail — votre réponse arrivera directement dans notre conversation.",
-    footer: "SourcingPick — sourcing en Chine",
+    footer: "SourcingPick — sourcing en Chine"
   },
   en: {
     heading: "A reply from the SourcingPick team",
     replyHint:
       "To continue, pick the conversation back up in the chat on our site — the whole history is waiting there.",
     replyByMail: "Just reply to this email — your answer lands straight back in our conversation.",
-    footer: "SourcingPick — sourcing from China",
+    footer: "SourcingPick — sourcing from China"
   },
   zh: {
     heading: "SourcingPick 团队回复",
     replyHint: "如需继续沟通，请回到我们网站的聊天窗口——完整记录都在那里。",
     replyByMail: "直接回复本邮件即可，您的回复会回到我们的会话中。",
-    footer: "SourcingPick — 中国采购",
+    footer: "SourcingPick — 中国采购"
   },
   ar: {
     heading: "رد من فريق SourcingPick",
     replyHint:
       "لمتابعة الحديث، عُد إلى نافذة الدردشة على موقعنا — سجلّ المحادثة كاملًا محفوظ هناك.",
     replyByMail: "يكفي أن ترد على هذا البريد — سيصل ردك مباشرة إلى محادثتنا.",
-    footer: "SourcingPick — التوريد من الصين",
-  },
+    footer: "SourcingPick — التوريد من الصين"
+  }
 };
 
 export default function PublicReplyEmail({
   visitorName,
   body,
   locale,
-  canReplyByEmail = false,
+  canReplyByEmail = false
 }: {
   visitorName: string;
   body: string;
@@ -69,7 +69,7 @@ export default function PublicReplyEmail({
    */
   canReplyByEmail?: boolean;
 }) {
-  const t = COPY[appLocaleFor(locale)];
+  const t = pick(COPY, locale);
   const dir = directionFor(locale);
 
   return (
@@ -81,7 +81,7 @@ export default function PublicReplyEmail({
           backgroundColor: "#f6f7f9",
           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
           margin: 0,
-          padding: "24px 0",
+          padding: "24px 0"
         }}
       >
         <Container
@@ -89,7 +89,7 @@ export default function PublicReplyEmail({
             backgroundColor: "#ffffff",
             borderRadius: "8px",
             maxWidth: "560px",
-            padding: "32px",
+            padding: "32px"
           }}
         >
           <Text
@@ -98,7 +98,7 @@ export default function PublicReplyEmail({
               fontSize: "12px",
               letterSpacing: "0.04em",
               margin: "0 0 8px",
-              textTransform: "uppercase",
+              textTransform: "uppercase"
             }}
           >
             {t.heading}
@@ -109,7 +109,7 @@ export default function PublicReplyEmail({
               color: "#111827",
               fontSize: "16px",
               fontWeight: 600,
-              margin: "0 0 16px",
+              margin: "0 0 16px"
             }}
           >
             {visitorName}
@@ -119,7 +119,7 @@ export default function PublicReplyEmail({
             {/* The operator writes plain text with blank lines between
                 paragraphs; render each as its own block rather than collapsing
                 the whole reply into one wall. */}
-            {body.split(/\n{2,}/).map((para, i) => (
+            {body.split(/\n{2}/).map((para, i) => (
               <Text
                 key={i}
                 style={{
@@ -127,7 +127,7 @@ export default function PublicReplyEmail({
                   fontSize: "14px",
                   lineHeight: "22px",
                   margin: "0 0 12px",
-                  whiteSpace: "pre-wrap",
+                  whiteSpace: "pre-wrap"
                 }}
               >
                 {para}

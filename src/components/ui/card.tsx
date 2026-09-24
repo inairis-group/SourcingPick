@@ -3,9 +3,16 @@ import { cn } from "@/lib/utils";
 
 type Variant = "default" | "raised" | "outline";
 
+/**
+ * The canvas's section card: a 22px corner, a single #DCE3F2 hairline and a
+ * very soft navy lift. It draws that card identically on every board, so
+ * `default` and `raised` are the same thing here — the shadow is part of the
+ * card, not an emphasis on top of it. `outline` keeps its job of marking a
+ * region without claiming to be a surface.
+ */
 const variantClasses: Record<Variant, string> = {
-  default: "bg-surface border border-line",
-  raised: "bg-surface border border-line shadow-sm",
+  default: "bg-surface border border-line shadow-card",
+  raised: "bg-surface border border-line shadow-card",
   outline: "bg-transparent border border-line",
 };
 
@@ -14,7 +21,7 @@ type Padding = "none" | "sm" | "md" | "lg";
 const paddingClasses: Record<Padding, string> = {
   none: "",
   sm: "p-4",
-  md: "p-6",
+  md: "p-6", // 24px — the canvas's card padding
   lg: "p-8",
 };
 
@@ -34,7 +41,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "rounded-lg",
+        "rounded-card",
         variantClasses[variant],
         paddingClasses[padding],
         className,
@@ -56,7 +63,15 @@ export function CardHeader({ className, children, ...rest }: HTMLAttributes<HTML
 
 export function CardTitle({ className, children, ...rest }: HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 className={cn("text-lg font-semibold text-headline", className)} {...rest}>
+    <h3
+      className={cn(
+        // Unbounded 18px — the canvas's card heading, same face as the page
+        // title one size down.
+        "font-display text-lg leading-snug font-semibold tracking-tight text-headline",
+        className,
+      )}
+      {...rest}
+    >
       {children}
     </h3>
   );

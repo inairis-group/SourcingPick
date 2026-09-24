@@ -1,5 +1,6 @@
 import { Body, Button, Container, Head, Heading, Html, Preview, Section, Text } from "react-email";
-import { appLocaleFor, directionFor, type AppLocale, type Locale } from "@/lib/i18n/config";
+import { directionFor, type Locale } from "@/lib/i18n/config";
+import { pick, type Localized } from "@/lib/i18n/localized";
 
 type Props = {
   resetUrl: string;
@@ -7,8 +8,7 @@ type Props = {
   expiresInMinutes: number;
 };
 
-const COPY: Record<
-  AppLocale,
+const COPY: Localized<
   {
     preview: string;
     heading: string;
@@ -26,7 +26,7 @@ const COPY: Record<
     cta: "Choisir un nouveau mot de passe",
     expires: (m) => `Ce lien expire dans ${m} minutes.`,
     ifNotYou: "Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.",
-    footer: "SourcingPick · le sourcing international, industrialisé.",
+    footer: "SourcingPick · le sourcing international, industrialisé."
   },
   en: {
     preview: "Reset your SourcingPick password",
@@ -35,7 +35,7 @@ const COPY: Record<
     cta: "Choose a new password",
     expires: (m) => `This link expires in ${m} minutes.`,
     ifNotYou: "If you didn't request this, you can safely ignore this email.",
-    footer: "SourcingPick · international sourcing, industrialised.",
+    footer: "SourcingPick · international sourcing, industrialised."
   },
   zh: {
     preview: "重置您的 SourcingPick 密码",
@@ -44,7 +44,7 @@ const COPY: Record<
     cta: "选择新密码",
     expires: (m) => `此链接将在 ${m} 分钟后失效。`,
     ifNotYou: "如果您没有发起此请求,可以安全地忽略此邮件。",
-    footer: "SourcingPick · 工业化的国际采购平台。",
+    footer: "SourcingPick · 工业化的国际采购平台。"
   },
   ar: {
     preview: "إعادة تعيين كلمة المرور الخاصة بك في SourcingPick",
@@ -53,12 +53,12 @@ const COPY: Record<
     cta: "اختيار كلمة مرور جديدة",
     expires: (m) => `تنتهي صلاحية هذا الرابط خلال ${m} دقيقة.`,
     ifNotYou: "إذا لم تطلب هذا، يمكنك تجاهل هذه الرسالة بأمان.",
-    footer: "SourcingPick · التوريد الدولي، بمعايير صناعية.",
-  },
+    footer: "SourcingPick · التوريد الدولي، بمعايير صناعية."
+  }
 };
 
 export default function PasswordResetEmail({ resetUrl, locale, expiresInMinutes }: Props) {
-  const t = COPY[appLocaleFor(locale)];
+  const t = pick(COPY, locale);
 
   return (
     <Html lang={locale} dir={directionFor(locale)}>
@@ -70,7 +70,7 @@ export default function PasswordResetEmail({ resetUrl, locale, expiresInMinutes 
           fontFamily: 'Geist, ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif',
           color: "#1e293b",
           margin: 0,
-          padding: "32px 16px",
+          padding: "32px 16px"
         }}
       >
         <Container
@@ -80,7 +80,7 @@ export default function PasswordResetEmail({ resetUrl, locale, expiresInMinutes 
             backgroundColor: "#ffffff",
             border: "1px solid #e2e8f0",
             borderRadius: "8px",
-            padding: "32px",
+            padding: "32px"
           }}
         >
           <Section>
@@ -89,7 +89,7 @@ export default function PasswordResetEmail({ resetUrl, locale, expiresInMinutes 
                 fontSize: "18px",
                 fontWeight: 600,
                 margin: "0 0 16px 0",
-                color: "#162456",
+                color: "#162456"
               }}
             >
               {t.heading}
@@ -108,7 +108,7 @@ export default function PasswordResetEmail({ resetUrl, locale, expiresInMinutes 
                 textDecoration: "none",
                 padding: "12px 20px",
                 borderRadius: "5px",
-                margin: "0 0 24px 0",
+                margin: "0 0 24px 0"
               }}
             >
               {t.cta}
@@ -118,7 +118,7 @@ export default function PasswordResetEmail({ resetUrl, locale, expiresInMinutes 
                 fontSize: "13px",
                 lineHeight: "18px",
                 color: "#475569",
-                margin: "0 0 16px 0",
+                margin: "0 0 16px 0"
               }}
             >
               {t.expires(expiresInMinutes)}
@@ -133,7 +133,7 @@ export default function PasswordResetEmail({ resetUrl, locale, expiresInMinutes 
             fontSize: "11px",
             color: "#94a3b8",
             textAlign: "center",
-            margin: "24px 0 0 0",
+            margin: "24px 0 0 0"
           }}
         >
           {t.footer}

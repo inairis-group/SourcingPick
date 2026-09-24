@@ -1,0 +1,170 @@
+{
+  "auth": {
+    "forgot": {
+      "title": "Password dimenticata",
+      "description": "Inserisci il tuo indirizzo email. Se esiste un account, riceverai un link per reimpostarla.",
+      "submit": "Invia il link",
+      "sentTitle": "Link inviato",
+      "sentBody": "Se esiste un account SourcingPick per quell’indirizzo, è appena partito un messaggio. Controlla la posta in arrivo (e lo spam).",
+      "backToLogin": "Torna all’accesso"
+    },
+    "reset": {
+      "title": "Nuova password",
+      "description": "Scegli una nuova password per il tuo account.",
+      "newPasswordLabel": "Nuova password",
+      "confirmPasswordLabel": "Conferma password",
+      "passwordHint": "Almeno 8 caratteri, di cui un numero.",
+      "submit": "Reimposta la password",
+      "missingTokenTitle": "Link non valido",
+      "missingTokenBody": "Questo link è incompleto. Richiedine uno nuovo dalla pagina password dimenticata.",
+      "requestNew": "Richiedi un nuovo link"
+    },
+    "otp": {
+      "title": "Verifica in due passaggi",
+      "description": "Inserisci il codice a 6 cifre che ti abbiamo inviato via email.",
+      "codeLabel": "Codice di verifica",
+      "resend": "Invia di nuovo il codice",
+      "resentNotice": "È stato inviato un nuovo codice.",
+      "verify": "Verifica"
+    },
+    "login": {
+      "title": "Accedi alla tua area",
+      "subtitle": "Segui le tue richieste, i tuoi preventivi e i tuoi container.",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••••",
+      "security": "Sicurezza",
+      "securityHint": "Invia un codice monouso a ogni accesso.",
+      "forgotPassword": "Password dimenticata?",
+      "submit": "Accedi",
+      "noAccount": "Non hai ancora un account?",
+      "signupLink": "Crea un account",
+      "divider": "o",
+      "google": "Continua con Google"
+    },
+    "signup": {
+      "title": "Crea il tuo account",
+      "subtitle": "Due minuti, e puoi inviare la tua prima richiesta.",
+      "youAre": "Sei",
+      "business": "Azienda",
+      "individual": "Privato",
+      "fullNameLabel": "Nome e cognome",
+      "companyLabel": "Azienda",
+      "vatOrRegistrationLabel": "Partita IVA o numero di registrazione",
+      "deliveryCountryLabel": "Paese di consegna",
+      "businessEmailLabel": "Email aziendale",
+      "passwordLabel": "Password",
+      "passwordHint": "Almeno 8 caratteri, di cui un numero.",
+      "submit": "Crea il mio account",
+      "hasAccount": "Hai già un account?",
+      "loginLink": "Accedi"
+    },
+    "verify": {
+      "title": "Verifica la tua email",
+      "body": "Abbiamo inviato un codice di sei cifre a {email}. È valido per 15 minuti.",
+      "codeLabel": "Codice di verifica",
+      "submit": "Verifica",
+      "resend": "Invia di nuovo il codice",
+      "spam": "Ricorda di controllare la cartella spam."
+    },
+    "panel": {
+      "headline": "Ogni fase lascia una traccia.",
+      "body": "Foto di ricevimento, controllo, carico e documenti: tutto resta nella vostra area.",
+      "note": "L’app mobile è in costruzione. L’area web fa tutto."
+    }
+  },
+  "common": {
+    "actions": {
+      "continue": "Continua",
+      "cancel": "Annulla",
+      "save": "Salva",
+      "delete": "Elimina",
+      "edit": "Modifica",
+      "back": "Indietro",
+      "next": "Avanti",
+      "submit": "Invia",
+      "close": "Chiudi",
+      "search": "Cerca",
+      "filter": "Filtra",
+      "export": "Esporta",
+      "loading": "Caricamento…"
+    },
+    "status": {
+      "pending": "In attesa",
+      "active": "Attivo",
+      "verified": "Verificato",
+      "flagged": "Segnalato",
+      "rejected": "Rifiutato",
+      "completed": "Completato",
+      "cancelled": "Annullato"
+    },
+    "roles": {
+      "client": "Cliente",
+      "factory": "Fabbrica",
+      "agent": "Agente",
+      "admin": "Amministratore"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Pagina non trovata",
+      "description": "La pagina che cerchi non esiste o è stata spostata.",
+      "back": "Torna alla home"
+    },
+    "500": {
+      "title": "Qualcosa è andato storto",
+      "description": "Si è rotto qualcosa da parte nostra. Riprova.",
+      "retry": "Riprova"
+    },
+    "notFound": {
+      "title": "Abbiamo perso quella pagina.",
+      "body": "L’indirizzo che hai provato non esiste o è stato spostato. Rimettiamoti sulla strada giusta.",
+      "home": "Torna alla home",
+      "browse": "Esplora il marketplace"
+    },
+    "systemError": {
+      "code": "Errore di sistema",
+      "title": "Si è rotto qualcosa da parte nostra.",
+      "body": "Non siamo riusciti a mostrare questa pagina. Il team è stato avvisato. Riprova tra un attimo.",
+      "retry": "Riprova"
+    }
+  },
+  "theme": {
+    "toggleLabel": "Cambia tema",
+    "light": "Chiaro",
+    "dark": "Scuro",
+    "system": "Sistema"
+  },
+  "locale": {
+    "switch": "Lingua"
+  },
+  "nav": {
+    "dashboard": "Cruscotto",
+    "requests": "Richieste",
+    "quotations": "Preventivi",
+    "orders": "Ordini",
+    "billing": "Fatturazione",
+    "invoices": "Fatture",
+    "payments": "Pagamenti",
+    "users": "Utenti",
+    "agents": "Agenti",
+    "documents": "Documenti",
+    "emails": "Email",
+    "settings": "Impostazioni",
+    "log": "Registro",
+    "help": "Aiuto",
+    "messages": "Messaggi",
+    "logout": "Esci",
+    "role": {
+      "client": "Cliente",
+      "agent": "Agente",
+      "admin": "Amministrazione"
+    },
+    "topbar": {
+      "search": "Cerca un ordine, un cliente, un riferimento…",
+      "notifications": "Notifiche",
+      "openMenu": "Apri il menu",
+      "closeMenu": "Chiudi il menu"
+    }
+  }
+}

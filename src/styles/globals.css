@@ -94,6 +94,18 @@
    * brand-500 is too dark to clear 4.5:1. */
   --color-brand-onnavy: #8db2ff;
 
+  /* The SaaS canvas (2026-09) adds six colours the marketing boards never
+   * needed: the navy sidebar's two text tints, the status violet, and the
+   * red/green/info trio the dashboards signal with. Same source of truth,
+   * more surface area. */
+  --color-navy-nav: #b8c4e6; /* sidebar link, resting */
+  --color-navy-navicon: #8e9bc4; /* sidebar icon, resting */
+  --color-navy-panel: #c6d2ee; /* body copy on the navy ground */
+  --color-violet: #7c5cff; /* quotation states */
+  --color-alert: #e02424; /* unread dot, destructive */
+  --color-go: #0e9f6e; /* passed, received, cleared */
+  --color-info-tint: #eaf1ff; /* the blue callout ground */
+
   /* Status pairs, as drawn. Each is a soft fill + a text/edge tone that
    * actually passes contrast on it — the design's own pairings. */
   --color-amber-soft: #fff1cc;
@@ -119,8 +131,11 @@
     var(--font-onest), "Segoe UI", system-ui, -apple-system, "Noto Sans SC", "Noto Sans Arabic",
     sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
-  /* Display face — marketing headlines and the oversized wordmarks only.
-   * App UI never uses this. */
+  /* Display face.
+   *
+   * SUPERSEDES the "marketing headlines only" rule: the 2026-09 SaaS canvas
+   * sets every in-app h1 in Unbounded 30px and every card h2 in Unbounded
+   * 18px. One display face across the product, which is the point. */
   --font-display: var(--font-unbounded), var(--font-onest), "Segoe UI", system-ui, sans-serif;
 
   --text-xs: 0.6875rem; /* 11px */
@@ -156,19 +171,25 @@
   --radius-md: 5px;
   --radius-lg: 8px;
   --radius-xl: 12px;
-  /* 2xl/3xl are MARKETING-ONLY. App UI (admin tables, agent queues,
-   * dashboards) stays capped at --radius-xl. A 12px corner on a
-   * full-bleed 1400px panel reads as a rendering bug, which is the only
-   * reason these exist. See docs/landing-v2.md §5.1. */
+  /* SUPERSEDES the "2xl/3xl are MARKETING-ONLY" rule of docs/landing-v2.md
+   * §5.1. The SaaS canvas draws app cards at 22px and app callouts at 14px,
+   * so the app is no longer capped at --radius-xl. The two named radii below
+   * are the canvas's own, given names because they recur on every board. */
   --radius-2xl: 20px;
   --radius-3xl: 28px;
   --radius-full: 9999px;
+  --radius-card: 22px; /* section cards, every dashboard board */
+  --radius-callout: 14px; /* inline notes, toolbars, code boxes */
 
   /* ---------- Shadows: restrained, neutral-tinted ---------- */
   --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
   --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
   --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.1), 0 2px 4px rgba(15, 23, 42, 0.04);
   --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.14), 0 4px 8px rgba(15, 23, 42, 0.05);
+  /* The canvas's card lift: a wide, very soft navy drop that reads as depth
+   * rather than as a border. Drawn identically on all 50 boards. */
+  --shadow-card: 0 20px 44px -36px rgba(14, 26, 61, 0.45);
+  --shadow-sheet: 0 30px 60px -40px rgba(14, 26, 61, 0.55);
 
   /* ---------- Motion ---------- */
   --duration-fast: 120ms;
@@ -266,35 +287,42 @@
  * app/[lang]/(marketing)/layout.tsx. */
 :root,
 .theme-light {
+  /* The light palette IS the canvas palette. Every value below is read off
+   * the artboards rather than chosen: the boards use exactly six greys and
+   * one blue, so the semantic layer points at those and nothing drifts.
+   * Dark (further down) is untouched — the canvas draws light only. */
+
   /* Surfaces */
-  --color-page: var(--color-neutral-0);
-  --color-surface: var(--color-neutral-0);
-  --color-subtle: var(--color-neutral-50);
-  --color-sunken: var(--color-neutral-100);
-  --color-overlay: rgba(15, 23, 42, 0.4);
+  --color-page: var(--color-navy-25); /* #F5F7FC, the app ground */
+  --color-surface: var(--color-neutral-0); /* cards sit white ON that ground */
+  --color-subtle: var(--color-navy-25);
+  --color-sunken: var(--color-navy-50);
+  --color-overlay: rgba(14, 26, 61, 0.4);
 
   /* Text */
-  --color-fg: var(--color-neutral-800);
-  --color-muted: var(--color-neutral-600);
-  --color-faint: var(--color-neutral-500);
-  --color-disabled: var(--color-neutral-400);
+  --color-fg: var(--color-navy-900); /* #0E1A3D */
+  --color-muted: var(--color-navy-600); /* #4A5578 */
+  --color-faint: var(--color-navy-600);
+  --color-disabled: var(--color-navy-400);
   --color-inverse: var(--color-neutral-0);
-  --color-headline: var(--color-ink);
-  --color-link: var(--color-brand-600);
-  --color-link-hover: var(--color-brand-700);
+  --color-headline: var(--color-navy-900);
+  --color-link: var(--color-brand-500); /* the boards link in #155DFC itself */
+  --color-link-hover: #0f47c9; /* the boards' own a:hover */
 
-  /* Borders */
-  --color-line: var(--color-neutral-200);
-  --color-line-strong: var(--color-neutral-300);
-  --color-line-subtle: var(--color-neutral-100);
+  /* Borders. The canvas has ONE hairline, #DCE3F2, drawn at 1px on chrome
+   * and 1.5px on controls. `line` and `line-strong` therefore resolve to the
+   * same colour: the emphasis is carried by width, not by tint. */
+  --color-line: var(--color-navy-100);
+  --color-line-strong: var(--color-navy-100);
+  --color-line-subtle: var(--color-navy-50);
   --color-focus: var(--color-brand-500);
 
   /* Actions */
-  --color-action: var(--color-brand-500);
-  --color-action-hover: var(--color-brand-600);
+  --color-action: var(--color-brand-500); /* #155DFC */
+  --color-action-hover: #0f47c9;
   --color-action-active: var(--color-brand-700);
   --color-on-action: var(--color-neutral-0);
-  --color-ghost-hover: var(--color-brand-50);
+  --color-ghost-hover: var(--color-info-tint); /* #EAF1FF */
 }
 
 /* =============================================================

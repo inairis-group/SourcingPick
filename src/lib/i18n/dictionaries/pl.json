@@ -1,0 +1,170 @@
+{
+  "auth": {
+    "forgot": {
+      "title": "Nie pamiętam hasła",
+      "description": "Podaj swój adres e-mail. Jeśli konto istnieje, otrzymasz link do zresetowania hasła.",
+      "submit": "Wyślij link",
+      "sentTitle": "Link wysłany",
+      "sentBody": "Jeśli istnieje konto SourcingPick dla tego adresu, wiadomość właśnie została wysłana. Sprawdź skrzynkę odbiorczą (i folder spam).",
+      "backToLogin": "Wróć do logowania"
+    },
+    "reset": {
+      "title": "Nowe hasło",
+      "description": "Wybierz nowe hasło do swojego konta.",
+      "newPasswordLabel": "Nowe hasło",
+      "confirmPasswordLabel": "Potwierdź hasło",
+      "passwordHint": "Co najmniej 8 znaków, w tym jedna cyfra.",
+      "submit": "Zresetuj hasło",
+      "missingTokenTitle": "Nieprawidłowy link",
+      "missingTokenBody": "Ten link jest niekompletny. Poproś o nowy na stronie odzyskiwania hasła.",
+      "requestNew": "Poproś o nowy link"
+    },
+    "otp": {
+      "title": "Weryfikacja dwuetapowa",
+      "description": "Wpisz 6-cyfrowy kod, który wysłaliśmy na Twój e-mail.",
+      "codeLabel": "Kod weryfikacyjny",
+      "resend": "Wyślij kod ponownie",
+      "resentNotice": "Nowy kod został wysłany.",
+      "verify": "Zweryfikuj"
+    },
+    "login": {
+      "title": "Zaloguj się do swojego panelu",
+      "subtitle": "Śledź swoje zapytania, wyceny i kontenery.",
+      "emailLabel": "E-mail",
+      "passwordLabel": "Hasło",
+      "passwordPlaceholder": "••••••••••",
+      "security": "Bezpieczeństwo",
+      "securityHint": "Wysyłaj kod jednorazowy przy każdym logowaniu.",
+      "forgotPassword": "Nie pamiętasz hasła?",
+      "submit": "Zaloguj się",
+      "noAccount": "Nie masz jeszcze konta?",
+      "signupLink": "Załóż konto",
+      "divider": "lub",
+      "google": "Kontynuuj z Google"
+    },
+    "signup": {
+      "title": "Załóż swoje konto",
+      "subtitle": "Dwie minuty i możesz wysłać pierwsze zapytanie.",
+      "youAre": "Jesteś",
+      "business": "Firma",
+      "individual": "Osoba prywatna",
+      "fullNameLabel": "Imię i nazwisko",
+      "companyLabel": "Firma",
+      "vatOrRegistrationLabel": "NIP lub numer rejestrowy",
+      "deliveryCountryLabel": "Kraj dostawy",
+      "businessEmailLabel": "Służbowy e-mail",
+      "passwordLabel": "Hasło",
+      "passwordHint": "Co najmniej 8 znaków, w tym jedna cyfra.",
+      "submit": "Załóż konto",
+      "hasAccount": "Masz już konto?",
+      "loginLink": "Zaloguj się"
+    },
+    "verify": {
+      "title": "Zweryfikuj swój e-mail",
+      "body": "Wysłaliśmy sześciocyfrowy kod na adres {email}. Jest ważny przez 15 minut.",
+      "codeLabel": "Kod weryfikacyjny",
+      "submit": "Zweryfikuj",
+      "resend": "Wyślij kod ponownie",
+      "spam": "Pamiętaj, aby sprawdzić folder spam."
+    },
+    "panel": {
+      "headline": "Każdy etap zostawia ślad.",
+      "body": "Zdjęcia z przyjęcia, kontrola, załadunek i dokumenty — wszystko zostaje w Państwa panelu.",
+      "note": "Aplikacja mobilna jest w budowie. Panel webowy robi wszystko."
+    }
+  },
+  "common": {
+    "actions": {
+      "continue": "Dalej",
+      "cancel": "Anuluj",
+      "save": "Zapisz",
+      "delete": "Usuń",
+      "edit": "Edytuj",
+      "back": "Wstecz",
+      "next": "Następny",
+      "submit": "Wyślij",
+      "close": "Zamknij",
+      "search": "Szukaj",
+      "filter": "Filtruj",
+      "export": "Eksportuj",
+      "loading": "Wczytywanie…"
+    },
+    "status": {
+      "pending": "Oczekuje",
+      "active": "Aktywne",
+      "verified": "Zweryfikowane",
+      "flagged": "Oznaczone",
+      "rejected": "Odrzucone",
+      "completed": "Zakończone",
+      "cancelled": "Anulowane"
+    },
+    "roles": {
+      "client": "Klient",
+      "factory": "Fabryka",
+      "agent": "Agent",
+      "admin": "Administrator"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Nie znaleziono strony",
+      "description": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
+      "back": "Wróć na stronę główną"
+    },
+    "500": {
+      "title": "Coś poszło nie tak",
+      "description": "Coś zawiodło po naszej stronie. Spróbuj ponownie.",
+      "retry": "Spróbuj ponownie"
+    },
+    "notFound": {
+      "title": "Zgubiliśmy tę stronę.",
+      "body": "Adres, który otworzyłeś, nie istnieje lub został przeniesiony. Wrócimy na właściwą drogę.",
+      "home": "Wróć na stronę główną",
+      "browse": "Przeglądaj marketplace"
+    },
+    "systemError": {
+      "code": "Błąd systemu",
+      "title": "Coś zawiodło po naszej stronie.",
+      "body": "Nie udało się wyświetlić tej strony. Zespół został powiadomiony. Spróbuj za chwilę.",
+      "retry": "Spróbuj ponownie"
+    }
+  },
+  "theme": {
+    "toggleLabel": "Zmień motyw",
+    "light": "Jasny",
+    "dark": "Ciemny",
+    "system": "Systemowy"
+  },
+  "locale": {
+    "switch": "Język"
+  },
+  "nav": {
+    "dashboard": "Pulpit",
+    "requests": "Zapytania",
+    "quotations": "Wyceny",
+    "orders": "Zamówienia",
+    "billing": "Rozliczenia",
+    "invoices": "Faktury",
+    "payments": "Płatności",
+    "users": "Użytkownicy",
+    "agents": "Agenci",
+    "documents": "Dokumenty",
+    "emails": "E-maile",
+    "settings": "Ustawienia",
+    "log": "Dziennik",
+    "help": "Pomoc",
+    "messages": "Wiadomości",
+    "logout": "Wyloguj się",
+    "role": {
+      "client": "Klient",
+      "agent": "Agent",
+      "admin": "Administracja"
+    },
+    "topbar": {
+      "search": "Szukaj zamówienia, klienta, numeru…",
+      "notifications": "Powiadomienia",
+      "openMenu": "Otwórz menu",
+      "closeMenu": "Zamknij menu"
+    }
+  }
+}

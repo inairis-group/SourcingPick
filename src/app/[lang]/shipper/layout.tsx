@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Role } from "@prisma/client";
-import { RoleShell } from "@/components/layout/role-shell";
+import { AppShell } from "@/components/layout/app-shell";
 import { requireRole } from "@/lib/permissions/guards";
 import { isLocale } from "@/lib/i18n/config";
 
@@ -17,8 +17,8 @@ export default async function ShipperLayout({ children, params }: LayoutProps<"/
   await requireRole(Role.SHIPPER);
 
   return (
-    <RoleShell locale={lang} role={Role.SHIPPER}>
+    <AppShell locale={lang} role={Role.SHIPPER}>
       {children}
-    </RoleShell>
+    </AppShell>
   );
 }

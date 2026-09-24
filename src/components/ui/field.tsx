@@ -28,7 +28,7 @@ export function Field({ label, hint, error, required, className, children }: Fie
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
 
   return (
-    <div className={cn("flex flex-col gap-1.5", className)}>
+    <div className={cn("flex flex-col gap-[7px]", className)}>
       {label && (
         <Label htmlFor={id} required={required}>
           {label}
@@ -40,7 +40,7 @@ export function Field({ label, hint, error, required, className, children }: Fie
         "aria-invalid": error ? true : undefined,
       })}
       {hint && !error && (
-        <p id={hintId} className="text-sm text-muted">
+        <p id={hintId} className="text-[12.5px] leading-snug text-muted">
           {hint}
         </p>
       )}

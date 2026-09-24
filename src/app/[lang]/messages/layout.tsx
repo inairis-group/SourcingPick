@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { RoleShell } from "@/components/layout/role-shell";
+import { AppShell } from "@/components/layout/app-shell";
 import { requireAuth } from "@/lib/permissions/guards";
 import { isLocale } from "@/lib/i18n/config";
 
@@ -19,8 +19,8 @@ export default async function MessagesLayout({
   const user = await requireAuth();
 
   return (
-    <RoleShell locale={lang} role={user.role}>
+    <AppShell locale={lang} role={user.role}>
       {children}
-    </RoleShell>
+    </AppShell>
   );
 }
