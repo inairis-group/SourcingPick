@@ -166,5 +166,78 @@
       "openMenu": "Menu openen",
       "closeMenu": "Menu sluiten"
     }
+  },
+  "lifecycle": {
+    "state": {
+      "REQUEST_RECEIVED": "Aanvraag ontvangen",
+      "AGENT_ASSIGNED": "Agent toegewezen",
+      "QUOTE_SENT": "Offerte verstuurd",
+      "PAYMENT_PENDING": "Betaling in afwachting",
+      "PAYMENT_RECEIVED": "Betaling ontvangen",
+      "PREPARATION_COMPLETE": "Voorbereiding voltooid",
+      "SHIPPED": "Verzonden",
+      "IN_TRANSIT": "Onderweg",
+      "COMPLETED": "Afgerond",
+      "CANCELLED": "Geannuleerd"
+    },
+    "stage": {
+      "RECEIVED": "Ontvangen",
+      "QUALIFYING": "Kwalificatie loopt",
+      "INFO_MISSING": "Ontbrekende gegevens",
+      "AGENT_ASSIGNED": "Agent toegewezen",
+      "SOURCING": "Sourcing loopt",
+      "SUPPLIERS_CONTACTED": "Leveranciers benaderd",
+      "SUPPLIER_OFFER_RECEIVED": "Offerte leverancier ontvangen",
+      "QUOTE_SENT": "Offerte verstuurd",
+      "QUOTE_VIEWED": "Offerte bekeken",
+      "QUOTE_SIGNED": "Offerte ondertekend",
+      "QUOTE_DECLINED": "Offerte geweigerd",
+      "QUOTE_EXPIRED": "Offerte verlopen",
+      "DEPOSIT_INVOICE_ISSUED": "Aanbetalingsfactuur verstuurd",
+      "TRANSFER_DECLARED": "Overboeking aangekondigd",
+      "AWAITING_FUNDS": "Wachten op betaling",
+      "PARTIAL_PAYMENT": "Deelbetaling",
+      "DEPOSIT_RECEIVED": "Aanbetaling ontvangen",
+      "ORDER_PLACED_WITH_SUPPLIER": "Bestelling bij leverancier geplaatst",
+      "PRODUCTION": "Productie loopt",
+      "PARTIALLY_RECEIVED": "Deels ontvangen in magazijn",
+      "FULLY_RECEIVED": "Volledig ontvangen",
+      "INSPECTING": "Controle loopt",
+      "ISSUE_REPORTED": "Afwijking gemeld",
+      "INSPECTION_PASSED": "Controle geslaagd",
+      "CONSOLIDATION": "Consolidatie en versteviging",
+      "READY_TO_LOAD": "Klaar om te laden",
+      "BALANCE_PAID": "Restbedrag betaald",
+      "CONTAINER_LOADED": "Container geladen",
+      "EXPORT_DOCS_ISSUED": "Exportdocumenten afgegeven",
+      "BOOKING_CONFIRMED": "Boeking bevestigd",
+      "AT_SEA": "Op zee",
+      "TRANSHIPMENT": "Overslag",
+      "ARRIVED_AT_PORT": "Aangekomen in haven",
+      "CUSTOMS_CLEARANCE": "Inklaring",
+      "GOODS_DELIVERED": "Goederen geleverd",
+      "FILE_CLOSED": "Dossier gesloten",
+      "CANCELLED_BY_CLIENT": "Geannuleerd door de klant",
+      "CANCELLED_BY_SOURCINGPICK": "Geannuleerd door Sourcing Pick",
+      "REFUND_ISSUED": "Terugbetaling gedaan"
+    }
+  },
+  "client": {
+    "requests": {
+      "title": "Mijn aanvragen",
+      "newRequest": "Nieuwe aanvraag",
+      "colReference": "Referentie",
+      "colProduct": "Product",
+      "colAgent": "Agent",
+      "colCreated": "Aangemaakt op",
+      "colState": "Status",
+      "open": "Openen",
+      "filterAll": "Alle",
+      "filterOpen": "Lopend",
+      "filterQuoted": "Offerte ontvangen",
+      "filterClosed": "Afgesloten",
+      "unassigned": "Niet toegewezen",
+      "empty": "Nog geen aanvragen."
+    }
   }
 }

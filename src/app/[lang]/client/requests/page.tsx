@@ -1,257 +1,262 @@
 import { notFound } from "next/navigation";
-import { Role, SourcingRequestOrigin } from "@prisma/client";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { PlusSignIcon } from "@hugeicons/core-free-icons";
+import Image from "next/image";
+import { Role, SourcingRequestOrigin, SourcingStatus } from "@prisma/client";
 import { Link } from "@/components/ui/link";
+import { Card } from "@/components/ui/card";
 import { buttonClass } from "@/components/ui/button";
+import { PageHeader } from "@/components/saas/page-header";
+import { FilterChips, type FilterChip } from "@/components/saas/filter-chips";
+import { DataTable, Ref, Stamp, type Column } from "@/components/saas/data-table";
+import { StatusPill } from "@/components/saas/status-pill";
+import { EmptyLine } from "@/components/saas/panel";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
-import { isLocale } from "@/lib/i18n/config";
-import { formatDate, formatEUR, formatNumber } from "@/lib/i18n/formatters";
-import { cn } from "@/lib/utils";
+import { getDictionary, type Dictionary } from "@/lib/i18n/get-dictionary";
+import { isLocale, type Locale } from "@/lib/i18n/config";
+import { formatDate } from "@/lib/i18n/formatters";
+import { STATE_TONE, type OrderState } from "@/lib/orders/lifecycle";
 
-export async function generateMetadata({
-  params,
-}: PageProps<"/[lang]/client/requests">) {
+export async function generateMetadata({ params }: PageProps<"/[lang]/client/requests">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   const dict = await getDictionary(lang);
   return { title: dict.client.requests.title };
 }
 
+/**
+ * Which requests each chip shows.
+ *
+ * The canvas draws four — Toutes, En cours, Devis reçu, Clôturées — and the
+ * application's `SourcingStatus` has eleven values, so the mapping is here
+ * rather than in the query. Kept as a plain object because it is also what
+ * makes an unknown `?status=` in the URL fall back to "all" instead of
+ * returning nothing.
+ */
+const FILTERS = {
+  all: null,
+  open: [
+    SourcingStatus.REQUEST_RECEIVED,
+    SourcingStatus.ASSIGNED,
+    SourcingStatus.PREPARATION,
+    SourcingStatus.SHIPPED,
+    SourcingStatus.IN_TRANSIT,
+  ],
+  quoted: [SourcingStatus.QUOTE_SENT, SourcingStatus.QUOTE_ACCEPTED],
+  closed: [
+    SourcingStatus.COMPLETED,
+    SourcingStatus.CANCELLED,
+    SourcingStatus.QUOTE_REJECTED,
+  ],
+} satisfies Record<string, SourcingStatus[] | null>;
+
+type FilterKey = keyof typeof FILTERS;
+
+function isFilterKey(v: string | undefined): v is FilterKey {
+  return v !== undefined && v in FILTERS;
+}
+
+/**
+ * The lifecycle state a request is in, from the status it actually holds.
+ *
+ * The canvas's ten states and the application's eleven statuses are close but
+ * not identical — the canvas splits payment into pending and received, and
+ * has no separate word for an accepted quotation. This is the join, and it is
+ * one-directional on purpose: `SourcingStatus` stays the stored truth, and
+ * the canvas's vocabulary is how it is spoken.
+ */
+const STATE_OF: Record<SourcingStatus, OrderState> = {
+  DRAFT: "REQUEST_RECEIVED",
+  REQUEST_RECEIVED: "REQUEST_RECEIVED",
+  ASSIGNED: "AGENT_ASSIGNED",
+  QUOTE_SENT: "QUOTE_SENT",
+  QUOTE_ACCEPTED: "PAYMENT_PENDING",
+  QUOTE_REJECTED: "CANCELLED",
+  PREPARATION: "PREPARATION_COMPLETE",
+  SHIPPED: "SHIPPED",
+  IN_TRANSIT: "IN_TRANSIT",
+  COMPLETED: "COMPLETED",
+  CANCELLED: "CANCELLED",
+};
+
+type Row = {
+  id: string;
+  reference: string;
+  title: string;
+  status: SourcingStatus;
+  createdAt: Date;
+  agent: { name: string | null; image: string | null } | null;
+};
+
 export default async function ClientRequestsPage({
   params,
+  searchParams,
 }: PageProps<"/[lang]/client/requests">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const user = await requireRole(Role.CLIENT);
   const dict = await getDictionary(lang);
+  const t = dict.client.requests;
+
+  const raw = (await searchParams)?.status;
+  const filter: FilterKey = isFilterKey(typeof raw === "string" ? raw : undefined)
+    ? (raw as FilterKey)
+    : "all";
+  const statuses = FILTERS[filter];
 
   const requests = await prisma.sourcingRequest.findMany({
-    // Marketplace purchases materialise a synthetic SourcingRequest at
-    // status=QUOTE_ACCEPTED so the Order/Invoice/Escrow pipeline can
-    // stay role-agnostic — but the buyer never goes through a quote
-    // step, so showing it in the "My requests" list rendered a
-    // confusing "Quote accepted" pill on something the buyer thinks of
-    // as an order. Filter them out — they're visible under
-    // /client/orders, which is their natural home. (Partner #18.)
+    // Marketplace purchases materialise a synthetic SourcingRequest so the
+    // Order/Invoice pipeline can stay role-agnostic, but the buyer never went
+    // through a quote step and seeing "Quotation sent" on something they
+    // think of as an order is confusing. They live under /client/orders.
     where: {
       clientOrgId: user.organizationId,
       origin: SourcingRequestOrigin.SOURCING_FLOW,
+      ...(statuses ? { status: { in: statuses } } : {}),
     },
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
       reference: true,
       title: true,
-      category: true,
-      quantity: true,
-      budgetCents: true,
       status: true,
-      deadline: true,
       createdAt: true,
+      agent: { select: { name: true, image: true } },
     },
   });
 
-  return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-      <header className="flex flex-col items-start md:flex-row md:items-end justify-between gap-4 mb-6">
-        <div className="flex flex-col gap-1">
-          <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
-            {dict.client.requests.eyebrow}
-          </p>
-          <h1 className="text-2xl font-bold text-headline tracking-tight">
-            {dict.client.requests.title}
-          </h1>
-          <p className="text-sm text-muted">{dict.client.requests.description}</p>
-        </div>
-        <Link
-          href={`/${lang}/client/requests/new`}
-          className={`w-full md:w-auto ${cn(buttonClass({ variant: "primary", size: "md" }))}`}
-        >
-          <HugeiconsIcon icon={PlusSignIcon} size={16} strokeWidth={1.75} />
-          <span className="ms-1.5">{dict.client.requests.newRequest}</span>
-        </Link>
-      </header>
+  const chips: FilterChip[] = [
+    { key: "all", label: t.filterAll },
+    { key: "open", label: t.filterOpen },
+    { key: "quoted", label: t.filterQuoted },
+    { key: "closed", label: t.filterClosed },
+  ];
 
-      {requests.length === 0 ? (
-        <div className="rounded-lg border border-line bg-surface px-6 py-16 text-center">
-          <p className="text-base font-medium text-headline mb-2">
-            {dict.client.requests.emptyTitle}
-          </p>
-          <p className="text-sm text-muted mb-6 max-w-md mx-auto">
-            {dict.client.requests.emptyBody}
-          </p>
+  return (
+    <>
+      <PageHeader
+        title={t.title}
+        actions={
           <Link
             href={`/${lang}/client/requests/new`}
-            className={cn(buttonClass({ variant: "primary", size: "md" }))}
+            variant="muted"
+            className={buttonClass({ variant: "primary", size: "md" })}
           >
-            {dict.client.requests.newRequest}
+            {t.newRequest}
+            <PlusGlyph />
           </Link>
-        </div>
-      ) : (
-        <>
-          {/* Mobile: card list. Tables don't survive narrow widths cleanly. */}
-          <ul className="md:hidden flex flex-col gap-3">
-            {requests.map((req) => (
-              <li key={req.id}>
-                <Link
-                  href={`/${lang}/client/requests/${req.id}`}
-                  variant="muted"
-                  className="block rounded-lg border border-line bg-surface p-4 hover:bg-subtle transition-colors duration-fast"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="text-xs font-mono uppercase tracking-wide text-faint">
-                        {req.reference}
-                      </p>
-                      <p className="text-sm font-semibold text-headline">
-                        {req.title}
-                      </p>
-                      <p className="text-xs text-muted mt-0.5">
-                        {dict.categories[req.category]} ·{" "}
-                        {formatNumber(req.quantity, lang)}
-                      </p>
-                    </div>
-                    <RequestStatusBadge status={req.status} dict={dict} />
-                  </div>
-                  <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mt-2 pt-2 border-t border-line-subtle text-[11px] text-faint">
-                    <span>{formatDate(req.createdAt, lang, "short")}</span>
-                    <span>
-                      {dict.client.requests.deadlineShort}{" "}
-                      {formatDate(req.deadline, lang, "short")}
-                    </span>
-                    {req.budgetCents && (
-                      <span className="text-fg font-medium">
-                        {formatEUR(req.budgetCents / 100, lang)}
-                      </span>
-                    )}
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
+        }
+      />
 
-          {/* Desktop: actual <table> so columns measure naturally and stay
-              aligned across rows. */}
-          <div className="hidden md:block rounded-lg border border-line bg-surface overflow-hidden">
-            <table className="w-full text-sm table-fixed">
-              <colgroup>
-                <col style={{ width: "26%" }} />
-                <col />
-                <col style={{ width: "13%" }} />
-                <col style={{ width: "10%" }} />
-                <col style={{ width: "13%" }} />
-                <col style={{ width: "16%" }} />
-              </colgroup>
-              <thead className="bg-subtle">
-                <tr className="text-start text-[11px] uppercase tracking-wide text-faint">
-                  <th className="px-4 py-2.5 font-medium">
-                    {dict.client.requests.colReference}
-                  </th>
-                  <th className="px-4 py-2.5 font-medium">
-                    {dict.client.requests.colTitle}
-                  </th>
-                  <th className="px-4 py-2.5 font-medium">
-                    {dict.client.requests.colCategory}
-                  </th>
-                  <th className="px-4 py-2.5 font-medium text-end">
-                    {dict.client.requests.colQuantity}
-                  </th>
-                  <th className="px-4 py-2.5 font-medium text-end">
-                    {dict.client.requests.colBudget}
-                  </th>
-                  <th className="px-4 py-2.5 font-medium text-end">
-                    {dict.client.requests.colStatus}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-line-subtle">
-                {requests.map((req) => (
-                  <tr
-                    key={req.id}
-                    className="hover:bg-subtle/40 transition-colors duration-fast cursor-pointer"
-                  >
-                    <td className="px-4 py-3 align-top">
-                      <Link
-                        href={`/${lang}/client/requests/${req.id}`}
-                        variant="muted"
-                        className="flex flex-col"
-                      >
-                        <span className="text-sm font-mono text-headline">
-                          {req.reference}
-                        </span>
-                        <span className="text-[11px] text-faint">
-                          {formatDate(req.createdAt, lang, "short")} ·{" "}
-                          {dict.client.requests.deadlineShort}{" "}
-                          {formatDate(req.deadline, lang, "short")}
-                        </span>
-                      </Link>
-                    </td>
-                    <td className="px-4 py-3 align-middle">
-                      <Link
-                        href={`/${lang}/client/requests/${req.id}`}
-                        variant="muted"
-                        className="block truncate text-sm text-fg"
-                      >
-                        {req.title}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-3 align-middle text-sm text-muted">
-                      {dict.categories[req.category]}
-                    </td>
-                    <td className="px-4 py-3 align-middle text-sm font-mono text-fg text-end whitespace-nowrap">
-                      {formatNumber(req.quantity, lang)}
-                    </td>
-                    <td className="px-4 py-3 align-middle text-sm text-muted text-end whitespace-nowrap">
-                      {req.budgetCents
-                        ? formatEUR(req.budgetCents / 100, lang)
-                        : "—"}
-                    </td>
-                    <td className="px-4 py-3 align-middle text-end">
-                      <RequestStatusBadge status={req.status} dict={dict} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
-    </div>
+      <FilterChips
+        chips={chips}
+        current={filter}
+        label={t.colState}
+        hrefFor={(key) =>
+          key === "all"
+            ? `/${lang}/client/requests`
+            : `/${lang}/client/requests?status=${key}`
+        }
+      />
+
+      <Card>
+        <DataTable<Row>
+          caption={t.title}
+          columns={columns(lang, dict)}
+          rows={requests}
+          rowKey={(r) => r.id}
+          rowHref={(r) => `/${lang}/client/requests/${r.id}`}
+          empty={<EmptyLine>{t.empty}</EmptyLine>}
+        />
+      </Card>
+    </>
   );
 }
 
-function RequestStatusBadge({
-  status,
-  dict,
-}: {
-  status: import("@prisma/client").SourcingStatus;
-  dict: Awaited<ReturnType<typeof getDictionary>>;
-}) {
-  const tone =
-    status === "COMPLETED"
-      ? "success"
-      : status === "CANCELLED" || status === "QUOTE_REJECTED"
-        ? "danger"
-        : status === "REQUEST_RECEIVED"
-          ? "info"
-          : "warn";
-  const toneClasses = {
-    success: "bg-success-soft text-success border-success-edge",
-    warn: "bg-warning-soft text-warning border-warning-edge",
-    info: "bg-info-soft text-info border-info-edge",
-    danger: "bg-danger-soft text-danger border-danger-edge",
-  } as const;
+function columns(lang: Locale, dict: Dictionary): Column<Row>[] {
+  const t = dict.client.requests;
+  return [
+    {
+      key: "reference",
+      header: t.colReference,
+      width: "16%",
+      primary: true,
+      cell: (r) => <Ref>{r.reference}</Ref>,
+    },
+    { key: "title", header: t.colProduct, width: "26%", cell: (r) => r.title },
+    {
+      key: "agent",
+      header: t.colAgent,
+      width: "18%",
+      // An assigned agent whose profile has no display name yet would
+      // otherwise render as an empty cell, which reads as "nobody is on
+      // this" — the opposite of what the row says two columns along.
+      cell: (r) =>
+        r.agent?.name ? (
+          <span className="inline-flex items-center gap-2">
+            {r.agent.image && (
+              <Image
+                src={r.agent.image}
+                alt=""
+                width={26}
+                height={26}
+                className="size-6.5 rounded-full object-cover"
+              />
+            )}
+            {r.agent.name}
+          </span>
+        ) : (
+          <span className="text-muted">{t.unassigned}</span>
+        ),
+    },
+    {
+      key: "created",
+      header: t.colCreated,
+      width: "14%",
+      cell: (r) => <Stamp>{formatDate(r.createdAt, lang)}</Stamp>,
+    },
+    {
+      key: "state",
+      header: t.colState,
+      width: "18%",
+      cell: (r) => {
+        const state = STATE_OF[r.status];
+        return <StatusPill tone={STATE_TONE[state]}>{dict.lifecycle.state[state]}</StatusPill>;
+      },
+    },
+    {
+      key: "open",
+      header: "",
+      width: "8%",
+      hideOnCard: true,
+      cell: (r) => (
+        <Link
+          href={`/${lang}/client/requests/${r.id}`}
+          variant="inline"
+          className="font-semibold"
+        >
+          {t.open}
+        </Link>
+      ),
+    },
+  ];
+}
+
+/** The canvas draws a plain plus beside "Nouvelle demande". */
+function PlusGlyph() {
   return (
-    <span
-      className={cn(
-        "inline-flex items-center h-6 px-2 rounded-full border text-[11px] font-medium uppercase tracking-wide whitespace-nowrap",
-        toneClasses[tone],
-      )}
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.9"
+      strokeLinecap="round"
+      aria-hidden="true"
+      className="shrink-0"
     >
-      {dict.client.requests.statuses[status]}
-    </span>
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </svg>
   );
 }

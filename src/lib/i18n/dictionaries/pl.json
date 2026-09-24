@@ -166,5 +166,78 @@
       "openMenu": "Otwórz menu",
       "closeMenu": "Zamknij menu"
     }
+  },
+  "lifecycle": {
+    "state": {
+      "REQUEST_RECEIVED": "Zapytanie otrzymane",
+      "AGENT_ASSIGNED": "Agent przypisany",
+      "QUOTE_SENT": "Wycena wysłana",
+      "PAYMENT_PENDING": "Oczekiwanie na płatność",
+      "PAYMENT_RECEIVED": "Płatność otrzymana",
+      "PREPARATION_COMPLETE": "Przygotowanie zakończone",
+      "SHIPPED": "Wysłane",
+      "IN_TRANSIT": "W transporcie",
+      "COMPLETED": "Zakończone",
+      "CANCELLED": "Anulowane"
+    },
+    "stage": {
+      "RECEIVED": "Otrzymane",
+      "QUALIFYING": "Kwalifikacja w toku",
+      "INFO_MISSING": "Brak informacji",
+      "AGENT_ASSIGNED": "Agent przypisany",
+      "SOURCING": "Poszukiwanie w toku",
+      "SUPPLIERS_CONTACTED": "Skontaktowano dostawców",
+      "SUPPLIER_OFFER_RECEIVED": "Otrzymano ofertę dostawcy",
+      "QUOTE_SENT": "Wycena wysłana",
+      "QUOTE_VIEWED": "Wycena obejrzana",
+      "QUOTE_SIGNED": "Wycena podpisana",
+      "QUOTE_DECLINED": "Wycena odrzucona",
+      "QUOTE_EXPIRED": "Wycena wygasła",
+      "DEPOSIT_INVOICE_ISSUED": "Wystawiono fakturę zaliczkową",
+      "TRANSFER_DECLARED": "Przelew zgłoszony",
+      "AWAITING_FUNDS": "Oczekiwanie na środki",
+      "PARTIAL_PAYMENT": "Płatność częściowa",
+      "DEPOSIT_RECEIVED": "Zaliczka otrzymana",
+      "ORDER_PLACED_WITH_SUPPLIER": "Zamówienie złożone u dostawcy",
+      "PRODUCTION": "Produkcja w toku",
+      "PARTIALLY_RECEIVED": "Częściowe przyjęcie do magazynu",
+      "FULLY_RECEIVED": "Pełne przyjęcie",
+      "INSPECTING": "Kontrola w toku",
+      "ISSUE_REPORTED": "Zgłoszono niezgodność",
+      "INSPECTION_PASSED": "Kontrola zaliczona",
+      "CONSOLIDATION": "Konsolidacja i wzmocnienie",
+      "READY_TO_LOAD": "Gotowe do załadunku",
+      "BALANCE_PAID": "Saldo opłacone",
+      "CONTAINER_LOADED": "Kontener załadowany",
+      "EXPORT_DOCS_ISSUED": "Dokumenty eksportowe wystawione",
+      "BOOKING_CONFIRMED": "Booking potwierdzony",
+      "AT_SEA": "Na morzu",
+      "TRANSHIPMENT": "Przeładunek",
+      "ARRIVED_AT_PORT": "Dotarł do portu",
+      "CUSTOMS_CLEARANCE": "Odprawa celna",
+      "GOODS_DELIVERED": "Towar dostarczony",
+      "FILE_CLOSED": "Sprawa zamknięta",
+      "CANCELLED_BY_CLIENT": "Anulowane przez klienta",
+      "CANCELLED_BY_SOURCINGPICK": "Anulowane przez Sourcing Pick",
+      "REFUND_ISSUED": "Zwrot zrealizowany"
+    }
+  },
+  "client": {
+    "requests": {
+      "title": "Moje zapytania",
+      "newRequest": "Nowe zapytanie",
+      "colReference": "Numer",
+      "colProduct": "Produkt",
+      "colAgent": "Agent",
+      "colCreated": "Utworzono",
+      "colState": "Status",
+      "open": "Otwórz",
+      "filterAll": "Wszystkie",
+      "filterOpen": "W toku",
+      "filterQuoted": "Wycena otrzymana",
+      "filterClosed": "Zamknięte",
+      "unassigned": "Nieprzypisany",
+      "empty": "Brak zapytań."
+    }
   }
 }

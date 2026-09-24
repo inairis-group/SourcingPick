@@ -757,6 +757,7 @@ model User {
   quotesAsAgent             Quote[]                  @relation("QuoteAgent")
   ordersAsAgent             Order[]                  @relation("OrderAgent")
   shipmentEvents            ShipmentEvent[]          @relation("ShipmentEventActor")
+  orderStageEvents          OrderStageEvent[]        @relation("OrderStageActor")
   shipmentQuotes            ShipmentQuote[]          @relation("ShipmentQuoteAuthor")
   marketplaceReviews        MarketplaceReview[]      @relation("ReviewAuthorUser")
   authoredMessages          Message[]                @relation("MessageAuthor")
@@ -1145,6 +1146,77 @@ model Quote {
   @@index([status, validUntil])
 }
 
+/// The 2026-09 SaaS canvas's order lifecycle — `SaaS-Flux-etats`.
+///
+/// Ten main states. These mostly restate `SourcingStatus`, which stays where
+/// it is: rewriting the enum eleven models depend on would be a migration
+/// with nothing to show for it. What is new is `PAYMENT_RECEIVED`, which the
+/// old model ran together with preparation, and the sub-state layer below.
+///
+/// Mirrored in src/lib/orders/lifecycle.ts, which holds the tones, the
+/// visibility rules and the allowed transitions. A test asserts the two
+/// agree.
+enum OrderState {
+  REQUEST_RECEIVED
+  AGENT_ASSIGNED
+  QUOTE_SENT
+  PAYMENT_PENDING
+  PAYMENT_RECEIVED
+  PREPARATION_COMPLETE
+  SHIPPED
+  IN_TRANSIT
+  COMPLETED
+  CANCELLED
+}
+
+/// The thirty-nine sub-states the canvas hangs off those ten.
+///
+/// This is where the product actually lives. "In transit" tells a client
+/// nothing; "arrived at port" tells them when to expect the lorry. Five of
+/// them are internal — the canvas annotates them "Interne, non visible par le
+/// client" — and collapse to their parent when a client is looking.
+enum OrderStage {
+  RECEIVED
+  QUALIFYING
+  INFO_MISSING
+  AGENT_ASSIGNED
+  SOURCING
+  SUPPLIERS_CONTACTED
+  SUPPLIER_OFFER_RECEIVED
+  QUOTE_SENT
+  QUOTE_VIEWED
+  QUOTE_SIGNED
+  QUOTE_DECLINED
+  QUOTE_EXPIRED
+  DEPOSIT_INVOICE_ISSUED
+  TRANSFER_DECLARED
+  AWAITING_FUNDS
+  PARTIAL_PAYMENT
+  DEPOSIT_RECEIVED
+  ORDER_PLACED_WITH_SUPPLIER
+  PRODUCTION
+  PARTIALLY_RECEIVED
+  FULLY_RECEIVED
+  INSPECTING
+  ISSUE_REPORTED
+  INSPECTION_PASSED
+  CONSOLIDATION
+  READY_TO_LOAD
+  BALANCE_PAID
+  CONTAINER_LOADED
+  EXPORT_DOCS_ISSUED
+  BOOKING_CONFIRMED
+  AT_SEA
+  TRANSHIPMENT
+  ARRIVED_AT_PORT
+  CUSTOMS_CLEARANCE
+  GOODS_DELIVERED
+  FILE_CLOSED
+  CANCELLED_BY_CLIENT
+  CANCELLED_BY_SOURCINGPICK
+  REFUND_ISSUED
+}
+
 model Order {
   id                   String              @id @default(cuid(2))
   reference            String              @unique // ORD-XXXXX
@@ -1206,14 +1278,67 @@ model Order {
   createdAt            DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
 
+  /// Where the order is, in the canvas's vocabulary. Nullable while the
+  /// lifecycle is being adopted: an order created before this existed has no
+  /// honest answer, and inventing one would put a fabricated history in front
+  /// of a client. `stage` may be null on its own — a state with no sub-state
+  /// yet is a legitimate position.
+  state  OrderState?
+  stage  OrderStage?
+
   invoices        Invoice[]
   escrows         EscrowTransaction[]
   forwarderTokens ForwarderUploadToken[]
   disputes        Dispute[]
+  stageEvents     OrderStageEvent[]
 
+  @@index([state, clientOrgId])
   @@index([status, factoryOrgId])
   @@index([status, clientOrgId])
   @@index([status, createdAt])
+}
+
+/// One step in an order's life.
+///
+/// The canvas draws a timeline on the client's order page and on the agent's
+/// and administrator's status screens, and the application had nowhere to
+/// read one from — `Order.status` was a single value with no history behind
+/// it. Every change writes a row here.
+///
+/// This is not the audit log. `AuditLog` records that a person did something,
+/// for people who investigate; this records that an order reached a point,
+/// for the people waiting on it. They answer different questions and one
+/// cannot be derived from the other.
+model OrderStageEvent {
+  id      String @id @default(cuid(2))
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  state OrderState
+  /// Null when a state was entered without a sub-state being chosen.
+  stage OrderStage?
+
+  /// Denormalised from `lifecycle.ts` at write time rather than joined at
+  /// read time. A sub-state's visibility is a property of the canvas, and if
+  /// it were ever reclassified we would still owe the client the version of
+  /// the timeline they were actually shown — not a retroactively edited one.
+  clientVisible Boolean
+
+  /// The note the agent writes for the client. `SaaS-Admin-Statut` draws it
+  /// as "Commentaire pour le client", optional, beside a publish button.
+  comment String? @db.Text
+
+  /// Who moved it. Null for transitions a job made — an expiring quotation,
+  /// a reconciled payment.
+  actorId String?
+  actor   User?   @relation("OrderStageActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  /// The client's timeline is this index: one order, only what they may see,
+  /// newest last.
+  @@index([orderId, clientVisible, createdAt])
+  @@index([orderId, createdAt])
 }
 
 /**

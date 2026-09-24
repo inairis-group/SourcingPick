@@ -166,5 +166,78 @@
       "openMenu": "Menü öffnen",
       "closeMenu": "Menü schließen"
     }
+  },
+  "lifecycle": {
+    "state": {
+      "REQUEST_RECEIVED": "Anfrage eingegangen",
+      "AGENT_ASSIGNED": "Agent zugewiesen",
+      "QUOTE_SENT": "Angebot gesendet",
+      "PAYMENT_PENDING": "Zahlung ausstehend",
+      "PAYMENT_RECEIVED": "Zahlung eingegangen",
+      "PREPARATION_COMPLETE": "Vorbereitung abgeschlossen",
+      "SHIPPED": "Versandt",
+      "IN_TRANSIT": "Unterwegs",
+      "COMPLETED": "Abgeschlossen",
+      "CANCELLED": "Storniert"
+    },
+    "stage": {
+      "RECEIVED": "Eingegangen",
+      "QUALIFYING": "Qualifizierung läuft",
+      "INFO_MISSING": "Angaben unvollständig",
+      "AGENT_ASSIGNED": "Agent zugewiesen",
+      "SOURCING": "Beschaffung läuft",
+      "SUPPLIERS_CONTACTED": "Lieferanten kontaktiert",
+      "SUPPLIER_OFFER_RECEIVED": "Lieferantenangebot erhalten",
+      "QUOTE_SENT": "Angebot gesendet",
+      "QUOTE_VIEWED": "Angebot angesehen",
+      "QUOTE_SIGNED": "Angebot unterzeichnet",
+      "QUOTE_DECLINED": "Angebot abgelehnt",
+      "QUOTE_EXPIRED": "Angebot abgelaufen",
+      "DEPOSIT_INVOICE_ISSUED": "Anzahlungsrechnung gestellt",
+      "TRANSFER_DECLARED": "Überweisung avisiert",
+      "AWAITING_FUNDS": "Warten auf Zahlungseingang",
+      "PARTIAL_PAYMENT": "Teilzahlung",
+      "DEPOSIT_RECEIVED": "Anzahlung eingegangen",
+      "ORDER_PLACED_WITH_SUPPLIER": "Bestellung beim Lieferanten",
+      "PRODUCTION": "Produktion läuft",
+      "PARTIALLY_RECEIVED": "Teillieferung im Lager",
+      "FULLY_RECEIVED": "Vollständig eingegangen",
+      "INSPECTING": "Prüfung läuft",
+      "ISSUE_REPORTED": "Abweichung gemeldet",
+      "INSPECTION_PASSED": "Prüfung bestanden",
+      "CONSOLIDATION": "Konsolidierung und Verstärkung",
+      "READY_TO_LOAD": "Ladebereit",
+      "BALANCE_PAID": "Restbetrag bezahlt",
+      "CONTAINER_LOADED": "Container beladen",
+      "EXPORT_DOCS_ISSUED": "Exportdokumente ausgestellt",
+      "BOOKING_CONFIRMED": "Buchung bestätigt",
+      "AT_SEA": "Auf See",
+      "TRANSHIPMENT": "Umschlag",
+      "ARRIVED_AT_PORT": "Im Hafen angekommen",
+      "CUSTOMS_CLEARANCE": "Zollabfertigung",
+      "GOODS_DELIVERED": "Ware zugestellt",
+      "FILE_CLOSED": "Vorgang abgeschlossen",
+      "CANCELLED_BY_CLIENT": "Vom Kunden storniert",
+      "CANCELLED_BY_SOURCINGPICK": "Von Sourcing Pick storniert",
+      "REFUND_ISSUED": "Erstattung erfolgt"
+    }
+  },
+  "client": {
+    "requests": {
+      "title": "Meine Anfragen",
+      "newRequest": "Neue Anfrage",
+      "colReference": "Referenz",
+      "colProduct": "Produkt",
+      "colAgent": "Agent",
+      "colCreated": "Erstellt am",
+      "colState": "Status",
+      "open": "Öffnen",
+      "filterAll": "Alle",
+      "filterOpen": "Laufend",
+      "filterQuoted": "Angebot erhalten",
+      "filterClosed": "Abgeschlossen",
+      "unassigned": "Nicht zugewiesen",
+      "empty": "Noch keine Anfragen."
+    }
   }
 }

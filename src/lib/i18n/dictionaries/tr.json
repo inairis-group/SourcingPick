@@ -166,5 +166,78 @@
       "openMenu": "Menüyü aç",
       "closeMenu": "Menüyü kapat"
     }
+  },
+  "lifecycle": {
+    "state": {
+      "REQUEST_RECEIVED": "Talep alındı",
+      "AGENT_ASSIGNED": "Ajan atandı",
+      "QUOTE_SENT": "Teklif gönderildi",
+      "PAYMENT_PENDING": "Ödeme bekleniyor",
+      "PAYMENT_RECEIVED": "Ödeme alındı",
+      "PREPARATION_COMPLETE": "Hazırlık tamamlandı",
+      "SHIPPED": "Gönderildi",
+      "IN_TRANSIT": "Yolda",
+      "COMPLETED": "Tamamlandı",
+      "CANCELLED": "İptal edildi"
+    },
+    "stage": {
+      "RECEIVED": "Alındı",
+      "QUALIFYING": "Değerlendirme sürüyor",
+      "INFO_MISSING": "Eksik bilgi",
+      "AGENT_ASSIGNED": "Ajan atandı",
+      "SOURCING": "Tedarik sürüyor",
+      "SUPPLIERS_CONTACTED": "Tedarikçilerle görüşüldü",
+      "SUPPLIER_OFFER_RECEIVED": "Tedarikçi teklifi alındı",
+      "QUOTE_SENT": "Teklif gönderildi",
+      "QUOTE_VIEWED": "Teklif görüntülendi",
+      "QUOTE_SIGNED": "Teklif imzalandı",
+      "QUOTE_DECLINED": "Teklif reddedildi",
+      "QUOTE_EXPIRED": "Teklif süresi doldu",
+      "DEPOSIT_INVOICE_ISSUED": "Ön ödeme faturası düzenlendi",
+      "TRANSFER_DECLARED": "Havale bildirildi",
+      "AWAITING_FUNDS": "Ödeme bekleniyor",
+      "PARTIAL_PAYMENT": "Kısmi ödeme",
+      "DEPOSIT_RECEIVED": "Ön ödeme alındı",
+      "ORDER_PLACED_WITH_SUPPLIER": "Tedarikçiye sipariş verildi",
+      "PRODUCTION": "Üretim sürüyor",
+      "PARTIALLY_RECEIVED": "Depoya kısmi kabul",
+      "FULLY_RECEIVED": "Tam kabul",
+      "INSPECTING": "Kontrol sürüyor",
+      "ISSUE_REPORTED": "Uygunsuzluk bildirildi",
+      "INSPECTION_PASSED": "Kontrol onaylandı",
+      "CONSOLIDATION": "Konsolidasyon ve güçlendirme",
+      "READY_TO_LOAD": "Yüklemeye hazır",
+      "BALANCE_PAID": "Bakiye ödendi",
+      "CONTAINER_LOADED": "Konteyner yüklendi",
+      "EXPORT_DOCS_ISSUED": "İhracat belgeleri düzenlendi",
+      "BOOKING_CONFIRMED": "Booking onaylandı",
+      "AT_SEA": "Denizde",
+      "TRANSHIPMENT": "Aktarma",
+      "ARRIVED_AT_PORT": "Limana ulaştı",
+      "CUSTOMS_CLEARANCE": "Gümrükleme",
+      "GOODS_DELIVERED": "Mal teslim edildi",
+      "FILE_CLOSED": "Dosya kapatıldı",
+      "CANCELLED_BY_CLIENT": "Müşteri iptal etti",
+      "CANCELLED_BY_SOURCINGPICK": "Sourcing Pick iptal etti",
+      "REFUND_ISSUED": "İade yapıldı"
+    }
+  },
+  "client": {
+    "requests": {
+      "title": "Taleplerim",
+      "newRequest": "Yeni talep",
+      "colReference": "Referans",
+      "colProduct": "Ürün",
+      "colAgent": "Ajan",
+      "colCreated": "Oluşturulma",
+      "colState": "Durum",
+      "open": "Aç",
+      "filterAll": "Tümü",
+      "filterOpen": "Devam eden",
+      "filterQuoted": "Teklif alındı",
+      "filterClosed": "Kapanan",
+      "unassigned": "Atanmadı",
+      "empty": "Henüz talep yok."
+    }
   }
 }

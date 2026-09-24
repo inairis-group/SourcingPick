@@ -166,5 +166,78 @@
       "openMenu": "Abrir el menú",
       "closeMenu": "Cerrar el menú"
     }
+  },
+  "lifecycle": {
+    "state": {
+      "REQUEST_RECEIVED": "Solicitud recibida",
+      "AGENT_ASSIGNED": "Agente asignado",
+      "QUOTE_SENT": "Presupuesto enviado",
+      "PAYMENT_PENDING": "Pago pendiente",
+      "PAYMENT_RECEIVED": "Pago recibido",
+      "PREPARATION_COMPLETE": "Preparación finalizada",
+      "SHIPPED": "Enviado",
+      "IN_TRANSIT": "En tránsito",
+      "COMPLETED": "Finalizado",
+      "CANCELLED": "Cancelado"
+    },
+    "stage": {
+      "RECEIVED": "Recibida",
+      "QUALIFYING": "Cualificación en curso",
+      "INFO_MISSING": "Faltan datos",
+      "AGENT_ASSIGNED": "Agente asignado",
+      "SOURCING": "Búsqueda en curso",
+      "SUPPLIERS_CONTACTED": "Proveedores contactados",
+      "SUPPLIER_OFFER_RECEIVED": "Oferta de proveedor recibida",
+      "QUOTE_SENT": "Presupuesto enviado",
+      "QUOTE_VIEWED": "Presupuesto consultado",
+      "QUOTE_SIGNED": "Presupuesto firmado",
+      "QUOTE_DECLINED": "Presupuesto rechazado",
+      "QUOTE_EXPIRED": "Presupuesto caducado",
+      "DEPOSIT_INVOICE_ISSUED": "Factura de anticipo emitida",
+      "TRANSFER_DECLARED": "Transferencia anunciada",
+      "AWAITING_FUNDS": "A la espera de fondos",
+      "PARTIAL_PAYMENT": "Pago parcial",
+      "DEPOSIT_RECEIVED": "Anticipo cobrado",
+      "ORDER_PLACED_WITH_SUPPLIER": "Pedido cursado al proveedor",
+      "PRODUCTION": "Producción en curso",
+      "PARTIALLY_RECEIVED": "Recepción parcial en almacén",
+      "FULLY_RECEIVED": "Recepción completa",
+      "INSPECTING": "Inspección en curso",
+      "ISSUE_REPORTED": "Anomalía detectada",
+      "INSPECTION_PASSED": "Inspección superada",
+      "CONSOLIDATION": "Consolidación y refuerzo",
+      "READY_TO_LOAD": "Listo para cargar",
+      "BALANCE_PAID": "Saldo pagado",
+      "CONTAINER_LOADED": "Contenedor cargado",
+      "EXPORT_DOCS_ISSUED": "Documentos de exportación emitidos",
+      "BOOKING_CONFIRMED": "Reserva confirmada",
+      "AT_SEA": "En el mar",
+      "TRANSHIPMENT": "Transbordo",
+      "ARRIVED_AT_PORT": "Llegado a puerto",
+      "CUSTOMS_CLEARANCE": "Despacho de aduanas",
+      "GOODS_DELIVERED": "Mercancía entregada",
+      "FILE_CLOSED": "Expediente cerrado",
+      "CANCELLED_BY_CLIENT": "Cancelado por el cliente",
+      "CANCELLED_BY_SOURCINGPICK": "Cancelado por Sourcing Pick",
+      "REFUND_ISSUED": "Reembolso efectuado"
+    }
+  },
+  "client": {
+    "requests": {
+      "title": "Mis solicitudes",
+      "newRequest": "Nueva solicitud",
+      "colReference": "Referencia",
+      "colProduct": "Producto",
+      "colAgent": "Agente",
+      "colCreated": "Creada el",
+      "colState": "Estado",
+      "open": "Abrir",
+      "filterAll": "Todas",
+      "filterOpen": "En curso",
+      "filterQuoted": "Presupuesto recibido",
+      "filterClosed": "Cerradas",
+      "unassigned": "Sin asignar",
+      "empty": "Todavía no hay solicitudes."
+    }
   }
 }

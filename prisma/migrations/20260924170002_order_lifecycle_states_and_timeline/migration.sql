@@ -1,0 +1,38 @@
+-- CreateEnum
+CREATE TYPE "OrderState" AS ENUM ('REQUEST_RECEIVED', 'AGENT_ASSIGNED', 'QUOTE_SENT', 'PAYMENT_PENDING', 'PAYMENT_RECEIVED', 'PREPARATION_COMPLETE', 'SHIPPED', 'IN_TRANSIT', 'COMPLETED', 'CANCELLED');
+
+-- CreateEnum
+CREATE TYPE "OrderStage" AS ENUM ('RECEIVED', 'QUALIFYING', 'INFO_MISSING', 'AGENT_ASSIGNED', 'SOURCING', 'SUPPLIERS_CONTACTED', 'SUPPLIER_OFFER_RECEIVED', 'QUOTE_SENT', 'QUOTE_VIEWED', 'QUOTE_SIGNED', 'QUOTE_DECLINED', 'QUOTE_EXPIRED', 'DEPOSIT_INVOICE_ISSUED', 'TRANSFER_DECLARED', 'AWAITING_FUNDS', 'PARTIAL_PAYMENT', 'DEPOSIT_RECEIVED', 'ORDER_PLACED_WITH_SUPPLIER', 'PRODUCTION', 'PARTIALLY_RECEIVED', 'FULLY_RECEIVED', 'INSPECTING', 'ISSUE_REPORTED', 'INSPECTION_PASSED', 'CONSOLIDATION', 'READY_TO_LOAD', 'BALANCE_PAID', 'CONTAINER_LOADED', 'EXPORT_DOCS_ISSUED', 'BOOKING_CONFIRMED', 'AT_SEA', 'TRANSHIPMENT', 'ARRIVED_AT_PORT', 'CUSTOMS_CLEARANCE', 'GOODS_DELIVERED', 'FILE_CLOSED', 'CANCELLED_BY_CLIENT', 'CANCELLED_BY_SOURCINGPICK', 'REFUND_ISSUED');
+
+-- AlterTable
+ALTER TABLE "Order" ADD COLUMN     "stage" "OrderStage",
+ADD COLUMN     "state" "OrderState";
+
+-- CreateTable
+CREATE TABLE "OrderStageEvent" (
+    "id" TEXT NOT NULL,
+    "orderId" TEXT NOT NULL,
+    "state" "OrderState" NOT NULL,
+    "stage" "OrderStage",
+    "clientVisible" BOOLEAN NOT NULL,
+    "comment" TEXT,
+    "actorId" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "OrderStageEvent_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE INDEX "OrderStageEvent_orderId_clientVisible_createdAt_idx" ON "OrderStageEvent"("orderId", "clientVisible", "createdAt");
+
+-- CreateIndex
+CREATE INDEX "OrderStageEvent_orderId_createdAt_idx" ON "OrderStageEvent"("orderId", "createdAt");
+
+-- CreateIndex
+CREATE INDEX "Order_state_clientOrgId_idx" ON "Order"("state", "clientOrgId");
+
+-- AddForeignKey
+ALTER TABLE "OrderStageEvent" ADD CONSTRAINT "OrderStageEvent_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderStageEvent" ADD CONSTRAINT "OrderStageEvent_actorId_fkey" FOREIGN KEY ("actorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

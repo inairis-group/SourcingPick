@@ -166,5 +166,78 @@
       "openMenu": "Abrir o menu",
       "closeMenu": "Fechar o menu"
     }
+  },
+  "lifecycle": {
+    "state": {
+      "REQUEST_RECEIVED": "Pedido recebido",
+      "AGENT_ASSIGNED": "Agente atribuído",
+      "QUOTE_SENT": "Orçamento enviado",
+      "PAYMENT_PENDING": "Pagamento pendente",
+      "PAYMENT_RECEIVED": "Pagamento recebido",
+      "PREPARATION_COMPLETE": "Preparação concluída",
+      "SHIPPED": "Expedido",
+      "IN_TRANSIT": "Em trânsito",
+      "COMPLETED": "Concluído",
+      "CANCELLED": "Cancelado"
+    },
+    "stage": {
+      "RECEIVED": "Recebido",
+      "QUALIFYING": "Qualificação em curso",
+      "INFO_MISSING": "Faltam informações",
+      "AGENT_ASSIGNED": "Agente atribuído",
+      "SOURCING": "Sourcing em curso",
+      "SUPPLIERS_CONTACTED": "Fornecedores contactados",
+      "SUPPLIER_OFFER_RECEIVED": "Proposta de fornecedor recebida",
+      "QUOTE_SENT": "Orçamento enviado",
+      "QUOTE_VIEWED": "Orçamento consultado",
+      "QUOTE_SIGNED": "Orçamento assinado",
+      "QUOTE_DECLINED": "Orçamento recusado",
+      "QUOTE_EXPIRED": "Orçamento expirado",
+      "DEPOSIT_INVOICE_ISSUED": "Fatura de adiantamento emitida",
+      "TRANSFER_DECLARED": "Transferência anunciada",
+      "AWAITING_FUNDS": "A aguardar fundos",
+      "PARTIAL_PAYMENT": "Pagamento parcial",
+      "DEPOSIT_RECEIVED": "Adiantamento recebido",
+      "ORDER_PLACED_WITH_SUPPLIER": "Encomenda colocada ao fornecedor",
+      "PRODUCTION": "Produção em curso",
+      "PARTIALLY_RECEIVED": "Receção parcial no armazém",
+      "FULLY_RECEIVED": "Receção completa",
+      "INSPECTING": "Inspeção em curso",
+      "ISSUE_REPORTED": "Anomalia reportada",
+      "INSPECTION_PASSED": "Inspeção aprovada",
+      "CONSOLIDATION": "Consolidação e reforço",
+      "READY_TO_LOAD": "Pronto para carregar",
+      "BALANCE_PAID": "Saldo pago",
+      "CONTAINER_LOADED": "Contentor carregado",
+      "EXPORT_DOCS_ISSUED": "Documentos de exportação emitidos",
+      "BOOKING_CONFIRMED": "Reserva confirmada",
+      "AT_SEA": "No mar",
+      "TRANSHIPMENT": "Transbordo",
+      "ARRIVED_AT_PORT": "Chegou ao porto",
+      "CUSTOMS_CLEARANCE": "Desalfandegamento",
+      "GOODS_DELIVERED": "Mercadoria entregue",
+      "FILE_CLOSED": "Processo encerrado",
+      "CANCELLED_BY_CLIENT": "Cancelado pelo cliente",
+      "CANCELLED_BY_SOURCINGPICK": "Cancelado pela Sourcing Pick",
+      "REFUND_ISSUED": "Reembolso efetuado"
+    }
+  },
+  "client": {
+    "requests": {
+      "title": "Os meus pedidos",
+      "newRequest": "Novo pedido",
+      "colReference": "Referência",
+      "colProduct": "Produto",
+      "colAgent": "Agente",
+      "colCreated": "Criado em",
+      "colState": "Estado",
+      "open": "Abrir",
+      "filterAll": "Todos",
+      "filterOpen": "Em curso",
+      "filterQuoted": "Orçamento recebido",
+      "filterClosed": "Fechados",
+      "unassigned": "Sem agente",
+      "empty": "Ainda não há pedidos."
+    }
   }
 }

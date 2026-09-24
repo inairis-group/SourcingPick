@@ -166,5 +166,78 @@
       "openMenu": "Открыть меню",
       "closeMenu": "Закрыть меню"
     }
+  },
+  "lifecycle": {
+    "state": {
+      "REQUEST_RECEIVED": "Заявка получена",
+      "AGENT_ASSIGNED": "Агент назначен",
+      "QUOTE_SENT": "Предложение отправлено",
+      "PAYMENT_PENDING": "Ожидается оплата",
+      "PAYMENT_RECEIVED": "Оплата получена",
+      "PREPARATION_COMPLETE": "Подготовка завершена",
+      "SHIPPED": "Отгружено",
+      "IN_TRANSIT": "В пути",
+      "COMPLETED": "Завершено",
+      "CANCELLED": "Отменено"
+    },
+    "stage": {
+      "RECEIVED": "Получена",
+      "QUALIFYING": "Идёт квалификация",
+      "INFO_MISSING": "Не хватает данных",
+      "AGENT_ASSIGNED": "Агент назначен",
+      "SOURCING": "Идёт подбор поставщика",
+      "SUPPLIERS_CONTACTED": "Поставщики опрошены",
+      "SUPPLIER_OFFER_RECEIVED": "Получено предложение поставщика",
+      "QUOTE_SENT": "Предложение отправлено",
+      "QUOTE_VIEWED": "Предложение просмотрено",
+      "QUOTE_SIGNED": "Предложение подписано",
+      "QUOTE_DECLINED": "Предложение отклонено",
+      "QUOTE_EXPIRED": "Срок предложения истёк",
+      "DEPOSIT_INVOICE_ISSUED": "Выставлен счёт на аванс",
+      "TRANSFER_DECLARED": "Перевод заявлен",
+      "AWAITING_FUNDS": "Ожидание средств",
+      "PARTIAL_PAYMENT": "Частичная оплата",
+      "DEPOSIT_RECEIVED": "Аванс получен",
+      "ORDER_PLACED_WITH_SUPPLIER": "Заказ размещён у поставщика",
+      "PRODUCTION": "Идёт производство",
+      "PARTIALLY_RECEIVED": "Частичная приёмка на складе",
+      "FULLY_RECEIVED": "Полная приёмка",
+      "INSPECTING": "Идёт контроль",
+      "ISSUE_REPORTED": "Зафиксировано отклонение",
+      "INSPECTION_PASSED": "Контроль пройден",
+      "CONSOLIDATION": "Консолидация и укрепление",
+      "READY_TO_LOAD": "Готово к погрузке",
+      "BALANCE_PAID": "Остаток оплачен",
+      "CONTAINER_LOADED": "Контейнер загружен",
+      "EXPORT_DOCS_ISSUED": "Экспортные документы выпущены",
+      "BOOKING_CONFIRMED": "Букинг подтверждён",
+      "AT_SEA": "В море",
+      "TRANSHIPMENT": "Перевалка",
+      "ARRIVED_AT_PORT": "Прибыл в порт",
+      "CUSTOMS_CLEARANCE": "Таможенное оформление",
+      "GOODS_DELIVERED": "Груз доставлен",
+      "FILE_CLOSED": "Дело закрыто",
+      "CANCELLED_BY_CLIENT": "Отменено клиентом",
+      "CANCELLED_BY_SOURCINGPICK": "Отменено Sourcing Pick",
+      "REFUND_ISSUED": "Возврат произведён"
+    }
+  },
+  "client": {
+    "requests": {
+      "title": "Мои заявки",
+      "newRequest": "Новая заявка",
+      "colReference": "Номер",
+      "colProduct": "Товар",
+      "colAgent": "Агент",
+      "colCreated": "Создана",
+      "colState": "Статус",
+      "open": "Открыть",
+      "filterAll": "Все",
+      "filterOpen": "В работе",
+      "filterQuoted": "Есть предложение",
+      "filterClosed": "Закрытые",
+      "unassigned": "Не назначен",
+      "empty": "Заявок пока нет."
+    }
   }
 }
