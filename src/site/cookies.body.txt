@@ -1,0 +1,64 @@
+Mentions légales
+Confidentialité
+Cookies
+Conditions générales
+Politique de cookies
+Dernière mise à jour : 24 septembre 2026
+Un cookie est un petit fichier déposé sur votre appareil quand vous visitez un site. Cette page dit lesquels nous déposons, pourquoi, combien de temps ils durent, et comment revenir sur votre choix à tout moment.
+Ce que nous ne faisons pas
+Aucun cookie publicitaire, aucun pixel de réseau social, aucun traceur tiers à des fins de profilage.
+Aucune revente ni location de vos données, à personne, sous aucune forme.
+Aucun cookie de mesure n’est déposé tant que vous n’avez pas accepté.
+Les cookies que nous utilisons
+Cookie
+Finalité
+Durée
+Base
+sp_session
+Vous garder connecté à votre espace client
+12 mois
+Nécessaire
+sp_lang
+Mémoriser la langue que vous avez choisie
+12 mois
+Nécessaire
+sp_draft
+Conserver votre demande de devis en cours de saisie
+30 jours
+Nécessaire
+sp_consent
+Mémoriser votre choix sur les cookies
+6 mois
+Nécessaire
+sp_stats
+Mesure d’audience : pages vues, données agrégées, sans identification
+13 mois
+Consentement
+Stripe, OpenSign
+Sécuriser le paiement et la signature électronique
+Selon le prestataire
+Nécessaire à l’usage
+Revenir sur votre choix
+Le lien « Cookies » en bas de chaque page rouvre le panneau de préférences : vous pouvez retirer votre consentement aussi simplement que vous l’avez donné.
+Sans action de votre part, votre choix est conservé 6 mois, puis la question vous est reposée.
+Votre navigateur permet aussi de bloquer ou d’effacer les cookies. Si vous bloquez les cookies nécessaires, la connexion à votre espace client cesse de fonctionner.
+Le bandeau de consentement
+Ce que voit un visiteur à sa première visite, et le panneau qui s’ouvre s’il veut choisir lui-même.
+Nous déposons le strict nécessaire
+Les cookies nécessaires font fonctionner le site. La mesure d’audience n’est déposée qu’avec votre accord. Aucune publicité, aucune revente.
+Tout accepter
+Tout refuser
+Choisir
+Vos préférences
+Nécessaires
+Session, langue, brouillon de devis, mémorisation de ce choix.
+Toujours actif
+Mesure d’audience
+Pages vues, agrégées, sans identification. Nous aide à savoir quelles pages servent.
+Prestataires
+Stripe et OpenSign, déposés seulement quand vous payez ou signez.
+Enregistrer mes choix
+Une question
+Écrivez à contact@sourcingpick.com. Le traitement de vos données est décrit dans notre
+politique de confidentialité
+.

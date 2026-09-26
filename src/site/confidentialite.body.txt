@@ -1,0 +1,40 @@
+Mentions légales
+Confidentialité
+Cookies
+Conditions générales
+Politique de confidentialité
+Dernière mise à jour : 24 septembre 2026
+Qui traite vos données
+Hangzhou Qiyuan Ying Technology Information Co., Ltd. (杭州起源缨科技信息有限公司), Pièce 401, 4e étage, Bâtiment 3, n° 152 rue Haoyun, sous-district de Liangzhu, district de Yuhang, Hangzhou, Zhejiang, Chine. Contact : contact@sourcingpick.com.
+Les données que nous collectons
+Compte : nom, email, type de compte, entreprise et numéro d’immatriculation.
+Demandes et devis : produits, quantités, budget, adresse de livraison, fichiers joints.
+Messages échangés avec nos agents.
+Paiements : traités par Stripe. Nous ne conservons pas vos numéros de carte.
+Pourquoi nous les utilisons
+Établir vos devis et exécuter vos commandes.
+Vous envoyer les notifications et relances liées à vos commandes.
+Sécuriser votre compte, notamment par un code de vérification envoyé par email.
+Respecter nos obligations comptables.
+Combien de temps nous les gardons
+Les données de votre compte et vos documents commerciaux sont conservés 5 ans après la fin de la relation, durée qui correspond à nos obligations comptables et à la prescription commerciale. Les emails de support sont effacés au bout de 5 ans. Vous pouvez demander la suppression de votre compte à tout moment : nous ne gardons alors que ce que la loi nous impose de conserver.
+Nos prestataires
+Vercel (hébergement), Stripe (paiement) et OpenSign (signature électronique). Le stockage de vos fichiers et l’envoi de nos emails sont assurés par nos propres moyens, sans sous-traitant supplémentaire. Chaque prestataire n’accède qu’aux données nécessaires à sa prestation.
+Transferts hors de l’Union européenne
+Notre équipe traite vos demandes depuis la Chine, et certains prestataires sont situés hors de l’Union européenne. Ces transferts sont encadrés par les clauses contractuelles types de la Commission européenne, complétées par des mesures techniques : chiffrement des échanges, accès limité aux personnes qui en ont besoin et journalisation des consultations.
+Cookies et mesure d’audience
+Nous n’utilisons aucun cookie publicitaire et nous ne revendons aucune donnée. Trois familles seulement, décrites ci-dessous.
+Nécessaires au fonctionnement : session de connexion, sécurité et mémorisation de la langue choisie. Ils ne demandent pas votre accord et durent au maximum 12 mois.
+Mesure d’audience : statistiques agrégées sur les pages consultées, sans identifiant publicitaire et sans partage avec un tiers. Déposés uniquement après votre accord, conservés 13 mois au plus.
+Déposés par nos prestataires : Stripe au moment du paiement, pour détecter la fraude ; OpenSign au moment de la signature, pour authentifier la session. Ils ne servent qu’à ces opérations.
+Le bandeau vous laisse accepter, refuser ou choisir catégorie par catégorie, et refuser est aussi simple qu’accepter. Votre choix est conservé 6 mois, et le lien « Cookies » en bas de page permet de le modifier à tout moment.
+Sécurité et incidents
+Les échanges sont chiffrés en transit et les documents au repos. L’accès aux dossiers est limité aux personnes qui en ont besoin, chaque consultation est journalisée, et les comptes internes sont protégés par une authentification à deux facteurs.
+En cas de violation de données, nous ouvrons un registre d’incident, corrigeons la faille et évaluons le risque. Si le risque pour vos droits est probable, nous notifions l’autorité de protection compétente dans les 72 heures après en avoir pris connaissance.
+Si le risque est élevé pour vous, nous vous prévenons directement, en décrivant ce qui s’est passé, les données concernées, ce que nous avons fait et ce que nous vous recommandons de faire.
+Vos droits
+Vous pouvez demander l’accès, la rectification, l’effacement, la limitation ou la portabilité de vos données, et vous opposer à leur traitement. Écrivez à contact@sourcingpick.com. Vous pouvez aussi saisir l’autorité de protection des données de votre pays (en France, la CNIL).
+Mineurs
+Le service s’adresse à des professionnels et à des particuliers majeurs. Nous ne créons pas de compte pour une personne de moins de 18 ans et ne collectons pas sciemment de données la concernant.
+Modifications de cette politique
+Toute modification est publiée sur cette page avec sa date. Si elle change la façon dont nous utilisons vos données, nous vous prévenons par email au moins 30 jours avant son entrée en vigueur.
