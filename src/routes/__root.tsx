@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Outlet, Scripts, useRouterState } from "@tanstack/react-router";
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { SiteNotFound } from "@/components/site-layout";
@@ -8,9 +8,11 @@ import { Track } from "@/components/track";
 import appCss from "../styles.css?url";
 
 function Fonts() {
+  const path = useRouterState({ select: (state) => state.location.pathname });
   useEffect(() => {
     const core = "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;600&display=swap";
     const extra = "https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Libre+Baskerville:wght@400;700&family=Newsreader:opsz,wght@6..72,400;600;700&family=Noto+Sans+SC:wght@500;700&family=Nunito:wght@400;600;700&display=swap";
+    const office = /^\/(admin|devis|factures|avoirs|clients|paiements|demandes|espace|commandes|documents|contrats|emails|journal|logs|agents|utilisateurs|parametres|stock|statistiques|gestion|sessions)(\/|$)/.test(path);
     const add = (href: string, mark: string) => {
       if (document.querySelector(`link[data-sp-fonts="${mark}"]`)) return;
       const link = document.createElement("link");
@@ -20,6 +22,7 @@ function Fonts() {
       document.head.appendChild(link);
     };
     add(core, "core");
+    if (office) return;
     let idleId = 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
     if ("requestIdleCallback" in window) idleId = window.requestIdleCallback(() => add(extra, "extra"));
@@ -28,7 +31,7 @@ function Fonts() {
       if (idleId && "cancelIdleCallback" in window) window.cancelIdleCallback(idleId);
       if (timer) globalThis.clearTimeout(timer);
     };
-  }, []);
+  }, [path]);
   return null;
 }
 

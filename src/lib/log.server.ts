@@ -56,6 +56,7 @@ let last = empty;
 let lastProbe = 0;
 let probing: Promise<Health> | null = null;
 let wasOk = true;
+let lastBeat = 0;
 
 export function readHealth() {
   return last;
@@ -102,6 +103,7 @@ async function measure() {
   databaseUp.set(db === "ok" ? 1 : 0);
   memoryMb.set(memoryMbValue);
   loopLag.set(lagMs);
+  const beat = Date.now() - lastBeat > 15 * 60 * 1000;
   if (!ok && wasOk) {
     logger.error(`santé dégradée — ${note}`, last);
     void import("@/lib/error-log.server").then(({ recordError }) =>
@@ -110,8 +112,10 @@ async function measure() {
     void alertMail(last);
   } else if (ok && !wasOk) {
     logger.info("santé rétablie", last);
+    lastBeat = Date.now();
     void alertMail(last);
-  } else if (ok) {
+  } else if (ok && beat) {
+    lastBeat = Date.now();
     logger.info(`santé ${note}`, { memoryMb: memoryMbValue, heapMb, db, lagMs, uptimeSec: last.uptimeSec });
   }
   wasOk = ok;

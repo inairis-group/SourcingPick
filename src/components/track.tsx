@@ -4,16 +4,6 @@ import { trackEvent, trackVisit } from "@/lib/commerce.functions";
 
 const PRIVATE = /^\/(admin|agent|devis|factures|avoirs|clients|commandes|demandes|documents|emails|statistiques|journal|logs|parametres|utilisateurs|sessions|agents|paiements|contrats|stock|gestion|imprimer|connexion|inscription|acces|verification|api)(\/|$)/;
 
-function sectionName() {
-  const nodes = document.querySelectorAll("h1, h2, h3");
-  let name = "";
-  for (const node of nodes) {
-    const top = node.getBoundingClientRect().top;
-    if (top < 180) name = (node.textContent || "").replace(/\s+/g, " ").trim().slice(0, 80);
-  }
-  return name;
-}
-
 export function Track() {
   const path = useRouterState({ select: (state) => state.location.pathname });
   useEffect(() => {
@@ -42,21 +32,34 @@ export function Track() {
 
     const start = Date.now();
     const sent = new Set<number>();
+    const headings = [...document.querySelectorAll("h1, h2, h3")];
+    const sectionName = () => {
+      let name = "";
+      for (const node of headings) {
+        if (node.getBoundingClientRect().top < 180) name = (node.textContent || "").replace(/\s+/g, " ").trim().slice(0, 80);
+      }
+      return name;
+    };
     let left = false;
     const send = (kind: "scroll" | "leave", depth: number) => {
       void trackEvent({
         data: { path: url.pathname, visitor, kind, depth, section: sectionName(), seconds: kind === "leave" ? Math.round((Date.now() - start) / 1000) : 0 },
       }).catch(() => undefined);
     };
+    let frame = 0;
     const onScroll = () => {
-      const height = document.documentElement.scrollHeight - window.innerHeight;
-      const depth = height <= 8 ? 100 : Math.round((window.scrollY / height) * 100);
-      for (const mark of [25, 50, 75, 100]) {
-        if (depth >= mark && !sent.has(mark)) {
-          sent.add(mark);
-          send("scroll", mark);
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const height = document.documentElement.scrollHeight - window.innerHeight;
+        const depth = height <= 8 ? 100 : Math.round((window.scrollY / height) * 100);
+        for (const mark of [25, 50, 75, 100]) {
+          if (depth >= mark && !sent.has(mark)) {
+            sent.add(mark);
+            send("scroll", mark);
+          }
         }
-      }
+      });
     };
     const leave = () => {
       if (left) return;
@@ -66,7 +69,7 @@ export function Track() {
     const onHide = () => {
       if (document.visibilityState === "hidden") leave();
     };
-    const frame = requestAnimationFrame(onScroll);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("visibilitychange", onHide);
     return () => {

@@ -635,6 +635,8 @@ export function armBilling() {
       void import("@/lib/error-log.server").then(({ recordError }) => recordError("facturation", message, error instanceof Error ? error.stack || "" : ""));
     });
   };
-  setTimeout(tick, 45_000);
-  setInterval(tick, 6 * 60 * 60 * 1000);
+  const first = setTimeout(tick, 45_000);
+  const every = setInterval(tick, 6 * 60 * 60 * 1000);
+  first.unref?.();
+  every.unref?.();
 }

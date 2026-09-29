@@ -240,12 +240,9 @@ function Page() {
       <h2 className="display mb-3 text-lg">Comptes liés</h2>
       <div className="grid gap-3">
         {clients.map((client) => {
-          const mine = quotes.filter((quote) => quote.clientUserId === client.id || quote.clientEmail === client.email);
-          const bills = invoices.filter((invoice) => {
-            const company = (client.company || "").trim().toLowerCase();
-            const named = (invoice.clientName || "").trim().toLowerCase();
-            return invoice.clientUserId === client.id || invoice.clientEmail === client.email || (company.length > 1 && named === company);
-          });
+          const email = client.email.trim().toLowerCase();
+          const mine = quotes.filter((quote) => quote.clientUserId === client.id || (email.length > 3 && (quote.clientEmail || "").trim().toLowerCase() === email));
+          const bills = invoices.filter((invoice) => invoice.clientUserId === client.id || (email.length > 3 && (invoice.clientEmail || "").trim().toLowerCase() === email));
           const signed = mine.filter((quote) => quote.status === "Devis signé").length;
           const open = openId === client.id;
           return (

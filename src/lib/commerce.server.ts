@@ -276,22 +276,31 @@ export async function recordEvent(input: { path: string; visitor: string; kind: 
   return { ok: true };
 }
 
-async function windowCount(days: number) {
+async function windowCounts() {
   const sql = await getSql();
-  const rows = await sql<{ views: number; visitors: number }>`
-    select count(*)::int as views, count(distinct visitor)::int as visitors
+  const rows = await sql<{ d1v: number; d1u: number; d7v: number; d7u: number; d30v: number; d30u: number }>`
+    select
+      count(*) filter (where at > now() - interval '1 day')::int as d1v,
+      count(distinct visitor) filter (where at > now() - interval '1 day')::int as d1u,
+      count(*) filter (where at > now() - interval '7 days')::int as d7v,
+      count(distinct visitor) filter (where at > now() - interval '7 days')::int as d7u,
+      count(*)::int as d30v,
+      count(distinct visitor)::int as d30u
     from site_hits
-    where at > now() - make_interval(days => ${days}) and path !~ ${STAFF_PATH}`;
-  return { views: Number(rows[0]?.views) || 0, visitors: Number(rows[0]?.visitors) || 0 };
+    where at > now() - interval '30 days' and path !~ ${STAFF_PATH}`;
+  const row = rows[0];
+  return {
+    today: { views: Number(row?.d1v) || 0, visitors: Number(row?.d1u) || 0 },
+    week: { views: Number(row?.d7v) || 0, visitors: Number(row?.d7u) || 0 },
+    month: { views: Number(row?.d30v) || 0, visitors: Number(row?.d30u) || 0 },
+  };
 }
 
 export async function readStats(): Promise<SiteStats> {
   await ensureCommerce();
   const sql = await getSql();
-  const [today, week, month, pages, sources, countries, devices, recent, reading, sections] = await Promise.all([
-    windowCount(1),
-    windowCount(7),
-    windowCount(30),
+  const [span, pages, sources, countries, devices, recent, reading, sections] = await Promise.all([
+    windowCounts(),
     sql<{ label: string; n: number }>`select path as label, count(*)::int as n from site_hits where at > now() - interval '30 days' and path !~ ${STAFF_PATH} group by path order by n desc limit 12`,
     sql<{ label: string; n: number }>`select source as label, count(*)::int as n from site_hits where at > now() - interval '30 days' and path !~ ${STAFF_PATH} group by source order by n desc limit 12`,
     sql<{ label: string; n: number }>`select coalesce(nullif(country, ''), '—') as label, count(*)::int as n from site_hits where at > now() - interval '30 days' and path !~ ${STAFF_PATH} group by 1 order by n desc limit 12`,
@@ -322,9 +331,9 @@ export async function readStats(): Promise<SiteStats> {
   const [mails, mailLog] = await Promise.all([mailSummary(), listMailMessages()]);
   const num = (rows: Array<{ label: string; n: number }>) => rows.map((row) => ({ label: row.label || "—", n: Number(row.n) || 0 }));
   return {
-    today,
-    week,
-    month,
+    today: span.today,
+    week: span.week,
+    month: span.month,
     pages: num(pages),
     sources: num(sources),
     countries: num(countries),
