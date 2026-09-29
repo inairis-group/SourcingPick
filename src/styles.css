@@ -244,50 +244,57 @@ select.field {
   color: var(--color-gold);
 }
 
-/* Barre du menu : fine, sombre, sans les flèches du navigateur. */
-.bg-sidebar {
-  color-scheme: dark;
-}
-
+/* Barre du menu : piste navy, pouce clair, sans flèches.
+   Couleurs en background-color + hex : lightningcss casse
+   background:transparent et background-clip (piste blanche). */
 .bg-sidebar,
 .bg-sidebar nav {
+  color-scheme: dark;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+  scrollbar-color: #9aafd4 #0b1433;
 }
 
 .bg-sidebar::-webkit-scrollbar,
 .bg-sidebar nav::-webkit-scrollbar {
   width: 8px;
   height: 8px;
+  background-color: #0b1433;
 }
 
 .bg-sidebar::-webkit-scrollbar-track,
 .bg-sidebar nav::-webkit-scrollbar-track,
 .bg-sidebar::-webkit-scrollbar-corner,
 .bg-sidebar nav::-webkit-scrollbar-corner {
-  background: transparent;
+  background-color: #0b1433;
 }
 
 .bg-sidebar::-webkit-scrollbar-thumb,
 .bg-sidebar nav::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.32);
-  border: 2px solid transparent;
+  background-color: #9aafd4;
   border-radius: 999px;
-  background-clip: padding-box;
 }
 
 .bg-sidebar::-webkit-scrollbar-thumb:hover,
 .bg-sidebar nav::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
-  border: 2px solid transparent;
-  background-clip: padding-box;
+  background-color: #d5def0;
 }
 
 .bg-sidebar::-webkit-scrollbar-button,
-.bg-sidebar nav::-webkit-scrollbar-button {
+.bg-sidebar nav::-webkit-scrollbar-button,
+.bg-sidebar::-webkit-scrollbar-button:single-button,
+.bg-sidebar nav::-webkit-scrollbar-button:single-button,
+.bg-sidebar::-webkit-scrollbar-button:vertical:start:decrement,
+.bg-sidebar nav::-webkit-scrollbar-button:vertical:start:decrement,
+.bg-sidebar::-webkit-scrollbar-button:vertical:end:increment,
+.bg-sidebar nav::-webkit-scrollbar-button:vertical:end:increment,
+.bg-sidebar::-webkit-scrollbar-button:vertical:start:increment,
+.bg-sidebar nav::-webkit-scrollbar-button:vertical:start:increment,
+.bg-sidebar::-webkit-scrollbar-button:vertical:end:decrement,
+.bg-sidebar nav::-webkit-scrollbar-button:vertical:end:decrement {
   display: none;
   width: 0;
   height: 0;
+  background-color: #0b1433;
 }
 
 @keyframes draw {
