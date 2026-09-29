@@ -1451,9 +1451,15 @@ select.field {
 .sp-hero-art,
 .sp-step,
 .sp-pose-float {
+  opacity: 1;
   animation: sp-float 6.5s ease-in-out infinite;
-  transform-box: view-box;
+  transform-box: fill-box;
   transform-origin: center;
+}
+
+.sp-step.sp-await,
+img.sp-step {
+  opacity: 1;
 }
 
 .sp-pose-hop {

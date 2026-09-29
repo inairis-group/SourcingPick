@@ -445,7 +445,7 @@ function motion(root: HTMLElement) {
     const style = node.getAttribute("style") || "";
     return style.includes("border-radius: 22px") || style.includes("border-radius: 24px");
   });
-  const nodes = [...root.querySelectorAll("h2, article, .sp-step"), ...cards]
+  const nodes = [...root.querySelectorAll("h2, article"), ...cards]
     .filter((node, index, all) => all.indexOf(node) === index && !hero?.contains(node))
     .slice(0, 36);
   const reveal = (el: Element) => {
