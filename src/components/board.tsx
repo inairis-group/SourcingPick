@@ -346,13 +346,24 @@ function openLongBoards(root: HTMLElement, force = false) {
 function linkCommerce(root: HTMLElement) {
   const nav = root.querySelector("header nav");
   if (nav && !nav.querySelector('a[href="/marketplace"]')) {
+    const faq = [...nav.querySelectorAll("a")].find((link) => link.getAttribute("href") === "/faq");
     for (const [href, label] of [["/marketplace", "Marketplace"], ["/encheres", "Enchères"]] as const) {
       const link = document.createElement("a");
       link.href = href;
       link.textContent = label;
-      link.style.cssText = "color:#0E1A3D;font-size:15px;font-weight:500;white-space:nowrap;";
-      nav.appendChild(link);
+      link.style.cssText = "color:#0E1A3D;font-size:14px;font-weight:500;white-space:nowrap;";
+      if (faq) nav.insertBefore(link, faq);
+      else nav.appendChild(link);
     }
+    nav.style.gap = "14px";
+    nav.style.flex = "1 1 auto";
+    nav.style.minWidth = "0";
+  }
+  const header = root.querySelector("header");
+  if (header instanceof HTMLElement && nav) {
+    header.style.paddingLeft = "28px";
+    header.style.paddingRight = "28px";
+    header.style.gap = "12px";
   }
   for (const block of root.querySelectorAll("footer div")) {
     const title = block.querySelector(":scope > span");

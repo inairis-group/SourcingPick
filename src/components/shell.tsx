@@ -248,7 +248,7 @@ export function Shell({ children }: { children: ReactNode }) {
   }
 
   const aside = (
-    <div className="flex h-full flex-col gap-5">
+    <div className="flex h-full min-h-0 flex-col gap-5">
       <div className={`flex items-center gap-2 ${collapsed ? "lg:justify-center" : "justify-between px-1.5"}`}>
         <div className={`flex flex-col gap-3 ${collapsed ? "lg:hidden" : ""}`}>
           <img src="/logo-lockup.svg" alt="Sourcing Pick" className="h-7 w-auto self-start" />
@@ -269,7 +269,7 @@ export function Shell({ children }: { children: ReactNode }) {
           <PanelLeft size={18} />
         </button>
       </div>
-      <nav className="flex flex-col gap-0.5">
+      <nav className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto">
         {NAV.filter((item) => account && (item.roles as readonly string[]).includes(account.role)).map((item) => (
           <NavLink key={item.to} {...item} />
         ))}
@@ -282,7 +282,7 @@ export function Shell({ children }: { children: ReactNode }) {
           </>
         ) : null}
       </nav>
-      <div className="mt-auto flex flex-col gap-1 border-t border-white/12 pt-3">
+      <div className="flex shrink-0 flex-col gap-1 border-t border-white/12 pt-3">
         {FOOT.filter((item) => account && (item.roles as readonly string[]).includes(account.role)).map((item) => (
           <NavLink key={item.to} {...item} />
         ))}
@@ -311,7 +311,7 @@ export function Shell({ children }: { children: ReactNode }) {
     <UiLangProvider role={account.role}>
     <div className={`min-h-screen bg-canvas text-ink lg:grid ${collapsed ? "lg:grid-cols-[76px_minmax(0,1fr)]" : "lg:grid-cols-[248px_minmax(0,1fr)]"}`}>
       {account ? <Tour /> : null}
-      <aside className={`sticky top-0 z-30 hidden h-screen flex-col overflow-y-auto bg-sidebar py-6 lg:flex ${collapsed ? "px-2" : "px-4"}`}>{aside}</aside>
+      <aside className={`sticky top-0 z-30 hidden h-screen min-h-0 flex-col overflow-hidden bg-sidebar py-6 lg:flex ${collapsed ? "px-2" : "px-4"}`}>{aside}</aside>
       {open ? (
         <div className="fixed inset-0 z-40 lg:hidden">
           <button className="absolute inset-0 bg-navy/50" aria-label="Fermer le menu" onClick={() => setOpen(false)} />
