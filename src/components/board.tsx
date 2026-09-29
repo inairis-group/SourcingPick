@@ -250,14 +250,21 @@ function animateSteps(root: HTMLElement) {
 
 function placeRails(root: HTMLElement) {
   for (const rail of root.querySelectorAll<HTMLElement>(".sp-rail")) {
-    const badge = rail.querySelector<HTMLElement>(".sp-step-badge");
-    if (!badge) continue;
+    const badges = [...rail.querySelectorAll<HTMLElement>(".sp-step-badge")];
+    const first = badges[0];
+    const last = badges.at(-1);
+    if (!first || !last) continue;
     const railBox = rail.getBoundingClientRect();
-    const badgeBox = badge.getBoundingClientRect();
+    const firstBox = first.getBoundingClientRect();
+    const lastBox = last.getBoundingClientRect();
     const scale = rail.offsetWidth ? railBox.width / rail.offsetWidth : 1;
     if (!scale) continue;
-    const x = (badgeBox.left - railBox.left) / scale + badgeBox.width / scale / 2 - 1.5;
+    const x = (firstBox.left - railBox.left) / scale + firstBox.width / scale / 2 - 1;
+    const top = (firstBox.top - railBox.top) / scale + firstBox.height / scale / 2;
+    const bottom = (railBox.bottom - lastBox.bottom) / scale + lastBox.height / scale / 2;
     rail.style.setProperty("--rail-x", `${Math.round(x)}px`);
+    rail.style.setProperty("--rail-top", `${Math.round(top)}px`);
+    rail.style.setProperty("--rail-bottom", `${Math.round(bottom)}px`);
   }
 }
 

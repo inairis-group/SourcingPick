@@ -28,9 +28,12 @@ async function instant(query: string): Promise<number | null> {
   return Number.isFinite(raw) ? raw : null;
 }
 
+const cacheRatio =
+  'sum(rate(pg_stat_database_blks_hit{datname!="",datname!~"template.*"}[10m])) / clamp_min(sum(rate(pg_stat_database_blks_hit{datname!="",datname!~"template.*"}[10m])) + sum(rate(pg_stat_database_blks_read{datname!="",datname!~"template.*"}[10m])), 0.001)';
+
 export async function readBoard() {
   try {
-    const [up, db, memory, pages, errors, latency, redis, redisUsed, redisMax] = await Promise.all([
+    const [up, db, memory, pages, errors, latency, redis, redisUsed, redisMax, sql, pgCache, pgSessions] = await Promise.all([
       instant("sourcingpick_up"),
       instant("sourcingpick_db_up"),
       range("sourcingpick_memory_mb"),
@@ -40,9 +43,12 @@ export async function readBoard() {
       range("redis_memory_used_bytes / 1048576"),
       instant("redis_memory_used_bytes"),
       instant("redis_memory_max_bytes"),
+      range("histogram_quantile(0.95, sum by (le) (rate(sourcingpick_sql_duration_seconds_bucket[5m])))"),
+      instant(cacheRatio),
+      instant("sum(pg_stat_activity_count)"),
     ]);
-    return { ready: true, up, db, memory, pages, errors, latency, redis, redisUsed, redisMax };
+    return { ready: true, up, db, memory, pages, errors, latency, redis, redisUsed, redisMax, sql, pgCache, pgSessions };
   } catch {
-    return { ready: false, up: null, db: null, memory: [], pages: [], errors: [], latency: [], redis: [], redisUsed: null, redisMax: null };
+    return { ready: false, up: null, db: null, memory: [], pages: [], errors: [], latency: [], redis: [], redisUsed: null, redisMax: null, sql: [], pgCache: null, pgSessions: null };
   }
 }

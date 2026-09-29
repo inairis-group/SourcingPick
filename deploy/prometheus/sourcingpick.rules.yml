@@ -97,6 +97,70 @@ groups:
         annotations:
           summary: Redis refuse des connexions
           description: Redis n’accepte plus de nouvelle connexion. Le cache ne sert plus les lectures.
+      - alert: RedisConnections
+        expr: redis_connected_clients > 40
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Redis a trop de connexions
+          description: Plus de 40 connexions restent ouvertes. Une connexion devrait suffire pour le site.
+      - alert: RedisBlocked
+        expr: redis_blocked_clients > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Des commandes Redis sont bloquées
+          description: Redis fait attendre des clients depuis 5 minutes.
+      - alert: RedisFragmentation
+        expr: redis_memory_used_bytes > 8 * 1024 * 1024 and redis_mem_fragmentation_ratio > 1.8
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: La mémoire Redis est fragmentée
+          description: Redis occupe beaucoup plus de mémoire réelle que les données qu’il garde.
+      - alert: SourcingPickSqlSlow
+        expr: histogram_quantile(0.95, sum by (le) (rate(sourcingpick_sql_duration_seconds_bucket[5m]))) > 0.25
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Les requêtes de la base sont lentes
+          description: 95 % des requêtes SQL mettent plus de 250 ms.
+      - alert: PostgresDown
+        expr: pg_exporter_last_scrape_error == 1 or up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: PostgreSQL ne répond plus
+          description: Les statistiques PostgreSQL ne sont plus lisibles.
+      - alert: PostgresConnections
+        expr: sum(pg_stat_activity_count) > 150
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: PostgreSQL a beaucoup de connexions
+          description: Plus de 150 sessions sont ouvertes depuis 10 minutes.
+      - alert: PostgresSlowQueries
+        expr: max(pg_stat_activity_max_tx_duration{state=~"active|idle in transaction"}) > 30
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Une requête PostgreSQL dure trop longtemps
+          description: Une transaction reste ouverte plus de 30 secondes.
+      - alert: PostgresCache
+        expr: sum(rate(pg_stat_database_blks_hit{datname!="",datname!~"template.*"}[10m])) / clamp_min(sum(rate(pg_stat_database_blks_hit{datname!="",datname!~"template.*"}[10m])) + sum(rate(pg_stat_database_blks_read{datname!="",datname!~"template.*"}[10m])), 0.001) < 0.9
+        for: 20m
+        labels:
+          severity: warning
+        annotations:
+          summary: PostgreSQL lit trop le disque
+          description: Moins de 90 % des lectures viennent de la mémoire. Les requêtes ralentissent.
       - alert: RedisSlow
         expr: sourcingpick_redis_ping_ms > 20
         for: 5m

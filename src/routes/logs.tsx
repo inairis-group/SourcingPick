@@ -96,6 +96,13 @@ function Page() {
             Réseau {live.netMs < 0 ? "coupé" : `${live.netMs} ms`}
             <span className="mx-2 text-muted">·</span>
             Site {live.siteMs < 0 ? "injoignable" : `${live.siteMs} ms`}
+            {curves?.pgSessions != null ? (
+              <>
+                <span className="mx-2 text-muted">·</span>
+                PostgreSQL {Math.round(curves.pgSessions)} sessions
+                {curves.pgCache != null ? ` · cache ${Math.round(curves.pgCache * 100)} %` : ""}
+              </>
+            ) : null}
             <span className="mx-2 text-muted">·</span>
             Vu à {clock(live.checkedAt)}
           </p>
@@ -108,6 +115,7 @@ function Page() {
         <Chart title="Mémoire Redis" points={curves?.redis ?? []} unit="Mo" digits={2} />
         <Chart title="Requêtes par minute" points={curves?.pages ?? []} unit="/ min" digits={1} />
         <Chart title="Temps de réponse des pages" points={curves?.latency ?? []} unit="s" digits={2} />
+        <Chart title="Temps des requêtes SQL" points={curves?.sql ?? []} unit="s" digits={3} />
         <Chart title="Erreurs serveur par minute" points={curves?.errors ?? []} unit="/ min" digits={2} />
       </div>
       <section className="mb-8 rounded-2xl border border-line bg-white p-4">
