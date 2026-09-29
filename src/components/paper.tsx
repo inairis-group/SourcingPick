@@ -1,5 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { paperLabels, toPaper, type Client, type Company, type Document } from "@/lib/docs";
+import { conditionsFor, isDevis, isFacture, paperLabels, toPaper, type Client, type Company, type Document } from "@/lib/docs";
+import { isYuan } from "@/lib/fx.shared";
+import { useFxRate } from "@/lib/use-fx";
 import { marks } from "@/components/marks";
 import { useAtelier } from "@/lib/store";
 
@@ -124,7 +126,12 @@ export function Paper({ doc, company: givenCompany, client: givenClient }: { doc
   const storedClient = useAtelier((s) => s.clients.find((c) => c.id === doc.clientId));
   const company = givenCompany ?? storedCompany;
   const client = givenClient === undefined ? storedClient : givenClient ?? undefined;
-  const model = toPaper(doc, company, client);
+  const fx = useFxRate(company.fxLabel);
+  const rated: Document = { ...doc, cnyPerEur: doc.cnyPerEur || fx.cnyPerEur };
+  const shown = !doc.conditionsCustom && (isDevis(rated) || isFacture(rated)) && isYuan(rated.currency)
+    ? { ...rated, conditions: conditionsFor(rated, company) }
+    : rated;
+  const model = toPaper(shown, company, client);
   const copy = paperLabels(doc.lang);
   const font = paperFont(doc.font);
 

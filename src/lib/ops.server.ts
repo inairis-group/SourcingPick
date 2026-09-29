@@ -1,4 +1,5 @@
 import { getSql, type Sql } from "@/lib/db";
+import { eurCentsFromCny, formatMoney, formatRate, isYuan } from "@/lib/fx.shared";
 import { cachedRead } from "@/lib/read-cache";
 import { armBilling, ensureBillingSchema, sendInvoiceReminder } from "@/lib/billing.server";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -1000,8 +1001,8 @@ export async function createDepositInvoice(id: string, actor: string) {
   const lines = JSON.stringify([
     { id: uid("ln"), kind: "service", title: `Acompte du devis ${quote.number}`, details: quote.number, qty: 1, unitCents: math.depositCents },
   ]);
-  await sql`insert into ops_invoices (id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, status, lines_json, issued_on, kind, due_on, reminders_on, lang)
-    values (${invoiceId}, ${number}, ${quote.orderRef}, ${quote.clientName}, ${quote.clientUserId || ""}, ${quote.clientEmail || ""}, ${quote.clientCompany || ""}, ${quote.clientAddress || ""}, ${quote.clientVat || ""}, ${quote.clientSiren || ""}, ${quote.clientSiret || ""}, ${quote.clientNaf || ""}, ${math.depositCents}, ${"Wise"}, ${"À régler"}, ${lines}, ${issued}, ${"deposit"}, ${due}, true, ${quote.lang === "en" ? "en" : "fr"})`;
+  await sql`insert into ops_invoices (id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, status, lines_json, issued_on, kind, due_on, reminders_on, lang, currency)
+    values (${invoiceId}, ${number}, ${quote.orderRef}, ${quote.clientName}, ${quote.clientUserId || ""}, ${quote.clientEmail || ""}, ${quote.clientCompany || ""}, ${quote.clientAddress || ""}, ${quote.clientVat || ""}, ${quote.clientSiren || ""}, ${quote.clientSiret || ""}, ${quote.clientNaf || ""}, ${math.depositCents}, ${"Wise"}, ${"À régler"}, ${lines}, ${issued}, ${"deposit"}, ${due}, true, ${quote.lang === "en" ? "en" : "fr"}, ${quote.currency || "EUR"})`;
   if (quote.orderRef) {
     await sql`update ops_orders set state = ${"Paiement en attente"}, substate = ${"Facture d’acompte émise"}, updated_at = now() where ref = ${quote.orderRef}`;
   }
@@ -1058,8 +1059,8 @@ export async function createQuoteBill(id: string, actor: string, mode: "deposit"
   const issued = new Date().toISOString().slice(0, 10);
   const title = mode === "balance" ? `Solde du devis ${quote.number}` : `Facture intégrale ${quote.number}`;
   const lines = JSON.stringify([{ id: uid("ln"), kind: "service", title, details: "", qty: 1, unitCents: amount }]);
-  await sql`insert into ops_invoices (id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, status, lines_json, issued_on, kind, due_on, reminders_on, lang)
-    values (${invoiceId}, ${number}, ${quote.orderRef}, ${quote.clientName}, ${quote.clientUserId || ""}, ${quote.clientEmail || ""}, ${quote.clientCompany || ""}, ${quote.clientAddress || ""}, ${quote.clientVat || ""}, ${quote.clientSiren || ""}, ${quote.clientSiret || ""}, ${quote.clientNaf || ""}, ${amount}, ${"Virement"}, ${"Brouillon"}, ${lines}, ${issued}, ${mode === "balance" ? "balance" : "standard"}, ${DUE_ON_RECEIPT}, true, ${quote.lang === "en" ? "en" : "fr"})`;
+  await sql`insert into ops_invoices (id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, status, lines_json, issued_on, kind, due_on, reminders_on, lang, currency)
+    values (${invoiceId}, ${number}, ${quote.orderRef}, ${quote.clientName}, ${quote.clientUserId || ""}, ${quote.clientEmail || ""}, ${quote.clientCompany || ""}, ${quote.clientAddress || ""}, ${quote.clientVat || ""}, ${quote.clientSiren || ""}, ${quote.clientSiret || ""}, ${quote.clientNaf || ""}, ${amount}, ${"Virement"}, ${"Brouillon"}, ${lines}, ${issued}, ${mode === "balance" ? "balance" : "standard"}, ${DUE_ON_RECEIPT}, true, ${quote.lang === "en" ? "en" : "fr"}, ${quote.currency || "EUR"})`;
   await log(sql, actor, mode === "balance" ? "Facture de solde" : "Facture intégrale", number);
   await fileDoc(sql, quote.clientName, "Devis, factures et avoirs", `${title} ${number}`, quote.orderRef || quote.number);
   return invoiceId;
@@ -1093,6 +1094,7 @@ type InvoiceRow = {
   reminder_on: string;
   series_id: string;
   lang: string;
+  currency: string;
 };
 
 function mapInvoice(row: InvoiceRow): OpsInvoice {
@@ -1124,6 +1126,7 @@ function mapInvoice(row: InvoiceRow): OpsInvoice {
     reminderOn: row.reminder_on || "",
     seriesId: row.series_id || "",
     lang: row.lang === "en" ? "en" : "fr",
+    currency: row.currency || "EUR",
   };
 }
 
@@ -1134,7 +1137,7 @@ export function listInvoices() {
 async function listInvoicesNow() {
   await ensureOps();
   const sql = await getSql();
-  const rows = await sql<InvoiceRow>`select id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, received_on, issued_on, status, received_cents, fees_cents, lines_json, kind, due_on, reminders_on, reminder_level, reminder_on, series_id, lang from ops_invoices order by number desc`;
+  const rows = await sql<InvoiceRow>`select id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, received_on, issued_on, status, received_cents, fees_cents, lines_json, kind, due_on, reminders_on, reminder_level, reminder_on, series_id, lang, currency from ops_invoices order by number desc`;
   return rows.map((row) => {
     const invoice = mapInvoice({ ...row, lines_json: withoutInlineImages(row.lines_json) });
     return { ...invoice, lines: invoice.lines.map((line) => (line.image || line.images?.length ? { ...line, image: "", images: [] } : line)) };
@@ -1144,7 +1147,7 @@ async function listInvoicesNow() {
 export async function getInvoice(id: string) {
   await ensureOps();
   const sql = await getSql();
-  const rows = await sql<InvoiceRow>`select id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, received_on, issued_on, status, received_cents, fees_cents, lines_json, kind, due_on, reminders_on, reminder_level, reminder_on, series_id, lang from ops_invoices where id = ${id} or number = ${id} order by (id = ${id}) desc limit 1`;
+  const rows = await sql<InvoiceRow>`select id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, received_on, issued_on, status, received_cents, fees_cents, lines_json, kind, due_on, reminders_on, reminder_level, reminder_on, series_id, lang, currency from ops_invoices where id = ${id} or number = ${id} order by (id = ${id}) desc limit 1`;
   return rows[0] ? mapInvoice(rows[0]) : null;
 }
 
@@ -1183,15 +1186,25 @@ export async function sendInvoiceCopy(id: string, actor: string, message: string
   const bankRows = await sql<{ beneficiary: string; iban: string; swift: string; bank: string }>`
     select beneficiary, iban, swift, bank from ops_settings where id = 'main'`;
   const bank = bankRows[0];
-  const money = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
+  const money = (cents: number) => formatMoney(cents, invoice.currency);
   const due = duePhrase(invoice.dueOn, invoice.lang === "en");
   const who = invoice.clientCompany || invoice.clientName;
   const letterSubject = (subject || `Votre facture ${invoice.number}`).slice(0, 180);
+  let euroLine = "";
+  if (isYuan(invoice.currency)) {
+    const { eurCny } = await import("@/lib/fx.server");
+    const rate = await eurCny();
+    const eur = formatMoney(eurCentsFromCny(invoice.amountCents, rate.cnyPerEur), "EUR");
+    euroLine = invoice.lang === "en"
+      ? `To pay in euros: ${eur} (1 EUR = ${formatRate(rate.cnyPerEur)} CNY).`
+      : `À verser en euros : ${eur} (1 € = ${formatRate(rate.cnyPerEur)} CNY).`;
+  }
   const facts = [
     message.trim() || `Bonjour,\n\nVeuillez trouver votre facture ${invoice.number}.`,
     "",
     `${who || ""}${invoice.clientAddress ? `\n${invoice.clientAddress}` : ""}${invoice.clientSiret ? `\nSIRET ${invoice.clientSiret}` : ""}`,
     due ? `Échéance ${due}` : "Échéance à réception",
+    euroLine,
     invoice.lines
       .filter((line) => line.title.trim())
       .map((line) => `• ${line.title} — ${line.qty} × ${money(line.unitCents)}`)
@@ -1495,7 +1508,7 @@ export async function createBlankInvoice(actor: string) {
 
 export async function updateInvoice(
   id: string,
-  patch: { clientName: string; orderRef: string; amountCents: number; number?: string; clientUserId?: string; clientEmail?: string; clientCompany?: string; clientAddress?: string; clientVat?: string; clientSiren?: string; clientSiret?: string; clientNaf?: string; lines?: QuoteLine[]; dueOn?: string; remindersOn?: boolean; lang?: string },
+  patch: { clientName: string; orderRef: string; amountCents: number; number?: string; clientUserId?: string; clientEmail?: string; clientCompany?: string; clientAddress?: string; clientVat?: string; clientSiren?: string; clientSiret?: string; clientNaf?: string; lines?: QuoteLine[]; dueOn?: string; remindersOn?: boolean; lang?: string; currency?: string },
   actor: string,
 ) {
   const sql = await getSql();
@@ -1518,6 +1531,7 @@ export async function updateInvoice(
     client_siren = ${patch.clientSiren || ""}, client_siret = ${patch.clientSiret || ""}, client_naf = ${patch.clientNaf || ""},
     lines_json = ${JSON.stringify(patch.lines ?? [])},
     lang = ${patch.lang === "en" ? "en" : "fr"},
+    currency = case when ${patch.currency == null} then currency else ${String(patch.currency || "EUR").slice(0, 16)} end,
     due_on = case when ${patch.dueOn == null} then due_on else ${patch.dueOn || ""} end,
     reminders_on = case when ${patch.remindersOn == null} then reminders_on else ${Boolean(patch.remindersOn)} end
     where id = ${id} returning number`;
@@ -1629,12 +1643,12 @@ export async function createCreditNote(invoiceId: string, actor: string) {
   );
   await sql`insert into ops_invoices (
       id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat,
-      client_siren, client_siret, client_naf, amount_cents, method, status, lines_json, issued_on, kind, due_on, reminders_on
+      client_siren, client_siret, client_naf, amount_cents, method, status, lines_json, issued_on, kind, due_on, reminders_on, currency
     ) values (
       ${id}, ${number}, ${invoice.orderRef}, ${invoice.clientName}, ${invoice.clientUserId || ""}, ${invoice.clientEmail || ""},
       ${invoice.clientCompany || ""}, ${invoice.clientAddress || ""}, ${invoice.clientVat || ""}, ${invoice.clientSiren || ""},
       ${invoice.clientSiret || ""}, ${invoice.clientNaf || ""}, ${invoice.amountCents}, ${link}, ${"Émis"}, ${lines}, ${issued},
-      ${"credit"}, ${""}, false
+      ${"credit"}, ${""}, false, ${invoice.currency || "EUR"}
     )`;
   const collected = invoice.receivedCents && invoice.receivedCents > 0
     ? invoice.receivedCents

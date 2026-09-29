@@ -111,6 +111,7 @@ export async function ensureBillingSchema(sql: Sql) {
     `alter table ops_invoices add column if not exists series_id text not null default ''`,
     `alter table ops_orders add column if not exists internal_note text not null default ''`,
     `alter table ops_invoices add column if not exists lang text not null default 'fr'`,
+    `alter table ops_invoices add column if not exists currency text not null default 'EUR'`,
     `alter table ops_quotes add column if not exists font text not null default 'onest'`,
     `create table if not exists ops_series (
       id text primary key,
@@ -152,6 +153,29 @@ export async function ensureBillingSchema(sql: Sql) {
     )`,
   ];
   for (const statement of statements) await sql.query(statement);
+  const flag = globalThis as typeof globalThis & { __spInvoiceCurrency?: boolean };
+  if (flag.__spInvoiceCurrency) return;
+  await sql.query(`update ops_invoices as i
+    set currency = q.currency
+    from ops_quotes as q
+    where upper(trim(i.currency)) in ('EUR', 'EURO', '€')
+      and char_length(q.number) > 6
+      and position(q.number in coalesce(i.lines_json, '')) > 0
+      and upper(trim(coalesce(q.currency, ''))) not in ('', 'EUR', 'EURO', '€')`);
+  await sql.query(`update ops_invoices as i
+    set currency = q.currency
+    from ops_quotes as q
+    where upper(trim(i.currency)) in ('EUR', 'EURO', '€')
+      and i.order_ref <> ''
+      and i.order_ref = q.order_ref
+      and upper(trim(coalesce(q.currency, ''))) not in ('', 'EUR', 'EURO', '€')
+      and (
+        select count(distinct upper(trim(q2.currency)))
+        from ops_quotes as q2
+        where q2.order_ref = i.order_ref
+          and upper(trim(coalesce(q2.currency, ''))) not in ('', 'EUR', 'EURO', '€')
+      ) = 1`);
+  flag.__spInvoiceCurrency = true;
 }
 
 async function nextInvoiceNumber(sql: Sql) {

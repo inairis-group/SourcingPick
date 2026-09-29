@@ -5,7 +5,9 @@ import { PaperView } from "@/components/paper";
 import { Badge, useOps } from "@/components/ops-ui";
 import { opsClients, opsCredit, opsEmails, opsInvoice, opsInvoices, opsMarkPaid, opsQuotes, opsRemind, opsSaveInvoice, opsSaveSeries, opsSendInvoice } from "@/lib/ops.functions";
 import { factureFromOps, openOpsInvoice, syncInvoiceClient } from "@/lib/ops-paper";
-import { chargedAmount, clientLabel, DUE_ON_RECEIPT, dueIsReceipt, euros, lineAmount, pricedLines, type CompanyHit, type OpsClient, type OpsInvoice, type QuoteLine } from "@/lib/ops.shared";
+import { chargedAmount, clientLabel, DUE_ON_RECEIPT, dueIsReceipt, lineAmount, pricedLines, type CompanyHit, type OpsClient, type OpsInvoice, type QuoteLine } from "@/lib/ops.shared";
+import { eurCentsFromCny, formatMoney, formatRate, isYuan } from "@/lib/fx.shared";
+import { useFxRate } from "@/lib/use-fx";
 import { partyFromHit, recoverCompany } from "@/lib/client-party";
 import { AddressField } from "@/components/address-field";
 import { BoldField } from "@/components/marks";
@@ -42,6 +44,8 @@ function Page() {
   const [feesCents, setFeesCents] = useState(0);
   const [lines, setLines] = useState<QuoteLine[]>([]);
   const [docLang, setDocLang] = useState("fr");
+  const [docCurrency, setDocCurrency] = useState("EUR");
+  const fx = useFxRate();
   const [clientName, setClientName] = useState("");
   const [clientUserId, setClientUserId] = useState("");
   const [clientEmail, setClientEmail] = useState("");
@@ -89,6 +93,7 @@ function Page() {
         orderRef,
         lines,
         lang: docLang,
+        currency: docCurrency,
         amountCents: lines.reduce((total, line) => total + chargedAmount(line), 0),
       }
     : null;
@@ -130,6 +135,7 @@ function Page() {
     setRemindersOn(invoice.remindersOn);
     setLines(invoice.lines.length ? invoice.lines : [{ id: crypto.randomUUID(), kind: "service", title: "", details: "", qty: 1, unitCents: 0 }]);
     setDocLang(invoice.lang === "en" ? "en" : "fr");
+    setDocCurrency(invoice.currency || "EUR");
     setParty(!invoice.clientCompany && !invoice.clientSiret && invoice.clientName ? "particulier" : "pro");
     setReceivedCents(invoice.amountCents);
     setFeesCents(invoice.feesCents || 0);
@@ -196,7 +202,7 @@ function Page() {
 
   function saveBody() {
     const amountCents = lines.reduce((total, line) => total + chargedAmount(line), 0);
-    return { id: invoice!.id, number: docNumber, clientName, orderRef, amountCents, clientUserId, clientEmail, clientCompany, clientAddress, clientVat, clientSiren, clientSiret, clientNaf, lines, dueOn: dueOn || DUE_ON_RECEIPT, remindersOn, lang: docLang };
+    return { id: invoice!.id, number: docNumber, clientName, orderRef, amountCents, clientUserId, clientEmail, clientCompany, clientAddress, clientVat, clientSiren, clientSiret, clientNaf, lines, dueOn: dueOn || DUE_ON_RECEIPT, remindersOn, lang: docLang, currency: docCurrency };
   }
 
   function addLine(kind: QuoteLine["kind"]) {
@@ -226,7 +232,8 @@ function Page() {
       ) : (
         <>
           <p className="mb-4 text-sm text-muted">
-            {orderRef || "Sans commande"} · {clientCompany || clientName || "Client à choisir"} · <Badge value={invoice.status} /> · {euros(shown?.amountCents || invoice.amountCents)}
+            {orderRef || "Sans commande"} · {clientCompany || clientName || "Client à choisir"} · <Badge value={invoice.status} /> · {formatMoney(shown?.amountCents || invoice.amountCents, docCurrency)}
+            <EuroDue cents={shown?.amountCents || invoice.amountCents} currency={docCurrency} />
           </p>
           {info ? <p className="mb-3 text-sm text-[#0e9f6e]">{info}</p> : null}
           <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(320px,42%)]">
@@ -235,6 +242,9 @@ function Page() {
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <label className="text-sm">Numéro
                   <input className="field mt-1" value={docNumber} onChange={(event) => setDocNumber(event.target.value)} />
+                </label>
+                <label className="text-sm">Devise
+                  <input className="field mt-1" value={docCurrency} placeholder="EUR ou CNY" onChange={(event) => setDocCurrency(event.target.value)} />
                 </label>
                 <label className="text-sm sm:col-span-2">Client
                   <input className="field mt-1" value={clientQuery} placeholder="Nom, société ou email" onChange={(event) => setClientQuery(event.target.value)} />
@@ -358,7 +368,7 @@ function Page() {
                         </label>
                       )}
                       {line.kind === "freight" && (line.rateBps || 0) > 0 ? (
-                        <p className="mb-2 text-sm">Fret imputé <span className="mono font-semibold">{euros(lineAmount(line))}</span>
+                        <p className="mb-2 text-sm">Fret imputé <span className="mono font-semibold">{formatMoney(lineAmount(line), docCurrency)}</span>
                           <span className="mt-1 block text-xs text-muted">Non ajouté au total. Pour l’ajouter, mettez le pourcentage à 0 et saisissez un montant.</span>
                         </p>
                       ) : (
@@ -366,7 +376,7 @@ function Page() {
                           <CentsField className="field mt-1 w-28" cents={line.unitCents} onChange={(unitCents) => setLine(index, { unitCents, rateBps: 0 })} />
                         </label>
                       )}
-                      <p className="mb-2 ml-auto text-sm">Total <span className="mono font-semibold">{euros(lineAmount(line))}</span></p>
+                      <p className="mb-2 ml-auto text-sm">Total <span className="mono font-semibold">{formatMoney(lineAmount(line), docCurrency)}</span></p>
                     </div>
                   </article>
                 ))}
@@ -381,7 +391,9 @@ function Page() {
                   }));
                 }}
               />
-              <p className="text-right text-sm font-semibold">Total de la facture {euros(lines.reduce((total, line) => total + chargedAmount(line), 0))}</p>
+              <p className="text-right text-sm font-semibold">Total de la facture {formatMoney(lines.reduce((total, line) => total + chargedAmount(line), 0), docCurrency)}
+                <EuroDue cents={lines.reduce((total, line) => total + chargedAmount(line), 0)} currency={docCurrency} />
+              </p>
               <button
                 className="btn btn-quiet mt-3"
                 type="button"
@@ -467,8 +479,10 @@ function Page() {
                   dress={{
                     badge: "FACTURE",
                     title: mailSubject || `Facture ${docNumber || invoice.number}`,
-                    amount: euros(invoice.amountCents),
-                    amountLabel: "Montant",
+                    amount: isYuan(docCurrency)
+                      ? `${formatMoney(invoice.amountCents, docCurrency)} · ${formatMoney(eurCentsFromCny(invoice.amountCents, fx.cnyPerEur), "EUR")}`
+                      : formatMoney(invoice.amountCents, docCurrency),
+                    amountLabel: isYuan(docCurrency) ? "Yuan · euros à verser" : "Montant",
                     ctaLabel: "Ouvrir mes factures",
                     ctaHref: "https://sourcingpick.com/espace/facturation",
                   }}
@@ -598,7 +612,7 @@ function Page() {
                   : "Les relances automatiques sont coupées pour cette facture. Le bouton ci-dessus envoie quand même un email."}
               </p>
               {invoice.receivedCents != null ? (
-                <p className="mt-3 text-sm text-muted">Déjà reçu {euros(invoice.receivedCents)} via {invoice.method || "—"}{invoice.receivedOn ? ` le ${invoice.receivedOn.split("-").reverse().join("/")}` : ""}{invoice.feesCents ? ` · frais ${euros(invoice.feesCents)}` : ""}.</p>
+                <p className="mt-3 text-sm text-muted">Déjà reçu {formatMoney(invoice.receivedCents || 0, docCurrency)} via {invoice.method || "—"}{invoice.receivedOn ? ` le ${invoice.receivedOn.split("-").reverse().join("/")}` : ""}{invoice.feesCents ? ` · frais ${formatMoney(invoice.feesCents, docCurrency)}` : ""}.</p>
               ) : null}
               </>
               ) : null}
@@ -619,6 +633,17 @@ function pieceKind(kind: string) {
   if (kind === "deposit") return "Facture d’acompte";
   if (kind === "balance") return "Facture de solde";
   return "Facture";
+}
+
+function EuroDue({ cents, currency }: { cents: number; currency?: string }) {
+  const fx = useFxRate();
+  if (!isYuan(currency) || !(fx.cnyPerEur > 0)) return null;
+  return (
+    <span className="mt-1 block text-sm font-semibold">
+      À verser en euros : {formatMoney(eurCentsFromCny(cents, fx.cnyPerEur), "EUR")}
+      <span className="mt-0.5 block text-xs font-normal text-muted">1 € = {formatRate(fx.cnyPerEur)} CNY{fx.source === "ecb" ? " · taux BCE" : ""}</span>
+    </span>
+  );
 }
 
 function InvoiceGlance({ invoice, onEdit, onReload }: { invoice: OpsInvoice; onEdit: () => void; onReload: () => void }) {
@@ -646,7 +671,8 @@ function InvoiceGlance({ invoice, onEdit, onReload }: { invoice: OpsInvoice; onE
       <aside className="card grid gap-2">
         <Badge value={invoice.status} />
         <p className="font-semibold">{clientLabel({ name: invoice.clientName, company: invoice.clientCompany })}</p>
-        <p className="mono text-lg">{euros(invoice.amountCents)}</p>
+        <p className="mono text-lg">{formatMoney(invoice.amountCents, invoice.currency)}</p>
+        <EuroDue cents={invoice.amountCents} currency={invoice.currency} />
         <p className="text-sm text-muted">Document finalisé. Les champs ne s’ouvrent qu’avec Modifier.</p>
         <div className="rounded-xl bg-canvas p-3 text-sm">
           <p className="font-semibold">Pièces liées</p>

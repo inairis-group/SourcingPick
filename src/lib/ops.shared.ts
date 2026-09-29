@@ -304,6 +304,7 @@ export type OpsInvoice = {
   reminderOn: string;
   seriesId: string;
   lang: string;
+  currency: string;
 };
 
 export type OpsSeries = {

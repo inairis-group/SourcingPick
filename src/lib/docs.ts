@@ -1,3 +1,5 @@
+import { cnyCentsFromEur, eurCentsFromCny, formatMoney, formatRate, isYuan, parseFxLabel } from "@/lib/fx.shared";
+
 export type Status = "brouillon" | "emis" | "accepte" | "payee" | "annulee";
 
 export type Line = {
@@ -28,6 +30,9 @@ type Base = {
   updatedAt: string;
   lang?: string;
   font?: string;
+  currency?: string;
+  /** Yuan pour 1 euro, figé au moment de l’affichage. */
+  cnyPerEur?: number;
 };
 
 export type Devis = Base & {
@@ -369,9 +374,9 @@ export function narrativeLine(
       material: `Devis du ${formatDate(devis.issueDate)}, ${devis.lines.length} postes — ${who}`,
       details: [
         names.length ? `Ouvrages ${codes} : ${names.join(", ")}.` : `Ouvrages du devis ${devis.number}.`,
-        `Total des ouvrages ${formatEUR(totals.worksCents)} + commission SourcingPick ${formatPercent(devis.commissionBps)} % ${formatEUR(totals.commissionCents)} = ${formatEUR(totals.netCents)} net à payer, livraison ${devis.delivery || "DAP"} comprise.`,
+        `Total des ouvrages ${formatMoney(totals.worksCents, devis.currency)} + commission SourcingPick ${formatPercent(devis.commissionBps)} % ${formatMoney(totals.commissionCents, devis.currency)} = ${formatMoney(totals.netCents, devis.currency)} net à payer, livraison ${devis.delivery || "DAP"} comprise.`,
         "La production est lancée à réception du présent acompte.",
-        `Solde de ${formatEUR(totals.balanceCents)} exigible avant expédition, sur présentation des photos de contrôle.`,
+        `Solde de ${formatMoney(totals.balanceCents, devis.currency)} exigible avant expédition, sur présentation des photos de contrôle.`,
       ].join("\n"),
       unit: "forfait",
       qty: 1,
@@ -386,12 +391,25 @@ export function narrativeLine(
     details: [
       names.length ? `Ouvrages ${codes} : ${names.join(", ")}.` : `Ouvrages du devis ${devis.number}.`,
       `Solde exigible avant expédition, sur présentation des photos de contrôle des pièces finies.`,
-      `Acompte déjà prévu : ${formatEUR(totals.depositCents)} sur un net de ${formatEUR(totals.netCents)}.`,
+      `Acompte déjà prévu : ${formatMoney(totals.depositCents, devis.currency)} sur un net de ${formatMoney(totals.netCents, devis.currency)}.`,
     ].join("\n"),
     unit: "forfait",
     qty: 1,
     unitPriceCents: totals.balanceCents,
   };
+}
+
+function priceSentence(doc: { currency?: string; cnyPerEur?: number }, fxLabel: string | undefined, en: boolean) {
+  const rate = doc.cnyPerEur || parseFxLabel(fxLabel);
+  const label = formatRate(rate);
+  if (isYuan(doc.currency)) {
+    return en
+      ? `Prices in yuan (CNY), exclusive of tax. The euro amount to pay uses 1 EUR = ${label} CNY and may be revised if the rate moves by more than 3%.`
+      : `Prix en yuans (CNY) hors taxes. La somme à verser en euros est établie au taux de 1 € = ${label} CNY, révisable au-delà de 3 % de variation.`;
+  }
+  return en
+    ? `Prices in euros, exclusive of tax, set at 1 EUR = ${label} CNY and revisable beyond a 3% move.`
+    : `Prix en euros hors taxes, établis au taux de 1 € = ${label} CNY, révisables au-delà de 3 % de variation.`;
 }
 
 export function devisConditions(d: Devis, company: Company): string {
@@ -405,7 +423,7 @@ export function devisConditions(d: Devis, company: Company): string {
         "Breakage cover is included. Any piece found broken, cracked or chipped on delivery, with reservations written on the delivery note, is remade and replaced at our cost.",
         `Delivery ${d.delivery || "DAP, unloaded"} is included: sea freight, blocking, export formalities, road haulage and unloading. Import duty and import VAT are payable by the client.`,
         "Not covered by SourcingPick: installation and maintenance.",
-        "Prices in euros, exclusive of tax.",
+        priceSentence(d, company.fxLabel, true),
         `Valid for ${d.validityDays} days. Paying the deposit accepts the quote and these terms.`,
         "This quote is also subject to our terms of sale: https://sourcingpick.com/cgv",
       ]
@@ -416,7 +434,7 @@ export function devisConditions(d: Devis, company: Company): string {
         `Livraison ${d.delivery || "DAP, déchargée"} comprise : fret maritime, calage, formalités d’export, acheminement routier, déchargement. Droits de douane et TVA à l’importation à la charge du client.`,
         "Non assurés par SourcingPick : la pose et l’entretien.",
         "Tous les plans des monuments seront refaits avant fabrication, pour tenir compte des derniers retours.",
-        `Prix en euros hors taxes, établis au taux de 1 € = ${company.fxLabel || "7,60"} CNY, révisables au-delà de 3 % de variation.`,
+        priceSentence(d, company.fxLabel, false),
         `Validité ${d.validityDays} jours. Le règlement de l’acompte vaut acceptation du devis et de ses conditions.`,
         "Notre devis est également soumis à nos conditions générales de ventes : https://sourcingpick.com/cgv",
       ];
@@ -428,18 +446,18 @@ export function factureConditions(f: Facture): string {
     if (f.mode === "integrale") {
       return [
         f.order ? `Invoice issued from quote ${f.order.sourceNumber} dated ${formatDate(f.order.sourceDate)}.` : "Invoice for services and goods.",
-        "Prices in euros, exclusive of tax. Delivery follows the quote, when there is one.",
+        `${priceSentence(f, undefined, true)} Delivery follows the quote, when there is one.`,
       ].join("\n");
     }
-    if (f.mode === "acompte") return "Deposit invoice. Production starts once payment is received.\nPrices in euros, exclusive of tax.";
-    return "Balance invoice, due before shipment, against inspection photos.\nPrices in euros, exclusive of tax.";
+    if (f.mode === "acompte") return `Deposit invoice. Production starts once payment is received.\n${priceSentence(f, undefined, true)}`;
+    return `Balance invoice, due before shipment, against inspection photos.\n${priceSentence(f, undefined, true)}`;
   }
   if (f.mode === "integrale") {
     return [
       f.order
         ? `Facture établie sur le devis ${f.order.sourceNumber} du ${formatDate(f.order.sourceDate)}.`
         : "Facture de prestations et marchandises.",
-      "Prix en euros hors taxes. Livraison selon les conditions du devis, lorsque celui-ci existe.",
+      `${priceSentence(f, undefined, false)} Livraison selon les conditions du devis, lorsque celui-ci existe.`,
       "La production ou l’expédition suit le calendrier convenu à la commande.",
     ].join("\n");
   }
@@ -452,8 +470,8 @@ export function factureConditions(f: Facture): string {
         ? `Facture d’acompte émise sur le devis ${order.sourceNumber} du ${formatDate(order.sourceDate)}, ${order.postes} postes.`
         : "Facture d’acompte.",
       "La production est lancée à réception du règlement.",
-      `Solde de ${formatEUR(rest)} exigible avant expédition, sur présentation des photos de contrôle.`,
-      "Prix en euros hors taxes, livraison DAP déchargée comprise.",
+      `Solde de ${formatMoney(rest, f.currency)} exigible avant expédition, sur présentation des photos de contrôle.`,
+      `${priceSentence(f, undefined, false)} Livraison DAP déchargée comprise.`,
     ].join("\n");
   }
   return [
@@ -461,7 +479,7 @@ export function factureConditions(f: Facture): string {
       ? `Facture de solde émise sur le devis ${order.sourceNumber} du ${formatDate(order.sourceDate)}.`
       : "Facture de solde.",
     "Exigible avant expédition, sur présentation des photos de contrôle des pièces finies.",
-    "Prix en euros hors taxes, livraison DAP déchargée comprise.",
+    `${priceSentence(f, undefined, false)} Livraison DAP déchargée comprise.`,
   ].join("\n");
 }
 
@@ -470,7 +488,7 @@ export function avoirConditions(a: Avoir): string {
     return [
       a.sourceNumber ? `Credit note issued against invoice ${a.sourceNumber}.` : "Credit note issued as a correction.",
       "The amount is deducted from the original invoice. It is applied to the balance still due, unless a refund is agreed in writing.",
-      "Prices in euros, exclusive of tax.",
+      priceSentence(a, undefined, true),
     ].join("\n");
   }
   return [
@@ -478,7 +496,7 @@ export function avoirConditions(a: Avoir): string {
       ? `Avoir émis en référence à la facture ${a.sourceNumber}.`
       : "Avoir émis pour rectification.",
     "Le montant vient en déduction de la facture d’origine. Il est imputé sur le solde restant dû, sauf accord écrit d’un remboursement.",
-    "Prix en euros hors taxes.",
+    priceSentence(a, undefined, false),
   ].join("\n");
 }
 
@@ -749,8 +767,39 @@ export type PaperModel = {
 
 export type PayLine = { text: string; tone: "lead" | "name" | "ref" };
 
-function moneyRow(label: string, cents: number, tone: PaperTotal["tone"] = "plain"): PaperTotal {
-  return { label, value: formatEUR(cents), tone };
+let paperCurrency: string | undefined;
+
+function moneyRow(label: string, cents: number, tone: PaperTotal["tone"] = "plain", currency?: string): PaperTotal {
+  return { label, value: formatMoney(cents, currency ?? paperCurrency), tone };
+}
+
+function fxTotals(
+  doc: Document,
+  copy: ReturnType<typeof paperLabels>,
+  amounts: { label: string; cents: number; tone?: PaperTotal["tone"] }[],
+): PaperTotal[] {
+  const rate = doc.cnyPerEur || 0;
+  if (!(rate > 0)) return [];
+  const rateLabel = formatRate(rate);
+  if (isYuan(doc.currency)) {
+    return amounts
+      .filter((item) => item.cents > 0)
+      .map((item) => ({
+        label: `${item.label} (1 ${copy.en ? "EUR" : "€"} = ${rateLabel} CNY)`,
+        value: formatEUR(eurCentsFromCny(item.cents, rate)),
+        tone: item.tone ?? "emph",
+      }));
+  }
+  if (doc.kind !== "devis") return [];
+  const net = amounts.find((item) => item.cents > 0);
+  if (!net) return [];
+  return [
+    {
+      label: copy.en ? `Yuan equivalent (1 EUR = ${rateLabel} CNY)` : `Équivalent en yuans (1 € = ${rateLabel} CNY)`,
+      value: formatMoney(cnyCentsFromEur(net.cents, rate), "CNY"),
+      tone: "muted",
+    },
+  ];
 }
 
 export function toPaper(
@@ -758,6 +807,7 @@ export function toPaper(
   company: Company,
   client: Client | undefined,
 ): PaperModel {
+  paperCurrency = doc.currency;
   const copy = paperLabels(doc.lang);
   const issuerLines = [
     company.contactName,
@@ -801,9 +851,9 @@ export function toPaper(
     images: (line.images?.length ? line.images : line.image ? [line.image] : []).filter(Boolean),
     unit: line.unit || "—",
     qty: formatQty(line.qty),
-    unitPrice: formatEUR(line.unitPriceCents),
+    unitPrice: formatMoney(line.unitPriceCents, doc.currency),
     vat: "—",
-    amount: formatEUR(Math.round((Number.isFinite(line.qty) ? line.qty : 0) * line.unitPriceCents)),
+    amount: formatMoney(Math.round((Number.isFinite(line.qty) ? line.qty : 0) * line.unitPriceCents), doc.currency),
   }));
 
   const base = {
@@ -847,6 +897,21 @@ export function toPaper(
         moneyRow(copy.balance, t.balanceCents, "muted"),
       );
     }
+    if (isYuan(doc.currency)) {
+      totals.push(
+        ...fxTotals(doc, copy, [
+          { label: copy.en ? "To pay in euros" : "À verser en euros", cents: t.netCents, tone: "strong" },
+          ...(doc.depositBps > 0
+            ? [
+                { label: copy.en ? "Deposit to pay in euros" : "Acompte à verser en euros", cents: t.depositCents, tone: "emph" as const },
+                { label: copy.en ? "Balance to pay in euros" : "Solde à verser en euros", cents: t.balanceCents, tone: "muted" as const },
+              ]
+            : []),
+        ]),
+      );
+    } else {
+      totals.push(...fxTotals(doc, copy, [{ label: "", cents: t.netCents }]));
+    }
     return {
       ...base,
       title: copy.quote,
@@ -881,7 +946,7 @@ export function toPaper(
     if (included > 0) {
       totals.push({
         label: copy.en ? "Freight included in the prices, not added" : "Fret imputé, non ajouté au total",
-        value: formatEUR(included),
+        value: formatMoney(included, doc.currency),
         tone: "muted",
       });
     }
@@ -924,6 +989,10 @@ export function toPaper(
       if (rest > 0) totals.push(moneyRow(copy.en ? "Still due before shipment" : "Reste à payer avant expédition", rest, "muted"));
     } else {
       totals.push({ label: copy.vat, value: copy.vatExport, tone: "muted", rule: true }, moneyRow(copy.due, billed, "strong"));
+    }
+    if (isYuan(doc.currency)) {
+      const dueCents = doc.mode === "integrale" ? commercial(lineSum(doc.lines), doc.commissionBps, 0).netCents : billed;
+      totals.push(...fxTotals(doc, copy, [{ label: copy.en ? "To pay in euros" : "À verser en euros", cents: dueCents, tone: "strong" }]));
     }
     const kicker = doc.mode === "acompte" ? copy.depositKicker : doc.mode === "solde" ? copy.balanceKicker : "";
     const meta = [

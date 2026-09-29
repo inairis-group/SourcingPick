@@ -176,6 +176,7 @@ export function devisFromOps(quote: OpsQuote): Devis {
     depositBps: quote.depositBps,
     lang: en ? "en" : "fr",
     font: quote.font || "onest",
+    currency: quote.currency || "EUR",
     lines,
     ...(quote.signerName
       ? {
@@ -272,6 +273,7 @@ export function factureFromOps(invoice: OpsInvoice): Facture {
     paidCents: invoice.receivedCents,
     feesCents: invoice.feesCents,
     lang: invoice.lang === "en" ? "en" : "fr",
+    currency: invoice.currency || "EUR",
   };
   draft.conditions = conditionsFor(draft, company);
   return draft;

@@ -3,13 +3,14 @@ import { logger, watchHealth } from "../../src/lib/log.server";
 type Loud = { message?: string; code?: string; cause?: unknown };
 
 function noisy(value: unknown): boolean {
-  if (typeof value === "string") return /aborted|ECONNRESET|EPIPE|socket hang up/i.test(value);
+  if (typeof value === "string") return /aborted|ECONNRESET|EPIPE|socket hang up|already been registered/i.test(value);
   if (!value || typeof value !== "object") return false;
   const error = value as Loud;
   const code = error.code || "";
   if (code === "ECONNRESET" || code === "EPIPE" || code === "ECONNABORTED") return true;
   const message = error.message || "";
   if (/^(aborted|the operation was aborted|socket hang up)$/i.test(message)) return true;
+  if (/already been registered/i.test(message)) return true;
   return noisy(error.cause);
 }
 

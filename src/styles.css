@@ -2046,6 +2046,11 @@ details.sp-menu-details > :not(summary) {
   }
 }
 
+.sp-gsap .sp-scroll,
+.sp-gsap .sp-parallax {
+  animation: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .sp-await {
     opacity: 1;

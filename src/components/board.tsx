@@ -509,105 +509,177 @@ function motion(root: HTMLElement) {
   markIdle();
   document.addEventListener("visibilitychange", markIdle);
 
-  if (viewDriven) {
-    if (pageDriven) frame?.classList.add("sp-parallax");
-    staged.forEach((node, index) => {
-      const el = node as HTMLElement;
-      const step = Number(el.dataset.stagger || 0);
-      const start = Math.min(16, step * 4);
-      const name = `--sp-r${index}`;
-      el.style.viewTimelineName = name;
-      el.style.animationTimeline = name;
-      el.style.animationRange = `entry ${start}% cover ${34 + start}%`;
-      el.classList.add("sp-scroll");
-    });
-  }
+  let dropped = false;
+  let usedCss = false;
+  let stopExtra = () => {};
+  for (const node of staged) (node as HTMLElement).style.opacity = "0";
 
-  if (viewDriven && pageDriven) {
-    return () => {
-      alive = false;
-      document.removeEventListener("visibilitychange", markIdle);
-      document.documentElement.classList.remove("sp-idle");
-    };
-  }
-
-  const release = (node: Element) => {
-    const done = () => {
-      node.classList.remove("sp-await", "sp-in");
-      (node as HTMLElement).style.transitionDelay = "";
-    };
-    node.addEventListener("transitionend", done, { once: true });
-  };
-  const pending = viewDriven ? [] : [...heroBits, ...chips, ...root.querySelectorAll(".sp-step-col, .sp-step-badge"), ...nodes];
-  pending.forEach((node) => {
-    node.classList.add("sp-await");
-    const at = heroBits.indexOf(node);
-    if (at >= 0) (node as HTMLElement).style.transitionDelay = `${40 + at * 70}ms`;
-  });
-  requestAnimationFrame(() => {
-    for (const node of pending) {
-      if (nodes.includes(node) && !heroBits.includes(node)) continue;
-      node.classList.add("sp-in");
-      release(node);
+  const cssMotion = () => {
+    for (const node of staged) (node as HTMLElement).style.opacity = "";
+    if (viewDriven) {
+      if (pageDriven) frame?.classList.add("sp-parallax");
+      staged.forEach((node, index) => {
+        const el = node as HTMLElement;
+        const step = Number(el.dataset.stagger || 0);
+        const start = Math.min(16, step * 4);
+        const name = `--sp-r${index}`;
+        const style = el.style as CSSStyleDeclaration & { viewTimelineName?: string; animationTimeline?: string; animationRange?: string };
+        style.viewTimelineName = name;
+        style.animationTimeline = name;
+        style.animationRange = `entry ${start}% cover ${34 + start}%`;
+        el.classList.add("sp-scroll");
+      });
     }
-  });
-  const reveal = (el: Element) => {
-    if (el.classList.contains("sp-in") || el.classList.contains("sp-scroll")) return;
-    const now = performance.now();
-    if (now - waveAt > 640) wave = 0;
-    waveAt = now;
-    (el as HTMLElement).style.transitionDelay = `${wave * 90}ms`;
-    wave += 1;
-    el.classList.add("sp-in");
-    release(el);
-  };
-  let wave = 0;
-  let waveAt = 0;
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-      for (const entry of visible) {
-        observer.unobserve(entry.target);
-        reveal(entry.target);
+
+    if (viewDriven && pageDriven) return () => {};
+
+    const release = (node: Element) => {
+      const done = () => {
+        node.classList.remove("sp-await", "sp-in");
+        (node as HTMLElement).style.transitionDelay = "";
+      };
+      node.addEventListener("transitionend", done, { once: true });
+    };
+    const pending = viewDriven ? [] : [...heroBits, ...chips, ...root.querySelectorAll(".sp-step-col, .sp-step-badge"), ...nodes];
+    pending.forEach((node) => {
+      node.classList.add("sp-await");
+      const at = heroBits.indexOf(node);
+      if (at >= 0) (node as HTMLElement).style.transitionDelay = `${40 + at * 70}ms`;
+    });
+    requestAnimationFrame(() => {
+      for (const node of pending) {
+        if (nodes.includes(node) && !heroBits.includes(node)) continue;
+        node.classList.add("sp-in");
+        release(node);
       }
-    },
-    { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
-  );
-  if (!viewDriven) {
-    nodes.forEach((node) => observer.observe(node));
-  }
-  const fallback = window.setTimeout(() => {
-    if (viewDriven) return;
-    for (const node of nodes) {
-      const box = node.getBoundingClientRect();
-      if (box.top < window.innerHeight * 0.9) reveal(node);
-    }
-  }, 1400);
-
-  let raf = 0;
-  const onScroll = () => {
-    if (!frame || raf || pageDriven) return;
-    raf = requestAnimationFrame(() => {
-      raf = 0;
-      const y = Math.max(-18, Math.min(0, -window.scrollY * 0.02));
-      frame.style.translate = `0 ${y}px`;
     });
+    const reveal = (el: Element) => {
+      if (el.classList.contains("sp-in") || el.classList.contains("sp-scroll")) return;
+      const now = performance.now();
+      if (now - waveAt > 640) wave = 0;
+      waveAt = now;
+      (el as HTMLElement).style.transitionDelay = `${wave * 90}ms`;
+      wave += 1;
+      el.classList.add("sp-in");
+      release(el);
+    };
+    let wave = 0;
+    let waveAt = 0;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        for (const entry of visible) {
+          observer.unobserve(entry.target);
+          reveal(entry.target);
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+    );
+    if (!viewDriven) nodes.forEach((node) => observer.observe(node));
+    const fallback = window.setTimeout(() => {
+      if (viewDriven) return;
+      for (const node of nodes) {
+        const box = node.getBoundingClientRect();
+        if (box.top < window.innerHeight * 0.9) reveal(node);
+      }
+    }, 1400);
+
+    let raf = 0;
+    const onScroll = () => {
+      if (!frame || raf || pageDriven) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const y = Math.max(-18, Math.min(0, -window.scrollY * 0.02));
+        frame.style.translate = `0 ${y}px`;
+      });
+    };
+    if (frame && !pageDriven) {
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   };
-  if (frame && !pageDriven) {
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-  }
+
+  const useCss = () => {
+    if (dropped || usedCss || root.classList.contains("sp-gsap")) return;
+    usedCss = true;
+    stopExtra = cssMotion();
+  };
+  const slow = window.setTimeout(useCss, 1800);
+
+  void (async () => {
+    try {
+      const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([import("gsap"), import("gsap/ScrollTrigger")]);
+      if (dropped || usedCss) return;
+      window.clearTimeout(slow);
+      gsap.registerPlugin(ScrollTrigger);
+      root.classList.add("sp-gsap");
+      const lead = staged.slice(0, heroBits.length + chips.length);
+      const rest = staged.slice(lead.length);
+      const ctx = gsap.context(() => {
+        if (lead.length) {
+          gsap.fromTo(lead, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.65, ease: "power2.out", stagger: 0.05, overwrite: "auto" });
+        }
+        rest.forEach((node) => {
+          gsap.fromTo(
+            node,
+            { opacity: 0, y: 20 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: "power2.out",
+              overwrite: "auto",
+              scrollTrigger: { trigger: node, start: "top 92%", once: true },
+            },
+          );
+        });
+        if (frame) {
+          gsap.fromTo(
+            frame,
+            { y: 0 },
+            {
+              y: -28,
+              ease: "none",
+              scrollTrigger: { trigger: hero || root, start: "top top", end: "45% top", scrub: 0.4 },
+            },
+          );
+        }
+      }, root);
+      const onVis = () => {
+        if (document.hidden) gsap.globalTimeline.pause();
+        else gsap.globalTimeline.resume();
+      };
+      document.addEventListener("visibilitychange", onVis);
+      stopExtra = () => {
+        document.removeEventListener("visibilitychange", onVis);
+        ctx.revert();
+        root.classList.remove("sp-gsap");
+      };
+    } catch {
+      root.classList.remove("sp-gsap");
+      useCss();
+    }
+  })();
 
   return () => {
+    dropped = true;
     alive = false;
-    observer.disconnect();
-    window.clearTimeout(fallback);
-    window.removeEventListener("scroll", onScroll);
+    window.clearTimeout(slow);
+    stopExtra();
+    if (!root.classList.contains("sp-gsap")) {
+      for (const node of staged) (node as HTMLElement).style.opacity = "";
+    }
     document.removeEventListener("visibilitychange", markIdle);
     document.documentElement.classList.remove("sp-idle");
-    if (raf) cancelAnimationFrame(raf);
   };
 }
 

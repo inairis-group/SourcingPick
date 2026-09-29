@@ -306,7 +306,7 @@ export const opsCreateInvoice = createServerFn({ method: "POST" }).handler(async
 });
 
 export const opsSaveInvoice = createServerFn({ method: "POST" })
-  .inputValidator((input: { id: string; clientName: string; orderRef: string; amountCents: number; number?: string; clientUserId?: string; clientEmail?: string; clientCompany?: string; clientAddress?: string; clientVat?: string; clientSiren?: string; clientSiret?: string; clientNaf?: string; lines?: QuoteLine[]; dueOn?: string; remindersOn?: boolean; lang?: string }) => ({
+  .inputValidator((input: { id: string; clientName: string; orderRef: string; amountCents: number; number?: string; clientUserId?: string; clientEmail?: string; clientCompany?: string; clientAddress?: string; clientVat?: string; clientSiren?: string; clientSiret?: string; clientNaf?: string; lines?: QuoteLine[]; dueOn?: string; remindersOn?: boolean; lang?: string; currency?: string }) => ({
     id: String(input?.id ?? ""),
     number: String(input?.number ?? "").trim().slice(0, 40),
     clientName: String(input?.clientName ?? "").slice(0, 160),
@@ -323,6 +323,7 @@ export const opsSaveInvoice = createServerFn({ method: "POST" })
     dueOn: input?.dueOn == null ? undefined : String(input.dueOn).slice(0, 10),
     remindersOn: input?.remindersOn == null ? undefined : Boolean(input.remindersOn),
     lang: input?.lang === "en" ? "en" : "fr",
+    currency: input?.currency == null ? undefined : String(input.currency).trim().slice(0, 16),
     lines: pricedLines((input?.lines ?? []).slice(0, 40).map((line) => ({
       id: String(line.id || crypto.randomUUID()),
       kind: lineKind(line.kind),

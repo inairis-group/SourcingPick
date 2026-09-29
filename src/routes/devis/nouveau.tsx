@@ -6,7 +6,9 @@ import { Badge, useOps } from "@/components/ops-ui";
 import { opsClients, opsCreateQuoteClient, opsEmails, opsInvoices, opsQuote, opsQuoteBill, opsQuotes, opsSaveQuote, opsSendQuote } from "@/lib/ops.functions";
 import { devisFromOps, openOpsQuote, signRows, syncOpsClient } from "@/lib/ops-paper";
 import { isOldQuoteMail, quoteReceivedBody, refreshQuoteMail } from "@/lib/mail-templates";
-import { clientLabel, euros, lineAmount, percent, pricedLines, quoteMath, type CompanyHit, type OpsClient, type OpsEmail, type OpsInvoice, type OpsQuote, type QuoteLine } from "@/lib/ops.shared";
+import { clientLabel, lineAmount, percent, pricedLines, quoteMath, type CompanyHit, type OpsClient, type OpsEmail, type OpsInvoice, type OpsQuote, type QuoteLine } from "@/lib/ops.shared";
+import { cnyCentsFromEur, eurCentsFromCny, formatMoney, formatRate, isYuan } from "@/lib/fx.shared";
+import { useFxRate } from "@/lib/use-fx";
 import { matchCompany, partyFromClient, partyFromHit, recoverCompany } from "@/lib/client-party";
 import { RichField } from "@/components/marks";
 import { CentsField, DecimalField } from "@/components/decimal-field";
@@ -32,6 +34,7 @@ function Page() {
   const { id, modifier } = Route.useSearch();
   const navigate = useNavigate();
   const account = useAccount();
+  const fx = useFxRate();
   const [step, setStep] = useState(1);
   const [quote, setQuote] = useState<OpsQuote | null>(null);
   const [error, setError] = useState("");
@@ -121,6 +124,7 @@ function Page() {
   }
 
   const current = quote;
+  const money = (cents: number) => formatMoney(cents, current.currency);
   const sealed = current.status === "Devis signé" || current.status === "Devis refusé";
   if (sealed) {
     const draft = devisFromOps(current);
@@ -144,7 +148,8 @@ function Page() {
           </section>
           <aside className="card grid gap-2">
             <p className="font-semibold">{current.clientCompany || current.clientName || "Client"}</p>
-            <p className="text-sm text-muted">{euros(current.amountCents)} · acompte {percent(current.depositBps)}</p>
+            <p className="text-sm text-muted">{money(current.amountCents)} · acompte {percent(current.depositBps)}</p>
+            {isYuan(current.currency) ? <p className="text-sm font-semibold">À verser en euros : {formatMoney(eurCentsFromCny(current.amountCents, fx.cnyPerEur), "EUR")}</p> : <p className="text-sm text-muted">Équivalent {formatMoney(cnyCentsFromEur(current.amountCents, fx.cnyPerEur), "CNY")}</p>}
             {current.signerName ? (
               <div className="grid gap-2 rounded-2xl bg-canvas p-3">
                 <p className="font-semibold">Signature électronique</p>
@@ -455,6 +460,7 @@ function Page() {
                 </label>
                 <Field label="Devise" value={quote.currency} onChange={(currency) => patch({ currency })} />
               </div>
+              <p className="text-xs text-muted">EUR ou CNY. Un devis en yuan affiche la somme à verser en euros, au taux de la Banque centrale européenne.</p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <Field label="Incoterm" value={quote.incoterm} onChange={(incoterm) => patch({ incoterm })} />
                 <Field label="Port d’arrivée" value={quote.port} onChange={(port) => patch({ port })} />
@@ -525,7 +531,7 @@ function Page() {
                     </label>
                   )}
                   {line.kind === "freight" && (line.rateBps || 0) > 0 ? (
-                    <p className="text-sm">Fret imputé <span className="mono font-semibold">{euros(lineAmount(line))}</span>
+                    <p className="text-sm">Fret imputé <span className="mono font-semibold">{money(lineAmount(line))}</span>
                       <span className="mt-1 block text-xs font-normal text-muted">Pourcentage de la commande. Il s’affiche, il ne s’ajoute pas au total. Pour l’ajouter, mettez le pourcentage à zéro et saisissez un montant.</span>
                     </p>
                   ) : (
@@ -533,7 +539,7 @@ function Page() {
                       <CentsField className="field mt-1" cents={line.unitCents} onChange={(unitCents) => setLine(index, { unitCents, rateBps: 0 })} />
                     </label>
                   )}
-                  <p className="text-sm">Total <span className="mono font-semibold">{euros(lineAmount(line))}</span></p>
+                  <p className="text-sm">Total <span className="mono font-semibold">{money(lineAmount(line))}</span></p>
                   <button className="text-left text-sm font-semibold text-[#8a1c1c]" type="button" onClick={() => patch({ lines: quote.lines.filter((item) => item.id !== line.id) })}>Retirer la ligne</button>
                 </div>
               </article>
@@ -553,18 +559,28 @@ function Page() {
             />
           </div>
           <ul className="mt-4 ml-auto grid max-w-md gap-1 text-sm">
-            <Sum label="Total marchandise" value={euros(math.goodsCents)} />
-            {(quote.lines ?? []).some((item) => item.kind === "service") ? <Sum label="Total prestations" value={euros(math.serviceCents)} /> : null}
-            {(quote.lines ?? []).some((item) => item.kind === "freight" && !(item.rateBps && item.rateBps > 0)) ? <Sum label="Total fret" value={euros(math.freightCents)} /> : null}
-            {math.includedFreightCents ? <Sum label="Fret imputé, non ajouté" value={euros(math.includedFreightCents)} /> : null}
-            {math.feeCents ? <Sum label="Frais" value={euros(math.feeCents)} /> : null}
-            {math.goodsCommissionCents ? <Sum label={`Commission marchandise (${percent(quote.goodsBps)} %)`} value={euros(math.goodsCommissionCents)} /> : null}
-            {math.freightCommissionCents || quote.freightBps > 0 ? <Sum label={`Commission fret (${percent(quote.freightBps)} %)`} value={euros(math.freightCommissionCents)} /> : null}
+            <Sum label="Total marchandise" value={money(math.goodsCents)} />
+            {(quote.lines ?? []).some((item) => item.kind === "service") ? <Sum label="Total prestations" value={money(math.serviceCents)} /> : null}
+            {(quote.lines ?? []).some((item) => item.kind === "freight" && !(item.rateBps && item.rateBps > 0)) ? <Sum label="Total fret" value={money(math.freightCents)} /> : null}
+            {math.includedFreightCents ? <Sum label="Fret imputé, non ajouté" value={money(math.includedFreightCents)} /> : null}
+            {math.feeCents ? <Sum label="Frais" value={money(math.feeCents)} /> : null}
+            {math.goodsCommissionCents ? <Sum label={`Commission marchandise (${percent(quote.goodsBps)} %)`} value={money(math.goodsCommissionCents)} /> : null}
+            {math.freightCommissionCents || quote.freightBps > 0 ? <Sum label={`Commission fret (${percent(quote.freightBps)} %)`} value={money(math.freightCommissionCents)} /> : null}
             {quote.freightBps > 0 && !math.freightCents && !math.includedFreightCents ? <li className="text-xs text-muted">Ajoutez une ligne fret pour que ces {percent(quote.freightBps)} % apparaissent sur le devis.</li> : null}
-            {math.discountCents ? <Sum label="Remise exceptionnelle" value={euros(-math.discountCents)} /> : null}
-            <Sum label="Total du devis" value={euros(math.totalCents)} strong />
-            <Sum label={`Acompte à la commande (${percent(quote.depositBps)} %)`} value={euros(math.depositCents)} />
-            <Sum label="Solde avant expédition" value={euros(math.balanceCents)} />
+            {math.discountCents ? <Sum label="Remise exceptionnelle" value={money(-math.discountCents)} /> : null}
+            <Sum label="Total du devis" value={money(math.totalCents)} strong />
+            {isYuan(quote.currency) ? (
+              <>
+                <Sum label="À verser en euros" value={formatMoney(eurCentsFromCny(math.totalCents, fx.cnyPerEur), "EUR")} strong />
+                {math.depositCents ? <Sum label="Acompte à verser en euros" value={formatMoney(eurCentsFromCny(math.depositCents, fx.cnyPerEur), "EUR")} /> : null}
+                <Sum label="Solde à verser en euros" value={formatMoney(eurCentsFromCny(math.balanceCents, fx.cnyPerEur), "EUR")} />
+                <li className="text-xs text-muted">1 € = {formatRate(fx.cnyPerEur)} CNY{fx.source === "ecb" ? " · taux BCE" : fx.source === "label" ? " · taux de repli" : " · taux indicatif"}.</li>
+              </>
+            ) : (
+              <Sum label="Équivalent en yuans" value={formatMoney(cnyCentsFromEur(math.totalCents, fx.cnyPerEur), "CNY")} />
+            )}
+            <Sum label={`Acompte à la commande (${percent(quote.depositBps)} %)`} value={money(math.depositCents)} />
+            <Sum label="Solde avant expédition" value={money(math.balanceCents)} />
           </ul>
           <div className="mt-4 flex gap-2">
             <button className="btn btn-quiet" type="button" onClick={() => setStep(1)}>Retour</button>
