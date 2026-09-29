@@ -1557,14 +1557,45 @@ img.sp-step {
   justify-content: center;
   width: 44px;
   height: 44px;
+  margin: 0;
+  padding: 0;
   border: 1.5px solid #dce3f2;
   border-radius: 12px;
   background: #fff;
+  color: #0e1a3d;
   cursor: pointer;
+}
+
+.sp-burger svg {
+  display: block;
 }
 
 .sp-narrow .sp-burger {
   display: inline-flex;
+  flex: 0 0 44px;
+}
+
+.sp-narrow header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: 64px !important;
+  padding: 0 16px !important;
+  gap: 12px !important;
+  background: rgba(245, 247, 252, 0.96) !important;
+  backdrop-filter: blur(12px);
+}
+
+.sp-narrow header > a img {
+  height: 28px !important;
+}
+
+.sp-narrow header > div {
+  gap: 8px !important;
+}
+
+.sp-narrow header > div > a {
+  display: none !important;
 }
 
 .sp-narrow header nav {
@@ -1576,20 +1607,86 @@ img.sp-step {
 }
 
 .sp-narrow .sp-menu:not([hidden]) {
+  position: relative;
+  z-index: 39;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 8px 24px 22px;
-  background: #fff;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 8px 16px 18px;
+  background: #f5f7fc;
   border-bottom: 1px solid #dce3f2;
+  box-shadow: 0 22px 40px -30px rgba(14, 26, 61, 0.45);
 }
 
-.sp-menu nav,
-.sp-menu-extra {
+.sp-narrow .sp-menu nav,
+.sp-narrow .sp-menu-extra {
   display: flex !important;
   flex-direction: column;
-  align-items: flex-start !important;
-  gap: 12px !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.sp-narrow .sp-menu a {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 12px 14px !important;
+  border: 1px solid #dce3f2 !important;
+  border-radius: 12px;
+  background: #fff !important;
+  color: #0e1a3d !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 1.3;
+  text-decoration: none;
+  white-space: normal !important;
+}
+
+.sp-narrow .sp-menu a[style*="#155DFC"],
+.sp-narrow .sp-menu a[style*="#155dfc"] {
+  border-color: #155dfc !important;
+  color: #155dfc !important;
+}
+
+.sp-narrow .sp-menu a[href="/demande"] {
+  justify-content: center;
+  border-color: #155dfc !important;
+  background: #155dfc !important;
+  color: #fff !important;
+}
+
+.sp-narrow .sp-menu a[href="/admin"] {
+  background: #fff !important;
+}
+
+.sp-phone header {
+  padding: 0 12px !important;
+}
+
+.sp-phone header > div > button:not(.sp-burger) span,
+.sp-phone header > div > button:not(.sp-burger) svg:last-of-type {
+  display: none !important;
+}
+
+.sp-phone header > div > button:not(.sp-burger) {
+  width: 44px;
+  padding: 0 !important;
+  justify-content: center;
+}
+
+.sp-phone .sp-menu:not([hidden]) {
+  padding-right: 12px;
+  padding-left: 12px;
 }
 
 .sp-narrow .sp-m-abs {

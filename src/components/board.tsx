@@ -277,11 +277,17 @@ function ensureMenu(art: HTMLElement) {
   button.type = "button";
   button.className = "sp-burger";
   button.setAttribute("aria-label", "Ouvrir le menu");
-  button.innerHTML =
-    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E1A3D" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M8 6h12"/><path d="M8 12h12"/><path d="M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>';
+  button.setAttribute("aria-expanded", "false");
+  button.setAttribute("aria-controls", "sp-mobile-menu");
+  const openIcon =
+    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>';
+  const closeIcon =
+    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>';
+  button.innerHTML = openIcon;
   actions.appendChild(button);
   const panel = document.createElement("div");
   panel.className = "sp-menu";
+  panel.id = "sp-mobile-menu";
   panel.hidden = true;
   const nav = header.querySelector("nav");
   if (nav) panel.appendChild(nav.cloneNode(true));
@@ -290,12 +296,18 @@ function ensureMenu(art: HTMLElement) {
   for (const link of actions.querySelectorAll("a")) extra.appendChild(link.cloneNode(true));
   panel.appendChild(extra);
   header.after(panel);
-  button.addEventListener("click", () => {
-    panel.hidden = !panel.hidden;
-    button.setAttribute("aria-expanded", panel.hidden ? "false" : "true");
-  });
+  const setOpen = (open: boolean) => {
+    panel.hidden = !open;
+    button.setAttribute("aria-expanded", open ? "true" : "false");
+    button.setAttribute("aria-label", open ? "Fermer le menu" : "Ouvrir le menu");
+    button.innerHTML = open ? closeIcon : openIcon;
+  };
+  button.addEventListener("click", () => setOpen(panel.hidden));
   panel.addEventListener("click", (event) => {
-    if ((event.target as HTMLElement).closest("a")) panel.hidden = true;
+    if ((event.target as HTMLElement).closest("a")) setOpen(false);
+  });
+  art.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
   });
 }
 
