@@ -1935,10 +1935,6 @@ details.sp-menu-details > :not(summary) {
 }
 
 @starting-style {
-  .sp-rail::before {
-    scale: 1 0;
-  }
-
   .sp-pop,
   .sp-drop,
   details.sp-menu-details[open] > :not(summary) {
@@ -1970,6 +1966,72 @@ details.sp-menu-details > :not(summary) {
   .sp-sheet {
     opacity: 0;
     translate: 0 28px;
+  }
+}
+
+@keyframes sp-view-in {
+  from {
+    opacity: 0;
+    translate: 0 32px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes sp-view-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sp-rail-view {
+  from {
+    scale: 1 0;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+@keyframes sp-parallax {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -36px;
+  }
+}
+
+/* Le défilement fait avancer l'animation.
+   Sans animation-timeline, les blocs restent simplement visibles. */
+@supports (animation-timeline: view()) {
+  .sp-scroll {
+    animation: sp-view-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 34%;
+  }
+
+  .sp-scroll:is(a, button) {
+    animation-name: sp-view-fade;
+  }
+
+  .sp-rail::before {
+    scale: 1 1;
+    transition: none;
+    animation: sp-rail-view linear both;
+    animation-timeline: view();
+    animation-range: entry 8% cover 55%;
+  }
+
+  .sp-parallax {
+    animation: sp-parallax linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 50vh;
   }
 }
 
@@ -2008,6 +2070,8 @@ details.sp-menu-details > :not(summary) {
   .sp-shade,
   .sp-drawer,
   .sp-sheet,
+  .sp-scroll,
+  .sp-parallax,
   details.sp-menu-details > :not(summary) {
     animation: none;
     transition: none;

@@ -228,8 +228,8 @@ function animateSteps(root: HTMLElement) {
     const cols = svg.nextElementSibling;
     if (cols) {
       [...cols.children].forEach((col, index) => {
-        col.classList.add("sp-await", "sp-step-col");
-        (col as HTMLElement).style.transitionDelay = `${180 + index * 90}ms`;
+        col.classList.add("sp-step-col");
+        (col as HTMLElement).dataset.stagger = String(index);
       });
     }
   }
@@ -241,8 +241,8 @@ function animateSteps(root: HTMLElement) {
     if (!badges.every((badge) => badge && /^\d$/.test(badge.textContent?.trim() || ""))) continue;
     section.classList.add("sp-rail");
     badges.forEach((badge, index) => {
-      badge?.classList.add("sp-await", "sp-step-badge");
-      (badge as HTMLElement).style.transitionDelay = `${index * 80}ms`;
+      badge?.classList.add("sp-step-badge");
+      (badge as HTMLElement).dataset.stagger = String(index);
     });
   }
   requestAnimationFrame(() => placeRails(root));
@@ -467,8 +467,8 @@ function motion(root: HTMLElement) {
     ? [...frame.querySelectorAll(":scope > div")].filter((node) => (node.getAttribute("style") || "").includes("box-shadow"))
     : [];
   chips.forEach((node, index) => {
-    node.classList.add("sp-await", "sp-chip-in");
-    (node as HTMLElement).style.transitionDelay = `${220 + index * 110}ms`;
+    node.classList.add("sp-chip-in");
+    (node as HTMLElement).dataset.stagger = String(index);
   });
 
   let heroKept = false;
@@ -493,25 +493,7 @@ function motion(root: HTMLElement) {
   let alive = true;
   void enliven(root, () => alive);
 
-  const release = (node: Element) => {
-    const done = () => {
-      node.classList.remove("sp-await", "sp-in");
-      (node as HTMLElement).style.transitionDelay = "";
-    };
-    node.addEventListener("transitionend", done, { once: true });
-  };
   const heroBits = hero ? [...hero.querySelectorAll("h1, p, a")].slice(0, 5) : [];
-  heroBits.forEach((node, index) => {
-    node.classList.add("sp-await");
-    (node as HTMLElement).style.transitionDelay = `${40 + index * 70}ms`;
-  });
-  requestAnimationFrame(() => {
-    for (const node of [...heroBits, ...chips, ...root.querySelectorAll(".sp-step-col, .sp-step-badge")]) {
-      node.classList.add("sp-in");
-      release(node);
-    }
-  });
-
   const cards = [...root.querySelectorAll("section > div")].filter((node) => {
     const style = node.getAttribute("style") || "";
     return style.includes("border-radius: 22px") || style.includes("border-radius: 24px");
@@ -519,6 +501,47 @@ function motion(root: HTMLElement) {
   const nodes = [...root.querySelectorAll("h2, article"), ...cards]
     .filter((node, index, all) => all.indexOf(node) === index && !hero?.contains(node))
     .slice(0, 36);
+  const staged = [...heroBits, ...chips, ...root.querySelectorAll(".sp-step-col, .sp-step-badge"), ...nodes];
+  const scrollDriven = CSS.supports("animation-timeline", "view()");
+
+  const markIdle = () => document.documentElement.classList.toggle("sp-idle", document.hidden);
+  markIdle();
+  document.addEventListener("visibilitychange", markIdle);
+
+  if (scrollDriven) {
+    frame?.classList.add("sp-parallax");
+    staged.forEach((node) => {
+      const step = Number((node as HTMLElement).dataset.stagger || 0);
+      const start = Math.min(16, step * 4);
+      (node as HTMLElement).style.animationRange = `entry ${start}% cover ${34 + start}%`;
+      node.classList.add("sp-scroll");
+    });
+    return () => {
+      alive = false;
+      document.removeEventListener("visibilitychange", markIdle);
+      document.documentElement.classList.remove("sp-idle");
+    };
+  }
+
+  const release = (node: Element) => {
+    const done = () => {
+      node.classList.remove("sp-await", "sp-in");
+      (node as HTMLElement).style.transitionDelay = "";
+    };
+    node.addEventListener("transitionend", done, { once: true });
+  };
+  heroBits.forEach((node, index) => {
+    node.classList.add("sp-await");
+    (node as HTMLElement).style.transitionDelay = `${40 + index * 70}ms`;
+  });
+  chips.forEach((node) => node.classList.add("sp-await"));
+  root.querySelectorAll(".sp-step-col, .sp-step-badge").forEach((node) => node.classList.add("sp-await"));
+  requestAnimationFrame(() => {
+    for (const node of [...heroBits, ...chips, ...root.querySelectorAll(".sp-step-col, .sp-step-badge")]) {
+      node.classList.add("sp-in");
+      release(node);
+    }
+  });
   const reveal = (el: Element) => {
     if (el.classList.contains("sp-in")) return;
     const now = performance.now();
@@ -567,10 +590,6 @@ function motion(root: HTMLElement) {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
   }
-
-  const markIdle = () => document.documentElement.classList.toggle("sp-idle", document.hidden);
-  markIdle();
-  document.addEventListener("visibilitychange", markIdle);
 
   return () => {
     alive = false;
