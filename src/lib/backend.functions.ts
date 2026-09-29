@@ -45,6 +45,8 @@ export const submitLead = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { assertSameSiteRequest } = await import("@/lib/auth/isolation.server");
     assertSameSiteRequest();
+    const { clientAddress, rateLimit } = await import("@/lib/guard.server");
+    rateLimit(`lead:${clientAddress()}`, 8, 60 * 60 * 1000);
     const sql = await getSql();
     const id = crypto.randomUUID();
     await sql`insert into leads (id, kind, name, email, subject, body, payload)
@@ -55,6 +57,9 @@ export const submitLead = createServerFn({ method: "POST" })
 export const listLeads = createServerFn({ method: "GET" }).handler(async () => {
   const { assertSameSiteRequest } = await import("@/lib/auth/isolation.server");
   assertSameSiteRequest();
+  const { requireUser } = await import("@/lib/admin-auth.server");
+  const user = await requireUser();
+  if (user.role === "client") throw new Error("Accès refusé.");
   const sql = await getSql();
   const rows = await sql<LeadRow>`select id, kind, name, email, subject, body, created_at::text as created_at
       from leads order by created_at desc limit 100`;
@@ -70,12 +75,35 @@ export type AtelierSnapshot = {
   seq: { [key: string]: Json };
 };
 
+function registeredClients(clients: Json[]) {
+  return clients.filter((client) => {
+    if (!client || typeof client !== "object" || Array.isArray(client)) return false;
+    const id = "id" in client ? String(client.id ?? "") : "";
+    return id.startsWith("usr_");
+  });
+}
+
 export const loadAtelier = createServerFn({ method: "GET" }).handler(async () => {
   const { assertSameSiteRequest } = await import("@/lib/auth/isolation.server");
   assertSameSiteRequest();
+  const { requireUser } = await import("@/lib/admin-auth.server");
+  const user = await requireUser();
   const sql = await getSql();
   const rows = await sql<{ payload: AtelierSnapshot }>`select payload from atelier_state where id = 'main'`;
-  return rows[0]?.payload ?? null;
+  const payload = rows[0]?.payload ?? null;
+  if (!payload) return payload;
+  const registered = registeredClients(payload.clients ?? []);
+  if (user.role !== "client") return { ...payload, clients: registered };
+  const clients = registered.filter((client) => {
+    const email = typeof client === "object" && client && "email" in client ? String(client.email ?? "") : "";
+    return email.toLowerCase() === user.email;
+  });
+  const ids = new Set(clients.map((client) => (typeof client === "object" && client ? String(client.id ?? "") : "")));
+  return {
+    ...payload,
+    clients,
+    docs: (payload.docs ?? []).filter((doc) => typeof doc === "object" && doc && ids.has(String(doc.clientId ?? ""))),
+  };
 });
 
 export const saveAtelier = createServerFn({ method: "POST" })
@@ -89,8 +117,18 @@ export const saveAtelier = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { assertSameSiteRequest } = await import("@/lib/auth/isolation.server");
     assertSameSiteRequest();
+    const { requireUser } = await import("@/lib/admin-auth.server");
+    const user = await requireUser();
+    if (user.role === "client") throw new Error("Accès refusé.");
     const sql = await getSql();
-    const payload = JSON.stringify(data);
+    const rows = await sql<{ payload: AtelierSnapshot }>`select payload from atelier_state where id = 'main'`;
+    const byId = new Map<string, Json>();
+    for (const client of [...registeredClients(rows[0]?.payload?.clients ?? []), ...registeredClients(data.clients)]) {
+      if (!client || typeof client !== "object" || Array.isArray(client)) continue;
+      const id = "id" in client ? String(client.id ?? "") : "";
+      if (id.startsWith("usr_")) byId.set(id, client);
+    }
+    const payload = JSON.stringify({ ...data, clients: [...byId.values()] });
     await sql`insert into atelier_state (id, payload, updated_at)
       values ('main', ${payload}::jsonb, now())
       on conflict (id) do update set payload = excluded.payload, updated_at = now()`;

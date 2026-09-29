@@ -11,32 +11,85 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AProposRouteImport } from './routes/a-propos'
+import { Route as AccesRouteImport } from './routes/acces'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AgentsRouteImport } from './routes/agents'
 import { Route as AideRouteImport } from './routes/aide'
 import { Route as ApplicationRouteImport } from './routes/application'
 import { Route as CgvRouteImport } from './routes/cgv'
 import { Route as ClientsRouteImport } from './routes/clients'
 import { Route as CommentCaMarcheRouteImport } from './routes/comment-ca-marche'
 import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
+import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ContratsRouteImport } from './routes/contrats'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as DemandeRouteImport } from './routes/demande'
 import { Route as DemandesRouteImport } from './routes/demandes'
+import { Route as DocumentsRouteImport } from './routes/documents'
+import { Route as EmailsRouteImport } from './routes/emails'
+import { Route as EncheresRouteImport } from './routes/encheres'
 import { Route as EntrepotRouteImport } from './routes/entrepot'
+import { Route as EspaceRouteImport } from './routes/espace'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as InscriptionRouteImport } from './routes/inscription'
+import { Route as JournalRouteImport } from './routes/journal'
+import { Route as LogsRouteImport } from './routes/logs'
+import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as MentionsRouteImport } from './routes/mentions'
 import { Route as PaiementsRouteImport } from './routes/paiements'
+import { Route as ParametresRouteImport } from './routes/parametres'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SessionsRouteImport } from './routes/sessions'
 import { Route as SocieteRouteImport } from './routes/societe'
+import { Route as StatistiquesRouteImport } from './routes/statistiques'
 import { Route as StockRouteImport } from './routes/stock'
 import { Route as TarifsRouteImport } from './routes/tarifs'
+import { Route as UtilisateursRouteImport } from './routes/utilisateurs'
+import { Route as VerificationRouteImport } from './routes/verification'
+import { Route as AgentIndexRouteImport } from './routes/agent/index'
+import { Route as AgentFinancesRouteImport } from './routes/agent/finances'
+import { Route as AgentMessagesRouteImport } from './routes/agent/messages'
+import { Route as AgentParametresRouteImport } from './routes/agent/parametres'
 import { Route as AvoirsIndexRouteImport } from './routes/avoirs/index'
 import { Route as AvoirsIdRouteImport } from './routes/avoirs/$id'
+import { Route as CommandesIndexRouteImport } from './routes/commandes/index'
+import { Route as CommandesIdRouteImport } from './routes/commandes/$id'
+import { Route as ConsulterTokenRouteImport } from './routes/consulter/$token'
+import { Route as DemandesIndexRouteImport } from './routes/demandes/index'
+import { Route as DemandesIdRouteImport } from './routes/demandes/$id'
 import { Route as DevisIndexRouteImport } from './routes/devis/index'
 import { Route as DevisIdRouteImport } from './routes/devis/$id'
+import { Route as DevisNouveauRouteImport } from './routes/devis/nouveau'
+import { Route as EspaceIndexRouteImport } from './routes/espace/index'
+import { Route as EspaceCommandesRouteImport } from './routes/espace/commandes'
+import { Route as EspaceDemandesRouteImport } from './routes/espace/demandes'
+import { Route as EspaceDocumentsRouteImport } from './routes/espace/documents'
+import { Route as EspaceFacturationRouteImport } from './routes/espace/facturation'
+import { Route as EspaceMessagesRouteImport } from './routes/espace/messages'
+import { Route as EspaceParametresRouteImport } from './routes/espace/parametres'
 import { Route as FacturesIndexRouteImport } from './routes/factures/index'
 import { Route as FacturesIdRouteImport } from './routes/factures/$id'
+import { Route as FacturesRecurrentesRouteImport } from './routes/factures/recurrentes'
+import { Route as FacturesRefacturationRouteImport } from './routes/factures/refacturation'
+import { Route as GestionEncheresRouteImport } from './routes/gestion/encheres'
+import { Route as GestionMarketplaceRouteImport } from './routes/gestion/marketplace'
 import { Route as ImprimerIdRouteImport } from './routes/imprimer/$id'
+import { Route as SignerTokenRouteImport } from './routes/signer/$token'
+import { Route as AgentStatutIdRouteImport } from './routes/agent/statut/$id'
+import { Route as ApiCIdRouteImport } from './routes/api/c/$id'
+import { Route as ApiOIdRouteImport } from './routes/api/o/$id'
+import { Route as EspaceAvoirIdRouteImport } from './routes/espace/avoir/$id'
+import { Route as EspaceCommandesIndexRouteImport } from './routes/espace/commandes/index'
+import { Route as EspaceCommandesIdRouteImport } from './routes/espace/commandes/$id'
+import { Route as EspaceDemandesIndexRouteImport } from './routes/espace/demandes/index'
+import { Route as EspaceDemandesIdRouteImport } from './routes/espace/demandes/$id'
+import { Route as EspaceDemandesNouvelleRouteImport } from './routes/espace/demandes/nouvelle'
+import { Route as EspaceDevisIdRouteImport } from './routes/espace/devis/$id'
+import { Route as EspaceFactureIdRouteImport } from './routes/espace/facture/$id'
+import { Route as EspacePayerIdRouteImport } from './routes/espace/payer/$id'
+import { Route as EspaceSignerIdRouteImport } from './routes/espace/signer/$id'
+import { Route as FacturesFicheIdRouteImport } from './routes/factures/fiche/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -48,9 +101,19 @@ const AProposRoute = AProposRouteImport.update({
   path: '/a-propos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccesRoute = AccesRouteImport.update({
+  id: '/acces',
+  path: '/acces',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentsRoute = AgentsRouteImport.update({
+  id: '/agents',
+  path: '/agents',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AideRoute = AideRouteImport.update({
@@ -83,9 +146,19 @@ const ConfidentialiteRoute = ConfidentialiteRouteImport.update({
   path: '/confidentialite',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConnexionRoute = ConnexionRouteImport.update({
+  id: '/connexion',
+  path: '/connexion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContratsRoute = ContratsRouteImport.update({
+  id: '/contrats',
+  path: '/contrats',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CookiesRoute = CookiesRouteImport.update({
@@ -103,14 +176,54 @@ const DemandesRoute = DemandesRouteImport.update({
   path: '/demandes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocumentsRoute = DocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmailsRoute = EmailsRouteImport.update({
+  id: '/emails',
+  path: '/emails',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EncheresRoute = EncheresRouteImport.update({
+  id: '/encheres',
+  path: '/encheres',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EntrepotRoute = EntrepotRouteImport.update({
   id: '/entrepot',
   path: '/entrepot',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EspaceRoute = EspaceRouteImport.update({
+  id: '/espace',
+  path: '/espace',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InscriptionRoute = InscriptionRouteImport.update({
+  id: '/inscription',
+  path: '/inscription',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalRoute = JournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogsRoute = LogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceRoute = MarketplaceRouteImport.update({
+  id: '/marketplace',
+  path: '/marketplace',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MentionsRoute = MentionsRouteImport.update({
@@ -123,14 +236,29 @@ const PaiementsRoute = PaiementsRouteImport.update({
   path: '/paiements',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParametresRoute = ParametresRouteImport.update({
+  id: '/parametres',
+  path: '/parametres',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SessionsRoute = SessionsRouteImport.update({
+  id: '/sessions',
+  path: '/sessions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SocieteRoute = SocieteRouteImport.update({
   id: '/societe',
   path: '/societe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatistiquesRoute = StatistiquesRouteImport.update({
+  id: '/statistiques',
+  path: '/statistiques',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StockRoute = StockRouteImport.update({
@@ -143,6 +271,36 @@ const TarifsRoute = TarifsRouteImport.update({
   path: '/tarifs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UtilisateursRoute = UtilisateursRouteImport.update({
+  id: '/utilisateurs',
+  path: '/utilisateurs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerificationRoute = VerificationRouteImport.update({
+  id: '/verification',
+  path: '/verification',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentIndexRoute = AgentIndexRouteImport.update({
+  id: '/agent/',
+  path: '/agent/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentFinancesRoute = AgentFinancesRouteImport.update({
+  id: '/agent/finances',
+  path: '/agent/finances',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentMessagesRoute = AgentMessagesRouteImport.update({
+  id: '/agent/messages',
+  path: '/agent/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentParametresRoute = AgentParametresRouteImport.update({
+  id: '/agent/parametres',
+  path: '/agent/parametres',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AvoirsIndexRoute = AvoirsIndexRouteImport.update({
   id: '/avoirs/',
   path: '/avoirs/',
@@ -152,6 +310,31 @@ const AvoirsIdRoute = AvoirsIdRouteImport.update({
   id: '/avoirs/$id',
   path: '/avoirs/$id',
   getParentRoute: () => rootRouteImport,
+} as any)
+const CommandesIndexRoute = CommandesIndexRouteImport.update({
+  id: '/commandes/',
+  path: '/commandes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommandesIdRoute = CommandesIdRouteImport.update({
+  id: '/commandes/$id',
+  path: '/commandes/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConsulterTokenRoute = ConsulterTokenRouteImport.update({
+  id: '/consulter/$token',
+  path: '/consulter/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemandesIndexRoute = DemandesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DemandesRoute,
+} as any)
+const DemandesIdRoute = DemandesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => DemandesRoute,
 } as any)
 const DevisIndexRoute = DevisIndexRouteImport.update({
   id: '/devis/',
@@ -163,6 +346,46 @@ const DevisIdRoute = DevisIdRouteImport.update({
   path: '/devis/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevisNouveauRoute = DevisNouveauRouteImport.update({
+  id: '/devis/nouveau',
+  path: '/devis/nouveau',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspaceIndexRoute = EspaceIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceCommandesRoute = EspaceCommandesRouteImport.update({
+  id: '/commandes',
+  path: '/commandes',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceDemandesRoute = EspaceDemandesRouteImport.update({
+  id: '/demandes',
+  path: '/demandes',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceDocumentsRoute = EspaceDocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceFacturationRoute = EspaceFacturationRouteImport.update({
+  id: '/facturation',
+  path: '/facturation',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceMessagesRoute = EspaceMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceParametresRoute = EspaceParametresRouteImport.update({
+  id: '/parametres',
+  path: '/parametres',
+  getParentRoute: () => EspaceRoute,
+} as any)
 const FacturesIndexRoute = FacturesIndexRouteImport.update({
   id: '/factures/',
   path: '/factures/',
@@ -173,225 +396,664 @@ const FacturesIdRoute = FacturesIdRouteImport.update({
   path: '/factures/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FacturesRecurrentesRoute = FacturesRecurrentesRouteImport.update({
+  id: '/factures/recurrentes',
+  path: '/factures/recurrentes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FacturesRefacturationRoute = FacturesRefacturationRouteImport.update({
+  id: '/factures/refacturation',
+  path: '/factures/refacturation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GestionEncheresRoute = GestionEncheresRouteImport.update({
+  id: '/gestion/encheres',
+  path: '/gestion/encheres',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GestionMarketplaceRoute = GestionMarketplaceRouteImport.update({
+  id: '/gestion/marketplace',
+  path: '/gestion/marketplace',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ImprimerIdRoute = ImprimerIdRouteImport.update({
   id: '/imprimer/$id',
   path: '/imprimer/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignerTokenRoute = SignerTokenRouteImport.update({
+  id: '/signer/$token',
+  path: '/signer/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentStatutIdRoute = AgentStatutIdRouteImport.update({
+  id: '/agent/statut/$id',
+  path: '/agent/statut/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCIdRoute = ApiCIdRouteImport.update({
+  id: '/api/c/$id',
+  path: '/api/c/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiOIdRoute = ApiOIdRouteImport.update({
+  id: '/api/o/$id',
+  path: '/api/o/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspaceAvoirIdRoute = EspaceAvoirIdRouteImport.update({
+  id: '/avoir/$id',
+  path: '/avoir/$id',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceCommandesIndexRoute = EspaceCommandesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EspaceCommandesRoute,
+} as any)
+const EspaceCommandesIdRoute = EspaceCommandesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => EspaceCommandesRoute,
+} as any)
+const EspaceDemandesIndexRoute = EspaceDemandesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EspaceDemandesRoute,
+} as any)
+const EspaceDemandesIdRoute = EspaceDemandesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => EspaceDemandesRoute,
+} as any)
+const EspaceDemandesNouvelleRoute = EspaceDemandesNouvelleRouteImport.update({
+  id: '/nouvelle',
+  path: '/nouvelle',
+  getParentRoute: () => EspaceDemandesRoute,
+} as any)
+const EspaceDevisIdRoute = EspaceDevisIdRouteImport.update({
+  id: '/devis/$id',
+  path: '/devis/$id',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceFactureIdRoute = EspaceFactureIdRouteImport.update({
+  id: '/facture/$id',
+  path: '/facture/$id',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspacePayerIdRoute = EspacePayerIdRouteImport.update({
+  id: '/payer/$id',
+  path: '/payer/$id',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceSignerIdRoute = EspaceSignerIdRouteImport.update({
+  id: '/signer/$id',
+  path: '/signer/$id',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const FacturesFicheIdRoute = FacturesFicheIdRouteImport.update({
+  id: '/factures/fiche/$id',
+  path: '/factures/fiche/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
+  '/acces': typeof AccesRoute
   '/admin': typeof AdminRoute
+  '/agents': typeof AgentsRoute
   '/aide': typeof AideRoute
   '/application': typeof ApplicationRoute
   '/cgv': typeof CgvRoute
   '/clients': typeof ClientsRoute
   '/comment-ca-marche': typeof CommentCaMarcheRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/connexion': typeof ConnexionRoute
   '/contact': typeof ContactRoute
+  '/contrats': typeof ContratsRoute
   '/cookies': typeof CookiesRoute
   '/demande': typeof DemandeRoute
-  '/demandes': typeof DemandesRoute
+  '/demandes': typeof DemandesRouteWithChildren
+  '/documents': typeof DocumentsRoute
+  '/emails': typeof EmailsRoute
+  '/encheres': typeof EncheresRoute
   '/entrepot': typeof EntrepotRoute
+  '/espace': typeof EspaceRouteWithChildren
   '/faq': typeof FaqRoute
+  '/inscription': typeof InscriptionRoute
+  '/journal': typeof JournalRoute
+  '/logs': typeof LogsRoute
+  '/marketplace': typeof MarketplaceRoute
   '/mentions': typeof MentionsRoute
   '/paiements': typeof PaiementsRoute
+  '/parametres': typeof ParametresRoute
   '/services': typeof ServicesRoute
+  '/sessions': typeof SessionsRoute
   '/societe': typeof SocieteRoute
+  '/statistiques': typeof StatistiquesRoute
   '/stock': typeof StockRoute
   '/tarifs': typeof TarifsRoute
+  '/utilisateurs': typeof UtilisateursRoute
+  '/verification': typeof VerificationRoute
+  '/agent/finances': typeof AgentFinancesRoute
+  '/agent/messages': typeof AgentMessagesRoute
+  '/agent/parametres': typeof AgentParametresRoute
   '/avoirs/$id': typeof AvoirsIdRoute
+  '/commandes/$id': typeof CommandesIdRoute
+  '/consulter/$token': typeof ConsulterTokenRoute
+  '/demandes/$id': typeof DemandesIdRoute
   '/devis/$id': typeof DevisIdRoute
+  '/devis/nouveau': typeof DevisNouveauRoute
+  '/espace/commandes': typeof EspaceCommandesRouteWithChildren
+  '/espace/demandes': typeof EspaceDemandesRouteWithChildren
+  '/espace/documents': typeof EspaceDocumentsRoute
+  '/espace/facturation': typeof EspaceFacturationRoute
+  '/espace/messages': typeof EspaceMessagesRoute
+  '/espace/parametres': typeof EspaceParametresRoute
   '/factures/$id': typeof FacturesIdRoute
+  '/factures/recurrentes': typeof FacturesRecurrentesRoute
+  '/factures/refacturation': typeof FacturesRefacturationRoute
+  '/gestion/encheres': typeof GestionEncheresRoute
+  '/gestion/marketplace': typeof GestionMarketplaceRoute
   '/imprimer/$id': typeof ImprimerIdRoute
+  '/signer/$token': typeof SignerTokenRoute
+  '/agent/': typeof AgentIndexRoute
   '/avoirs/': typeof AvoirsIndexRoute
+  '/commandes/': typeof CommandesIndexRoute
+  '/demandes/': typeof DemandesIndexRoute
   '/devis/': typeof DevisIndexRoute
+  '/espace/': typeof EspaceIndexRoute
   '/factures/': typeof FacturesIndexRoute
+  '/agent/statut/$id': typeof AgentStatutIdRoute
+  '/api/c/$id': typeof ApiCIdRoute
+  '/api/o/$id': typeof ApiOIdRoute
+  '/espace/avoir/$id': typeof EspaceAvoirIdRoute
+  '/espace/commandes/$id': typeof EspaceCommandesIdRoute
+  '/espace/demandes/$id': typeof EspaceDemandesIdRoute
+  '/espace/demandes/nouvelle': typeof EspaceDemandesNouvelleRoute
+  '/espace/devis/$id': typeof EspaceDevisIdRoute
+  '/espace/facture/$id': typeof EspaceFactureIdRoute
+  '/espace/payer/$id': typeof EspacePayerIdRoute
+  '/espace/signer/$id': typeof EspaceSignerIdRoute
+  '/factures/fiche/$id': typeof FacturesFicheIdRoute
+  '/espace/commandes/': typeof EspaceCommandesIndexRoute
+  '/espace/demandes/': typeof EspaceDemandesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
+  '/acces': typeof AccesRoute
   '/admin': typeof AdminRoute
+  '/agents': typeof AgentsRoute
   '/aide': typeof AideRoute
   '/application': typeof ApplicationRoute
   '/cgv': typeof CgvRoute
   '/clients': typeof ClientsRoute
   '/comment-ca-marche': typeof CommentCaMarcheRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/connexion': typeof ConnexionRoute
   '/contact': typeof ContactRoute
+  '/contrats': typeof ContratsRoute
   '/cookies': typeof CookiesRoute
   '/demande': typeof DemandeRoute
-  '/demandes': typeof DemandesRoute
+  '/documents': typeof DocumentsRoute
+  '/emails': typeof EmailsRoute
+  '/encheres': typeof EncheresRoute
   '/entrepot': typeof EntrepotRoute
   '/faq': typeof FaqRoute
+  '/inscription': typeof InscriptionRoute
+  '/journal': typeof JournalRoute
+  '/logs': typeof LogsRoute
+  '/marketplace': typeof MarketplaceRoute
   '/mentions': typeof MentionsRoute
   '/paiements': typeof PaiementsRoute
+  '/parametres': typeof ParametresRoute
   '/services': typeof ServicesRoute
+  '/sessions': typeof SessionsRoute
   '/societe': typeof SocieteRoute
+  '/statistiques': typeof StatistiquesRoute
   '/stock': typeof StockRoute
   '/tarifs': typeof TarifsRoute
+  '/utilisateurs': typeof UtilisateursRoute
+  '/verification': typeof VerificationRoute
+  '/agent/finances': typeof AgentFinancesRoute
+  '/agent/messages': typeof AgentMessagesRoute
+  '/agent/parametres': typeof AgentParametresRoute
   '/avoirs/$id': typeof AvoirsIdRoute
+  '/commandes/$id': typeof CommandesIdRoute
+  '/consulter/$token': typeof ConsulterTokenRoute
+  '/demandes/$id': typeof DemandesIdRoute
   '/devis/$id': typeof DevisIdRoute
+  '/devis/nouveau': typeof DevisNouveauRoute
+  '/espace/documents': typeof EspaceDocumentsRoute
+  '/espace/facturation': typeof EspaceFacturationRoute
+  '/espace/messages': typeof EspaceMessagesRoute
+  '/espace/parametres': typeof EspaceParametresRoute
   '/factures/$id': typeof FacturesIdRoute
+  '/factures/recurrentes': typeof FacturesRecurrentesRoute
+  '/factures/refacturation': typeof FacturesRefacturationRoute
+  '/gestion/encheres': typeof GestionEncheresRoute
+  '/gestion/marketplace': typeof GestionMarketplaceRoute
   '/imprimer/$id': typeof ImprimerIdRoute
+  '/signer/$token': typeof SignerTokenRoute
+  '/agent': typeof AgentIndexRoute
   '/avoirs': typeof AvoirsIndexRoute
+  '/commandes': typeof CommandesIndexRoute
+  '/demandes': typeof DemandesIndexRoute
   '/devis': typeof DevisIndexRoute
+  '/espace': typeof EspaceIndexRoute
   '/factures': typeof FacturesIndexRoute
+  '/agent/statut/$id': typeof AgentStatutIdRoute
+  '/api/c/$id': typeof ApiCIdRoute
+  '/api/o/$id': typeof ApiOIdRoute
+  '/espace/avoir/$id': typeof EspaceAvoirIdRoute
+  '/espace/commandes/$id': typeof EspaceCommandesIdRoute
+  '/espace/demandes/$id': typeof EspaceDemandesIdRoute
+  '/espace/demandes/nouvelle': typeof EspaceDemandesNouvelleRoute
+  '/espace/devis/$id': typeof EspaceDevisIdRoute
+  '/espace/facture/$id': typeof EspaceFactureIdRoute
+  '/espace/payer/$id': typeof EspacePayerIdRoute
+  '/espace/signer/$id': typeof EspaceSignerIdRoute
+  '/factures/fiche/$id': typeof FacturesFicheIdRoute
+  '/espace/commandes': typeof EspaceCommandesIndexRoute
+  '/espace/demandes': typeof EspaceDemandesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
+  '/acces': typeof AccesRoute
   '/admin': typeof AdminRoute
+  '/agents': typeof AgentsRoute
   '/aide': typeof AideRoute
   '/application': typeof ApplicationRoute
   '/cgv': typeof CgvRoute
   '/clients': typeof ClientsRoute
   '/comment-ca-marche': typeof CommentCaMarcheRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/connexion': typeof ConnexionRoute
   '/contact': typeof ContactRoute
+  '/contrats': typeof ContratsRoute
   '/cookies': typeof CookiesRoute
   '/demande': typeof DemandeRoute
-  '/demandes': typeof DemandesRoute
+  '/demandes': typeof DemandesRouteWithChildren
+  '/documents': typeof DocumentsRoute
+  '/emails': typeof EmailsRoute
+  '/encheres': typeof EncheresRoute
   '/entrepot': typeof EntrepotRoute
+  '/espace': typeof EspaceRouteWithChildren
   '/faq': typeof FaqRoute
+  '/inscription': typeof InscriptionRoute
+  '/journal': typeof JournalRoute
+  '/logs': typeof LogsRoute
+  '/marketplace': typeof MarketplaceRoute
   '/mentions': typeof MentionsRoute
   '/paiements': typeof PaiementsRoute
+  '/parametres': typeof ParametresRoute
   '/services': typeof ServicesRoute
+  '/sessions': typeof SessionsRoute
   '/societe': typeof SocieteRoute
+  '/statistiques': typeof StatistiquesRoute
   '/stock': typeof StockRoute
   '/tarifs': typeof TarifsRoute
+  '/utilisateurs': typeof UtilisateursRoute
+  '/verification': typeof VerificationRoute
+  '/agent/finances': typeof AgentFinancesRoute
+  '/agent/messages': typeof AgentMessagesRoute
+  '/agent/parametres': typeof AgentParametresRoute
   '/avoirs/$id': typeof AvoirsIdRoute
+  '/commandes/$id': typeof CommandesIdRoute
+  '/consulter/$token': typeof ConsulterTokenRoute
+  '/demandes/$id': typeof DemandesIdRoute
   '/devis/$id': typeof DevisIdRoute
+  '/devis/nouveau': typeof DevisNouveauRoute
+  '/espace/commandes': typeof EspaceCommandesRouteWithChildren
+  '/espace/demandes': typeof EspaceDemandesRouteWithChildren
+  '/espace/documents': typeof EspaceDocumentsRoute
+  '/espace/facturation': typeof EspaceFacturationRoute
+  '/espace/messages': typeof EspaceMessagesRoute
+  '/espace/parametres': typeof EspaceParametresRoute
   '/factures/$id': typeof FacturesIdRoute
+  '/factures/recurrentes': typeof FacturesRecurrentesRoute
+  '/factures/refacturation': typeof FacturesRefacturationRoute
+  '/gestion/encheres': typeof GestionEncheresRoute
+  '/gestion/marketplace': typeof GestionMarketplaceRoute
   '/imprimer/$id': typeof ImprimerIdRoute
+  '/signer/$token': typeof SignerTokenRoute
+  '/agent/': typeof AgentIndexRoute
   '/avoirs/': typeof AvoirsIndexRoute
+  '/commandes/': typeof CommandesIndexRoute
+  '/demandes/': typeof DemandesIndexRoute
   '/devis/': typeof DevisIndexRoute
+  '/espace/': typeof EspaceIndexRoute
   '/factures/': typeof FacturesIndexRoute
+  '/agent/statut/$id': typeof AgentStatutIdRoute
+  '/api/c/$id': typeof ApiCIdRoute
+  '/api/o/$id': typeof ApiOIdRoute
+  '/espace/avoir/$id': typeof EspaceAvoirIdRoute
+  '/espace/commandes/$id': typeof EspaceCommandesIdRoute
+  '/espace/demandes/$id': typeof EspaceDemandesIdRoute
+  '/espace/demandes/nouvelle': typeof EspaceDemandesNouvelleRoute
+  '/espace/devis/$id': typeof EspaceDevisIdRoute
+  '/espace/facture/$id': typeof EspaceFactureIdRoute
+  '/espace/payer/$id': typeof EspacePayerIdRoute
+  '/espace/signer/$id': typeof EspaceSignerIdRoute
+  '/factures/fiche/$id': typeof FacturesFicheIdRoute
+  '/espace/commandes/': typeof EspaceCommandesIndexRoute
+  '/espace/demandes/': typeof EspaceDemandesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/a-propos'
+    | '/acces'
     | '/admin'
+    | '/agents'
     | '/aide'
     | '/application'
     | '/cgv'
     | '/clients'
     | '/comment-ca-marche'
     | '/confidentialite'
+    | '/connexion'
     | '/contact'
+    | '/contrats'
     | '/cookies'
     | '/demande'
     | '/demandes'
+    | '/documents'
+    | '/emails'
+    | '/encheres'
     | '/entrepot'
+    | '/espace'
     | '/faq'
+    | '/inscription'
+    | '/journal'
+    | '/logs'
+    | '/marketplace'
     | '/mentions'
     | '/paiements'
+    | '/parametres'
     | '/services'
+    | '/sessions'
     | '/societe'
+    | '/statistiques'
     | '/stock'
     | '/tarifs'
+    | '/utilisateurs'
+    | '/verification'
+    | '/agent/finances'
+    | '/agent/messages'
+    | '/agent/parametres'
     | '/avoirs/$id'
+    | '/commandes/$id'
+    | '/consulter/$token'
+    | '/demandes/$id'
     | '/devis/$id'
+    | '/devis/nouveau'
+    | '/espace/commandes'
+    | '/espace/demandes'
+    | '/espace/documents'
+    | '/espace/facturation'
+    | '/espace/messages'
+    | '/espace/parametres'
     | '/factures/$id'
+    | '/factures/recurrentes'
+    | '/factures/refacturation'
+    | '/gestion/encheres'
+    | '/gestion/marketplace'
     | '/imprimer/$id'
+    | '/signer/$token'
+    | '/agent/'
     | '/avoirs/'
+    | '/commandes/'
+    | '/demandes/'
     | '/devis/'
+    | '/espace/'
     | '/factures/'
+    | '/agent/statut/$id'
+    | '/api/c/$id'
+    | '/api/o/$id'
+    | '/espace/avoir/$id'
+    | '/espace/commandes/$id'
+    | '/espace/demandes/$id'
+    | '/espace/demandes/nouvelle'
+    | '/espace/devis/$id'
+    | '/espace/facture/$id'
+    | '/espace/payer/$id'
+    | '/espace/signer/$id'
+    | '/factures/fiche/$id'
+    | '/espace/commandes/'
+    | '/espace/demandes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/a-propos'
+    | '/acces'
     | '/admin'
+    | '/agents'
     | '/aide'
     | '/application'
     | '/cgv'
     | '/clients'
     | '/comment-ca-marche'
     | '/confidentialite'
+    | '/connexion'
     | '/contact'
+    | '/contrats'
     | '/cookies'
     | '/demande'
-    | '/demandes'
+    | '/documents'
+    | '/emails'
+    | '/encheres'
     | '/entrepot'
     | '/faq'
+    | '/inscription'
+    | '/journal'
+    | '/logs'
+    | '/marketplace'
     | '/mentions'
     | '/paiements'
+    | '/parametres'
     | '/services'
+    | '/sessions'
     | '/societe'
+    | '/statistiques'
     | '/stock'
     | '/tarifs'
+    | '/utilisateurs'
+    | '/verification'
+    | '/agent/finances'
+    | '/agent/messages'
+    | '/agent/parametres'
     | '/avoirs/$id'
+    | '/commandes/$id'
+    | '/consulter/$token'
+    | '/demandes/$id'
     | '/devis/$id'
+    | '/devis/nouveau'
+    | '/espace/documents'
+    | '/espace/facturation'
+    | '/espace/messages'
+    | '/espace/parametres'
     | '/factures/$id'
+    | '/factures/recurrentes'
+    | '/factures/refacturation'
+    | '/gestion/encheres'
+    | '/gestion/marketplace'
     | '/imprimer/$id'
+    | '/signer/$token'
+    | '/agent'
     | '/avoirs'
+    | '/commandes'
+    | '/demandes'
     | '/devis'
+    | '/espace'
     | '/factures'
+    | '/agent/statut/$id'
+    | '/api/c/$id'
+    | '/api/o/$id'
+    | '/espace/avoir/$id'
+    | '/espace/commandes/$id'
+    | '/espace/demandes/$id'
+    | '/espace/demandes/nouvelle'
+    | '/espace/devis/$id'
+    | '/espace/facture/$id'
+    | '/espace/payer/$id'
+    | '/espace/signer/$id'
+    | '/factures/fiche/$id'
+    | '/espace/commandes'
+    | '/espace/demandes'
   id:
     | '__root__'
     | '/'
     | '/a-propos'
+    | '/acces'
     | '/admin'
+    | '/agents'
     | '/aide'
     | '/application'
     | '/cgv'
     | '/clients'
     | '/comment-ca-marche'
     | '/confidentialite'
+    | '/connexion'
     | '/contact'
+    | '/contrats'
     | '/cookies'
     | '/demande'
     | '/demandes'
+    | '/documents'
+    | '/emails'
+    | '/encheres'
     | '/entrepot'
+    | '/espace'
     | '/faq'
+    | '/inscription'
+    | '/journal'
+    | '/logs'
+    | '/marketplace'
     | '/mentions'
     | '/paiements'
+    | '/parametres'
     | '/services'
+    | '/sessions'
     | '/societe'
+    | '/statistiques'
     | '/stock'
     | '/tarifs'
+    | '/utilisateurs'
+    | '/verification'
+    | '/agent/finances'
+    | '/agent/messages'
+    | '/agent/parametres'
     | '/avoirs/$id'
+    | '/commandes/$id'
+    | '/consulter/$token'
+    | '/demandes/$id'
     | '/devis/$id'
+    | '/devis/nouveau'
+    | '/espace/commandes'
+    | '/espace/demandes'
+    | '/espace/documents'
+    | '/espace/facturation'
+    | '/espace/messages'
+    | '/espace/parametres'
     | '/factures/$id'
+    | '/factures/recurrentes'
+    | '/factures/refacturation'
+    | '/gestion/encheres'
+    | '/gestion/marketplace'
     | '/imprimer/$id'
+    | '/signer/$token'
+    | '/agent/'
     | '/avoirs/'
+    | '/commandes/'
+    | '/demandes/'
     | '/devis/'
+    | '/espace/'
     | '/factures/'
+    | '/agent/statut/$id'
+    | '/api/c/$id'
+    | '/api/o/$id'
+    | '/espace/avoir/$id'
+    | '/espace/commandes/$id'
+    | '/espace/demandes/$id'
+    | '/espace/demandes/nouvelle'
+    | '/espace/devis/$id'
+    | '/espace/facture/$id'
+    | '/espace/payer/$id'
+    | '/espace/signer/$id'
+    | '/factures/fiche/$id'
+    | '/espace/commandes/'
+    | '/espace/demandes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AProposRoute: typeof AProposRoute
+  AccesRoute: typeof AccesRoute
   AdminRoute: typeof AdminRoute
+  AgentsRoute: typeof AgentsRoute
   AideRoute: typeof AideRoute
   ApplicationRoute: typeof ApplicationRoute
   CgvRoute: typeof CgvRoute
   ClientsRoute: typeof ClientsRoute
   CommentCaMarcheRoute: typeof CommentCaMarcheRoute
   ConfidentialiteRoute: typeof ConfidentialiteRoute
+  ConnexionRoute: typeof ConnexionRoute
   ContactRoute: typeof ContactRoute
+  ContratsRoute: typeof ContratsRoute
   CookiesRoute: typeof CookiesRoute
   DemandeRoute: typeof DemandeRoute
-  DemandesRoute: typeof DemandesRoute
+  DemandesRoute: typeof DemandesRouteWithChildren
+  DocumentsRoute: typeof DocumentsRoute
+  EmailsRoute: typeof EmailsRoute
+  EncheresRoute: typeof EncheresRoute
   EntrepotRoute: typeof EntrepotRoute
+  EspaceRoute: typeof EspaceRouteWithChildren
   FaqRoute: typeof FaqRoute
+  InscriptionRoute: typeof InscriptionRoute
+  JournalRoute: typeof JournalRoute
+  LogsRoute: typeof LogsRoute
+  MarketplaceRoute: typeof MarketplaceRoute
   MentionsRoute: typeof MentionsRoute
   PaiementsRoute: typeof PaiementsRoute
+  ParametresRoute: typeof ParametresRoute
   ServicesRoute: typeof ServicesRoute
+  SessionsRoute: typeof SessionsRoute
   SocieteRoute: typeof SocieteRoute
+  StatistiquesRoute: typeof StatistiquesRoute
   StockRoute: typeof StockRoute
   TarifsRoute: typeof TarifsRoute
+  UtilisateursRoute: typeof UtilisateursRoute
+  VerificationRoute: typeof VerificationRoute
+  AgentFinancesRoute: typeof AgentFinancesRoute
+  AgentMessagesRoute: typeof AgentMessagesRoute
+  AgentParametresRoute: typeof AgentParametresRoute
   AvoirsIdRoute: typeof AvoirsIdRoute
+  CommandesIdRoute: typeof CommandesIdRoute
+  ConsulterTokenRoute: typeof ConsulterTokenRoute
   DevisIdRoute: typeof DevisIdRoute
+  DevisNouveauRoute: typeof DevisNouveauRoute
   FacturesIdRoute: typeof FacturesIdRoute
+  FacturesRecurrentesRoute: typeof FacturesRecurrentesRoute
+  FacturesRefacturationRoute: typeof FacturesRefacturationRoute
+  GestionEncheresRoute: typeof GestionEncheresRoute
+  GestionMarketplaceRoute: typeof GestionMarketplaceRoute
   ImprimerIdRoute: typeof ImprimerIdRoute
+  SignerTokenRoute: typeof SignerTokenRoute
+  AgentIndexRoute: typeof AgentIndexRoute
   AvoirsIndexRoute: typeof AvoirsIndexRoute
+  CommandesIndexRoute: typeof CommandesIndexRoute
   DevisIndexRoute: typeof DevisIndexRoute
   FacturesIndexRoute: typeof FacturesIndexRoute
+  AgentStatutIdRoute: typeof AgentStatutIdRoute
+  ApiCIdRoute: typeof ApiCIdRoute
+  ApiOIdRoute: typeof ApiOIdRoute
+  FacturesFicheIdRoute: typeof FacturesFicheIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -410,11 +1072,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AProposRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/acces': {
+      id: '/acces'
+      path: '/acces'
+      fullPath: '/acces'
+      preLoaderRoute: typeof AccesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agents': {
+      id: '/agents'
+      path: '/agents'
+      fullPath: '/agents'
+      preLoaderRoute: typeof AgentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/aide': {
@@ -459,11 +1135,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConfidentialiteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/connexion': {
+      id: '/connexion'
+      path: '/connexion'
+      fullPath: '/connexion'
+      preLoaderRoute: typeof ConnexionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contrats': {
+      id: '/contrats'
+      path: '/contrats'
+      fullPath: '/contrats'
+      preLoaderRoute: typeof ContratsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cookies': {
@@ -487,6 +1177,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemandesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/documents': {
+      id: '/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof DocumentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emails': {
+      id: '/emails'
+      path: '/emails'
+      fullPath: '/emails'
+      preLoaderRoute: typeof EmailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/encheres': {
+      id: '/encheres'
+      path: '/encheres'
+      fullPath: '/encheres'
+      preLoaderRoute: typeof EncheresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/entrepot': {
       id: '/entrepot'
       path: '/entrepot'
@@ -494,11 +1205,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EntrepotRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/espace': {
+      id: '/espace'
+      path: '/espace'
+      fullPath: '/espace'
+      preLoaderRoute: typeof EspaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inscription': {
+      id: '/inscription'
+      path: '/inscription'
+      fullPath: '/inscription'
+      preLoaderRoute: typeof InscriptionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal': {
+      id: '/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof JournalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logs': {
+      id: '/logs'
+      path: '/logs'
+      fullPath: '/logs'
+      preLoaderRoute: typeof LogsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace': {
+      id: '/marketplace'
+      path: '/marketplace'
+      fullPath: '/marketplace'
+      preLoaderRoute: typeof MarketplaceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mentions': {
@@ -515,6 +1261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaiementsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parametres': {
+      id: '/parametres'
+      path: '/parametres'
+      fullPath: '/parametres'
+      preLoaderRoute: typeof ParametresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -522,11 +1275,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sessions': {
+      id: '/sessions'
+      path: '/sessions'
+      fullPath: '/sessions'
+      preLoaderRoute: typeof SessionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/societe': {
       id: '/societe'
       path: '/societe'
       fullPath: '/societe'
       preLoaderRoute: typeof SocieteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/statistiques': {
+      id: '/statistiques'
+      path: '/statistiques'
+      fullPath: '/statistiques'
+      preLoaderRoute: typeof StatistiquesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/stock': {
@@ -543,6 +1310,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TarifsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/utilisateurs': {
+      id: '/utilisateurs'
+      path: '/utilisateurs'
+      fullPath: '/utilisateurs'
+      preLoaderRoute: typeof UtilisateursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verification': {
+      id: '/verification'
+      path: '/verification'
+      fullPath: '/verification'
+      preLoaderRoute: typeof VerificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agent/': {
+      id: '/agent/'
+      path: '/agent'
+      fullPath: '/agent/'
+      preLoaderRoute: typeof AgentIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agent/finances': {
+      id: '/agent/finances'
+      path: '/agent/finances'
+      fullPath: '/agent/finances'
+      preLoaderRoute: typeof AgentFinancesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agent/messages': {
+      id: '/agent/messages'
+      path: '/agent/messages'
+      fullPath: '/agent/messages'
+      preLoaderRoute: typeof AgentMessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agent/parametres': {
+      id: '/agent/parametres'
+      path: '/agent/parametres'
+      fullPath: '/agent/parametres'
+      preLoaderRoute: typeof AgentParametresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/avoirs/': {
       id: '/avoirs/'
       path: '/avoirs'
@@ -556,6 +1365,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/avoirs/$id'
       preLoaderRoute: typeof AvoirsIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/commandes/': {
+      id: '/commandes/'
+      path: '/commandes'
+      fullPath: '/commandes/'
+      preLoaderRoute: typeof CommandesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/commandes/$id': {
+      id: '/commandes/$id'
+      path: '/commandes/$id'
+      fullPath: '/commandes/$id'
+      preLoaderRoute: typeof CommandesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/consulter/$token': {
+      id: '/consulter/$token'
+      path: '/consulter/$token'
+      fullPath: '/consulter/$token'
+      preLoaderRoute: typeof ConsulterTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demandes/': {
+      id: '/demandes/'
+      path: '/'
+      fullPath: '/demandes/'
+      preLoaderRoute: typeof DemandesIndexRouteImport
+      parentRoute: typeof DemandesRoute
+    }
+    '/demandes/$id': {
+      id: '/demandes/$id'
+      path: '/$id'
+      fullPath: '/demandes/$id'
+      preLoaderRoute: typeof DemandesIdRouteImport
+      parentRoute: typeof DemandesRoute
     }
     '/devis/': {
       id: '/devis/'
@@ -571,6 +1415,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevisIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/devis/nouveau': {
+      id: '/devis/nouveau'
+      path: '/devis/nouveau'
+      fullPath: '/devis/nouveau'
+      preLoaderRoute: typeof DevisNouveauRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/espace/': {
+      id: '/espace/'
+      path: '/'
+      fullPath: '/espace/'
+      preLoaderRoute: typeof EspaceIndexRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/commandes': {
+      id: '/espace/commandes'
+      path: '/commandes'
+      fullPath: '/espace/commandes'
+      preLoaderRoute: typeof EspaceCommandesRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/demandes': {
+      id: '/espace/demandes'
+      path: '/demandes'
+      fullPath: '/espace/demandes'
+      preLoaderRoute: typeof EspaceDemandesRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/documents': {
+      id: '/espace/documents'
+      path: '/documents'
+      fullPath: '/espace/documents'
+      preLoaderRoute: typeof EspaceDocumentsRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/facturation': {
+      id: '/espace/facturation'
+      path: '/facturation'
+      fullPath: '/espace/facturation'
+      preLoaderRoute: typeof EspaceFacturationRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/messages': {
+      id: '/espace/messages'
+      path: '/messages'
+      fullPath: '/espace/messages'
+      preLoaderRoute: typeof EspaceMessagesRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/parametres': {
+      id: '/espace/parametres'
+      path: '/parametres'
+      fullPath: '/espace/parametres'
+      preLoaderRoute: typeof EspaceParametresRouteImport
+      parentRoute: typeof EspaceRoute
+    }
     '/factures/': {
       id: '/factures/'
       path: '/factures'
@@ -585,6 +1485,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FacturesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/factures/recurrentes': {
+      id: '/factures/recurrentes'
+      path: '/factures/recurrentes'
+      fullPath: '/factures/recurrentes'
+      preLoaderRoute: typeof FacturesRecurrentesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/factures/refacturation': {
+      id: '/factures/refacturation'
+      path: '/factures/refacturation'
+      fullPath: '/factures/refacturation'
+      preLoaderRoute: typeof FacturesRefacturationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gestion/encheres': {
+      id: '/gestion/encheres'
+      path: '/gestion/encheres'
+      fullPath: '/gestion/encheres'
+      preLoaderRoute: typeof GestionEncheresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gestion/marketplace': {
+      id: '/gestion/marketplace'
+      path: '/gestion/marketplace'
+      fullPath: '/gestion/marketplace'
+      preLoaderRoute: typeof GestionMarketplaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/imprimer/$id': {
       id: '/imprimer/$id'
       path: '/imprimer/$id'
@@ -592,38 +1520,254 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ImprimerIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signer/$token': {
+      id: '/signer/$token'
+      path: '/signer/$token'
+      fullPath: '/signer/$token'
+      preLoaderRoute: typeof SignerTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agent/statut/$id': {
+      id: '/agent/statut/$id'
+      path: '/agent/statut/$id'
+      fullPath: '/agent/statut/$id'
+      preLoaderRoute: typeof AgentStatutIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/c/$id': {
+      id: '/api/c/$id'
+      path: '/api/c/$id'
+      fullPath: '/api/c/$id'
+      preLoaderRoute: typeof ApiCIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/o/$id': {
+      id: '/api/o/$id'
+      path: '/api/o/$id'
+      fullPath: '/api/o/$id'
+      preLoaderRoute: typeof ApiOIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/espace/avoir/$id': {
+      id: '/espace/avoir/$id'
+      path: '/avoir/$id'
+      fullPath: '/espace/avoir/$id'
+      preLoaderRoute: typeof EspaceAvoirIdRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/commandes/': {
+      id: '/espace/commandes/'
+      path: '/'
+      fullPath: '/espace/commandes/'
+      preLoaderRoute: typeof EspaceCommandesIndexRouteImport
+      parentRoute: typeof EspaceCommandesRoute
+    }
+    '/espace/commandes/$id': {
+      id: '/espace/commandes/$id'
+      path: '/$id'
+      fullPath: '/espace/commandes/$id'
+      preLoaderRoute: typeof EspaceCommandesIdRouteImport
+      parentRoute: typeof EspaceCommandesRoute
+    }
+    '/espace/demandes/': {
+      id: '/espace/demandes/'
+      path: '/'
+      fullPath: '/espace/demandes/'
+      preLoaderRoute: typeof EspaceDemandesIndexRouteImport
+      parentRoute: typeof EspaceDemandesRoute
+    }
+    '/espace/demandes/$id': {
+      id: '/espace/demandes/$id'
+      path: '/$id'
+      fullPath: '/espace/demandes/$id'
+      preLoaderRoute: typeof EspaceDemandesIdRouteImport
+      parentRoute: typeof EspaceDemandesRoute
+    }
+    '/espace/demandes/nouvelle': {
+      id: '/espace/demandes/nouvelle'
+      path: '/nouvelle'
+      fullPath: '/espace/demandes/nouvelle'
+      preLoaderRoute: typeof EspaceDemandesNouvelleRouteImport
+      parentRoute: typeof EspaceDemandesRoute
+    }
+    '/espace/devis/$id': {
+      id: '/espace/devis/$id'
+      path: '/devis/$id'
+      fullPath: '/espace/devis/$id'
+      preLoaderRoute: typeof EspaceDevisIdRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/facture/$id': {
+      id: '/espace/facture/$id'
+      path: '/facture/$id'
+      fullPath: '/espace/facture/$id'
+      preLoaderRoute: typeof EspaceFactureIdRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/payer/$id': {
+      id: '/espace/payer/$id'
+      path: '/payer/$id'
+      fullPath: '/espace/payer/$id'
+      preLoaderRoute: typeof EspacePayerIdRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/signer/$id': {
+      id: '/espace/signer/$id'
+      path: '/signer/$id'
+      fullPath: '/espace/signer/$id'
+      preLoaderRoute: typeof EspaceSignerIdRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/factures/fiche/$id': {
+      id: '/factures/fiche/$id'
+      path: '/factures/fiche/$id'
+      fullPath: '/factures/fiche/$id'
+      preLoaderRoute: typeof FacturesFicheIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface DemandesRouteChildren {
+  DemandesIdRoute: typeof DemandesIdRoute
+  DemandesIndexRoute: typeof DemandesIndexRoute
+}
+
+const DemandesRouteChildren: DemandesRouteChildren = {
+  DemandesIdRoute: DemandesIdRoute,
+  DemandesIndexRoute: DemandesIndexRoute,
+}
+
+const DemandesRouteWithChildren = DemandesRoute._addFileChildren(
+  DemandesRouteChildren,
+)
+
+interface EspaceCommandesRouteChildren {
+  EspaceCommandesIdRoute: typeof EspaceCommandesIdRoute
+  EspaceCommandesIndexRoute: typeof EspaceCommandesIndexRoute
+}
+
+const EspaceCommandesRouteChildren: EspaceCommandesRouteChildren = {
+  EspaceCommandesIdRoute: EspaceCommandesIdRoute,
+  EspaceCommandesIndexRoute: EspaceCommandesIndexRoute,
+}
+
+const EspaceCommandesRouteWithChildren = EspaceCommandesRoute._addFileChildren(
+  EspaceCommandesRouteChildren,
+)
+
+interface EspaceDemandesRouteChildren {
+  EspaceDemandesIdRoute: typeof EspaceDemandesIdRoute
+  EspaceDemandesNouvelleRoute: typeof EspaceDemandesNouvelleRoute
+  EspaceDemandesIndexRoute: typeof EspaceDemandesIndexRoute
+}
+
+const EspaceDemandesRouteChildren: EspaceDemandesRouteChildren = {
+  EspaceDemandesIdRoute: EspaceDemandesIdRoute,
+  EspaceDemandesNouvelleRoute: EspaceDemandesNouvelleRoute,
+  EspaceDemandesIndexRoute: EspaceDemandesIndexRoute,
+}
+
+const EspaceDemandesRouteWithChildren = EspaceDemandesRoute._addFileChildren(
+  EspaceDemandesRouteChildren,
+)
+
+interface EspaceRouteChildren {
+  EspaceCommandesRoute: typeof EspaceCommandesRouteWithChildren
+  EspaceDemandesRoute: typeof EspaceDemandesRouteWithChildren
+  EspaceDocumentsRoute: typeof EspaceDocumentsRoute
+  EspaceFacturationRoute: typeof EspaceFacturationRoute
+  EspaceMessagesRoute: typeof EspaceMessagesRoute
+  EspaceParametresRoute: typeof EspaceParametresRoute
+  EspaceIndexRoute: typeof EspaceIndexRoute
+  EspaceAvoirIdRoute: typeof EspaceAvoirIdRoute
+  EspaceDevisIdRoute: typeof EspaceDevisIdRoute
+  EspaceFactureIdRoute: typeof EspaceFactureIdRoute
+  EspacePayerIdRoute: typeof EspacePayerIdRoute
+  EspaceSignerIdRoute: typeof EspaceSignerIdRoute
+}
+
+const EspaceRouteChildren: EspaceRouteChildren = {
+  EspaceCommandesRoute: EspaceCommandesRouteWithChildren,
+  EspaceDemandesRoute: EspaceDemandesRouteWithChildren,
+  EspaceDocumentsRoute: EspaceDocumentsRoute,
+  EspaceFacturationRoute: EspaceFacturationRoute,
+  EspaceMessagesRoute: EspaceMessagesRoute,
+  EspaceParametresRoute: EspaceParametresRoute,
+  EspaceIndexRoute: EspaceIndexRoute,
+  EspaceAvoirIdRoute: EspaceAvoirIdRoute,
+  EspaceDevisIdRoute: EspaceDevisIdRoute,
+  EspaceFactureIdRoute: EspaceFactureIdRoute,
+  EspacePayerIdRoute: EspacePayerIdRoute,
+  EspaceSignerIdRoute: EspaceSignerIdRoute,
+}
+
+const EspaceRouteWithChildren =
+  EspaceRoute._addFileChildren(EspaceRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AProposRoute: AProposRoute,
+  AccesRoute: AccesRoute,
   AdminRoute: AdminRoute,
+  AgentsRoute: AgentsRoute,
   AideRoute: AideRoute,
   ApplicationRoute: ApplicationRoute,
   CgvRoute: CgvRoute,
   ClientsRoute: ClientsRoute,
   CommentCaMarcheRoute: CommentCaMarcheRoute,
   ConfidentialiteRoute: ConfidentialiteRoute,
+  ConnexionRoute: ConnexionRoute,
   ContactRoute: ContactRoute,
+  ContratsRoute: ContratsRoute,
   CookiesRoute: CookiesRoute,
   DemandeRoute: DemandeRoute,
-  DemandesRoute: DemandesRoute,
+  DemandesRoute: DemandesRouteWithChildren,
+  DocumentsRoute: DocumentsRoute,
+  EmailsRoute: EmailsRoute,
+  EncheresRoute: EncheresRoute,
   EntrepotRoute: EntrepotRoute,
+  EspaceRoute: EspaceRouteWithChildren,
   FaqRoute: FaqRoute,
+  InscriptionRoute: InscriptionRoute,
+  JournalRoute: JournalRoute,
+  LogsRoute: LogsRoute,
+  MarketplaceRoute: MarketplaceRoute,
   MentionsRoute: MentionsRoute,
   PaiementsRoute: PaiementsRoute,
+  ParametresRoute: ParametresRoute,
   ServicesRoute: ServicesRoute,
+  SessionsRoute: SessionsRoute,
   SocieteRoute: SocieteRoute,
+  StatistiquesRoute: StatistiquesRoute,
   StockRoute: StockRoute,
   TarifsRoute: TarifsRoute,
+  UtilisateursRoute: UtilisateursRoute,
+  VerificationRoute: VerificationRoute,
+  AgentFinancesRoute: AgentFinancesRoute,
+  AgentMessagesRoute: AgentMessagesRoute,
+  AgentParametresRoute: AgentParametresRoute,
   AvoirsIdRoute: AvoirsIdRoute,
+  CommandesIdRoute: CommandesIdRoute,
+  ConsulterTokenRoute: ConsulterTokenRoute,
   DevisIdRoute: DevisIdRoute,
+  DevisNouveauRoute: DevisNouveauRoute,
   FacturesIdRoute: FacturesIdRoute,
+  FacturesRecurrentesRoute: FacturesRecurrentesRoute,
+  FacturesRefacturationRoute: FacturesRefacturationRoute,
+  GestionEncheresRoute: GestionEncheresRoute,
+  GestionMarketplaceRoute: GestionMarketplaceRoute,
   ImprimerIdRoute: ImprimerIdRoute,
+  SignerTokenRoute: SignerTokenRoute,
+  AgentIndexRoute: AgentIndexRoute,
   AvoirsIndexRoute: AvoirsIndexRoute,
+  CommandesIndexRoute: CommandesIndexRoute,
   DevisIndexRoute: DevisIndexRoute,
   FacturesIndexRoute: FacturesIndexRoute,
+  AgentStatutIdRoute: AgentStatutIdRoute,
+  ApiCIdRoute: ApiCIdRoute,
+  ApiOIdRoute: ApiOIdRoute,
+  FacturesFicheIdRoute: FacturesFicheIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

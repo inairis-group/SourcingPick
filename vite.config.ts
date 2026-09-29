@@ -1,4 +1,4 @@
-import { readdirSync } from "node:fs";
+import { copyFileSync, existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Plugin } from "vite";
 import { defineConfig } from "vite";
@@ -142,6 +142,47 @@ function authPopupPlugin(): Plugin {
   };
 }
 
+/**
+ * Client and SSR builds hash styles.css differently. The document head uses the
+ * SSR url, which 404s and leaves /imprimer unstyled. Point every server
+ * reference at the file that was actually emitted.
+ */
+function syncCssUrlPlugin(): Plugin {
+  return {
+    name: "sync-css-url",
+    apply: "build",
+    closeBundle() {
+      const assets = join(process.cwd(), ".output/public/assets");
+      const server = join(process.cwd(), ".output/server");
+      if (!existsSync(assets) || !existsSync(server)) return;
+      const cssName = readdirSync(assets).find((file) => /^styles-[A-Za-z0-9_-]+\.css$/.test(file));
+      if (!cssName) return;
+      const walk = (dir: string) => {
+        for (const name of readdirSync(dir)) {
+          const path = join(dir, name);
+          if (statSync(path).isDirectory()) {
+            walk(path);
+            continue;
+          }
+          if (!name.endsWith(".mjs") && !name.endsWith(".js")) continue;
+          const text = readFileSync(path, "utf8");
+          const next = text.replace(/styles-[A-Za-z0-9_-]+\.css/g, cssName);
+          if (next !== text) writeFileSync(path, next);
+        }
+      };
+      walk(server);
+      const libs = join(server, "_libs");
+      const pglite = join(process.cwd(), "node_modules/@electric-sql/pglite/dist");
+      if (existsSync(libs)) {
+        for (const file of ["pglite.data", "pglite.wasm"]) {
+          const from = join(pglite, file);
+          if (existsSync(from)) copyFileSync(from, join(libs, file));
+        }
+      }
+    },
+  };
+}
+
 // `0.0.0.0:8080` is the live-preview contract — don't change host/port.
 // The dev server starts once `src/router.tsx` and `src/routes/` exist — see
 // AGENTS.md § "First scaffold".
@@ -165,12 +206,13 @@ export default defineConfig(({ command, isPreview }) => ({
     appEnvPlugin(),
     // PWA head + ?install=1 tutorial page; runs before Start/Nitro.
     grokPwaPlugin(),
+    syncCssUrlPlugin(),
     tailwindcss(),
     tanstackStart(),
     ...(command === "build" || isPreview
       ? [
           nitro({
-            preset: "vercel",
+            preset: process.env.NITRO_PRESET || "vercel",
             // Auto-registers server/middleware/* (the PWA install page +
             // manifest + head-tag middleware). Nitro v3 defaults serverDir to
             // false, so removing this silently unwires /?install=1 on deploys.

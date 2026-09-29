@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { Mark } from "@/components/logo";
+import { Board } from "@/components/board";
 import { LANGS, LangProvider, useLang, type Lang } from "@/site/i18n";
 
 const NAV = [
@@ -124,69 +125,65 @@ function Frame({ children }: { children: ReactNode }) {
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <p className="font-semibold text-white">SourcingPick</p>
-            <p className="mt-2 text-sm leading-relaxed text-[#b8c4e6]">
-              Réception, contrôle, consolidation et expédition de vos marchandises, de Guangzhou vers l’Europe.
-            </p>
+            <p className="mt-2 text-sm leading-relaxed text-[#b8c4e6]">{t.footLead}</p>
             <a className="mt-3 inline-block text-sm text-white" href="mailto:contact@sourcingpick.com">
               contact@sourcingpick.com
             </a>
           </div>
           <div>
-            <p className="text-xs font-semibold tracking-wider text-gold uppercase">Services</p>
+            <p className="text-xs font-semibold tracking-wider text-gold uppercase">{t.colServices}</p>
             <ul className="mt-3 space-y-2 text-sm">
-              <li>Réception</li>
-              <li>Vérification</li>
-              <li>Consolidation</li>
-              <li>Renforcement bois</li>
-              <li>Chargement</li>
-              <li>Expédition maritime</li>
-              <li>Sourcing</li>
+              <li>{t.reception}</li>
+              <li>{t.check}</li>
+              <li>{t.consolidation}</li>
+              <li>{t.wood}</li>
+              <li>{t.loading}</li>
+              <li>{t.sea}</li>
+              <li>{t.sourcing}</li>
             </ul>
           </div>
           <div>
-            <p className="text-xs font-semibold tracking-wider text-gold uppercase">Entreprise</p>
+            <p className="text-xs font-semibold tracking-wider text-gold uppercase">{t.colCompany}</p>
             <ul className="mt-3 space-y-2 text-sm">
-              <li><Link to="/a-propos" className="hover:text-white">À propos</Link></li>
-              <li><Link to="/entrepot" className="hover:text-white">Notre entrepôt</Link></li>
-              <li><a href="/#vrai" className="hover:text-white">Transparence</a></li>
-              <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
-              <li><Link to="/faq" className="hover:text-white">FAQ</Link></li>
-              <li><Link to="/application" className="hover:text-white">Application</Link></li>
-              <li><Link to="/stock" className="hover:text-white">Stock terrain</Link></li>
+              <li><Link to="/a-propos" className="hover:text-white">{t.about}</Link></li>
+              <li><Link to="/entrepot" className="hover:text-white">{t.ourWarehouse}</Link></li>
+              <li><a href="/#vrai" className="hover:text-white">{t.transparency}</a></li>
+              <li><Link to="/contact" className="hover:text-white">{t.contact}</Link></li>
+              <li><Link to="/faq" className="hover:text-white">{t.faq}</Link></li>
+              <li><Link to="/application" className="hover:text-white">{t.application}</Link></li>
+              <li><Link to="/stock" className="hover:text-white">{t.stockField}</Link></li>
             </ul>
           </div>
           <div>
-            <p className="text-xs font-semibold tracking-wider text-gold uppercase">Légal</p>
+            <p className="text-xs font-semibold tracking-wider text-gold uppercase">{t.colLegal}</p>
             <ul className="mt-3 space-y-2 text-sm">
-              <li><Link to="/mentions" className="hover:text-white">Mentions légales</Link></li>
-              <li><Link to="/confidentialite" className="hover:text-white">Confidentialité</Link></li>
+              <li><Link to="/mentions" className="hover:text-white">{lang === "en" ? "Legal notice" : "Mentions légales"}</Link></li>
+              <li><Link to="/confidentialite" className="hover:text-white">{lang === "en" ? "Privacy" : "Confidentialité"}</Link></li>
               <li><button type="button" className="hover:text-white" onClick={() => setConsent(null)}>Cookies</button></li>
-              <li><Link to="/cgv" className="hover:text-white">Conditions générales</Link></li>
+              <li><Link to="/cgv" className="hover:text-white">{lang === "en" ? "Terms" : "Conditions générales"}</Link></li>
             </ul>
           </div>
         </div>
         <div className="border-t border-white/10">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4 text-xs text-[#9facd3]">
             <p>© 2026 SourcingPick · Hangzhou Qiyuan Ying Technology Information Co., Ltd. · Guangzhou</p>
-            <p>12 langues</p>
+            <p>{lang === "en" ? "12 languages" : "12 langues"}</p>
           </div>
         </div>
       </footer>
       {consent == null ? (
         <div className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-3xl rounded-2xl border border-line bg-paper p-4 shadow-card">
-          <p className="font-semibold">Nous déposons le strict nécessaire</p>
-          <p className="mt-1 text-sm text-muted">
-            Les cookies nécessaires font fonctionner le site. La mesure d’audience n’est pas encore active : aucun traceur publicitaire n’est chargé.
-          </p>
+          <p className="font-semibold">{t.cookiesTitle}</p>
+          <p className="mt-1 text-sm text-muted">{t.cookiesBody}</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <button className="btn btn-primary h-10 min-h-10" type="button" onClick={() => choose("all")}>
-              Tout accepter
+              {t.acceptAll}
             </button>
             <button className="btn btn-quiet h-10 min-h-10" type="button" onClick={() => choose("none")}>
-              Tout refuser
+              {t.refuseAll}
             </button>
             <Link to="/cookies" className="btn btn-quiet h-10 min-h-10" onClick={() => choose("custom")}>
-              Choisir
+              {t.choose}
             </Link>
           </div>
         </div>
@@ -196,19 +193,7 @@ function Frame({ children }: { children: ReactNode }) {
 }
 
 export function SiteNotFound() {
-  return (
-    <SiteLayout>
-      <section className="mx-auto max-w-3xl px-4 py-24">
-        <p className="mono text-sm text-brand">404</p>
-        <h1 className="display mt-3 text-4xl">Ce colis s’est égaré.</h1>
-        <p className="mt-3 text-muted">La page que vous cherchez n’existe pas ou a été déplacée.</p>
-        <div className="mt-6 flex gap-2">
-          <Link to="/" className="btn btn-primary">Retour à l’accueil</Link>
-          <Link to="/demande" className="btn btn-quiet">Demander un devis</Link>
-        </div>
-      </section>
-    </SiteLayout>
-  );
+  return <Board name="lost" />;
 }
 
 export function PageIntro({ kicker, title, lead }: { kicker?: string; title: string; lead: string }) {

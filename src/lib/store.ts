@@ -394,10 +394,15 @@ export const useAtelier = create<AtelierState>()(
       skipHydration: true,
       partialize: (s) => ({
         company: s.company,
-        clients: s.clients,
+        clients: s.clients.filter((client) => client.id.startsWith("usr_")),
         docs: s.docs,
         seq: s.seq,
       }),
+      onRehydrateStorage: () => (state) => {
+        if (!state) return;
+        const clients = state.clients.filter((client) => client.id.startsWith("usr_"));
+        if (clients.length !== state.clients.length) state.clients = clients;
+      },
     },
   ),
 );

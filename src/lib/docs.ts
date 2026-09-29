@@ -10,6 +10,9 @@ export type Line = {
   qty: number;
   unitPriceCents: number;
   image?: string;
+  images?: string[];
+  /** Shown on the paper, but already included in the prices. */
+  omitFromTotal?: boolean;
 };
 
 type Base = {
@@ -23,6 +26,8 @@ type Base = {
   conditionsCustom: boolean;
   createdAt: string;
   updatedAt: string;
+  lang?: string;
+  font?: string;
 };
 
 export type Devis = Base & {
@@ -34,6 +39,19 @@ export type Devis = Base & {
   commissionBps: number;
   depositBps: number;
   lines: Line[];
+  signature?: {
+    name: string;
+    at: string;
+    image: string;
+    proof?: string;
+    email?: string;
+    role?: string;
+    company?: string;
+    ip?: string;
+    place?: string;
+    browser?: string;
+    ua?: string;
+  };
 };
 
 export type OrderSnap = {
@@ -85,6 +103,7 @@ export type Client = {
   siret: string;
   rcs: string;
   siteNote: string;
+  email: string;
 };
 
 export type Company = {
@@ -101,6 +120,7 @@ export type Company = {
   bank: string;
   fxLabel: string;
   vatNote: string;
+  conditionsExtra: string;
 };
 
 export type Seq = { devis: number; facture: number; avoir: number };
@@ -157,19 +177,76 @@ export function formatQty(n: number): string {
   return new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 3 }).format(n);
 }
 
+export function paperLabels(lang?: string) {
+  const en = lang === "en";
+  return {
+    en,
+    designation: en ? "Description" : "Désignation et description",
+    unit: en ? "Unit" : "Unité",
+    qty: en ? "Qty" : "Qté",
+    price: en ? "Unit price" : "P.U.",
+    vat: en ? "VAT" : "TVA",
+    amount: en ? "Amount" : "Montant",
+    empty: en ? "No lines yet." : "Aucune ligne pour le moment.",
+    payment: en ? "Payment" : "Règlement",
+    terms: en ? "Terms" : "Conditions",
+    signKicker: en ? "Electronic signature" : "Espace de signature électronique",
+    pieces: en ? "Attachments" : "Pièces jointes",
+    signTitle: en ? "Approved" : "Bon pour accord",
+    signNote: en
+      ? "Signing in this box accepts the quote and the general terms of sale. The signature is time-stamped and kept with the document."
+      : "La signature dans ce cadre vaut acceptation du devis et des conditions générales de vente. Elle est horodatée et conservée avec le document.",
+    untitled: en ? "Untitled line" : "Ligne sans intitulé",
+    vatFree: en ? "not applicable" : "non applicable",
+    vatExport: en ? "0 % — export from China" : "0 % — exportation Chine",
+    net: en ? "Amount due" : "Net à payer",
+    netDap: en ? "Amount due, DAP included" : "Net à payer, DAP compris",
+    works: en ? "Subtotal" : "Total des ouvrages",
+    due: en ? "Amount due" : "Montant à régler",
+    deposit: en ? "Deposit" : "Acompte",
+    balance: en ? "Balance before shipment" : "Solde avant expédition",
+    quote: en ? "Quote" : "Devis",
+    invoice: en ? "Invoice" : "Facture",
+    credit: en ? "Credit note" : "Avoir",
+    issued: en ? "Issue date" : "Date d’émission",
+    valid: en ? "Quote valid until" : "Validité du devis",
+    days: en ? "days" : "jours",
+    lead: en ? "Production time" : "Délai de production",
+    delivery: en ? "Delivery" : "Livraison",
+    port: en ? "Arrival port" : "Port d’arrivée",
+    dueDate: en ? "Due date" : "Date d’exigibilité",
+    refQuote: en ? "Source quote" : "Devis de référence",
+    posts: en ? "Lines billed" : "Postes facturés",
+    sourceInvoice: en ? "Original invoice" : "Facture d’origine",
+    reason: en ? "Reason" : "Motif",
+    creditAmount: en ? "Credit amount" : "Montant de l’avoir",
+    afterCredit: en ? "Invoice balance after credit" : "Solde facture après avoir",
+    transfer: en ? "Bank transfer in euros" : "Virement bancaire en euros",
+    bankMissing: en ? "Bank: to be completed" : "Banque : à compléter",
+    refHint: (number: string) => (en ? `Put the reference ${number} in the transfer reference.` : `Indiquez la référence ${number} dans le libellé.`),
+    vatNote: en
+      ? "VAT not applicable: goods and services supplied by a company established in China. Import duty and import VAT are payable by the client; an EORI number is required."
+      : "",
+    depositKicker: en ? "deposit" : "d’acompte",
+    balanceKicker: en ? "balance" : "de solde",
+    clientMissing: en ? "Choose a client." : "Sélectionnez un client dans l’atelier.",
+    clientPending: en ? "Client to be completed" : "Client à renseigner",
+  };
+}
+
 export function formatPercent(bps: number): string {
   return new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(bps / 100);
 }
 
 export function formatDate(iso: string): string {
-  const [y, m, d] = iso.split("-");
-  if (!y || !m || !d) return iso;
+  const [y, m, d] = String(iso ?? "").split("-");
+  if (!y || !m || !d) return iso || "";
   return `${d}.${m}.${y}`;
 }
 
 export function formatDateSlash(iso: string): string {
-  const [y, m, d] = iso.split("-");
-  if (!y || !m || !d) return iso;
+  const [y, m, d] = String(iso ?? "").split("-");
+  if (!y || !m || !d) return iso || "";
   return `${d}/${m}/${y}`;
 }
 
@@ -196,6 +273,7 @@ export function uid(prefix: string): string {
 
 export function lineSum(lines: Line[]): number {
   return lines.reduce((sum, line) => {
+    if (line.omitFromTotal) return sum;
     const qty = Number.isFinite(line.qty) ? line.qty : 0;
     const price = Number.isFinite(line.unitPriceCents) ? line.unitPriceCents : 0;
     return sum + Math.round(qty * price);
@@ -220,7 +298,13 @@ export function dueCents(doc: Document): number {
 }
 
 export function bulletLines(details: string): string[] {
-  return details
+  const text = String(details ?? "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(div|p)>/gi, "\n")
+    .replace(/<(div|p)[^>]*>/gi, "")
+    .replace(/([a-zàâäéèêëïîôùûüç])([A-ZÉÈÊÀÂÎÔÙ])/g, "$1\n$2")
+    .replace(/cm(?=\d)/gi, "cm\n");
+  return text
     .split("\n")
     .map((s) => s.trim())
     .filter(Boolean);
@@ -313,19 +397,43 @@ export function narrativeLine(
 export function devisConditions(d: Devis, company: Company): string {
   const deposit = formatPercent(d.depositBps);
   const balance = formatPercent(Math.max(0, 10000 - d.depositBps));
-  return [
-    `Acompte : ${deposit} % du net à payer à la commande. La production est lancée à réception.`,
-    `Solde : ${balance} % avant expédition, sur présentation des photos de contrôle des pièces finies.`,
-    "Assurance et garantie cassée incluses. Toute pièce cassée, fissurée ou éclatée constatée à la réception, avec réserves portées sur le bordereau de livraison, est refabriquée et remplacée à l’identique à notre charge.",
-    `Livraison ${d.delivery || "DAP"} comprise : fret maritime, calage, formalités d’export, acheminement routier, déchargement. Droits de douane et TVA à l’importation à la charge du client.`,
-    "Non assurés par SourcingPick : la pose et l’entretien.",
-    "Tous les plans des monuments seront refaits avant fabrication, pour tenir compte des derniers retours.",
-    `Prix en euros hors taxes, établis au taux de 1 € = ${company.fxLabel || "7,60"} CNY, révisables au-delà de 3 % de variation.`,
-    `Validité ${d.validityDays} jours. Le règlement de l’acompte vaut acceptation du devis et de ses conditions.`,
-  ].join("\n");
+  const en = d.lang === "en";
+  const lines = en
+    ? [
+        `Deposit: ${deposit}% of the net amount, payable on order. Production starts once it is received.`,
+        `Balance: ${balance}% before shipment, against inspection photos of the finished goods.`,
+        "Breakage cover is included. Any piece found broken, cracked or chipped on delivery, with reservations written on the delivery note, is remade and replaced at our cost.",
+        `Delivery ${d.delivery || "DAP, unloaded"} is included: sea freight, blocking, export formalities, road haulage and unloading. Import duty and import VAT are payable by the client.`,
+        "Not covered by SourcingPick: installation and maintenance.",
+        "Prices in euros, exclusive of tax.",
+        `Valid for ${d.validityDays} days. Paying the deposit accepts the quote and these terms.`,
+        "This quote is also subject to our terms of sale: https://sourcingpick.com/cgv",
+      ]
+    : [
+        `Acompte : ${deposit} % du net à payer à la commande. La production est lancée à réception.`,
+        `Solde : ${balance} % avant expédition, sur présentation des photos de contrôle des pièces finies.`,
+        "Assurance et garantie cassée incluses. Toute pièce cassée, fissurée ou éclatée constatée à la réception, avec réserves portées sur le bordereau de livraison, est refabriquée et remplacée à l’identique à notre charge.",
+        `Livraison ${d.delivery || "DAP, déchargée"} comprise : fret maritime, calage, formalités d’export, acheminement routier, déchargement. Droits de douane et TVA à l’importation à la charge du client.`,
+        "Non assurés par SourcingPick : la pose et l’entretien.",
+        "Tous les plans des monuments seront refaits avant fabrication, pour tenir compte des derniers retours.",
+        `Prix en euros hors taxes, établis au taux de 1 € = ${company.fxLabel || "7,60"} CNY, révisables au-delà de 3 % de variation.`,
+        `Validité ${d.validityDays} jours. Le règlement de l’acompte vaut acceptation du devis et de ses conditions.`,
+        "Notre devis est également soumis à nos conditions générales de ventes : https://sourcingpick.com/cgv",
+      ];
+  return lines.join("\n");
 }
 
 export function factureConditions(f: Facture): string {
+  if (f.lang === "en") {
+    if (f.mode === "integrale") {
+      return [
+        f.order ? `Invoice issued from quote ${f.order.sourceNumber} dated ${formatDate(f.order.sourceDate)}.` : "Invoice for services and goods.",
+        "Prices in euros, exclusive of tax. Delivery follows the quote, when there is one.",
+      ].join("\n");
+    }
+    if (f.mode === "acompte") return "Deposit invoice. Production starts once payment is received.\nPrices in euros, exclusive of tax.";
+    return "Balance invoice, due before shipment, against inspection photos.\nPrices in euros, exclusive of tax.";
+  }
   if (f.mode === "integrale") {
     return [
       f.order
@@ -358,6 +466,13 @@ export function factureConditions(f: Facture): string {
 }
 
 export function avoirConditions(a: Avoir): string {
+  if (a.lang === "en") {
+    return [
+      a.sourceNumber ? `Credit note issued against invoice ${a.sourceNumber}.` : "Credit note issued as a correction.",
+      "The amount is deducted from the original invoice. It is applied to the balance still due, unless a refund is agreed in writing.",
+      "Prices in euros, exclusive of tax.",
+    ].join("\n");
+  }
   return [
     a.sourceNumber
       ? `Avoir émis en référence à la facture ${a.sourceNumber}.`
@@ -368,9 +483,9 @@ export function avoirConditions(a: Avoir): string {
 }
 
 export function conditionsFor(doc: Document, company: Company): string {
-  if (isDevis(doc)) return devisConditions(doc, company);
-  if (isFacture(doc)) return factureConditions(doc);
-  return avoirConditions(doc);
+  const base = isDevis(doc) ? devisConditions(doc, company) : isFacture(doc) ? factureConditions(doc) : avoirConditions(doc);
+  const extra = company.conditionsExtra?.trim();
+  return extra ? `${base}\n${extra}` : base;
 }
 
 export const COMPANY: Company = {
@@ -389,6 +504,7 @@ export const COMPANY: Company = {
   fxLabel: "7,60",
   vatNote:
     "TVA non applicable : marchandises et prestations fournies par une société établie en Chine. Droits de douane et TVA à l’importation à la charge du client ; numéro EORI nécessaire.",
+  conditionsExtra: "",
 };
 
 export const CLIENTS: Client[] = [
@@ -401,6 +517,7 @@ export const CLIENTS: Client[] = [
     siret: "384 621 520 00012",
     rcs: "RCS Mâcon",
     siteNote: "DAP · Bourbon-Lancy (71), France",
+    email: "",
   },
 ];
 
@@ -499,8 +616,8 @@ const manziniLines: Line[] = [
       "Tombale 1,70 × 0,80 m, épaisseur 5 à 7 cm.",
       "Stèle doucine.",
     ].join("\n"),
-    1,
-    2895,
+    3,
+    965,
   ),
   L(
     "H",
@@ -513,8 +630,8 @@ const manziniLines: Line[] = [
       "Tombale 4 chants polis 2,25 × 1,00 m, épaisseur 12/10 à pente.",
       "Queue de billard sur les deux longueurs : 0 cm aux pieds, 10 cm à la tête.",
     ].join("\n"),
-    1,
-    4145,
+    3,
+    1100,
   ),
   L(
     "I",
@@ -592,7 +709,8 @@ export const SEED_SEQ: Seq = { devis: 9, facture: 5, avoir: 1 };
 export type PaperTotal = {
   label: string;
   value: string;
-  tone: "plain" | "strong" | "pill" | "muted";
+  tone: "plain" | "strong" | "pill" | "muted" | "emph";
+  rule?: boolean;
 };
 
 export type PaperModel = {
@@ -614,6 +732,7 @@ export type PaperModel = {
     material: string;
     bullets: string[];
     image: string;
+    images: string[];
     unit: string;
     qty: string;
     unitPrice: string;
@@ -621,12 +740,14 @@ export type PaperModel = {
     amount: string;
   }[];
   totals: PaperTotal[];
-  payment: string[];
+  payment: PayLine[];
   conditions: string[];
   vatNote: string;
   sealTitle: string;
   sealHint: string;
 };
+
+export type PayLine = { text: string; tone: "lead" | "name" | "ref" };
 
 function moneyRow(label: string, cents: number, tone: PaperTotal["tone"] = "plain"): PaperTotal {
   return { label, value: formatEUR(cents), tone };
@@ -637,40 +758,47 @@ export function toPaper(
   company: Company,
   client: Client | undefined,
 ): PaperModel {
+  const copy = paperLabels(doc.lang);
   const issuerLines = [
     company.contactName,
     company.email,
-    ...company.address.split("\n").filter(Boolean),
+    ...String(company.address ?? "").split("\n").filter(Boolean),
     company.usci ? `USCI : ${company.usci}` : "",
-    company.capital ? `Capital social : ${company.capital}` : "",
+    company.capital ? (copy.en ? `Share capital: ${company.capital}` : `Capital social : ${company.capital}`) : "",
   ].filter(Boolean);
 
   const clientLines = client
     ? [
-        client.tradeName,
-        ...client.address.split("\n").filter(Boolean),
-        client.vat ? `N° TVA : ${client.vat}` : "",
+        client.tradeName && client.tradeName !== client.legalName ? client.tradeName : "",
+        client.email,
+        ...String(client.address ?? "").split("\n").filter(Boolean),
+        client.vat ? `${copy.en ? "VAT no." : "N° TVA"} : ${client.vat}` : "",
         [client.siret ? `SIRET ${client.siret}` : "", client.rcs].filter(Boolean).join(" · "),
-        client.siteNote,
       ].filter(Boolean)
-    : ["Sélectionnez un client dans l’atelier."];
+    : [copy.clientMissing];
 
-  const payment = [
-    "Virement bancaire en euros",
-    company.legalName,
-    company.iban ? `IBAN ${company.iban}` : "IBAN à compléter",
-    company.swift ? `SWIFT ${company.swift}` : "SWIFT à compléter",
-    company.bank || "Banque : à compléter",
-    `Indiquez la référence ${doc.number} dans le libellé.`,
+  const tagged = (prefix: string, value: string) => {
+    const v = String(value ?? "").trim();
+    if (!v) return copy.en ? `${prefix}: to be completed` : `${prefix} à compléter`;
+    return new RegExp(`^${prefix}\\b`, "i").test(v) ? v : `${prefix} ${v}`;
+  };
+  const payment: PayLine[] = [
+    { text: copy.transfer, tone: "lead" },
+    { text: company.legalName, tone: "name" },
+    { text: tagged("IBAN", company.iban), tone: "name" },
+    { text: tagged("SWIFT", company.swift), tone: "name" },
+    { text: (company.bank || "").trim() || copy.bankMissing, tone: "name" },
+    { text: copy.refHint(doc.number), tone: "ref" },
   ];
 
   const lines = doc.lines.map((line) => ({
     key: line.id,
     code: line.code || "·",
-    title: line.title || "Ligne sans intitulé",
+    title: line.title || copy.untitled,
     material: line.material,
     bullets: bulletLines(line.details),
-    image: line.image || "",
+    image: line.image || line.images?.[0] || "",
+    images: (line.images?.length ? line.images : line.image ? [line.image] : []).filter(Boolean),
     unit: line.unit || "—",
     qty: formatQty(line.qty),
     unitPrice: formatEUR(line.unitPriceCents),
@@ -685,53 +813,57 @@ export function toPaper(
     issuerBrand: company.brandLine,
     issuerZh: company.chineseName,
     issuerLines,
-    clientName: client?.legalName || "Client à renseigner",
+    clientName: client?.legalName || copy.clientPending,
     clientLines,
     lines,
     payment,
     conditions: bulletLines(doc.conditions),
-    vatNote: company.vatNote,
+    vatNote: copy.en ? copy.vatNote : company.vatNote,
   };
 
   if (isDevis(doc)) {
     const t = commercial(lineSum(doc.lines), doc.commissionBps, doc.depositBps);
-    const totals: PaperTotal[] = [
-      moneyRow("Total des ouvrages", t.worksCents),
-    ];
+    const totals: PaperTotal[] = [moneyRow(copy.works, t.worksCents)];
     if (doc.commissionBps > 0) {
       totals.push(
         moneyRow(
-          `Commission SourcingPick ${formatPercent(doc.commissionBps)} % (sourcing, contrôles, suivi)`,
+          copy.en
+            ? `SourcingPick commission ${formatPercent(doc.commissionBps)}% (sourcing, inspection, follow-up)`
+            : `Commission SourcingPick ${formatPercent(doc.commissionBps)} % (sourcing, contrôles, suivi)`,
           t.commissionCents,
         ),
       );
     }
-    totals.push({ label: "TVA", value: "non applicable", tone: "plain" });
-    const netLabel = /dap/i.test(doc.delivery) ? "Net à payer, DAP compris" : "Net à payer";
+    totals.push({ label: copy.vat, value: copy.vatFree, tone: "muted" });
+    const netLabel = /dap/i.test(doc.delivery) ? copy.netDap : copy.net;
     totals.push(moneyRow(netLabel, t.netCents, "strong"));
     if (doc.depositBps > 0) {
       totals.push(
-        moneyRow(`Acompte ${formatPercent(doc.depositBps)} % à la commande`, t.depositCents, "pill"),
-        moneyRow("Solde avant expédition", t.balanceCents, "muted"),
+        moneyRow(
+          copy.en ? `Deposit ${formatPercent(doc.depositBps)}% on order` : `Acompte ${formatPercent(doc.depositBps)} % à la commande`,
+          t.depositCents,
+          "emph",
+        ),
+        moneyRow(copy.balance, t.balanceCents, "muted"),
       );
     }
     return {
       ...base,
-      title: "Devis",
+      title: copy.quote,
       kicker: "",
       meta: [
-        { label: "Date d’émission", value: formatDate(doc.issueDate) },
+        { label: copy.issued, value: formatDate(doc.issueDate) },
         {
-          label: "Validité du devis",
-          value: `${doc.validityDays} jours — ${formatDate(addDays(doc.issueDate, doc.validityDays))}`,
+          label: copy.valid,
+          value: `${doc.validityDays} ${copy.days} — ${formatDate(addDays(doc.issueDate, doc.validityDays))}`,
         },
-        { label: "Délai de production", value: doc.leadTime || "—" },
-        { label: "Livraison", value: doc.delivery || "—" },
-        ...(doc.port ? [{ label: "Port d’arrivée", value: doc.port }] : []),
+        { label: copy.lead, value: doc.leadTime || "—" },
+        { label: copy.delivery, value: doc.delivery || "—" },
+        ...(doc.port ? [{ label: copy.port, value: doc.port }] : []),
       ],
       totals,
-      sealTitle: "Bon pour accord",
-      sealHint: "Date, nom du signataire et signature",
+      sealTitle: "",
+      sealHint: "",
     };
   }
 
@@ -740,85 +872,159 @@ export function toPaper(
     const totals: PaperTotal[] = [];
     if (doc.mode === "integrale") {
       const t = commercial(lineSum(doc.lines), doc.commissionBps, 0);
-      totals.push(moneyRow("Total des ouvrages", t.worksCents));
+      totals.push(moneyRow(copy.works, t.worksCents));
+    const included = doc.lines.reduce((sum, line) => {
+      if (!line.omitFromTotal) return sum;
+      const qty = Number.isFinite(line.qty) ? line.qty : 0;
+      return sum + Math.round(qty * (Number.isFinite(line.unitPriceCents) ? line.unitPriceCents : 0));
+    }, 0);
+    if (included > 0) {
+      totals.push({
+        label: copy.en ? "Freight included in the prices, not added" : "Fret imputé, non ajouté au total",
+        value: formatEUR(included),
+        tone: "muted",
+      });
+    }
       if (doc.commissionBps > 0) {
         totals.push(
-          moneyRow(`Commission SourcingPick ${formatPercent(doc.commissionBps)} %`, t.commissionCents),
+          moneyRow(
+            copy.en ? `SourcingPick commission ${formatPercent(doc.commissionBps)}%` : `Commission SourcingPick ${formatPercent(doc.commissionBps)} %`,
+            t.commissionCents,
+            "muted",
+          ),
         );
       }
-      totals.push({ label: "TVA", value: "0 % — exportation Chine", tone: "plain" });
-      totals.push(moneyRow("Montant à régler", t.netCents, "strong"));
+      totals.push({ label: copy.vat, value: copy.vatExport, tone: "muted", rule: true });
+      totals.push(moneyRow(copy.due, t.netCents, "strong"));
     } else if (doc.order) {
       const order = doc.order;
       const rest = Math.max(0, order.netCents - order.alreadyInvoicedCents - billed);
       totals.push(
-        moneyRow("Total des ouvrages", order.worksCents),
-        moneyRow(`Commission SourcingPick ${formatPercent(order.commissionBps)} %`, order.commissionCents),
-        moneyRow("Net à payer de la commande", order.netCents),
-        { label: "TVA", value: "0 % — exportation Chine", tone: "plain" },
+        moneyRow(copy.works, order.worksCents),
+        moneyRow(
+          copy.en ? `SourcingPick commission ${formatPercent(order.commissionBps)}%` : `Commission SourcingPick ${formatPercent(order.commissionBps)} %`,
+          order.commissionCents,
+          "muted",
+        ),
+        moneyRow(copy.en ? "Order amount due" : "Net à payer de la commande", order.netCents),
+        { label: copy.vat, value: copy.vatExport, tone: "muted", rule: true },
       );
       if (doc.mode === "solde" && order.alreadyInvoicedCents > 0) {
-        totals.push(moneyRow("Acompte déjà facturé", order.alreadyInvoicedCents, "muted"));
+        totals.push(moneyRow(copy.en ? "Deposit already invoiced" : "Acompte déjà facturé", order.alreadyInvoicedCents, "muted"));
       }
       const pill =
         doc.mode === "acompte"
-          ? `Acompte ${formatPercent(order.depositBps)} % — présente facture`
-          : "Solde — présente facture";
-      totals.push(moneyRow(pill, billed, "pill"), moneyRow("Montant à régler", billed, "strong"));
-      if (rest > 0) totals.push(moneyRow("Reste à payer avant expédition", rest, "muted"));
+          ? copy.en
+            ? `Deposit ${formatPercent(order.depositBps)}% — this invoice`
+            : `Acompte ${formatPercent(order.depositBps)} % — présente facture`
+          : copy.en
+            ? "Balance — this invoice"
+            : "Solde — présente facture";
+      totals.push(moneyRow(pill, billed, "pill"), moneyRow(copy.due, billed, "strong"));
+      if (rest > 0) totals.push(moneyRow(copy.en ? "Still due before shipment" : "Reste à payer avant expédition", rest, "muted"));
     } else {
-      totals.push(
-        { label: "TVA", value: "non applicable", tone: "plain" },
-        moneyRow("Montant à régler", billed, "strong"),
-      );
+      totals.push({ label: copy.vat, value: copy.vatExport, tone: "muted", rule: true }, moneyRow(copy.due, billed, "strong"));
     }
-    const kicker = doc.mode === "acompte" ? "d’acompte" : doc.mode === "solde" ? "de solde" : "";
+    const kicker = doc.mode === "acompte" ? copy.depositKicker : doc.mode === "solde" ? copy.balanceKicker : "";
     const meta = [
-      { label: "Date d’émission", value: formatDate(doc.issueDate) },
-      { label: "Date d’exigibilité", value: doc.dueLabel || "—" },
+      { label: copy.issued, value: formatDate(doc.issueDate) },
+      { label: copy.dueDate, value: doc.dueLabel || "—" },
     ];
     if (doc.order) {
-      meta.push(
-        { label: "Devis de référence", value: doc.order.sourceNumber },
-        { label: "Postes facturés", value: String(doc.order.postes) },
-      );
+      meta.push({ label: copy.refQuote, value: doc.order.sourceNumber }, { label: copy.posts, value: String(doc.order.postes) });
     }
     return {
       ...base,
-      title: "Facture",
+      title: copy.invoice,
       kicker,
       meta,
       totals,
-      sealTitle: "Cachet contractuel",
-      sealHint: company.chineseName,
+      sealTitle: "",
+      sealHint: "",
     };
   }
 
   const credit = lineSum(doc.lines);
   const totals: PaperTotal[] = [];
   if (doc.sourceAmountCents > 0) {
-    totals.push(moneyRow("Facture d’origine", doc.sourceAmountCents, "muted"));
+    totals.push(moneyRow(copy.sourceInvoice, doc.sourceAmountCents, "muted"));
   }
-  totals.push(
-    { label: "TVA", value: "non applicable", tone: "plain" },
-    moneyRow("Montant de l’avoir", credit, "strong"),
-  );
+  totals.push({ label: copy.vat, value: copy.vatFree, tone: "muted", rule: true }, moneyRow(copy.creditAmount, credit, "strong"));
   if (doc.sourceAmountCents > 0) {
-    totals.push(moneyRow("Solde facture après avoir", doc.sourceAmountCents - credit, "muted"));
+    totals.push(moneyRow(copy.afterCredit, doc.sourceAmountCents - credit, "muted"));
   }
   return {
     ...base,
-    title: "Avoir",
+    title: copy.credit,
     kicker: "",
     meta: [
-      { label: "Date d’émission", value: formatDate(doc.issueDate) },
-      { label: "Facture d’origine", value: doc.sourceNumber || "—" },
-      { label: "Motif", value: doc.reason || "—" },
+      { label: copy.issued, value: formatDate(doc.issueDate) },
+      { label: copy.sourceInvoice, value: doc.sourceNumber || "—" },
+      { label: copy.reason, value: doc.reason || "—" },
     ],
     totals,
-    sealTitle: "Avoir",
-    sealHint: "À déduire de la facture d’origine",
+    sealTitle: "",
+    sealHint: "",
   };
+}
+
+/** Recale le devis d’exemple SP-DV-2026-08 sur le modèle validé (postes G et H au prix unitaire). */
+export function normalizeDocs(
+  company: Company,
+  clients: Client[],
+  docs: Document[],
+): { docs: Document[]; changed: boolean } {
+  let changed = false;
+  const next = docs.map((doc) => {
+    if (!isDevis(doc) || doc.number !== "SP-DV-2026-08") return doc;
+    let lineChanged = false;
+    const lines = doc.lines.map((line) => {
+      if (line.code === "G" && line.qty === 1 && line.unitPriceCents === 289500) {
+        lineChanged = true;
+        return { ...line, qty: 3, unitPriceCents: 96500 };
+      }
+      if (line.code === "H" && line.qty === 1 && line.unitPriceCents === 414500) {
+        lineChanged = true;
+        return { ...line, qty: 3, unitPriceCents: 110000 };
+      }
+      return line;
+    });
+    let updated: Devis = lineChanged ? { ...doc, lines } : doc;
+    if (!updated.conditionsCustom) {
+      const conditions = devisConditions(updated, company);
+      if (conditions !== updated.conditions) {
+        changed = true;
+        updated = { ...updated, conditions };
+      }
+    }
+    if (lineChanged) changed = true;
+    return updated;
+  });
+
+  const devis = next.find((d): d is Devis => isDevis(d) && d.number === "SP-DV-2026-08");
+  const docsOut = devis
+    ? next.map((doc) => {
+        if (!isFacture(doc) || doc.number !== "SP-FA-2026-004") return doc;
+        if (doc.conditionsCustom || doc.lines.length !== 1 || doc.lines[0]?.id !== "ln_acompte") return doc;
+        const client = clients.find((c) => c.id === devis.clientId);
+        const line = narrativeLine(devis, client, "acompte");
+        line.id = "ln_acompte";
+        const order = snapFromDevis(devis, 0);
+        if (line.unitPriceCents === doc.lines[0].unitPriceCents && doc.order?.netCents === order.netCents) return doc;
+        changed = true;
+        const facture: Facture = {
+          ...doc,
+          lines: [line],
+          order,
+          headline: `Acompte de ${formatPercent(devis.depositBps)} % sur le devis ${devis.number} du ${formatDate(devis.issueDate)}, ${devis.lines.length} postes.`,
+          conditionsCustom: false,
+        };
+        facture.conditions = factureConditions(facture);
+        return facture;
+      })
+    : next;
+
+  return { docs: changed ? docsOut : docs, changed };
 }
 
 export function kindLabel(kind: Document["kind"]): string {

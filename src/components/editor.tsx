@@ -1,7 +1,8 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, ImagePlus, Plus, Printer, Trash2 } from "lucide-react";
 import { PageHead } from "@/components/shell";
+import { BoldField } from "@/components/marks";
 import { Paper } from "@/components/paper";
 import { StatusPill } from "@/components/status";
 import {
@@ -17,15 +18,10 @@ import {
   type Line,
 } from "@/lib/docs";
 import { useAtelier } from "@/lib/store";
-
-function euros(cents: number) {
-  return (cents / 100).toFixed(2).replace(".", ",");
-}
-
-function parseEuros(value: string) {
-  const n = Number(value.replace(/\s/g, "").replace(",", "."));
-  return Number.isFinite(n) ? Math.round(n * 100) : 0;
-}
+import { CentsField, DecimalField } from "@/components/decimal-field";
+import { opsClients, opsCreateQuoteClient, opsSendMail } from "@/lib/ops.functions";
+import { partyFromHit, recoverCompany } from "@/lib/client-party";
+import { clientLabel, type CompanyHit, type OpsClient } from "@/lib/ops.shared";
 
 async function shrinkImage(file: File) {
   const bmp = await createImageBitmap(file);
@@ -57,6 +53,45 @@ function Field({
 
 const STEPS = ["Client et commande", "Lignes", "Aperçu et envoi"] as const;
 
+function sirenOf(value: string) {
+  return String(value ?? "").replace(/^SIREN\s*/i, "").trim();
+}
+
+function nafOf(value: string) {
+  return value.replace(/^NAF\s*/i, "").trim();
+}
+
+function clientFromHit(hit: CompanyHit, base: Client): Client {
+  const party = partyFromHit(hit, { userId: base.id, name: base.tradeName || base.legalName, email: base.email });
+  return {
+    ...base,
+    id: base.id || party.clientUserId || `cli-${hit.siret || hit.siren}`,
+    legalName: party.clientCompany || base.legalName,
+    tradeName: base.tradeName && base.tradeName !== party.clientCompany ? base.tradeName : "",
+    address: party.clientAddress,
+    vat: party.clientVat,
+    siret: party.clientSiret,
+    rcs: party.clientSiren ? `SIREN ${party.clientSiren}` : "",
+    siteNote: party.clientNaf ? `NAF ${party.clientNaf}` : "",
+    email: base.email,
+  };
+}
+
+function clientFromOps(client: OpsClient): Client {
+  const company = client.company || client.name || "Client";
+  return {
+    id: client.id,
+    legalName: company,
+    tradeName: client.company && client.name && client.name !== client.company ? client.name : "",
+    address: client.address || "",
+    vat: client.vat || "",
+    siret: client.siret || "",
+    rcs: client.siren ? `SIREN ${client.siren}` : "",
+    siteNote: client.naf ? `NAF ${client.naf}` : "",
+    email: client.email || "",
+  };
+}
+
 export function Editor({ id }: { id: string }) {
   const doc = useAtelier((s) => s.docs.find((d) => d.id === id));
   const clients = useAtelier((s) => s.clients);
@@ -74,10 +109,31 @@ export function Editor({ id }: { id: string }) {
   const removeDoc = useAtelier((s) => s.removeDoc);
   const saveClient = useAtelier((s) => s.saveClient);
   const navigate = useNavigate();
+  const [accounts, setAccounts] = useState<OpsClient[]>([]);
+  const [hits, setHits] = useState<CompanyHit[]>([]);
+  const [lookupError, setLookupError] = useState("");
+  const [mailText, setMailText] = useState("");
+  const [mailInfo, setMailInfo] = useState("");
+  const [mailErr, setMailErr] = useState("");
   const [step, setStep] = useState(() =>
-    doc && doc.lines.some((l) => l.title.trim()) && (doc.kind !== "devis" || doc.status !== "brouillon") ? 3 : 1,
+    doc && doc.lines.some((l) => (l.title || "").trim()) && (doc.kind !== "devis" || doc.status !== "brouillon") ? 3 : 1,
   );
   const [newClient, setNewClient] = useState(false);
+  const filled = useRef("");
+
+  useEffect(() => {
+    void opsClients().then(setAccounts).catch(() => setAccounts([]));
+  }, []);
+
+  useEffect(() => {
+    if (!doc || !accounts.length || filled.current === doc.id) return;
+    filled.current = doc.id;
+    const account = accounts.find((item) => item.id === doc.clientId);
+    if (!account || (!account.company && !account.siret && !account.address)) return;
+    const current = useAtelier.getState().clients.find((item) => item.id === doc.clientId);
+    if (current?.siret && current.address && current.legalName && current.legalName !== "Client") return;
+    saveClient(clientFromOps(account));
+  }, [doc, accounts, saveClient]);
 
   if (!doc) {
     return (
@@ -91,11 +147,80 @@ export function Editor({ id }: { id: string }) {
   }
 
   const client = clients.find((c) => c.id === doc.clientId);
+  const options = accounts
+    .filter((item) => item.id.startsWith("usr_") && item.email.includes("@"))
+    .map((item) => ({ id: item.id, label: `${clientLabel(item)} — ${item.email}${item.kind === "particulier" ? " · particulier" : ""}` }));
+
+  function remember(next: Client) {
+    saveClient(next);
+    updateDoc(doc!.id, { clientId: next.id });
+  }
+
+  function pickClient(userId: string) {
+    const account = accounts.find((item) => item.id === userId);
+    if (!account) {
+      updateDoc(doc!.id, { clientId: userId });
+      setHits([]);
+      return;
+    }
+    const next = clientFromOps(account);
+    remember(next);
+    setHits([]);
+  }
+
+  function applyHit(hit: CompanyHit) {
+    const base = client ?? {
+      id: doc!.clientId || `cli-${Date.now().toString(36)}`,
+      legalName: "",
+      tradeName: "",
+      address: "",
+      vat: "",
+      siret: "",
+      rcs: "",
+      siteNote: "",
+      email: "",
+    };
+    const next = clientFromHit(hit, base);
+    remember(next);
+    setHits([]);
+    setLookupError("");
+    if (next.email) {
+      void opsCreateQuoteClient({
+        data: {
+          name: next.tradeName || next.legalName,
+          email: next.email,
+          company: next.legalName,
+          address: next.address,
+          vat: next.vat,
+          country: "France",
+          siren: sirenOf(next.rcs),
+          siret: next.siret,
+          naf: nafOf(next.siteNote),
+        },
+      }).catch(() => undefined);
+    }
+  }
+
+  function lookup() {
+    const query = client?.siret || (client ? sirenOf(client.rcs) : "") || client?.legalName || client?.tradeName || "";
+    setLookupError("");
+    void recoverCompany(query)
+      .then((found) => {
+        if (!found.length) {
+          setLookupError("Aucune entreprise trouvée. Vérifiez la dénomination ou le SIRET.");
+          setHits([]);
+          return;
+        }
+        if (found.length === 1) applyHit(found[0]);
+        else setHits(found);
+      })
+      .catch((err: unknown) => setLookupError(err instanceof Error ? err.message : "Annuaire indisponible."));
+  }
   const back =
     doc.kind === "devis" ? "/devis" : doc.kind === "facture" ? "/factures" : "/avoirs";
   const heading =
     doc.kind === "devis"
-      ? doc.status === "brouillon" && !doc.lines.some((l) => l.title.trim())
+      ? doc.status === "brouillon" && !doc.lines.some((l) => (l.title || "").trim())
         ? "Nouveau devis"
         : doc.number
       : doc.kind === "facture"
@@ -161,16 +286,52 @@ export function Editor({ id }: { id: string }) {
             </Link>
           </div>
           <Field label="Client">
-            <select className="field" value={doc.clientId} onChange={(e) => updateDoc(doc.id, { clientId: e.target.value })}>
+            <select className="field" value={doc.clientId} onChange={(e) => pickClient(e.target.value)}>
               <option value="">Choisir un client</option>
-              {clients.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.legalName}
-                  {c.tradeName ? ` — ${c.tradeName}` : ""}
+              {options.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.label}
                 </option>
               ))}
             </select>
           </Field>
+          {client ? (
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field label="Dénomination">
+                <input className="field" value={client.legalName || ""} onChange={(e) => saveClient({ ...client, legalName: e.target.value })} />
+              </Field>
+              <Field label="Contact">
+                <input className="field" value={client.tradeName || ""} onChange={(e) => saveClient({ ...client, tradeName: e.target.value })} />
+              </Field>
+              <Field label="Email">
+                <input className="field" value={client.email || ""} onChange={(e) => saveClient({ ...client, email: e.target.value })} />
+              </Field>
+              <Field label="SIRET">
+                <input className="field" value={client.siret || ""} onChange={(e) => saveClient({ ...client, siret: e.target.value })} />
+              </Field>
+              <Field label="SIREN">
+                <input className="field" value={sirenOf(client.rcs)} onChange={(e) => saveClient({ ...client, rcs: e.target.value ? `SIREN ${e.target.value}` : "" })} />
+              </Field>
+              <Field label="TVA">
+                <input className="field" value={client.vat || ""} onChange={(e) => saveClient({ ...client, vat: e.target.value })} />
+              </Field>
+              <Field label="Adresse">
+                <input className="field sm:col-span-2" value={client.address || ""} onChange={(e) => saveClient({ ...client, address: e.target.value })} />
+              </Field>
+            </div>
+          ) : null}
+          <button className="btn btn-quiet w-fit" type="button" onClick={lookup}>Récupérer la dénomination, le SIRET et l’adresse</button>
+          {lookupError ? <p className="text-sm text-[#8a1c1c]">{lookupError}</p> : null}
+          {hits.length ? (
+            <div className="grid gap-2">
+              {hits.map((hit) => (
+                <button key={hit.siret || hit.siren} className="rounded-2xl border border-line bg-canvas px-3 py-2 text-left text-sm" type="button" onClick={() => applyHit(hit)}>
+                  <b>{hit.name}</b>
+                  <span className="mt-1 block text-muted">{[hit.address, hit.siret ? `SIRET ${hit.siret}` : "", hit.siren ? `SIREN ${hit.siren}` : ""].filter(Boolean).join(" · ")}</span>
+                </button>
+              ))}
+            </div>
+          ) : null}
           {newClient ? (
             <NewClient
               onCancel={() => setNewClient(false)}
@@ -211,10 +372,10 @@ export function Editor({ id }: { id: string }) {
                 <input className="field" value={doc.port} onChange={(e) => updateDoc(doc.id, { port: e.target.value })} placeholder="Optionnel" />
               </Field>
               <Field label="Commission ouvrages (%)">
-                <input className="field" inputMode="decimal" value={String(doc.commissionBps / 100)} onChange={(e) => updateDoc(doc.id, { commissionBps: Math.round((Number(e.target.value.replace(",", ".")) || 0) * 100) })} />
+                <DecimalField value={doc.commissionBps / 100} onChange={(value) => updateDoc(doc.id, { commissionBps: Math.round(value * 100) })} />
               </Field>
               <Field label="Acompte (%)">
-                <input className="field" inputMode="decimal" value={String(doc.depositBps / 100)} onChange={(e) => updateDoc(doc.id, { depositBps: Math.round((Number(e.target.value.replace(",", ".")) || 0) * 100) })} />
+                <DecimalField value={doc.depositBps / 100} onChange={(value) => updateDoc(doc.id, { depositBps: Math.round(value * 100) })} />
               </Field>
             </div>
           ) : null}
@@ -254,15 +415,7 @@ export function Editor({ id }: { id: string }) {
             </div>
           ) : null}
           {isFacture(doc) ? <PaymentBlock doc={doc} /> : null}
-          {client ? (
-            <p className="text-sm text-muted">
-              {client.legalName}
-              {client.tradeName ? ` · ${client.tradeName}` : ""}
-              {client.siteNote ? ` · ${client.siteNote}` : ""}
-            </p>
-          ) : (
-            <p className="text-sm text-danger">Choisissez un client avant l’envoi.</p>
-          )}
+          {client ? null : <p className="text-sm text-danger">Choisissez un client avant l’envoi.</p>}
         </section>
       ) : null}
 
@@ -307,6 +460,54 @@ export function Editor({ id }: { id: string }) {
             <Link to="/imprimer/$id" params={{ id: doc.id }} className="btn btn-primary">
               <Printer size={16} /> Télécharger le PDF
             </Link>
+            <label className="text-sm font-semibold">
+              Message du mail
+              <textarea className="field mt-1 min-h-24 font-normal" value={mailText} placeholder={doc.kind === "facture" ? "Bonjour, veuillez trouver votre facture." : "Bonjour, veuillez trouver votre devis."} onChange={(event) => setMailText(event.target.value)} />
+            </label>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={() => {
+                setMailErr("");
+                setMailInfo("");
+                if (!(client?.email || "").includes("@")) {
+                  setMailErr("Indiquez l’email du client à l’étape 1.");
+                  return;
+                }
+                const rows = doc.lines
+                  .filter((line) => line.title.trim())
+                  .map((line) => `• ${line.title} — ${formatEUR(Math.round(line.qty * line.unitPriceCents))}`)
+                  .join("\n");
+                const label = doc.kind === "facture" ? "facture" : doc.kind === "avoir" ? "avoir" : "devis";
+                const text = [
+                  mailText.trim() || `Bonjour,\n\nVeuillez trouver votre ${label} ${doc.number}.`,
+                  "",
+                  `${doc.number} · ${client.legalName}`,
+                  client.address,
+                  client.siret ? `SIRET ${client.siret}` : "",
+                  rows,
+                  `Total : ${formatEUR(dueCents(doc))}`,
+                  "",
+                  "SourcingPick",
+                  "contact@sourcingpick.com",
+                ]
+                  .filter(Boolean)
+                  .join("\n");
+                void opsSendMail({
+                  data: {
+                    to: client.email,
+                    subject: doc.kind === "facture" ? `Votre facture ${doc.number}` : `Votre devis ${doc.number}`,
+                    text,
+                  },
+                })
+                  .then(() => setMailInfo(`Email envoyé à ${client.email}.`))
+                  .catch((err: unknown) => setMailErr(err instanceof Error ? err.message : "Envoi impossible."));
+              }}
+            >
+              Envoyer par email
+            </button>
+            {mailInfo ? <p className="text-sm text-[#0e9f6e]">{mailInfo}</p> : null}
+            {mailErr ? <p className="text-sm text-[#8a1c1c]">{mailErr}</p> : null}
             {doc.status === "brouillon" ? (
               <button className="btn btn-quiet" type="button" onClick={() => setStatus("emis")}>
                 Marquer comme envoyé
@@ -421,15 +622,10 @@ function PaymentBlock({ doc }: { doc: Facture }) {
         <input className="field" type="date" value={doc.paidOn} onChange={(e) => updateDoc(doc.id, { paidOn: e.target.value })} />
       </Field>
       <Field label="Montant reçu (€)">
-        <input
-          className="field"
-          inputMode="decimal"
-          value={doc.paidCents == null ? "" : euros(doc.paidCents)}
-          onChange={(e) => updateDoc(doc.id, { paidCents: e.target.value.trim() ? parseEuros(e.target.value) : null })}
-        />
+        <CentsField className="field" cents={doc.paidCents ?? 0} onChange={(cents) => updateDoc(doc.id, { paidCents: cents })} />
       </Field>
       <Field label="Frais bancaires (€)">
-        <input className="field" inputMode="decimal" value={euros(doc.feesCents)} onChange={(e) => updateDoc(doc.id, { feesCents: parseEuros(e.target.value) })} />
+        <CentsField className="field" cents={doc.feesCents} onChange={(cents) => updateDoc(doc.id, { feesCents: cents })} />
       </Field>
     </div>
   );
@@ -464,7 +660,7 @@ function LineCard({
           <input className="field" value={line.material} onChange={(e) => onChange({ material: e.target.value })} />
         </Field>
         <Field label="Description, une puce par ligne">
-          <textarea className="field min-h-24 py-3" value={line.details} onChange={(e) => onChange({ details: e.target.value })} />
+          <BoldField value={line.details} onChange={(details) => onChange({ details })} placeholder="Une puce par ligne. Sélectionnez un mot, puis Gras." />
         </Field>
         <Field label="Photo du produit">
           <div className="flex flex-wrap items-center gap-3">
@@ -497,10 +693,10 @@ function LineCard({
             <input className="field" value={line.unit} onChange={(e) => onChange({ unit: e.target.value })} />
           </Field>
           <Field label="Quantité">
-            <input className="field" inputMode="decimal" value={String(line.qty)} onChange={(e) => onChange({ qty: Number(e.target.value.replace(",", ".")) || 0 })} />
+            <DecimalField fraction={0} value={line.qty} onChange={(qty) => onChange({ qty })} />
           </Field>
           <Field label="Prix unitaire (€)">
-            <input className="field" inputMode="decimal" value={euros(line.unitPriceCents)} onChange={(e) => onChange({ unitPriceCents: parseEuros(e.target.value) })} />
+            <CentsField className="field" cents={line.unitPriceCents} onChange={(unitPriceCents) => onChange({ unitPriceCents })} />
           </Field>
           <Field label="Montant">
             <input className="field mono" readOnly value={formatEUR(amount)} />
@@ -514,22 +710,78 @@ function LineCard({
 function NewClient({ onSave, onCancel }: { onSave: (c: Client) => void; onCancel: () => void }) {
   const [legalName, setLegalName] = useState("");
   const [tradeName, setTradeName] = useState("");
+  const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [siret, setSiret] = useState("");
+  const [siren, setSiren] = useState("");
+  const [vat, setVat] = useState("");
+  const [naf, setNaf] = useState("");
+  const [hits, setHits] = useState<CompanyHit[]>([]);
+  const [error, setError] = useState("");
+
+  function apply(hit: CompanyHit) {
+    setLegalName(hit.name);
+    setAddress(hit.address);
+    setSiret(hit.siret);
+    setSiren(hit.siren);
+    setVat(hit.vat);
+    setNaf(hit.naf);
+    setHits([]);
+    setError("");
+  }
+
   return (
     <div className="grid gap-3 rounded-xl bg-canvas p-3 sm:grid-cols-2">
-      <Field label="Raison sociale">
+      <Field label="Dénomination">
         <input className="field" value={legalName} onChange={(e) => setLegalName(e.target.value)} />
       </Field>
-      <Field label="Enseigne">
+      <Field label="Contact">
         <input className="field" value={tradeName} onChange={(e) => setTradeName(e.target.value)} />
       </Field>
-      <Field label="Adresse">
-        <input className="field" value={address} onChange={(e) => setAddress(e.target.value)} />
+      <Field label="Email">
+        <input className="field" value={email} onChange={(e) => setEmail(e.target.value)} />
       </Field>
       <Field label="SIRET">
         <input className="field" value={siret} onChange={(e) => setSiret(e.target.value)} />
       </Field>
+      <Field label="SIREN">
+        <input className="field" value={siren} onChange={(e) => setSiren(e.target.value)} />
+      </Field>
+      <Field label="TVA">
+        <input className="field" value={vat} onChange={(e) => setVat(e.target.value)} />
+      </Field>
+      <Field label="Adresse">
+        <input className="field" value={address} onChange={(e) => setAddress(e.target.value)} />
+      </Field>
+      <div className="flex flex-wrap gap-2 sm:col-span-2">
+        <button
+          className="btn btn-quiet"
+          type="button"
+          onClick={() => {
+            setError("");
+            void recoverCompany(siret || siren || legalName)
+              .then((found) => {
+                if (!found.length) {
+                  setError("Aucune entreprise trouvée.");
+                  setHits([]);
+                  return;
+                }
+                if (found.length === 1) apply(found[0]);
+                else setHits(found);
+              })
+              .catch((err: unknown) => setError(err instanceof Error ? err.message : "Annuaire indisponible."));
+          }}
+        >
+          Récupérer la dénomination, le SIRET et l’adresse
+        </button>
+      </div>
+      {error ? <p className="text-sm text-[#8a1c1c] sm:col-span-2">{error}</p> : null}
+      {hits.map((hit) => (
+        <button key={hit.siret || hit.siren} className="rounded-2xl border border-line bg-paper px-3 py-2 text-left text-sm sm:col-span-2" type="button" onClick={() => apply(hit)}>
+          <b>{hit.name}</b>
+          <span className="mt-1 block text-muted">{[hit.address, hit.siret ? `SIRET ${hit.siret}` : ""].filter(Boolean).join(" · ")}</span>
+        </button>
+      ))}
       <div className="flex gap-2 sm:col-span-2">
         <button
           className="btn btn-primary"
@@ -541,10 +793,11 @@ function NewClient({ onSave, onCancel }: { onSave: (c: Client) => void; onCancel
               legalName: legalName.trim(),
               tradeName: tradeName.trim(),
               address: address.trim(),
-              vat: "",
+              vat: vat.trim(),
               siret: siret.trim(),
-              rcs: "",
-              siteNote: "",
+              rcs: siren.trim() ? `SIREN ${siren.trim()}` : "",
+              siteNote: naf.trim() ? `NAF ${naf.trim()}` : "",
+              email: email.trim(),
             })
           }
         >

@@ -1,69 +1,113 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { useRouterState } from "@tanstack/react-router";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { loadAtelier, saveAtelier, type AtelierSnapshot } from "@/lib/backend.functions";
+import { normalizeDocs, type Client, type Company, type Document, type Seq } from "@/lib/docs";
+import { armLoadingBar, clearLoadingBar } from "@/lib/loading";
+import { loadSession, peekSession } from "@/lib/session";
 import { useAtelier } from "@/lib/store";
 
 function snapshot(): AtelierSnapshot {
   const s = useAtelier.getState();
-  return { company: s.company, clients: s.clients, docs: s.docs, seq: s.seq };
+  return {
+    company: s.company,
+    clients: s.clients.filter((client) => client.id.startsWith("usr_")),
+    docs: s.docs,
+    seq: s.seq,
+  };
+}
+
+function printReady(path: string) {
+  if (!path.startsWith("/imprimer/")) return false;
+  const id = decodeURIComponent(path.slice("/imprimer/".length).split("/")[0] || "");
+  if (!id) return false;
+  try {
+    return Boolean(localStorage.getItem(`sp-print:${id}`));
+  } catch {
+    return false;
+  }
 }
 
 function isAtelier(path: string) {
-  return /^\/(admin|devis|factures|avoirs|clients|paiements|societe|demandes|aide|imprimer)(\/|$)/.test(path);
+  return /^\/(admin|devis|factures|avoirs|clients|paiements|societe|demandes|aide|imprimer|espace|acces|sessions|commandes|documents|contrats|emails|journal|agents|utilisateurs|parametres|stock)(\/|$)/.test(path);
+}
+
+function Loader() {
+  return (
+    <div className="app-boot" aria-busy="true">
+      <img src="/illustrations/mascotte-ronde.svg" alt="" />
+      <p>Chargement…</p>
+    </div>
+  );
 }
 
 export function Boot({ children }: { children: ReactNode }) {
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
   const atelier = isAtelier(path);
-  const [ready, setReady] = useState(!atelier);
+  const [tick, setTick] = useState(0);
   useEffect(() => {
     let live = true;
     let timer = 0;
     let unsub = () => {};
     void (async () => {
-      await Promise.resolve(useAtelier.persist.rehydrate());
+      const cached = printReady(path);
+      if (!cached) await Promise.resolve(useAtelier.persist.rehydrate());
       if (!live) return;
-      if (!atelier) {
-        setReady(true);
-        return;
-      }
+      if (!atelier) return;
+      armLoadingBar();
       try {
+        const session = await loadSession();
+        if (!live) return;
+        if (!session.user) {
+          void navigate({ to: "/connexion" });
+          return;
+        }
+        sessionStorage.removeItem("sp-error-retry");
+        if (cached) return;
+        const staff = session.user.role !== "client";
+        if (!staff) return;
         const remote = await loadAtelier();
         if (!live) return;
         if (remote && Array.isArray(remote.docs)) {
+          const company = remote.company as unknown as Company;
+          const clients = (remote.clients as unknown as Client[]).filter((client) => String(client?.id || "").startsWith("usr_"));
+          const docs = remote.docs as unknown as Document[];
+          const seq = remote.seq as unknown as Seq;
+          const fixed = normalizeDocs(company, clients, docs);
           useAtelier.setState({
-            company: remote.company as never,
-            clients: remote.clients as never,
-            docs: remote.docs as never,
-            seq: remote.seq as never,
+            company,
+            clients,
+            docs: fixed.docs,
+            seq,
           });
-        } else {
+          if (fixed.changed && staff) await saveAtelier({ data: snapshot() });
+        } else if (staff) {
           await saveAtelier({ data: snapshot() });
         }
       } catch (err) {
         console.error("[atelier] synchro serveur", err);
+        return;
       }
       if (!live) return;
       unsub = useAtelier.subscribe(() => {
         window.clearTimeout(timer);
         timer = window.setTimeout(() => {
-          void saveAtelier({ data: snapshot() }).catch((err) => console.error("[atelier] enregistrement", err));
-        }, 400);
+          void saveAtelier({ data: snapshot() }).catch((saveErr) => console.error("[atelier] enregistrement", saveErr));
+        }, 700);
       });
-      setReady(true);
-    })();
+    })().finally(() => {
+      if (live) {
+        clearLoadingBar();
+        setTick((value) => value + 1);
+      }
+    });
     return () => {
       live = false;
       window.clearTimeout(timer);
       unsub();
+      clearLoadingBar();
     };
-  }, [atelier]);
-  if (!ready) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-canvas text-muted">
-        <p className="rise">SourcingPick</p>
-      </div>
-    );
-  }
+  }, [atelier, navigate]);
+  if (atelier && tick >= 0 && !peekSession()?.user) return <Loader />;
   return children;
 }

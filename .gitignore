@@ -6,5 +6,11 @@ screenshots
 .grok/*
 !.grok/app-env.json
 dist
-*.log
+.output
+.project_id
+.node_modules.lock
+mail.env
+.env
+.env.*
+
 .DS_Store

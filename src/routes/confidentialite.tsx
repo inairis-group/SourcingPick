@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { LegalPage } from "@/components/legal-page";
-import raw from "@/site/confidentialite.body.txt?raw";
+import { Board } from "@/components/board";
+import { seoHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/confidentialite")({ component: () => <LegalPage title="Politique de confidentialité" raw={raw} /> });
+export const Route = createFileRoute("/confidentialite")({
+  head: () => seoHead("/confidentialite"),
+  component: () => <Board name="confidentialite" />,
+});

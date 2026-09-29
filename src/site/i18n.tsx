@@ -34,6 +34,28 @@ type Pack = {
   lead: string;
   steps: string;
   langNote: string;
+  footLead: string;
+  colServices: string;
+  colCompany: string;
+  colLegal: string;
+  about: string;
+  ourWarehouse: string;
+  transparency: string;
+  contact: string;
+  application: string;
+  stockField: string;
+  reception: string;
+  check: string;
+  consolidation: string;
+  wood: string;
+  loading: string;
+  sea: string;
+  sourcing: string;
+  cookiesTitle: string;
+  cookiesBody: string;
+  acceptAll: string;
+  refuseAll: string;
+  choose: string;
 };
 
 const fr: Pack = {
@@ -53,6 +75,28 @@ const fr: Pack = {
   lead: "Sourcing Pick réceptionne vos commandes dans son entrepôt de Guangzhou, contrôle chaque colis, consolide, renforce, charge le conteneur et l’expédie depuis le port de Nansha vers l’Europe. Des photos à chaque étape, le suivi dans votre espace client.",
   steps: "Voir les 6 étapes",
   langNote: "",
+  footLead: "Réception, contrôle, consolidation et expédition de vos marchandises, de Guangzhou vers l’Europe.",
+  colServices: "Services",
+  colCompany: "Entreprise",
+  colLegal: "Légal",
+  about: "À propos",
+  ourWarehouse: "Notre entrepôt",
+  transparency: "Transparence",
+  contact: "Contact",
+  application: "Application",
+  stockField: "Stock terrain",
+  reception: "Réception",
+  check: "Vérification",
+  consolidation: "Consolidation",
+  wood: "Renforcement bois",
+  loading: "Chargement",
+  sea: "Expédition maritime",
+  sourcing: "Sourcing",
+  cookiesTitle: "Nous déposons le strict nécessaire",
+  cookiesBody: "Les cookies nécessaires font fonctionner le site. La mesure d’audience n’est pas encore active : aucun traceur publicitaire n’est chargé.",
+  acceptAll: "Tout accepter",
+  refuseAll: "Tout refuser",
+  choose: "Choisir",
 };
 
 const packs: Record<Lang, Pack> = {
@@ -74,7 +118,29 @@ const packs: Record<Lang, Pack> = {
     heroB: "before they sail.",
     lead: "Sourcing Pick receives your orders in Guangzhou, checks every parcel, consolidates, reinforces, loads the container and ships it from Nansha to Europe. Photos at every step, tracking in your client area.",
     steps: "See the 6 steps",
-    langNote: "Detailed pages stay in French, the language of the contract.",
+    langNote: "Terms, privacy and cookies stay in French: that is the language of the contract.",
+    footLead: "We receive, check, consolidate and ship your goods from Guangzhou to Europe.",
+    colServices: "Services",
+    colCompany: "Company",
+    colLegal: "Legal",
+    about: "About",
+    ourWarehouse: "Our warehouse",
+    transparency: "Transparency",
+    contact: "Contact",
+    application: "App",
+    stockField: "Field stock",
+    reception: "Receiving",
+    check: "Inspection",
+    consolidation: "Consolidation",
+    wood: "Wooden reinforcement",
+    loading: "Loading",
+    sea: "Ocean freight",
+    sourcing: "Sourcing",
+    cookiesTitle: "Only what the site needs",
+    cookiesBody: "Necessary cookies keep the site working. Audience measurement is not on yet: no advertising tracker is loaded.",
+    acceptAll: "Accept all",
+    refuseAll: "Refuse all",
+    choose: "Choose",
   },
   zh: {
     ...fr,

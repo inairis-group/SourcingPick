@@ -41,6 +41,18 @@ function Page() {
           Mention de TVA
           <textarea className="field min-h-20 py-3 font-normal" value={company.vatNote} onChange={(e) => setCompany({ vatNote: e.target.value })} />
         </label>
+        <label className="flex flex-col gap-1.5 text-sm font-semibold sm:col-span-2">
+          Mention ajoutée à toutes les conditions
+          <textarea
+            className="field min-h-28 py-3 font-normal"
+            value={company.conditionsExtra ?? ""}
+            onChange={(e) => setCompany({ conditionsExtra: e.target.value })}
+            placeholder="Une ligne par phrase. Elle s'ajoute aux conditions automatiques de chaque devis, facture et avoir."
+          />
+        </label>
+        <p className="text-sm text-muted sm:col-span-2">
+          Les conditions de base (acompte, solde, assurance, livraison, validité) se recalculent sur chaque document. Cette mention s'y ajoute, sauf si le texte du document a été réécrit à la main.
+        </p>
       </form>
       <button className="btn btn-quiet mt-4" type="button" onClick={() => restore()}>
         Recharger l’exemple Manzini

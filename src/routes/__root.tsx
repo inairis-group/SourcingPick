@@ -1,27 +1,52 @@
+import { useEffect } from "react";
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { SiteNotFound } from "@/components/site-layout";
 import { Boot } from "@/components/boot";
+import { Track } from "@/components/track";
 import appCss from "../styles.css?url";
+
+function Fonts() {
+  useEffect(() => {
+    const core = "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;600&display=swap";
+    const extra = "https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Libre+Baskerville:wght@400;700&family=Newsreader:opsz,wght@6..72,400;600;700&family=Noto+Sans+SC:wght@500;700&family=Nunito:wght@400;600;700&display=swap";
+    const add = (href: string, mark: string) => {
+      if (document.querySelector(`link[data-sp-fonts="${mark}"]`)) return;
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      link.dataset.spFonts = mark;
+      document.head.appendChild(link);
+    };
+    add(core, "core");
+    let idleId = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    if ("requestIdleCallback" in window) idleId = window.requestIdleCallback(() => add(extra, "extra"));
+    else timer = globalThis.setTimeout(() => add(extra, "extra"), 1200);
+    return () => {
+      if (idleId && "cancelIdleCallback" in window) window.cancelIdleCallback(idleId);
+      if (timer) globalThis.clearTimeout(timer);
+    };
+  }, []);
+  return null;
+}
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SourcingPick" },
       { name: "theme-color", content: "#0B1433" },
     ],
     links: [
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg?v=2" },
+      { rel: "icon", href: "/favicon.ico?v=2" },
       { rel: "stylesheet", href: appCss },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Noto+Sans+SC:wght@500;700&family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;600&display=swap",
-      },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
   }),
   notFoundComponent: SiteNotFound,
@@ -30,8 +55,10 @@ export const Route = createRootRoute({
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body style={{ margin: 0, background: "#f5f7fc", color: "#0e1a3d" }}>
         <PreviewHostBridge />
+        <Fonts />
+        <Track />
         <AuthProvider>
           <Boot>
             <Outlet />
