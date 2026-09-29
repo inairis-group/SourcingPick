@@ -1918,6 +1918,132 @@ img.sp-step {
   }
 }
 
+/* Sous-menus (langue, compte, recherche, cloche).
+   L'élément naît à l'ouverture, donc l'animation joue à l'apparition.
+   L'origine en haut à droite suit le bouton qui l'ouvre. */
+.sp-pop {
+  transform-origin: top right;
+  animation: sp-pop-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sp-pop button,
+.sp-pop a {
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Menu du compte : le panneau reste dans le DOM.
+   Le navigateur le cache tant que <details> est fermé. */
+details.sp-menu-details > :not(summary) {
+  transform-origin: top right;
+  animation: sp-pop-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Bandeau qui se déplie sous l'en-tête mobile. */
+.sp-drop {
+  transform-origin: top center;
+  animation: sp-drop-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Fenêtre : le fond s'assombrit, la carte monte un peu. */
+.sp-modal {
+  animation: sp-fade 0.2s ease both;
+}
+
+.sp-modal > * {
+  animation: sp-modal-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Tiroir. sp-drawer vient de la gauche, sp-drawer-end de la droite. */
+.sp-shade {
+  animation: sp-fade 0.2s ease both;
+}
+
+.sp-drawer {
+  animation: sp-drawer-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sp-drawer-end {
+  animation-name: sp-drawer-end;
+}
+
+/* Feuille qui monte depuis le bas de l'écran. */
+.sp-sheet {
+  animation: sp-sheet-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes sp-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sp-drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sp-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sp-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sp-drawer-in {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sp-drawer-end {
+  from {
+    transform: translateX(24px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes sp-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .sp-await {
     opacity: 1;
@@ -1945,7 +2071,15 @@ img.sp-step {
   .sp-menu,
   .sp-menu a,
   .sp-burger,
-  .sp-burger svg {
+  .sp-burger svg,
+  .sp-pop,
+  .sp-drop,
+  .sp-modal,
+  .sp-modal > *,
+  .sp-shade,
+  .sp-drawer,
+  .sp-sheet,
+  details.sp-menu-details > :not(summary) {
     animation: none;
     transition: none;
   }

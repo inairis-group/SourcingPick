@@ -254,8 +254,8 @@ function File({ item, auction, onClose, onChange, onSaved }: { item: MarketItem;
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-navy/40" onClick={onClose}>
-      <aside className="h-full w-full max-w-md overflow-y-auto bg-paper p-5 shadow-card" onClick={(event) => event.stopPropagation()}>
+    <div className="sp-shade fixed inset-0 z-50 flex justify-end bg-navy/40" onClick={onClose}>
+      <aside className="sp-drawer sp-drawer-end h-full w-full max-w-md overflow-y-auto bg-paper p-5 shadow-card" onClick={(event) => event.stopPropagation()}>
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">{item.sku || item.id}</p>

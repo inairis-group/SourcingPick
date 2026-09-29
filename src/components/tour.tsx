@@ -135,7 +135,7 @@ export function useFirstStepsCount() {
 
 function Veil({ children }: { children: ReactNode }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0E1A3D]/55 px-4" role="dialog" aria-modal="true">
+    <div className="sp-modal fixed inset-0 z-50 flex items-center justify-center bg-[#0E1A3D]/55 px-4" role="dialog" aria-modal="true">
       {children}
     </div>
   );
@@ -441,7 +441,7 @@ export function Tour() {
       ) : (
         <div className="pointer-events-auto absolute inset-0 bg-[#0E1A3D]/45" />
       )}
-      <div className="pointer-events-auto fixed z-10" style={{ top, left, width }}>
+      <div className="sp-pop pointer-events-auto fixed z-10" style={{ top, left, width }}>
         <div className="flex flex-col gap-3 rounded-[20px] bg-white p-5 shadow-[0_28px_60px_-28px_rgba(14,26,61,0.6)]">
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#EAF1FF] text-[#155DFC]">
             <Icon size={18} />

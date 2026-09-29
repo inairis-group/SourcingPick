@@ -318,8 +318,8 @@ function PinSheet({ onClose }: { onClose: () => void }) {
 
 function Sheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   return (
-    <div className="fixed inset-0 z-40 flex items-end justify-center bg-[#0b1433]/40 p-0 sm:items-center sm:p-4" onClick={onClose}>
-      <div className="max-h-[92vh] w-full max-w-lg overflow-auto rounded-t-3xl bg-paper p-4 sm:rounded-3xl" onClick={(e) => e.stopPropagation()}>
+    <div className="sp-shade fixed inset-0 z-40 flex items-end justify-center bg-[#0b1433]/40 p-0 sm:items-center sm:p-4" onClick={onClose}>
+      <div className="sp-sheet max-h-[92vh] w-full max-w-lg overflow-auto rounded-t-3xl bg-paper p-4 sm:rounded-3xl" onClick={(e) => e.stopPropagation()}>
         <div className="mb-3 flex items-start justify-between gap-3">
           <h2 className="text-lg font-semibold">{title}</h2>
           <button className="btn btn-quiet btn-icon" type="button" aria-label="Fermer" onClick={onClose}><X size={16} /></button>

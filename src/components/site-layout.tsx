@@ -66,7 +66,7 @@ function Frame({ children }: { children: ReactNode }) {
                 {LANGS.find((l) => l.id === lang)?.label}
               </button>
               {langs ? (
-                <ul className="absolute end-0 top-12 z-40 max-h-80 w-44 overflow-auto rounded-xl border border-line bg-paper p-1 shadow-card">
+                <ul className="sp-pop absolute end-0 top-12 z-40 max-h-80 w-44 overflow-auto rounded-xl border border-line bg-paper p-1 shadow-card">
                   {LANGS.map((l) => (
                     <li key={l.id}>
                       <button
@@ -96,7 +96,7 @@ function Frame({ children }: { children: ReactNode }) {
           </div>
         </div>
         {open ? (
-          <div className="border-t border-line bg-paper px-4 py-3 lg:hidden">
+          <div className="sp-drop border-t border-line bg-paper px-4 py-3 lg:hidden">
             <div className="flex flex-col gap-1">
               {NAV.map((item) => (
                 <Link key={item.to} to={item.to} className="rounded-xl px-3 py-3 text-sm font-semibold" onClick={() => setOpen(false)}>

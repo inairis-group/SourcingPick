@@ -313,9 +313,9 @@ export function Shell({ children }: { children: ReactNode }) {
       {account ? <Tour /> : null}
       <aside className={`sticky top-0 z-30 hidden h-screen min-h-0 flex-col overflow-hidden bg-sidebar py-6 lg:flex ${collapsed ? "px-2" : "px-4"}`}>{aside}</aside>
       {open ? (
-        <div className="fixed inset-0 z-40 lg:hidden">
+        <div className="sp-shade fixed inset-0 z-40 lg:hidden">
           <button className="absolute inset-0 bg-navy/50" aria-label="Fermer le menu" onClick={() => setOpen(false)} />
-          <aside className="absolute inset-y-0 left-0 w-[280px] overflow-y-auto bg-sidebar px-4 py-6">{aside}</aside>
+          <aside className="sp-drawer absolute inset-y-0 left-0 w-[280px] overflow-y-auto bg-sidebar px-4 py-6">{aside}</aside>
         </div>
       ) : null}
       <div className="min-w-0">
@@ -341,7 +341,7 @@ export function Shell({ children }: { children: ReactNode }) {
             <Search size={18} className="shrink-0 text-muted" />
             <AgentSearch q={q} setQ={setQ} />
             {hits.length > 0 ? (
-              <ul className="absolute top-12 right-0 left-0 z-30 overflow-hidden rounded-xl bg-paper shadow-card">
+              <ul className="sp-pop absolute top-12 right-0 left-0 z-30 overflow-hidden rounded-xl bg-paper shadow-card">
                 {hits.map((d) => (
                   <li key={d.id}>
                     <button
@@ -368,7 +368,7 @@ export function Shell({ children }: { children: ReactNode }) {
           <div className="ms-auto flex items-center gap-3.5">
             <LangSwitch />
             <BellMenu role={account.role} index={index} />
-            <details className="group relative">
+            <details className="sp-menu-details group relative">
               <summary className="flex cursor-pointer list-none items-center gap-2.5 [&::-webkit-details-marker]:hidden">
                 <CubeFace />
                 <span className="hidden leading-tight sm:block">
@@ -585,7 +585,7 @@ function BellMenu({ role, index }: { role: Role; index: NoticeDoc[] }) {
         {seen ? null : <span className="absolute top-[9px] right-2.5 size-2 rounded-full bg-[#E02424]" />}
       </button>
       {open ? (
-        <div className="absolute top-[52px] right-0 z-50 w-[340px] max-w-[80vw] overflow-hidden rounded-2xl border border-line bg-white shadow-card">
+        <div className="sp-pop absolute top-[52px] right-0 z-50 w-[340px] max-w-[80vw] overflow-hidden rounded-2xl border border-line bg-white shadow-card">
           <p className="border-b border-line px-4 py-3 text-sm font-semibold">{t("Notifications")}</p>
           {rows.length === 0 ? (
             <p className="px-4 py-5 text-sm text-muted">{t("Aucune notification.")}</p>
