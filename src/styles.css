@@ -244,17 +244,6 @@ select.field {
   color: var(--color-gold);
 }
 
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 @keyframes draw {
   from {
     stroke-dashoffset: 240;
@@ -267,15 +256,19 @@ select.field {
 @keyframes drift {
   0%,
   100% {
-    transform: translateY(0);
+    translate: 0 0;
   }
   50% {
-    transform: translateY(-6px);
+    translate: 0 -6px;
   }
 }
 
 .rise {
-  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .drift {
@@ -288,11 +281,18 @@ select.field {
 }
 
 .card {
-  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: translate 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  translate: 0 -2px;
+}
+
+@starting-style {
+  .rise {
+    opacity: 0;
+    translate: 0 18px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1436,16 +1436,15 @@ select.field {
 
 .sp-await {
   opacity: 0;
-  transform: translateY(18px);
+  translate: 0 18px;
 }
 
 .sp-in {
-  animation: sp-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.sp-chip-in,
-.sp-step-col {
-  animation: sp-rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .sp-hero-art,
@@ -1500,11 +1499,11 @@ img.sp-step {
 }
 
 .sp-cta {
-  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: translate 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .sp-cta:hover {
-  transform: translateY(-2px);
+  translate: 0 -2px;
 }
 
 .sp-dash {
@@ -1514,7 +1513,6 @@ img.sp-step {
 .sp-step-dot {
   transform-box: fill-box;
   transform-origin: center;
-  animation: sp-pop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .sp-step-ring {
@@ -1542,13 +1540,13 @@ img.sp-step {
   width: 2px;
   background: linear-gradient(#155dfc, rgba(21, 93, 252, 0.2));
   transform-origin: top;
-  animation: sp-rail 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  scale: 1 1;
+  transition: scale 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .sp-step-badge {
   position: relative;
   z-index: 1;
-  animation: sp-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .sp-art header a:focus-visible,
@@ -1583,23 +1581,23 @@ img.sp-step {
 
 .sp-burger svg {
   display: block;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s ease, rotate 0.2s ease;
 }
 
 .sp-burger .sp-ico-close {
   position: absolute;
   opacity: 0;
-  transform: rotate(-90deg);
+  rotate: -90deg;
 }
 
 .sp-burger[aria-expanded="true"] .sp-ico-open {
   opacity: 0;
-  transform: rotate(90deg);
+  rotate: 90deg;
 }
 
 .sp-burger[aria-expanded="true"] .sp-ico-close {
   opacity: 1;
-  transform: none;
+  rotate: 0deg;
 }
 
 .sp-narrow .sp-burger {
@@ -1634,32 +1632,38 @@ img.sp-step {
   display: none !important;
 }
 
+.sp-narrow .sp-art > :first-child {
+  position: relative;
+}
+
 .sp-menu {
   display: none;
 }
 
 .sp-narrow .sp-menu {
-  display: grid !important;
-  grid-template-rows: 0fr;
-  opacity: 0;
+  position: absolute;
+  z-index: 30;
+  inset-inline: 0;
+  display: block !important;
   overflow: hidden;
-  pointer-events: none;
   background: #f5f7fc;
-  border-bottom: 1px solid transparent;
-  box-shadow: none;
+  border-bottom: 1px solid #dce3f2;
+  box-shadow: 0 22px 40px -30px rgba(14, 26, 61, 0.45);
+  opacity: 0;
+  translate: 0 -8px;
+  visibility: hidden;
+  pointer-events: none;
   transition:
-    grid-template-rows 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.22s ease,
-    box-shadow 0.32s ease,
-    border-color 0.22s ease;
+    opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.28s allow-discrete;
 }
 
 .sp-narrow .sp-menu.is-open {
-  grid-template-rows: 1fr;
   opacity: 1;
+  translate: 0 0;
+  visibility: visible;
   pointer-events: auto;
-  border-bottom-color: #dce3f2;
-  box-shadow: 0 22px 40px -30px rgba(14, 26, 61, 0.45);
 }
 
 .sp-menu-clip {
@@ -1705,10 +1709,10 @@ img.sp-step {
   text-decoration: none;
   white-space: normal !important;
   opacity: 0;
-  transform: translateY(-8px);
+  translate: 0 -8px;
   transition:
-    opacity 0.2s ease,
-    transform 0.2s ease,
+    opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.2s cubic-bezier(0.22, 1, 0.36, 1),
     background-color 0.15s ease,
     border-color 0.15s ease;
 }
@@ -1725,7 +1729,7 @@ img.sp-step {
 
 .sp-narrow .sp-menu.is-open a {
   opacity: 1;
-  transform: none;
+  translate: 0 0;
 }
 
 .sp-narrow .sp-menu a:hover {
@@ -1791,64 +1795,53 @@ img.sp-step {
   display: none !important;
 }
 
-@keyframes sp-rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 @keyframes sp-float {
   0%,
   100% {
-    transform: translateY(0);
+    translate: 0 0;
   }
   50% {
-    transform: translateY(-8px);
+    translate: 0 -8px;
   }
 }
 
 @keyframes sp-hop {
   0%,
   100% {
-    transform: translateY(0);
+    translate: 0 0;
   }
   40% {
-    transform: translateY(-10px);
+    translate: 0 -10px;
   }
 }
 
 @keyframes sp-scan {
   0%,
   100% {
-    transform: rotate(0deg);
+    rotate: 0deg;
   }
   50% {
-    transform: rotate(-4deg);
+    rotate: -4deg;
   }
 }
 
 @keyframes sp-nod {
   0%,
   100% {
-    transform: translateY(0);
+    translate: 0 0;
   }
   50% {
-    transform: translateY(4px);
+    translate: 0 4px;
   }
 }
 
 @keyframes sp-arm {
   0%,
   100% {
-    transform: rotate(0deg);
+    rotate: 0deg;
   }
   50% {
-    transform: rotate(-12deg);
+    rotate: -12deg;
   }
 }
 
@@ -1878,25 +1871,14 @@ img.sp-step {
   }
 }
 
-@keyframes sp-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.72);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 @keyframes sp-ring {
   0% {
     opacity: 0.7;
-    transform: scale(1);
+    scale: 1;
   }
   100% {
     opacity: 0;
-    transform: scale(1.65);
+    scale: 1.65;
   }
 }
 
@@ -1909,21 +1891,42 @@ img.sp-step {
   }
 }
 
-@keyframes sp-rail {
-  from {
-    transform: scaleY(0);
-  }
-  to {
-    transform: scaleY(1);
-  }
+/* Boucles décoratives : seulement opacité, déplacement, rotation, échelle.
+   Elles s'arrêtent quand l'onglet est caché. */
+html.sp-idle .sp-hero-art,
+html.sp-idle .sp-step,
+html.sp-idle .sp-pose-float,
+html.sp-idle .sp-pose-hop,
+html.sp-idle .sp-pose-scan,
+html.sp-idle .sp-pose-nod,
+html.sp-idle .sp-wave,
+html.sp-idle .sp-spark,
+html.sp-idle .sp-pulse,
+html.sp-idle .sp-dash,
+html.sp-idle .sp-step-ring,
+html.sp-idle .sp-traveler,
+html.sp-idle .drift {
+  animation-play-state: paused;
 }
 
-/* Sous-menus (langue, compte, recherche, cloche).
-   L'élément naît à l'ouverture, donc l'animation joue à l'apparition.
-   L'origine en haut à droite suit le bouton qui l'ouvre. */
-.sp-pop {
-  transform-origin: top right;
-  animation: sp-pop-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+/* Apparition par transition, pas par keyframe.
+   @starting-style donne l'état de départ au premier affichage,
+   et la transition peut être coupée si l'élément disparaît. */
+.sp-pop,
+.sp-drop,
+.sp-modal,
+.sp-modal > *,
+.sp-shade,
+.sp-drawer,
+.sp-sheet,
+details.sp-menu-details > :not(summary) {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+  transition:
+    opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .sp-pop button,
@@ -1931,123 +1934,49 @@ img.sp-step {
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* Menu du compte : le panneau reste dans le DOM.
-   Le navigateur le cache tant que <details> est fermé. */
-details.sp-menu-details > :not(summary) {
-  transform-origin: top right;
-  animation: sp-pop-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
+@starting-style {
+  .sp-rail::before {
+    scale: 1 0;
+  }
 
-/* Bandeau qui se déplie sous l'en-tête mobile. */
-.sp-drop {
-  transform-origin: top center;
-  animation: sp-drop-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* Fenêtre : le fond s'assombrit, la carte monte un peu. */
-.sp-modal {
-  animation: sp-fade 0.2s ease both;
-}
-
-.sp-modal > * {
-  animation: sp-modal-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* Tiroir. sp-drawer vient de la gauche, sp-drawer-end de la droite. */
-.sp-shade {
-  animation: sp-fade 0.2s ease both;
-}
-
-.sp-drawer {
-  animation: sp-drawer-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.sp-drawer-end {
-  animation-name: sp-drawer-end;
-}
-
-/* Feuille qui monte depuis le bas de l'écran. */
-.sp-sheet {
-  animation: sp-sheet-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes sp-pop-in {
-  from {
+  .sp-pop,
+  .sp-drop,
+  details.sp-menu-details[open] > :not(summary) {
     opacity: 0;
-    transform: translateY(-8px) scale(0.98);
+    translate: 0 -8px;
+    scale: 0.98;
   }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
 
-@keyframes sp-drop-in {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes sp-fade {
-  from {
+  .sp-modal,
+  .sp-shade {
     opacity: 0;
   }
-  to {
-    opacity: 1;
-  }
-}
 
-@keyframes sp-modal-in {
-  from {
+  .sp-modal > * {
     opacity: 0;
-    transform: translateY(14px) scale(0.98);
+    translate: 0 14px;
+    scale: 0.98;
   }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
 
-@keyframes sp-drawer-in {
-  from {
+  .sp-drawer {
     opacity: 0;
-    transform: translateX(-18px);
+    translate: -18px 0;
   }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
 
-@keyframes sp-drawer-end {
-  from {
-    transform: translateX(24px);
+  .sp-drawer-end {
+    translate: 24px 0;
   }
-  to {
-    transform: none;
-  }
-}
 
-@keyframes sp-sheet-in {
-  from {
+  .sp-sheet {
     opacity: 0;
-    transform: translateY(28px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
+    translate: 0 28px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .sp-await {
     opacity: 1;
-    transform: none;
+    translate: 0 0;
   }
 
   .sp-in,
