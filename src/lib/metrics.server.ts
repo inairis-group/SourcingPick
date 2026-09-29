@@ -10,6 +10,9 @@ type Bag = {
   httpResponses: Counter<string>;
   httpDuration: Histogram<string>;
   appErrors: Counter<string>;
+  sqlDuration: Histogram<string>;
+  sqlSlow: Counter<string>;
+  cacheEvents: Counter<string>;
 };
 
 const slot = globalThis as typeof globalThis & { __spMetrics?: Bag };
@@ -49,6 +52,25 @@ function bag(): Bag {
       labelNames: ["source"],
       registers: [register],
     }),
+    sqlDuration: new Histogram({
+      name: "sourcingpick_sql_duration_seconds",
+      help: "Durée des requêtes SQL",
+      labelNames: ["op"],
+      buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2],
+      registers: [register],
+    }),
+    sqlSlow: new Counter({
+      name: "sourcingpick_sql_slow_total",
+      help: "Requêtes SQL plus lentes que 50 ms",
+      labelNames: ["op"],
+      registers: [register],
+    }),
+    cacheEvents: new Counter({
+      name: "sourcingpick_cache_events_total",
+      help: "Lectures de cache",
+      labelNames: ["result"],
+      registers: [register],
+    }),
   };
   slot.__spMetrics = created;
   return created;
@@ -65,6 +87,9 @@ export const httpRequests = metrics.httpRequests;
 export const httpResponses = metrics.httpResponses;
 export const httpDuration = metrics.httpDuration;
 export const appErrors = metrics.appErrors;
+export const sqlDuration = metrics.sqlDuration;
+export const sqlSlow = metrics.sqlSlow;
+export const cacheEvents = metrics.cacheEvents;
 
 export function routeLabel(pathname: string) {
   if (pathname === "/sante" || pathname === "/metrics") return pathname;

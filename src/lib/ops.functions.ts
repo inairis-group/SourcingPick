@@ -733,6 +733,14 @@ export const opsBoard = createServerFn({ method: "GET" }).handler(async () => {
   return readBoard();
 });
 
+export const opsSql = createServerFn({ method: "GET" }).handler(async () => {
+  await admin();
+  const { recentSlowSql } = await import("@/lib/sql-profile.server");
+  const { redisClient } = await import("@/lib/redis.server");
+  const redis = await redisClient();
+  return { redis: Boolean(redis), slow: recentSlowSql() };
+});
+
 export const opsSettings = createServerFn({ method: "GET" }).handler(async () => {
   await admin();
   return readSettings();

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHead, Shell } from "@/components/shell";
 import { useOps } from "@/components/ops-ui";
-import { opsBoard, opsHealth, opsLogs } from "@/lib/ops.functions";
+import { opsBoard, opsHealth, opsLogs, opsSql } from "@/lib/ops.functions";
 
 export const Route = createFileRoute("/logs")({
   head: () => ({ meta: [{ title: "SourcingPick — Logs" }] }),
@@ -65,13 +65,14 @@ function Page() {
   const { data, error, reload } = useOps(() => opsLogs(), "logs");
   const health = useOps(() => opsHealth(), "health");
   const board = useOps(() => opsBoard(), "board");
+  const sql = useOps(() => opsSql(), "sql");
   const rows = data ?? [];
   const live = health.data;
   const curves = board.data;
   return (
     <Shell>
       <PageHead title="Logs">
-        <button className="btn btn-quiet" type="button" onClick={() => { reload(); health.reload(); board.reload(); }}>Actualiser</button>
+        <button className="btn btn-quiet" type="button" onClick={() => { reload(); health.reload(); board.reload(); sql.reload(); }}>Actualiser</button>
       </PageHead>
       <section className="mb-5 rounded-2xl border border-line bg-white p-4">
         <p className="text-sm font-semibold">{live?.ok ? "Serveur stable" : live ? "Serveur à surveiller" : "Mesure en cours"}</p>
@@ -96,6 +97,23 @@ function Page() {
         <Chart title="Temps de réponse des pages" points={curves?.latency ?? []} unit="s" digits={2} />
         <Chart title="Erreurs serveur par minute" points={curves?.errors ?? []} unit="/ min" digits={2} />
       </div>
+      <section className="mb-8 rounded-2xl border border-line bg-white p-4">
+        <p className="text-sm font-semibold">Requêtes SQL</p>
+        <p className="mt-1 text-sm text-muted">
+          Cache {sql.data?.redis ? "Redis" : "mémoire"}. Une requête est notée ici à partir de 50 ms. Les valeurs ne sont pas enregistrées, seulement le texte de la requête.
+        </p>
+        {sql.error ? <p className="mt-2 text-sm text-[#8a1c1c]">{sql.error}</p> : null}
+        {(sql.data?.slow.length ?? 0) === 0 ? <p className="mt-3 text-sm text-muted">Aucune requête lente depuis le dernier démarrage.</p> : null}
+        <div className="mt-3 grid gap-2">
+          {sql.data?.slow.map((query, index) => (
+            <p key={`${query.at}-${index}`} className="text-xs text-muted">
+              <span className="font-semibold text-ink">{query.ms} ms</span>
+              <span className="mx-2">·</span>
+              <span className="mono">{query.sql}</span>
+            </p>
+          ))}
+        </div>
+      </section>
       <p className="mb-4 max-w-3xl text-sm text-muted">Les erreurs techniques restent ici. Le détail est la réponse brute, pas le message affiché à l’écran.</p>
       {error ? <p className="mb-3 text-sm text-[#8a1c1c]">{error}</p> : null}
       {rows.length === 0 ? <p className="text-sm text-muted">Aucune erreur enregistrée.</p> : null}

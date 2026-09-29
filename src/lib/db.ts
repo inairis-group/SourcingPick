@@ -1,5 +1,6 @@
 import { pendingMigrations } from "../../scripts/migration-plan.mjs";
 import { noteSql } from "@/lib/read-cache";
+import { noteQuery } from "@/lib/sql-profile.server";
 
 /** Which database backend is active. */
 export type DbSource = "neon" | "pglite";
@@ -80,11 +81,21 @@ function toSql(run: Run): Sql {
     let text = strings[0];
     for (let i = 0; i < values.length; i += 1) text += `$${i + 1}${strings[i + 1]}`;
     noteSql(text);
-    return run<T>(text, values);
+    const started = performance.now();
+    try {
+      return await run<T>(text, values);
+    } finally {
+      noteQuery(text, performance.now() - started);
+    }
   }) as unknown as Sql;
-  sql.query = <T = Record<string, unknown>>(text: string, params: unknown[] = []) => {
+  sql.query = async <T = Record<string, unknown>>(text: string, params: unknown[] = []) => {
     noteSql(text);
-    return run<T>(text, params);
+    const started = performance.now();
+    try {
+      return await run<T>(text, params);
+    } finally {
+      noteQuery(text, performance.now() - started);
+    }
   };
   return sql;
 }
