@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { Mark } from "@/components/logo";
 import { Board } from "@/components/board";
 import { LANGS, LangProvider, useLang, type Lang } from "@/site/i18n";
+import lost from "@/site/boards/lost.html?raw";
 
 const NAV = [
   { to: "/services", key: "services" },
@@ -193,7 +194,7 @@ function Frame({ children }: { children: ReactNode }) {
 }
 
 export function SiteNotFound() {
-  return <Board name="lost" />;
+  return <Board name="lost" source={lost} />;
 }
 
 export function PageIntro({ kicker, title, lead }: { kicker?: string; title: string; lead: string }) {

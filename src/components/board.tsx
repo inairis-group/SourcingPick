@@ -506,15 +506,19 @@ function motion(root: HTMLElement) {
   };
 }
 
-export function Board({ name }: { name: string }) {
+export function Board({ name, source = "" }: { name: string; source?: string }) {
   const stage = useRef<HTMLDivElement>(null);
   const board = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { lang } = useLang();
-  const [html, setHtml] = useState("");
+  const [html, setHtml] = useState(source);
   const [note, setNote] = useState<{ text: string; tone: "bad" | "ok" | "wait" } | null>(null);
 
   useEffect(() => {
+    if (source) {
+      setHtml(source);
+      return;
+    }
     let live = true;
     armLoadingBar();
     const load = LOADERS[name] ?? LOADERS.lost;
@@ -528,7 +532,7 @@ export function Board({ name }: { name: string }) {
     return () => {
       live = false;
     };
-  }, [name]);
+  }, [name, source]);
 
   useLayoutEffect(() => {
     if (!html) return;
