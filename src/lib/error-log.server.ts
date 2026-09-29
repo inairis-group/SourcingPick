@@ -59,6 +59,7 @@ if (!slot.__spErrorHook) {
   slot.__spErrorHook = true;
   process.on("unhandledRejection", (reason) => {
     const message = reason instanceof Error ? reason.message : String(reason);
+    if (/aborted|ECONNRESET|EPIPE|socket hang up/i.test(message)) return;
     const detail = reason instanceof Error ? reason.stack || "" : "";
     void recordError("serveur", message, detail);
   });
