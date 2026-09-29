@@ -727,6 +727,12 @@ export const opsHealth = createServerFn({ method: "GET" }).handler(async () => {
   return probeHealth();
 });
 
+export const opsBoard = createServerFn({ method: "GET" }).handler(async () => {
+  await admin();
+  const { readBoard } = await import("@/lib/prom.server");
+  return readBoard();
+});
+
 export const opsSettings = createServerFn({ method: "GET" }).handler(async () => {
   await admin();
   return readSettings();
