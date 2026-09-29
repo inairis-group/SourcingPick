@@ -2007,12 +2007,13 @@ details.sp-menu-details > :not(summary) {
   }
 }
 
-/* Le défilement fait avancer l'animation.
-   Sans animation-timeline, les blocs restent simplement visibles. */
-@supports (animation-timeline: view()) {
+/* scroll-timeline : le document. view-timeline : chaque bloc.
+   Les noms sont limités à leur élément, donc plusieurs sections
+   peuvent réutiliser --sp-steps. */
+@supports (view-timeline-name: --sp) {
   .sp-scroll {
+    view-timeline-axis: block;
     animation: sp-view-in linear both;
-    animation-timeline: view();
     animation-range: entry 0% cover 34%;
   }
 
@@ -2020,18 +2021,28 @@ details.sp-menu-details > :not(summary) {
     animation-name: sp-view-fade;
   }
 
+  .sp-rail {
+    view-timeline: --sp-steps block;
+  }
+
   .sp-rail::before {
     scale: 1 1;
     transition: none;
     animation: sp-rail-view linear both;
-    animation-timeline: view();
+    animation-timeline: --sp-steps;
     animation-range: entry 8% cover 55%;
+  }
+}
+
+@supports (scroll-timeline-name: --sp-page) {
+  :root {
+    scroll-timeline: --sp-page block;
   }
 
   .sp-parallax {
     animation: sp-parallax linear both;
-    animation-timeline: scroll(root);
-    animation-range: 0 50vh;
+    animation-timeline: --sp-page;
+    animation-range: 0% 45%;
   }
 }
 
