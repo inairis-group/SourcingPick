@@ -76,7 +76,7 @@ function Page() {
       </PageHead>
       <section className="mb-5 rounded-2xl border border-line bg-white p-4">
         <p className="text-sm font-semibold">{live?.ok ? "Serveur stable" : live ? "Serveur à surveiller" : "Mesure en cours"}</p>
-        <p className="mt-1 text-sm text-muted">{live?.note || "Les courbes ci-dessous sont celles du serveur. Un email part si la base tombe, si la mémoire dépasse 700 Mo, ou si le site ne répond plus."}</p>
+        <p className="mt-1 text-sm text-muted">{live?.note || "Les courbes ci-dessous sont celles du serveur. Un email part si la base tombe, si la mémoire dépasse 700 Mo, si Redis dépasse 75 %, ou si le site ne répond plus."}</p>
         {live ? (
           <p className="mt-2 text-sm">
             Base {live.db === "ok" ? "joignable" : "injoignable"}
@@ -86,6 +86,12 @@ function Page() {
             En ligne depuis {span(live.uptimeSec)}
             <span className="mx-2 text-muted">·</span>
             Redis {live.redisMs < 0 ? "indisponible" : `${live.redisMs} ms`}
+            {curves?.redisMax ? (
+              <>
+                <span className="mx-2 text-muted">·</span>
+                Cache {((curves.redisUsed ?? 0) / 1048576).toFixed(1)} / {(curves.redisMax / 1048576).toFixed(0)} Mo
+              </>
+            ) : null}
             <span className="mx-2 text-muted">·</span>
             Réseau {live.netMs < 0 ? "coupé" : `${live.netMs} ms`}
             <span className="mx-2 text-muted">·</span>
@@ -99,6 +105,7 @@ function Page() {
       </section>
       <div className="mb-8 grid gap-3 md:grid-cols-2">
         <Chart title="Mémoire" points={curves?.memory ?? []} unit="Mo" />
+        <Chart title="Mémoire Redis" points={curves?.redis ?? []} unit="Mo" digits={2} />
         <Chart title="Requêtes par minute" points={curves?.pages ?? []} unit="/ min" digits={1} />
         <Chart title="Temps de réponse des pages" points={curves?.latency ?? []} unit="s" digits={2} />
         <Chart title="Erreurs serveur par minute" points={curves?.errors ?? []} unit="/ min" digits={2} />

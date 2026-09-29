@@ -30,16 +30,19 @@ async function instant(query: string): Promise<number | null> {
 
 export async function readBoard() {
   try {
-    const [up, db, memory, pages, errors, latency] = await Promise.all([
+    const [up, db, memory, pages, errors, latency, redis, redisUsed, redisMax] = await Promise.all([
       instant("sourcingpick_up"),
       instant("sourcingpick_db_up"),
       range("sourcingpick_memory_mb"),
       range("sum(rate(sourcingpick_http_requests_total[2m])) * 60"),
       range('sum(rate(sourcingpick_http_responses_total{status=~"5.."}[5m])) * 60'),
       range('histogram_quantile(0.95, sum by (le) (rate(sourcingpick_http_duration_seconds_bucket{route="page"}[5m])))'),
+      range("redis_memory_used_bytes / 1048576"),
+      instant("redis_memory_used_bytes"),
+      instant("redis_memory_max_bytes"),
     ]);
-    return { ready: true, up, db, memory, pages, errors, latency };
+    return { ready: true, up, db, memory, pages, errors, latency, redis, redisUsed, redisMax };
   } catch {
-    return { ready: false, up: null, db: null, memory: [], pages: [], errors: [], latency: [] };
+    return { ready: false, up: null, db: null, memory: [], pages: [], errors: [], latency: [], redis: [], redisUsed: null, redisMax: null };
   }
 }

@@ -74,13 +74,29 @@ groups:
           summary: Redis ne répond plus
           description: Le cache Redis est injoignable. Le site continue en mémoire, mais les lectures répétées retournent à la base.
       - alert: RedisMemory
-        expr: redis_memory_used_bytes > 48 * 1024 * 1024
+        expr: redis_memory_max_bytes > 0 and redis_memory_used_bytes / redis_memory_max_bytes > 0.75
         for: 10m
         labels:
           severity: warning
         annotations:
-          summary: Redis approche de sa limite
-          description: Le cache dépasse 48 Mo. Les clés temporaires seront effacées avant la clé de version.
+          summary: La mémoire Redis dépasse 75 %
+          description: Le cache utilise plus des trois quarts de ses 64 Mo. Les clés temporaires seront effacées avant la clé de version.
+      - alert: RedisEvicting
+        expr: increase(redis_evicted_keys_total[15m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Redis efface des clés faute de place
+          description: Plus de 10 clés ont été évincées en 15 minutes. Le cache est trop juste.
+      - alert: RedisRejected
+        expr: increase(redis_rejected_connections_total[5m]) > 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Redis refuse des connexions
+          description: Redis n’accepte plus de nouvelle connexion. Le cache ne sert plus les lectures.
       - alert: RedisSlow
         expr: sourcingpick_redis_ping_ms > 20
         for: 5m
