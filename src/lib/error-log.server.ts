@@ -17,6 +17,7 @@ function table() {
         at_label text not null default '',
         created_at timestamptz not null default now()
       )`;
+      await sql`create index if not exists ops_logs_created_idx on ops_logs (created_at desc)`;
     })().catch((error) => {
       ready = null;
       throw error;

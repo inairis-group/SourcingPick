@@ -118,14 +118,10 @@ async function ensureCommerce() {
       key text primary key,
       value text not null
     )`;
-    await sql`create table if not exists product_events (
-      id text primary key,
-      item_id text not null,
-      at timestamptz not null default now(),
-      author text not null default '',
-      note text not null default '',
-      stage text not null default ''
-    )`;
+    await sql`create index if not exists auction_bids_item_idx on auction_bids (item_id, amount_cents desc)`;
+    await sql`create index if not exists product_events_item_idx on product_events (item_id, at desc)`;
+    await sql`create index if not exists market_items_live_idx on market_items (kind, status, created_at desc)`;
+    await sql`create index if not exists site_events_kind_idx on site_events (kind, at desc)`;
   })().catch((error) => {
     ready = null;
     throw error;

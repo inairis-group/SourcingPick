@@ -1,0 +1,12 @@
+create index if not exists ops_quotes_token_idx on ops_quotes (public_token) where public_token <> '';
+create index if not exists ops_quotes_number_idx on ops_quotes (number);
+create index if not exists ops_quotes_signed_idx on ops_quotes (status, signed_at);
+create index if not exists ops_quotes_client_idx on ops_quotes (client_name);
+create index if not exists ops_invoices_number_idx on ops_invoices (number);
+create index if not exists ops_invoices_kind_idx on ops_invoices (order_ref, kind);
+create index if not exists ops_invoices_client_idx on ops_invoices (client_name);
+create index if not exists ops_suppliers_order_idx on ops_suppliers (order_id);
+create index if not exists ops_outbox_quote_idx on ops_outbox (quote_id);
+create index if not exists ops_outbox_mail_idx on ops_outbox (to_email, sent);
+create index if not exists ops_series_due_idx on ops_series (active, next_on);
+create index if not exists ops_charges_status_idx on ops_charges (status);

@@ -65,11 +65,20 @@ groups:
         annotations:
           summary: Le serveur SourcingPick redémarre en boucle
           description: Le processus a redémarré plus de deux fois en 15 minutes.
-      - alert: SourcingPickAppErrors
-        expr: sum(increase(sourcingpick_app_errors_total[10m])) > 5
-        for: 2m
+      - alert: RedisDown
+        expr: redis_up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Redis ne répond plus
+          description: Le cache Redis est injoignable. Le site continue en mémoire, mais les lectures répétées retournent à la base.
+      - alert: RedisMemory
+        expr: redis_memory_used_bytes > 48 * 1024 * 1024
+        for: 10m
         labels:
           severity: warning
         annotations:
-          summary: SourcingPick enregistre trop d’erreurs
-          description: Plus de 5 erreurs applicatives en 10 minutes. Le détail est dans les logs.
+          summary: Redis approche de sa limite
+          description: Le cache dépasse 48 Mo. Les clés temporaires seront effacées avant la clé de version.
+
