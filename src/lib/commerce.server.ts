@@ -74,6 +74,7 @@ async function ensureCommerce() {
       visitor text not null default ''
     )`;
     await sql`create index if not exists site_hits_at_idx on site_hits (at desc)`;
+    await sql`alter table site_hits add column if not exists public boolean not null default true`;
     await sql`create table if not exists site_events (
       id text primary key,
       at timestamptz not null default now(),
@@ -85,6 +86,7 @@ async function ensureCommerce() {
       seconds integer not null default 0
     )`;
     await sql`create index if not exists site_events_at_idx on site_events (at desc)`;
+    await sql`alter table site_events add column if not exists public boolean not null default true`;
     await sql`create table if not exists market_items (
       id text primary key,
       title text not null,
@@ -122,6 +124,14 @@ async function ensureCommerce() {
     await sql`create index if not exists product_events_item_idx on product_events (item_id, at desc)`;
     await sql`create index if not exists market_items_live_idx on market_items (kind, status, created_at desc)`;
     await sql`create index if not exists site_events_kind_idx on site_events (kind, at desc)`;
+    const marked = await sql<{ value: string }>`select value from commerce_settings where key = 'hits_public'`;
+    if (!marked.length) {
+      await sql`update site_hits set public = false where path ~ ${STAFF_PATH}`;
+      await sql`update site_events set public = false where path ~ ${STAFF_PATH}`;
+      await sql`insert into commerce_settings (key, value) values ('hits_public', '1') on conflict (key) do nothing`;
+    }
+    await sql`create index if not exists site_hits_public_at_idx on site_hits (at desc) where public`;
+    await sql`create index if not exists site_events_public_at_idx on site_events (at desc) where public`;
   })().catch((error) => {
     ready = null;
     throw error;
@@ -134,6 +144,11 @@ function clip(value: string, max: number) {
 }
 
 const STAFF_PATH = "^/(admin|agent|devis|factures|avoirs|clients|commandes|demandes|documents|emails|statistiques|journal|logs|parametres|utilisateurs|sessions|agents|paiements|contrats|stock|gestion|imprimer|connexion|inscription|acces|verification|api)(/|$)";
+const STAFF_RE = new RegExp(STAFF_PATH);
+
+function isPublicPath(path: string) {
+  return !STAFF_RE.test(path || "/");
+}
 
 const countries = new Map<string, string>();
 
@@ -232,18 +247,20 @@ export async function recordHit(input: {
   const id = crypto.randomUUID();
   const referrer = clip(input.referrer, 300);
   const source = clip(input.source, 80) || hostOf(referrer) || "direct";
+  const path = clip(input.path, 180) || "/";
   const sql = await getSql();
-  await sql`insert into site_hits (id, path, referrer, source, medium, campaign, country, device, visitor)
+  await sql`insert into site_hits (id, path, referrer, source, medium, campaign, country, device, visitor, public)
     values (
       ${id},
-      ${clip(input.path, 180) || "/"},
+      ${path},
       ${referrer},
       ${source},
       ${clip(input.medium, 80)},
       ${clip(input.campaign, 80)},
       ${clip(country, 8)},
       ${clip(input.device, 24) || "inconnu"},
-      ${clip(input.visitor, 64)}
+      ${clip(input.visitor, 64)},
+      ${isPublicPath(path)}
     )`;
   if (!country && ip) {
     void countryOf(ip, "").then(async (code) => {
@@ -258,16 +275,18 @@ export async function recordEvent(input: { path: string; visitor: string; kind: 
   await ensureCommerce();
   const kind = input.kind === "scroll" || input.kind === "leave" ? input.kind : "";
   if (!kind) return { ok: false };
+  const path = clip(input.path, 180) || "/";
   const sql = await getSql();
-  await sql`insert into site_events (id, path, visitor, kind, depth, section, seconds)
+  await sql`insert into site_events (id, path, visitor, kind, depth, section, seconds, public)
     values (
       ${crypto.randomUUID()},
-      ${clip(input.path, 180) || "/"},
+      ${path},
       ${clip(input.visitor, 64)},
       ${kind},
       ${Math.max(0, Math.min(100, Math.round(Number(input.depth) || 0)))},
       ${clip(input.section, 120)},
-      ${Math.max(0, Math.min(3600, Math.round(Number(input.seconds) || 0)))}
+      ${Math.max(0, Math.min(3600, Math.round(Number(input.seconds) || 0)))},
+      ${isPublicPath(path)}
     )`;
   return { ok: true };
 }
@@ -283,7 +302,7 @@ async function windowCounts() {
       count(*)::int as d30v,
       count(distinct visitor)::int as d30u
     from site_hits
-    where at > now() - interval '30 days' and path !~ ${STAFF_PATH}`;
+    where at > now() - interval '30 days' and public`;
   const row = rows[0];
   return {
     today: { views: Number(row?.d1v) || 0, visitors: Number(row?.d1u) || 0 },
@@ -297,13 +316,13 @@ export async function readStats(): Promise<SiteStats> {
   const sql = await getSql();
   const [span, pages, sources, countries, devices, recent, reading, sections] = await Promise.all([
     windowCounts(),
-    sql<{ label: string; n: number }>`select path as label, count(*)::int as n from site_hits where at > now() - interval '30 days' and path !~ ${STAFF_PATH} group by path order by n desc limit 12`,
-    sql<{ label: string; n: number }>`select source as label, count(*)::int as n from site_hits where at > now() - interval '30 days' and path !~ ${STAFF_PATH} group by source order by n desc limit 12`,
-    sql<{ label: string; n: number }>`select coalesce(nullif(country, ''), '—') as label, count(*)::int as n from site_hits where at > now() - interval '30 days' and path !~ ${STAFF_PATH} group by 1 order by n desc limit 12`,
-    sql<{ label: string; n: number }>`select device as label, count(*)::int as n from site_hits where at > now() - interval '30 days' and path !~ ${STAFF_PATH} group by device order by n desc limit 6`,
+    sql<{ label: string; n: number }>`select path as label, count(*)::int as n from site_hits where at > now() - interval '30 days' and public group by path order by n desc limit 12`,
+    sql<{ label: string; n: number }>`select source as label, count(*)::int as n from site_hits where at > now() - interval '30 days' and public group by source order by n desc limit 12`,
+    sql<{ label: string; n: number }>`select coalesce(nullif(country, ''), '—') as label, count(*)::int as n from site_hits where at > now() - interval '30 days' and public group by 1 order by n desc limit 12`,
+    sql<{ label: string; n: number }>`select device as label, count(*)::int as n from site_hits where at > now() - interval '30 days' and public group by device order by n desc limit 6`,
     sql<{ at: string; path: string; source: string; country: string; device: string }>`
       select to_char(at, 'DD/MM HH24:MI') as at, path, source, country, device
-      from site_hits where path !~ ${STAFF_PATH} order by site_hits.at desc limit 40`,
+      from site_hits where public order by site_hits.at desc limit 40`,
     sql<{ label: string; views: number; half: number; full: number; seconds: number }>`
       select path as label,
         count(distinct visitor) filter (where kind = 'scroll' or kind = 'leave')::int as views,
@@ -311,14 +330,14 @@ export async function readStats(): Promise<SiteStats> {
         count(distinct visitor) filter (where kind = 'scroll' and depth >= 100)::int as full,
         coalesce(round(avg(seconds) filter (where kind = 'leave' and seconds > 0)), 0)::int as seconds
       from site_events
-      where at > now() - interval '30 days' and path !~ ${STAFF_PATH}
+      where at > now() - interval '30 days' and public
       group by path
       order by views desc
       limit 12`,
     sql<{ label: string; n: number }>`
       select section as label, count(*)::int as n
       from site_events
-      where kind = 'scroll' and section <> '' and at > now() - interval '30 days' and path !~ ${STAFF_PATH}
+      where kind = 'scroll' and section <> '' and at > now() - interval '30 days' and public
       group by section
       order by n desc
       limit 12`,
