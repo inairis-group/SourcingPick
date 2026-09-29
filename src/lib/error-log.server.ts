@@ -1,4 +1,5 @@
 import { getSql } from "@/lib/db";
+import { logger } from "@/lib/log.server";
 
 let ready: Promise<void> | null = null;
 
@@ -24,6 +25,7 @@ function table() {
 }
 
 export async function recordError(source: string, message: string, detail = "") {
+  logger.error(`${source}: ${message}`, { detail });
   try {
     await table();
     const sql = await getSql();

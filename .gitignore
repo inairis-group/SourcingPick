@@ -12,5 +12,6 @@ dist
 mail.env
 .env
 .env.*
+logs/
 
 .DS_Store

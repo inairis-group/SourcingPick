@@ -721,6 +721,12 @@ export const opsLogs = createServerFn({ method: "GET" }).handler(async () => {
   return listErrorLogs();
 });
 
+export const opsHealth = createServerFn({ method: "GET" }).handler(async () => {
+  await admin();
+  const { probeHealth } = await import("@/lib/log.server");
+  return probeHealth();
+});
+
 export const opsSettings = createServerFn({ method: "GET" }).handler(async () => {
   await admin();
   return readSettings();

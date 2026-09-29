@@ -1,3 +1,5 @@
+import { logger, watchHealth } from "../../src/lib/log.server";
+
 type Loud = { message?: string; code?: string; cause?: unknown };
 
 function noisy(value: unknown): boolean {
@@ -15,9 +17,13 @@ export default function quiet() {
   const slot = globalThis as typeof globalThis & { __spQuiet?: boolean };
   if (slot.__spQuiet) return;
   slot.__spQuiet = true;
+  watchHealth();
   const original = console.error.bind(console);
   console.error = (...args: unknown[]) => {
     if (args.length > 0 && args.every((item) => item == null || noisy(item))) return;
     original(...args);
+    logger.error(
+      args.map((item) => (item instanceof Error ? item.stack || item.message : typeof item === "string" ? item : JSON.stringify(item))).join(" "),
+    );
   };
 }
