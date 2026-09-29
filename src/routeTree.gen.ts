@@ -39,6 +39,7 @@ import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as MentionsRouteImport } from './routes/mentions'
 import { Route as PaiementsRouteImport } from './routes/paiements'
 import { Route as ParametresRouteImport } from './routes/parametres'
+import { Route as SanteRouteImport } from './routes/sante'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SessionsRouteImport } from './routes/sessions'
 import { Route as SocieteRouteImport } from './routes/societe'
@@ -239,6 +240,11 @@ const PaiementsRoute = PaiementsRouteImport.update({
 const ParametresRoute = ParametresRouteImport.update({
   id: '/parametres',
   path: '/parametres',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SanteRoute = SanteRouteImport.update({
+  id: '/sante',
+  path: '/sante',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -528,6 +534,7 @@ export interface FileRoutesByFullPath {
   '/mentions': typeof MentionsRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
+  '/sante': typeof SanteRoute
   '/services': typeof ServicesRoute
   '/sessions': typeof SessionsRoute
   '/societe': typeof SocieteRoute
@@ -609,6 +616,7 @@ export interface FileRoutesByTo {
   '/mentions': typeof MentionsRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
+  '/sante': typeof SanteRoute
   '/services': typeof ServicesRoute
   '/sessions': typeof SessionsRoute
   '/societe': typeof SocieteRoute
@@ -691,6 +699,7 @@ export interface FileRoutesById {
   '/mentions': typeof MentionsRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
+  '/sante': typeof SanteRoute
   '/services': typeof ServicesRoute
   '/sessions': typeof SessionsRoute
   '/societe': typeof SocieteRoute
@@ -776,6 +785,7 @@ export interface FileRouteTypes {
     | '/mentions'
     | '/paiements'
     | '/parametres'
+    | '/sante'
     | '/services'
     | '/sessions'
     | '/societe'
@@ -857,6 +867,7 @@ export interface FileRouteTypes {
     | '/mentions'
     | '/paiements'
     | '/parametres'
+    | '/sante'
     | '/services'
     | '/sessions'
     | '/societe'
@@ -938,6 +949,7 @@ export interface FileRouteTypes {
     | '/mentions'
     | '/paiements'
     | '/parametres'
+    | '/sante'
     | '/services'
     | '/sessions'
     | '/societe'
@@ -1022,6 +1034,7 @@ export interface RootRouteChildren {
   MentionsRoute: typeof MentionsRoute
   PaiementsRoute: typeof PaiementsRoute
   ParametresRoute: typeof ParametresRoute
+  SanteRoute: typeof SanteRoute
   ServicesRoute: typeof ServicesRoute
   SessionsRoute: typeof SessionsRoute
   SocieteRoute: typeof SocieteRoute
@@ -1266,6 +1279,13 @@ declare module '@tanstack/react-router' {
       path: '/parametres'
       fullPath: '/parametres'
       preLoaderRoute: typeof ParametresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sante': {
+      id: '/sante'
+      path: '/sante'
+      fullPath: '/sante'
+      preLoaderRoute: typeof SanteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -1736,6 +1756,7 @@ const rootRouteChildren: RootRouteChildren = {
   MentionsRoute: MentionsRoute,
   PaiementsRoute: PaiementsRoute,
   ParametresRoute: ParametresRoute,
+  SanteRoute: SanteRoute,
   ServicesRoute: ServicesRoute,
   SessionsRoute: SessionsRoute,
   SocieteRoute: SocieteRoute,
