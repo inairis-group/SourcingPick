@@ -85,6 +85,12 @@ function Page() {
             <span className="mx-2 text-muted">·</span>
             En ligne depuis {span(live.uptimeSec)}
             <span className="mx-2 text-muted">·</span>
+            Redis {live.redisMs < 0 ? "indisponible" : `${live.redisMs} ms`}
+            <span className="mx-2 text-muted">·</span>
+            Réseau {live.netMs < 0 ? "coupé" : `${live.netMs} ms`}
+            <span className="mx-2 text-muted">·</span>
+            Site {live.siteMs < 0 ? "injoignable" : `${live.siteMs} ms`}
+            <span className="mx-2 text-muted">·</span>
             Vu à {clock(live.checkedAt)}
           </p>
         ) : null}

@@ -2,7 +2,8 @@ import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 import winston from "winston";
 import { getSql } from "@/lib/db";
-import { databaseUp, loopLag, memoryMb, serverUp } from "@/lib/metrics.server";
+import { connect } from "node:net";
+import { databaseUp, loopLag, memoryMb, netRtt, redisPing, serverUp, siteRtt } from "@/lib/metrics.server";
 
 const dir = join(process.cwd(), "logs");
 mkdirSync(dir, { recursive: true });
@@ -37,6 +38,9 @@ export type Health = {
   heapMb: number;
   db: "ok" | "down";
   lagMs: number;
+  redisMs: number;
+  netMs: number;
+  siteMs: number;
   checkedAt: string;
   note: string;
 };
@@ -48,6 +52,9 @@ const empty: Health = {
   heapMb: 0,
   db: "down",
   lagMs: 0,
+  redisMs: 0,
+  netMs: 0,
+  siteMs: 0,
   checkedAt: "",
   note: "pas encore mesuré",
 };
@@ -71,6 +78,47 @@ export async function probeHealth() {
   return probing;
 }
 
+function timeConnect(host: string, port: number) {
+  return new Promise<number>((resolve) => {
+    const started = performance.now();
+    const socket = connect({ host, port, timeout: 2000 });
+    const finish = (ms: number) => {
+      socket.destroy();
+      resolve(ms);
+    };
+    socket.once("connect", () => finish(Math.max(0, Math.round(performance.now() - started))));
+    socket.once("timeout", () => finish(-1));
+    socket.once("error", () => finish(-1));
+  });
+}
+
+async function timeRedis() {
+  try {
+    const { redisClient } = await import("@/lib/redis.server");
+    const client = await redisClient();
+    if (!client) return -1;
+    const started = performance.now();
+    await client.ping();
+    return Math.max(0, Math.round(performance.now() - started));
+  } catch {
+    return -1;
+  }
+}
+
+async function timeSite() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 2000);
+  const started = performance.now();
+  try {
+    await fetch("https://sourcingpick.com/favicon.svg", { signal: controller.signal, redirect: "manual" });
+    return Math.max(0, Math.round(performance.now() - started));
+  } catch {
+    return -1;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function measure() {
   const started = performance.now();
   await new Promise((resolve) => setImmediate(resolve));
@@ -86,6 +134,10 @@ async function measure() {
   const use = process.memoryUsage();
   const memoryMbValue = Math.round(use.rss / 1048576);
   const heapMb = Math.round(use.heapUsed / 1048576);
+  const [redisMs, netMs, siteMs] = await Promise.all([timeRedis(), timeConnect("1.1.1.1", 443), timeSite()]);
+  redisPing.set(redisMs);
+  netRtt.set(netMs);
+  siteRtt.set(siteMs);
   const ok = db === "ok" && lagMs < 800 && memoryMbValue < 700;
   const note = ok ? "stable" : db === "down" ? "base de données injoignable" : memoryMbValue >= 700 ? "mémoire trop haute" : "le serveur répond lentement";
   last = {
@@ -95,6 +147,9 @@ async function measure() {
     heapMb,
     db,
     lagMs,
+    redisMs,
+    netMs,
+    siteMs,
     checkedAt: new Date().toISOString(),
     note,
   };

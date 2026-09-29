@@ -81,4 +81,28 @@ groups:
         annotations:
           summary: Redis approche de sa limite
           description: Le cache dépasse 48 Mo. Les clés temporaires seront effacées avant la clé de version.
+      - alert: RedisSlow
+        expr: sourcingpick_redis_ping_ms > 20
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Redis répond lentement
+          description: L’aller-retour local vers Redis dépasse 20 ms depuis 5 minutes.
+      - alert: NetworkSlow
+        expr: sourcingpick_net_rtt_ms > 200
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: La latence réseau est haute
+          description: La connexion vers l’extérieur dépasse 200 ms depuis 10 minutes.
+      - alert: SiteSlow
+        expr: probe_success{job="blackbox-http"} == 0 or probe_duration_seconds{job="blackbox-http"} > 1.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Le site public répond mal
+          description: La sonde HTTPS échoue, ou met plus de 1,5 s, depuis 5 minutes.
 

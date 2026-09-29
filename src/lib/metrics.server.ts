@@ -13,6 +13,9 @@ type Bag = {
   sqlDuration: Histogram<string>;
   sqlSlow: Counter<string>;
   cacheEvents: Counter<string>;
+  redisPing: Gauge;
+  netRtt: Gauge;
+  siteRtt: Gauge;
 };
 
 const slot = globalThis as typeof globalThis & { __spMetrics?: Bag };
@@ -71,6 +74,9 @@ function bag(): Bag {
       labelNames: ["result"],
       registers: [register],
     }),
+    redisPing: new Gauge({ name: "sourcingpick_redis_ping_ms", help: "Aller-retour vers Redis en millisecondes", registers: [register] }),
+    netRtt: new Gauge({ name: "sourcingpick_net_rtt_ms", help: "Latence réseau vers l’extérieur en millisecondes", registers: [register] }),
+    siteRtt: new Gauge({ name: "sourcingpick_site_rtt_ms", help: "Temps de réponse public du site en millisecondes", registers: [register] }),
   };
   slot.__spMetrics = created;
   return created;
@@ -90,6 +96,9 @@ export const appErrors = metrics.appErrors;
 export const sqlDuration = metrics.sqlDuration;
 export const sqlSlow = metrics.sqlSlow;
 export const cacheEvents = metrics.cacheEvents;
+export const redisPing = metrics.redisPing;
+export const netRtt = metrics.netRtt;
+export const siteRtt = metrics.siteRtt;
 
 export function routeLabel(pathname: string) {
   if (pathname === "/sante" || pathname === "/metrics") return pathname;
