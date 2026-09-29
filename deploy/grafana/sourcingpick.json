@@ -1,0 +1,91 @@
+{
+  "uid": "sourcingpick",
+  "title": "SourcingPick",
+  "timezone": "Europe/Paris",
+  "schemaVersion": 39,
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Serveur",
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "mappings": [{ "type": "value", "options": { "0": { "text": "Dégradé", "color": "red" }, "1": { "text": "Stable", "color": "green" } } }] } },
+      "targets": [{ "expr": "sourcingpick_up", "refId": "A" }]
+    },
+    {
+      "type": "stat",
+      "title": "Base",
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "mappings": [{ "type": "value", "options": { "0": { "text": "Coupée", "color": "red" }, "1": { "text": "Joignable", "color": "green" } } }] } },
+      "targets": [{ "expr": "sourcingpick_db_up", "refId": "A" }]
+    },
+    {
+      "type": "stat",
+      "title": "Mémoire",
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "decmbytes", "decimals": 0 } },
+      "targets": [{ "expr": "sourcingpick_memory_mb", "refId": "A" }]
+    },
+    {
+      "type": "stat",
+      "title": "Délai",
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ms", "decimals": 0 } },
+      "targets": [{ "expr": "sourcingpick_event_loop_lag_ms", "refId": "A" }]
+    },
+    {
+      "type": "stat",
+      "title": "Erreurs 5 min",
+      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "decimals": 0 } },
+      "targets": [{ "expr": "sum(increase(sourcingpick_http_responses_total{status=~\"5..\"}[5m]))", "refId": "A" }]
+    },
+    {
+      "type": "stat",
+      "title": "En ligne depuis",
+      "gridPos": { "h": 4, "w": 4, "x": 20, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "s", "decimals": 0 } },
+      "targets": [{ "expr": "time() - process_start_time_seconds{job=\"sourcingpick\"}", "refId": "A" }]
+    },
+    {
+      "type": "timeseries",
+      "title": "Requêtes par minute",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum by (status) (rate(sourcingpick_http_responses_total[1m])) * 60", "legendFormat": "{{status}}", "refId": "A" }]
+    },
+    {
+      "type": "timeseries",
+      "title": "Temps de réponse",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "s" } },
+      "targets": [
+        { "expr": "histogram_quantile(0.50, sum by (le) (rate(sourcingpick_http_duration_seconds_bucket[5m])))", "legendFormat": "médiane", "refId": "A" },
+        { "expr": "histogram_quantile(0.95, sum by (le) (rate(sourcingpick_http_duration_seconds_bucket[5m])))", "legendFormat": "95 %", "refId": "B" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Mémoire",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "decmbytes" } },
+      "targets": [{ "expr": "sourcingpick_memory_mb", "legendFormat": "mémoire", "refId": "A" }]
+    },
+    {
+      "type": "timeseries",
+      "title": "Erreurs applicatives",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum by (source) (increase(sourcingpick_app_errors_total[10m]))", "legendFormat": "{{source}}", "refId": "A" }]
+    }
+  ]
+}

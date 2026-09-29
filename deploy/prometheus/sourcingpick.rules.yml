@@ -8,6 +8,7 @@ groups:
           severity: critical
         annotations:
           summary: Le serveur SourcingPick ne répond plus
+          description: Prometheus n’arrive plus à lire les métriques depuis une minute.
       - alert: SourcingPickUnhealthy
         expr: sourcingpick_up == 0
         for: 2m
@@ -15,6 +16,7 @@ groups:
           severity: warning
         annotations:
           summary: Le serveur SourcingPick est dégradé
+          description: La base, la mémoire ou le temps de réponse n’est plus dans les limites.
       - alert: SourcingPickDatabase
         expr: sourcingpick_db_up == 0
         for: 1m
@@ -22,6 +24,7 @@ groups:
           severity: critical
         annotations:
           summary: La base SourcingPick ne répond plus
+          description: Le contrôle `select 1` échoue depuis une minute.
       - alert: SourcingPickMemory
         expr: sourcingpick_memory_mb > 700
         for: 5m
@@ -29,3 +32,44 @@ groups:
           severity: warning
         annotations:
           summary: La mémoire de SourcingPick dépasse 700 Mo
+          description: Le processus reste au-dessus de 700 Mo depuis 5 minutes.
+      - alert: SourcingPickHttpErrors
+        expr: sum(rate(sourcingpick_http_responses_total{status=~"5.."}[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: Le site renvoie des erreurs serveur
+          description: Plus d’une réponse 5xx toutes les 20 secondes, pendant 5 minutes.
+      - alert: SourcingPickSlow
+        expr: histogram_quantile(0.95, sum by (le) (rate(sourcingpick_http_duration_seconds_bucket{route="page"}[5m]))) > 2
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Les pages SourcingPick sont lentes
+          description: 95 % des pages mettent plus de 2 secondes à répondre.
+      - alert: SourcingPickLag
+        expr: sourcingpick_event_loop_lag_ms > 500
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Le serveur SourcingPick répond lentement
+          description: La boucle d’événements dépasse 500 ms depuis 5 minutes.
+      - alert: SourcingPickRestartLoop
+        expr: changes(process_start_time_seconds{job="sourcingpick"}[15m]) > 2
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Le serveur SourcingPick redémarre en boucle
+          description: Le processus a redémarré plus de deux fois en 15 minutes.
+      - alert: SourcingPickAppErrors
+        expr: sum(increase(sourcingpick_app_errors_total[10m])) > 5
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: SourcingPick enregistre trop d’erreurs
+          description: Plus de 5 erreurs applicatives en 10 minutes. Le détail est dans les logs.

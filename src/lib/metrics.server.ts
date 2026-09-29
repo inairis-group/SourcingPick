@@ -7,7 +7,9 @@ type Bag = {
   memoryMb: Gauge;
   loopLag: Gauge;
   httpRequests: Counter<string>;
+  httpResponses: Counter<string>;
   httpDuration: Histogram<string>;
+  appErrors: Counter<string>;
 };
 
 const slot = globalThis as typeof globalThis & { __spMetrics?: Bag };
@@ -28,11 +30,23 @@ function bag(): Bag {
       labelNames: ["method", "route"],
       registers: [register],
     }),
+    httpResponses: new Counter({
+      name: "sourcingpick_http_responses_total",
+      help: "Réponses HTTP par statut",
+      labelNames: ["method", "route", "status"],
+      registers: [register],
+    }),
     httpDuration: new Histogram({
       name: "sourcingpick_http_duration_seconds",
       help: "Durée des requêtes HTTP",
       labelNames: ["method", "route"],
       buckets: [0.05, 0.1, 0.3, 0.5, 1, 2, 5],
+      registers: [register],
+    }),
+    appErrors: new Counter({
+      name: "sourcingpick_app_errors_total",
+      help: "Erreurs applicatives enregistrées",
+      labelNames: ["source"],
       registers: [register],
     }),
   };
@@ -48,7 +62,9 @@ export const databaseUp = metrics.databaseUp;
 export const memoryMb = metrics.memoryMb;
 export const loopLag = metrics.loopLag;
 export const httpRequests = metrics.httpRequests;
+export const httpResponses = metrics.httpResponses;
 export const httpDuration = metrics.httpDuration;
+export const appErrors = metrics.appErrors;
 
 export function routeLabel(pathname: string) {
   if (pathname === "/sante" || pathname === "/metrics") return pathname;

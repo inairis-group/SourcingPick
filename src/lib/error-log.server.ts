@@ -1,5 +1,6 @@
 import { getSql } from "@/lib/db";
 import { logger } from "@/lib/log.server";
+import { appErrors } from "@/lib/metrics.server";
 
 let ready: Promise<void> | null = null;
 
@@ -26,6 +27,7 @@ function table() {
 
 export async function recordError(source: string, message: string, detail = "") {
   logger.error(`${source}: ${message}`, { detail });
+  appErrors.inc({ source: source.slice(0, 40) || "serveur" });
   try {
     await table();
     const sql = await getSql();

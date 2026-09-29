@@ -48,6 +48,12 @@ export const Route = createRootRoute({
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
+    scripts: [
+      {
+        children:
+          'try{if(!localStorage.getItem("sp-cache-clean")){localStorage.setItem("sp-cache-clean","1");if("serviceWorker"in navigator)navigator.serviceWorker.getRegistrations().then(function(list){list.forEach(function(item){item.unregister()})});if(window.caches)caches.keys().then(function(keys){keys.forEach(function(key){caches.delete(key)})})}}catch(e){}',
+      },
+    ],
   }),
   notFoundComponent: SiteNotFound,
   component: () => (
