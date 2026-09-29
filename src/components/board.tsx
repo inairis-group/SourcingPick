@@ -279,35 +279,74 @@ function ensureMenu(art: HTMLElement) {
   button.setAttribute("aria-label", "Ouvrir le menu");
   button.setAttribute("aria-expanded", "false");
   button.setAttribute("aria-controls", "sp-mobile-menu");
-  const openIcon =
-    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>';
-  const closeIcon =
-    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>';
-  button.innerHTML = openIcon;
+  button.innerHTML =
+    '<svg class="sp-ico-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg><svg class="sp-ico-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>';
   actions.appendChild(button);
   const panel = document.createElement("div");
   panel.className = "sp-menu";
   panel.id = "sp-mobile-menu";
-  panel.hidden = true;
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-modal", "true");
+  panel.setAttribute("aria-label", "Navigation");
+  panel.setAttribute("aria-hidden", "true");
+  panel.inert = true;
+  const clip = document.createElement("div");
+  clip.className = "sp-menu-clip";
   const nav = header.querySelector("nav");
-  if (nav) panel.appendChild(nav.cloneNode(true));
+  if (nav) clip.appendChild(nav.cloneNode(true));
   const extra = document.createElement("div");
   extra.className = "sp-menu-extra";
   for (const link of actions.querySelectorAll("a")) extra.appendChild(link.cloneNode(true));
-  panel.appendChild(extra);
+  clip.appendChild(extra);
+  panel.appendChild(clip);
   header.after(panel);
+  const here = location.pathname.replace(/\/$/, "") || "/";
+  for (const link of panel.querySelectorAll("a")) {
+    const href = (link.getAttribute("href") || "").replace(/\/$/, "") || "/";
+    if (href === here) link.setAttribute("aria-current", "page");
+  }
+  const items = () => [...panel.querySelectorAll<HTMLAnchorElement>("a")];
   const setOpen = (open: boolean) => {
-    panel.hidden = !open;
+    const was = button.getAttribute("aria-expanded") === "true";
+    if (was === open) return;
+    panel.classList.toggle("is-open", open);
+    panel.inert = !open;
+    panel.setAttribute("aria-hidden", open ? "false" : "true");
     button.setAttribute("aria-expanded", open ? "true" : "false");
     button.setAttribute("aria-label", open ? "Fermer le menu" : "Ouvrir le menu");
-    button.innerHTML = open ? closeIcon : openIcon;
+    if (open) items()[0]?.focus();
+    else if (panel.contains(document.activeElement)) button.focus();
   };
-  button.addEventListener("click", () => setOpen(panel.hidden));
+  button.addEventListener("click", () => setOpen(button.getAttribute("aria-expanded") !== "true"));
+  button.addEventListener("keydown", (event) => {
+    if (button.getAttribute("aria-expanded") !== "true") return;
+    if (event.key === "Escape") setOpen(false);
+    if (event.key === "ArrowDown" || (event.key === "Tab" && !event.shiftKey)) {
+      event.preventDefault();
+      items()[0]?.focus();
+    }
+  });
+  panel.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setOpen(false);
+      button.focus();
+      return;
+    }
+    const list = items();
+    if (!list.length) return;
+    const index = list.indexOf(document.activeElement as HTMLAnchorElement);
+    if (event.key === "ArrowDown" || (event.key === "Tab" && !event.shiftKey && index === list.length - 1)) {
+      event.preventDefault();
+      list[(index + 1) % list.length]?.focus();
+    }
+    if (event.key === "ArrowUp" || (event.key === "Tab" && event.shiftKey && index <= 0)) {
+      event.preventDefault();
+      list[(index - 1 + list.length) % list.length]?.focus();
+    }
+  });
   panel.addEventListener("click", (event) => {
     if ((event.target as HTMLElement).closest("a")) setOpen(false);
-  });
-  art.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") setOpen(false);
   });
 }
 
@@ -343,7 +382,13 @@ function restoreWide(art: HTMLElement) {
   for (const el of art.querySelectorAll<HTMLElement>(".sp-m-abs, .sp-m-hide")) {
     el.classList.remove("sp-m-abs", "sp-m-hide");
   }
-  art.querySelector<HTMLElement>(".sp-menu")?.setAttribute("hidden", "");
+  const menu = art.querySelector<HTMLElement>(".sp-menu");
+  menu?.classList.remove("is-open");
+  if (menu) {
+    menu.inert = true;
+    menu.setAttribute("aria-hidden", "true");
+  }
+  art.querySelector(".sp-burger")?.setAttribute("aria-expanded", "false");
 }
 function openLongBoards(root: HTMLElement, force = false) {
   const art = root.querySelector<HTMLElement>(".sp-art");
