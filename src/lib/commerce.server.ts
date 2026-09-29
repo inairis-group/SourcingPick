@@ -139,14 +139,26 @@ function clip(value: string, max: number) {
 
 const STAFF_PATH = "^/(admin|agent|devis|factures|avoirs|clients|commandes|demandes|documents|emails|statistiques|journal|logs|parametres|utilisateurs|sessions|agents|paiements|contrats|stock|gestion|imprimer|connexion|inscription|acces|verification|api)(/|$)";
 
-async function isStaffVisit() {
+const countries = new Map<string, string>();
+
+async function countryOf(ip: string, header: string) {
+  const given = header.trim().toUpperCase();
+  if (given && given !== "XX" && given !== "T1") return given.slice(0, 8);
+  if (!ip || ip === "local" || ip.startsWith("127.") || ip === "::1") return "";
+  const known = countries.get(ip);
+  if (known !== undefined) return known;
   try {
-    const { readSession } = await import("@/lib/admin-auth.server");
-    const session = await readSession();
-    const role = session.user?.role;
-    return role === "admin" || role === "agent";
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 800);
+    const res = await fetch(`https://ipwho.is/${encodeURIComponent(ip)}?fields=country_code`, { signal: ctrl.signal });
+    clearTimeout(timer);
+    const body = (await res.json()) as { country_code?: string };
+    const code = String(body.country_code || "").slice(0, 8);
+    countries.set(ip, code);
+    return code;
   } catch {
-    return false;
+    countries.set(ip, "");
+    return "";
   }
 }
 
@@ -216,18 +228,18 @@ export async function recordHit(input: {
   visitor: string;
 }) {
   await ensureCommerce();
-  if (await isStaffVisit()) return { ok: true };
   const request = getRequest();
-  const country =
-    request?.headers.get("cf-ipcountry") ||
-    request?.headers.get("x-country-code") ||
-    "";
+  const forwarded = request?.headers.get("x-forwarded-for") ?? "";
+  const ip = forwarded.split(",")[0]?.trim() || request?.headers.get("x-real-ip") || "";
+  const hinted = (request?.headers.get("cf-ipcountry") || request?.headers.get("x-country-code") || "").trim().toUpperCase();
+  const country = hinted && hinted !== "XX" && hinted !== "T1" ? hinted.slice(0, 8) : countries.get(ip) || "";
+  const id = crypto.randomUUID();
   const referrer = clip(input.referrer, 300);
   const source = clip(input.source, 80) || hostOf(referrer) || "direct";
   const sql = await getSql();
   await sql`insert into site_hits (id, path, referrer, source, medium, campaign, country, device, visitor)
     values (
-      ${crypto.randomUUID()},
+      ${id},
       ${clip(input.path, 180) || "/"},
       ${referrer},
       ${source},
@@ -237,12 +249,17 @@ export async function recordHit(input: {
       ${clip(input.device, 24) || "inconnu"},
       ${clip(input.visitor, 64)}
     )`;
+  if (!country && ip) {
+    void countryOf(ip, "").then(async (code) => {
+      if (!code) return;
+      await sql`update site_hits set country = ${code} where id = ${id}`;
+    }).catch(() => undefined);
+  }
   return { ok: true };
 }
 
 export async function recordEvent(input: { path: string; visitor: string; kind: string; depth: number; section: string; seconds: number }) {
   await ensureCommerce();
-  if (await isStaffVisit()) return { ok: true };
   const kind = input.kind === "scroll" || input.kind === "leave" ? input.kind : "";
   if (!kind) return { ok: false };
   const sql = await getSql();
@@ -260,12 +277,11 @@ export async function recordEvent(input: { path: string; visitor: string; kind: 
 }
 
 async function windowCount(days: number) {
-  const span = days <= 1 ? "1 day" : days <= 7 ? "7 days" : "30 days";
   const sql = await getSql();
   const rows = await sql<{ views: number; visitors: number }>`
     select count(*)::int as views, count(distinct visitor)::int as visitors
     from site_hits
-    where at > now() - ${span}::interval and path !~ ${STAFF_PATH}`;
+    where at > now() - make_interval(days => ${days}) and path !~ ${STAFF_PATH}`;
   return { views: Number(rows[0]?.views) || 0, visitors: Number(rows[0]?.visitors) || 0 };
 }
 

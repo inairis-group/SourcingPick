@@ -20,6 +20,15 @@ async function ensure() {
       last_click timestamptz
     )`;
     await sql`create index if not exists mail_messages_at_idx on mail_messages (at desc)`;
+    try {
+      await sql`insert into mail_messages (id, at, to_email, subject, accepted)
+        select id, created_at, to_email, subject, sent
+        from ops_outbox
+        where not exists (select 1 from mail_messages where mail_messages.id = ops_outbox.id)
+        on conflict (id) do nothing`;
+    } catch (error) {
+      console.error("mail-backfill", error);
+    }
   })().catch((error) => {
     ready = null;
     throw error;
@@ -135,7 +144,6 @@ export async function listMailMessages(): Promise<MailLog[]> {
       to_char(first_open, 'DD/MM HH24:MI') as opened,
       to_char(last_click, 'DD/MM HH24:MI') as clicked
     from mail_messages
-    where lower(to_email) not in (select lower(email) from admin_users where role in ('admin', 'agent'))
     order by mail_messages.at desc limit 40`;
   return rows.map((row) => ({
     id: row.id,
@@ -161,8 +169,7 @@ export async function mailSummary() {
       coalesce(sum(opens), 0)::int as opens,
       coalesce(sum(clicks), 0)::int as clicks
     from mail_messages
-    where at > now() - interval '30 days'
-      and lower(to_email) not in (select lower(email) from admin_users where role in ('admin', 'agent'))`;
+    where at > now() - interval '30 days'`;
   const row = rows[0];
   return {
     sent: Number(row?.sent) || 0,
