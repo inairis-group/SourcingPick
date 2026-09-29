@@ -127,7 +127,8 @@ export function Paper({ doc, company: givenCompany, client: givenClient }: { doc
   const company = givenCompany ?? storedCompany;
   const client = givenClient === undefined ? storedClient : givenClient ?? undefined;
   const fx = useFxRate(company.fxLabel);
-  const rated: Document = { ...doc, cnyPerEur: doc.cnyPerEur || fx.cnyPerEur };
+  const liveRate = fx.fetchedAt > 0 ? fx.cnyPerEur : doc.cnyPerEur || fx.cnyPerEur;
+  const rated: Document = { ...doc, cnyPerEur: liveRate, fxAsOf: fx.asOf || doc.fxAsOf, fxFetchedAt: fx.fetchedAt || doc.fxFetchedAt };
   const shown = !doc.conditionsCustom && (isDevis(rated) || isFacture(rated)) && isYuan(rated.currency)
     ? { ...rated, conditions: conditionsFor(rated, company) }
     : rated;

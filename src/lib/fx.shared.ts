@@ -5,6 +5,15 @@ export type FxQuote = {
   fetchedAt: number;
 };
 
+export function rateWhen(fetchedAt: number, en = false) {
+  if (!fetchedAt) return "";
+  return new Date(fetchedAt).toLocaleTimeString(en ? "en-GB" : "fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Paris",
+  });
+}
+
 export function isYuan(currency?: string) {
   const value = String(currency || "")
     .trim()

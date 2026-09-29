@@ -2,8 +2,8 @@ import { parseFxLabel, type FxQuote } from "@/lib/fx.shared";
 import { redisClient } from "@/lib/redis.server";
 
 const KEY = "fx:eur-cny";
-const MEMORY_MS = 30 * 60 * 1000;
-const REDIS_SEC = 6 * 60 * 60;
+const LIVE_MS = 20_000;
+const REDIS_SEC = 24 * 60 * 60;
 
 const slot = globalThis as typeof globalThis & { __spFx?: { rate?: FxQuote; until?: number } };
 
@@ -38,13 +38,13 @@ async function readJson(url: string) {
     headers: { accept: "application/json" },
   });
   if (!response.ok) return null;
-  return (await response.json()) as { date?: string; rates?: { CNY?: number }; eur?: { cny?: number } };
+  return (await response.json()) as { date?: string; rate?: number; rates?: { CNY?: number }; eur?: { cny?: number } };
 }
 
 async function fetchRate(): Promise<FxQuote | null> {
   try {
-    const body = await readJson("https://api.frankfurter.dev/v1/latest?from=EUR&to=CNY");
-    const rate = Number(body?.rates?.CNY);
+    const body = await readJson("https://api.frankfurter.dev/v2/rate/eur/cny");
+    const rate = Number(body?.rate ?? body?.rates?.CNY);
     if (rate > 0) return { cnyPerEur: rate, asOf: body?.date || "", source: "ecb", fetchedAt: Date.now() };
   } catch {
     /* le repli open source prend le relais */
@@ -67,23 +67,18 @@ async function fetchRate(): Promise<FxQuote | null> {
 
 export async function eurCny(fallbackLabel = "7,60"): Promise<FxQuote> {
   const bag = memory();
-  if (bag.rate && (bag.until || 0) > Date.now()) return bag.rate;
-  const cached = await readRedis();
-  if (cached && Date.now() - cached.fetchedAt < REDIS_SEC * 1000) {
-    bag.rate = cached;
-    bag.until = Date.now() + MEMORY_MS;
-    return cached;
-  }
+  if (bag.rate && bag.rate.source !== "label" && (bag.until || 0) > Date.now()) return bag.rate;
   const fresh = await fetchRate();
   if (fresh) {
     bag.rate = fresh;
-    bag.until = Date.now() + MEMORY_MS;
+    bag.until = Date.now() + LIVE_MS;
     await writeRedis(fresh);
     return fresh;
   }
+  const cached = await readRedis();
   if (cached) {
     bag.rate = cached;
-    bag.until = Date.now() + 5 * 60 * 1000;
+    bag.until = Date.now() + LIVE_MS;
     return cached;
   }
   const fallback: FxQuote = {
@@ -93,6 +88,6 @@ export async function eurCny(fallbackLabel = "7,60"): Promise<FxQuote> {
     fetchedAt: Date.now(),
   };
   bag.rate = fallback;
-  bag.until = Date.now() + 5 * 60 * 1000;
+  bag.until = Date.now() + LIVE_MS;
   return fallback;
 }

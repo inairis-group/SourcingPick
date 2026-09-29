@@ -6,7 +6,7 @@ import { Badge, useOps } from "@/components/ops-ui";
 import { opsClients, opsCredit, opsEmails, opsInvoice, opsInvoices, opsMarkPaid, opsQuotes, opsRemind, opsSaveInvoice, opsSaveSeries, opsSendInvoice } from "@/lib/ops.functions";
 import { factureFromOps, openOpsInvoice, syncInvoiceClient } from "@/lib/ops-paper";
 import { chargedAmount, clientLabel, DUE_ON_RECEIPT, dueIsReceipt, lineAmount, pricedLines, type CompanyHit, type OpsClient, type OpsInvoice, type QuoteLine } from "@/lib/ops.shared";
-import { eurCentsFromCny, formatMoney, formatRate, isYuan } from "@/lib/fx.shared";
+import { eurCentsFromCny, formatMoney, formatRate, isYuan, rateWhen } from "@/lib/fx.shared";
 import { useFxRate } from "@/lib/use-fx";
 import { partyFromHit, recoverCompany } from "@/lib/client-party";
 import { AddressField } from "@/components/address-field";
@@ -641,7 +641,7 @@ function EuroDue({ cents, currency }: { cents: number; currency?: string }) {
   return (
     <span className="mt-1 block text-sm font-semibold">
       À verser en euros : {formatMoney(eurCentsFromCny(cents, fx.cnyPerEur), "EUR")}
-      <span className="mt-0.5 block text-xs font-normal text-muted">1 € = {formatRate(fx.cnyPerEur)} CNY{fx.source === "ecb" ? " · taux BCE" : ""}</span>
+      <span className="mt-0.5 block text-xs font-normal text-muted">1 € = {formatRate(fx.cnyPerEur)} CNY · {fx.source === "ecb" ? "BCE" : "indicatif"}{rateWhen(fx.fetchedAt) ? ` · en direct ${rateWhen(fx.fetchedAt)}` : ""}</span>
     </span>
   );
 }

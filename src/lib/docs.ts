@@ -31,8 +31,10 @@ type Base = {
   lang?: string;
   font?: string;
   currency?: string;
-  /** Yuan pour 1 euro, figé au moment de l’affichage. */
+  /** Yuans pour 1 euro, relu en direct. */
   cnyPerEur?: number;
+  fxAsOf?: string;
+  fxFetchedAt?: number;
 };
 
 export type Devis = Base & {
@@ -781,11 +783,17 @@ function fxTotals(
   const rate = doc.cnyPerEur || 0;
   if (!(rate > 0)) return [];
   const rateLabel = formatRate(rate);
+  const clock = doc.fxFetchedAt
+    ? new Date(doc.fxFetchedAt).toLocaleTimeString(copy.en ? "en-GB" : "fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" })
+    : "";
+  const day = /^\d{4}-\d{2}-\d{2}$/.test(doc.fxAsOf || "") ? `${doc.fxAsOf!.slice(8, 10)}/${doc.fxAsOf!.slice(5, 7)}` : "";
+  const live = [day, clock ? (copy.en ? `live ${clock}` : `en direct ${clock}`) : ""].filter(Boolean).join(" · ");
+  const pair = `1 ${copy.en ? "EUR" : "€"} = ${rateLabel} CNY${live ? `, ${live}` : ""}`;
   if (isYuan(doc.currency)) {
     return amounts
       .filter((item) => item.cents > 0)
       .map((item) => ({
-        label: `${item.label} (1 ${copy.en ? "EUR" : "€"} = ${rateLabel} CNY)`,
+        label: `${item.label} (${pair})`,
         value: formatEUR(eurCentsFromCny(item.cents, rate)),
         tone: item.tone ?? "emph",
       }));
@@ -795,7 +803,7 @@ function fxTotals(
   if (!net) return [];
   return [
     {
-      label: copy.en ? `Yuan equivalent (1 EUR = ${rateLabel} CNY)` : `Équivalent en yuans (1 € = ${rateLabel} CNY)`,
+      label: copy.en ? `Yuan equivalent (${pair})` : `Équivalent en yuans (${pair})`,
       value: formatMoney(cnyCentsFromEur(net.cents, rate), "CNY"),
       tone: "muted",
     },

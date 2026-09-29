@@ -7,7 +7,7 @@ import { opsClients, opsCreateQuoteClient, opsEmails, opsInvoices, opsQuote, ops
 import { devisFromOps, openOpsQuote, signRows, syncOpsClient } from "@/lib/ops-paper";
 import { isOldQuoteMail, quoteReceivedBody, refreshQuoteMail } from "@/lib/mail-templates";
 import { clientLabel, lineAmount, percent, pricedLines, quoteMath, type CompanyHit, type OpsClient, type OpsEmail, type OpsInvoice, type OpsQuote, type QuoteLine } from "@/lib/ops.shared";
-import { cnyCentsFromEur, eurCentsFromCny, formatMoney, formatRate, isYuan } from "@/lib/fx.shared";
+import { cnyCentsFromEur, eurCentsFromCny, formatMoney, formatRate, isYuan, rateWhen } from "@/lib/fx.shared";
 import { useFxRate } from "@/lib/use-fx";
 import { matchCompany, partyFromClient, partyFromHit, recoverCompany } from "@/lib/client-party";
 import { RichField } from "@/components/marks";
@@ -460,7 +460,7 @@ function Page() {
                 </label>
                 <Field label="Devise" value={quote.currency} onChange={(currency) => patch({ currency })} />
               </div>
-              <p className="text-xs text-muted">EUR ou CNY. Un devis en yuan affiche la somme à verser en euros, au taux de la Banque centrale européenne.</p>
+              <p className="text-xs text-muted">EUR ou CNY. Le taux BCE est relu en direct : un devis en yuan affiche tout de suite la somme à verser en euros.</p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <Field label="Incoterm" value={quote.incoterm} onChange={(incoterm) => patch({ incoterm })} />
                 <Field label="Port d’arrivée" value={quote.port} onChange={(port) => patch({ port })} />
@@ -574,7 +574,7 @@ function Page() {
                 <Sum label="À verser en euros" value={formatMoney(eurCentsFromCny(math.totalCents, fx.cnyPerEur), "EUR")} strong />
                 {math.depositCents ? <Sum label="Acompte à verser en euros" value={formatMoney(eurCentsFromCny(math.depositCents, fx.cnyPerEur), "EUR")} /> : null}
                 <Sum label="Solde à verser en euros" value={formatMoney(eurCentsFromCny(math.balanceCents, fx.cnyPerEur), "EUR")} />
-                <li className="text-xs text-muted">1 € = {formatRate(fx.cnyPerEur)} CNY{fx.source === "ecb" ? " · taux BCE" : fx.source === "label" ? " · taux de repli" : " · taux indicatif"}.</li>
+                <li className="text-xs text-muted">1 € = {formatRate(fx.cnyPerEur)} CNY · {fx.source === "ecb" ? "BCE" : fx.source === "label" ? "repli" : "indicatif"}{rateWhen(fx.fetchedAt) ? ` · en direct ${rateWhen(fx.fetchedAt)}` : ""}.</li>
               </>
             ) : (
               <Sum label="Équivalent en yuans" value={formatMoney(cnyCentsFromEur(math.totalCents, fx.cnyPerEur), "CNY")} />
