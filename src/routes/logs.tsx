@@ -34,7 +34,7 @@ function Page() {
       </PageHead>
       <section className="mb-5 rounded-2xl border border-line bg-white p-4">
         <p className="text-sm font-semibold">{live?.ok ? "Serveur stable" : live ? "Serveur à surveiller" : "Mesure en cours"}</p>
-        <p className="mt-1 text-sm text-muted">{live?.note || "Winston vérifie la base, la mémoire et le temps de réponse chaque minute."}</p>
+        <p className="mt-1 text-sm text-muted">{live?.note || "Prometheus relève les métriques. Un email part si la base tombe, si la mémoire dépasse 700 Mo, ou si le serveur ne répond plus."}</p>
         {live ? (
           <p className="mt-2 text-sm">
             Base {live.db === "ok" ? "joignable" : "injoignable"}

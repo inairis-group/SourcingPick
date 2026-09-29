@@ -37,6 +37,7 @@ import { Route as JournalRouteImport } from './routes/journal'
 import { Route as LogsRouteImport } from './routes/logs'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as MentionsRouteImport } from './routes/mentions'
+import { Route as MetricsRouteImport } from './routes/metrics'
 import { Route as PaiementsRouteImport } from './routes/paiements'
 import { Route as ParametresRouteImport } from './routes/parametres'
 import { Route as SanteRouteImport } from './routes/sante'
@@ -230,6 +231,11 @@ const MarketplaceRoute = MarketplaceRouteImport.update({
 const MentionsRoute = MentionsRouteImport.update({
   id: '/mentions',
   path: '/mentions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MetricsRoute = MetricsRouteImport.update({
+  id: '/metrics',
+  path: '/metrics',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PaiementsRoute = PaiementsRouteImport.update({
@@ -532,6 +538,7 @@ export interface FileRoutesByFullPath {
   '/logs': typeof LogsRoute
   '/marketplace': typeof MarketplaceRoute
   '/mentions': typeof MentionsRoute
+  '/metrics': typeof MetricsRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/sante': typeof SanteRoute
@@ -614,6 +621,7 @@ export interface FileRoutesByTo {
   '/logs': typeof LogsRoute
   '/marketplace': typeof MarketplaceRoute
   '/mentions': typeof MentionsRoute
+  '/metrics': typeof MetricsRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/sante': typeof SanteRoute
@@ -697,6 +705,7 @@ export interface FileRoutesById {
   '/logs': typeof LogsRoute
   '/marketplace': typeof MarketplaceRoute
   '/mentions': typeof MentionsRoute
+  '/metrics': typeof MetricsRoute
   '/paiements': typeof PaiementsRoute
   '/parametres': typeof ParametresRoute
   '/sante': typeof SanteRoute
@@ -783,6 +792,7 @@ export interface FileRouteTypes {
     | '/logs'
     | '/marketplace'
     | '/mentions'
+    | '/metrics'
     | '/paiements'
     | '/parametres'
     | '/sante'
@@ -865,6 +875,7 @@ export interface FileRouteTypes {
     | '/logs'
     | '/marketplace'
     | '/mentions'
+    | '/metrics'
     | '/paiements'
     | '/parametres'
     | '/sante'
@@ -947,6 +958,7 @@ export interface FileRouteTypes {
     | '/logs'
     | '/marketplace'
     | '/mentions'
+    | '/metrics'
     | '/paiements'
     | '/parametres'
     | '/sante'
@@ -1032,6 +1044,7 @@ export interface RootRouteChildren {
   LogsRoute: typeof LogsRoute
   MarketplaceRoute: typeof MarketplaceRoute
   MentionsRoute: typeof MentionsRoute
+  MetricsRoute: typeof MetricsRoute
   PaiementsRoute: typeof PaiementsRoute
   ParametresRoute: typeof ParametresRoute
   SanteRoute: typeof SanteRoute
@@ -1265,6 +1278,13 @@ declare module '@tanstack/react-router' {
       path: '/mentions'
       fullPath: '/mentions'
       preLoaderRoute: typeof MentionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/metrics': {
+      id: '/metrics'
+      path: '/metrics'
+      fullPath: '/metrics'
+      preLoaderRoute: typeof MetricsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/paiements': {
@@ -1754,6 +1774,7 @@ const rootRouteChildren: RootRouteChildren = {
   LogsRoute: LogsRoute,
   MarketplaceRoute: MarketplaceRoute,
   MentionsRoute: MentionsRoute,
+  MetricsRoute: MetricsRoute,
   PaiementsRoute: PaiementsRoute,
   ParametresRoute: ParametresRoute,
   SanteRoute: SanteRoute,

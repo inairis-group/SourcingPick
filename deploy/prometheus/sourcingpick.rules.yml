@@ -1,0 +1,31 @@
+groups:
+  - name: sourcingpick
+    rules:
+      - alert: SourcingPickDown
+        expr: up{job="sourcingpick"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Le serveur SourcingPick ne répond plus
+      - alert: SourcingPickUnhealthy
+        expr: sourcingpick_up == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Le serveur SourcingPick est dégradé
+      - alert: SourcingPickDatabase
+        expr: sourcingpick_db_up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: La base SourcingPick ne répond plus
+      - alert: SourcingPickMemory
+        expr: sourcingpick_memory_mb > 700
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: La mémoire de SourcingPick dépasse 700 Mo
