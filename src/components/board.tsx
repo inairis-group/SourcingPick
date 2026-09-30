@@ -4,43 +4,11 @@ import { submitLead } from "@/lib/backend.functions";
 import { armLoadingBar, clearLoadingBar } from "@/lib/loading";
 import { useLang } from "@/site/i18n";
 import { LEGAL_BOARDS, translateDom } from "@/site/translate";
-
-const LOADERS: Record<string, () => Promise<{ default: string }>> = {
-  accueil: () => import("@/site/boards/accueil.html?raw"),
-  services: () => import("@/site/boards/services.html?raw"),
-  comment: () => import("@/site/boards/comment.html?raw"),
-  entrepot: () => import("@/site/boards/entrepot.html?raw"),
-  tarifs: () => import("@/site/boards/tarifs.html?raw"),
-  faq: () => import("@/site/boards/faq.html?raw"),
-  devis: () => import("@/site/boards/devis.html?raw"),
-  contact: () => import("@/site/boards/contact.html?raw"),
-  apropos: () => import("@/site/boards/apropos.html?raw"),
-  application: () => import("@/site/boards/application.html?raw"),
-  mentions: () => import("@/site/boards/mentions.html?raw"),
-  confidentialite: () => import("@/site/boards/confidentialite.html?raw"),
-  cookies: () => import("@/site/boards/cookies.html?raw"),
-  cgv: () => import("@/site/boards/cgv.html?raw"),
-  lost: () => import("@/site/boards/lost.html?raw"),
-};
-
-// Boards mobile dédiés (maquettes 390px du design system), servis sous 720px.
-const LOADERS_MOBILE: Record<string, () => Promise<{ default: string }>> = {
-  accueil: () => import("@/site/boards/accueil-mobile.html?raw"),
-  services: () => import("@/site/boards/services-mobile.html?raw"),
-  comment: () => import("@/site/boards/comment-mobile.html?raw"),
-  entrepot: () => import("@/site/boards/entrepot-mobile.html?raw"),
-  tarifs: () => import("@/site/boards/tarifs-mobile.html?raw"),
-  faq: () => import("@/site/boards/faq-mobile.html?raw"),
-  devis: () => import("@/site/boards/devis-mobile.html?raw"),
-  contact: () => import("@/site/boards/contact-mobile.html?raw"),
-  apropos: () => import("@/site/boards/apropos-mobile.html?raw"),
-  application: () => import("@/site/boards/application-mobile.html?raw"),
-  mentions: () => import("@/site/boards/mentions-mobile.html?raw"),
-  confidentialite: () => import("@/site/boards/confidentialite-mobile.html?raw"),
-  cookies: () => import("@/site/boards/cookies-mobile.html?raw"),
-  cgv: () => import("@/site/boards/cgv-mobile.html?raw"),
-  lost: () => import("@/site/boards/lost-mobile.html?raw"),
-};
+import {
+  BOARD_LOADERS,
+  BOARD_LOADERS_MOBILE,
+  type BoardVariant,
+} from "@/site/board-source";
 
 // Largeur de référence des maquettes mobile (canvas figma).
 const MOBILE_BOARD_WIDTH = 390;
@@ -58,6 +26,52 @@ const DEFAULT_NAV: Array<[string, string]> = [
 const DEFAULT_EXTRA: Array<[string, string]> = [
   ["/connexion", "Espace client"],
   ["/demande", "Demander un devis"],
+];
+
+// Plan du site injecté dans le footer des boards mobile : les maquettes 390px
+// n'ont que contact + langues, les liens essentiels doivent rester accessibles.
+const FOOTER_GROUPS: Array<[string, Array<[string, string]>]> = [
+  [
+    "Services",
+    [
+      ["/services", "Réception"],
+      ["/services", "Vérification"],
+      ["/services", "Consolidation"],
+      ["/services", "Renforcement bois"],
+      ["/services", "Chargement"],
+      ["/services", "Expédition maritime"],
+      ["/services", "Sourcing"],
+      ["/marketplace", "Marketplace"],
+      ["/encheres", "Enchères"],
+    ],
+  ],
+  [
+    "Entreprise",
+    [
+      ["/a-propos", "À propos"],
+      ["/entrepot", "Notre entrepôt"],
+      ["/#verite", "Transparence"],
+      ["/contact", "Contact"],
+    ],
+  ],
+  [
+    "Aide",
+    [
+      ["/faq", "FAQ"],
+      ["/application", "Application"],
+      ["/connexion", "Espace client"],
+      ["/demande", "Demander un devis"],
+    ],
+  ],
+  [
+    "Légal",
+    [
+      ["/mentions", "Mentions légales"],
+      ["/confidentialite", "Confidentialité"],
+      ["/cookies", "Cookies"],
+      ["/cgv", "Conditions générales"],
+    ],
+  ],
 ];
 
 function fold(value: string) {
@@ -377,6 +391,9 @@ function ensureMenu(art: HTMLElement) {
     if (was === open) return;
     panel.classList.toggle("is-open", open);
     panel.inert = !open;
+    // Verrouille le scroll de la page tant que le menu est ouvert : le panneau
+    // (positionné en absolu sous le header sticky) ne "suit" plus le scroll.
+    document.documentElement.style.overflow = open ? "hidden" : "";
     panel.setAttribute("aria-hidden", open ? "false" : "true");
     button.setAttribute("aria-expanded", open ? "true" : "false");
     button.setAttribute("aria-label", open ? "Fermer le menu" : "Ouvrir le menu");
@@ -436,8 +453,7 @@ function relaxWide(art: HTMLElement) {
   }
 }
 
-function restoreWide(art: HTMLElement) {
-  if (art.dataset.relaxed !== "1") return;
+function restoreWide(art: HTMLElement) {  if (art.dataset.relaxed !== "1") return;
   delete art.dataset.relaxed;
   const box = art.firstElementChild;
   if (box instanceof HTMLElement) {
@@ -456,6 +472,43 @@ function restoreWide(art: HTMLElement) {
   }
   art.querySelector(".sp-burger")?.setAttribute("aria-expanded", "false");
 }
+
+// Injecte le plan du site dans le footer des maquettes mobile (qui n'ont que
+// contact + langues) : les liens Services/Entreprise/Aide/Légal restent
+// accessibles en mobile, groupés en grille compacte avant la barre de langues.
+function ensureFooterNav(art: HTMLElement) {
+  const footer = art.querySelector("footer");
+  if (!footer || footer.querySelector(".sp-footnav")) return;
+  if (footer.querySelector('a[href^="/"]')) return; // déjà des liens internes
+  const nav = document.createElement("nav");
+  nav.className = "sp-footnav";
+  nav.setAttribute("aria-label", "Plan du site");
+  nav.style.cssText =
+    "display:grid;grid-template-columns:1fr 1fr;gap:22px 16px;padding:22px 0 4px;border-top:1px solid rgba(184,196,230,0.16);order:3;width:100%;";
+  for (const [title, links] of FOOTER_GROUPS) {
+    const col = document.createElement("div");
+    col.style.cssText = "display:flex;flex-direction:column;gap:9px;";
+    const head = document.createElement("span");
+    head.textContent = title;
+    head.style.cssText =
+      "font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#8DB2FF;margin-bottom:2px;";
+    col.appendChild(head);
+    for (const [href, label] of links) {
+      const link = document.createElement("a");
+      link.href = href;
+      link.textContent = label;
+      link.style.cssText = "color:#C3CDEB;font-size:14px;line-height:1.35;text-decoration:none;";
+      col.appendChild(link);
+    }
+    nav.appendChild(col);
+  }
+  // avant la barre de langues (div contenant les a[lang]), sinon avant le ©
+  const langLink = footer.querySelector("a[lang]");
+  const langRow = langLink?.parentElement;
+  if (langRow && langRow.parentElement === footer) footer.insertBefore(nav, langRow);
+  else footer.appendChild(nav);
+}
+
 function openLongBoards(root: HTMLElement, force = false) {
   const art = root.querySelector<HTMLElement>(".sp-art");
   const box = art?.firstElementChild;
@@ -749,12 +802,23 @@ function motion(root: HTMLElement) {
   };
 }
 
-export function Board({ name, source = "" }: { name: string; source?: string }) {
+export function Board({
+  name,
+  source = "",
+  sourceVariant = "desktop",
+}: {
+  name: string;
+  source?: string;
+  sourceVariant?: BoardVariant;
+}) {
   const stage = useRef<HTMLDivElement>(null);
   const board = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { lang } = useLang();
-  const [html, setHtml] = useState(source);
+  const [view, setView] = useState<{ html: string; variant: BoardVariant }>({
+    html: source,
+    variant: sourceVariant,
+  });
   const [note, setNote] = useState<{ text: string; tone: "bad" | "ok" | "wait" } | null>(null);
   const [phone, setPhone] = useState(
     () => typeof window !== "undefined" && window.innerWidth < 1100,
@@ -770,41 +834,34 @@ export function Board({ name, source = "" }: { name: string; source?: string }) 
 
   // Sous 1100px (mobile + tablette), la maquette mobile dédiée remplace le
   // board desktop : le reflow heuristique du canvas 1440px était illisible.
-  const mobileBoard = phone && Boolean(LOADERS_MOBILE[name]);
+  const mobileBoard = phone && Boolean(BOARD_LOADERS_MOBILE[name]);
+  const want: BoardVariant = mobileBoard ? "mobile" : "desktop";
 
+  // La route change : nouvelle source déjà adaptée au contexte (UA / viewport).
   useEffect(() => {
-    if (mobileBoard) {
-      let live = true;
-      armLoadingBar();
-      LOADERS_MOBILE[name]()
-        .then((mod) => {
-          if (live) setHtml(mod.default);
-        })
-        .catch(() => {
-          if (live && source) setHtml(source);
-        });
-      return () => {
-        live = false;
-      };
-    }
-    if (source) {
-      setHtml(source);
-      return;
-    }
+    setView({ html: source, variant: sourceVariant });
+  }, [source, sourceVariant]);
+
+  // Bascule de variante au redimensionnement (desktop <-> mobile).
+  useEffect(() => {
+    if (view.variant === want) return;
     let live = true;
     armLoadingBar();
-    const load = LOADERS[name] ?? LOADERS.lost;
+    const load =
+      (want === "mobile" ? BOARD_LOADERS_MOBILE[name] : BOARD_LOADERS[name]) ?? BOARD_LOADERS.lost;
     load()
       .then((mod) => {
-        if (live) setHtml(mod.default);
+        if (live) setView({ html: mod.default, variant: want });
       })
       .catch(() => {
-        if (live) void LOADERS.lost().then((mod) => setHtml(mod.default));
+        if (live) void BOARD_LOADERS.lost().then((mod) => setView({ html: mod.default, variant: want }));
       });
     return () => {
       live = false;
     };
-  }, [name, source, mobileBoard]);
+  }, [want, name, view.variant]);
+
+  const html = view.html;
 
   useLayoutEffect(() => {
     if (!html) return;
@@ -815,6 +872,7 @@ export function Board({ name, source = "" }: { name: string; source?: string }) 
     const art = boardEl.querySelector<HTMLElement>(".sp-art");
     tagSectionJumps(boardEl);
     linkCommerce(boardEl);
+    if (mobileBoard) ensureFooterNav(boardEl as HTMLElement);
     if (name === "entrepot") mountWarehouseMap(boardEl);
     if (name === "devis") mountCountry(boardEl);
     openLongBoards(boardEl, name === "faq" || name === "cgv");
@@ -873,6 +931,8 @@ export function Board({ name, source = "" }: { name: string; source?: string }) 
     return () => {
       observer.disconnect();
       stopMotion?.();
+      // le menu pouvait verrouiller le scroll : on libère toujours
+      document.documentElement.style.overflow = "";
     };
   }, [html, lang, name, mobileBoard]);
 

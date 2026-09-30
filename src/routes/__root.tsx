@@ -7,10 +7,12 @@ import { Boot } from "@/components/boot";
 import { Track } from "@/components/track";
 import appCss from "../styles.css?url";
 
+const CORE_FONTS =
+  "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;600&display=swap";
+
 function Fonts() {
   const path = useRouterState({ select: (state) => state.location.pathname });
   useEffect(() => {
-    const core = "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;600&display=swap";
     const extra = "https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Libre+Baskerville:wght@400;700&family=Newsreader:opsz,wght@6..72,400;600;700&family=Noto+Sans+SC:wght@500;700&family=Nunito:wght@400;600;700&display=swap";
     const office = /^\/(admin|devis|factures|avoirs|clients|paiements|demandes|espace|commandes|documents|contrats|emails|journal|logs|agents|utilisateurs|parametres|stock|statistiques|gestion|sessions)(\/|$)/.test(path);
     const add = (href: string, mark: string) => {
@@ -21,7 +23,6 @@ function Fonts() {
       link.dataset.spFonts = mark;
       document.head.appendChild(link);
     };
-    add(core, "core");
     if (office) return;
     let idleId = 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -48,6 +49,9 @@ export const Route = createRootRoute({
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      // Polices principales en SSR : le texte est directement dans la bonne
+      // fonte (plus de flash typographique au premier affichage).
+      { rel: "stylesheet", href: CORE_FONTS },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],

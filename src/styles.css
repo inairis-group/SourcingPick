@@ -1698,6 +1698,8 @@ img.sp-step {
   z-index: 30;
   inset-inline: 0;
   display: block !important;
+  max-height: calc(100dvh - 64px);
+  overflow-y: auto;
   overflow: hidden;
   background: #f5f7fc;
   border-bottom: 1px solid #dce3f2;
