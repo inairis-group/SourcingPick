@@ -1045,6 +1045,12 @@ export function Board({
           void send(link);
           return;
         }
+        if (href === "#cookies-choices") {
+          // Rouvre le bandeau de consentement (politique de cookies, art. 3).
+          event.preventDefault();
+          window.dispatchEvent(new Event("sp:consent:open"));
+          return;
+        }
         if (href === "#" || href.startsWith("#")) {
           event.preventDefault();
           const id = href.slice(1);

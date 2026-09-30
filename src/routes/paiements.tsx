@@ -84,8 +84,8 @@ function Page() {
                     <label className="text-sm">Moyen
                       <select className="field mt-1" value={method} onChange={(event) => setMethod(event.target.value)}>
                         <option>Virement</option>
+                        <option>XTransfer</option>
                         <option>Wise</option>
-                        <option>Stripe</option>
                         <option>Carte</option>
                       </select>
                     </label>

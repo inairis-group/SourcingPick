@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { trackEvent, trackVisit } from "@/lib/commerce.functions";
+import { statsAllowed } from "@/components/consent-banner";
 
 const PRIVATE = /^\/(admin|agent|devis|factures|avoirs|clients|commandes|demandes|documents|emails|statistiques|journal|logs|parametres|utilisateurs|sessions|agents|paiements|contrats|stock|gestion|imprimer|connexion|inscription|acces|verification|api)(\/|$)/;
 
@@ -9,6 +10,9 @@ export function Track() {
   useEffect(() => {
     if (typeof navigator !== "undefined" && navigator.webdriver) return;
     if (PRIVATE.test(path)) return;
+    // Mesure d'audience uniquement avec consentement (politique de cookies) :
+    // aucun identifiant n'est déposé ni lu avant l'accord.
+    if (!statsAllowed()) return;
     const key = "sp_vid";
     let visitor = localStorage.getItem(key) || "";
     if (!visitor) {
