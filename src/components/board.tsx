@@ -23,6 +23,43 @@ const LOADERS: Record<string, () => Promise<{ default: string }>> = {
   lost: () => import("@/site/boards/lost.html?raw"),
 };
 
+// Boards mobile dédiés (maquettes 390px du design system), servis sous 720px.
+const LOADERS_MOBILE: Record<string, () => Promise<{ default: string }>> = {
+  accueil: () => import("@/site/boards/accueil-mobile.html?raw"),
+  services: () => import("@/site/boards/services-mobile.html?raw"),
+  comment: () => import("@/site/boards/comment-mobile.html?raw"),
+  entrepot: () => import("@/site/boards/entrepot-mobile.html?raw"),
+  tarifs: () => import("@/site/boards/tarifs-mobile.html?raw"),
+  faq: () => import("@/site/boards/faq-mobile.html?raw"),
+  devis: () => import("@/site/boards/devis-mobile.html?raw"),
+  contact: () => import("@/site/boards/contact-mobile.html?raw"),
+  apropos: () => import("@/site/boards/apropos-mobile.html?raw"),
+  application: () => import("@/site/boards/application-mobile.html?raw"),
+  mentions: () => import("@/site/boards/mentions-mobile.html?raw"),
+  confidentialite: () => import("@/site/boards/confidentialite-mobile.html?raw"),
+  cookies: () => import("@/site/boards/cookies-mobile.html?raw"),
+  cgv: () => import("@/site/boards/cgv-mobile.html?raw"),
+  lost: () => import("@/site/boards/lost-mobile.html?raw"),
+};
+
+// Largeur de référence des maquettes mobile (canvas figma).
+const MOBILE_BOARD_WIDTH = 390;
+
+// Navigation canonique pour les boards mobile (leur header n'a pas de <nav>).
+const DEFAULT_NAV: Array<[string, string]> = [
+  ["/services", "Services"],
+  ["/comment-ca-marche", "Comment ça marche"],
+  ["/entrepot", "Entrepôt"],
+  ["/tarifs", "Tarifs"],
+  ["/marketplace", "Marketplace"],
+  ["/encheres", "Enchères"],
+  ["/faq", "FAQ"],
+];
+const DEFAULT_EXTRA: Array<[string, string]> = [
+  ["/connexion", "Espace client"],
+  ["/demande", "Demander un devis"],
+];
+
 function fold(value: string) {
   return value.toLowerCase().normalize("NFD").replace(/\p{M}/gu, "");
 }
@@ -273,15 +310,25 @@ function ensureMenu(art: HTMLElement) {
   if (!header || header.querySelector(".sp-burger")) return;
   const actions = header.querySelector(":scope > div");
   if (!actions) return;
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "sp-burger";
-  button.setAttribute("aria-label", "Ouvrir le menu");
-  button.setAttribute("aria-expanded", "false");
-  button.setAttribute("aria-controls", "sp-mobile-menu");
-  button.innerHTML =
+  const icons =
     '<svg class="sp-ico-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg><svg class="sp-ico-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>';
-  actions.appendChild(button);
+  // Les maquettes mobile ont déjà un burger décoratif : on l'adopte.
+  let button = actions.querySelector<HTMLButtonElement>('button[aria-label="Ouvrir le menu"]');
+  if (button) {
+    button.className = "sp-burger";
+    button.innerHTML = icons;
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-controls", "sp-mobile-menu");
+  } else {
+    button = document.createElement("button");
+    button.type = "button";
+    button.className = "sp-burger";
+    button.setAttribute("aria-label", "Ouvrir le menu");
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-controls", "sp-mobile-menu");
+    button.innerHTML = icons;
+    actions.appendChild(button);
+  }
   const panel = document.createElement("div");
   panel.className = "sp-menu";
   panel.id = "sp-mobile-menu";
@@ -293,10 +340,29 @@ function ensureMenu(art: HTMLElement) {
   const clip = document.createElement("div");
   clip.className = "sp-menu-clip";
   const nav = header.querySelector("nav");
-  if (nav) clip.appendChild(nav.cloneNode(true));
+  if (nav) {
+    clip.appendChild(nav.cloneNode(true));
+  } else {
+    const built = document.createElement("nav");
+    for (const [href, label] of DEFAULT_NAV) {
+      const link = document.createElement("a");
+      link.href = href;
+      link.textContent = label;
+      built.appendChild(link);
+    }
+    clip.appendChild(built);
+  }
   const extra = document.createElement("div");
   extra.className = "sp-menu-extra";
   for (const link of actions.querySelectorAll("a")) extra.appendChild(link.cloneNode(true));
+  if (!extra.childElementCount) {
+    for (const [href, label] of DEFAULT_EXTRA) {
+      const link = document.createElement("a");
+      link.href = href;
+      link.textContent = label;
+      extra.appendChild(link);
+    }
+  }
   clip.appendChild(extra);
   panel.appendChild(clip);
   header.after(panel);
@@ -690,8 +756,37 @@ export function Board({ name, source = "" }: { name: string; source?: string }) 
   const { lang } = useLang();
   const [html, setHtml] = useState(source);
   const [note, setNote] = useState<{ text: string; tone: "bad" | "ok" | "wait" } | null>(null);
+  const [phone, setPhone] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < 1100,
+  );
 
   useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1099px)");
+    const update = () => setPhone(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  // Sous 1100px (mobile + tablette), la maquette mobile dédiée remplace le
+  // board desktop : le reflow heuristique du canvas 1440px était illisible.
+  const mobileBoard = phone && Boolean(LOADERS_MOBILE[name]);
+
+  useEffect(() => {
+    if (mobileBoard) {
+      let live = true;
+      armLoadingBar();
+      LOADERS_MOBILE[name]()
+        .then((mod) => {
+          if (live) setHtml(mod.default);
+        })
+        .catch(() => {
+          if (live && source) setHtml(source);
+        });
+      return () => {
+        live = false;
+      };
+    }
     if (source) {
       setHtml(source);
       return;
@@ -709,7 +804,7 @@ export function Board({ name, source = "" }: { name: string; source?: string }) 
     return () => {
       live = false;
     };
-  }, [name, source]);
+  }, [name, source, mobileBoard]);
 
   useLayoutEffect(() => {
     if (!html) return;
@@ -726,10 +821,24 @@ export function Board({ name, source = "" }: { name: string; source?: string }) 
     const height = Number(art?.dataset.h || 2000);
     const fit = () => {
       const width = stageEl.clientWidth;
+      if (mobileBoard) {
+        // Maquette mobile 390px servie jusqu'à 1100px : mise à l'échelle
+        // centrée (x1,5 max sur tablette — vectoriel, donc net), menu OK.
+        art?.classList.toggle("sp-narrow", true);
+        art?.classList.toggle("sp-phone", true);
+        if (art) ensureMenu(art);
+        boardEl.style.width = `${MOBILE_BOARD_WIDTH}px`;
+        boardEl.style.transformOrigin = "top left";
+        const scale = Math.min(1.5, width / MOBILE_BOARD_WIDTH);
+        const offset = Math.max(0, (width - MOBILE_BOARD_WIDTH * scale) / 2);
+        boardEl.style.transform = `translateX(${offset}px) scale(${scale})`;
+        stageEl.style.height = `${height * scale}px`;
+        return;
+      }
       const narrow = width < 1100;
-      const phone = width < 720;
+      const phoneWidth = width < 720;
       art?.classList.toggle("sp-narrow", narrow);
-      art?.classList.toggle("sp-phone", phone);
+      art?.classList.toggle("sp-phone", phoneWidth);
       if (narrow && art) {
         ensureMenu(art);
         relaxWide(art);
@@ -765,7 +874,7 @@ export function Board({ name, source = "" }: { name: string; source?: string }) 
       observer.disconnect();
       stopMotion?.();
     };
-  }, [html, lang, name]);
+  }, [html, lang, name, mobileBoard]);
 
   async function send(origin: HTMLElement) {
     const root = origin.closest(".sp-art") ?? board.current;
