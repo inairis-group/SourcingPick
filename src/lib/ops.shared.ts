@@ -240,6 +240,7 @@ export type OpsJournal = {
   actor: string;
   action: string;
   objectRef: string;
+  createdAt: string;
 };
 
 export type OpsQuote = {

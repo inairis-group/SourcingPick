@@ -104,7 +104,7 @@ async function ownedInvoice(id: string) {
 
 export const opsDashboard = createServerFn({ method: "GET" }).handler(async () => {
   await admin();
-  const [orders, settings, invoices, quotes, users] = await Promise.all([listOrders(), readSettings(), listInvoices(), listQuotes(), listUsers()]);
+  const [orders, settings, invoices, quotes, users, journal] = await Promise.all([listOrders(), readSettings(), listInvoices(), listQuotes(), listUsers(), listJournal()]);
   const pipeline = new Map<string, number>();
   for (const order of orders) pipeline.set(order.state, (pipeline.get(order.state) ?? 0) + 1);
   const now = Date.now();
@@ -132,6 +132,23 @@ export const opsDashboard = createServerFn({ method: "GET" }).handler(async () =
     .filter((user) => user.role === "agent" && user.active)
     .map((user) => ({ name: user.name, count: orders.filter((order) => order.agentName === user.name).length }))
     .sort((a, b) => b.count - a.count);
+  // Bandeau « Supervision » : actions du jour par rôle (maquette admin).
+  const today = new Date().toISOString().slice(0, 10);
+  const roleOf = new Map(users.map((user) => [user.name, user.role]));
+  const todayEntries = journal.filter((entry) => (entry.createdAt || "").startsWith(today));
+  const supervision = (["admin", "agent", "client"] as const).map((role) => {
+    const entries = todayEntries.filter((entry) => (roleOf.get(entry.actor) ?? (entry.actor === "Sourcing Pick" ? "admin" : "client")) === role);
+    const byAction = new Map<string, number>();
+    for (const entry of entries) {
+      const key = entry.action.trim().toLowerCase();
+      byAction.set(key, (byAction.get(key) ?? 0) + 1);
+    }
+    const hints = [...byAction.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 2)
+      .map(([action, count]) => `${count} ${action}`);
+    return { role, count: entries.length, hint: hints.join(" · ") };
+  });
   return {
     settings,
     pipeline: STATE_TREE.map((group) => ({ state: group.state, count: pipeline.get(group.state) ?? 0 })),
@@ -142,6 +159,7 @@ export const opsDashboard = createServerFn({ method: "GET" }).handler(async () =
     collectedPrev: collected(monthOf(-1)),
     invoicedMonth: invoiced(monthOf(0)),
     atSea: orders.filter((order) => order.state === "En transit").length,
+    supervision,
     stale: [
       ...quotes.filter((quote) => quote.status === "Devis envoyé" && age(quote.issuedOn) > 7).map((quote) => ({ id: quote.id, kind: "devis" as const, label: `${quote.number} · ${quote.clientName || "Client"} · sans signature depuis plus de 7 jours` })),
       ...invoices.filter((invoice) => {

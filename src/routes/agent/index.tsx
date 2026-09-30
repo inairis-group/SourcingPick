@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { FileText, ListChecks, MessageSquare, Package } from "lucide-react";
 import { Shell } from "@/components/shell";
 import { Hero, Stat } from "@/components/design";
 import { Badge, DataTable, Td, useOps } from "@/components/ops-ui";
@@ -24,30 +25,34 @@ function Page() {
   const orders = data?.orders ?? [];
   const mine = orders.filter((order) => order.agentName === me && !["Terminé", "Annulé"].includes(order.state));
   const toUpdate = mine.filter((order) => OPEN.has(order.state));
+  const toQualify = orders.filter((order) => order.state === "Demande reçue");
+  const toQuote = orders.filter((order) => order.state === "Agent assigné");
   const lastByOrder = new Map<string, { author: string; agentName: string }>();
   for (const message of data?.inbox ?? []) {
     if (message.internalOnly) continue;
     lastByOrder.set(message.orderId, { author: message.author, agentName: message.agentName });
   }
   const unanswered = [...lastByOrder.values()].filter((row) => row.agentName === me && row.author !== me).length;
-  const queue = mine.slice(0, 12);
+  const queue = [...toQualify, ...toQuote, ...mine].filter((order, index, all) => all.indexOf(order) === index).slice(0, 12);
 
   return (
     <Shell>
       <Hero
         kicker={t("Agent")}
         title={t("Mon travail du jour")}
-        text={t("Vous suivez les dossiers qui vous sont attribués. Vous n’écrivez pas au client, sauf si l’administration vous y autorise.")}
+        text={t("File des demandes")}
       >
+        <Link to="/demandes" className="btn btn-primary">{t("File des demandes")}</Link>
         <Link to="/commandes" className="btn btn-quiet">{t("Mes commandes")}</Link>
       </Hero>
       {error ? <p className="mb-4 text-sm text-[#8a1c1c]">{error}</p> : null}
       <section className="mb-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Stat label={t("Dossiers attribués")} value={String(mine.length)} />
-        <Stat label={t("Commandes à mettre à jour")} value={String(toUpdate.length)} />
-        <Stat label={t("Messages sans réponse")} value={String(unanswered)} />
+        <Stat label={t("Demandes à qualifier")} value={String(toQualify.length)} icon={<ListChecks size={16} />} tone="#EEF3FF" ink="#155DFC" />
+        <Stat label={t("Devis à établir")} value={String(toQuote.length)} icon={<FileText size={16} />} tone="#F3EEFF" ink="#7C5CFF" />
+        <Stat label={t("Commandes à mettre à jour")} value={String(toUpdate.length)} icon={<Package size={16} />} tone="#E3F6EC" ink="#0E9F6E" />
+        <Stat label={t("Messages sans réponse")} value={String(unanswered)} icon={<MessageSquare size={16} />} tone="#FFF0F3" ink="#E11D48" />
       </section>
-      <h2 className="display mb-3 text-lg">{t("Dossiers attribués")}</h2>
+      <h2 className="display mb-3 text-lg">{t("File des demandes")}</h2>
       <DataTable head={["Référence", "Produit", "État", "Sous-état", ""]}>
         {queue.map((order) => (
             <tr key={order.id}>
