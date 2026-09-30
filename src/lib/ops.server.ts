@@ -486,6 +486,7 @@ export async function getOrder(id: string) {
         actor: row.actor,
         action: row.action,
         objectRef: row.object_ref,
+        createdAt: "",
       }),
     ),
   };
@@ -1360,8 +1361,8 @@ export function listJournal() {
 async function listJournalNow() {
   await ensureOps();
   const sql = await getSql();
-  const rows = await sql<{ id: string; at_label: string; actor: string; action: string; object_ref: string }>`
-    select id, at_label, actor, action, object_ref from ops_journal order by created_at desc limit 200`;
+  const rows = await sql<{ id: string; at_label: string; actor: string; action: string; object_ref: string; created_at: string }>`
+    select id, at_label, actor, action, object_ref, created_at::text as created_at from ops_journal order by created_at desc limit 200`;
   return rows.map(
     (row): OpsJournal => ({
       id: row.id,
@@ -1369,6 +1370,7 @@ async function listJournalNow() {
       actor: row.actor,
       action: row.action,
       objectRef: row.object_ref,
+      createdAt: row.created_at || "",
     }),
   );
 }

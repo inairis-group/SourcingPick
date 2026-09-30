@@ -64,6 +64,26 @@ function AdminHome() {
         <Stat label="Acomptes non réglés" value={String(data?.unpaidDeposits ?? "—")} icon={<CreditCard size={16} />} tone="#FFF0F3" ink="#E11D48" />
         <Stat label="Conteneurs en mer" value={String(data?.atSea ?? "—")} icon={<Ship size={16} />} tone="#EEF6FF" ink="#3B82F6" />
       </div>
+      <section className="card mb-5">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 className="display text-lg">Supervision — aujourd’hui, tous rôles</h2>
+            <p className="text-sm text-muted">Un coup d’œil sur ce que fait chaque rôle, avant de plonger dans le détail.</p>
+          </div>
+          <Link to="/journal" className="text-sm font-semibold text-brand">Voir le journal complet</Link>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-3">
+          {(data?.supervision ?? []).map((row) => (
+            <article key={row.role} className="rounded-2xl border border-line bg-canvas p-4">
+              <span className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ${row.role === "admin" ? "bg-[#F3EEFF] text-[#7C5CFF]" : row.role === "agent" ? "bg-[#EEF3FF] text-[#155DFC]" : "bg-[#E3F6EC] text-[#0E9F6E]"}`}>
+                {row.role === "admin" ? "Administration" : row.role === "agent" ? "Agent" : "Client"}
+              </span>
+              <p className="display mt-3 text-2xl">{row.count} action{row.count > 1 ? "s" : ""}</p>
+              <p className="mt-1 text-sm text-muted">{row.hint || "aucune action aujourd’hui"}</p>
+            </article>
+          ))}
+        </div>
+      </section>
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_380px]">
         <section className="card">
           <h2 className="display mb-2 text-lg">Pipeline par état</h2>
