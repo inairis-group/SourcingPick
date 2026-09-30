@@ -1,9 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Board } from "@/components/board";
-import { SERVICE_JSON, seoHead } from "@/lib/seo";
-import source from "@/site/boards/services.html?raw";
+import { seoHead } from "@/lib/seo";
+import { boardHtml } from "@/site/board-source";
 
 export const Route = createFileRoute("/services")({
-  head: () => seoHead("/services", { jsonLd: SERVICE_JSON }),
-  component: () => <Board name="services" source={source} />,
+  head: () => seoHead("/services"),
+  loader: () => boardHtml("services"),
+  component: Page,
 });
+
+function Page() {
+  const data = Route.useLoaderData();
+  return <Board name="services" source={data.html} sourceVariant={data.variant} />;
+}

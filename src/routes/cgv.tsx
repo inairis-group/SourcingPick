@@ -1,9 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Board } from "@/components/board";
 import { seoHead } from "@/lib/seo";
-import source from "@/site/boards/cgv.html?raw";
+import { boardHtml } from "@/site/board-source";
 
 export const Route = createFileRoute("/cgv")({
   head: () => seoHead("/cgv"),
-  component: () => <Board name="cgv" source={source} />,
+  loader: () => boardHtml("cgv"),
+  component: Page,
 });
+
+function Page() {
+  const data = Route.useLoaderData();
+  return <Board name="cgv" source={data.html} sourceVariant={data.variant} />;
+}

@@ -1,9 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Board } from "@/components/board";
 import { seoHead } from "@/lib/seo";
-import source from "@/site/boards/mentions.html?raw";
+import { boardHtml } from "@/site/board-source";
 
 export const Route = createFileRoute("/mentions")({
   head: () => seoHead("/mentions"),
-  component: () => <Board name="mentions" source={source} />,
+  loader: () => boardHtml("mentions"),
+  component: Page,
 });
+
+function Page() {
+  const data = Route.useLoaderData();
+  return <Board name="mentions" source={data.html} sourceVariant={data.variant} />;
+}
