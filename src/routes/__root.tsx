@@ -3,6 +3,7 @@ import { createRootRoute, HeadContent, Outlet, Scripts, useRouterState } from "@
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { SiteNotFound } from "@/components/site-layout";
+import { ConsentBanner } from "@/components/consent-banner";
 import { Boot } from "@/components/boot";
 import { Track } from "@/components/track";
 import appCss from "../styles.css?url";
@@ -72,6 +73,7 @@ export const Route = createRootRoute({
         <PreviewHostBridge />
         <Fonts />
         <Track />
+        <ConsentBanner />
         <AuthProvider>
           <Boot>
             <Outlet />

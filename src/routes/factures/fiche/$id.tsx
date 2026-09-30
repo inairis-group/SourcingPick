@@ -534,8 +534,8 @@ function Page() {
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <label className="text-sm">Moyen
                   <select className="field mt-1" value={method} onChange={(event) => setMethod(event.target.value)}>
+                    <option>XTransfer</option>
                     <option>Wise</option>
-                    <option>Stripe</option>
                     <option>Virement</option>
                   </select>
                 </label>

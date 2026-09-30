@@ -55,7 +55,7 @@ function Page() {
               </button>
             </dl>
           ) : payable ? (
-            <p className="text-sm text-muted">Paiement sécurisé par Stripe. Aucune donnée de carte n’est conservée par Sourcing Pick. Le lien de paiement est envoyé avec la facture tant que Stripe n’est pas branché sur ce compte.</p>
+            <p className="text-sm text-muted">Paiement sécurisé par XTransfer. Les numéros de carte et coordonnées bancaires sont saisis chez XTransfer et ne transitent jamais par nos serveurs. Le lien de paiement est envoyé avec la facture tant que XTransfer n’est pas branché sur ce compte.</p>
           ) : (
             <p className="text-sm text-muted">{invoice.status === "Virement annoncé" ? "Le virement est déjà annoncé. L’encaissement n’est pas encore enregistré." : invoice.status === "Payée" ? "Cette facture est déjà soldée." : "Cette pièce n’est pas à régler en ligne."}</p>
           )}
