@@ -29,6 +29,7 @@ function Page() {
   const [role, setRole] = useState("");
   const [company, setCompany] = useState("");
   const [accepted, setAccepted] = useState(false);
+  const [cgvAccepted, setCgvAccepted] = useState(false);
   const [read, setRead] = useState(false);
   const [mode, setMode] = useState<"draw" | "type">("draw");
   const [step, setStep] = useState<"mail" | "code" | "who">("mail");
@@ -194,6 +195,10 @@ function Page() {
                   setNote("Confirmez que vous pouvez engager la société.");
                   return;
                 }
+                if (!cgvAccepted) {
+                  setNote("Acceptez les conditions générales de vente et d’utilisation pour signer.");
+                  return;
+                }
                 if (!read && !signed) {
                   setNote("Le contrat défile encore. La signature s’ouvre à la dernière page.");
                   return;
@@ -205,7 +210,7 @@ function Page() {
                 }
                 setBusy(true);
                 void publicSign({
-                  data: { token, email, code, name, role, company, image },
+                  data: { token, email, code, name, role, company, image, cgv: cgvAccepted },
                 })
                   .then((result) => {
                     setOpened((current) =>
@@ -304,6 +309,16 @@ function Page() {
                   <label className="flex items-start gap-2 text-sm">
                     <input className="mt-1" type="checkbox" checked={accepted} onChange={(event) => setAccepted(event.target.checked)} />
                     Je confirme être habilité à engager la société. Cette signature vaut acceptation du devis, du contrat et des conditions.
+                  </label>
+                  <label className="flex items-start gap-2 text-sm">
+                    <input className="mt-1" type="checkbox" checked={cgvAccepted} onChange={(event) => setCgvAccepted(event.target.checked)} />
+                    <span>
+                      J’accepte les{" "}
+                      <a href="/cgv" target="_blank" rel="noreferrer" className="font-semibold text-[#155dfc] underline">
+                        conditions générales de vente et d’utilisation
+                      </a>{" "}
+                      (version du 30 septembre 2026) et je demande l’exécution immédiate des prestations.
+                    </span>
                   </label>
                 </>
               ) : null}

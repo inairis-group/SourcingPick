@@ -18,6 +18,7 @@ function Page() {
   const [signer, setSigner] = useState("");
   const [role, setRole] = useState("");
   const [ok, setOk] = useState(false);
+  const [cgvOk, setCgvOk] = useState(false);
   const [note, setNote] = useState("");
   const [signed, setSigned] = useState("");
   const [code, setCode] = useState("");
@@ -42,7 +43,13 @@ function Page() {
   return (
     <Shell>
       <PageHead title="Signature électronique" />
-      <p className="mb-4 text-sm text-muted">En signant, vous acceptez le devis {quote.number} et les conditions générales de vente.</p>
+      <p className="mb-4 text-sm text-muted">
+        En signant, vous acceptez le devis {quote.number} et les{" "}
+        <a href="/cgv" target="_blank" rel="noreferrer" className="font-semibold text-brand underline">
+          conditions générales de vente et d’utilisation
+        </a>{" "}
+        (version du 30 septembre 2026).
+      </p>
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <form
           className="card flex flex-col gap-3"
@@ -50,6 +57,10 @@ function Page() {
             event.preventDefault();
             if (!ok) {
               setNote("Confirmez que vous pouvez engager la société.");
+              return;
+            }
+            if (!cgvOk) {
+              setNote("Acceptez les conditions générales de vente et d’utilisation pour signer.");
               return;
             }
             if (!ink.current) {
@@ -61,7 +72,7 @@ function Page() {
               return;
             }
             const image = canvas.current?.toDataURL("image/png") || "";
-            void clientSign({ data: { id: quote.id, signer: role ? `${signer}, ${role}` : signer, image, code } })
+            void clientSign({ data: { id: quote.id, signer: role ? `${signer}, ${role}` : signer, image, code, cgv: cgvOk } })
               .then((result) => setSigned(result.invoiceId || "ok"))
               .catch((err: unknown) => setNote(err instanceof Error ? err.message : "Signature impossible."));
           }}
@@ -117,6 +128,16 @@ function Page() {
           <label className="flex items-center gap-2 text-sm">
             <input type="checkbox" checked={ok} onChange={(event) => setOk(event.target.checked)} />
             Je confirme être habilité à engager la société.
+          </label>
+          <label className="flex items-start gap-2 text-sm">
+            <input className="mt-1" type="checkbox" checked={cgvOk} onChange={(event) => setCgvOk(event.target.checked)} />
+            <span>
+              J’accepte les{" "}
+              <a href="/cgv" target="_blank" rel="noreferrer" className="font-semibold text-brand underline">
+                conditions générales de vente et d’utilisation
+              </a>{" "}
+              (version du 30 septembre 2026) et je demande l’exécution immédiate des prestations.
+            </span>
           </label>
           {data?.otpSign ? (
             <div className="rounded-2xl border border-line bg-canvas p-3">

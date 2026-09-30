@@ -427,7 +427,7 @@ export function devisConditions(d: Devis, company: Company): string {
         "Not covered by SourcingPick: installation and maintenance.",
         priceSentence(d, company.fxLabel, true),
         `Valid for ${d.validityDays} days. Paying the deposit accepts the quote and these terms.`,
-        "This quote is also subject to our terms of sale: https://sourcingpick.com/cgv",
+        cgvLine(true, true),
       ]
     : [
         `Acompte : ${deposit} % du net à payer à la commande. La production est lancée à réception.`,
@@ -438,7 +438,7 @@ export function devisConditions(d: Devis, company: Company): string {
         "Tous les plans des monuments seront refaits avant fabrication, pour tenir compte des derniers retours.",
         priceSentence(d, company.fxLabel, false),
         `Validité ${d.validityDays} jours. Le règlement de l’acompte vaut acceptation du devis et de ses conditions.`,
-        "Notre devis est également soumis à nos conditions générales de ventes : https://sourcingpick.com/cgv",
+        cgvLine(false, true),
       ];
   return lines.join("\n");
 }
@@ -449,10 +449,11 @@ export function factureConditions(f: Facture): string {
       return [
         f.order ? `Invoice issued from quote ${f.order.sourceNumber} dated ${formatDate(f.order.sourceDate)}.` : "Invoice for services and goods.",
         `${priceSentence(f, undefined, true)} Delivery follows the quote, when there is one.`,
+        cgvLine(true, false),
       ].join("\n");
     }
-    if (f.mode === "acompte") return `Deposit invoice. Production starts once payment is received.\n${priceSentence(f, undefined, true)}`;
-    return `Balance invoice, due before shipment, against inspection photos.\n${priceSentence(f, undefined, true)}`;
+    if (f.mode === "acompte") return `Deposit invoice. Production starts once payment is received.\n${priceSentence(f, undefined, true)}\n${cgvLine(true, false)}`;
+    return `Balance invoice, due before shipment, against inspection photos.\n${priceSentence(f, undefined, true)}\n${cgvLine(true, false)}`;
   }
   if (f.mode === "integrale") {
     return [
@@ -461,6 +462,7 @@ export function factureConditions(f: Facture): string {
         : "Facture de prestations et marchandises.",
       `${priceSentence(f, undefined, false)} Livraison selon les conditions du devis, lorsque celui-ci existe.`,
       "La production ou l’expédition suit le calendrier convenu à la commande.",
+      cgvLine(false, false),
     ].join("\n");
   }
   const order = f.order;
@@ -474,6 +476,7 @@ export function factureConditions(f: Facture): string {
       "La production est lancée à réception du règlement.",
       `Solde de ${formatMoney(rest, f.currency)} exigible avant expédition, sur présentation des photos de contrôle.`,
       `${priceSentence(f, undefined, false)} Livraison DAP déchargée comprise.`,
+      cgvLine(false, false),
     ].join("\n");
   }
   return [
@@ -482,6 +485,7 @@ export function factureConditions(f: Facture): string {
       : "Facture de solde.",
     "Exigible avant expédition, sur présentation des photos de contrôle des pièces finies.",
     `${priceSentence(f, undefined, false)} Livraison DAP déchargée comprise.`,
+    cgvLine(false, false),
   ].join("\n");
 }
 
@@ -491,6 +495,7 @@ export function avoirConditions(a: Avoir): string {
       a.sourceNumber ? `Credit note issued against invoice ${a.sourceNumber}.` : "Credit note issued as a correction.",
       "The amount is deducted from the original invoice. It is applied to the balance still due, unless a refund is agreed in writing.",
       priceSentence(a, undefined, true),
+      cgvLine(true, false),
     ].join("\n");
   }
   return [
@@ -499,6 +504,7 @@ export function avoirConditions(a: Avoir): string {
       : "Avoir émis pour rectification.",
     "Le montant vient en déduction de la facture d’origine. Il est imputé sur le solde restant dû, sauf accord écrit d’un remboursement.",
     priceSentence(a, undefined, false),
+    cgvLine(false, false),
   ].join("\n");
 }
 
@@ -506,6 +512,22 @@ export function conditionsFor(doc: Document, company: Company): string {
   const base = isDevis(doc) ? devisConditions(doc, company) : isFacture(doc) ? factureConditions(doc) : avoirConditions(doc);
   const extra = company.conditionsExtra?.trim();
   return extra ? `${base}\n${extra}` : base;
+}
+
+/** Référence CGV obligatoire sur devis, factures et avoirs (opposabilité). */
+export const CGV_URL = "https://sourcingpick.com/cgv";
+export const CGV_VERSION = "30 septembre 2026";
+export const CGV_VERSION_ISO = "2026-09-30";
+
+function cgvLine(en: boolean, complement: boolean): string {
+  if (en) {
+    return complement
+      ? `This quote is also subject to our terms of sale and use (version of September 30, 2026), which complete it: ${CGV_URL}`
+      : `This document is subject to our terms of sale and use (version of September 30, 2026): ${CGV_URL}`;
+  }
+  return complement
+    ? `Le présent devis est également soumis à nos conditions générales de vente et d'utilisation (version du ${CGV_VERSION}), qui le complètent : ${CGV_URL}`
+    : `Le présent document est soumis à nos conditions générales de vente et d'utilisation (version du ${CGV_VERSION}) : ${CGV_URL}`;
 }
 
 export const COMPANY: Company = {

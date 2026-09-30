@@ -213,6 +213,8 @@ export async function signPublicQuote(input: {
     ua,
     lang,
     at: signedAt,
+    cgv: "2026-09-30",
+    cgvAccepted: true,
   });
   await sql`update ops_quotes set status = ${"Devis signé"}, signer_name = ${who}, signed_at = ${signedAt}, signature_image = ${input.image}, sign_meta = ${meta}, otp_hash = ${""}
     where id = ${quote.id}`;
