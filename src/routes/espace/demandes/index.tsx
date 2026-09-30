@@ -27,13 +27,13 @@ function Page() {
       </PageHead>
       {error ? <p className="mb-4 text-sm text-[#8a1c1c]">{error}</p> : null}
       <Filters value={filter} options={["Toutes", "En cours", "Devis reçu", "Clôturées"]} onChange={setFilter} />
-      <DataTable head={["Référence", "Produit", "Agent", "Mise à jour", "État", ""]}>
+      <DataTable head={["Référence", "Produit", "Agent", "Créée le", "État", ""]}>
         {orders.map((order) => (
           <tr key={order.id}>
             <Td className="mono font-semibold">{order.ref}</Td>
             <Td>{order.product}</Td>
             <Td>{order.agentName}</Td>
-            <Td>{frDate(order.updatedAt)}</Td>
+            <Td>{frDate(order.createdAt || order.updatedAt)}</Td>
             <Td>
               <Badge value={order.state} />
             </Td>
