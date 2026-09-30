@@ -1908,7 +1908,8 @@ export async function clientPostMessage(userId: string, orderId: string, body: s
   return { ok: true };
 }
 
-export async function clientSignQuote(userId: string, quoteId: string, signer: string, image = "", code = "") {
+export async function clientSignQuote(userId: string, quoteId: string, signer: string, image = "", code = "", cgv = false) {
+  if (!cgv) throw new Error("Acceptez les conditions générales de vente et d’utilisation pour signer.");
   const portal = await loadClientPortal(userId);
   const quote = portal.quotes.find((item) => item.id === quoteId || item.number === quoteId);
   if (!quote) throw new Error("Devis introuvable.");
@@ -1934,7 +1935,7 @@ export async function clientSignQuote(userId: string, quoteId: string, signer: s
   const ua = (request?.headers.get("user-agent") || "").slice(0, 240);
   const lang = (request?.headers.get("accept-language") || "").slice(0, 80);
   const place = await placeOf(ip);
-  const meta = JSON.stringify({ name: who, email: quote.clientEmail || "", ip, place, ua, lang, at: signedAt });
+  const meta = JSON.stringify({ name: who, email: quote.clientEmail || "", ip, place, ua, lang, at: signedAt, cgv: "2026-09-30", cgvAccepted: true });
   await sql`update ops_quotes set status = ${"Devis signé"}, signer_name = ${who}, signed_at = ${signedAt}, signature_image = ${image}, sign_meta = ${meta} where id = ${quote.id}`;
   const { announceSignedQuote } = await import("@/lib/quote-link.server");
   const pack = await announceSignedQuote(quote.id);

@@ -1096,20 +1096,22 @@ export const clientReply = createServerFn({ method: "POST" })
   });
 
 export const clientSign = createServerFn({ method: "POST" })
-  .inputValidator((input: { id: string; signer: string; image?: string; code?: string }) => {
+  .inputValidator((input: { id: string; signer: string; image?: string; code?: string; cgv?: boolean }) => {
     const id = String(input?.id ?? "").trim();
     const signer = String(input?.signer ?? "").trim().slice(0, 120);
     const image = String(input?.image ?? "");
     const code = String(input?.code ?? "").replace(/\D/g, "").slice(0, 6);
+    const cgv = input?.cgv === true;
     if (!id || signer.length < 2) throw new Error("Indiquez le nom du signataire.");
     if (image && (!image.startsWith("data:image/png;base64,") || image.length > 180000)) {
       throw new Error("La signature n’a pas pu être enregistrée. Signez à nouveau dans le cadre.");
     }
-    return { id, signer, image, code };
+    if (!cgv) throw new Error("Acceptez les conditions générales de vente et d’utilisation pour signer.");
+    return { id, signer, image, code, cgv };
   })
   .handler(async ({ data }) => {
     const user = await asClient();
-    return clientSignQuote(user.id, data.id, data.signer, data.image, data.code);
+    return clientSignQuote(user.id, data.id, data.signer, data.image, data.code, data.cgv);
   });
 
 export const clientRefuse = createServerFn({ method: "POST" })
@@ -1247,7 +1249,7 @@ export const publicUnlock = createServerFn({ method: "POST" })
   });
 
 export const publicSign = createServerFn({ method: "POST" })
-  .inputValidator((input: { token: string; email: string; code: string; name: string; role: string; company: string; image: string }) => {
+  .inputValidator((input: { token: string; email: string; code: string; name: string; role: string; company: string; image: string; cgv: boolean }) => {
     const token = String(input?.token ?? "").trim();
     const email = String(input?.email ?? "").trim().toLowerCase().slice(0, 160);
     const code = String(input?.code ?? "").replace(/\D/g, "").slice(0, 6);
@@ -1255,12 +1257,14 @@ export const publicSign = createServerFn({ method: "POST" })
     const role = String(input?.role ?? "").trim().slice(0, 80);
     const company = String(input?.company ?? "").trim().slice(0, 160);
     const image = String(input?.image ?? "");
+    const cgv = input?.cgv === true;
     if (token.length < 16) throw new Error("Lien invalide.");
     if (!email.includes("@")) throw new Error("Indiquez l’email qui a reçu le devis.");
     if (code.length !== 6) throw new Error("Indiquez le code à 6 chiffres reçu par email.");
     if (name.length < 2) throw new Error("Indiquez le nom du signataire.");
     if (!image.startsWith("data:image/png;base64,") || image.length > 180000) throw new Error("Signez dans le cadre.");
-    return { token, email, code, name, role, company, image };
+    if (!cgv) throw new Error("Acceptez les conditions générales de vente et d’utilisation pour signer.");
+    return { token, email, code, name, role, company, image, cgv };
   })
   .handler(async ({ data }) => {
     assertSameSiteRequest();

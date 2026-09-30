@@ -76,7 +76,7 @@ function proofOf(raw: string) {
 }
 
 export function readSign(raw: string, name = "", at = "") {
-  let meta: { name?: string; role?: string; company?: string; email?: string; ip?: string; place?: string; ua?: string; at?: string } = {};
+  let meta: { name?: string; role?: string; company?: string; email?: string; ip?: string; place?: string; ua?: string; at?: string; cgv?: string; cgvAccepted?: boolean } = {};
   try {
     meta = raw ? (JSON.parse(raw) as typeof meta) : {};
   } catch {
@@ -101,6 +101,7 @@ export function readSign(raw: string, name = "", at = "") {
     place: meta.place || "",
     browser: [browser, os].filter(Boolean).join(" · "),
     ua,
+    cgv: meta.cgvAccepted ? meta.cgv || "acceptées" : "",
   };
 }
 
@@ -113,6 +114,7 @@ export function signRows(quote: { signMeta: string; signerName: string; signedAt
     { label: en ? "Role" : "Fonction", value: facts.role },
     { label: en ? "Company" : "Société", value: facts.company },
     { label: "Email", value: facts.email },
+    { label: en ? "Terms accepted" : "CGV acceptées", value: facts.cgv ? (en ? `version of ${facts.cgv}` : `version du ${facts.cgv === "2026-09-30" ? "30 septembre 2026" : facts.cgv}`) : "" },
     { label: en ? "IP address" : "Adresse IP", value: facts.ip },
     { label: en ? "Connection" : "Lieu de connexion", value: facts.place },
     { label: en ? "Browser" : "Navigateur", value: facts.browser },
