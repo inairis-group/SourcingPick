@@ -208,6 +208,7 @@ export type OpsOrder = {
   note: string;
   internalNote: string;
   updatedAt: string;
+  createdAt: string;
   clientEmail: string;
   clientPhone: string;
   clientTalk: boolean;

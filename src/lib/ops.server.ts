@@ -129,6 +129,7 @@ type OrderRow = {
   internal_note: string;
   client_talk: boolean;
   updated_at: string;
+  created_at?: string;
 };
 
 function mapOrder(row: OrderRow): OpsOrder {
@@ -144,6 +145,7 @@ function mapOrder(row: OrderRow): OpsOrder {
     note: row.note,
     internalNote: row.internal_note || "",
     updatedAt: String(row.updated_at),
+    createdAt: row.created_at ? String(row.created_at) : String(row.updated_at),
     clientEmail: "",
     clientPhone: "",
     clientTalk: Boolean(row.client_talk),
@@ -428,7 +430,7 @@ function withContacts(
 async function listOrdersNow() {
   await ensureOps();
   const sql = await getSql();
-  const rows = await sql<OrderRow>`select id, ref, client_name, product, agent_name, state, substate, internal_only, note, internal_note, client_talk, updated_at::text as updated_at
+  const rows = await sql<OrderRow>`select id, ref, client_name, product, agent_name, state, substate, internal_only, note, internal_note, client_talk, updated_at::text as updated_at, created_at::text as created_at
     from ops_orders order by ref desc`;
   return withContacts(rows.map(mapOrder), await clientDirectory(sql));
 }
@@ -436,7 +438,7 @@ async function listOrdersNow() {
 export async function getOrder(id: string) {
   await ensureOps();
   const sql = await getSql();
-  const rows = await sql<OrderRow>`select id, ref, client_name, product, agent_name, state, substate, internal_only, note, internal_note, client_talk, updated_at::text as updated_at
+  const rows = await sql<OrderRow>`select id, ref, client_name, product, agent_name, state, substate, internal_only, note, internal_note, client_talk, updated_at::text as updated_at, created_at::text as created_at
     from ops_orders where id = ${id} or ref = ${id}`;
   const order = rows[0] ? withContacts([mapOrder(rows[0])], await clientDirectory(sql))[0] : null;
   if (!order) return null;

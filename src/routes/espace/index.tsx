@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Camera, FileText, ListChecks, PenLine, Ship, Wallet } from "lucide-react";
 import { Shell } from "@/components/shell";
 import { Hero, Stat } from "@/components/design";
 import { FirstSteps } from "@/components/tour";
@@ -37,37 +37,49 @@ function Page() {
       </Hero>
         {error ? <p className="mb-4 text-sm text-[#8a1c1c]">{error}</p> : null}
         <section className="mb-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <Stat label="Demandes en cours" value={String(open.length)} />
-          <Stat label="Devis à signer" value={String(toSign.length)} />
-          <Stat label="Commandes en transit" value={String(transit.length)} />
-          <Stat label="Documents ajoutés cette semaine" value={String((data?.documents ?? []).length)} />
+          <Stat label="Demandes en cours" value={String(open.length)} icon={<ListChecks size={16} />} tone="#EEF3FF" ink="#155DFC" />
+          <Stat label="Devis à signer" value={String(toSign.length)} icon={<FileText size={16} />} tone="#F3EEFF" ink="#7C5CFF" />
+          <Stat label="Commandes en transit" value={String(transit.length)} icon={<Ship size={16} />} tone="#FFF6E8" ink="#B45309" />
+          <Stat label="Documents ajoutés cette semaine" value={String((data?.documents ?? []).length)} icon={<Camera size={16} />} tone="#E3F6EC" ink="#0E9F6E" />
         </section>
+        <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+          <div>
         <section className="card mb-5 flex flex-col gap-3" data-tour="devis">
           <h2 className="display text-lg">Ce qu’on attend de vous</h2>
           {toSign.length + toPay.length === 0 ? <p className="text-sm text-muted">Rien en attente.</p> : null}
           {toSign.map((quote) => (
             <article key={quote.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line px-4 py-3">
-              <div>
-                <p className="text-sm font-semibold">Signer le devis {quote.number}</p>
-                <p className="text-sm text-muted">
-                  {quote.orderRef} · {euros(quote.amountCents)}
-                </p>
+              <div className="flex items-center gap-3">
+                <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl bg-[#FFF3D6] text-[#B45309]">
+                  <PenLine size={17} />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold">Signer le devis {quote.number}</p>
+                  <p className="text-sm text-muted">
+                    {quote.orderRef} · {euros(quote.amountCents)}
+                  </p>
+                </div>
               </div>
-              <Link className="btn btn-quiet" to="/espace/signer/$id" params={{ id: quote.id }}>
-                Ouvrir
+              <Link className="btn btn-primary" to="/espace/signer/$id" params={{ id: quote.id }}>
+                Ouvrir <ArrowRight size={15} />
               </Link>
             </article>
           ))}
           {toPay.map((invoice) => (
             <article key={invoice.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line px-4 py-3">
-              <div>
-                <p className="text-sm font-semibold">Payer {invoice.number}</p>
-                <p className="text-sm text-muted">
-                  {invoice.orderRef} · échéance {duePhrase(invoice.dueOn)} · {euros(invoice.amountCents)}
-                </p>
+              <div className="flex items-center gap-3">
+                <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl bg-[#FFF3D6] text-[#B45309]">
+                  <Wallet size={17} />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold">Payer {invoice.number}</p>
+                  <p className="text-sm text-muted">
+                    {invoice.orderRef} · échéance {duePhrase(invoice.dueOn)} · {euros(invoice.amountCents)}
+                  </p>
+                </div>
               </div>
-              <Link className="btn btn-quiet" to="/espace/payer/$id" params={{ id: invoice.id }}>
-                Ouvrir
+              <Link className="btn btn-primary" to="/espace/payer/$id" params={{ id: invoice.id }}>
+                Ouvrir <ArrowRight size={15} />
               </Link>
             </article>
           ))}
@@ -107,22 +119,24 @@ function Page() {
             })}
           </DataTable>
         </section>
-        <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <section className="card" data-tour="messages">
-            <h2 className="display mb-3 text-lg">Dernières activités</h2>
-            <ul className="flex flex-col gap-3">
-              {(data?.journal ?? []).slice(0, 5).map((entry) => (
-                <li key={entry.id} className="text-sm">
-                  <p className="font-semibold">{entry.action}</p>
-                  <p className="text-muted">
-                    {entry.objectRef} · {entry.atLabel}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </section>
-          <div data-tour="premiers-pas">
-            <FirstSteps />
+          </div>
+          <div className="flex flex-col gap-4">
+            <div data-tour="premiers-pas">
+              <FirstSteps />
+            </div>
+            <section className="card" data-tour="messages">
+              <h2 className="display mb-3 text-lg">Dernières activités</h2>
+              <ul className="flex flex-col gap-3">
+                {(data?.journal ?? []).slice(0, 5).map((entry) => (
+                  <li key={entry.id} className="text-sm">
+                    <p className="font-semibold">{entry.action}</p>
+                    <p className="text-muted">
+                      {entry.objectRef} · {entry.atLabel}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </section>
           </div>
         </div>
       </div>
