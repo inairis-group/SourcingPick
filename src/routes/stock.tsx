@@ -285,7 +285,12 @@ function StockFrame() {
           </section>
         ) : null}
 
-        <iframe title="SourcingPick Stock" src="/stock/" className="min-h-0 w-full flex-1 border-0 bg-white" />
+        <iframe
+          title="SourcingPick Stock"
+          src="/stock/"
+          className="min-h-0 w-full flex-1 border-0 bg-white"
+          allow="camera"
+        />
       </div>
     </Shell>
   );
