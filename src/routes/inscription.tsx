@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
-import { AuthFrame } from "@/components/auth-frame";
+import { ArrowRight, CheckCircle2, Lock, Mail, Phone } from "lucide-react";
+import { AuthFrame, AuthLangPills } from "@/components/auth-frame";
+import { LangProvider } from "@/site/i18n";
 import { registerClient } from "@/lib/admin-auth.functions";
 
 import { seoHead } from "@/lib/seo";
@@ -43,8 +44,13 @@ function Page() {
   }
 
   return (
+    <LangProvider>
     <AuthFrame>
-      <img src="/illustrations/logo.svg" alt="Sourcing Pick" className="h-8 w-auto self-start" />
+      <div className="flex items-center justify-between gap-3">
+        <img src="/illustrations/logo.svg" alt="Sourcing Pick" className="h-8 w-auto self-start" />
+        <AuthLangPills />
+      </div>
+      <img src="/illustrations/mascotte-bras.svg" alt="" className="mx-auto w-40 max-w-full" />
       <div>
         <h1 className="display text-3xl">Créer votre compte</h1>
         <p className="mt-2 text-[15px] text-muted">Deux minutes, et vous pouvez envoyer votre première demande.</p>
@@ -84,16 +90,25 @@ function Page() {
         </div>
         <label className="flex flex-col gap-1.5 text-sm font-semibold">
           Email professionnel
-          <input className="field font-normal" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" required />
+          <span className="relative block">
+            <Mail size={17} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" aria-hidden="true" />
+            <input className="field pl-10 font-normal" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="vous@entreprise.fr" autoComplete="email" required />
+          </span>
         </label>
         <label className="flex flex-col gap-1.5 text-sm font-semibold">
           Téléphone
-          <input className="field font-normal" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" placeholder="+33 6 12 34 56 78" required />
+          <span className="relative block">
+            <Phone size={17} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" aria-hidden="true" />
+            <input className="field pl-10 font-normal" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" placeholder="+33 6 12 34 56 78" required />
+          </span>
           <span className="text-xs font-normal text-muted">Pour vous joindre sur vos demandes.</span>
         </label>
         <label className="flex flex-col gap-1.5 text-sm font-semibold">
           Mot de passe
-          <input className="field font-normal" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••••" autoComplete="new-password" required />
+          <span className="relative block">
+            <Lock size={17} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" aria-hidden="true" />
+            <input className="field pl-10 font-normal" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••••" autoComplete="new-password" required />
+          </span>
           <span className="text-xs font-normal text-muted">8 caractères minimum, dont un chiffre.</span>
         </label>
         <label className="flex items-start gap-2 text-sm leading-snug text-muted">
@@ -114,6 +129,11 @@ function Page() {
           <Link to="/connexion" className="font-semibold text-[#155DFC]">Se connecter</Link>
         </p>
       </form>
+      <p className="mt-1 flex items-center justify-center gap-2 text-xs text-muted">
+        <CheckCircle2 size={15} className="shrink-0 text-[#0E9F6E]" aria-hidden="true" />
+        Connexion chiffrée · code de vérification par email
+      </p>
     </AuthFrame>
+    </LangProvider>
   );
 }

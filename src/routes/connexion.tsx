@@ -1,7 +1,8 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
-import { AuthFrame } from "@/components/auth-frame";
+import { ArrowRight, CheckCircle2, Lock, Mail } from "lucide-react";
+import { AuthFrame, AuthLangPills } from "@/components/auth-frame";
+import { LangProvider } from "@/site/i18n";
 import { adminLogin, adminOnboard, confirmPasswordReset, requestPasswordReset } from "@/lib/admin-auth.functions";
 import { clearSession, loadSession } from "@/lib/session";
 
@@ -134,11 +135,18 @@ function Connexion() {
   }
 
   return (
+    <LangProvider>
     <AuthFrame>
-      <img src="/illustrations/logo.svg" alt="Sourcing Pick" className="h-8 w-auto self-start" />
+      <div className="flex items-center justify-between gap-3">
+        <img src="/illustrations/logo.svg" alt="Sourcing Pick" className="h-8 w-auto self-start" />
+        <AuthLangPills />
+      </div>
+      {mode === "login" ? (
+        <img src="/illustrations/mascotte-bras.svg" alt="" className="mx-auto w-44 max-w-full" />
+      ) : null}
       <div>
         <h1 className="display text-3xl">
-          {mode === "onboard" ? "Créer l'accès" : mode === "forgot" ? "Mot de passe oublié" : "Connexion à votre espace"}
+          {mode === "onboard" ? "Créer l'accès" : mode === "forgot" ? "Mot de passe oublié" : "Bon retour !"}
         </h1>
         <p className="mt-2 text-[15px] text-muted">
           {mode === "onboard"
@@ -149,7 +157,7 @@ function Connexion() {
                 : "Indiquez l’email du compte. Un code à six chiffres vous est envoyé."
               : mode === "loading"
                 ? "Vérification de la session…"
-                : "Suivez vos demandes, vos devis et vos conteneurs."}
+                : "Connectez-vous pour suivre vos commandes."}
         </p>
       </div>
       {mode !== "loading" ? (
@@ -162,7 +170,10 @@ function Connexion() {
           ) : null}
           <label className="flex flex-col gap-1.5 text-sm font-semibold">
             Email
-            <input className="field font-normal" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="username" required />
+            <span className="relative block">
+              <Mail size={17} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" aria-hidden="true" />
+              <input className="field pl-10 font-normal" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="vous@entreprise.fr" autoComplete="username" required />
+            </span>
           </label>
           {mode === "forgot" && resetStep === "code" ? (
             <label className="flex flex-col gap-1.5 text-sm font-semibold">
@@ -173,7 +184,10 @@ function Connexion() {
           {mode !== "forgot" || resetStep === "code" ? (
             <label className="flex flex-col gap-1.5 text-sm font-semibold">
               {mode === "forgot" ? "Nouveau mot de passe" : "Mot de passe"}
-              <input className="field font-normal" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••••" autoComplete={mode === "login" ? "current-password" : "new-password"} required />
+              <span className="relative block">
+                <Lock size={17} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" aria-hidden="true" />
+                <input className="field pl-10 font-normal" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••••" autoComplete={mode === "login" ? "current-password" : "new-password"} required />
+              </span>
               {mode === "forgot" && password ? (
                 <span className="mt-1">
                   <span className="flex gap-1">
@@ -199,11 +213,7 @@ function Connexion() {
             </label>
           ) : null}
           {mode === "login" ? (
-            <div className="flex items-center justify-between gap-3 text-sm">
-              <label className="inline-flex items-center gap-2 text-muted">
-                <input type="checkbox" defaultChecked className="accent-[#155DFC]" />
-                Sécurité
-              </label>
+            <div className="flex items-center justify-end gap-3 text-sm">
               <button className="font-semibold text-[#155DFC]" type="button" onClick={() => { setMode("forgot"); setResetStep("email"); setError(""); setNote(""); setPassword(""); setConfirm(""); setCode(""); }}>
                 Mot de passe oublié ?
               </button>
@@ -248,6 +258,13 @@ function Connexion() {
           ) : null}
         </form>
       ) : null}
+      {mode === "login" ? (
+        <p className="mt-2 flex items-center justify-center gap-2 text-xs text-muted">
+          <CheckCircle2 size={15} className="shrink-0 text-[#0E9F6E]" aria-hidden="true" />
+          Connexion chiffrée · code de vérification par email
+        </p>
+      ) : null}
     </AuthFrame>
+    </LangProvider>
   );
 }
