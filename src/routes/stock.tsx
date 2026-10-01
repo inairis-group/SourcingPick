@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Shell } from "@/components/shell";
 import { opsMarket } from "@/lib/commerce.functions";
@@ -39,8 +39,13 @@ function StockGate() {
 function StockFrame() {
   const sales = useOps(() => opsMarket({ data: "sale" }), "stock-sales");
   const auctions = useOps(() => opsMarket({ data: "auction" }), "stock-auctions");
-  const low = [...(sales.data ?? []), ...(auctions.data ?? [])].filter(
-    (item) => item.qty <= item.minQty && item.stage !== "Expédié" && item.stage !== "Vendu",
+  // Mémoïsé : sinon la fusion + le filtre repartent à chaque rendu.
+  const low = useMemo(
+    () =>
+      [...(sales.data ?? []), ...(auctions.data ?? [])].filter(
+        (item) => item.qty <= item.minQty && item.stage !== "Expédié" && item.stage !== "Vendu",
+      ),
+    [sales.data, auctions.data],
   );
   return (
     <Shell>
