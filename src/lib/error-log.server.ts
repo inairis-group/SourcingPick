@@ -18,6 +18,8 @@ function table() {
         created_at timestamptz not null default now()
       )`;
       await sql`create index if not exists ops_logs_created_idx on ops_logs (created_at desc)`;
+      // Rétention au démarrage du processus : 90 jours d'erreurs conservées.
+      await sql`delete from ops_logs where created_at < now() - interval '90 days'`;
     })().catch((error) => {
       ready = null;
       throw error;
@@ -32,6 +34,8 @@ export async function recordError(source: string, message: string, detail = "") 
   try {
     await table();
     const sql = await getSql();
+    // Purge probabiliste (~2 %) : la table reste bornée même sans redémarrage.
+    if (Math.random() < 0.02) await sql`delete from ops_logs where created_at < now() - interval '90 days'`;
     const id = `log_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
     const at = new Intl.DateTimeFormat("fr-FR", {
       dateStyle: "short",
