@@ -42,7 +42,7 @@ function Page() {
           <Stat label="Commandes en transit" value={String(transit.length)} icon={<Ship size={16} />} tone="#FFF6E8" ink="#B45309" />
           <Stat label="Documents ajoutés cette semaine" value={String((data?.documents ?? []).length)} icon={<Camera size={16} />} tone="#E3F6EC" ink="#0E9F6E" />
         </section>
-        <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="grid min-w-0 grid-cols-1 items-start gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
           <div>
         <section className="card mb-5 flex flex-col gap-3" data-tour="devis">
           <h2 className="display text-lg">Ce qu’on attend de vous</h2>

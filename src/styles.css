@@ -337,6 +337,13 @@ select.field {
   transition: translate 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Les pages applicatives ne débordent jamais : tout enfant flex/grid peut
+   se compresser sous sa largeur de contenu (min-width: auto → 0). */
+.app-page,
+.app-page * {
+  min-width: 0;
+}
+
 .card:hover {
   translate: 0 -2px;
 }
