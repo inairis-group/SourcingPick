@@ -276,12 +276,13 @@ export async function announceSignedQuote(quoteId: string) {
         "Le bouton ouvre le devis signé. Vous pouvez le télécharger en PDF depuis cette page.",
         ...(invoice ? ["La facture d’acompte part dans un second email."] : []),
       ].join("\n"), {
-        badge: "DEVIS SIGNÉ",
-        title: "Votre devis est signé",
+        badge: "DEVIS ACCEPTÉ",
+        title: "Devis accepté !",
         amount: euros(math.totalCents),
         amountLabel: "Montant accepté",
         ctaLabel: "Voir et télécharger le devis signé",
         ctaHref: link,
+        reason: "Vous recevez ce message car vous avez signé un devis Sourcing Pick.",
       }, copy)
     : false;
   let invoiceSent = false;
