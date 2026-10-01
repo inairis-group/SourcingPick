@@ -1,5 +1,25 @@
 import type { ReactNode } from "react";
 import { Clock } from "lucide-react";
+import { LANGS, useLang, type Lang } from "@/site/i18n";
+
+/** Sélecteur de langue compact des pages d'authentification (FR / EN / 中文). */
+export function AuthLangPills() {
+  const { lang, setLang } = useLang();
+  return (
+    <div className="flex items-center gap-1 rounded-full border border-line bg-canvas p-1">
+      {LANGS.slice(0, 3).map((item) => (
+        <button
+          key={item.id}
+          type="button"
+          onClick={() => setLang(item.id as Lang)}
+          className={`rounded-full px-3 py-1.5 text-sm font-semibold transition-colors ${lang === item.id ? "bg-white text-ink shadow-sm" : "text-muted"}`}
+        >
+          {item.id === "zh" ? "中文" : item.id.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export function AuthFrame({ children }: { children: ReactNode }) {
   return (
