@@ -470,7 +470,7 @@ export function Editor({ id }: { id: string }) {
               onClick={() => {
                 setMailErr("");
                 setMailInfo("");
-                if (!(client?.email || "").includes("@")) {
+                if (!client || !(client.email || "").includes("@")) {
                   setMailErr("Indiquez l’email du client à l’étape 1.");
                   return;
                 }

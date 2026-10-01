@@ -98,11 +98,11 @@ export const loadAtelier = createServerFn({ method: "GET" }).handler(async () =>
     const email = typeof client === "object" && client && "email" in client ? String(client.email ?? "") : "";
     return email.toLowerCase() === user.email;
   });
-  const ids = new Set(clients.map((client) => (typeof client === "object" && client ? String(client.id ?? "") : "")));
+  const ids = new Set(clients.map((client) => (typeof client === "object" && client ? String((client as Record<string, unknown>).id ?? "") : "")));
   return {
     ...payload,
     clients,
-    docs: (payload.docs ?? []).filter((doc) => typeof doc === "object" && doc && ids.has(String(doc.clientId ?? ""))),
+    docs: (payload.docs ?? []).filter((doc) => typeof doc === "object" && doc && ids.has(String((doc as Record<string, unknown>).clientId ?? ""))),
   };
 });
 
