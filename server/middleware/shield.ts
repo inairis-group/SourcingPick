@@ -9,7 +9,12 @@ function guarded(response: Response, pathname: string) {
   if (!headers.has("x-content-type-options")) headers.set("x-content-type-options", "nosniff");
   if (!headers.has("referrer-policy")) headers.set("referrer-policy", "strict-origin-when-cross-origin");
   if (!headers.has("x-frame-options")) headers.set("x-frame-options", "SAMEORIGIN");
-  if (!headers.has("permissions-policy")) headers.set("permissions-policy", "camera=(), microphone=(), geolocation=()");
+  if (!headers.has("permissions-policy")) {
+    // /stock embarque l'app entrepot en iframe : les opérateurs scannent des
+    // QR codes avec la caméra — la page parente doit pouvoir la déléguer.
+    const stock = pathname === "/stock" || pathname.startsWith("/stock/");
+    headers.set("permissions-policy", stock ? "camera=(self), microphone=(), geolocation=()" : "camera=(), microphone=(), geolocation=()");
+  }
   if (!headers.has("x-permitted-cross-domain-policies")) headers.set("x-permitted-cross-domain-policies", "none");
   const hashed = /\/assets\/[^/]+-[A-Za-z0-9_-]{6,}\./.test(pathname);
   if (hashed) headers.set("cache-control", "public, max-age=31536000, immutable");
