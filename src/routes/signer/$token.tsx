@@ -103,6 +103,7 @@ function Page() {
   const image = !written && opened.mime.startsWith("image/");
   const pdf = !written && opened.mime.includes("pdf");
   const signed = opened.signed || done;
+  const doc = opened;
 
   function saveCopy() {
     const href = written
@@ -111,7 +112,7 @@ function Page() {
     if (!href) return;
     const link = document.createElement("a");
     link.href = href;
-    link.download = opened.fileName || `${opened.title}.txt`;
+    link.download = doc.fileName || `${doc.title}.txt`;
     link.click();
     if (written) URL.revokeObjectURL(href);
   }

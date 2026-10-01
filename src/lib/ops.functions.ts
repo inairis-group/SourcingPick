@@ -356,7 +356,7 @@ export const opsSaveInvoice = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const user = await admin();
     if (!data.id) throw new Error("Facture manquante.");
-    const amountCents = data.lines.length ? data.lines.reduce((total, line) => total + (line.kind === "freight" && line.rateBps > 0 ? 0 : lineAmount(line)), 0) : data.amountCents;
+    const amountCents = data.lines.length ? data.lines.reduce((total, line) => total + (line.kind === "freight" && (line.rateBps ?? 0) > 0 ? 0 : lineAmount(line)), 0) : data.amountCents;
     await updateInvoice(data.id, { ...data, amountCents }, user.name);
     return { ok: true };
   });

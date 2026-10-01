@@ -82,6 +82,7 @@ function Page() {
         meta: `${order.product} · ${order.state}`,
         date: "",
         open: () => navigate({ to: "/commandes/$id", params: { id: order.id } }),
+        sign: undefined as OpsDocument | undefined,
       }))
     : folder === "Factures"
       ? (data?.invoices ?? []).filter((invoice) => ownsInvoice(invoice) && invoice.kind !== "credit").map((invoice) => ({
@@ -90,6 +91,7 @@ function Page() {
           meta: `${invoice.status} · ${euros(invoice.amountCents)}`,
           date: slash(invoice.issuedOn),
           open: () => navigate({ to: "/factures/fiche/$id", params: { id: invoice.id } }),
+          sign: undefined as OpsDocument | undefined,
         }))
       : folder === "Devis"
         ? (data?.quotes ?? []).filter(ownsQuote).map((quote) => ({
@@ -98,6 +100,7 @@ function Page() {
             meta: `${quote.status} · ${euros(quote.amountCents)}`,
             date: slash(quote.issuedOn),
             open: () => navigate({ to: "/devis/nouveau", search: { id: quote.id } }),
+            sign: undefined as OpsDocument | undefined,
           }))
         : folder === "Avoirs"
           ? (data?.invoices ?? []).filter((invoice) => ownsInvoice(invoice) && invoice.kind === "credit").map((invoice) => ({
@@ -106,6 +109,7 @@ function Page() {
               meta: `${invoice.method || "Avoir"} · − ${euros(invoice.amountCents)}`,
               date: slash(invoice.issuedOn),
               open: () => navigate({ to: "/avoirs/$id", params: { id: invoice.id } }),
+              sign: undefined as OpsDocument | undefined,
             }))
           : documents.filter((doc) => ownsDoc(doc) && doc.category === folder).map((doc) => ({
               key: doc.id,
@@ -117,7 +121,7 @@ function Page() {
               ].filter(Boolean).join(" · "),
               date: slash(doc.issuedOn),
               open: () => openPiece(doc, false),
-              sign: doc.byteSize > 0 ? doc : undefined,
+              sign: (doc.byteSize > 0 ? doc : undefined) as OpsDocument | undefined,
             }));
 
   function count(name: string) {
@@ -317,7 +321,7 @@ function Page() {
                       <td className="py-2 pr-2 text-muted">{row.meta}</td>
                       <td className="py-2">{row.date || "—"}</td>
                       <td className="py-2 text-right">
-                        {"sign" in row && row.sign && row.sign.signStatus !== "signed" ? (
+                        {row.sign && row.sign.signStatus !== "signed" ? (
                           <button
                             className="btn btn-quiet h-9 min-h-9 px-3"
                             type="button"
