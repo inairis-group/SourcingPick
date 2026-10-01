@@ -19,7 +19,6 @@ function Page() {
   const { token } = Route.useParams();
   const [phase, setPhase] = useState(0);
   const [opened, setOpened] = useState<Opened | null>(null);
-  const [error, setError] = useState("");
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [email, setEmail] = useState("");
@@ -105,7 +104,6 @@ function Page() {
             </label>
           )}
           {note ? <p className="mt-3 text-sm text-[#8a1c1c]">{note}</p> : null}
-          {error ? <p className="mt-3 text-sm text-[#8a1c1c]">{error}</p> : null}
           <button className="btn btn-primary mt-4 w-full" type="submit" disabled={busy}>{busy ? "Vérification…" : step !== "code" ? "Recevoir le code" : "Ouvrir le devis"}</button>
           {step === "code" ? <button className="mt-3 text-sm font-semibold text-[#155dfc]" type="button" onClick={() => setStep("mail")}>Changer d’email</button> : null}
         </form>

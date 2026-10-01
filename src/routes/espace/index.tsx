@@ -4,7 +4,7 @@ import { Shell } from "@/components/shell";
 import { Hero, Stat } from "@/components/design";
 import { FirstSteps } from "@/components/tour";
 import { Badge, DataTable, Td } from "@/components/ops-ui";
-import { frDate, isCommande, stepIndex, useClient } from "@/components/client-ui";
+import { isCommande, stepIndex, useClient } from "@/components/client-ui";
 import { duePhrase, euros } from "@/lib/ops.shared";
 
 export const Route = createFileRoute("/espace/")({
