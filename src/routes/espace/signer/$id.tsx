@@ -48,7 +48,7 @@ function Page() {
         <a href="/cgv" target="_blank" rel="noreferrer" className="font-semibold text-brand underline">
           conditions générales de vente et d’utilisation
         </a>{" "}
-        (version du 30 septembre 2026).
+        (version du 1er octobre 2026).
       </p>
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <form
@@ -136,7 +136,7 @@ function Page() {
               <a href="/cgv" target="_blank" rel="noreferrer" className="font-semibold text-brand underline">
                 conditions générales de vente et d’utilisation
               </a>{" "}
-              (version du 30 septembre 2026) et je demande l’exécution immédiate des prestations.
+              (version du 1er octobre 2026) et je demande l’exécution immédiate des prestations.
             </span>
           </label>
           {data?.otpSign ? (
