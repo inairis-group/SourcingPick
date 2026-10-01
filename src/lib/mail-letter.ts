@@ -7,6 +7,8 @@ export type MailDress = {
   code?: string;
   amount?: string;
   amountLabel?: string;
+  amountSub?: string;
+  reason?: string;
 };
 
 const ORIGIN = "https://sourcingpick.com";
@@ -28,17 +30,21 @@ export function guessBadge(subject: string) {
   if (text.includes("essai")) return "ESSAI";
   if (text.includes("code")) return "CODE DE VÉRIFICATION";
   if (text.includes("mot de passe")) return "SÉCURITÉ";
+  if (text.includes("compte activ")) return "COMPTE ACTIVÉ";
   if (text.includes("bienvenue") || text.includes("confirmez")) return "BIENVENUE";
   if (text.includes("invitation") || text.includes("agent")) return "ÉQUIPE";
   if (text.includes("acompte")) return "ACOMPTE";
   if (text.includes("facture")) return "FACTURE";
   if (text.includes("dernier jour")) return "DERNIER JOUR";
+  if (text.includes("j-3") || text.includes("3 jours")) return "RAPPEL · J-3";
+  if (text.includes("j-1") || text.includes("qu’un jour")) return "RAPPEL · J-1";
   if (text.includes("relance") || text.includes("rappel") || text.includes("jour")) return "RAPPEL";
   if (text.includes("refus")) return "DEVIS REFUSÉ";
   if (text.includes("accept")) return "DEVIS ACCEPTÉ";
   if (text.includes("devis")) return "NOUVEAU DEVIS";
   if (text.includes("commande")) return "COMMANDE CONFIRMÉE";
   if (text.includes("demande")) return "NOUVELLE DEMANDE";
+  if (text.includes("signature") || text.includes("signer")) return "RELANCE · 48 H";
   if (text.includes("message")) return "MESSAGE";
   return "SOURCING PICK";
 }
@@ -88,13 +94,13 @@ export function brandCard(input: { subject: string; text: string; dress?: MailDr
   const body = mailBody(input.text);
   const logo = asset("logo-white.png", absolute);
   const picky = asset("picky.png", absolute);
-  const wave = asset("wave.png", absolute);
   const grid = asset("grid.png", absolute);
   const lockup = asset("lockup.png", absolute);
   const amount = dress.amount
     ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:8px 0 16px;"><tr><td align="center" style="background:#E3F6EC;border:1px solid #B6E5C8;border-radius:14px;padding:18px 12px;">
         <div style="font-family:ui-monospace,monospace;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1F8F55;">${esc(dress.amountLabel || "Montant")}</div>
         <div style="font-size:32px;line-height:1.2;font-weight:700;color:#145C38;margin-top:4px;">${esc(dress.amount)}</div>
+        ${dress.amountSub ? `<div style="font-size:13px;color:#1F8F55;margin-top:2px;">${esc(dress.amountSub)}</div>` : ""}
       </td></tr></table>`
     : "";
   const code = dress.code
@@ -128,10 +134,7 @@ export function brandCard(input: { subject: string; text: string; dress?: MailDr
           </td>
         </tr></table>
       </td></tr>
-      <tr><td bgcolor="#162456" style="background-color:#162456;line-height:0;font-size:0;">
-        <img src="${wave}" alt="" width="600" style="display:block;width:100%;height:auto;border:0;">
-      </td></tr>
-      <tr><td style="padding:8px 36px 28px;font-family:'Segoe UI',Helvetica,Arial,sans-serif;color:#0E1A3D;">
+      <tr><td style="padding:8px 36px 28px;font-family:'Segoe UI',Helvetica,Arial,sans-serif;color:#0E1A3D;border-radius:0 0 0 0;">
         <h1 style="margin:0 0 16px;font-family:'Trebuchet MS','Segoe UI',sans-serif;font-size:26px;line-height:1.25;font-weight:700;letter-spacing:-0.02em;color:#0E1A3D;">${title}</h1>
         ${body}
         ${amount}
@@ -140,8 +143,15 @@ export function brandCard(input: { subject: string; text: string; dress?: MailDr
         ${note}
       </td></tr>
       <tr><td style="background:#F5F7FC;border-top:1px solid #DCE3F2;padding:22px 36px 26px;font-family:'Segoe UI',Helvetica,Arial,sans-serif;">
-        <img src="${lockup}" alt="Sourcing Pick" height="42" style="display:block;height:42px;width:auto;border:0;">
-        <p style="margin:14px 0 0;font-size:12.5px;line-height:1.6;color:#4A5578;">Une question ? Répondez à cet email ou écrivez à <a href="mailto:contact@sourcingpick.com" style="color:#155DFC;font-weight:700;text-decoration:none;">contact@sourcingpick.com</a>.<br>© 2026 Sourcing Pick · Guangzhou</p>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+          <td valign="middle"><img src="${lockup}" alt="Sourcing Pick" height="42" style="display:block;height:42px;width:auto;border:0;"></td>
+          <td valign="middle" align="right">
+            <table role="presentation" cellpadding="0" cellspacing="0"><tr><td bgcolor="#0B1433" style="border-radius:10px;">
+              <a href="${ORIGIN}/espace" style="display:inline-block;padding:10px 16px;color:#ffffff;font-size:13px;font-weight:700;text-decoration:none;">Ouvrir mon espace client&nbsp;&nbsp;&#8595;</a>
+            </td></tr></table>
+          </td>
+        </tr></table>
+        <p style="margin:14px 0 0;font-size:12.5px;line-height:1.6;color:#4A5578;">Une question ? Répondez à cet email ou écrivez à <a href="mailto:contact@sourcingpick.com" style="color:#155DFC;font-weight:700;text-decoration:none;">contact@sourcingpick.com</a>.<br>${esc(dress.reason || "Vous recevez ce message car vous avez un compte Sourcing Pick.")}<br>© 2026 Sourcing Pick · Guangzhou</p>
       </td></tr>
     </table>
   </td></tr>
