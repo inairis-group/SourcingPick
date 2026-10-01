@@ -534,13 +534,16 @@ export async function saveQualification(
   const sql = await getSql();
   await sql`update ops_orders set internal_note = ${note}, updated_at = now() where id = ${id}`;
   await sql`delete from ops_suppliers where order_id = ${id}`;
+  const rows = await sql<{ ref: string }>`select ref from ops_orders where id = ${id}`;
+  const ref = rows[0]?.ref ?? id;
   for (const supplier of suppliers) {
     if (!supplier.name.trim()) continue;
     await sql`insert into ops_suppliers (id, order_id, name, price, qty, lead, status)
       values (${supplier.id || uid("sup")}, ${id}, ${supplier.name}, ${supplier.price}, ${supplier.qty}, ${supplier.lead}, ${supplier.status || "Comparé"})`;
+    // Preuve de présentation (art. 10 CGV — non-contournement 12 mois).
+    await log(sql, actor, `Fournisseur présenté : ${supplier.name.trim()}`, ref);
   }
-  const rows = await sql<{ ref: string }>`select ref from ops_orders where id = ${id}`;
-  await log(sql, actor, "Qualification enregistrée", rows[0]?.ref ?? id);
+  await log(sql, actor, "Qualification enregistrée", ref);
 }
 
 export async function addMessage(orderId: string, author: string, body: string, internalOnly: boolean, role = "admin") {
@@ -1939,7 +1942,7 @@ export async function clientSignQuote(userId: string, quoteId: string, signer: s
   const ua = (request?.headers.get("user-agent") || "").slice(0, 240);
   const lang = (request?.headers.get("accept-language") || "").slice(0, 80);
   const place = await placeOf(ip);
-  const meta = JSON.stringify({ name: who, email: quote.clientEmail || "", ip, place, ua, lang, at: signedAt, cgv: "2026-09-30", cgvAccepted: true });
+  const meta = JSON.stringify({ name: who, email: quote.clientEmail || "", ip, place, ua, lang, at: signedAt, cgv: "2026-10-01", cgvAccepted: true });
   await sql`update ops_quotes set status = ${"Devis signé"}, signer_name = ${who}, signed_at = ${signedAt}, signature_image = ${image}, sign_meta = ${meta} where id = ${quote.id}`;
   const { announceSignedQuote } = await import("@/lib/quote-link.server");
   const pack = await announceSignedQuote(quote.id);

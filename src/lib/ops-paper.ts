@@ -114,7 +114,7 @@ export function signRows(quote: { signMeta: string; signerName: string; signedAt
     { label: en ? "Role" : "Fonction", value: facts.role },
     { label: en ? "Company" : "Société", value: facts.company },
     { label: "Email", value: facts.email },
-    { label: en ? "Terms accepted" : "CGV acceptées", value: facts.cgv ? (en ? `version of ${facts.cgv}` : `version du ${facts.cgv === "2026-09-30" ? "30 septembre 2026" : facts.cgv}`) : "" },
+    { label: en ? "Terms accepted" : "CGV acceptées", value: facts.cgv ? (en ? `version of ${facts.cgv}` : `version du ${facts.cgv === "2026-10-01" ? "1er octobre 2026" : facts.cgv === "2026-09-30" ? "30 septembre 2026" : facts.cgv}`) : "" },
     { label: en ? "IP address" : "Adresse IP", value: facts.ip },
     { label: en ? "Connection" : "Lieu de connexion", value: facts.place },
     { label: en ? "Browser" : "Navigateur", value: facts.browser },

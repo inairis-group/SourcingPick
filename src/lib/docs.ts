@@ -428,6 +428,7 @@ export function devisConditions(d: Devis, company: Company): string {
         priceSentence(d, company.fxLabel, true),
         `Valid for ${d.validityDays} days. Paying the deposit accepts the quote and these terms.`,
         cgvLine(true, true),
+        "Consumers: you have a 14-day withdrawal right from signature (article 28 of our terms); the withdrawal form is available on request.",
       ]
     : [
         `Acompte : ${deposit} % du net à payer à la commande. La production est lancée à réception.`,
@@ -439,6 +440,7 @@ export function devisConditions(d: Devis, company: Company): string {
         priceSentence(d, company.fxLabel, false),
         `Validité ${d.validityDays} jours. Le règlement de l’acompte vaut acceptation du devis et de ses conditions.`,
         cgvLine(false, true),
+        "Consommateur : vous disposez d’un droit de rétractation de 14 jours à compter de la signature (article 28 des conditions générales) ; le formulaire de rétractation est disponible sur simple demande.",
       ];
   return lines.join("\n");
 }
@@ -516,8 +518,8 @@ export function conditionsFor(doc: Document, company: Company): string {
 
 /** Référence CGV obligatoire sur devis, factures et avoirs (opposabilité). */
 export const CGV_URL = "https://sourcingpick.com/cgv";
-export const CGV_VERSION = "30 septembre 2026";
-export const CGV_VERSION_ISO = "2026-09-30";
+export const CGV_VERSION = "1er octobre 2026";
+export const CGV_VERSION_ISO = "2026-10-01";
 
 function cgvLine(en: boolean, complement: boolean): string {
   if (en) {
