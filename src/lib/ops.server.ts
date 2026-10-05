@@ -377,11 +377,19 @@ async function listInboxNow() {
     product: string;
     client_name: string;
     agent_name: string;
-  }>`select m.id, m.order_id, m.author, m.body, m.at_label, m.kind, m.internal_only,
-      o.ref, o.product, o.client_name, o.agent_name
+  }>`select id, order_id, author, body, at_label, kind, internal_only, ref, product, client_name, agent_name from (
+    select m.id, m.order_id, m.author, m.body, m.at_label, m.kind, m.internal_only,
+      o.ref, o.product, o.client_name, o.agent_name, m.created_at
     from ops_messages m
-    join ops_orders o on o.id = m.order_id or o.ref = m.order_id
-    order by m.created_at asc`;
+    join ops_orders o on o.id = m.order_id
+    union all
+    select m.id, m.order_id, m.author, m.body, m.at_label, m.kind, m.internal_only,
+      o.ref, o.product, o.client_name, o.agent_name, m.created_at
+    from ops_messages m
+    join ops_orders o on o.ref = m.order_id
+    where not exists (select 1 from ops_orders known where known.id = m.order_id)
+  ) inbox
+  order by created_at asc`;
   return rows.map((row) => ({
     id: row.id,
     orderId: row.order_id,
@@ -821,8 +829,10 @@ async function listQuotesNow() {
 export async function getQuote(id: string) {
   await ensureOps();
   const sql = await getSql();
-  const rows = await sql<Parameters<typeof mapQuote>[0]>`select id, number, order_ref, client_name, amount_cents, issued_on, status, lang, currency, incoterm, port, validity_days, deposit_bps, goods_bps, freight_bps, font, lines_json, email_subject, email_body, client_email, client_user_id, client_company, client_address, client_vat, client_country, client_siren, client_siret, client_naf, signer_name, signed_at, signature_image, sign_meta from ops_quotes where id = ${id} or number = ${id} order by (id = ${id}) desc limit 1`;
-  return rows[0] ? mapQuote(rows[0]) : null;
+  const rows = await sql<Parameters<typeof mapQuote>[0]>`select id, number, order_ref, client_name, amount_cents, issued_on, status, lang, currency, incoterm, port, validity_days, deposit_bps, goods_bps, freight_bps, font, lines_json, email_subject, email_body, client_email, client_user_id, client_company, client_address, client_vat, client_country, client_siren, client_siret, client_naf, signer_name, signed_at, signature_image, sign_meta from ops_quotes where id = ${id} limit 1`;
+  if (rows[0]) return mapQuote(rows[0]);
+  const byNumber = await sql<Parameters<typeof mapQuote>[0]>`select id, number, order_ref, client_name, amount_cents, issued_on, status, lang, currency, incoterm, port, validity_days, deposit_bps, goods_bps, freight_bps, font, lines_json, email_subject, email_body, client_email, client_user_id, client_company, client_address, client_vat, client_country, client_siren, client_siret, client_naf, signer_name, signed_at, signature_image, sign_meta from ops_quotes where number = ${id} limit 1`;
+  return byNumber[0] ? mapQuote(byNumber[0]) : null;
 }
 
 export async function saveQuote(quote: OpsQuote, actor: string) {
@@ -908,16 +918,23 @@ async function catchSignedNotices(sql: Sql) {
 }
 
 async function repairQuoteNumbers(sql: Sql) {
-  const rows = await sql<{ id: string; number: string }>`select id, number from ops_quotes`;
   const year = new Date().getFullYear();
+  const rows = await sql<{ id: string; number: string }>`
+    select id, number from ops_quotes
+    where number like ${`%${year}-%`} and number ~ ${`-${year}-[0-9]{3,}$`}`;
   const parsed = rows.flatMap((row) => {
     const match = String(row.number).match(/(20\d{2})-(\d+)$/);
     if (!match || Number(match[1]) !== year) return [];
     return [{ id: row.id, number: row.number, seq: Number(match[2]) }];
   });
-  const low = parsed.filter((row) => row.seq < 100);
   const high = parsed.filter((row) => row.seq >= 100).sort((a, b) => a.seq - b.seq);
-  let next = low.reduce((max, row) => Math.max(max, row.seq), 0);
+  if (!high.length) return;
+  const lowMax = await sql<{ number: string }>`select number from ops_quotes where number like ${`%${year}-%`}`;
+  let next = 0;
+  for (const row of lowMax) {
+    const match = String(row.number).match(/(20\d{2})-(\d+)$/);
+    if (match && Number(match[1]) === year && Number(match[2]) < 100) next = Math.max(next, Number(match[2]));
+  }
   for (const row of high) {
     next += 1;
     const number = `DV-${year}-${String(next).padStart(4, "0")}`;
@@ -929,8 +946,10 @@ async function repairQuoteNumbers(sql: Sql) {
 }
 
 async function nextQuoteNumber(sql: Sql) {
-  const rows = await sql<{ number: string }>`select number from ops_quotes`;
   const year = new Date().getFullYear();
+  const rows = await sql<{ number: string }>`
+    select number from ops_quotes
+    where number like ${`DV-${year}-%`} or number like ${`SP-DV-${year}-%`}`;
   let max = 0;
   for (const row of rows) {
     const match = String(row.number).match(/(20\d{2})-(\d+)$/);
@@ -975,29 +994,38 @@ export async function quoteFunnel() {
     signer_name: string;
     signed_at: string;
     order_ref: string;
-  }>`select id, number, client_name, client_company, client_email, status, signer_name, signed_at, order_ref
+    deposit_invoice_id: string;
+  }>`select id, number, client_name, client_company, client_email, status, signer_name, signed_at, order_ref, deposit_invoice_id
     from ops_quotes order by issued_on desc limit 40`;
+  if (!quotes.length) return [];
+  const numbers = quotes.map((quote) => quote.number);
+  const refs = quotes.map((quote) => quote.order_ref).filter(Boolean);
+  const linked = quotes.map((quote) => quote.deposit_invoice_id).filter(Boolean);
   const logs = await sql<{ object_ref: string; action: string; at_label: string }>`
-    select object_ref, action, at_label from ops_journal
-    where action in (
-      'Devis envoyé par email',
-      'Code de signature demandé',
-      'Devis ouvert',
-      'Devis consulté',
-      'Devis signé',
-      'Devis marqué signé',
-      'Devis signé téléchargé',
-      'Devis téléchargé',
-      'Facture d’acompte'
-    )
-    order by created_at desc
-    limit 500`;
-  const deposits = await sql<{ id: string; number: string; order_ref: string; lines_json: string }>`
-    select id, number, order_ref, lines_json from ops_invoices
-    where kind = ${"deposit"} and status <> ${"Annulée"}`;
+    select object_ref, action, max(at_label) as at_label
+    from ops_journal
+    where object_ref = any(${numbers})
+      and action in (
+        'Devis envoyé par email',
+        'Code de signature demandé',
+        'Devis ouvert',
+        'Devis consulté',
+        'Devis signé',
+        'Devis marqué signé',
+        'Devis signé téléchargé',
+        'Devis téléchargé'
+      )
+    group by object_ref, action`;
+  const deposits = await sql<{ id: string; number: string; order_ref: string }>`
+    select id, number, order_ref from ops_invoices
+    where kind = ${"deposit"} and status <> ${"Annulée"}
+      and (
+        (${linked.length} > 0 and id = any(${linked.length ? linked : [""]}))
+        or (${refs.length} > 0 and order_ref <> '' and order_ref = any(${refs.length ? refs : [""]}))
+      )`;
   const when = (number: string, action: string) => logs.find((row) => row.object_ref === number && row.action === action)?.at_label || "";
   return quotes.map((quote) => {
-    const deposit = deposits.find((row) => (quote.order_ref && row.order_ref === quote.order_ref) || row.lines_json.includes(quote.number));
+    const deposit = deposits.find((row) => row.id === quote.deposit_invoice_id || (quote.order_ref && row.order_ref === quote.order_ref));
     const signed = quote.status === "Devis signé";
     return {
       id: quote.id,
@@ -1149,14 +1177,16 @@ export async function createQuoteBill(id: string, actor: string, mode: "deposit"
     if (!deposits[0]) throw new Error("La facture de solde n’est disponible qu’après une facture d’acompte.");
   }
   const kind = mode === "balance" ? "balance" : "standard";
-  const prior = await sql<{ id: string; lines_json: string; order_ref: string; client_user_id: string }>`
-    select id, lines_json, order_ref, client_user_id from ops_invoices where kind = ${kind} and status <> ${"Annulée"}`;
-  const already = prior.find((row) => {
-    const sameOrder = Boolean(quote.orderRef) && row.order_ref === quote.orderRef;
-    const sameClient = !quote.orderRef && Boolean(quote.clientUserId) && row.client_user_id === quote.clientUserId;
-    return (sameOrder || sameClient) && String(row.lines_json).includes(quote.number);
-  });
-  if (already) return already.id;
+  const prior = await sql<{ id: string }>`
+    select id from ops_invoices
+    where kind = ${kind} and status <> ${"Annulée"}
+      and position(${quote.number} in lines_json) > 0
+      and (
+        (${quote.orderRef} <> '' and order_ref = ${quote.orderRef})
+        or (${quote.orderRef} = '' and ${quote.clientUserId || ""} <> '' and client_user_id = ${quote.clientUserId || ""})
+      )
+    limit 1`;
+  if (prior[0]) return prior[0].id;
   const math = quoteMath(quote.lines, quote.goodsBps, quote.freightBps, quote.depositBps);
   const amount = mode === "balance" ? math.balanceCents : math.totalCents;
   if (amount <= 0) throw new Error(mode === "balance" ? "Il n’y a pas de solde à facturer." : "Le devis n’a pas de montant.");
@@ -1253,8 +1283,10 @@ async function listInvoicesNow() {
 export async function getInvoice(id: string) {
   await ensureOps();
   const sql = await getSql();
-  const rows = await sql<InvoiceRow>`select id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, received_on, issued_on, status, received_cents, fees_cents, lines_json, kind, due_on, reminders_on, reminder_level, reminder_on, series_id, lang, currency from ops_invoices where id = ${id} or number = ${id} order by (id = ${id}) desc limit 1`;
-  return rows[0] ? mapInvoice(rows[0]) : null;
+  const rows = await sql<InvoiceRow>`select id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, received_on, issued_on, status, received_cents, fees_cents, lines_json, kind, due_on, reminders_on, reminder_level, reminder_on, series_id, lang, currency from ops_invoices where id = ${id} limit 1`;
+  if (rows[0]) return mapInvoice(rows[0]);
+  const byNumber = await sql<InvoiceRow>`select id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, received_on, issued_on, status, received_cents, fees_cents, lines_json, kind, due_on, reminders_on, reminder_level, reminder_on, series_id, lang, currency from ops_invoices where number = ${id} limit 1`;
+  return byNumber[0] ? mapInvoice(byNumber[0]) : null;
 }
 
 function readInvoiceLines(raw: string, fallbackCents: number): QuoteLine[] {
@@ -1807,18 +1839,73 @@ export function loadClientPortal(userId: string) {
 
 async function loadClientPortalNow(userId: string) {
   const identity = await clientIdentity(userId);
+  const sql = await getSql();
   const owns = (clientName: string) => sameParty(identity.company, identity.name, clientName);
-  const [orders, quotes, invoices, documents, messages, settings, journal] = await Promise.all([
+  const email = identity.email.trim().toLowerCase();
+  const name = identity.name.trim().toLowerCase();
+  const company = identity.company.trim().toLowerCase();
+  const [orders, quoteRows, invoiceRows, documents, messages, settings, journal] = await Promise.all([
     listOrders(),
-    listQuotes(),
-    listInvoices(),
+    sql<Parameters<typeof mapQuote>[0]>`select id, number, order_ref, client_name, amount_cents, issued_on, status, lang, currency, incoterm, port, validity_days, deposit_bps, goods_bps, freight_bps, font, lines_json, email_subject, email_body, client_email, client_user_id, client_company, client_address, client_vat, client_country, client_siren, client_siret, client_naf, signer_name, signed_at, sign_meta from ops_quotes
+      where client_user_id = ${userId}
+        or (${email.includes("@")} and lower(client_email) = ${email})
+        or (${name.length} > 1 and (lower(client_name) = ${name} or lower(client_company) = ${name}))
+        or (${company.length} > 1 and (lower(client_name) = ${company} or lower(client_company) = ${company}))
+        or (${name.length} >= 6 and (
+          position(${name} in lower(client_name)) > 0 or position(${name} in lower(client_company)) > 0
+          or position(lower(client_name) in ${name}) > 0 or position(lower(client_company) in ${name}) > 0
+        ))
+        or (${company.length} >= 6 and (
+          position(${company} in lower(client_name)) > 0 or position(${company} in lower(client_company)) > 0
+          or position(lower(client_name) in ${company}) > 0 or position(lower(client_company) in ${company}) > 0
+        ))
+        or order_ref in (
+          select ref from ops_orders
+          where ref <> '' and (
+            (${name.length} > 1 and lower(client_name) = ${name})
+            or (${company.length} > 1 and lower(client_name) = ${company})
+          )
+        )
+      order by issued_on desc`,
+    sql<InvoiceRow>`select id, number, order_ref, client_name, client_user_id, client_email, client_company, client_address, client_vat, client_siren, client_siret, client_naf, amount_cents, method, received_on, issued_on, status, received_cents, fees_cents, lines_json, kind, due_on, reminders_on, reminder_level, reminder_on, series_id, lang, currency from ops_invoices
+      where client_user_id = ${userId}
+        or (${email.includes("@")} and lower(client_email) = ${email})
+        or (${name.length} > 1 and (lower(client_name) = ${name} or lower(client_company) = ${name}))
+        or (${company.length} > 1 and (lower(client_name) = ${company} or lower(client_company) = ${company}))
+        or (${name.length} >= 6 and (
+          position(${name} in lower(client_name)) > 0 or position(${name} in lower(client_company)) > 0
+          or position(lower(client_name) in ${name}) > 0 or position(lower(client_company) in ${name}) > 0
+        ))
+        or (${company.length} >= 6 and (
+          position(${company} in lower(client_name)) > 0 or position(${company} in lower(client_company)) > 0
+          or position(lower(client_name) in ${company}) > 0 or position(lower(client_company) in ${company}) > 0
+        ))
+        or order_ref in (
+          select order_ref from ops_quotes
+          where order_ref <> '' and (
+            client_user_id = ${userId}
+            or (${email.includes("@")} and lower(client_email) = ${email})
+          )
+        )
+      order by number desc`,
     listDocuments(),
     listInbox(),
     readSettings(),
     listJournal(),
   ]);
+  const quotes = quoteRows.map((row) => {
+    const quote = mapQuote({ ...row, lines_json: withoutInlineImages(row.lines_json) });
+    return {
+      ...quote,
+      signatureImage: "",
+      lines: quote.lines.map((line) => (line.image || line.images?.length ? { ...line, image: "", images: [] } : line)),
+    };
+  });
+  const invoices = invoiceRows.map((row) => {
+    const invoice = mapInvoice({ ...row, lines_json: withoutInlineImages(row.lines_json) });
+    return { ...invoice, lines: invoice.lines.map((line) => (line.image || line.images?.length ? { ...line, image: "", images: [] } : line)) };
+  });
   const mine = orders.filter((order) => owns(order.clientName));
-  const email = identity.email.toLowerCase();
   const refs = new Set(mine.map((order) => order.ref));
   const visibleQuotes = quotes.filter((quote) => quote.clientUserId === userId || owns(quote.clientName) || owns(quote.clientCompany) || (email && (quote.clientEmail || "").toLowerCase() === email) || refs.has(quote.orderRef));
   for (const quote of visibleQuotes) if (quote.orderRef) refs.add(quote.orderRef);
