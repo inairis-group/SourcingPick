@@ -752,6 +752,7 @@ export const SEED_SEQ: Seq = { devis: 9, facture: 5, avoir: 1 };
 
 export type PaperTotal = {
   label: string;
+  hint?: string;
   value: string;
   tone: "plain" | "strong" | "pill" | "muted" | "emph";
   rule?: boolean;
@@ -817,7 +818,8 @@ function fxTotals(
     return amounts
       .filter((item) => item.cents > 0)
       .map((item) => ({
-        label: `${item.label} (${pair})`,
+        label: item.label,
+        hint: pair,
         value: formatEUR(eurCentsFromCny(item.cents, rate)),
         tone: item.tone ?? "emph",
       }));
@@ -827,7 +829,8 @@ function fxTotals(
   if (!net) return [];
   return [
     {
-      label: copy.en ? `Yuan equivalent (${pair})` : `Équivalent en yuans (${pair})`,
+      label: copy.en ? "Yuan equivalent" : "Équivalent en yuans",
+      hint: pair,
       value: formatMoney(cnyCentsFromEur(net.cents, rate), "CNY"),
       tone: "muted",
     },

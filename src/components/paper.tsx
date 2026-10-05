@@ -245,7 +245,10 @@ export function Paper({ doc, company: givenCompany, client: givenClient }: { doc
       <div className="totals">
         {model.totals.map((row, index) => (
           <div key={`${row.label}-${index}`} className={`total-row ${row.tone}${row.rule ? " rule" : ""}`}>
-            <span>{row.label}</span>
+            <span>
+              {row.label}
+              {row.hint ? <small>{row.hint}</small> : null}
+            </span>
             <span>{row.value}</span>
           </div>
         ))}

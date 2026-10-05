@@ -987,14 +987,24 @@ select.field {
 }
 
 .total-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  column-gap: 16px;
   align-items: baseline;
   padding: 2px 2px;
 }
 
+.total-row span:first-child small {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
 .total-row span:last-child {
+  justify-self: end;
+  text-align: right;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   font-weight: 650;
