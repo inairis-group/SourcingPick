@@ -290,7 +290,7 @@ export function Paper({ doc, company: givenCompany, client: givenClient }: { doc
         <path fill="#EEF3FF" d="M0 168H794V78C640 22 500 128 360 102 230 78 130 36 0 72Z" />
         <path fill="#DCE7FF" d="M0 168H794V112C630 78 500 140 350 122 220 106 120 88 0 108Z" />
         <DotField cols={8} rows={3} x={36} y={112} dx={16} dy={15} r={3.1} />
-        <circle cx="688" cy="86" r="52" fill="none" stroke="#D6E4FF" strokeWidth="11" />
+        <circle cx="688" cy="132" r="36" fill="none" stroke="#D6E4FF" strokeWidth="11" />
       </svg>
     </article>
   );

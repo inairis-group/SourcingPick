@@ -270,12 +270,15 @@ export function Shell({ children }: { children: ReactNode }) {
         </button>
       </div>
       <nav className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto">
+        {account && account.role !== "client" ? (
+          <p className={`ops-nav-label ${collapsed ? "lg:hidden" : ""}`}>Travail</p>
+        ) : null}
         {NAV.filter((item) => account && (item.roles as readonly string[]).includes(account.role)).map((item) => (
           <NavLink key={item.to} {...item} />
         ))}
         {BILLING.some((item) => account && (item.roles as readonly string[]).includes(account.role)) ? (
           <>
-            <p className={`mt-3 px-3 text-[11px] font-semibold tracking-wide text-white/45 uppercase ${collapsed ? "lg:hidden" : ""}`}>Facturation</p>
+            <p className={`ops-nav-label mt-3 ${collapsed ? "lg:hidden" : ""}`}>Facturation</p>
             {BILLING.filter((item) => account && (item.roles as readonly string[]).includes(account.role)).map((item) => (
               <NavLink key={item.to} {...item} />
             ))}
@@ -283,6 +286,9 @@ export function Shell({ children }: { children: ReactNode }) {
         ) : null}
       </nav>
       <div className="flex shrink-0 flex-col gap-1 border-t border-white/12 pt-3">
+        {account && account.role === "admin" ? (
+          <p className={`ops-nav-label ${collapsed ? "lg:hidden" : ""}`}>Atelier</p>
+        ) : null}
         {FOOT.filter((item) => account && (item.roles as readonly string[]).includes(account.role)).map((item) => (
           <NavLink key={item.to} {...item} />
         ))}
@@ -309,7 +315,7 @@ export function Shell({ children }: { children: ReactNode }) {
 
   return (
     <UiLangProvider role={account.role}>
-    <div className={`min-h-screen bg-canvas text-ink lg:grid ${collapsed ? "lg:grid-cols-[76px_minmax(0,1fr)]" : "lg:grid-cols-[248px_minmax(0,1fr)]"}`}>
+    <div className={`min-h-screen bg-canvas text-ink lg:grid ${collapsed ? "lg:grid-cols-[76px_minmax(0,1fr)]" : "lg:grid-cols-[248px_minmax(0,1fr)]"}`} data-desk={account.role === "client" ? "client" : "ops"} data-role={account.role}>
       {account ? <Tour /> : null}
       <aside className={`sticky top-0 z-30 hidden h-screen min-h-0 flex-col overflow-hidden bg-sidebar py-6 lg:flex ${collapsed ? "px-2" : "px-4"}`}>{aside}</aside>
       {open ? (
@@ -319,7 +325,7 @@ export function Shell({ children }: { children: ReactNode }) {
         </div>
       ) : null}
       <div className="min-w-0">
-        <header className="sticky top-0 z-20 flex h-[68px] items-center gap-3 border-b border-line bg-paper px-4 lg:h-[76px] lg:px-7">
+        <header className={`sticky top-0 z-20 flex items-center gap-3 border-b border-line bg-paper px-4 lg:px-7 ${account.role === "client" ? "h-[68px] lg:h-[76px]" : "h-[60px] lg:h-16"}`}>
           <button className="btn btn-quiet btn-icon lg:hidden" type="button" aria-label="Menu" onClick={() => setOpen(true)}>
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>
