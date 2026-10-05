@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { PageHead, Shell } from "@/components/shell";
 import { Badge, DataTable, Td } from "@/components/ops-ui";
-import { opsCreateQuote, opsDeleteQuote, opsQuotes } from "@/lib/ops.functions";
+import { opsCreateQuote, opsDeleteQuote, opsMarkQuoteSigned, opsQuoteBill, opsQuotes } from "@/lib/ops.functions";
 import { euros, type OpsQuote } from "@/lib/ops.shared";
 
 export const Route = createFileRoute("/devis/")({
@@ -60,6 +60,33 @@ function Page() {
             <Td>
               <span className="flex items-center gap-3">
                 <button type="button" className="font-semibold text-brand" onClick={() => open(row.id)}>Ouvrir</button>
+                {row.status !== "Devis signé" && row.status !== "Devis refusé" ? (
+                  <button
+                    type="button"
+                    className="font-semibold text-brand"
+                    onClick={() => {
+                      setError("");
+                      void opsMarkQuoteSigned({ data: row.id })
+                        .then(load)
+                        .catch((err: unknown) => setError(err instanceof Error ? err.message : "Marquage impossible."));
+                    }}
+                  >
+                    Marquer signé
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="font-semibold text-brand"
+                    onClick={() => {
+                      setError("");
+                      void opsQuoteBill({ data: { id: row.id, mode: "deposit" } })
+                        .then((invoiceId) => navigate({ to: "/factures/fiche/$id", params: { id: invoiceId } }))
+                        .catch((err: unknown) => setError(err instanceof Error ? err.message : "Facture impossible."));
+                    }}
+                  >
+                    Créer l’acompte
+                  </button>
+                )}
                 <button
                   type="button"
                   className="font-semibold text-[#8a1c1c]"

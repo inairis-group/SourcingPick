@@ -1,6 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { PageHead, Shell } from "@/components/shell";
 import { useOps } from "@/components/ops-ui";
+import { opsMarkQuoteSigned, opsQuoteBill, opsQuoteFunnel } from "@/lib/ops.functions";
 import { opsStats } from "@/lib/commerce.functions";
 import { SEO_PAGES } from "@/lib/seo";
 
@@ -10,8 +12,12 @@ export const Route = createFileRoute("/statistiques")({
 });
 
 function Page() {
+  const navigate = useNavigate();
   const { data, error, reload } = useOps(() => opsStats(), "stats");
+  const funnel = useOps(() => opsQuoteFunnel(), "quote-funnel");
   const stats = data;
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState("");
   const clientPath = (path: string) => /^\/(espace|consulter|signer)(\/|$)/.test(path);
   const publicPages = (stats?.pages ?? []).filter((row) => !clientPath(row.label));
   const clientPages = (stats?.pages ?? []).filter((row) => clientPath(row.label));
@@ -21,9 +27,88 @@ function Page() {
   return (
     <Shell>
       <PageHead title="Statistiques">
-        <button className="btn btn-quiet" type="button" onClick={() => reload()}>Actualiser</button>
+        <button className="btn btn-quiet" type="button" onClick={() => { reload(); funnel.reload(); }}>Actualiser</button>
       </PageHead>
       <p className="mb-4 max-w-3xl text-sm text-muted">Uniquement les visiteurs du site et les clients. Tes passages dans l’administration, et ceux des agents, ne sont pas comptés.</p>
+      <h2 className="mb-2 text-sm font-semibold">Devis — ouvert, signé, téléchargé</h2>
+      <p className="mb-3 max-w-3xl text-sm text-muted">Ce n’est pas le trafic du site. Chaque ligne est un devis. « Marquer signé » n’envoie pas d’email. « Créer l’acompte » non plus.</p>
+      {note ? <p className="mb-3 text-sm text-[#8a1c1c]">{note}</p> : null}
+      <div className="mb-8 overflow-x-auto rounded-2xl border border-line bg-white">
+        <table className="w-full min-w-[920px] text-sm">
+          <thead className="text-left text-xs uppercase text-muted">
+            <tr>
+              <th className="px-3 py-2">Devis</th>
+              <th className="px-3 py-2">Client</th>
+              <th className="px-3 py-2">Code</th>
+              <th className="px-3 py-2">Ouvert</th>
+              <th className="px-3 py-2">Signé</th>
+              <th className="px-3 py-2">PDF</th>
+              <th className="px-3 py-2">Acompte</th>
+              <th className="px-3 py-2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {(funnel.data ?? []).map((row) => (
+              <tr key={row.id} className="border-t border-line">
+                <td className="px-3 py-2 font-semibold">
+                  <Link to="/devis/nouveau" search={{ id: row.id }} className="text-brand">{row.number}</Link>
+                  <span className="mt-0.5 block text-xs font-normal text-muted">{row.status}</span>
+                </td>
+                <td className="px-3 py-2">{row.client}</td>
+                <td className="px-3 py-2">{row.code ? "Oui" : "—"}</td>
+                <td className="px-3 py-2">{row.opened ? "Oui" : "—"}</td>
+                <td className="px-3 py-2">{row.signed ? (row.manual ? "Par toi" : "Client") : "—"}</td>
+                <td className="px-3 py-2">{row.downloaded ? "Oui" : "—"}</td>
+                <td className="px-3 py-2">
+                  {row.depositId ? (
+                    <Link to="/factures/fiche/$id" params={{ id: row.depositId }} className="font-semibold text-brand">{row.depositNumber}</Link>
+                  ) : "—"}
+                </td>
+                <td className="px-3 py-2">
+                  <span className="flex flex-wrap gap-2">
+                    {!row.signed && row.status !== "Devis refusé" ? (
+                      <button
+                        className="font-semibold text-brand disabled:opacity-50"
+                        type="button"
+                        disabled={busy === row.id}
+                        onClick={() => {
+                          setNote("");
+                          setBusy(row.id);
+                          void opsMarkQuoteSigned({ data: row.id })
+                            .then(() => funnel.reload())
+                            .catch((err: unknown) => setNote(err instanceof Error ? err.message : "Marquage impossible."))
+                            .finally(() => setBusy(""));
+                        }}
+                      >
+                        Marquer signé
+                      </button>
+                    ) : null}
+                    {row.signed && !row.depositId ? (
+                      <button
+                        className="font-semibold text-brand disabled:opacity-50"
+                        type="button"
+                        disabled={busy === row.id}
+                        onClick={() => {
+                          setNote("");
+                          setBusy(row.id);
+                          void opsQuoteBill({ data: { id: row.id, mode: "deposit" } })
+                            .then((invoiceId) => navigate({ to: "/factures/fiche/$id", params: { id: invoiceId } }))
+                            .catch((err: unknown) => setNote(err instanceof Error ? err.message : "Facture impossible."))
+                            .finally(() => setBusy(""));
+                        }}
+                      >
+                        Créer l’acompte
+                      </button>
+                    ) : null}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {funnel.data && funnel.data.length === 0 ? <p className="px-3 py-3 text-sm text-muted">Aucun devis.</p> : null}
+        {funnel.error ? <p className="px-3 py-3 text-sm text-[#8a1c1c]">{funnel.error}</p> : null}
+      </div>
       {error ? <p className="mb-3 text-sm text-[#8a1c1c]">{error}</p> : null}
       {stats ? (
         <>

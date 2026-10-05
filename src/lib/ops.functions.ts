@@ -47,6 +47,7 @@ import {
   markInvoicePaid,
   markQuoteSigned,
   quoteActivity,
+  quoteFunnel,
   readDocumentFile,
   readSettings,
   sendInvoiceCopy,
@@ -480,6 +481,11 @@ export const opsQuoteActivity = createServerFn({ method: "GET" })
     await staff();
     return quoteActivity(data);
   });
+
+export const opsQuoteFunnel = createServerFn({ method: "GET" }).handler(async () => {
+  await admin();
+  return quoteFunnel();
+});
 
 export const opsQuoteBill = createServerFn({ method: "POST" })
   .inputValidator((input: { id: string; mode: string }) => {

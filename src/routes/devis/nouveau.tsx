@@ -383,6 +383,31 @@ function Page() {
       </ol>
       {info ? <p className="mb-3 text-sm text-[#0e9f6e]">{info}</p> : null}
       {error ? <p className="mb-3 text-sm text-[#8a1c1c]">{error}</p> : null}
+      {account?.role === "admin" && quote.status !== "Devis signé" && quote.status !== "Devis refusé" ? (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-white px-4 py-3">
+          <p className="text-sm">Signer à la place du client, sans email. L’acompte se crée ensuite, ici, sans envoi.</p>
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={() => {
+              setError("");
+              void opsMarkQuoteSigned({ data: quote.id })
+                .then(() => {
+                  setQuote((value) => value ? {
+                    ...value,
+                    status: "Devis signé",
+                    signerName: account?.name || "Administration",
+                    signedAt: new Date().toISOString(),
+                    signMeta: JSON.stringify({ name: account?.name || "Administration", role: "Administration", manual: true }),
+                  } : value);
+                })
+                .catch((err: unknown) => setError(err instanceof Error ? err.message : "Marquage impossible."));
+            }}
+          >
+            Marquer comme signé
+          </button>
+        </div>
+      ) : null}
 
       {step === 1 ? (
         <>

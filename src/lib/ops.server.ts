@@ -962,6 +962,63 @@ export async function markQuoteSigned(id: string, actor: string) {
   return { ok: true as const, already: false };
 }
 
+export async function quoteFunnel() {
+  await ensureOps();
+  const sql = await getSql();
+  const quotes = await sql<{
+    id: string;
+    number: string;
+    client_name: string;
+    client_company: string;
+    client_email: string;
+    status: string;
+    signer_name: string;
+    signed_at: string;
+    order_ref: string;
+  }>`select id, number, client_name, client_company, client_email, status, signer_name, signed_at, order_ref
+    from ops_quotes order by issued_on desc limit 40`;
+  const logs = await sql<{ object_ref: string; action: string; at_label: string }>`
+    select object_ref, action, at_label from ops_journal
+    where action in (
+      'Devis envoyé par email',
+      'Code de signature demandé',
+      'Devis ouvert',
+      'Devis consulté',
+      'Devis signé',
+      'Devis marqué signé',
+      'Devis signé téléchargé',
+      'Devis téléchargé',
+      'Facture d’acompte'
+    )
+    order by created_at desc
+    limit 500`;
+  const deposits = await sql<{ id: string; number: string; order_ref: string; lines_json: string }>`
+    select id, number, order_ref, lines_json from ops_invoices
+    where kind = ${"deposit"} and status <> ${"Annulée"}`;
+  const when = (number: string, action: string) => logs.find((row) => row.object_ref === number && row.action === action)?.at_label || "";
+  return quotes.map((quote) => {
+    const deposit = deposits.find((row) => (quote.order_ref && row.order_ref === quote.order_ref) || row.lines_json.includes(quote.number));
+    const signed = quote.status === "Devis signé";
+    return {
+      id: quote.id,
+      number: quote.number,
+      client: quote.client_company || quote.client_name || "—",
+      email: quote.client_email || "",
+      status: quote.status,
+      signer: quote.signer_name || "",
+      signed,
+      manual: Boolean(when(quote.number, "Devis marqué signé")),
+      signedAt: quote.signed_at || when(quote.number, "Devis signé") || when(quote.number, "Devis marqué signé"),
+      sent: when(quote.number, "Devis envoyé par email"),
+      code: when(quote.number, "Code de signature demandé"),
+      opened: when(quote.number, "Devis ouvert") || when(quote.number, "Devis consulté"),
+      downloaded: when(quote.number, "Devis signé téléchargé") || when(quote.number, "Devis téléchargé"),
+      depositId: deposit?.id || "",
+      depositNumber: deposit?.number || "",
+    };
+  });
+}
+
 export async function quoteActivity(id: string) {
   const quote = await getQuote(id);
   if (!quote) return [];
