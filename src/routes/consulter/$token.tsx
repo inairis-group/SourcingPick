@@ -4,7 +4,7 @@ import { PaperView } from "@/components/paper";
 import { ContractPages } from "@/components/contract-pages";
 import { PageReel } from "@/components/page-reel";
 import { devisFromOps, printNamed, signRows, stageClient } from "@/lib/ops-paper";
-import { publicSign, publicSignCode, publicUnlock } from "@/lib/ops.functions";
+import { publicQuoteDownload, publicSign, publicSignCode, publicUnlock } from "@/lib/ops.functions";
 import { euros } from "@/lib/ops.shared";
 import { marks } from "@/components/marks";
 
@@ -160,7 +160,10 @@ function Page() {
               ) : (
                 <p className="mt-2">Ce devis n’a pas d’acompte à régler. {done?.sent === false ? "L’email n’est pas parti." : "Le devis signé vient d’être envoyé par email."}</p>
               )}
-              <button className="btn btn-primary mt-4 w-full" type="button" onClick={() => printNamed(opened.quote.number)}>Télécharger le devis signé</button>
+              <button className="btn btn-primary mt-4 w-full" type="button" onClick={() => {
+                void publicQuoteDownload({ data: token }).catch(() => undefined);
+                printNamed(opened.quote.number);
+              }}>Télécharger le devis signé</button>
             </div>
           ) : (
             <form

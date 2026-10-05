@@ -875,7 +875,8 @@ async function catchSignedNotices(sql: Sql) {
         where subject = ${"Devis signé : "} || ops_quotes.number
           and to_email = ${"contact@sourcingpick.com"}
           and sent = true
-      )`;
+      )
+      and coalesce(sign_meta, '') not like ${'%"manual":true%'}`;
   if (!rows.length) return;
   const desks = await sql<{ email: string }>`select email from admin_users where role = ${"admin"} and active = true`;
   const targets = new Set<string>(["contact@sourcingpick.com"]);
@@ -936,6 +937,48 @@ async function nextQuoteNumber(sql: Sql) {
     if (match && Number(match[1]) === year) max = Math.max(max, Number(match[2]));
   }
   return `DV-${year}-${String(max + 1).padStart(4, "0")}`;
+}
+
+export async function markQuoteSigned(id: string, actor: string) {
+  const quote = await getQuote(id);
+  if (!quote) throw new Error("Devis introuvable.");
+  if (quote.status === "Devis refusé") throw new Error("Ce devis est refusé. Il ne se marque pas signé.");
+  if (quote.status === "Devis signé") return { ok: true as const, already: true };
+  const sql = await getSql();
+  const signedAt = new Date().toISOString();
+  const meta = JSON.stringify({
+    name: actor,
+    role: "Administration",
+    manual: true,
+    at: signedAt,
+    note: "Marqué signé par l’administration. Aucun email n’est envoyé.",
+  });
+  await sql`update ops_quotes set status = ${"Devis signé"}, signer_name = ${actor}, signed_at = ${signedAt}, sign_meta = ${meta}
+    where id = ${quote.id} and status <> ${"Devis signé"}`;
+  if (quote.orderRef) {
+    await sql`update ops_orders set substate = ${"Devis signé"}, updated_at = now() where ref = ${quote.orderRef} and state = ${"Devis envoyé"}`;
+  }
+  await log(sql, actor, "Devis marqué signé", quote.number);
+  return { ok: true as const, already: false };
+}
+
+export async function quoteActivity(id: string) {
+  const quote = await getQuote(id);
+  if (!quote) return [];
+  const sql = await getSql();
+  const rows = await sql<{ id: string; at_label: string; actor: string; action: string; object_ref: string; created_at: string }>`
+    select id, at_label, actor, action, object_ref, created_at::text as created_at
+    from ops_journal
+    where object_ref = ${quote.number}
+    order by created_at desc
+    limit 40`;
+  return rows.map((row) => ({
+    id: row.id,
+    atLabel: row.at_label,
+    actor: row.actor,
+    action: row.action,
+    createdAt: row.created_at || "",
+  }));
 }
 
 export async function createQuote(actor: string) {

@@ -3,7 +3,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PageHead, Shell } from "@/components/shell";
 import { PaperView } from "@/components/paper";
 import { Badge, useOps } from "@/components/ops-ui";
-import { opsClients, opsCreateQuoteClient, opsEmails, opsInvoices, opsQuote, opsQuoteBill, opsQuotes, opsSaveQuote, opsSendQuote } from "@/lib/ops.functions";
+import { opsClients, opsCreateQuoteClient, opsEmails, opsInvoices, opsMarkQuoteSigned, opsQuote, opsQuoteActivity, opsQuoteBill, opsQuotes, opsSaveQuote, opsSendQuote } from "@/lib/ops.functions";
 import { devisFromOps, openOpsQuote, signRows, syncOpsClient } from "@/lib/ops-paper";
 import { isOldQuoteMail, quoteReceivedBody, refreshQuoteMail } from "@/lib/mail-templates";
 import { clientLabel, lineAmount, percent, pricedLines, quoteMath, type CompanyHit, type OpsClient, type OpsEmail, type OpsInvoice, type OpsQuote, type QuoteLine } from "@/lib/ops.shared";
@@ -164,6 +164,7 @@ function Page() {
               <p className="text-sm text-muted">En attente de signature.</p>
             )}
             <Linked quote={current} invoices={bills ?? []} quotes={allQuotes ?? []} />
+            <QuoteTrail id={current.id} />
             {current.status === "Devis signé" && account?.role === "admin" ? (
               <BillActions quote={current} invoices={bills ?? []} onError={setError} error={error} signed />
             ) : null}
@@ -608,7 +609,31 @@ function Page() {
               <>
                 <h2 className="display text-lg">Actions</h2>
                 <button className="btn btn-primary mt-3 w-full" type="button" onClick={() => setStep(2)}>Modifier les lignes</button>
+                {account?.role === "admin" && quote.status !== "Devis signé" && quote.status !== "Devis refusé" ? (
+                  <button
+                    className="btn btn-primary mt-3 w-full"
+                    type="button"
+                    onClick={() => {
+                      setError("");
+                      void opsMarkQuoteSigned({ data: quote.id })
+                        .then(() => {
+                          setQuote((value) => value ? {
+                            ...value,
+                            status: "Devis signé",
+                            signerName: account?.name || "Administration",
+                            signedAt: new Date().toISOString(),
+                            signMeta: JSON.stringify({ name: account?.name || "Administration", role: "Administration", manual: true }),
+                          } : value);
+                          setInfo("Devis marqué signé. Aucun email n’a été envoyé. Tu peux créer l’acompte ci-dessous.");
+                        })
+                        .catch((err: unknown) => setError(err instanceof Error ? err.message : "Marquage impossible."));
+                    }}
+                  >
+                    Marquer comme signé
+                  </button>
+                ) : null}
                 {account?.role === "admin" ? <BillActions quote={quote} invoices={bills ?? []} onError={setError} error={error} signed={quote.status === "Devis signé"} /> : null}
+                <QuoteTrail id={quote.id} />
                 <Linked quote={quote} invoices={bills ?? []} quotes={allQuotes ?? []} />
                 <details className="mt-3 rounded-2xl border border-line p-3">
                   <summary className="cursor-pointer text-sm font-semibold">Client, gabarit et message</summary>
@@ -660,8 +685,29 @@ function BillActions({ quote, invoices, onError, error, signed }: { quote: OpsQu
         </button>
       ))}
       {deposits.length === 0 ? <p className="text-xs leading-relaxed text-muted">La facture intégrale reprend tout le devis. La facture de solde n’apparaît qu’après une facture d’acompte.</p> : null}
-      {signed ? null : <p className="text-xs leading-relaxed text-muted">Ces factures se créent une fois le devis signé.</p>}
+      {signed ? null : <p className="text-xs leading-relaxed text-muted">Ces factures se créent une fois le devis signé. La création n’envoie pas d’email.</p>}
       {error ? <p className="text-sm text-[#8a1c1c]">{error}</p> : null}
+      {signed ? <p className="text-xs leading-relaxed text-muted">La facture est créée ici. Aucun email n’est envoyé au client.</p> : null}
+    </div>
+  );
+}
+
+function QuoteTrail({ id }: { id: string }) {
+  const { data } = useOps(() => opsQuoteActivity({ data: id }), `quote-activity-${id}`);
+  const rows = data ?? [];
+  return (
+    <div className="mt-3 grid gap-2 rounded-2xl bg-canvas p-3">
+      <p className="font-semibold">Parcours du client</p>
+      {rows.length === 0 ? <p className="text-sm text-muted">Aucune ouverture, téléchargement ou signature enregistré pour ce devis.</p> : null}
+      <ul className="grid gap-2">
+        {rows.map((row) => (
+          <li key={row.id} className="text-sm">
+            <span className="block text-[11px] font-semibold tracking-wide text-muted uppercase">{row.atLabel}</span>
+            <span>{row.action}</span>
+            {row.actor ? <span className="text-muted"> · {row.actor}</span> : null}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

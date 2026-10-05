@@ -45,6 +45,8 @@ import {
   listUsers,
   loadClientPortal,
   markInvoicePaid,
+  markQuoteSigned,
+  quoteActivity,
   readDocumentFile,
   readSettings,
   sendInvoiceCopy,
@@ -459,6 +461,24 @@ export const opsDepositInvoice = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const user = await admin();
     return createDepositInvoice(data, user.name);
+  });
+
+export const opsMarkQuoteSigned = createServerFn({ method: "POST" })
+  .inputValidator((id: string) => {
+    const clean = String(id ?? "").trim();
+    if (!clean) throw new Error("Devis manquant.");
+    return clean;
+  })
+  .handler(async ({ data }) => {
+    const user = await admin();
+    return markQuoteSigned(data, user.name);
+  });
+
+export const opsQuoteActivity = createServerFn({ method: "GET" })
+  .inputValidator((id: string) => String(id ?? "").trim())
+  .handler(async ({ data }) => {
+    await staff();
+    return quoteActivity(data);
   });
 
 export const opsQuoteBill = createServerFn({ method: "POST" })
@@ -1264,6 +1284,19 @@ export const publicUnlock = createServerFn({ method: "POST" })
     rateLimit(`sign-check:${clientAddress()}`, 12, 10 * 60 * 1000);
     const { confirmSignCode } = await import("@/lib/quote-link.server");
     return confirmSignCode(data.token, data.email, data.code);
+  });
+
+export const publicQuoteDownload = createServerFn({ method: "POST" })
+  .inputValidator((token: string) => {
+    const clean = String(token ?? "").trim();
+    if (clean.length < 16) throw new Error("Lien invalide.");
+    return clean;
+  })
+  .handler(async ({ data }) => {
+    assertSameSiteRequest();
+    rateLimit(`quote-pdf:${clientAddress()}`, 30, 10 * 60 * 1000);
+    const { noteQuoteDownload } = await import("@/lib/quote-link.server");
+    return noteQuoteDownload(data);
   });
 
 export const publicSign = createServerFn({ method: "POST" })

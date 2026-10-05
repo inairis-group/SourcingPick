@@ -24,6 +24,13 @@ function hashCode(createHash: typeof import("node:crypto").createHash, token: st
   return createHash("sha256").update(`sp-sign:${token}:${code}`).digest("hex");
 }
 
+async function trace(number: string, actor: string, action: string) {
+  if (!number) return;
+  const sql = await getSql();
+  await sql`insert into ops_journal (id, at_label, actor, action, object_ref)
+    values (${uid("jr")}, ${new Date().toLocaleString("fr-FR")}, ${actor.slice(0, 120)}, ${action.slice(0, 80)}, ${number})`;
+}
+
 async function remember(quoteId: string, to: string, subject: string, body: string, sent: boolean) {
   const sql = await getSql();
   await sql`insert into ops_outbox (id, quote_id, to_email, subject, body, sent)
@@ -109,6 +116,7 @@ export async function requestSignCode(token: string, email: string) {
     note: "Si vous n’êtes pas en train de signer ce devis, ignorez ce message.",
   });
   if (!sent) throw new Error(mailError() || "Le code n’a pas pu être envoyé.");
+  await trace(quote.number, row.client_email, "Code de signature demandé");
   return { ok: true as const, emailMasked: maskEmail(row.client_email) };
 }
 
@@ -126,6 +134,7 @@ export async function confirmSignCode(token: string, email: string, code: string
   const expected = Buffer.from(row.otp_hash);
   const actual = Buffer.from(hashCode(createHash, row.public_token, code.trim()));
   if (expected.length !== actual.length || !timingSafeEqual(expected, actual)) throw new Error("Code incorrect.");
+  await trace(quote.number, row.client_email, "Devis ouvert");
   return openPublicQuote(token.trim());
 }
 
@@ -163,6 +172,13 @@ export async function openPublicQuote(token: string) {
     signed: quote.status === "Devis signé",
     invoice: invoice ? { number: invoice.number, amountCents: invoice.amountCents } : null,
   };
+}
+
+export async function noteQuoteDownload(token: string) {
+  const quote = await quoteByToken(token.trim());
+  if (!quote) return { ok: false as const };
+  await trace(quote.number, quote.clientEmail || "Client", quote.status === "Devis signé" ? "Devis signé téléchargé" : "Devis téléchargé");
+  return { ok: true as const };
 }
 
 async function quoteByToken(token: string) {
