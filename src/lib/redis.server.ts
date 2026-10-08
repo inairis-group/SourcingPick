@@ -7,15 +7,24 @@ const slot = globalThis as typeof globalThis & {
 };
 
 function drop(client: Redis | null) {
+  if (!client) return;
+  const marked = client as Redis & { __spDropped?: boolean };
+  if (marked.__spDropped) return;
+  marked.__spDropped = true;
   if (slot.__spRedis === client) slot.__spRedis = null;
   slot.__spRedisOpen = undefined;
-  client?.disconnect();
+  client.removeAllListeners();
+  client.on("error", () => undefined);
+  try {
+    client.disconnect();
+  } catch {
+    /* already closed */
+  }
 }
 
 async function open() {
   const client = new Redis(process.env.REDIS_URL || "redis://127.0.0.1:6379", {
     connectionName: "sourcingpick",
-    enableAutoPipelining: true,
     keepAlive: 30_000,
     commandTimeout: 150,
     maxRetriesPerRequest: 1,
