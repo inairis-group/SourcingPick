@@ -271,14 +271,14 @@ export function Shell({ children }: { children: ReactNode }) {
       </div>
       <nav className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto">
         {account && account.role !== "client" ? (
-          <p className={`ops-nav-label ${collapsed ? "lg:hidden" : ""}`}>Travail</p>
+          <p className={`ops-nav-label ${collapsed ? "lg:hidden" : ""}`}><Tx text="Travail" /></p>
         ) : null}
         {NAV.filter((item) => account && (item.roles as readonly string[]).includes(account.role)).map((item) => (
           <NavLink key={item.to} {...item} />
         ))}
         {BILLING.some((item) => account && (item.roles as readonly string[]).includes(account.role)) ? (
           <>
-            <p className={`ops-nav-label mt-3 ${collapsed ? "lg:hidden" : ""}`}>Facturation</p>
+            <p className={`ops-nav-label mt-3 ${collapsed ? "lg:hidden" : ""}`}><Tx text="Facturation" /></p>
             {BILLING.filter((item) => account && (item.roles as readonly string[]).includes(account.role)).map((item) => (
               <NavLink key={item.to} {...item} />
             ))}
@@ -287,7 +287,7 @@ export function Shell({ children }: { children: ReactNode }) {
       </nav>
       <div className="flex shrink-0 flex-col gap-1 border-t border-white/12 pt-3">
         {account && account.role === "admin" ? (
-          <p className={`ops-nav-label ${collapsed ? "lg:hidden" : ""}`}>Atelier</p>
+          <p className={`ops-nav-label ${collapsed ? "lg:hidden" : ""}`}><Tx text="Atelier" /></p>
         ) : null}
         {FOOT.filter((item) => account && (item.roles as readonly string[]).includes(account.role)).map((item) => (
           <NavLink key={item.to} {...item} />
@@ -621,8 +621,7 @@ function BellMenu({ role, index }: { role: Role; index: NoticeDoc[] }) {
 }
 
 function LangSwitch() {
-  const { agent, lang, setLang } = useUi();
-  if (!agent) return null;
+  const { lang, setLang } = useUi();
   return (
     <div className="flex rounded-full border border-line p-0.5 text-xs font-semibold">
       <button type="button" className={`rounded-full px-2 py-1 ${lang === "fr" ? "bg-navy text-white" : ""}`} onClick={() => setLang("fr")}>FR</button>

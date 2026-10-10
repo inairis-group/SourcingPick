@@ -193,6 +193,10 @@ export const AGENT_EN: Record<string, string> = {
   "Payée": "Paid",
   "En retard": "Overdue",
   "Équipe Hangzhou": "Hangzhou team",
+  "Travail": "Work",
+  "Facturation": "Billing",
+  "Atelier": "Workshop",
+  "Chargement…": "Loading…",
 };
 
 type Ui = {
@@ -227,7 +231,7 @@ export function UiLangProvider({
     setLangState(next);
     localStorage.setItem("sp_agent_lang", next);
   }
-  const english = role === "agent" && lang === "en";
+  const english = lang === "en";
   const t = (value: string) => (english && AGENT_EN[value]) || value;
   return <Ctx.Provider value={{ agent: role === "agent", english, lang, setLang, t }}>{children}</Ctx.Provider>;
 }
