@@ -1,7 +1,12 @@
 import { getSql } from "@/lib/db";
 import { authStamp } from "@/lib/read-cache";
 
-const COOKIE = "sp_admin";
+// `__Host-` prefix: the browser refuses any same-named cookie carrying a
+// `Domain` attribute, so a sibling subdomain cannot "toss" a session cookie
+// onto this app. Requires Secure + Path=/ + no Domain — both already set on
+// every write/delete of this cookie below. Renaming invalidates existing
+// sessions once (acceptable for a back-office of a handful of users).
+const COOKIE = "__Host-sp_admin";
 const MONTH = 60 * 60 * 24 * 30;
 
 export type Role = "admin" | "agent" | "client";
@@ -307,8 +312,12 @@ export async function confirmCode(code: string) {
   if (user.verify_expires && new Date(user.verify_expires).getTime() < Date.now()) {
     throw new Error("Ce code a expiré. Renvoyez-en un.");
   }
-  const { createHash } = await cryptoKit();
-  if (user.verify_code_hash !== codeHash(createHash, code)) throw new Error("Code incorrect.");
+  const { createHash, timingSafeEqual } = await cryptoKit();
+  const expected = Buffer.from(user.verify_code_hash);
+  const actual = Buffer.from(codeHash(createHash, code));
+  if (expected.length !== actual.length || !timingSafeEqual(expected, actual)) {
+    throw new Error("Code incorrect.");
+  }
   const sql = await getSql();
   await sql`update admin_users set email_verified = true, verify_code_hash = '', verify_token_hash = '', verify_expires = null where id = ${user.id}`;
   const { deleteCookie } = await cookieJar();
