@@ -6,13 +6,13 @@ import { LANGS, useLang, type Lang } from "@/site/i18n";
 export function AuthLangPills() {
   const { lang, setLang } = useLang();
   return (
-    <div className="flex items-center gap-1 rounded-full border border-line bg-canvas p-1">
+    <div className="flex max-w-full items-center gap-1 rounded-full border border-line bg-canvas p-1">
       {LANGS.slice(0, 3).map((item) => (
         <button
           key={item.id}
           type="button"
           onClick={() => setLang(item.id as Lang)}
-          className={`rounded-full px-3 py-1.5 text-sm font-semibold transition-colors ${lang === item.id ? "bg-white text-ink shadow-sm" : "text-muted"}`}
+          className={`rounded-full px-2.5 py-1.5 text-sm font-semibold transition-colors sm:px-3 ${lang === item.id ? "bg-white text-ink shadow-sm" : "text-muted"}`}
         >
           {item.id === "zh" ? "中文" : item.id.toUpperCase()}
         </button>
@@ -23,9 +23,9 @@ export function AuthLangPills() {
 
 export function AuthFrame({ children }: { children: ReactNode }) {
   return (
-    <main className="grid min-h-screen bg-white lg:grid-cols-[minmax(0,1fr)_minmax(320px,560px)]">
-      <section className="flex items-center justify-center px-6 py-12">
-        <div className="flex w-full max-w-[420px] flex-col gap-5">{children}</div>
+    <main className="grid min-h-dvh bg-white lg:min-h-screen lg:grid-cols-[minmax(0,1fr)_minmax(320px,560px)]">
+      <section className="flex items-start justify-center overflow-x-hidden px-4 py-8 sm:items-center sm:px-6 sm:py-12">
+        <div className="flex w-full min-w-0 max-w-[420px] flex-col gap-5">{children}</div>
       </section>
       <aside className="hidden flex-col justify-center gap-6 bg-[#0B1433] px-12 py-14 text-white lg:flex">
         <img src="/illustrations/logo-footer.svg" alt="" className="h-8 w-auto self-start" />

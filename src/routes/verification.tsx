@@ -53,7 +53,7 @@ function Page() {
       <form className="flex flex-col gap-4" onSubmit={submit}>
         <div className="flex flex-col gap-2">
           <span className="text-sm font-semibold">Code de vérification</span>
-          <div className="flex gap-2">
+          <div className="grid grid-cols-6 gap-1.5">
             {digits.map((digit, index) => (
               <input
                 key={index}
@@ -64,7 +64,7 @@ function Page() {
                 maxLength={1}
                 value={digit}
                 aria-label={`Chiffre ${index + 1}`}
-                className={`h-16 w-12 rounded-2xl border bg-white text-center font-mono text-2xl font-semibold ${digit ? "border-[#155DFC]" : "border-[#DCE3F2]"}`}
+                className={`h-12 w-full min-w-0 rounded-xl border bg-white text-center font-mono text-xl font-semibold sm:h-14 sm:text-2xl ${digit ? "border-[#155DFC]" : "border-[#DCE3F2]"}`}
                 onChange={(event) => {
                   const value = event.target.value.replace(/\D/g, "").slice(-1);
                   setAt(index, value);

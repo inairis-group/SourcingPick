@@ -46,7 +46,7 @@ function Page() {
   return (
     <LangProvider>
     <AuthFrame>
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <img src="/illustrations/logo.svg" alt="Sourcing Pick" className="h-8 w-auto self-start" />
         <AuthLangPills />
       </div>

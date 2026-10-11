@@ -558,17 +558,12 @@ function fitCtaMascot(root: HTMLElement) {
     if (!img.style.right.trim().startsWith("-")) continue;
     const section = img.parentElement;
     if (!(section instanceof HTMLElement)) continue;
-    section.style.overflow = "hidden";
-    img.style.right = "10px";
-    img.style.top = "12px";
-    img.style.width = "84px";
-    img.style.height = "84px";
-    img.style.objectFit = "contain";
+    img.style.right = "0px";
+    if ((parseFloat(img.style.top) || 0) < 0) img.style.top = "0px";
+    section.style.overflow = "visible";
     const title = section.querySelector("h2");
-    if (title instanceof HTMLElement) {
-      title.style.maxWidth = "none";
-      title.style.paddingRight = "92px";
-    }
+    const width = parseFloat(img.style.width) || 146;
+    if (title instanceof HTMLElement) title.style.paddingRight = `${Math.round(width * 0.58)}px`;
   }
 }
 

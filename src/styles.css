@@ -206,6 +206,10 @@ select.field {
   .hide-md {
     display: none !important;
   }
+
+  .field {
+    font-size: 16px;
+  }
 }
 
 .nav-link {
