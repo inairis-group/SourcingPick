@@ -2,8 +2,6 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 
 const NAV: Array<[string, string]> = [
-  ["/marketplace", "Marketplace"],
-  ["/encheres", "Enchères"],
   ["/cgv", "Conditions"],
 ];
 

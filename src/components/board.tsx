@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "@tanstack/react-router";
 import { submitLead } from "@/lib/backend.functions";
 import { armLoadingBar, clearLoadingBar } from "@/lib/loading";
-import { useLang } from "@/site/i18n";
+import { useLang, type Lang } from "@/site/i18n";
 import { LEGAL_BOARDS, translateDom } from "@/site/translate";
 import {
   BOARD_LOADERS,
@@ -19,8 +19,6 @@ const DEFAULT_NAV: Array<[string, string]> = [
   ["/comment-ca-marche", "Comment ça marche"],
   ["/entrepot", "Entrepôt"],
   ["/tarifs", "Tarifs"],
-  ["/marketplace", "Marketplace"],
-  ["/encheres", "Enchères"],
   ["/faq", "FAQ"],
 ];
 const DEFAULT_EXTRA: Array<[string, string]> = [
@@ -41,8 +39,6 @@ const FOOTER_GROUPS: Array<[string, Array<[string, string]>]> = [
       ["/services", "Chargement"],
       ["/services", "Expédition maritime"],
       ["/services", "Sourcing"],
-      ["/marketplace", "Marketplace"],
-      ["/encheres", "Enchères"],
     ],
   ],
   [
@@ -484,7 +480,7 @@ function ensureFooterNav(art: HTMLElement) {
   nav.className = "sp-footnav";
   nav.setAttribute("aria-label", "Plan du site");
   nav.style.cssText =
-    "display:grid;grid-template-columns:1fr 1fr;gap:22px 16px;padding:22px 0 4px;border-top:1px solid rgba(184,196,230,0.16);order:3;width:100%;";
+    "display:grid;grid-template-columns:1fr 1fr;gap:22px 16px;padding:18px 0 4px;border-top:1px solid rgba(184,196,230,0.16);width:100%;";
   for (const [title, links] of FOOTER_GROUPS) {
     const col = document.createElement("div");
     col.style.cssText = "display:flex;flex-direction:column;gap:9px;";
@@ -519,28 +515,59 @@ function openLongBoards(root: HTMLElement, force = false) {
   art.dataset.h = String(Math.ceil(Math.max(box.scrollHeight, art.scrollHeight)));
 }
 
-function linkCommerce(root: HTMLElement) {
-  const nav = root.querySelector("header nav");
-  if (nav && !nav.querySelector('a[href="/marketplace"]')) {
-    const faq = [...nav.querySelectorAll("a")].find((link) => link.getAttribute("href") === "/faq");
-    for (const [href, label] of [["/marketplace", "Marketplace"], ["/encheres", "Enchères"]] as const) {
-      const link = document.createElement("a");
-      link.href = href;
-      link.textContent = label;
-      link.style.cssText = "color:#0E1A3D;font-size:15px;font-weight:500;white-space:nowrap;";
-      if (faq) nav.insertBefore(link, faq);
-      else nav.appendChild(link);
-    }
+function pinLanguagesLast(root: HTMLElement) {
+  const footer = root.querySelector("footer");
+  if (!footer) return;
+  const langLink = footer.querySelector("a[lang]");
+  const langRow = langLink?.parentElement;
+  if (!langRow || langRow.parentElement !== footer) return;
+  const copy = [...footer.children].find((el) => el !== langRow && (el.textContent || "").includes("©"));
+  if (copy) footer.appendChild(copy);
+  footer.appendChild(langRow);
+}
+
+const LANG_ATTR: Record<string, Lang> = {
+  fr: "fr",
+  en: "en",
+  "en-GB": "en",
+  zh: "zh",
+  "zh-Hans": "zh",
+  es: "es",
+  de: "de",
+  it: "it",
+  pt: "pt",
+  "pt-PT": "pt",
+  nl: "nl",
+  ar: "ar",
+  ru: "ru",
+  tr: "tr",
+  pl: "pl",
+};
+
+function markActiveLang(root: HTMLElement, lang: Lang) {
+  for (const link of root.querySelectorAll<HTMLAnchorElement>("a[lang]")) {
+    const id = LANG_ATTR[link.getAttribute("lang") || ""];
+    const on = id === lang;
+    link.style.fontWeight = on ? "700" : "500";
+    link.style.color = on ? "#FFFFFF" : "#9FACD3";
   }
-  for (const block of root.querySelectorAll("footer div")) {
-    const title = block.querySelector(":scope > span");
-    if (title?.textContent?.trim() !== "Services" || block.querySelector(":scope > a[href='/marketplace']")) continue;
-    for (const [href, label] of [["/marketplace", "Marketplace"], ["/encheres", "Enchères"]] as const) {
-      const link = document.createElement("a");
-      link.href = href;
-      link.textContent = label;
-      link.style.cssText = "color:#C3CDEB;font-size:15px;";
-      block.appendChild(link);
+}
+
+function fitCtaMascot(root: HTMLElement) {
+  for (const img of root.querySelectorAll<HTMLImageElement>("img")) {
+    if (!img.style.right.trim().startsWith("-")) continue;
+    const section = img.parentElement;
+    if (!(section instanceof HTMLElement)) continue;
+    section.style.overflow = "hidden";
+    img.style.right = "10px";
+    img.style.top = "12px";
+    img.style.width = "84px";
+    img.style.height = "84px";
+    img.style.objectFit = "contain";
+    const title = section.querySelector("h2");
+    if (title instanceof HTMLElement) {
+      title.style.maxWidth = "none";
+      title.style.paddingRight = "92px";
     }
   }
 }
@@ -814,7 +841,7 @@ export function Board({
   const stage = useRef<HTMLDivElement>(null);
   const board = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const { lang } = useLang();
+  const { lang, setLang } = useLang();
   const [view, setView] = useState<{ html: string; variant: BoardVariant }>({
     html: source,
     variant: sourceVariant,
@@ -869,13 +896,16 @@ export function Board({
     const stageEl = stage.current;
     const boardEl = board.current;
     if (!stageEl || !boardEl) return;
+    boardEl.innerHTML = html;
     const art = boardEl.querySelector<HTMLElement>(".sp-art");
     tagSectionJumps(boardEl);
-    linkCommerce(boardEl);
+    fitCtaMascot(boardEl);
     if (mobileBoard) ensureFooterNav(boardEl as HTMLElement);
+    pinLanguagesLast(boardEl);
+    markActiveLang(boardEl, lang);
     if (name === "entrepot") mountWarehouseMap(boardEl);
     if (name === "devis") mountCountry(boardEl);
-    openLongBoards(boardEl, name === "faq" || name === "cgv");
+    openLongBoards(boardEl, mobileBoard || name === "faq" || name === "cgv");
     const height = Number(art?.dataset.h || 2000);
     const fit = () => {
       const width = stageEl.clientWidth;
@@ -1040,6 +1070,12 @@ export function Board({
         const link = (event.target as HTMLElement).closest("a");
         if (!link || !board.current?.contains(link)) return;
         const href = link.getAttribute("href") || "";
+        const langAttr = link.getAttribute("lang");
+        if (langAttr && LANG_ATTR[langAttr]) {
+          event.preventDefault();
+          setLang(LANG_ATTR[langAttr]);
+          return;
+        }
         if (href === "#submit-lead") {
           event.preventDefault();
           void send(link);

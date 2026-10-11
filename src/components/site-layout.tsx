@@ -166,9 +166,20 @@ function Frame({ children }: { children: ReactNode }) {
           </div>
         </div>
         <div className="border-t border-white/10">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4 text-xs text-[#9facd3]">
+          <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4 text-xs text-[#9facd3]">
             <p>© 2026 SourcingPick · Hangzhou Qiyuan Ying Technology Information Co., Ltd. · Guangzhou</p>
-            <p>{lang === "en" ? "12 languages" : "12 langues"}</p>
+            <div className="flex flex-wrap gap-x-3 gap-y-2">
+              {LANGS.map((l) => (
+                <button
+                  key={l.id}
+                  type="button"
+                  className={lang === l.id ? "font-semibold text-white" : "hover:text-white"}
+                  onClick={() => setLang(l.id)}
+                >
+                  {l.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </footer>

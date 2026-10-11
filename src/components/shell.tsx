@@ -27,9 +27,7 @@ import {
   ChevronDown,
   ArrowLeftRight,
   BarChart3,
-  Gavel,
   Package,
-  Store,
 } from "lucide-react";
 import { kindLabel, type Document } from "@/lib/docs";
 import { adminLogout } from "@/lib/admin-auth.functions";
@@ -61,8 +59,6 @@ const NAV = [
   { to: "/contrats", label: "Contrats", icon: FileSignature, exact: false, roles: ["admin"] },
   { to: "/agent/finances", label: "Finances", icon: Wallet, exact: true, roles: ["agent"] },
   { to: "/stock", label: "Stock", icon: Package, exact: true, roles: ["admin"] },
-  { to: "/gestion/marketplace", label: "Marketplace", icon: Store, exact: false, roles: ["admin"] },
-  { to: "/gestion/encheres", label: "Enchères", icon: Gavel, exact: false, roles: ["admin"] },
   { to: "/statistiques", label: "Statistiques", icon: BarChart3, exact: true, roles: ["admin"] },
 ] as const;
 
