@@ -9,6 +9,14 @@ import { clearSession, loadSession } from "@/lib/session";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/connexion")({
+  validateSearch: (search: Record<string, unknown>): { reprise?: boolean; email?: string } => {
+    const reprise = search.reprise === "1" || search.reprise === 1 || search.reprise === true;
+    const email = typeof search.email === "string" ? search.email.slice(0, 160) : "";
+    return {
+      ...(reprise ? { reprise: true } : {}),
+      ...(email.includes("@") ? { email } : {}),
+    };
+  },
   head: () => seoHead("/connexion"),
   component: Connexion,
 });
@@ -33,6 +41,7 @@ function passwordStrength(password: string) {
 
 function Connexion() {
   const navigate = useNavigate();
+  const search = Route.useSearch();
   const [mode, setMode] = useState<"onboard" | "login" | "forgot" | "loading">("loading");
   const [resetStep, setResetStep] = useState<"email" | "code">("email");
   const [name, setName] = useState("");
@@ -46,6 +55,13 @@ function Connexion() {
   const strength = passwordStrength(mode === "forgot" ? password : "");
 
   useEffect(() => {
+    if (search.reprise && search.email?.includes("@")) {
+      setEmail(search.email);
+      setResetStep("code");
+      setMode("forgot");
+      setNote("Saisissez le code reçu par email, puis choisissez votre mot de passe.");
+      return;
+    }
     let live = true;
     loadSession()
       .then((session) => {
@@ -62,7 +78,7 @@ function Connexion() {
     return () => {
       live = false;
     };
-  }, [navigate]);
+  }, [navigate, search.email, search.reprise]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();

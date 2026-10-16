@@ -128,6 +128,9 @@ type OrderRow = {
   note: string;
   internal_note: string;
   client_talk: boolean;
+  client_user_id?: string;
+  client_email?: string;
+  client_phone?: string;
   updated_at: string;
   created_at?: string;
 };
@@ -146,8 +149,9 @@ function mapOrder(row: OrderRow): OpsOrder {
     internalNote: row.internal_note || "",
     updatedAt: String(row.updated_at),
     createdAt: row.created_at ? String(row.created_at) : String(row.updated_at),
-    clientEmail: "",
-    clientPhone: "",
+    clientEmail: row.client_email || "",
+    clientPhone: row.client_phone || "",
+    clientUserId: row.client_user_id || "",
     clientTalk: Boolean(row.client_talk),
   };
 }
@@ -429,8 +433,8 @@ function withContacts(
     const written = noteContact(order.note || "");
     return {
       ...order,
-      clientEmail: person?.email || written.email,
-      clientPhone: person?.phone || written.phone,
+      clientEmail: order.clientEmail || person?.email || written.email,
+      clientPhone: order.clientPhone || person?.phone || written.phone,
     };
   });
 }
@@ -438,7 +442,7 @@ function withContacts(
 async function listOrdersNow() {
   await ensureOps();
   const sql = await getSql();
-  const rows = await sql<OrderRow>`select id, ref, client_name, product, agent_name, state, substate, internal_only, note, internal_note, client_talk, updated_at::text as updated_at, created_at::text as created_at
+  const rows = await sql<OrderRow>`select id, ref, client_name, product, agent_name, state, substate, internal_only, note, internal_note, client_talk, client_user_id, client_email, client_phone, updated_at::text as updated_at, created_at::text as created_at
     from ops_orders order by ref desc`;
   return withContacts(rows.map(mapOrder), await clientDirectory(sql));
 }
@@ -446,7 +450,7 @@ async function listOrdersNow() {
 export async function getOrder(id: string) {
   await ensureOps();
   const sql = await getSql();
-  const rows = await sql<OrderRow>`select id, ref, client_name, product, agent_name, state, substate, internal_only, note, internal_note, client_talk, updated_at::text as updated_at, created_at::text as created_at
+  const rows = await sql<OrderRow>`select id, ref, client_name, product, agent_name, state, substate, internal_only, note, internal_note, client_talk, client_user_id, client_email, client_phone, updated_at::text as updated_at, created_at::text as created_at
     from ops_orders where id = ${id} or ref = ${id}`;
   const order = rows[0] ? withContacts([mapOrder(rows[0])], await clientDirectory(sql))[0] : null;
   if (!order) return null;
@@ -1905,7 +1909,7 @@ async function loadClientPortalNow(userId: string) {
     const invoice = mapInvoice({ ...row, lines_json: withoutInlineImages(row.lines_json) });
     return { ...invoice, lines: invoice.lines.map((line) => (line.image || line.images?.length ? { ...line, image: "", images: [] } : line)) };
   });
-  const mine = orders.filter((order) => owns(order.clientName));
+  const mine = orders.filter((order) => (order.clientUserId ? order.clientUserId === userId : owns(order.clientName)));
   const refs = new Set(mine.map((order) => order.ref));
   const visibleQuotes = quotes.filter((quote) => quote.clientUserId === userId || owns(quote.clientName) || owns(quote.clientCompany) || (email && (quote.clientEmail || "").toLowerCase() === email) || refs.has(quote.orderRef));
   for (const quote of visibleQuotes) if (quote.orderRef) refs.add(quote.orderRef);
@@ -1955,6 +1959,16 @@ async function ownedOrder(userId: string, id: string) {
   return { portal, order };
 }
 
+async function nextOrderRef(sql: Sql) {
+  const refs = await sql<{ ref: string }>`select ref from ops_orders`;
+  let next = 148;
+  for (const row of refs) {
+    const match = row.ref.match(/(\d+)$/);
+    if (match) next = Math.max(next, Number(match[1]));
+  }
+  return `SP-${new Date().getFullYear()}-${String(next + 1).padStart(4, "0")}`;
+}
+
 export async function createClientOrder(
   userId: string,
   input: {
@@ -1976,15 +1990,7 @@ export async function createClientOrder(
 ) {
   const identity = await clientIdentity(userId);
   const sql = await getSql();
-  const refs = await sql<{ ref: string }>`select ref from ops_orders`;
-  let next = 148;
-  for (const row of refs) {
-    const match = row.ref.match(/(\d+)$/);
-    if (match) next = Math.max(next, Number(match[1]));
-  }
-  next += 1;
-  const year = new Date().getFullYear();
-  const ref = `SP-${year}-${String(next).padStart(4, "0")}`;
+  const ref = await nextOrderRef(sql);
   const id = uid("ord");
   const clientName = identity.company || identity.name;
   const products = input.products?.length ? input.products : [{ name: input.product, qty: input.qty, note: "" }];
@@ -2020,8 +2026,8 @@ export async function createClientOrder(
   ]
     .filter(Boolean)
     .join("\n");
-  await sql`insert into ops_orders (id, ref, client_name, product, agent_name, state, substate, note, updated_at)
-    values (${id}, ${ref}, ${clientName}, ${product}, ${"Équipe Hangzhou"}, ${"Demande reçue"}, ${"Reçue"}, ${note}, now())`;
+  await sql`insert into ops_orders (id, ref, client_name, client_user_id, client_email, client_phone, product, agent_name, state, substate, note, updated_at)
+    values (${id}, ${ref}, ${clientName}, ${userId}, ${identity.email}, ${phone}, ${product}, ${"Équipe Hangzhou"}, ${"Demande reçue"}, ${"Reçue"}, ${note}, now())`;
   await log(sql, identity.name, "Demande reçue", ref);
   await tell(sql, ref, "Sourcing Pick", `Votre demande ${ref} est bien arrivée. Elle n’est pas encore une commande : elle le devient quand le devis est signé et l’acompte reçu.`);
   for (const file of input.files ?? []) {
@@ -2043,6 +2049,104 @@ export async function createClientOrder(
     );
   }
   return { id, ref };
+}
+
+export async function openPublicRequest(input: {
+  kind: "devis" | "contact";
+  name: string;
+  email: string;
+  subject: string;
+  body: string;
+  payload: Record<string, string>;
+}) {
+  await ensureOps();
+  const sql = await getSql();
+  const email = input.email.trim().toLowerCase();
+  const name = input.name.trim();
+  const company = (input.payload.entreprise || "").trim();
+  const phone = (input.payload["téléphone"] || input.payload.telephone || "").trim();
+  const rows = await sql<{ id: string; name: string; role: string; company: string }>`
+    select id, name, role, company from admin_users where lower(email) = ${email} limit 1`;
+  const found = rows[0];
+  let userId = "";
+  let account: "new" | "client" | "desk" = "desk";
+  let resetCode = "";
+  if (!found) {
+    const { hashPassword } = await import("@/lib/admin-auth.server");
+    const { randomBytes, randomInt, createHash } = await import("node:crypto");
+    userId = crypto.randomUUID();
+    const passwordHash = await hashPassword(randomBytes(24).toString("hex"));
+    await sql`insert into admin_users
+        (id, name, email, password_hash, role, active, kind, company, vat, country, phone, email_verified)
+      values (${userId}, ${name}, ${email}, ${passwordHash}, 'client', true,
+        ${company ? "pro" : "particulier"}, ${company}, ${""}, ${input.payload.pays || ""}, ${phone}, false)`;
+    resetCode = String(randomInt(0, 1_000_000)).padStart(6, "0");
+    const hash = createHash("sha256").update(`sp-reset:${userId}:${resetCode}`).digest("hex");
+    await sql`update admin_users set reset_code_hash = ${hash}, reset_expires = now() + interval '24 hours' where id = ${userId}`;
+    account = "new";
+  } else if (found.role === "client") {
+    userId = found.id;
+    account = "client";
+    if (phone.replace(/\D/g, "").length >= 8) {
+      await sql`update admin_users set phone = ${phone} where id = ${userId} and coalesce(phone, '') = ''`;
+    }
+  }
+  const ownerName = account === "client" ? found?.company || found?.name || name : company || name;
+  const product = (input.payload.produit || input.subject || input.body).replace(/\s+/g, " ").trim().slice(0, 400) || "Demande";
+  const note = [
+    `Email : ${email}`,
+    phone ? `Téléphone : ${phone}` : "",
+    input.kind === "contact" ? "Contact" : "Demande de devis",
+    input.subject,
+    input.body,
+    ...Object.entries(input.payload).map(([key, value]) => (value ? `${key} : ${value}` : "")),
+  ]
+    .filter(Boolean)
+    .join("\n")
+    .slice(0, 8000);
+  const ref = await nextOrderRef(sql);
+  const id = uid("ord");
+  await sql`insert into ops_orders (id, ref, client_name, client_user_id, client_email, client_phone, product, agent_name, state, substate, note, updated_at)
+    values (${id}, ${ref}, ${ownerName}, ${userId}, ${email}, ${phone}, ${product}, ${"Équipe Hangzhou"}, ${"Demande reçue"}, ${"Reçue"}, ${note}, now())`;
+  await log(sql, name, "Demande reçue", ref);
+  await tell(
+    sql,
+    ref,
+    "Sourcing Pick",
+    `Votre demande ${ref} est bien arrivée. Elle n’est pas encore une commande : elle le devient quand le devis est signé et l’acompte reçu.`,
+  );
+  const { deliverMail, mailError } = await import("@/lib/mail.server");
+  const link = account === "new"
+    ? `https://sourcingpick.com/connexion?reprise=1&email=${encodeURIComponent(email)}`
+    : "https://sourcingpick.com/connexion";
+  const lines = [
+    `Bonjour ${name},`,
+    "",
+    `Votre demande ${ref} est enregistrée. Ce n’est pas encore une commande : elle le devient quand le devis est signé et l’acompte reçu.`,
+    "Un agent vous répond sous 24 à 72 heures, dans votre espace et par email.",
+    "",
+    account === "new"
+      ? "Pour ouvrir votre espace, utilisez le code ci-dessous et choisissez un mot de passe. Le lien ouvre directement cette étape."
+      : "Retrouvez cette demande dans votre espace client.",
+    link,
+  ];
+  const sent = await deliverMail(email, `Demande ${ref} enregistrée`, lines.join("\n"), {
+    badge: "DEMANDE",
+    title: `Demande ${ref} enregistrée`,
+    code: resetCode || undefined,
+    note: account === "new" ? "Ce code expire dans 24 heures. Ne le communiquez à personne." : "Connectez-vous pour suivre la demande et écrire à l’équipe.",
+  });
+  const desks = await sql<{ email: string }>`select email from admin_users where role = ${"admin"} and active = true`;
+  for (const desk of desks) {
+    if (!desk.email || desk.email.toLowerCase() === email) continue;
+    await deliverMail(
+      desk.email,
+      `Nouvelle demande ${ref}`,
+      [`${name} · ${email}`, phone, input.subject, "", input.body].filter(Boolean).join("\n"),
+      { badge: "ADMIN", title: `Nouvelle demande ${ref}`, note: "La demande est dans la file Demandes." },
+    );
+  }
+  return { id, ref, account, mailed: sent, mailNote: sent ? "" : mailError() || "L’email n’est pas parti." };
 }
 
 export async function clientAttachOrder(
@@ -2080,14 +2184,7 @@ export async function createManualOrder(
   const product = input.product.trim();
   if (!clientName || !product) throw new Error("Indiquez le client et ce qu’il commande.");
   const sql = await getSql();
-  const refs = await sql<{ ref: string }>`select ref from ops_orders`;
-  let next = 148;
-  for (const row of refs) {
-    const match = row.ref.match(/(\d+)$/);
-    if (match) next = Math.max(next, Number(match[1]));
-  }
-  const year = new Date().getFullYear();
-  const ref = `SP-${year}-${String(next + 1).padStart(4, "0")}`;
+  const ref = await nextOrderRef(sql);
   const id = uid("ord");
   await sql`insert into ops_orders (id, ref, client_name, product, agent_name, state, substate, note, updated_at)
     values (${id}, ${ref}, ${clientName}, ${product}, ${input.agentName?.trim() || "Équipe Hangzhou"}, ${"Demande reçue"}, ${"Reçue"}, ${input.note?.trim() || ""}, now())`;

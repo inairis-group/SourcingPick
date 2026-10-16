@@ -13,6 +13,7 @@ function Page() {
   const navigate = useNavigate();
   const [email] = useState(() => sessionStorage.getItem("sp-verify-email") || "");
   const [hint, setHint] = useState(() => sessionStorage.getItem("sp-verify-code") || "");
+  const [mailed, setMailed] = useState(() => sessionStorage.getItem("sp-verify-mailed") !== "0");
   const [digits, setDigits] = useState<string[]>(() => {
     const saved = sessionStorage.getItem("sp-verify-code") || "";
     return Array.from({ length: 6 }, (_, index) => saved[index] ?? "");
@@ -79,7 +80,13 @@ function Page() {
             ))}
           </div>
         </div>
-        {hint ? <p className="text-sm text-muted">Votre code, tant que l’email n’est pas branché : <span className="mono font-semibold text-ink">{hint}</span></p> : null}
+        {hint ? (
+          <p className="text-sm text-muted">L’email n’est pas parti. Voici le code : <span className="mono font-semibold text-ink">{hint}</span></p>
+        ) : mailed ? (
+          <p className="text-sm text-muted">Le code a été envoyé à {email || "votre adresse"}. Regardez aussi les indésirables.</p>
+        ) : (
+          <p className="text-sm text-[#8a1c1c]">L’email n’est pas parti. Renvoyez le code.</p>
+        )}
         {error ? <p className="text-sm text-red-700">{error}</p> : null}
         <button className="btn btn-primary w-full" type="submit" disabled={pending}>
           Vérifier <ArrowRight size={18} />
@@ -92,10 +99,18 @@ function Page() {
               setError("");
               void resendVerification()
                 .then((result) => {
-                  sessionStorage.setItem("sp-verify-code", result.code);
                   sessionStorage.setItem("sp-verify-email", result.email);
-                  setHint(result.code);
-                  setDigits(Array.from({ length: 6 }, (_, index) => result.code[index] ?? ""));
+                  sessionStorage.setItem("sp-verify-mailed", result.mailed ? "1" : "0");
+                  setMailed(result.mailed);
+                  if (result.code) {
+                    sessionStorage.setItem("sp-verify-code", result.code);
+                    setHint(result.code);
+                    setDigits(Array.from({ length: 6 }, (_, index) => result.code[index] ?? ""));
+                  } else {
+                    sessionStorage.removeItem("sp-verify-code");
+                    setHint("");
+                    setDigits(Array.from({ length: 6 }, () => ""));
+                  }
                 })
                 .catch((err) => setError(err instanceof Error ? err.message : "Envoi impossible."));
             }}

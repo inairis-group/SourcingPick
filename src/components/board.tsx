@@ -1026,7 +1026,7 @@ export function Board({
     if (chosen.length) payload.choix = chosen.join(" · ");
     setNote({ tone: "wait", text: english ? "Sending…" : "Envoi…" });
     try {
-      await submitLead({
+      const result = await submitLead({
         data: {
           kind: name === "contact" ? "contact" : "devis",
           name: nameValue,
@@ -1036,9 +1036,28 @@ export function Board({
           payload,
         },
       });
+      const ref = result.ref ? ` ${result.ref}` : "";
+      const mailed = result.mailed
+        ? english
+          ? ` A confirmation email was sent to ${email}.`
+          : ` Un email de confirmation est parti vers ${email}.`
+        : english
+          ? ` The request is in our queue, but the email did not leave${result.mailNote ? ` (${result.mailNote})` : ""}.`
+          : ` La demande est dans notre file, mais l’email n’est pas parti${result.mailNote ? ` (${result.mailNote})` : ""}.`;
+      const access = result.account === "new"
+        ? english
+          ? " The email contains a code to choose your password and open your space."
+          : " L’email contient un code pour choisir votre mot de passe et ouvrir votre espace."
+        : result.account === "client"
+          ? english
+            ? " It is also in your client space."
+            : " Elle est aussi dans votre espace client."
+          : "";
       setNote({
         tone: "ok",
-        text: english ? "Request sent. We reply by email within 24 to 72 hours." : "Demande envoyée. Nous vous répondons par email sous 24 à 72 heures.",
+        text: english
+          ? `Request${ref} recorded.${mailed}${result.mailed ? access : ""}`
+          : `Demande${ref} enregistrée.${mailed}${result.mailed ? access : ""}`,
       });
     } catch (error) {
       setNote({

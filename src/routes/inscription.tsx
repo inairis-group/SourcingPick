@@ -35,7 +35,9 @@ function Page() {
         data: { name, email, password, kind, company, vat, country, phone, accepted },
       });
       sessionStorage.setItem("sp-verify-email", result.email);
-      sessionStorage.setItem("sp-verify-code", result.code);
+      if (result.code) sessionStorage.setItem("sp-verify-code", result.code);
+      else sessionStorage.removeItem("sp-verify-code");
+      sessionStorage.setItem("sp-verify-mailed", result.mailed ? "1" : "0");
       void navigate({ to: "/verification" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Inscription impossible.");

@@ -211,6 +211,7 @@ export type OpsOrder = {
   createdAt: string;
   clientEmail: string;
   clientPhone: string;
+  clientUserId: string;
   clientTalk: boolean;
 };
 

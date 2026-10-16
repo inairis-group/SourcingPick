@@ -278,7 +278,24 @@ export async function registerClient(input: {
     values (${id}, ${input.name}, ${input.email}, ${passwordHash}, 'client', true,
       ${input.kind}, ${input.company}, ${input.vat}, ${input.country}, ${input.phone}, false)`;
   const code = await issueCode(id);
-  return { email: input.email, code };
+  const { deliverMail, mailError } = await import("@/lib/mail.server");
+  const mailed = await deliverMail(
+    input.email,
+    "Confirmez votre adresse email",
+    [
+      `Bonjour ${input.name},`,
+      "",
+      "Utilisez ce code pour confirmer votre adresse et ouvrir votre espace SourcingPick.",
+      "Si vous n’êtes pas à l’origine de cette inscription, ignorez ce message.",
+    ].join("\n"),
+    {
+      badge: "COMPTE",
+      title: "Confirmez votre adresse",
+      code,
+      note: "Ce code expire dans 15 minutes. Ne le communiquez à personne.",
+    },
+  );
+  return { email: input.email, code: mailed ? "" : code, mailed, mailNote: mailed ? "" : mailError() || "L’email n’est pas parti." };
 }
 
 async function pendingUser() {
@@ -298,7 +315,19 @@ export async function resendCode() {
   const user = await pendingUser();
   if (!user) throw new Error("Recommencez l'inscription pour recevoir un code.");
   const code = await issueCode(user.id);
-  return { email: user.email, code };
+  const { deliverMail, mailError } = await import("@/lib/mail.server");
+  const mailed = await deliverMail(
+    user.email,
+    "Votre code de vérification",
+    "Utilisez ce code pour confirmer votre adresse SourcingPick.",
+    {
+      badge: "COMPTE",
+      title: "Votre code de vérification",
+      code,
+      note: "Ce code expire dans 15 minutes. Ne le communiquez à personne.",
+    },
+  );
+  return { email: user.email, code: mailed ? "" : code, mailed, mailNote: mailed ? "" : mailError() || "L’email n’est pas parti." };
 }
 
 export async function confirmCode(code: string) {

@@ -51,7 +51,9 @@ export const submitLead = createServerFn({ method: "POST" })
     const id = crypto.randomUUID();
     await sql`insert into leads (id, kind, name, email, subject, body, payload)
       values (${id}, ${data.kind}, ${data.name}, ${data.email}, ${data.subject}, ${data.body}, ${JSON.stringify(data.payload)}::jsonb)`;
-    return { id };
+    const { openPublicRequest } = await import("@/lib/ops.server");
+    const opened = await openPublicRequest(data);
+    return { id, ref: opened.ref, account: opened.account, mailed: opened.mailed, mailNote: opened.mailNote };
   });
 
 export const listLeads = createServerFn({ method: "GET" }).handler(async () => {
