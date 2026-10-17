@@ -1866,14 +1866,13 @@ img.sp-step {
 }
 
 .sp-narrow header {
-  position: sticky;
-  top: 0;
+  position: relative;
+  top: auto;
   z-index: 40;
   height: 64px !important;
   padding: 0 16px !important;
   gap: 12px !important;
-  background: rgba(245, 247, 252, 0.96) !important;
-  backdrop-filter: blur(12px);
+  background: #f5f7fc !important;
 }
 
 .sp-narrow header > a img {
@@ -2055,6 +2054,19 @@ img.sp-step {
 
 .sp-narrow .sp-m-hide {
   display: none !important;
+}
+
+.sp-narrow .sp-parallax,
+.sp-narrow .sp-scroll,
+.sp-narrow .sp-hero-art {
+  animation: none !important;
+  opacity: 1 !important;
+  translate: none !important;
+}
+
+.sp-narrow a {
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 @keyframes sp-float {

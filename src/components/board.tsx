@@ -567,6 +567,34 @@ function fitCtaMascot(root: HTMLElement) {
   }
 }
 
+function wireDeadLinks(root: HTMLElement) {
+  const routes: Array<[RegExp, string]> = [
+    [/demander un devis/, "/demande"],
+    [/decrire mon besoin/, "/demande"],
+    [/ouvrir l.?espace/, "/connexion"],
+    [/^espace client$/, "/connexion"],
+    [/^contact$/, "/contact"],
+    [/^faq$/, "/faq"],
+    [/^application$/, "/application"],
+    [/^a propos$/, "/apropos"],
+    [/notre entrepot/, "/entrepot"],
+    [/mentions legales/, "/mentions"],
+    [/^confidentialite$/, "/confidentialite"],
+    [/conditions generales/, "/cgv"],
+    [/^en savoir plus$/, "/apropos"],
+  ];
+  for (const link of root.querySelectorAll<HTMLAnchorElement>("a")) {
+    if (link.hasAttribute("lang")) continue;
+    const href = link.getAttribute("href") || "";
+    if (href !== "#" && href !== "") continue;
+    const label = fold((link.textContent || "").replace(/\s+/g, " ").trim());
+    const route = routes.find(([pattern]) => pattern.test(label));
+    if (!route) continue;
+    link.setAttribute("href", route[1]);
+    link.classList.add("sp-cta");
+  }
+}
+
 function tagSectionJumps(root: HTMLElement) {
   const heads = [...root.querySelectorAll("h2")];
   for (const link of root.querySelectorAll("a")) {
@@ -628,7 +656,7 @@ function motion(root: HTMLElement) {
 
   for (const link of root.querySelectorAll('a[href="/demande"]')) link.classList.add("sp-cta");
 
-  if (reduce) return () => {};
+  if (reduce || root.classList.contains("sp-narrow")) return () => {};
 
   animateSteps(root);
   let alive = true;
@@ -893,6 +921,7 @@ export function Board({
     if (!stageEl || !boardEl) return;
     boardEl.innerHTML = html;
     const art = boardEl.querySelector<HTMLElement>(".sp-art");
+    wireDeadLinks(boardEl);
     tagSectionJumps(boardEl);
     fitCtaMascot(boardEl);
     if (mobileBoard) ensureFooterNav(boardEl as HTMLElement);
