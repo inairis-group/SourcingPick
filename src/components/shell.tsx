@@ -247,7 +247,9 @@ export function Shell({ children }: { children: ReactNode }) {
     <div className="flex h-full min-h-0 flex-col gap-5">
       <div className={`flex items-center gap-2 ${collapsed ? "lg:justify-center" : "justify-between px-1.5"}`}>
         <div className={`flex flex-col gap-3 ${collapsed ? "lg:hidden" : ""}`}>
-          <img src="/logo-lockup.svg" alt="Sourcing Pick" className="h-7 w-auto self-start" />
+          <Link to={account ? homeFor(account.role) : "/"} aria-label="Accueil" className="self-start">
+            <img src="/logo-lockup.svg" alt="Sourcing Pick" className="h-7 w-auto" />
+          </Link>
           <span className="role-pill mono">
             {account ? <Tx text={ROLE_LABEL[account.role]} /> : "Sourcing Pick"}
           </span>

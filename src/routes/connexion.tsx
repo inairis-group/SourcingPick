@@ -154,7 +154,9 @@ function Connexion() {
     <LangProvider>
     <AuthFrame>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <img src="/illustrations/logo.svg" alt="Sourcing Pick" className="h-8 w-auto self-start" />
+        <Link to="/" aria-label="Sourcing Pick, accueil" className="self-start">
+          <img src="/illustrations/logo.svg" alt="Sourcing Pick" className="h-8 w-auto" />
+        </Link>
         <AuthLangPills />
       </div>
       {mode === "login" ? (

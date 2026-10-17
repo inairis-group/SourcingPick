@@ -589,6 +589,20 @@ function routeForLabel(label: string) {
   return routes.find(([pattern]) => pattern.test(text))?.[1] ?? "";
 }
 
+function linkLogos(root: HTMLElement) {
+  for (const img of root.querySelectorAll<HTMLImageElement>("header img, footer img")) {
+    if (img.closest("a")) continue;
+    const alt = (img.getAttribute("alt") || "").toLowerCase();
+    if (!alt.includes("sourcing")) continue;
+    const link = document.createElement("a");
+    link.href = "/";
+    link.setAttribute("aria-label", "Sourcing Pick, accueil");
+    link.style.cssText = "display:inline-flex;align-items:center;flex-shrink:0;";
+    img.replaceWith(link);
+    link.appendChild(img);
+  }
+}
+
 function wireDeadLinks(root: HTMLElement) {
   for (const link of root.querySelectorAll<HTMLAnchorElement>("a")) {
     if (link.hasAttribute("lang")) continue;
@@ -945,6 +959,7 @@ export function Board({
     boardEl.innerHTML = html;
     const art = boardEl.querySelector<HTMLElement>(".sp-art");
     wireDeadLinks(boardEl);
+    linkLogos(boardEl);
     tagSectionJumps(boardEl);
     fitCtaMascot(boardEl);
     if (mobileBoard) ensureFooterNav(boardEl as HTMLElement);
