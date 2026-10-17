@@ -567,10 +567,13 @@ function fitCtaMascot(root: HTMLElement) {
   }
 }
 
-function wireDeadLinks(root: HTMLElement) {
+function routeForLabel(label: string) {
+  const text = fold(label.replace(/\s+/g, " ").trim());
   const routes: Array<[RegExp, string]> = [
     [/demander un devis/, "/demande"],
     [/decrire mon besoin/, "/demande"],
+    [/voir les (6|six) etapes/, "/comment-ca-marche"],
+    [/app store|google play|application sourcing/, "/application"],
     [/ouvrir l.?espace/, "/connexion"],
     [/^espace client$/, "/connexion"],
     [/^contact$/, "/contact"],
@@ -583,15 +586,35 @@ function wireDeadLinks(root: HTMLElement) {
     [/conditions generales/, "/cgv"],
     [/^en savoir plus$/, "/apropos"],
   ];
+  return routes.find(([pattern]) => pattern.test(text))?.[1] ?? "";
+}
+
+function wireDeadLinks(root: HTMLElement) {
   for (const link of root.querySelectorAll<HTMLAnchorElement>("a")) {
     if (link.hasAttribute("lang")) continue;
     const href = link.getAttribute("href") || "";
     if (href !== "#" && href !== "") continue;
-    const label = fold((link.textContent || "").replace(/\s+/g, " ").trim());
-    const route = routes.find(([pattern]) => pattern.test(label));
+    const route = routeForLabel(link.textContent || "");
     if (!route) continue;
-    link.setAttribute("href", route[1]);
-    link.classList.add("sp-cta");
+    link.setAttribute("href", route);
+  }
+  for (const card of root.querySelectorAll<HTMLElement>("div")) {
+    if (card.querySelector("a")) continue;
+    if (!/background:\s*#EAF1FF/i.test(card.getAttribute("style") || "")) continue;
+    const label = card.textContent || "";
+    if (!/application sourcing/i.test(fold(label))) continue;
+    if (card.children.length < 2) continue;
+    const link = document.createElement("a");
+    link.href = "/application";
+    link.style.cssText = card.getAttribute("style") || "";
+    link.style.color = "inherit";
+    link.style.textDecoration = "none";
+    while (card.firstChild) link.appendChild(card.firstChild);
+    card.replaceWith(link);
+  }
+  for (const node of root.querySelectorAll<HTMLElement>("[style*='position: absolute']")) {
+    const style = node.getAttribute("style") || "";
+    if (style.includes("z-index: 1") || style.includes("inset: 0")) node.style.pointerEvents = "none";
   }
 }
 
@@ -1131,6 +1154,13 @@ export function Board({
           return;
         }
         if (href === "#" || href.startsWith("#")) {
+          const route = routeForLabel(link.textContent || "");
+          if (route) {
+            event.preventDefault();
+            armLoadingBar();
+            void Promise.resolve(router.navigate({ to: route })).catch(() => window.location.assign(route)).finally(clearLoadingBar);
+            return;
+          }
           event.preventDefault();
           const id = href.slice(1);
           const target = id ? board.current.querySelector<HTMLElement>(`[id="${CSS.escape(id)}"]`) : null;
@@ -1151,9 +1181,11 @@ export function Board({
         if (href.startsWith("/")) {
           event.preventDefault();
           armLoadingBar();
-          const hash = href.includes("#") ? href.slice(href.indexOf("#") + 1) : undefined;
           const path = href.split("#")[0] || "/";
-          void router.navigate({ to: path, hash }).finally(clearLoadingBar);
+          const hash = href.includes("#") ? href.slice(href.indexOf("#") + 1) : "";
+          void Promise.resolve(router.navigate(hash ? { to: path, hash } : { to: path }))
+            .catch(() => window.location.assign(href))
+            .finally(clearLoadingBar);
         }
       }}
     >

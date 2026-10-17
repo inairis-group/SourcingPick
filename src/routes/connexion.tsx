@@ -186,9 +186,9 @@ function Connexion() {
           ) : null}
           <label className="flex flex-col gap-1.5 text-sm font-semibold">
             Email
-            <span className="relative block">
-              <Mail size={17} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" aria-hidden="true" />
-              <input className="field pl-10 font-normal" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="vous@entreprise.fr" autoComplete="username" required />
+            <span className="field-icon">
+              <Mail size={17} className="text-muted" aria-hidden="true" />
+              <input className="field font-normal" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="vous@entreprise.fr" autoComplete="username" required />
             </span>
           </label>
           {mode === "forgot" && resetStep === "code" ? (
@@ -200,9 +200,9 @@ function Connexion() {
           {mode !== "forgot" || resetStep === "code" ? (
             <label className="flex flex-col gap-1.5 text-sm font-semibold">
               {mode === "forgot" ? "Nouveau mot de passe" : "Mot de passe"}
-              <span className="relative block">
-                <Lock size={17} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" aria-hidden="true" />
-                <input className="field pl-10 font-normal" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••••" autoComplete={mode === "login" ? "current-password" : "new-password"} required />
+              <span className="field-icon">
+                <Lock size={17} className="text-muted" aria-hidden="true" />
+                <input className="field font-normal" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••••" autoComplete={mode === "login" ? "current-password" : "new-password"} required />
               </span>
               {mode === "forgot" && password ? (
                 <span className="mt-1">

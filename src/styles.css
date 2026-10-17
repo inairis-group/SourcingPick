@@ -126,6 +126,24 @@ select.field {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-brand) 18%, transparent);
 }
 
+.field-icon {
+  position: relative;
+  display: block;
+}
+
+.field-icon > svg {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  z-index: 1;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.field-icon > .field {
+  padding-left: 44px;
+}
+
 .card {
   background: #fff;
   border: 1px solid var(--color-line);

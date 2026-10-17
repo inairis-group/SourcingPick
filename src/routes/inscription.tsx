@@ -92,24 +92,24 @@ function Page() {
         </div>
         <label className="flex flex-col gap-1.5 text-sm font-semibold">
           Email professionnel
-          <span className="relative block">
-            <Mail size={17} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" aria-hidden="true" />
-            <input className="field pl-10 font-normal" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="vous@entreprise.fr" autoComplete="email" required />
+          <span className="field-icon">
+            <Mail size={17} className="text-muted" aria-hidden="true" />
+            <input className="field font-normal" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="vous@entreprise.fr" autoComplete="email" required />
           </span>
         </label>
         <label className="flex flex-col gap-1.5 text-sm font-semibold">
           Téléphone
-          <span className="relative block">
-            <Phone size={17} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" aria-hidden="true" />
-            <input className="field pl-10 font-normal" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" placeholder="+33 6 12 34 56 78" required />
+          <span className="field-icon">
+            <Phone size={17} className="text-muted" aria-hidden="true" />
+            <input className="field font-normal" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} autoComplete="tel" placeholder="+33 6 12 34 56 78" required />
           </span>
           <span className="text-xs font-normal text-muted">Pour vous joindre sur vos demandes.</span>
         </label>
         <label className="flex flex-col gap-1.5 text-sm font-semibold">
           Mot de passe
-          <span className="relative block">
-            <Lock size={17} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted" aria-hidden="true" />
-            <input className="field pl-10 font-normal" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••••" autoComplete="new-password" required />
+          <span className="field-icon">
+            <Lock size={17} className="text-muted" aria-hidden="true" />
+            <input className="field font-normal" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••••" autoComplete="new-password" required />
           </span>
           <span className="text-xs font-normal text-muted">8 caractères minimum, dont un chiffre.</span>
         </label>
