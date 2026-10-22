@@ -5,16 +5,16 @@ Ne pas inventer de fonctionnalité. Ne pas toucher aux autres applications du se
 
 ## 1. Où est le code
 
-Dépôt **privé** : https://github.com/inairis-group/SourcingPick
+Dépôt **public** : https://github.com/inairis-group/SourcingPick
 
-Il n’y a pas de branche `main` à déployer. Branche de travail et de production :
+Le code du site et du SaaS est lisible sans compte. Pour pousser et déployer, il faut quand même un accès en écriture GitHub et la clé privée SSH (donnée à part, jamais dans ce fichier).
 
 | Branche | Rôle |
 |---|---|
 | `rebuild` | **Le code en ligne.** Site public + SaaS atelier. Commit déployé `ebd59f9` — « Send the logo back to the home page. » |
 | `dev` | Ancienne. Ne pas déployer. |
 
-Une recherche GitHub publique ne trouve rien. Il faut un compte membre de l’organisation `inairis-group`, ou un jeton avec accès à ce dépôt.
+Une recherche GitHub publique trouve le dépôt. Pour pousser, il faut un droit d’écriture sur `inairis-group/SourcingPick`.
 
 ```bash
 git clone https://github.com/inairis-group/SourcingPick.git
