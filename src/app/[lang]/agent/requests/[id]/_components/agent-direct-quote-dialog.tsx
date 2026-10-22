@@ -59,8 +59,8 @@ export function AgentDirectQuoteDialog({
   const [leadTimeDays, setLeadTimeDays] = useState("");
   const [moq, setMoq] = useState("1");
   const [incoterm, setIncoterm] = useState<Incoterm>(Incoterm.DAP);
-  const [depositPercentage, setDepositPercentage] = useState("30");
-  const [validityDays, setValidityDays] = useState("14");
+  const [depositPercentage, setDepositPercentage] = useState("40");
+  const [validityDays, setValidityDays] = useState("15");
   const [notes, setNotes] = useState("");
 
   const submit = () => {
@@ -269,8 +269,8 @@ export function AgentDirectQuoteDialog({
               <Input
                 type="number"
                 inputMode="numeric"
-                min="1"
-                max="60"
+                min="7"
+                max="30"
                 step="1"
                 value={validityDays}
                 onChange={(e) => setValidityDays(e.target.value)}

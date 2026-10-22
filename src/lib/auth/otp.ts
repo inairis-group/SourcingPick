@@ -14,7 +14,7 @@ import { prisma } from "@/lib/db/client";
  * Issuing a fresh code invalidates any unconsumed prior codes for the user.
  */
 
-const OTP_TTL_MS = 10 * 60 * 1000;
+const OTP_TTL_MS = 15 * 60 * 1000;
 const OTP_MAX_ATTEMPTS = 5;
 const OTP_HASH_COST = 8; // codes are short-lived, no need for full password cost
 

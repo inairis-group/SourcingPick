@@ -10,5 +10,5 @@
  */
 export const AUTH_PENDING_COOKIE = "sp_auth_pending";
 
-/** Ten minutes: long enough to fetch a code, short enough to be worthless later. */
-export const AUTH_PENDING_TTL_S = 10 * 60;
+/** Fifteen minutes, the lifetime of the code itself: long enough to fetch it, short enough to be worthless later. */
+export const AUTH_PENDING_TTL_S = 15 * 60;

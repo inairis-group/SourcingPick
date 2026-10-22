@@ -52,13 +52,23 @@ test("every sub-state belongs to a state, and every state has sub-states", () =>
   );
 });
 
-test("exactly the five sub-states the canvas marks internal are internal", () => {
+test("exactly the fifteen sub-states the flow board draws in grey are internal", () => {
   const internal = ORDER_STAGES.filter((s) => !STAGES[s].clientVisible);
   assert.deepEqual(internal.sort(), [
     "BOOKING_CONFIRMED",
+    "CANCELLED_BY_SOURCINGPICK",
     "CONSOLIDATION",
     "EXPORT_DOCS_ISSUED",
     "INSPECTING",
+    "ORDER_PLACED_WITH_SUPPLIER",
+    "PARTIAL_PAYMENT",
+    "QUOTE_DECLINED",
+    "QUOTE_EXPIRED",
+    "QUOTE_VIEWED",
+    "SOURCING",
+    "SUPPLIERS_CONTACTED",
+    "SUPPLIER_OFFER_RECEIVED",
+    "TRANSFER_DECLARED",
     "TRANSHIPMENT",
   ]);
 });

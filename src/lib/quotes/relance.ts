@@ -20,7 +20,7 @@ import { writeAuditLog } from "@/lib/audit/log";
  * with the other admin crons). Cadence: once a day at ~07:00 UTC.
  */
 
-const RELANCE_DAYS = 3;
+const RELANCE_DAYS = 2;
 const DAY_MS = 1000 * 60 * 60 * 24;
 
 export async function dispatchQuoteRelances(): Promise<{

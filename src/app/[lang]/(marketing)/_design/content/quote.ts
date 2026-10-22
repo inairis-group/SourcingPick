@@ -64,7 +64,7 @@ export const quote = {
       "DÉLAI DE RÉPONSE",
       ".",
       "3",
-      "Vous l’acceptez et le signez dans l’application.",
+      "Vous l’acceptez et le signez dans votre espace client.",
       "Une question avant d’envoyer ?",
       "contact@sourcingpick.com",
       "Vos informations servent uniquement à établir votre devis.",

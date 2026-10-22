@@ -252,7 +252,7 @@ export type ResendOtpState = {
 /**
  * Resend OTP — only valid if there's an active pending-auth cookie.
  * Rate-limited implicitly by the cookie's existence (the cookie self-clears
- * after 10 minutes).
+ * after 15 minutes).
  */
 export async function resendOtpAction(): Promise<ResendOtpState> {
   const cookieStore = await cookies();
