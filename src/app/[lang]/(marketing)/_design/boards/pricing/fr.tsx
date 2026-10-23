@@ -1,4 +1,4 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: fr-Tarifs.dc.html (and 0 more)
 // Regenerate: npm run design:port
 /*
@@ -985,76 +985,6 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     <p style={{ "margin": "0", "fontSize": "var(--sp-fs-15_5, 15.5px)", "lineHeight": "1.55", "color": "#4A5578" }}>
                       {t[109]}
                     </p>
-                    <div style={{ "display": "flex", "flexDirection": "column" }}>
-                      <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-1_5fr-fr-fr, minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr))", "gap": "12px", "paddingBottom": "8px" }}>
-                        <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "11.5px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#4A5578", "textAlign": "start" }}>
-                          {t[110]}
-                        </span>
-                        <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "11.5px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#4A5578", "textAlign": "end" }}>
-                          {t[111]}
-                        </span>
-                        <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "11.5px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#4A5578", "textAlign": "end" }}>
-                          {t[112]}
-                        </span>
-                      </div>
-                      <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-1_5fr-fr-fr, minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr))", "gap": "12px", "alignItems": "center", "padding": "13px 0", "borderTop": "1px solid #DCE3F2" }}>
-                        <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "fontWeight": "600", "color": "#0E1A3D" }}>
-                          {t[113]}
-                        </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "700", "letterSpacing": "-0.02em", "color": "#0E1A3D", "textAlign": "end" }}>
-                          {t[114]}
-                        </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "700", "letterSpacing": "-0.02em", "color": "#0E1A3D", "textAlign": "end" }}>
-                          {t[115]}
-                        </span>
-                      </div>
-                      <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-1_5fr-fr-fr, minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr))", "gap": "12px", "alignItems": "center", "padding": "13px 0", "borderTop": "1px solid #DCE3F2" }}>
-                        <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "fontWeight": "600", "color": "#0E1A3D" }}>
-                          {t[116]}
-                        </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "letterSpacing": "-0.02em", "color": "#0E1A3D", "textAlign": "end" }}>
-                          {t[117]}
-                        </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "letterSpacing": "-0.02em", "color": "#0E1A3D", "textAlign": "end" }}>
-                          {t[118]}
-                        </span>
-                      </div>
-                      <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-1_5fr-fr-fr, minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr))", "gap": "12px", "alignItems": "center", "padding": "13px 0", "borderTop": "1px solid #DCE3F2" }}>
-                        <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "fontWeight": "600", "color": "#0E1A3D" }}>
-                          {t[119]}
-                        </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "letterSpacing": "-0.02em", "color": "#0E1A3D", "textAlign": "end" }}>
-                          {t[120]}
-                        </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "letterSpacing": "-0.02em", "color": "#0E1A3D", "textAlign": "end" }}>
-                          {t[121]}
-                        </span>
-                      </div>
-                      <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-1_5fr-fr-fr, minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr))", "gap": "12px", "alignItems": "center", "padding": "13px 0", "borderTop": "1px solid #DCE3F2" }}>
-                        <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "fontWeight": "600", "color": "#0E1A3D" }}>
-                          {t[122]}
-                        </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "15px", "fontWeight": "600", "letterSpacing": "-0.02em", "color": "#4A5578", "textAlign": "end" }}>
-                          {t[123]}
-                        </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "15px", "fontWeight": "600", "letterSpacing": "-0.02em", "color": "#4A5578", "textAlign": "end" }}>
-                          {t[124]}
-                        </span>
-                      </div>
-                    </div>
-                    <div>
-                      <span className="sp-placeholder" style={{ "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }}>
-                        {t[125]}
-                      </span>
-                    </div>
-                  </div>
-                  <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px", "padding": "var(--sp-pad-32, 32px)", "borderRadius": "24px", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
-                    <h3 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-22, 22px)", "lineHeight": "1.25", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                      {t[126]}
-                    </h3>
-                    <p style={{ "margin": "0", "fontSize": "var(--sp-fs-15_5, 15.5px)", "lineHeight": "1.55", "color": "#4A5578" }}>
-                      {t[127]}
-                    </p>
                     <ul style={{ "margin": "0", "padding": "0", "listStyle": "none", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
                       <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "15px", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                         <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FBE7EB", "marginTop": "1px" }}>
@@ -1063,7 +993,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                             <path d="M18 6L6 18" />
                           </svg>
                         </span>
-                        <span>{t[128]}</span>
+                        <span>{t[110]}</span>
                       </li>
                       <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "15px", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                         <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FBE7EB", "marginTop": "1px" }}>
@@ -1072,7 +1002,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                             <path d="M18 6L6 18" />
                           </svg>
                         </span>
-                        <span>{t[129]}</span>
+                        <span>{t[111]}</span>
                       </li>
                       <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "15px", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                         <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FBE7EB", "marginTop": "1px" }}>
@@ -1081,7 +1011,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                             <path d="M18 6L6 18" />
                           </svg>
                         </span>
-                        <span>{t[130]}</span>
+                        <span>{t[112]}</span>
                       </li>
                       <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "15px", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                         <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FBE7EB", "marginTop": "1px" }}>
@@ -1090,7 +1020,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                             <path d="M18 6L6 18" />
                           </svg>
                         </span>
-                        <span>{t[131]}</span>
+                        <span>{t[113]}</span>
                       </li>
                       <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "15px", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                         <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FBE7EB", "marginTop": "1px" }}>
@@ -1099,7 +1029,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                             <path d="M18 6L6 18" />
                           </svg>
                         </span>
-                        <span>{t[132]}</span>
+                        <span>{t[114]}</span>
                       </li>
                       <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "15px", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                         <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FBE7EB", "marginTop": "1px" }}>
@@ -1108,7 +1038,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                             <path d="M18 6L6 18" />
                           </svg>
                         </span>
-                        <span>{t[133]}</span>
+                        <span>{t[115]}</span>
                       </li>
                       <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "15px", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                         <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FBE7EB", "marginTop": "1px" }}>
@@ -1117,17 +1047,17 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                             <path d="M18 6L6 18" />
                           </svg>
                         </span>
-                        <span>{t[134]}</span>
+                        <span>{t[116]}</span>
                       </li>
                     </ul>
                     <p style={{ "margin": "0", "paddingTop": "4px", "fontSize": "14px", "lineHeight": "1.5", "color": "#4A5578" }}>
-                      {t[135]}
+                      {t[117]}
                     </p>
                   </div>
                 </div>
                 <div>
                   <Link href={`/${lang}/contact`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
-                    <span>{t[136]}</span>
+                    <span>{t[118]}</span>
                     <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M5 12h14" />
@@ -1142,67 +1072,67 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
               <div style={{ "padding": "var(--sp-pad-52, 52px)", "borderRadius": "28px", "background": "#0E1A3D", "color": "#FFFFFF", "display": "flex", "flexDirection": "column", "gap": "28px" }}>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px", "maxWidth": "820px" }}>
                   <div style={{ "display": "inline-flex", "alignSelf": "flex-start", "alignItems": "center", "gap": "8px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#8DB2FF" }}>
-                    {t[137]}
+                    {t[119]}
                   </div>
                   <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-40, 40px)", "lineHeight": "1.12", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#FFFFFF", "textWrap": "balance" }}>
-                    {t[138]}
+                    {t[120]}
                   </h2>
                   <p style={{ "margin": "0", "fontSize": "var(--sp-fs-17, 17px)", "lineHeight": "1.6", "color": "#C6D2EE" }}>
-                    {t[139]}
+                    {t[121]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "gap": "18px", "alignItems": "stretch" }}>
                   <div style={{ "flex": "1", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "8px", "padding": "var(--sp-pad-26-26, 26px 26px)", "borderRadius": "20px", "background": "#162456", "border": "1px solid rgba(255,255,255,0.14)", "boxSizing": "content-box" }}>
                     <span style={{ "display": "flex", "alignItems": "center", "minHeight": "48px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-40, 40px)", "fontWeight": "600", "lineHeight": "1.1", "color": "#FFC247" }}>
-                      {t[140]}
+                      {t[122]}
                     </span>
                     <span style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "fontWeight": "600", "color": "#FFFFFF" }}>
-                      {t[141]}
+                      {t[123]}
                     </span>
                     <span style={{ "fontSize": "14.5px", "lineHeight": "1.5", "color": "#B8C4E6" }}>
-                      {t[142]}
+                      {t[124]}
                     </span>
                   </div>
                   <div style={{ "flex": "1", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "8px", "padding": "var(--sp-pad-26-26, 26px 26px)", "borderRadius": "20px", "background": "#162456", "border": "1px solid rgba(255,255,255,0.14)", "boxSizing": "content-box" }}>
                     <span style={{ "display": "flex", "alignItems": "center", "minHeight": "48px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-40, 40px)", "fontWeight": "600", "lineHeight": "1.1", "color": "#FFC247" }}>
-                      {t[143]}
+                      {t[125]}
                     </span>
                     <span style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "fontWeight": "600", "color": "#FFFFFF" }}>
-                      {t[144]}
+                      {t[126]}
                     </span>
                     <span style={{ "fontSize": "14.5px", "lineHeight": "1.5", "color": "#B8C4E6" }}>
-                      {t[145]}
+                      {t[127]}
                     </span>
                   </div>
                   <div style={{ "flex": "1", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "8px", "padding": "var(--sp-pad-26-26, 26px 26px)", "borderRadius": "20px", "background": "#162456", "border": "1px solid rgba(255,255,255,0.14)", "boxSizing": "content-box" }}>
                     <span style={{ "display": "flex", "alignItems": "center", "minHeight": "48px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "calc(var(--sp-fs-28, 28px) * 0.9643)", "fontWeight": "600", "lineHeight": "1.1", "color": "#FFC247" }}>
-                      {t[146]}
+                      {t[128]}
                     </span>
                     <span style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "fontWeight": "600", "color": "#FFFFFF" }}>
-                      {t[147]}
+                      {t[129]}
                     </span>
                     <span style={{ "fontSize": "14.5px", "lineHeight": "1.5", "color": "#B8C4E6" }}>
-                      {t[148]}
+                      {t[130]}
                     </span>
                   </div>
                   <div style={{ "flex": "1", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "8px", "padding": "var(--sp-pad-26-26, 26px 26px)", "borderRadius": "20px", "background": "rgba(255,255,255,0.06)", "border": "1px solid rgba(255,255,255,0.14)", "boxSizing": "content-box" }}>
                     <span style={{ "display": "flex", "alignItems": "center", "minHeight": "48px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-40, 40px)", "fontWeight": "600", "lineHeight": "1.1", "color": "#8DB2FF" }}>
-                      {t[149]}
+                      {t[131]}
                     </span>
                     <span style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "fontWeight": "600", "color": "#FFFFFF" }}>
-                      {t[150]}
+                      {t[132]}
                     </span>
                     <span style={{ "fontSize": "14.5px", "lineHeight": "1.5", "color": "#B8C4E6" }}>
-                      {t[151]}
+                      {t[133]}
                     </span>
                   </div>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "10px" }}>
                   <p style={{ "margin": "0", "fontSize": "15px", "lineHeight": "1.6", "color": "#B8C4E6" }}>
-                    {t[152]}
+                    {t[134]}
                   </p>
                   <p style={{ "margin": "0", "fontSize": "15px", "lineHeight": "1.6", "color": "#E3EBFF", "fontWeight": "500" }}>
-                    {t[153]}
+                    {t[135]}
                   </p>
                 </div>
               </div>
@@ -1210,7 +1140,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
             <section style={{ "padding": "0 var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))", "display": "grid", "gridTemplateColumns": "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))", "gap": "24px" }}>
               <div style={{ "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "24px", "padding": "var(--sp-pad-36-40, 36px 40px)", "display": "flex", "flexDirection": "column", "gap": "20px" }}>
                 <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-26, 26px)", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                  {t[154]}
+                  {t[136]}
                 </h2>
                 <ul style={{ "margin": "0", "padding": "0", "listStyle": "none", "display": "flex", "flexDirection": "column", "gap": "14px" }}>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
@@ -1219,7 +1149,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M5 12.5l4.5 4.5L19 7.5" />
                       </svg>
                     </span>
-                    <span>{t[155]}</span>
+                    <span>{t[137]}</span>
                   </li>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#E3F6EC", "marginTop": "1px" }}>
@@ -1227,7 +1157,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M5 12.5l4.5 4.5L19 7.5" />
                       </svg>
                     </span>
-                    <span>{t[156]}</span>
+                    <span>{t[138]}</span>
                   </li>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#E3F6EC", "marginTop": "1px" }}>
@@ -1235,7 +1165,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M5 12.5l4.5 4.5L19 7.5" />
                       </svg>
                     </span>
-                    <span>{t[157]}</span>
+                    <span>{t[139]}</span>
                   </li>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#E3F6EC", "marginTop": "1px" }}>
@@ -1243,7 +1173,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M5 12.5l4.5 4.5L19 7.5" />
                       </svg>
                     </span>
-                    <span>{t[158]}</span>
+                    <span>{t[140]}</span>
                   </li>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#E3F6EC", "marginTop": "1px" }}>
@@ -1251,13 +1181,13 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M5 12.5l4.5 4.5L19 7.5" />
                       </svg>
                     </span>
-                    <span>{t[159]}</span>
+                    <span>{t[141]}</span>
                   </li>
                 </ul>
               </div>
               <div style={{ "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "24px", "padding": "var(--sp-pad-36-40, 36px 40px)", "display": "flex", "flexDirection": "column", "gap": "20px" }}>
                 <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-26, 26px)", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                  {t[160]}
+                  {t[142]}
                 </h2>
                 <ul style={{ "margin": "0", "padding": "0", "listStyle": "none", "display": "flex", "flexDirection": "column", "gap": "14px" }}>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
@@ -1266,7 +1196,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M5 12.5l4.5 4.5L19 7.5" />
                       </svg>
                     </span>
-                    <span>{t[161]}</span>
+                    <span>{t[143]}</span>
                   </li>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#E3F6EC", "marginTop": "1px" }}>
@@ -1274,7 +1204,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M5 12.5l4.5 4.5L19 7.5" />
                       </svg>
                     </span>
-                    <span>{t[162]}</span>
+                    <span>{t[144]}</span>
                   </li>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#E3F6EC", "marginTop": "1px" }}>
@@ -1282,7 +1212,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M5 12.5l4.5 4.5L19 7.5" />
                       </svg>
                     </span>
-                    <span>{t[163]}</span>
+                    <span>{t[145]}</span>
                   </li>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#E3F6EC", "marginTop": "1px" }}>
@@ -1290,7 +1220,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M5 12.5l4.5 4.5L19 7.5" />
                       </svg>
                     </span>
-                    <span>{t[164]}</span>
+                    <span>{t[146]}</span>
                   </li>
                   <li style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "24px", "height": "24px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#E3F6EC", "marginTop": "1px" }}>
@@ -1298,7 +1228,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M5 12.5l4.5 4.5L19 7.5" />
                       </svg>
                     </span>
-                    <span>{t[165]}</span>
+                    <span>{t[147]}</span>
                   </li>
                 </ul>
               </div>
@@ -1313,25 +1243,25 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 </span>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "6px" }}>
                   <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-24, 24px)", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                    {t[166]}
+                    {t[148]}
                   </h2>
                   <p style={{ "margin": "0", "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
-                    {t[167]}
+                    {t[149]}
                   </p>
                   <p style={{ "margin": "0", "fontSize": "15px", "color": "#4A5578" }}>
-                    {t[168]}
+                    {t[150]}
                   </p>
                 </div>
               </div>
             </section>
             <section id="questions" style={{ "padding": "0 var(--sp-gutter, 120px) calc(40px * var(--sp-vs, 1))", "display": "grid", "gridTemplateColumns": "var(--sp-grid-380-fr, 380px minmax(0, 1fr))", "gap": "var(--sp-gap-64, 64px)" }}>
               <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-36, 36px)", "lineHeight": "1.15", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                {t[169]}
+                {t[151]}
               </h2>
               <div style={{ "display": "flex", "flexDirection": "column", "borderTop": "1px solid #DCE3F2" }}>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
                   <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="true">
-                    <span>{t[170]}</span>
+                    <span>{t[152]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M6 6l12 12" />
@@ -1340,12 +1270,12 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </span>
                   </button>
                   <p style={{ "margin": "0", "maxWidth": "680px", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.65", "color": "#4A5578" }}>
-                    {t[171]}
+                    {t[153]}
                   </p>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
                   <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="true">
-                    <span>{t[172]}</span>
+                    <span>{t[154]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M6 6l12 12" />
@@ -1354,12 +1284,12 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </span>
                   </button>
                   <p style={{ "margin": "0", "maxWidth": "680px", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.65", "color": "#4A5578" }}>
-                    {t[173]}
+                    {t[155]}
                   </p>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
                   <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="true">
-                    <span>{t[174]}</span>
+                    <span>{t[156]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M6 6l12 12" />
@@ -1368,12 +1298,12 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </span>
                   </button>
                   <p style={{ "margin": "0", "maxWidth": "680px", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.65", "color": "#4A5578" }}>
-                    {t[175]}
+                    {t[157]}
                   </p>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
                   <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="true">
-                    <span>{t[176]}</span>
+                    <span>{t[158]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M6 6l12 12" />
@@ -1382,12 +1312,12 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </span>
                   </button>
                   <p style={{ "margin": "0", "maxWidth": "680px", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.65", "color": "#4A5578" }}>
-                    {t[177]}
+                    {t[159]}
                   </p>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
                   <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="true">
-                    <span>{t[178]}</span>
+                    <span>{t[160]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M6 6l12 12" />
@@ -1396,12 +1326,12 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </span>
                   </button>
                   <p style={{ "margin": "0", "maxWidth": "680px", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.65", "color": "#4A5578" }}>
-                    {t[179]}
+                    {t[161]}
                   </p>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
                   <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="true">
-                    <span>{t[180]}</span>
+                    <span>{t[162]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M6 6l12 12" />
@@ -1410,12 +1340,12 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </span>
                   </button>
                   <p style={{ "margin": "0", "maxWidth": "680px", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.65", "color": "#4A5578" }}>
-                    {t[181]}
+                    {t[163]}
                   </p>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
                   <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="true">
-                    <span>{t[182]}</span>
+                    <span>{t[164]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M6 6l12 12" />
@@ -1424,12 +1354,12 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </span>
                   </button>
                   <p style={{ "margin": "0", "maxWidth": "680px", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.65", "color": "#4A5578" }}>
-                    {t[183]}
+                    {t[165]}
                   </p>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
                   <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="true">
-                    <span>{t[184]}</span>
+                    <span>{t[166]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M6 6l12 12" />
@@ -1438,12 +1368,12 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </span>
                   </button>
                   <p style={{ "margin": "0", "maxWidth": "680px", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.65", "color": "#4A5578" }}>
-                    {t[185]}
+                    {t[167]}
                   </p>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
                   <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="true">
-                    <span>{t[186]}</span>
+                    <span>{t[168]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M6 6l12 12" />
@@ -1452,21 +1382,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </span>
                   </button>
                   <p style={{ "margin": "0", "maxWidth": "680px", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.65", "color": "#4A5578" }}>
-                    {t[187]}
-                  </p>
-                </Disclosure>
-                <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
-                  <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="true">
-                    <span>{t[188]}</span>
-                    <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M6 6l12 12" />
-                        <path d="M18 6L6 18" />
-                      </svg>
-                    </span>
-                  </button>
-                  <p style={{ "margin": "0", "maxWidth": "680px", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.65", "color": "#4A5578" }}>
-                    {t[189]}
+                    {t[169]}
                   </p>
                 </Disclosure>
               </div>
@@ -1476,14 +1392,14 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                 <div style={{ "position": "absolute", "inset": "0", "backgroundImage": "linear-gradient(30deg, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(150deg, rgba(255,255,255,0.08) 1px, transparent 1px)", "backgroundSize": "44px 25.4px" }} />
                 <div style={{ "position": "relative", "display": "flex", "flexDirection": "column", "gap": "22px", "maxWidth": "700px" }}>
                   <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-48, 48px)", "lineHeight": "1.08", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#FFFFFF", "textWrap": "balance" }}>
-                    {t[190]}
+                    {t[170]}
                   </h2>
                   <p style={{ "margin": "0", "fontSize": "var(--sp-fs-18, 18px)", "lineHeight": "1.6", "color": "#E3EBFF" }}>
-                    {t[191]}
+                    {t[171]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
                     <Link href={`/${lang}/devis`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #FFFFFF", "textAlign": "center" }}>
-                      <span>{t[192]}</span>
+                      <span>{t[172]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                           <path d="M5 12h14" />
@@ -1492,15 +1408,15 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                       </span>
                     </Link>
                     <a href="mailto:contact@sourcingpick.com" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "transparent", "color": "#FFFFFF", "border": "1.5px solid rgba(255,255,255,0.28)", "textAlign": "center" }}>
-                      <span><span dir="ltr">{t[193]}</span></span>
+                      <span><span dir="ltr">{t[173]}</span></span>
                     </a>
                   </div>
                 </div>
                 <div className="sp-cta-mascot" style={{ "position": "relative", "width": "300px", "height": "300px", "flexShrink": "0" }}>
                   <div style={{ "position": "absolute", "left": "-60px", "top": "6px", "maxWidth": "220px", "padding": "12px 16px", "borderRadius": "18px 18px 4px 18px", "background": "#FFFFFF", "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "600", "boxShadow": "0 16px 32px -16px rgba(14,26,61,0.5)", "boxSizing": "content-box" }}>
-                    {t[194]}
+                    {t[174]}
                   </div>
-                  <img src="/design/picky-arms-up.svg" alt={t[195]} style={{ "width": "300px", "height": "auto", "maxWidth": "100%" }} />
+                  <img src="/design/picky-arms-up.svg" alt={t[175]} style={{ "width": "300px", "height": "auto", "maxWidth": "100%" }} />
                 </div>
               </div>
             </section>

@@ -59,11 +59,16 @@ def convert(src, cur):
     inner = re.sub(r'\sdata-pk-[a-z-]+="[^"]*"', "", inner)
     return f'<html><head><title>{title.group(1) if title else ""}</title></head><body><x-dc><div>{inner}</div></x-dc></body></html>'
 
+# Pages the design draws in French only. Every other language shows the French
+# page, so the porter sees twelve identical boards and the content tables fall
+# back to French by construction.
+FR_ONLY = {"Livraisons"}
+
 os.makedirs(OUT, exist_ok=True)
 n = 0
 for stem, (f, frname) in FR.items():
     for loc in LOCALES:
-        p = os.path.join(EXPORT, "site", loc, f + ".html")
+        p = os.path.join(EXPORT, "site", "fr" if stem in FR_ONLY else loc, f + ".html")
         if not os.path.exists(p):
             continue
         out = frname if loc == "fr" else f"{loc}-{stem}.dc.html"

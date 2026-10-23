@@ -1,4 +1,4 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: Main.dc.html — footer; identical on every artboard
 // Regenerate: npm run design:port
 /*

@@ -1,4 +1,4 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: Site-Tarifs.dc.html
 // Regenerate: npm run design:port
 //
@@ -120,24 +120,6 @@ export const pricing = {
       "Première commande préparée avant votre retour",
       "Aide pour votre visa, séjour de 31 jours",
       "L’application Sourcing Pick offerte, dès son ouverture",
-      "Seul ou en groupe, le prix par personne baisse",
-      "Plus la session réunit d’inscrits, moins chacun paie. Les prix ci-dessous sont par personne et hors frais.",
-      "Inscrits",
-      "Semaine",
-      "Mois",
-      "1 personne, en solo",
-      "2 000 €",
-      "5 000 €",
-      "2 à 3 personnes",
-      "1 800 €",
-      "4 500 €",
-      "4 à 6 personnes",
-      "1 600 €",
-      "4 000 €",
-      "7 personnes et plus",
-      "Sur devis",
-      "Sur devis",
-      "Paliers proposés, à valider",
       "Ce que le prix ne comprend pas",
       "Il couvre notre accompagnement. Les dépenses du voyage restent à votre charge :",
       "Les vols internationaux et les trajets en Chine : train à grande vitesse, avion, taxi, chauffeur",
@@ -198,8 +180,6 @@ export const pricing = {
       "Oui. En trois jours, nous visitons dix fournisseurs du Guangdong à votre place, pour 1 900 €, nourriture, déplacements et hôtel compris. Pour chacun, vous recevez photos, vidéo, prix, quantité minimale et délais. Au-delà de dix fournisseurs, nous établissons un devis.",
       "Que comprend l’accompagnement en Chine ?",
       "Un programme de visites d’usines et de rendez-vous fournisseurs, avec nous à vos côtés pour traduire et négocier, l’aide pour votre visa et l’application Sourcing Pick offerte. Les vols, l’hôtel, les repas et les déplacements restent à votre charge.",
-      "Peut-on venir à plusieurs ?",
-      "Oui. Les prix sont par personne et baissent avec le nombre d’inscrits sur la même session. Pour un grand groupe, nous établissons un devis.",
       "Comment fonctionne le test de produits ?",
       "Vous passez commande via nous. Nous réceptionnons la marchandise à Guangzhou, ouvrons les cartons et testons vos produits selon vos critères. Vous recevez photos, vidéos et rapport avant l’expédition. Le prix dépend du produit et du nombre de pièces testées : il est donné sur devis.",
       "Parlez-nous de votre prochaine commande.",

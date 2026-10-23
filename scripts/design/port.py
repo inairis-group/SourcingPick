@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Port the approved 2026-09 canvas into the app, artboard by artboard.
+"""Port the approved design (2026-10 export) into the app, artboard by artboard.
 
 Why a generator rather than hand-written components: the canvas exports every
 page as HTML with the design's own paddings, radii and hexes inline. Retyping
@@ -94,6 +94,11 @@ PAGES = {
              "legal/mentions-legales"),
         Page("Confidentialite", "PrivacyBoard", "privacy", "Site-Confidentialite.dc.html",
              "legal/privacy"),
+        Page("Cookies", "CookiesBoard", "cookies", "Site-Cookies.dc.html", "legal/cookies"),
+        Page("CGV", "TermsBoard", "terms", "Site-CGV.dc.html", "legal/terms"),
+        # Drawn in French only; the other languages show the French page.
+        Page("Livraisons", "DeliveriesBoard", "deliveries", "Site-Livraisons.dc.html",
+             "livraisons"),
         Page("404", "NotFoundBoard", "notFound", "Site-404.dc.html", None),
     ]
 }
@@ -361,12 +366,17 @@ def is_lang_row(node: Element) -> bool:
 
 
 def chrome_replacer(node: Element, em: Emitter):
+    # Both stand-ins swallow a subtree the attribute stream still counts, so the
+    # attribute counter has to step over it too or every locale-varying value
+    # after it lands on the wrong node (an icon's width read an arrow's path).
     if is_lang_button(node):
         em.i += em.count_slots(node)
+        em.a += em.count_attrs(node)
         return ["<LocaleSwitch lang={lang} />"]
     if is_lang_row(node):
         label = em.i  # "12 langues"
         em.i += em.count_slots(node)
+        em.a += em.count_attrs(node)
         return [f"<LocaleRow lang={{lang}} label={{{em.slot_expr(label)}}} />"]
     return None
 
@@ -625,6 +635,11 @@ COMPONENTS: dict[str, list[tuple]] = {
         # sizes and remove buttons are added around the box it did draw.
         (_is_file_drop, "FileDrop", "../../file-drop", 1, True),
     ],
+    "Livraisons": [
+        # The figures of the drawn example follow the five numeric fields.
+        (lambda el: el.tag == "section" and el.attr("id") == "simulateur",
+         "DeliverySimulator", "../../delivery-simulator", 1, False),
+    ],
     "FAQ": [
         # The chips work as plain anchors with no JavaScript; this adds the
         # moving active state the canvas can only draw one frame of.
@@ -794,6 +809,16 @@ def _is_hero_figure(el: Element) -> bool:
     )
 
 
+def _is_hero_illustration(el: Element) -> bool:
+    """The Livraisons hero draws its ship in a bare 560px-wide frame (no pale
+    box, no height): a fixed width beside the heading, clipped and bordered."""
+    return (
+        el.tag == "div"
+        and _has(el, "flex-shrink: 0", "width: 560px", "overflow: hidden")
+        and not _has(el, "height:")
+    )
+
+
 def _is_phone_stage(el: Element) -> bool:
     return el.tag == "div" and _has(el, "position: relative; height: 700px")
 
@@ -849,7 +874,7 @@ def _is_not_found_numeral(el: Element) -> bool:
 # per page shape like the page rules: a page that gains or loses a closing
 # band fails the port until this says so.
 _CTA_PAGES = {"Accueil": 1, "Services": 1, "Comment-ca-marche": 1, "Entrepot": 1,
-              "Tarifs": 1, "A-propos": 1}
+              "Tarifs": 1, "A-propos": 1, "Livraisons": 1}
 _TWO_TRACK_PAGES = {"Accueil": 3, "Services": 2, "Comment-ca-marche": 1, "Tarifs": 1,
                     "FAQ": 2, "A-propos": 1, "Application": 1}
 
@@ -861,7 +886,18 @@ def _is_two_track_tail(el: Element) -> bool:
     return el.tag == "div" and _has(el, "flex-wrap: wrap; justify-content: flex-end")
 _HERO_FIGURE_PAGES = {"Services": 1, "Comment-ca-marche": 1, "Tarifs": 1, "FAQ": 1,
                       "A-propos": 1, "404": 1}
+def _is_scheme(el: Element) -> bool:
+    """The "hors échelle" map of the four sites: 600×548, pins placed in pixels."""
+    return (
+        el.tag == "div"
+        and el.attr("role") == "img"
+        and _has(el, "position: relative", "width: 600px", "height: 548px")
+    )
+
+
 SITE_DECORATIONS: list[tuple] = [
+    (_is_scheme, "sp-scheme", {"Entrepot": 1, "Livraisons": 1}),
+    (_is_hero_illustration, "sp-hero-illustration", {"Livraisons": 1}),
     (_is_cta_band, "sp-cta-band", _CTA_PAGES),
     (_is_cta_mascot, "sp-cta-mascot", _CTA_PAGES),
     (_is_two_track, "sp-two-track", _TWO_TRACK_PAGES),
@@ -870,7 +906,31 @@ SITE_DECORATIONS: list[tuple] = [
     (_is_phone_stage, "sp-phone-stage", {"Accueil": 1, "Application": 1}),
 ]
 
+def _sim_card(label: str):
+    """A result card of the shipment simulator: three spans, the first its label."""
+    def pred(el: Element) -> bool:
+        spans = [c for c in kids(el) if isinstance(c, Element)]
+        return (
+            el.tag == "div"
+            and len(spans) == 3
+            and all(c.tag == "span" for c in spans)
+            and text_of(spans[0]) == label
+        )
+    return pred
+
+
+def _sim_volume(el: Element) -> bool:
+    return el.tag == "span" and text_of(el).startswith("Volume total") and find(el, "b") is not None
+
+
 DECORATIONS: dict[str, list[tuple]] = {
+    # Where DeliverySimulator writes the figures it computes.
+    "Livraisons": [
+        (_sim_card("Poids réel"), {"data-sim": "real"}, 1),
+        (_sim_card("Poids volumétrique"), {"data-sim": "vol"}, 1),
+        (_sim_card("Poids facturable"), {"data-sim": "bill"}, 1),
+        (_sim_volume, {"data-sim": "volume"}, 1),
+    ],
     # Six category groups, numbered so the six chips above them have
     # somewhere to land. Count-checked: if the canvas ever draws a
     # seventh category, the port stops rather than orphaning a chip.
@@ -904,6 +964,8 @@ SHAPE_COUNTS: dict[tuple[str, str], dict[str, int]] = {
     # old two-track and badge-row signatures no longer match. Reviewed on the
     # new board before the zeros were accepted.
     ("Application", "fr"): {"sp-two-track": 0, "sp-two-track-tail": 0},
+    # The other languages keep the old Entrepôt, which has no map of the sites.
+    ("Entrepot", "en"): {"sp-scheme": 0},
 }
 
 
@@ -915,7 +977,7 @@ def decorator_for(stem: str, tag: str = "fr"):
     ]
     over = SHAPE_COUNTS.get((stem, tag), {})
     rules = [
-        (pred, what, over.get(getattr(what, "__name__", what), expected))
+        (pred, what, over.get(what if isinstance(what, str) else getattr(what, "__name__", ""), expected))
         for pred, what, expected in rules
     ]
     seen = [0] * len(rules)
@@ -932,7 +994,7 @@ def decorator_for(stem: str, tag: str = "fr"):
 
     def check() -> None:
         bad = [
-            f"{getattr(what, '__name__', what)}: expected {expected}, matched {got}"
+            f"{what if isinstance(what, str) else getattr(what, '__name__', what)}: expected {expected}, matched {got}"
             for (pred, what, expected), got in zip(rules, seen)
             if got != expected
         ]
@@ -1022,7 +1084,7 @@ def assert_header_shape(header: Element) -> None:
 
 # --- emission ----------------------------------------------------------------
 
-BANNER = """// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+BANNER = """// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: {src}
 // Regenerate: npm run design:port
 """
@@ -1051,7 +1113,7 @@ def lead_paragraph(strings: list[str]) -> str:
     return strings[1] if len(strings) > 1 else ""
 
 
-BANNER = """// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+BANNER = """// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: {src}
 // Regenerate: npm run design:port
 """
@@ -1071,12 +1133,105 @@ def write(path: str, body: str) -> None:
         fh.write(body)
 
 
+# -- what the design draws but the site must not publish ------------------------
+#
+# The export carries the designer's working notes and one proposal that Adam has
+# not validated. They are cut out of the tree before anything is counted, so the
+# strings, the shapes and the routes all agree on what the page is. Each rule
+# says how many French matches to expect: if the design moves, the port stops
+# instead of silently publishing (or silently dropping) something else.
+WORK_NOTES = {
+    "Préciser ce que couvre Nansha",   # D5 — a question to Adam, drawn as a pastille
+    "Orthographe de Zhongluotan ?",    # D5
+    "Paliers proposés, à valider",     # D7
+}
+
+
+def _work_note(el: Element) -> bool:
+    return (
+        el.tag == "span"
+        and "border: 1px dashed #D99A00" in _style(el)
+        and text_of(el) in WORK_NOTES
+    )
+
+
+def _group_tiers_card(el: Element) -> bool:
+    """D7 — group prices for the China programme are Claude's proposal, not Adam's."""
+    return el.tag == "div" and any(
+        c.tag == "h3" and text_of(c).startswith("Seul ou en groupe") for c in kids(el)
+    )
+
+
+def _group_faq_item(el: Element) -> bool:
+    """The answer says prices fall with the number of people: it rests on D7."""
+    k = kids(el)
+    return (
+        el.tag == "div"
+        and bool(k)
+        and k[0].tag == "button"
+        and text_of(k[0]).startswith("Peut-on venir à plusieurs")
+    )
+
+
+OMIT: dict[str, list[tuple]] = {
+    "Entrepot": [(_work_note, 2)],
+    "Livraisons": [(_work_note, 2)],
+    "Tarifs": [(_work_note, 1), (_group_tiers_card, 1), (_group_faq_item, 1)],
+}
+
+
+def _stem_of(path: str) -> str | None:
+    name = os.path.basename(path)
+    for stem, page in PAGES.items():
+        if name == page.board:
+            return stem
+    m = re.match(r"^[a-z]{2}-(.+)\.dc\.html$", name)
+    return m.group(1) if m and m.group(1) in PAGES else None
+
+
+def _omit(node: Element, pred) -> int:
+    """Remove every descendant matching `pred`, and any wrapper left empty."""
+    removed = 0
+    for c in list(node.children):
+        if isinstance(c, str):
+            continue
+        if pred(c):
+            node.children.remove(c)
+            removed += 1
+            continue
+        before = len(c.children)
+        removed += _omit(c, pred)
+        # A wrapper that only held the removed note goes with it.
+        if before and c.tag == "div" and not any(
+            isinstance(x, Element) or x.strip() for x in c.children
+        ):
+            node.children.remove(c)
+    return removed
+
+
 def board_parts(path: str):
     """(announce strip, header, page sections, footer) for one artboard."""
     frame = [c for c in kids(find(parse(path), "x-dc")) if c.tag == "div"][0]
+    stem = _stem_of(path)
+    for pred, expected in OMIT.get(stem, []):
+        got = _omit(frame, pred)
+        if os.path.basename(path) == PAGES[stem].board and got != expected:
+            raise SystemExit(
+                f"{stem}: expected {expected} element(s) to omit ({pred.__name__}), "
+                f"found {got}. The artboard changed — update OMIT."
+            )
     parts = kids(frame)
     footer = parts[-1]
     ch = kids(parts[0])
+    # A board can open with the <style> of its drawn illustrations, ahead of
+    # the announcement strip. It travels with the first section instead, so the
+    # strip and the header keep the positions every other page gives them.
+    lead = []
+    while ch and ch[0].tag == "style":
+        lead.append(ch[0])
+        ch = ch[1:]
+    if lead:
+        ch[2].children[:0] = lead
     # A page drawn on two artboards (Tarifs, 1/2 and 2/2) arrives glued: the
     # first wrapper, the second wrapper, then the footer. The second wrapper
     # opens with a bare spacer standing in for the seam; it carries nothing.

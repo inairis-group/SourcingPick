@@ -1,4 +1,4 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: en-Tarifs.dc.html (and 10 more)
 // Regenerate: npm run design:port
 /*

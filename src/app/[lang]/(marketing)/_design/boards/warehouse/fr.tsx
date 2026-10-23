@@ -1,4 +1,4 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: fr-Entrepot.dc.html (and 0 more)
 // Regenerate: npm run design:port
 /*
@@ -169,15 +169,10 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                     <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.5", "color": "#C6D2EE" }}>
                       {t[29]}
                     </span>
-                    <div>
-                      <span className="sp-placeholder" style={{ "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }}>
-                        {t[30]}
-                      </span>
-                    </div>
                   </div>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "6px", "padding": "var(--sp-pad-28-30, 28px 30px)", "borderRadius": "24px", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
                     <span style={{ "display": "inline-flex", "alignSelf": "flex-start", "padding": "4px 11px", "borderRadius": "999px", "background": "#EAF1FF", "color": "#155DFC", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "marginBottom": "4px" }}>
-                      {t[31]}
+                      {t[30]}
                     </span>
                     <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "14px 0", "borderTop": "1px solid #DCE3F2" }}>
                       <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "38px", "height": "38px", "borderRadius": "12px", "background": "#EAF1FF", "alignItems": "center", "justifyContent": "center" }}>
@@ -188,27 +183,27 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                       </span>
                       <div style={{ "display": "flex", "flexDirection": "column", "gap": "2px" }}>
                         <span style={{ "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D" }}>
+                          {t[31]}
+                        </span>
+                        <span style={{ "fontSize": "13.5px", "color": "#4A5578" }}>
                           {t[32]}
                         </span>
-                        <span style={{ "fontSize": "13.5px", "color": "#4A5578" }}>
+                      </div>
+                    </div>
+                    <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "14px 0", "borderTop": "1px solid #DCE3F2" }}>
+                      <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "38px", "height": "38px", "borderRadius": "12px", "background": "#EAF1FF", "alignItems": "center", "justifyContent": "center" }}>
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#155DFC" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M12 21s-7-6.2-7-11.5A7 7 0 0112 2.5a7 7 0 017 7C19 14.8 12 21 12 21z" />
+                          <circle cx="12" cy="9.5" r="2.5" />
+                        </svg>
+                      </span>
+                      <div style={{ "display": "flex", "flexDirection": "column", "gap": "2px" }}>
+                        <span style={{ "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D" }}>
                           {t[33]}
                         </span>
-                      </div>
-                    </div>
-                    <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "14px 0", "borderTop": "1px solid #DCE3F2" }}>
-                      <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "38px", "height": "38px", "borderRadius": "12px", "background": "#EAF1FF", "alignItems": "center", "justifyContent": "center" }}>
-                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#155DFC" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d="M12 21s-7-6.2-7-11.5A7 7 0 0112 2.5a7 7 0 017 7C19 14.8 12 21 12 21z" />
-                          <circle cx="12" cy="9.5" r="2.5" />
-                        </svg>
-                      </span>
-                      <div style={{ "display": "flex", "flexDirection": "column", "gap": "2px" }}>
-                        <span style={{ "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D" }}>
+                        <span style={{ "fontSize": "13.5px", "color": "#4A5578" }}>
                           {t[34]}
                         </span>
-                        <span style={{ "fontSize": "13.5px", "color": "#4A5578" }}>
-                          {t[35]}
-                        </span>
                       </div>
                     </div>
                     <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "14px 0", "borderTop": "1px solid #DCE3F2" }}>
@@ -220,22 +215,17 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                       </span>
                       <div style={{ "display": "flex", "flexDirection": "column", "gap": "2px" }}>
                         <span style={{ "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#0E1A3D" }}>
-                          {t[36]}
+                          {t[35]}
                         </span>
                         <span style={{ "fontSize": "13.5px", "color": "#4A5578" }}>
-                          {t[37]}
+                          {t[36]}
                         </span>
                       </div>
-                    </div>
-                    <div style={{ "paddingTop": "8px" }}>
-                      <span className="sp-placeholder" style={{ "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }}>
-                        {t[38]}
-                      </span>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <div role="img" aria-label={t[39]} style={{ "position": "relative", "width": "600px", "height": "548px", "borderRadius": "26px", "overflow": "hidden", "border": "1px solid #DCE3F2", "backgroundColor": "#E9F0FF", "backgroundImage": "linear-gradient(0deg, rgba(21,93,252,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(21,93,252,0.07) 1px, transparent 1px)", "backgroundSize": "36px 36px" }}>
+                  <div className="sp-scheme" role="img" aria-label={t[37]} style={{ "position": "relative", "width": "600px", "height": "548px", "borderRadius": "26px", "overflow": "hidden", "border": "1px solid #DCE3F2", "backgroundColor": "#E9F0FF", "backgroundImage": "linear-gradient(0deg, rgba(21,93,252,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(21,93,252,0.07) 1px, transparent 1px)", "backgroundSize": "36px 36px" }}>
                     <svg width="600" height="548" viewBox="0 0 600 548" style={{ "position": "absolute", "inset": "0" }} aria-hidden="true">
                       <path d="M0 510 C 120 471, 204 548, 312 510 S 504 471, 600 515 L 600 548 L 0 548 Z" fill="#D6F3FA" />
                       <line x1="300" y1="93" x2="300" y2="411" stroke="#8DB2FF" strokeWidth="2.5" strokeDasharray="3 9" strokeLinecap="round" />
@@ -251,10 +241,10 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                       </span>
                       <span style={{ "display": "inline-flex", "flexDirection": "column", "alignItems": "center", "padding": "6px 12px", "borderRadius": "12px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "boxShadow": "0 10px 24px -14px rgba(14,26,61,0.4)", "whiteSpace": "nowrap" }}>
                         <span style={{ "fontSize": "14.5px", "fontWeight": "600", "color": "#0E1A3D" }}>
-                          {t[40]}
+                          {t[38]}
                         </span>
                         <span style={{ "fontSize": "12px", "color": "#4A5578" }}>
-                          {t[41]}
+                          {t[39]}
                         </span>
                       </span>
                     </div>
@@ -267,10 +257,10 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                       </span>
                       <span style={{ "display": "inline-flex", "flexDirection": "column", "alignItems": "center", "padding": "6px 12px", "borderRadius": "12px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "boxShadow": "0 10px 24px -14px rgba(14,26,61,0.4)", "whiteSpace": "nowrap" }}>
                         <span style={{ "fontSize": "14.5px", "fontWeight": "600", "color": "#0E1A3D" }}>
-                          {t[42]}
+                          {t[40]}
                         </span>
                         <span style={{ "fontSize": "12px", "color": "#4A5578" }}>
-                          {t[43]}
+                          {t[41]}
                         </span>
                       </span>
                     </div>
@@ -283,10 +273,10 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                       </span>
                       <span style={{ "display": "inline-flex", "flexDirection": "column", "alignItems": "center", "padding": "6px 12px", "borderRadius": "12px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "boxShadow": "0 10px 24px -14px rgba(14,26,61,0.4)", "whiteSpace": "nowrap" }}>
                         <span style={{ "fontSize": "14.5px", "fontWeight": "600", "color": "#0E1A3D" }}>
-                          {t[44]}
+                          {t[42]}
                         </span>
                         <span style={{ "fontSize": "12px", "color": "#4A5578" }}>
-                          {t[45]}
+                          {t[43]}
                         </span>
                       </span>
                     </div>
@@ -333,15 +323,15 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                       </span>
                       <span style={{ "display": "inline-flex", "flexDirection": "column", "alignItems": "center", "padding": "6px 14px", "borderRadius": "12px", "background": "#FFC247", "color": "#7A4E00", "whiteSpace": "nowrap" }}>
                         <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "700" }}>
-                          {t[46]}
+                          {t[44]}
                         </span>
                         <span style={{ "fontSize": "12px", "fontWeight": "600" }}>
-                          {t[47]}
+                          {t[45]}
                         </span>
                       </span>
                     </div>
                     <span style={{ "position": "absolute", "insetInlineEnd": "14px", "top": "12px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "11.5px", "fontWeight": "600", "color": "#4A5578" }}>
-                      {t[48]}
+                      {t[46]}
                     </span>
                   </div>
                 </div>
@@ -349,9 +339,17 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
             </section>
             <section style={{ "padding": "calc(24px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))", "display": "flex", "flexDirection": "column", "gap": "28px" }}>
               <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-40, 40px)", "lineHeight": "1.1", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                {t[49]}
+                {t[47]}
               </h2>
               <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-r3, repeat(3, minmax(0, 1fr)))", "gap": "18px" }}>
+                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "padding": "var(--sp-pad-28, 28px)", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "22px" }}>
+                  <span style={{ "display": "inline-flex", "width": "40px", "height": "40px", "borderRadius": "50%", "background": "#155DFC", "color": "#FFFFFF", "alignItems": "center", "justifyContent": "center", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "15px", "fontWeight": "600" }}>
+                    {t[48]}
+                  </span>
+                  <p style={{ "margin": "0", "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
+                    {t[49]}
+                  </p>
+                </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "padding": "var(--sp-pad-28, 28px)", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "22px" }}>
                   <span style={{ "display": "inline-flex", "width": "40px", "height": "40px", "borderRadius": "50%", "background": "#155DFC", "color": "#FFFFFF", "alignItems": "center", "justifyContent": "center", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "15px", "fontWeight": "600" }}>
                     {t[50]}
@@ -368,20 +366,12 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                     {t[53]}
                   </p>
                 </div>
-                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "padding": "var(--sp-pad-28, 28px)", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "22px" }}>
-                  <span style={{ "display": "inline-flex", "width": "40px", "height": "40px", "borderRadius": "50%", "background": "#155DFC", "color": "#FFFFFF", "alignItems": "center", "justifyContent": "center", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "15px", "fontWeight": "600" }}>
-                    {t[54]}
-                  </span>
-                  <p style={{ "margin": "0", "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.55", "color": "#0E1A3D" }}>
-                    {t[55]}
-                  </p>
-                </div>
               </div>
             </section>
             <section style={{ "background": "#0B1433", "padding": "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))", "display": "grid", "gridTemplateColumns": "var(--sp-grid-420-fr, 420px minmax(0, 1fr))", "gap": "var(--sp-gap-56, 56px)", "alignItems": "center" }}>
               <div style={{ "display": "flex", "flexDirection": "column", "gap": "20px" }}>
                 <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-40, 40px)", "lineHeight": "1.1", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#FFFFFF", "textWrap": "balance" }}>
-                  {t[56]}
+                  {t[54]}
                 </h2>
                 <img src="/design/picky-loupe.svg" alt="" style={{ "width": "220px", "height": "auto", "maxWidth": "100%" }} />
               </div>
@@ -396,7 +386,7 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                     </svg>
                   </span>
                   <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#FFFFFF" }}>
-                    {t[57]}
+                    {t[55]}
                   </span>
                 </div>
                 <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "18px 20px", "borderRadius": "18px", "background": "rgba(255,255,255,0.06)", "border": "1px solid rgba(255,255,255,0.12)" }}>
@@ -408,7 +398,7 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                     </svg>
                   </span>
                   <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#FFFFFF" }}>
-                    {t[58]}
+                    {t[56]}
                   </span>
                 </div>
                 <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "18px 20px", "borderRadius": "18px", "background": "rgba(255,255,255,0.06)", "border": "1px solid rgba(255,255,255,0.12)" }}>
@@ -422,7 +412,7 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                     </svg>
                   </span>
                   <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#FFFFFF" }}>
-                    {t[59]}
+                    {t[57]}
                   </span>
                 </div>
                 <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "18px 20px", "borderRadius": "18px", "background": "rgba(255,255,255,0.06)", "border": "1px solid rgba(255,255,255,0.12)" }}>
@@ -435,7 +425,7 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                     </svg>
                   </span>
                   <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#FFFFFF" }}>
-                    {t[60]}
+                    {t[58]}
                   </span>
                 </div>
                 <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "18px 20px", "borderRadius": "18px", "background": "rgba(255,255,255,0.06)", "border": "1px solid rgba(255,255,255,0.12)" }}>
@@ -446,7 +436,7 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                     </svg>
                   </span>
                   <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#FFFFFF" }}>
-                    {t[61]}
+                    {t[59]}
                   </span>
                 </div>
                 <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "18px 20px", "borderRadius": "18px", "background": "rgba(255,255,255,0.06)", "border": "1px solid rgba(255,255,255,0.12)" }}>
@@ -457,7 +447,7 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                     </svg>
                   </span>
                   <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#FFFFFF" }}>
-                    {t[62]}
+                    {t[60]}
                   </span>
                 </div>
               </div>
@@ -467,14 +457,14 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                 <div style={{ "position": "absolute", "inset": "0", "backgroundImage": "linear-gradient(30deg, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(150deg, rgba(255,255,255,0.08) 1px, transparent 1px)", "backgroundSize": "44px 25.4px" }} />
                 <div style={{ "position": "relative", "display": "flex", "flexDirection": "column", "gap": "22px", "maxWidth": "700px" }}>
                   <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-48, 48px)", "lineHeight": "1.08", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#FFFFFF", "textWrap": "balance" }}>
-                    {t[63]}
+                    {t[61]}
                   </h2>
                   <p style={{ "margin": "0", "fontSize": "var(--sp-fs-18, 18px)", "lineHeight": "1.6", "color": "#E3EBFF" }}>
-                    {t[64]}
+                    {t[62]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
                     <Link href={`/${lang}/devis`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #FFFFFF", "textAlign": "center" }}>
-                      <span>{t[65]}</span>
+                      <span>{t[63]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                           <path d="M5 12h14" />
@@ -483,15 +473,15 @@ export function WarehouseBoardFR({ lang }: { lang: Locale }) {
                       </span>
                     </Link>
                     <a href="mailto:contact@sourcingpick.com" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "transparent", "color": "#FFFFFF", "border": "1.5px solid rgba(255,255,255,0.28)", "textAlign": "center" }}>
-                      <span><span dir="ltr">{t[66]}</span></span>
+                      <span><span dir="ltr">{t[64]}</span></span>
                     </a>
                   </div>
                 </div>
                 <div className="sp-cta-mascot" style={{ "position": "relative", "width": "300px", "height": "300px", "flexShrink": "0" }}>
                   <div style={{ "position": "absolute", "left": "-60px", "top": "6px", "maxWidth": "220px", "padding": "12px 16px", "borderRadius": "18px 18px 4px 18px", "background": "#FFFFFF", "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "600", "boxShadow": "0 16px 32px -16px rgba(14,26,61,0.5)", "boxSizing": "content-box" }}>
-                    {t[67]}
+                    {t[65]}
                   </div>
-                  <img src="/design/picky-arms-up.svg" alt={t[68]} style={{ "width": "300px", "height": "auto", "maxWidth": "100%" }} />
+                  <img src="/design/picky-arms-up.svg" alt={t[66]} style={{ "width": "300px", "height": "auto", "maxWidth": "100%" }} />
                 </div>
               </div>
             </section>

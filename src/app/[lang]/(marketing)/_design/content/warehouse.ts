@@ -1,4 +1,4 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: Site-Entrepot.dc.html
 // Regenerate: npm run design:port
 //
@@ -42,7 +42,6 @@ export const warehouse = {
       "Notre solution",
       "Nansha",
       "Guangzhou · port de départ vers l’Europe",
-      "Préciser ce que couvre Nansha",
       "Logistique partenaire",
       "Zhongluotan",
       "Guangzhou",
@@ -50,7 +49,6 @@ export const warehouse = {
       "Guangdong",
       "Dongguan",
       "Guangdong",
-      "Orthographe de Zhongluotan ?",
       "Schéma de nos quatre sites : Nansha, Zhongluotan, Foshan et Dongguan",
       "Zhongluotan",
       "Guangzhou",
