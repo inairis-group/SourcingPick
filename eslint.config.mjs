@@ -40,9 +40,16 @@ const eslintConfig = defineConfig([
     // wrapper, a layout pass and a loader round-trip for no smaller byte —
     // and these files are generated, so a suppression comment would be
     // rewritten on the next re-port anyway.
+    //
+    // The same goes for the links to the client area (`/connexion`,
+    // `/inscription`): that area is another application on the same host, so
+    // they are plain anchors on purpose. The rule reads them as pages of this
+    // app — `/[lang]` accepts any single word — and asks for `<Link />`, which
+    // would try to resolve them in this router.
     files: ["**/_design/**/*.tsx"],
     rules: {
       "@next/next/no-img-element": "off",
+      "@next/next/no-html-link-for-pages": "off",
     },
   },
   // Override default ignores of eslint-config-next.

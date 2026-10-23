@@ -586,7 +586,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                   </div>
                 </div>
                 <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "flexWrap": "wrap" }}>
-                  <Link href={`/${lang}/login`} style={s[40][lang]}>
+                  <a href="/connexion" style={s[40][lang]}>
                     <span>{t[110]}</span>
                     <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -594,7 +594,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                         <path d={v[20][lang]} />
                       </svg>
                     </span>
-                  </Link>
+                  </a>
                   <span style={{ "display": "inline-flex", "alignItems": "center", "gap": "8px", "padding": "8px 14px", "borderRadius": "999px", "background": "#FFF1CC", "color": "#7A4E00", "fontSize": "14px", "fontWeight": "600" }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7A4E00" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <circle cx="12" cy="12" r="9" />

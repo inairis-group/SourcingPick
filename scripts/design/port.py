@@ -137,7 +137,7 @@ ROUTES: dict[str, str] = {
     "Contact": "/contact",
     "Application": "/application",
     "Sourcing": "/services",
-    "Espace client": "/login",
+    "Espace client": "~/connexion",
     "Mentions légales": "/legal/mentions-legales",
     "Confidentialité": "/legal/privacy",
     "Politique de confidentialité": "/legal/privacy",
@@ -162,10 +162,10 @@ ROUTES: dict[str, str] = {
     "Réserver les trois jours": "/contact",
     "Demander les dates": "/contact",
     "Demander un devis test": "/devis",
-    "Ouvrir l’espace client": "/login",
-    "Ouvrir mon espace client": "/login",
-    "Créer mon compte gratuit": "/signup",
-    "J’ai déjà un compte": "/login",
+    "Ouvrir l’espace client": "~/connexion",
+    "Ouvrir mon espace client": "~/connexion",
+    "Créer mon compte gratuit": "~/inscription",
+    "J’ai déjà un compte": "~/connexion",
     "conditions générales de vente": "/legal/terms",
 }
 
@@ -230,7 +230,7 @@ def french_route(node: Element, label: str, raw: str) -> str | None:
         return raw
     if not label:
         return "@home"  # the wordmark, the only anchor with no text
-    if raw.startswith("/"):
+    if raw.startswith(("/", "~")):
         return raw  # the export wires every link to its route
     if label in IN_PAGE:
         return IN_PAGE[label]
@@ -334,6 +334,11 @@ def resolve_href(path: str | None, raw: str):
         return None
     if path.startswith("mailto:") or path.startswith("http"):
         return json.dumps(path), False
+    if path.startswith("~"):
+        # A page another application serves on the same host (the client area):
+        # written as it is, with no language prefix, and as a plain anchor so the
+        # router does not try to resolve it inside this app.
+        return json.dumps(path[1:]), False
     if path in ("@home", "/"):
         return "{`/${lang}`}", True
     if path.startswith("/#"):
