@@ -1,6 +1,6 @@
 import "server-only";
 import { prisma } from "@/lib/db/client";
-import { issueEmailOtp } from "@/lib/auth/otp";
+import { OTP_TTL_MINUTES, issueEmailOtp } from "@/lib/auth/otp";
 import { sendEmail } from "@/lib/email/send";
 import OtpEmail from "@/lib/email/templates/otp";
 import { pick, type Localized } from "@/lib/i18n/localized";
@@ -28,6 +28,6 @@ export async function sendOtpEmailToUser(userId: string): Promise<void> {
   await sendEmail({
     to: user.email,
     subject: pick(SUBJECT, user.locale),
-    react: OtpEmail({ code, locale: user.locale, expiresInMinutes: 10 }),
+    react: OtpEmail({ code, locale: user.locale, expiresInMinutes: OTP_TTL_MINUTES }),
   });
 }
