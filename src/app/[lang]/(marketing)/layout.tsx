@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { SiteHeader } from "./_design/site-header";
 import { SiteFooter } from "./_design/site-footer";
+import { FRAME_FIT_SCRIPT } from "./_design/frame-fit";
+import { FrameFitEffect } from "./_design/frame-fit-effect";
 import { PublicContactButton } from "@/components/marketing/public-contact-button";
 import { isLocale } from "@/lib/i18n/config";
 import { getCurrentUser } from "@/lib/auth/session";
@@ -26,16 +28,22 @@ export default async function MarketingLayout({ children, params }: LayoutProps<
   const user = await getCurrentUser();
 
   return (
-    <div className={`theme-light ${styles.frame}`}>
-      <div className={styles.page}>
-        <SiteHeader lang={lang} />
-        <main>{children}</main>
+    <>
+      {/* Between 821 and 1439px the frame is the artboard scaled to the
+          window; this measures the window before the frame is drawn. */}
+      <script id="sp-frame-fit" dangerouslySetInnerHTML={{ __html: FRAME_FIT_SCRIPT }} />
+      <FrameFitEffect />
+      <div className={`theme-light ${styles.frame}`}>
+        <div className={styles.page}>
+          <SiteHeader lang={lang} />
+          <main>{children}</main>
+        </div>
+        <SiteFooter lang={lang} />
+        {/* Partner #17: lightweight pre-signup contact dock. Not part of the
+            canvas — it is an operations affordance, and it hides itself once
+            somebody has an account to message us from. */}
+        {!user && <PublicContactButton />}
       </div>
-      <SiteFooter lang={lang} />
-      {/* Partner #17: lightweight pre-signup contact dock. Not part of the
-          canvas — it is an operations affordance, and it hides itself once
-          somebody has an account to message us from. */}
-      {!user && <PublicContactButton />}
-    </div>
+    </>
   );
 }
