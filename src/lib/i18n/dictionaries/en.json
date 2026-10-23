@@ -911,7 +911,27 @@
     "tabDocuments": "Documents",
     "tabMessages": "Messages",
     "tabInvoices": "Invoices",
-    "noTimeline": "Tracking begins with the first step."
+    "noTimeline": "Tracking begins with the first step.",
+    "statusForm": {
+      "title": "Update the status",
+      "internal": "Internal, not visible to the client",
+      "rule": "An agent can move an order to preparation complete, shipped or in transit.",
+      "commentLabel": "Comment for the client",
+      "publish": "Publish to the client",
+      "cancel": "Cancel",
+      "saved": "Status updated.",
+      "errors": {
+        "no_stage": "Choose a step.",
+        "not_found": "Order not found.",
+        "illegal_transition": "This step cannot be chosen: an order does not move backwards.",
+        "comment_too_long": "The comment is too long (2,000 characters at most)."
+      },
+      "historyTitle": "History",
+      "historyEmpty": "No step recorded yet.",
+      "openRequest": "View the request",
+      "back": "Back",
+      "notStarted": "Not started yet"
+    }
   },
   "publicMarketplace": {
     "loadMoreTitle": "More than 20 products available",

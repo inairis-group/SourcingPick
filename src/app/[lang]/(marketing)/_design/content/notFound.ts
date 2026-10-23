@@ -1,4 +1,4 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: Site-404.dc.html
 // Regenerate: npm run design:port
 //
@@ -25,7 +25,7 @@ export const notFound = {
       "This package has gone astray.",
       "The page you’re looking for doesn’t exist or has been moved.",
       "Back to homepage",
-      "Get a quote",
+      "Request a quotation",
       "?",
       "The Sourcing Pick mascot searching with a magnifying glass",
     ],

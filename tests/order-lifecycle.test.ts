@@ -6,8 +6,10 @@ import {
   ORDER_STATES,
   STAGES,
   STATE_TONE,
+  STATUS_FORM_STATES,
   canTransition,
   stagesOf,
+  statusFormStages,
   visibleToClient,
   type OrderStage,
 } from "../src/lib/orders/lifecycle";
@@ -143,4 +145,32 @@ test("the schema's enums and the vocabulary are the same list", () => {
   };
   assert.deepEqual(values("OrderState").sort(), [...ORDER_STATES].sort());
   assert.deepEqual(values("OrderStage").sort(), [...ORDER_STAGES].sort());
+});
+
+test("the status form offers the fifteen sub-states of preparation, shipping and transit", () => {
+  assert.deepEqual([...STATUS_FORM_STATES], ["PREPARATION_COMPLETE", "SHIPPED", "IN_TRANSIT"]);
+  const offered = statusFormStages();
+  // Seven + four + four, in the canvas's own order.
+  assert.equal(offered.length, 15);
+  assert.deepEqual(offered, [
+    "PARTIALLY_RECEIVED",
+    "FULLY_RECEIVED",
+    "INSPECTING",
+    "ISSUE_REPORTED",
+    "INSPECTION_PASSED",
+    "CONSOLIDATION",
+    "READY_TO_LOAD",
+    "BALANCE_PAID",
+    "CONTAINER_LOADED",
+    "EXPORT_DOCS_ISSUED",
+    "BOOKING_CONFIRMED",
+    "AT_SEA",
+    "TRANSHIPMENT",
+    "ARRIVED_AT_PORT",
+    "CUSTOMS_CLEARANCE",
+  ]);
+  // Nothing outside the three states can be set from it.
+  for (const stage of offered) {
+    assert.ok((STATUS_FORM_STATES as readonly string[]).includes(STAGES[stage].state));
+  }
 });

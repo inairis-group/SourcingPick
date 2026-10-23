@@ -127,6 +127,19 @@
     height: 84% !important;
   }
 
+  /* Livraisons' hero draws its ship in a 560px frame beside the heading, and
+     the svg inside is sized in the same pixels. The frame gives way to the
+     column and the picture follows it. */
+  .frame :global(.sp-hero-illustration) {
+    flex: 0 1 560px !important;
+    width: min(100%, 560px) !important;
+    min-width: 0;
+  }
+  .frame :global(.sp-hero-illustration) > :global(svg) {
+    width: 100% !important;
+    height: auto !important;
+  }
+
   /* The amber "to be confirmed" chips are drawn `white-space: nowrap`; the
      Russian ones are wider than a phone, and one in the pricing hero pushes
      that page sideways at 1280. Below the artboard's width they wrap. */
@@ -166,6 +179,7 @@
     --sp-fs-46: clamp(26px, calc(16.37px + 2.469vw), 46px);
     --sp-fs-44: clamp(26px, calc(17.333px + 2.222vw), 44px);
     --sp-fs-40: clamp(24px, calc(16.296px + 1.975vw), 40px);
+    --sp-fs-34_6: clamp(22px, calc(15.926px + 1.558vw), 34.6px);
     --sp-fs-36: clamp(22px, calc(15.259px + 1.728vw), 36px);
     --sp-fs-34: clamp(22px, calc(16.222px + 1.481vw), 34px);
     --sp-fs-32: clamp(21px, calc(15.704px + 1.358vw), 32px);
@@ -262,6 +276,11 @@
     --sp-grid-fr-560: minmax(0, 1fr) minmax(0, 1fr);
     /* Two phones fanned across a 700px stage need 640px: one column. */
     --sp-grid-fr-640: minmax(0, 1fr);
+    /* A 600px fixed track beside a text column; and a number + text + action
+       card whose action is 420px wide. Neither fits beside the rest at 768. */
+    --sp-grid-fr-600: minmax(0, 1fr);
+    --sp-grid-120-fr-420: minmax(0, 1fr);
+    --sp-grid-fr-500: minmax(0, 1fr);
     --sp-grid-fr-fr: minmax(0, 1fr) minmax(0, 1fr);
     --sp-grid-r2: repeat(2, minmax(0, 1fr));
     /* How-it-works rows: the number keeps a rail on the left, the three
@@ -357,6 +376,11 @@
     --sp-grid-fr-520: minmax(0, 1fr);
     --sp-grid-fr-560: minmax(0, 1fr);
     --sp-grid-fr-640: minmax(0, 1fr);
+    --sp-grid-fr-600: minmax(0, 1fr);
+    --sp-grid-fr-500: minmax(0, 1fr);
+    --sp-grid-120-fr-420: minmax(0, 1fr);
+    /* The price table's header row keeps its three columns as a ratio. */
+    --sp-grid-1_5fr-fr-fr: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
     --sp-grid-fr-fr: minmax(0, 1fr);
     --sp-grid-76-1_1fr-fr-fr-230: minmax(0, 1fr);
     /* The footer keeps its link columns, two abreast; the brand block spans
@@ -371,6 +395,13 @@
        28×22. */
     --sp-pad-24: 16px;
     --sp-pad-26: 16px;
+    --sp-pad-26-26: 16px;
+    --sp-pad-26-28: 16px 18px;
+    --sp-pad-28-30: 18px;
+    --sp-pad-36: 20px;
+    --sp-pad-48: 24px;
+    --sp-pad-52: 24px;
+    --sp-pad-56: 26px;
     --sp-pad-28: 18px;
     --sp-pad-30: 18px;
     --sp-pad-32: 20px;
@@ -767,5 +798,21 @@
   }
   .localeButton > :global(svg):last-child {
     display: none;
+  }
+}
+
+/* The map of the four sites is drawn 600×548 with its pins placed in pixels,
+   so it cannot reflow: it shrinks as one picture. `zoom` scales the layout box
+   with it, which a transform would not, and the steps are chosen so the whole
+   map fits the content column of a 390 and a 320 phone. */
+@media (max-width: 767.98px) {
+  .frame :global(.sp-scheme) {
+    zoom: 0.56;
+  }
+}
+
+@media (max-width: 379.98px) {
+  .frame :global(.sp-scheme) {
+    zoom: 0.45;
   }
 }

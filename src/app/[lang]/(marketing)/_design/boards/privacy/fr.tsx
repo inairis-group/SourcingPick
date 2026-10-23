@@ -1,4 +1,4 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: fr-Confidentialite.dc.html (and 11 more)
 // Regenerate: npm run design:port
 /*
@@ -48,26 +48,38 @@ export function PrivacyBoard({ lang }: { lang: Locale }) {
               </nav>
               <article style={{ "display": "flex", "flexDirection": "column", "gap": "30px", "maxWidth": "820px" }}>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px" }}>
-                  <span className="sp-placeholder" style={s[0][lang]}>{t[5]}</span>
-                  <h1 style={s[1][lang]}>{t[6]}</h1>
+                  <h1 style={s[0][lang]}>{t[5]}</h1>
                   <p style={{ "margin": "0", "fontSize": "15px", "color": "#4A5578" }}>
-                    {t[7]}{" "}
-                    <span className="sp-placeholder" style={s[2][lang]}>{t[8]}</span>
+                    {t[6]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[3][lang]}>{t[9]}</h2>
+                  <h2 style={s[1][lang]}>{t[7]}</h2>
                   <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      <span className="sp-placeholder" style={s[4][lang]}>{t[10]}</span>
-                      {t[11]}{" "}
-                      <span className="sp-placeholder" style={s[5][lang]}>{t[12]}</span>
+                      {t[8]}
+                    </li>
+                  </ul>
+                </div>
+                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
+                  <h2 style={s[2][lang]}>{t[9]}</h2>
+                  <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[10]}
+                    </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[11]}
+                    </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[12]}
+                    </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
                       {t[13]}
                     </li>
                   </ul>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[6][lang]}>{t[14]}</h2>
+                  <h2 style={s[3][lang]}>{t[14]}</h2>
                   <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
                       {t[15]}
@@ -81,61 +93,87 @@ export function PrivacyBoard({ lang }: { lang: Locale }) {
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
                       {t[18]}
                     </li>
+                  </ul>
+                </div>
+                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
+                  <h2 style={s[4][lang]}>{t[19]}</h2>
+                  <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[19]}
+                      {t[20]}
                     </li>
                   </ul>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[7][lang]}>{t[20]}</h2>
+                  <h2 style={s[5][lang]}>{t[21]}</h2>
                   <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[21]}
-                    </li>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
                       {t[22]}
                     </li>
-                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[23]}
-                    </li>
+                  </ul>
+                </div>
+                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
+                  <h2 style={s[6][lang]}>{t[23]}</h2>
+                  <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
                       {t[24]}
                     </li>
                   </ul>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[8][lang]}>{t[25]}</h2>
+                  <h2 style={s[7][lang]}>{t[25]}</h2>
                   <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      <span className="sp-placeholder" style={s[9][lang]}>{t[26]}</span>
+                      {t[26]}
+                    </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[27]}
+                    </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[28]}
+                    </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[29]}
+                    </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[30]}
                     </li>
                   </ul>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[10][lang]}>{t[27]}</h2>
+                  <h2 style={s[8][lang]}>{t[31]}</h2>
                   <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[28]}{" "}
-                      <span className="sp-placeholder" style={s[11][lang]}>{t[29]}</span>
+                      {t[32]}
+                    </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[33]}
+                    </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[34]}
                     </li>
                   </ul>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[12][lang]}>{t[30]}</h2>
+                  <h2 style={s[9][lang]}>{t[35]}</h2>
                   <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[31]}{" "}
-                      <span className="sp-placeholder" style={s[13][lang]}>{t[32]}</span>
-                    </li>
-                  </ul>
-                </div>
-                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[14][lang]}>{t[33]}</h2>
-                  <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[34]}{" "}
-                      <span className="sp-placeholder" style={s[15][lang]}>{t[35]}</span>
                       {t[36]}
+                    </li>
+                  </ul>
+                </div>
+                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
+                  <h2 style={s[10][lang]}>{t[37]}</h2>
+                  <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[38]}
+                    </li>
+                  </ul>
+                </div>
+                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
+                  <h2 style={s[11][lang]}>{t[39]}</h2>
+                  <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[40]}
                     </li>
                   </ul>
                 </div>

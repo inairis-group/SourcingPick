@@ -1,4 +1,4 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: *-Accueil.dc.html (footer)
 // Regenerate: npm run design:port
 import type { CSSProperties } from "react";
@@ -46,8 +46,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "RAISON SOCIALE ET SIÈGE",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "Guangzhou · Chine",
     ],
     en: [
@@ -60,7 +59,7 @@ export const chromeFooter = {
       "Consolidation",
       "Wooden crating",
       "Loading",
-      "Sea freight",
+      "Ocean shipping",
       "Sourcing",
       "Company",
       "About us",
@@ -71,7 +70,7 @@ export const chromeFooter = {
       "FAQ",
       "App",
       "Client area",
-      "Get a quote",
+      "Request a quotation",
       "Legal",
       "Legal notice",
       "Privacy",
@@ -90,8 +89,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "COMPANY NAME AND REGISTERED OFFICE",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "Guangzhou · China",
     ],
     zh: [
@@ -120,7 +118,7 @@ export const chromeFooter = {
       "法律声明",
       "隐私政策",
       "Cookie 政策",
-      "服务条款",
+      "销售条款",
       "12 种语言",
       "Français",
       "English",
@@ -134,8 +132,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "公司名称及注册地址",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "中国 · 广州",
     ],
     es: [
@@ -178,8 +175,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "RAZÓN SOCIAL Y DOMICILIO SOCIAL",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "Guangzhou · China",
     ],
     de: [
@@ -222,8 +218,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "FIRMENNAME UND SITZ",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "Guangzhou · China",
     ],
     it: [
@@ -266,8 +261,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "RAGIONE SOCIALE E SEDE",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "Guangzhou · Cina",
     ],
     pt: [
@@ -310,8 +304,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "DENOMINAÇÃO SOCIAL E SEDE",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "Guangzhou · China",
     ],
     nl: [
@@ -354,8 +347,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "BEDRIJFSNAAM EN ZETEL",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "Guangzhou · China",
     ],
     ar: [
@@ -384,7 +376,7 @@ export const chromeFooter = {
       "الإشعار القانوني",
       "الخصوصية",
       "ملفات تعريف الارتباط",
-      "الشروط والأحكام",
+      "الشروط العامة",
       "12 لغة",
       "Français",
       "English",
@@ -398,8 +390,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "الاسم القانوني والمقر",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "قوانغتشو · الصين",
     ],
     ru: [
@@ -442,8 +433,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "НАИМЕНОВАНИЕ И ЮРИДИЧЕСКИЙ АДРЕС",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "Гуанчжоу · Китай",
     ],
     tr: [
@@ -486,8 +476,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "TİCARİ UNVAN VE MERKEZ ADRESİ",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "Guangzhou · Çin",
     ],
     pl: [
@@ -516,7 +505,7 @@ export const chromeFooter = {
       "Nota prawna",
       "Polityka prywatności",
       "Pliki cookie",
-      "Regulamin",
+      "Warunki sprzedaży",
       "12 języków",
       "Français",
       "English",
@@ -530,8 +519,7 @@ export const chromeFooter = {
       "Русский",
       "Türkçe",
       "Polski",
-      "© 2026 Sourcing Pick ·",
-      "NAZWA FIRMY I SIEDZIBA",
+      "© 2026 Sourcing Pick · Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
       "Guangzhou · Chiny",
     ],
   } as Record<Locale, readonly string[]>,
@@ -553,7 +541,6 @@ export const chromeFooter = {
     { fr: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, en: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, zh: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, es: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, de: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, it: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, pt: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, nl: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, ar: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, ru: { "color": "#FFFFFF", "fontSize": "14px", "fontWeight": "600" }, tr: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, pl: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" } },
     { fr: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, en: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, zh: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, es: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, de: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, it: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, pt: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, nl: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, ar: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, ru: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, tr: { "color": "#FFFFFF", "fontSize": "14px", "fontWeight": "600" }, pl: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" } },
     { fr: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, en: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, zh: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, es: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, de: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, it: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, pt: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, nl: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, ar: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, ru: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, tr: { "color": "#9FACD3", "fontSize": "14px", "fontWeight": "500" }, pl: { "color": "#FFFFFF", "fontSize": "14px", "fontWeight": "600" } },
-    { fr: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }, en: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }, zh: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }, es: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }, de: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }, it: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }, pt: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }, nl: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }, ar: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'Readex Pro', 'Segoe UI', Tahoma, sans-serif", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }, ru: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }, tr: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }, pl: { "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" } },
   ] as Record<Locale, CSSProperties>[],
   values: [] as Record<Locale, string>[],
 };

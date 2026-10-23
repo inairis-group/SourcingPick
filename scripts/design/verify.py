@@ -120,6 +120,10 @@ def text_slots(stem: str, locale: str) -> list[str]:
         # generated, not designed. The HTML side drops both, so this must too.
         if n.tag in ("svg", "select"):
             return
+        # A <style> (the keyframes behind a drawn illustration) is a slot to the
+        # porter but not visible text; the HTML side strips it.
+        if n.tag == "style":
+            return
         for c in n.children:
             walk(c)
 

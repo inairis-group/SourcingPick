@@ -1,13 +1,11 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
-// Source: fr-Accueil.dc.html (and 10 more)
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
+// Source: fr-Accueil.dc.html (and 11 more)
 // Regenerate: npm run design:port
 /*
  * Markup, spacing and colour are the design's own, transcribed rather than
  * interpreted. Copy lives in ../../content/home.ts, one array per locale, zipped by
  * position — sound because the artboards behind this file were checked to
  * have identical tag-and-attribute structure before anything was written.
- *
- * Locales using this shape: fr, en, zh, es, de, it, pt, nl, ar, ru, pl.
  */
 
 import Link from "next/link";
@@ -15,7 +13,7 @@ import type { Locale } from "@/lib/i18n/config";
 import { home as content } from "../../content/home";
 import { Disclosure } from "../../disclosure";
 
-export function HomeBoardFR({ lang }: { lang: Locale }) {
+export function HomeBoard({ lang }: { lang: Locale }) {
   const t = content.text[lang];
   const s = content.frStyles;
   const v = content.frValues;
@@ -102,7 +100,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   </span>
                   {t[12]}
                 </div>
-                <div className="sp-hero-label" dir={v[4][lang]} style={{ "position": "absolute", "left": "640px", "top": "76px", "display": "flex", "alignItems": "center", "gap": "8px", "padding": "8px 12px 8px 8px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "12px", "boxShadow": "0 10px 24px -12px rgba(14,26,61,0.35)", "fontSize": "13px", "fontWeight": "600", "color": "#0E1A3D", "whiteSpace": "nowrap" }}>
+                <div className="sp-hero-label" dir={v[4][lang]} style={{ "position": "absolute", "right": "52px", "top": "76px", "display": "flex", "alignItems": "center", "gap": "8px", "padding": "8px 12px 8px 8px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "12px", "boxShadow": "0 10px 24px -12px rgba(14,26,61,0.35)", "fontSize": "13px", "fontWeight": "600", "color": "#0E1A3D", "whiteSpace": "nowrap" }}>
                   <span style={{ "display": "inline-flex", "width": "26px", "height": "26px", "borderRadius": "8px", "background": "#EAF1FF", "alignItems": "center", "justifyContent": "center" }}>
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#155DFC" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M5 21V4" />
@@ -587,23 +585,26 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                     </div>
                   </div>
                 </div>
-                <div style={{ "display": "flex", "alignItems": "center", "gap": "12px", "flexWrap": "wrap" }}>
-                  <Link href={`/${lang}/application`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M12 4v12" />
-                      <path d="M7 11l5 5 5-5" />
-                      <path d="M4 20h16" />
-                    </svg>
-                    <span style={{ "display": "flex", "flexDirection": "column" }}>
-                      <span style={{ "fontSize": "11.5px", "color": "#B8C4E6" }}>
-                        {t[110]}
-                      </span>
-                      <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "600" }} dir="ltr">
-                        {t[111]}
-                      </span>
+                <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "flexWrap": "wrap" }}>
+                  <Link href={`/${lang}/login`} style={s[40][lang]}>
+                    <span>{t[110]}</span>
+                    <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d={v[19][lang]} />
+                        <path d={v[20][lang]} />
+                      </svg>
                     </span>
                   </Link>
-                  <Link href={`/${lang}/application`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
+                  <span style={{ "display": "inline-flex", "alignItems": "center", "gap": "8px", "padding": "8px 14px", "borderRadius": "999px", "background": "#FFF1CC", "color": "#7A4E00", "fontSize": "14px", "fontWeight": "600" }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7A4E00" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v5l3.5 2" />
+                    </svg>
+                    {t[111]}
+                  </span>
+                </div>
+                <div style={{ "display": "flex", "alignItems": "center", "gap": "12px", "flexWrap": "wrap" }}>
+                  <Link href={`/${lang}/application`} data-pk="inert" style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M12 4v12" />
                       <path d="M7 11l5 5 5-5" />
@@ -618,10 +619,29 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                       </span>
                     </span>
                   </Link>
-                  <span style={{ "fontSize": "14px", "color": "#4A5578" }}>
-                    {t[114]}{" "}
-                    <span className="sp-placeholder" style={s[40][lang]}>{t[115]}</span>
-                    {" "}{t[116]}{" "}
+                  <Link href={`/${lang}/application`} data-pk="inert" style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M12 4v12" />
+                      <path d="M7 11l5 5 5-5" />
+                      <path d="M4 20h16" />
+                    </svg>
+                    <span style={{ "display": "flex", "flexDirection": "column" }}>
+                      <span style={{ "fontSize": "11.5px", "color": "#B8C4E6" }}>
+                        {t[114]}
+                      </span>
+                      <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "600" }} dir="ltr">
+                        {t[115]}
+                      </span>
+                    </span>
+                  </Link>
+                  <span style={{ "display": "inline-flex", "alignItems": "center", "gap": "8px", "fontSize": "14px", "color": "#4A5578" }}>
+                    <span style={{ "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 10px", "borderRadius": "999px", "background": "#FFF1CC", "color": "#7A4E00", "fontWeight": "600" }}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7A4E00" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 7v5l3.5 2" />
+                      </svg>
+                      {t[116]}
+                    </span>
                     <span dir="ltr">{t[117]}</span>
                   </span>
                 </div>
@@ -633,8 +653,8 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                       <div style={{ "padding": "var(--sp-pad-44-20-0, 44px 20px 0)", "display": "flex", "alignItems": "center", "justifyContent": "space-between" }}>
                         <span aria-label={t[118]} style={{ "display": "inline-flex", "width": "36px", "height": "36px", "borderRadius": "12px", "background": "#F5F7FC", "alignItems": "center", "justifyContent": "center" }}>
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E1A3D" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                            <path d={v[19][lang]} />
-                            <path d={v[20][lang]} />
+                            <path d={v[21][lang]} />
+                            <path d={v[22][lang]} />
                           </svg>
                         </span>
                         <span style={{ "fontSize": "14px", "fontWeight": "600" }}>
@@ -837,31 +857,41 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                       <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#0E1A3D" }}>
                         {t[147]}
                       </span>
-                      <span className="sp-placeholder" style={s[56][lang]}>{t[148]}</span>
+                      <span style={{ "fontSize": "15px", "fontWeight": "600", "color": "#155DFC", "whiteSpace": "nowrap" }}>
+                        {t[148]}
+                      </span>
                     </div>
                     <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "16px", "padding": "14px 0", "borderBottom": "1px solid #DCE3F2" }}>
                       <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#0E1A3D" }}>
                         {t[149]}
                       </span>
-                      <span className="sp-placeholder" style={s[57][lang]}>{t[150]}</span>
+                      <span style={{ "fontSize": "15px", "fontWeight": "600", "color": "#155DFC", "whiteSpace": "nowrap" }}>
+                        {t[150]}
+                      </span>
                     </div>
                     <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "16px", "padding": "14px 0", "borderBottom": "1px solid #DCE3F2" }}>
                       <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#0E1A3D" }}>
                         {t[151]}
                       </span>
-                      <span className="sp-placeholder" style={s[58][lang]}>{t[152]}</span>
+                      <span style={{ "fontSize": "15px", "fontWeight": "600", "color": "#155DFC", "whiteSpace": "nowrap" }}>
+                        {t[152]}
+                      </span>
                     </div>
                     <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "16px", "padding": "14px 0", "borderBottom": "1px solid #DCE3F2" }}>
                       <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#0E1A3D" }}>
                         {t[153]}
                       </span>
-                      <span className="sp-placeholder" style={s[59][lang]}>{t[154]}</span>
+                      <span style={{ "fontSize": "15px", "fontWeight": "600", "color": "#155DFC", "whiteSpace": "nowrap" }}>
+                        {t[154]}
+                      </span>
                     </div>
                     <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "16px", "padding": "14px 0", "borderBottom": "1px solid #DCE3F2" }}>
                       <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#0E1A3D" }}>
                         {t[155]}
                       </span>
-                      <span className="sp-placeholder" style={s[60][lang]}>{t[156]}</span>
+                      <span style={{ "fontSize": "15px", "fontWeight": "600", "color": "#155DFC", "whiteSpace": "nowrap" }}>
+                        {t[156]}
+                      </span>
                     </div>
                     <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "16px", "padding": "14px 0", "borderBottom": "1px solid #DCE3F2" }}>
                       <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "color": "#0E1A3D" }}>
@@ -873,12 +903,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                     </div>
                   </div>
                   <div style={{ "paddingTop": "6px" }}>
-                    <Link href={`/${lang}/devis`} style={s[61][lang]}>
+                    <Link href={`/${lang}/devis`} style={s[56][lang]}>
                       <span>{t[159]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d={v[21][lang]} />
-                          <path d={v[22][lang]} />
+                          <path d={v[23][lang]} />
+                          <path d={v[24][lang]} />
                         </svg>
                       </span>
                     </Link>
@@ -886,7 +916,7 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                 </article>
                 <article style={{ "background": "#162456", "borderRadius": "24px", "padding": "var(--sp-pad-40, 40px)", "display": "flex", "flexDirection": "column", "gap": "22px", "color": "#FFFFFF" }}>
                   <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "16px" }}>
-                    <h3 style={s[62][lang]}>{t[160]}</h3>
+                    <h3 style={s[57][lang]}>{t[160]}</h3>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "44px", "height": "44px", "borderRadius": "12px", "background": "rgba(141,178,255,0.14)", "alignItems": "center", "justifyContent": "center" }}>
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8DB2FF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <circle cx="11" cy="11" r="6.5" />
@@ -894,53 +924,43 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                       </svg>
                     </span>
                   </div>
-                  <div style={s[63][lang]}>{t[161]}</div>
+                  <div style={s[58][lang]}>{t[161]}</div>
                   <div style={{ "display": "flex", "flexDirection": "column" }}>
-                    <div style={{ "display": "flex", "flexDirection": "column", "gap": "6px", "padding": "16px 0", "borderBottom": "1px solid rgba(255,255,255,0.14)" }}>
-                      <span style={s[64][lang]}>{t[162]}</span>
-                      <div style={{ "display": "flex", "justifyContent": "space-between", "gap": "16px" }}>
-                        <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "color": "#FFFFFF" }}>
-                          {t[163]}
-                        </span>
-                        <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "fontWeight": "600", "color": "#FFFFFF", "textAlign": "end" }}>
-                          {t[164]}
-                        </span>
-                      </div>
+                    <div style={{ "display": "flex", "alignItems": "baseline", "justifyContent": "space-between", "gap": "16px", "padding": "16px 0", "borderBottom": "1px solid rgba(255,255,255,0.14)" }}>
+                      <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "color": "#FFFFFF" }}>
+                        {t[162]}
+                      </span>
+                      <span style={s[59][lang]}>{t[163]}</span>
                     </div>
-                    <div style={{ "display": "flex", "flexDirection": "column", "gap": "6px", "padding": "16px 0", "borderBottom": "1px solid rgba(255,255,255,0.14)" }}>
-                      <span style={s[65][lang]}>{t[165]}</span>
-                      <div style={{ "display": "flex", "justifyContent": "space-between", "gap": "16px" }}>
-                        <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "color": "#FFFFFF" }}>
-                          {t[166]}
-                        </span>
-                        <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "fontWeight": "600", "color": "#FFFFFF", "textAlign": "end" }}>
-                          {t[167]}
-                        </span>
-                      </div>
+                    <div style={{ "display": "flex", "alignItems": "baseline", "justifyContent": "space-between", "gap": "16px", "padding": "16px 0", "borderBottom": "1px solid rgba(255,255,255,0.14)" }}>
+                      <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "color": "#FFFFFF" }}>
+                        {t[164]}
+                      </span>
+                      <span style={s[60][lang]}>{t[165]}</span>
                     </div>
-                    <div style={{ "display": "flex", "flexDirection": "column", "gap": "6px", "padding": "16px 0", "borderBottom": "1px solid rgba(255,255,255,0.14)" }}>
-                      <span style={s[66][lang]}>{t[168]}</span>
-                      <div style={{ "display": "flex", "justifyContent": "space-between", "gap": "16px" }}>
-                        <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "color": "#FFFFFF" }}>
-                          {t[169]}
-                        </span>
-                        <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "fontWeight": "600", "color": "#FFFFFF", "textAlign": "end" }}>
-                          {t[170]}
-                        </span>
-                      </div>
+                    <div style={{ "display": "flex", "alignItems": "baseline", "justifyContent": "space-between", "gap": "16px", "padding": "16px 0", "borderBottom": "1px solid rgba(255,255,255,0.14)" }}>
+                      <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "color": "#FFFFFF" }}>
+                        {t[166]}
+                      </span>
+                      <span style={s[61][lang]}>{t[167]}</span>
+                    </div>
+                    <div style={{ "display": "flex", "alignItems": "baseline", "justifyContent": "space-between", "gap": "16px", "padding": "16px 0", "borderBottom": "1px solid rgba(255,255,255,0.14)" }}>
+                      <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "color": "#FFFFFF" }}>
+                        {t[168]}
+                      </span>
+                      <span style={s[62][lang]}>{t[169]}</span>
                     </div>
                   </div>
                   <p style={{ "margin": "0", "fontSize": "13.5px", "color": "#B8C4E6" }}>
-                    {t[171]}{" "}
-                    <span className="sp-placeholder" style={s[67][lang]}>{t[172]}</span>
+                    {t[170]}
                   </p>
                   <div>
-                    <Link href={`/${lang}/devis`} style={s[68][lang]}>
-                      <span>{t[173]}</span>
+                    <Link href={`/${lang}/devis`} style={s[63][lang]}>
+                      <span>{t[171]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d={v[23][lang]} />
-                          <path d={v[24][lang]} />
+                          <path d={v[25][lang]} />
+                          <path d={v[26][lang]} />
                         </svg>
                       </span>
                     </Link>
@@ -954,29 +974,25 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                     <path d="M8 11V8a4 4 0 018 0v3" />
                   </svg>
                 </span>
-                <span>
-                  {t[174]}{" "}
-                  <span className="sp-placeholder" style={s[69][lang]}>{t[175]}</span>
-                  {t[176]}
-                </span>
+                <span>{t[172]}</span>
               </div>
             </section>
             <section id="faq" style={{ "padding": "calc(24px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))", "display": "grid", "gridTemplateColumns": "var(--sp-grid-420-fr, 420px minmax(0, 1fr))", "gap": "var(--sp-gap-80, 80px)", "alignItems": "start" }}>
               <div style={{ "display": "flex", "flexDirection": "column", "gap": "22px" }}>
-                <div style={s[70][lang]}>{t[177]}</div>
-                <h2 style={s[71][lang]}>{t[178]}</h2>
+                <div style={s[64][lang]}>{t[173]}</div>
+                <h2 style={s[65][lang]}>{t[174]}</h2>
                 <img src="/design/picky-loupe.svg" alt="" style={{ "width": "220px", "height": "auto", "maxWidth": "100%" }} />
                 <p style={{ "margin": "0", "fontSize": "var(--sp-fs-16, 16px)", "color": "#4A5578" }}>
-                  {t[179]}{" "}
+                  {t[175]}{" "}
                   <a href="mailto:contact@sourcingpick.com" style={{ "fontWeight": "600" }} dir="ltr">
-                    {t[180]}
+                    {t[176]}
                   </a>
                 </p>
               </div>
               <div style={{ "display": "flex", "flexDirection": "column", "borderTop": "1px solid #DCE3F2" }}>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
-                  <button type="button" style={s[72][lang]} aria-expanded="true">
-                    <span>{t[181]}</span>
+                  <button type="button" style={s[66][lang]} aria-expanded="true">
+                    <span>{t[177]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M6 6l12 12" />
@@ -985,12 +1001,12 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                     </span>
                   </button>
                   <p style={{ "margin": "0", "maxWidth": "680px", "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.65", "color": "#4A5578" }}>
-                    {t[182]}
+                    {t[178]}
                   </p>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
-                  <button type="button" style={s[73][lang]} aria-expanded="false">
-                    <span>{t[183]}</span>
+                  <button type="button" style={s[67][lang]} aria-expanded="false">
+                    <span>{t[179]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1A3D" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 5v14" />
@@ -1000,8 +1016,8 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   </button>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
-                  <button type="button" style={s[74][lang]} aria-expanded="false">
-                    <span>{t[184]}</span>
+                  <button type="button" style={s[68][lang]} aria-expanded="false">
+                    <span>{t[180]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1A3D" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 5v14" />
@@ -1011,8 +1027,8 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   </button>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
-                  <button type="button" style={s[75][lang]} aria-expanded="false">
-                    <span>{t[185]}</span>
+                  <button type="button" style={s[69][lang]} aria-expanded="false">
+                    <span>{t[181]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1A3D" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 5v14" />
@@ -1022,8 +1038,8 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
                   </button>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
-                  <button type="button" style={s[76][lang]} aria-expanded="false">
-                    <span>{t[186]}</span>
+                  <button type="button" style={s[70][lang]} aria-expanded="false">
+                    <span>{t[182]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1A3D" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 5v14" />
@@ -1038,30 +1054,28 @@ export function HomeBoardFR({ lang }: { lang: Locale }) {
               <div className="sp-cta-band" style={{ "position": "relative", "overflow": "hidden", "borderRadius": "32px", "background": "#155DFC", "padding": "var(--sp-pad-72, 72px)", "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "var(--sp-gap-40, 40px)", "color": "#FFFFFF" }}>
                 <div style={{ "position": "absolute", "inset": "0", "backgroundImage": "linear-gradient(30deg, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(150deg, rgba(255,255,255,0.08) 1px, transparent 1px)", "backgroundSize": "44px 25.4px" }} />
                 <div style={{ "position": "relative", "display": "flex", "flexDirection": "column", "gap": "22px", "maxWidth": "700px" }}>
-                  <h2 style={s[77][lang]}>{t[187]}</h2>
+                  <h2 style={s[71][lang]}>{t[183]}</h2>
                   <p style={{ "margin": "0", "fontSize": "var(--sp-fs-18, 18px)", "lineHeight": "1.6", "color": "#E3EBFF" }}>
-                    {t[188]}{" "}
-                    <span className="sp-placeholder" style={s[78][lang]}>{t[189]}</span>
-                    {t[190]}
+                    {t[184]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
-                    <Link href={`/${lang}/devis`} style={s[79][lang]}>
-                      <span>{t[191]}</span>
+                    <Link href={`/${lang}/devis`} style={s[72][lang]}>
+                      <span>{t[185]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d={v[25][lang]} />
-                          <path d={v[26][lang]} />
+                          <path d={v[27][lang]} />
+                          <path d={v[28][lang]} />
                         </svg>
                       </span>
                     </Link>
-                    <a href="mailto:contact@sourcingpick.com" style={s[80][lang]}>
-                      <span><span dir="ltr">{t[192]}</span></span>
+                    <a href="mailto:contact@sourcingpick.com" style={s[73][lang]}>
+                      <span><span dir="ltr">{t[186]}</span></span>
                     </a>
                   </div>
                 </div>
                 <div className="sp-cta-mascot" style={{ "position": "relative", "width": "300px", "height": "300px", "flexShrink": "0" }}>
-                  <div style={s[81][lang]}>{t[193]}</div>
-                  <img src="/design/picky-arms-up.svg" alt={t[194]} style={{ "width": "300px", "height": "auto", "maxWidth": "100%" }} />
+                  <div style={s[74][lang]}>{t[187]}</div>
+                  <img src="/design/picky-arms-up.svg" alt={t[188]} style={{ "width": "300px", "height": "auto", "maxWidth": "100%" }} />
                 </div>
               </div>
             </section>

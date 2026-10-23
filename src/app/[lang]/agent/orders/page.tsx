@@ -74,7 +74,7 @@ export default async function AgentOrdersPage({
           {orders.map((o) => (
             <li key={o.id}>
               <Link
-                href={`/${lang}/agent/requests/${o.request.id}`}
+                href={`/${lang}/agent/orders/${o.id}`}
                 variant="muted"
                 className="block rounded-lg border border-line bg-surface p-4 hover:bg-subtle transition-colors duration-fast"
               >

@@ -1,4 +1,4 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: Main.dc.html — header; identical on every artboard
 // Regenerate: npm run design:port
 /*
@@ -55,19 +55,19 @@ export function SiteHeader({ lang }: { lang: Locale }) {
               </nav>
               <div style={{ "display": "flex", "alignItems": "center", "gap": "12px", "flexShrink": "0" }}>
                 <LocaleSwitch lang={lang} />
-                <Link href={`/${lang}/login`} style={s[0][lang]}>
+                <Link href={`/${lang}/login`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "8px", "minHeight": "44px", "padding": "0 6px", "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "600", "whiteSpace": "nowrap" }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E1A3D" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <circle cx="12" cy="8" r="4" />
                     <path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6" />
                   </svg>
                   <span>{t[12]}</span>
                 </Link>
-                <Link href={`/${lang}/devis`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "10px 16px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "14px", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
+                <Link href={`/${lang}/devis`} style={s[1][lang]}>
                   <span>{t[13]}</span>
                   <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M5 12h14" />
-                      <path d="M13 6l6 6-6 6" />
+                      <path d={v[2][lang]} />
+                      <path d={v[3][lang]} />
                     </svg>
                   </span>
                 </Link>

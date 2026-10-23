@@ -1,4 +1,4 @@
-// GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
+// GENERATED FROM THE 2026-10 DESIGN EXPORT — DO NOT EDIT BY HAND.
 // Source: *-Accueil.dc.html (header)
 // Regenerate: npm run design:port
 import type { CSSProperties } from "react";
@@ -36,7 +36,7 @@ export const chrome = {
       "Change language: English",
       "EN",
       "Client area",
-      "Get a quote",
+      "Request a quotation",
     ],
     zh: [
       "Sourcing Pick 刚刚起步。与其编造客户评价，我们更愿意让您看看我们的仓库。",

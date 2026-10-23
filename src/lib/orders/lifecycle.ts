@@ -159,6 +159,30 @@ export const STAGES: Record<OrderStage, StageSpec> = {
 };
 
 /**
+ * The three states "Mettre à jour l'état" moves an order through.
+ *
+ * `SaaS-Admin-Statut` and `SaaS-Agent-Statut` draw the same form: fifteen
+ * sub-states, from "Réception partielle à l'entrepôt" to "Dédouanement", under
+ * the captions "Préparation terminée", "Expédié" and "En transit", with the
+ * rule "Un agent peut passer une commande en préparation terminée, expédiée
+ * ou en transit." The administrator has every right an agent has, so the form
+ * is the same for both; the other states are entered by other events (a
+ * signed quotation, a reconciled payment, a cancellation).
+ */
+export const STATUS_FORM_STATES = [
+  "PREPARATION_COMPLETE",
+  "SHIPPED",
+  "IN_TRANSIT",
+] as const satisfies readonly OrderState[];
+
+/** The sub-states the form offers, in the order the canvas lists them. */
+export function statusFormStages(): OrderStage[] {
+  return ORDER_STAGES.filter((s) =>
+    (STATUS_FORM_STATES as readonly OrderState[]).includes(STAGES[s].state),
+  );
+}
+
+/**
  * The colour each main state is drawn in, read off the lifecycle board.
  * Sub-states inherit their parent's tone — the canvas never gives one a
  * colour of its own.

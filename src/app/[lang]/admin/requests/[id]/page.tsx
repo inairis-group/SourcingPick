@@ -377,9 +377,13 @@ export default async function AdminRequestDetailPage({
                 className="py-2 flex items-center justify-between gap-3 flex-wrap text-sm"
               >
                 <div className="min-w-0">
-                  <p className="font-mono text-xs uppercase tracking-wide text-faint">
+                  <Link
+                    href={`/${lang}/admin/orders/${o.id}`}
+                    variant="inline"
+                    className="font-mono text-xs uppercase tracking-wide"
+                  >
                     {o.reference}
-                  </p>
+                  </Link>
                   <p className="text-xs text-faint mt-0.5">
                     {formatDate(o.createdAt, lang, "short")}
                   </p>

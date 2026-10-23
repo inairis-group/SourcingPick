@@ -911,7 +911,27 @@
     "tabDocuments": "Documents",
     "tabMessages": "Messages",
     "tabInvoices": "Factures",
-    "noTimeline": "Le suivi commencera dès la première étape."
+    "noTimeline": "Le suivi commencera dès la première étape.",
+    "statusForm": {
+      "title": "Mettre à jour l’état",
+      "internal": "Interne, non visible par le client",
+      "rule": "Un agent peut passer une commande en préparation terminée, expédiée ou en transit.",
+      "commentLabel": "Commentaire pour le client",
+      "publish": "Publier au client",
+      "cancel": "Annuler",
+      "saved": "État mis à jour.",
+      "errors": {
+        "no_stage": "Choisissez une étape.",
+        "not_found": "Commande introuvable.",
+        "illegal_transition": "Cette étape ne peut pas être choisie : une commande ne revient pas en arrière.",
+        "comment_too_long": "Le commentaire est trop long (2 000 caractères au maximum)."
+      },
+      "historyTitle": "Historique",
+      "historyEmpty": "Aucune étape enregistrée.",
+      "openRequest": "Voir la demande",
+      "back": "Retour",
+      "notStarted": "Pas encore commencée"
+    }
   },
   "publicMarketplace": {
     "loadMoreTitle": "Plus de 20 produits disponibles",
