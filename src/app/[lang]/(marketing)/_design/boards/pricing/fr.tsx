@@ -454,10 +454,10 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <circle cx="0" cy="-6" r="8" fill="#FFFFFF" stroke="#162456" strokeWidth="2.6" strokeLinejoin="round" strokeLinecap="round" />
                       </g>
                     </svg>
-                    <span style={{ "position": "absolute", "top": "12px", "left": "12px", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 11px", "borderRadius": "999px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "11.5px", "fontWeight": "600", "letterSpacing": "0.06em", "textTransform": "uppercase", "color": "#155DFC" }}>
-                      {t[51]}
-                    </span>
                   </div>
+                  <span className="sp-offer-tag" style={{ "position": "absolute", "top": "12px", "left": "12px", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 11px", "borderRadius": "999px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "11.5px", "fontWeight": "600", "letterSpacing": "0.06em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[51]}
+                  </span>
                   <h3 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-24, 24px)", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
                     {t[52]}
                   </h3>
@@ -563,10 +563,10 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         </text>
                       </g>
                     </svg>
-                    <span style={{ "position": "absolute", "top": "12px", "left": "12px", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 11px", "borderRadius": "999px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "11.5px", "fontWeight": "600", "letterSpacing": "0.06em", "textTransform": "uppercase", "color": "#155DFC" }}>
-                      {t[62]}
-                    </span>
                   </div>
+                  <span className="sp-offer-tag" style={{ "position": "absolute", "top": "12px", "left": "12px", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 11px", "borderRadius": "999px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "11.5px", "fontWeight": "600", "letterSpacing": "0.06em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[62]}
+                  </span>
                   <h3 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-24, 24px)", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
                     {t[63]}
                   </h3>
@@ -657,10 +657,10 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M18 19 L36 38" stroke="#FFC247" strokeWidth="3.4" strokeLinecap="round" />
                       </g>
                     </svg>
-                    <span style={{ "position": "absolute", "top": "12px", "left": "12px", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 11px", "borderRadius": "999px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "11.5px", "fontWeight": "600", "letterSpacing": "0.06em", "textTransform": "uppercase", "color": "#155DFC" }}>
-                      {t[73]}
-                    </span>
                   </div>
+                  <span className="sp-offer-tag" style={{ "position": "absolute", "top": "12px", "left": "12px", "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 11px", "borderRadius": "999px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "11.5px", "fontWeight": "600", "letterSpacing": "0.06em", "textTransform": "uppercase", "color": "#155DFC" }}>
+                    {t[73]}
+                  </span>
                   <h3 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-24, 24px)", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
                     {t[74]}
                   </h3>
@@ -978,7 +978,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                   </article>
                 </div>
                 <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))", "gap": "24px", "alignItems": "start" }}>
-                  <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px", "padding": "var(--sp-pad-32, 32px)", "borderRadius": "24px", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
+                  <div className="sp-solo-card" style={{ "display": "flex", "flexDirection": "column", "gap": "14px", "padding": "var(--sp-pad-32, 32px)", "borderRadius": "24px", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
                     <h3 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-22, 22px)", "lineHeight": "1.25", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
                       {t[108]}
                     </h3>
