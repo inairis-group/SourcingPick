@@ -3,6 +3,8 @@ import { isLocale } from "@/lib/i18n/config";
 import { WarehouseBoard } from "../_design/boards/warehouse";
 import { warehouse as content } from "../_design/content/warehouse";
 import { WarehouseMaintenance } from "./maintenance";
+import { pageAlternates } from "@/lib/seo/alternates";
+import { pageMeta } from "@/lib/seo/fr-meta";
 
 /**
  * Route for the canvas's “Entrepot” artboard.
@@ -22,7 +24,10 @@ const IN_MAINTENANCE = true;
 export async function generateMetadata({ params }: PageProps<"/[lang]/entrepot">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: content.title[lang], description: content.description[lang] };
+  return {
+    ...pageMeta(lang, "/entrepot", { title: content.title[lang], description: content.description[lang] }),
+    alternates: pageAlternates(lang, "/entrepot"),
+  };
 }
 
 export default async function WarehousePage({ params }: PageProps<"/[lang]/entrepot">) {

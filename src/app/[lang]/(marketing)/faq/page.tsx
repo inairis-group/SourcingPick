@@ -3,6 +3,8 @@ import { isLocale } from "@/lib/i18n/config";
 import { FaqBoard } from "../_design/boards/faq";
 import { faq as content } from "../_design/content/faq";
 import { faqJsonLd, JsonLd } from "@/lib/seo/structured-data";
+import { pageAlternates } from "@/lib/seo/alternates";
+import { pageMeta } from "@/lib/seo/fr-meta";
 
 /**
  * Route for the canvas's “FAQ” artboard.
@@ -14,7 +16,10 @@ import { faqJsonLd, JsonLd } from "@/lib/seo/structured-data";
 export async function generateMetadata({ params }: PageProps<"/[lang]/faq">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: content.title[lang], description: content.description[lang] };
+  return {
+    ...pageMeta(lang, "/faq", { title: content.title[lang], description: content.description[lang] }),
+    alternates: pageAlternates(lang, "/faq"),
+  };
 }
 
 export default async function FaqPage({ params }: PageProps<"/[lang]/faq">) {

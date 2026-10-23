@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n/config";
 import { CookiesBoard } from "../../_design/boards/cookies";
 import { cookies as content } from "../../_design/content/cookies";
+import { pageAlternates } from "@/lib/seo/alternates";
+import { pageMeta } from "@/lib/seo/fr-meta";
 
 /**
  * Route for the canvas's “Cookies” artboard.
@@ -15,9 +17,9 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/legal/cook
   if (!isLocale(lang)) return {};
   // Not a page anyone searches for: kept out of the index, links still followed.
   return {
-    title: content.title[lang],
-    description: content.description[lang],
+    ...pageMeta(lang, "/legal/cookies", { title: content.title[lang], description: content.description[lang] }),
     robots: { index: false, follow: true },
+    alternates: pageAlternates(lang, "/legal/cookies"),
   };
 }
 

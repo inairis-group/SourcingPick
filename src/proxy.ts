@@ -1,13 +1,61 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { defaultLocale, isLocale, localeCookieName, locales } from "@/lib/i18n/config";
 import { resolveLocale } from "@/lib/i18n/match-locale";
+import { frenchAddressOf, frenchRouteOf } from "@/lib/i18n/site-paths";
 import { isHiddenRoute, withoutLocale } from "@/lib/permissions/hidden-routes";
 
 const PROTECTED_PREFIXES = ["/client", "/factory", "/agent", "/admin", "/shipper"] as const;
 const ONE_YEAR_SECONDS = 365 * 24 * 60 * 60;
 
+/** Old French addresses of pages the site no longer has, and where they went. */
+const FRENCH_RETIRED: Readonly<Record<string, string>> = {
+  "/fr/factories": "/services",
+};
+
+function rememberLocale(response: NextResponse, request: NextRequest, locale: string) {
+  if (request.cookies.get(localeCookieName)?.value === locale) return;
+  response.cookies.set({
+    name: localeCookieName,
+    value: locale,
+    path: "/",
+    maxAge: ONE_YEAR_SECONDS,
+    sameSite: "lax",
+  });
+}
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // French pages live at the root under French addresses (see
+  // lib/i18n/site-paths.ts): /tarifs is served by the /fr/pricing route,
+  // without the address changing.
+  const frenchRoute = frenchRouteOf(pathname);
+  if (frenchRoute !== null) {
+    // The home page included: it is French for everyone, search engines too.
+    // No guess from Accept-Language or from the language cookie — a crawler
+    // would be sent elsewhere, and a visitor choosing "Français" in the menu
+    // would be sent back to the language they were leaving.
+    const url = request.nextUrl.clone();
+    url.pathname = `/fr${frenchRoute === "/" ? "" : frenchRoute}`;
+    const forwarded = new Headers(request.headers);
+    forwarded.set("x-locale", "fr");
+    const response = NextResponse.rewrite(url, { request: { headers: forwarded } });
+    response.headers.set("x-locale", "fr");
+    rememberLocale(response, request, "fr");
+    return response;
+  }
+
+  // The French pages' old addresses, permanently: one address per page is
+  // what lets a search engine drop the duplicate.
+  if (pathname === "/fr" || pathname.startsWith("/fr/")) {
+    const route = pathname.slice(3) || "/";
+    const address = FRENCH_RETIRED[pathname.replace(/\/+$/, "")] ?? frenchAddressOf(route);
+    if (address) {
+      const url = request.nextUrl.clone();
+      url.pathname = address;
+      return NextResponse.redirect(url, 301);
+    }
+  }
 
   const pathnameHasLocale = locales.some(
     (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`),
@@ -74,16 +122,7 @@ export function proxy(request: NextRequest) {
   //   2. A stale cookie pointing at a different locale would flip the
   //      page back the next time they hit an unprefixed redirect (the
   //      partner-reported "English keeps flipping to French" bug).
-  const cookieLocale = request.cookies.get(localeCookieName)?.value;
-  if (isLocale(urlLocale) && cookieLocale !== urlLocale) {
-    response.cookies.set({
-      name: localeCookieName,
-      value: urlLocale,
-      path: "/",
-      maxAge: ONE_YEAR_SECONDS,
-      sameSite: "lax",
-    });
-  }
+  if (isLocale(urlLocale)) rememberLocale(response, request, urlLocale);
 
   return response;
 }

@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n/config";
 import { AboutBoard } from "../_design/boards/about";
 import { about as content } from "../_design/content/about";
+import { pageAlternates } from "@/lib/seo/alternates";
+import { pageMeta } from "@/lib/seo/fr-meta";
 
 /**
  * Route for the canvas's “A-propos” artboard.
@@ -13,7 +15,10 @@ import { about as content } from "../_design/content/about";
 export async function generateMetadata({ params }: PageProps<"/[lang]/about">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: content.title[lang], description: content.description[lang] };
+  return {
+    ...pageMeta(lang, "/about", { title: content.title[lang], description: content.description[lang] }),
+    alternates: pageAlternates(lang, "/about"),
+  };
 }
 
 export default async function AboutPage({ params }: PageProps<"/[lang]/about">) {

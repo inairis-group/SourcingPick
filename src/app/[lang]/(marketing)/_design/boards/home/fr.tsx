@@ -10,6 +10,7 @@
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
+import { sitePath } from "@/lib/i18n/site-paths";
 import { home as content } from "../../content/home";
 import { Disclosure } from "../../disclosure";
 
@@ -35,7 +36,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                   {t[4]}
                 </p>
                 <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "flexWrap": "wrap" }}>
-                  <Link href={`/${lang}/devis`} style={s[3][lang]}>
+                  <a href={sitePath(lang, "/devis")} style={s[3][lang]}>
                     <span>{t[5]}</span>
                     <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -43,8 +44,10 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                         <path d={v[1][lang]} />
                       </svg>
                     </span>
+                  </a>
+                  <Link href={sitePath(lang, "/#etapes")} style={s[4][lang]}>
+                    <span>{t[6]}</span>
                   </Link>
-                  <Link href={`/${lang}#etapes`} style={s[4][lang]}><span>{t[6]}</span></Link>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "6px" }}>
                   <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "14.5px", "color": "#4A5578" }}>
@@ -216,7 +219,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                       {t[43]}
                     </p>
                     <div style={{ "paddingTop": "6px" }}>
-                      <Link href={`/${lang}/devis`} style={s[16][lang]}>
+                      <a href={sitePath(lang, "/devis")} style={s[16][lang]}>
                         <span>{t[44]}</span>
                         <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -224,7 +227,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                             <path d={v[6][lang]} />
                           </svg>
                         </span>
-                      </Link>
+                      </a>
                     </div>
                   </div>
                   <div style={{ "width": "330px", "flexShrink": "0", "background": "#1E3170", "display": "flex", "alignItems": "center", "justifyContent": "center" }}>
@@ -604,7 +607,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                   </span>
                 </div>
                 <div style={{ "display": "flex", "alignItems": "center", "gap": "12px", "flexWrap": "wrap" }}>
-                  <Link href={`/${lang}/application`} data-pk="inert" style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
+                  <a href={sitePath(lang, "/application")} data-pk="inert" style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M12 4v12" />
                       <path d="M7 11l5 5 5-5" />
@@ -618,8 +621,8 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                         {t[113]}
                       </span>
                     </span>
-                  </Link>
-                  <Link href={`/${lang}/application`} data-pk="inert" style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
+                  </a>
+                  <a href={sitePath(lang, "/application")} data-pk="inert" style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M12 4v12" />
                       <path d="M7 11l5 5 5-5" />
@@ -633,7 +636,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                         {t[115]}
                       </span>
                     </span>
-                  </Link>
+                  </a>
                   <span style={{ "display": "inline-flex", "alignItems": "center", "gap": "8px", "fontSize": "14px", "color": "#4A5578" }}>
                     <span style={{ "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 10px", "borderRadius": "999px", "background": "#FFF1CC", "color": "#7A4E00", "fontWeight": "600" }}>
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7A4E00" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -903,7 +906,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                     </div>
                   </div>
                   <div style={{ "paddingTop": "6px" }}>
-                    <Link href={`/${lang}/devis`} style={s[56][lang]}>
+                    <a href={sitePath(lang, "/devis")} style={s[56][lang]}>
                       <span>{t[159]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -911,7 +914,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                           <path d={v[24][lang]} />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </article>
                 <article style={{ "background": "#162456", "borderRadius": "24px", "padding": "var(--sp-pad-40, 40px)", "display": "flex", "flexDirection": "column", "gap": "22px", "color": "#FFFFFF" }}>
@@ -955,7 +958,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                     {t[170]}
                   </p>
                   <div>
-                    <Link href={`/${lang}/devis`} style={s[63][lang]}>
+                    <a href={sitePath(lang, "/devis")} style={s[63][lang]}>
                       <span>{t[171]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -963,7 +966,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                           <path d={v[26][lang]} />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </article>
               </div>
@@ -1059,7 +1062,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                     {t[184]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
-                    <Link href={`/${lang}/devis`} style={s[72][lang]}>
+                    <a href={sitePath(lang, "/devis")} style={s[72][lang]}>
                       <span>{t[185]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -1067,7 +1070,7 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                           <path d={v[28][lang]} />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                     <a href="mailto:contact@sourcingpick.com" style={s[73][lang]}>
                       <span><span dir="ltr">{t[186]}</span></span>
                     </a>

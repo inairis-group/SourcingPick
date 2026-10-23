@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { localeLabels, localeTags, locales, type Locale } from "@/lib/i18n/config";
+import { pageOf, sitePath } from "@/lib/i18n/site-paths";
 import styles from "./board.module.css";
 
 /**
@@ -61,9 +62,11 @@ export function LocaleSwitch({ lang }: { lang: Locale }) {
   }, [open]);
 
   const swap = (next: Locale) => {
-    // The locale is the first path segment. Replacing it keeps the reader on
-    // the page they were reading instead of returning them to the home page.
-    router.push(`/${next}${pathname.replace(/^\/[^/]+/, "")}`);
+    // The same page in the other language keeps the reader where they were
+    // instead of returning them to the home page. French pages are at the
+    // root under French addresses (/tarifs), the others at /<lang>/<route>,
+    // so the route is read from whichever form the address is in.
+    router.push(sitePath(next, pageOf(pathname).route));
     setOpen(false);
   };
 
@@ -261,7 +264,7 @@ export function LocaleRow({ lang, label }: { lang: Locale; label: string }) {
       {locales.map((l) => (
         <a
           key={l}
-          href={`/${l}`}
+          href={sitePath(l, "/")}
           lang={localeTags[l]}
           style={{
             color: l === lang ? "#FFFFFF" : "#9FACD3",

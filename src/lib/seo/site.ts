@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import type { Locale } from "@/lib/i18n/config";
 
 /**
  * Canonical public origin used to build absolute URLs across SEO surfaces
@@ -17,29 +18,54 @@ export function getSiteUrl(): string {
 type ChangeFreq = MetadataRoute.Sitemap[number]["changeFrequency"];
 
 /**
- * Locale-relative public routes (no `/[lang]` prefix) that are safe to index.
- * Authenticated dashboards, auth/onboarding flows and API routes are excluded
- * here and disallowed in robots.ts. Dynamic detail pages (marketplace/[id],
- * auctions/[id]) are intentionally omitted — add a DB-backed sitemap segment
- * when we want individual listings indexed.
+ * The public pages, as routes (this app's folders: /pricing, /about), for the
+ * sitemap. Their addresses come from `sitePath` — French at the root under
+ * French slugs, the other languages at /<lang>/<route>. `only` marks a page
+ * that exists in French alone. Not listed: the cookie policy (noindex), the
+ * hidden marketplace and auctions, the legacy factories and delivery
+ * calculator pages, and the contact, quote and app pages, which the other
+ * application serves (see OTHER_APP_PAGES).
  */
-export const PUBLIC_ROUTES: Array<{
-  path: string;
+export const PUBLIC_PAGES: Array<{
+  route: string;
+  only?: readonly Locale[];
   changeFrequency: ChangeFreq;
   priority: number;
 }> = [
-  { path: "", changeFrequency: "weekly", priority: 1 },
-  { path: "marketplace", changeFrequency: "daily", priority: 0.9 },
-  { path: "auctions", changeFrequency: "daily", priority: 0.8 },
-  { path: "pricing", changeFrequency: "monthly", priority: 0.8 },
-  { path: "factories", changeFrequency: "weekly", priority: 0.7 },
-  { path: "about", changeFrequency: "monthly", priority: 0.6 },
-  { path: "faq", changeFrequency: "monthly", priority: 0.6 },
-  { path: "delivery-calculator", changeFrequency: "monthly", priority: 0.5 },
-  { path: "legal/terms", changeFrequency: "yearly", priority: 0.3 },
-  { path: "legal/privacy", changeFrequency: "yearly", priority: 0.3 },
-  { path: "legal/cookies", changeFrequency: "yearly", priority: 0.3 },
-  { path: "legal/security", changeFrequency: "yearly", priority: 0.3 },
+  { route: "/", changeFrequency: "weekly", priority: 1 },
+  { route: "/services", changeFrequency: "weekly", priority: 0.95 },
+  { route: "/comment-ca-marche", changeFrequency: "monthly", priority: 0.9 },
+  { route: "/entrepot", changeFrequency: "monthly", priority: 0.9 },
+  { route: "/pricing", changeFrequency: "weekly", priority: 0.9 },
+  { route: "/faq", changeFrequency: "monthly", priority: 0.85 },
+  { route: "/about", changeFrequency: "monthly", priority: 0.8 },
+  { route: "/livraisons", only: ["fr"], changeFrequency: "monthly", priority: 0.8 },
+  { route: "/legal/mentions-legales", changeFrequency: "yearly", priority: 0.3 },
+  { route: "/legal/privacy", changeFrequency: "yearly", priority: 0.3 },
+  { route: "/legal/terms", changeFrequency: "yearly", priority: 0.3 },
+];
+
+/** Public French pages the other application serves at the root. */
+export const OTHER_APP_PAGES: Array<{ path: string; changeFrequency: ChangeFreq; priority: number }> = [
+  { path: "/demande", changeFrequency: "monthly", priority: 0.9 },
+  { path: "/contact", changeFrequency: "monthly", priority: 0.85 },
+  { path: "/application", changeFrequency: "monthly", priority: 0.5 },
+];
+
+/**
+ * What the other application keeps out of search engines. Once this app
+ * serves /robots.txt for the whole host, these have to be said here: they are
+ * the other application's client area, administration and documents, copied
+ * from the robots.txt it served (2026-10). Keep in step with it.
+ */
+export const OTHER_APP_PRIVATE = [
+  "/admin", "/espace", "/devis", "/factures", "/avoirs", "/clients", "/documents",
+  "/emails", "/journal", "/logs", "/parametres", "/paiements", "/sessions",
+  "/societe", "/stock", "/statistiques", "/contrats", "/utilisateurs", "/agents",
+  "/agent", "/commandes", "/demandes", "/gestion", "/imprimer", "/consulter",
+  "/signer", "/acces", "/aide", "/connexion", "/verification",
+  // Added by the SEO pack: the sign-up and the usual private entry points.
+  "/inscription", "/login", "/register", "/dashboard/", "/app/", "/espace-client/",
 ];
 
 /**

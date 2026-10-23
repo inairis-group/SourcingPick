@@ -1,27 +1,25 @@
 import type { MetadataRoute } from "next";
 import { locales } from "@/lib/i18n/config";
-import { getSiteUrl, PRIVATE_SEGMENTS } from "@/lib/seo/site";
+import { getSiteUrl, OTHER_APP_PRIVATE, PRIVATE_SEGMENTS } from "@/lib/seo/site";
 
 /**
- * Allow crawling of public marketing pages; disallow authenticated dashboards,
- * auth/onboarding flows and the API. Private segments are listed per-locale
- * (e.g. /fr/admin, /en/admin) since every route is under `/[lang]`.
+ * robots.txt for the whole host: this app's private areas in every language,
+ * the API, and the other application's own private paths (it shares the host
+ * and used to serve this file).
  */
 export default function robots(): MetadataRoute.Robots {
   const site = getSiteUrl();
   const disallow = [
-    ...locales.flatMap((lang) =>
-      PRIVATE_SEGMENTS.map((seg) => `/${lang}/${seg}`),
-    ),
+    ...locales.flatMap((lang) => PRIVATE_SEGMENTS.map((seg) => `/${lang}/${seg}`)),
     "/api/",
+    ...OTHER_APP_PRIVATE,
+    // Session and post-login parameters on any page.
+    "/*?session=",
+    "/*?redirect=",
   ];
 
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-      disallow,
-    },
+    rules: { userAgent: "*", allow: "/", disallow },
     sitemap: `${site}/sitemap.xml`,
     host: site,
   };

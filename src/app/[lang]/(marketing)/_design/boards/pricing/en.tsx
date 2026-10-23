@@ -10,8 +10,8 @@
  * Locales using this shape: en, zh, es, de, it, pt, nl, ar, ru, tr, pl.
  */
 
-import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
+import { sitePath } from "@/lib/i18n/site-paths";
 import { pricing as content } from "../../content/pricing";
 import { Disclosure } from "../../disclosure";
 
@@ -99,7 +99,7 @@ export function PricingBoardEN({ lang }: { lang: Locale }) {
                     </div>
                   </div>
                   <div style={{ "paddingTop": "6px" }}>
-                    <Link href={`/${lang}/devis`} style={s[4][lang]}>
+                    <a href={sitePath(lang, "/devis")} style={s[4][lang]}>
                       <span>{t[18]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -107,7 +107,7 @@ export function PricingBoardEN({ lang }: { lang: Locale }) {
                           <path d={v[1][lang]} />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </article>
                 <article style={{ "background": "#162456", "borderRadius": "24px", "padding": "var(--sp-pad-40, 40px)", "display": "flex", "flexDirection": "column", "gap": "22px", "color": "#FFFFFF" }}>
@@ -151,7 +151,7 @@ export function PricingBoardEN({ lang }: { lang: Locale }) {
                     {t[29]}
                   </p>
                   <div>
-                    <Link href={`/${lang}/devis`} style={s[11][lang]}>
+                    <a href={sitePath(lang, "/devis")} style={s[11][lang]}>
                       <span>{t[30]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -159,7 +159,7 @@ export function PricingBoardEN({ lang }: { lang: Locale }) {
                           <path d={v[3][lang]} />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </article>
               </div>
@@ -373,7 +373,7 @@ export function PricingBoardEN({ lang }: { lang: Locale }) {
                     {t[66]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
-                    <Link href={`/${lang}/devis`} style={s[24][lang]}>
+                    <a href={sitePath(lang, "/devis")} style={s[24][lang]}>
                       <span>{t[67]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -381,7 +381,7 @@ export function PricingBoardEN({ lang }: { lang: Locale }) {
                           <path d={v[5][lang]} />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                     <a href="mailto:contact@sourcingpick.com" style={s[25][lang]}>
                       <span><span dir="ltr">{t[68]}</span></span>
                     </a>

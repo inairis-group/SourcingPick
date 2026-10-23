@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n/config";
 import { TermsBoard } from "../../_design/boards/terms";
 import { terms as content } from "../../_design/content/terms";
+import { pageAlternates } from "@/lib/seo/alternates";
+import { pageMeta } from "@/lib/seo/fr-meta";
 
 /**
  * Route for the canvas's “CGV” artboard.
@@ -13,7 +15,10 @@ import { terms as content } from "../../_design/content/terms";
 export async function generateMetadata({ params }: PageProps<"/[lang]/legal/terms">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: content.title[lang], description: content.description[lang] };
+  return {
+    ...pageMeta(lang, "/legal/terms", { title: content.title[lang], description: content.description[lang] }),
+    alternates: pageAlternates(lang, "/legal/terms"),
+  };
 }
 
 export default async function TermsPage({ params }: PageProps<"/[lang]/legal/terms">) {

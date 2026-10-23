@@ -10,6 +10,7 @@
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
+import { sitePath } from "@/lib/i18n/site-paths";
 import { notFound as content } from "../../content/notFound";
 
 export function NotFoundBoard({ lang }: { lang: Locale }) {
@@ -28,7 +29,7 @@ export function NotFoundBoard({ lang }: { lang: Locale }) {
                   {t[2]}
                 </p>
                 <div style={{ "display": "flex", "gap": "14px", "flexWrap": "wrap" }}>
-                  <Link href={`/${lang}`} style={s[1][lang]}>
+                  <Link href={sitePath(lang, "/")} style={s[1][lang]}>
                     <span>{t[3]}</span>
                     <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -37,7 +38,9 @@ export function NotFoundBoard({ lang }: { lang: Locale }) {
                       </svg>
                     </span>
                   </Link>
-                  <Link href={`/${lang}/devis`} style={s[2][lang]}><span>{t[4]}</span></Link>
+                  <a href={sitePath(lang, "/devis")} style={s[2][lang]}>
+                    <span>{t[4]}</span>
+                  </a>
                 </div>
               </div>
               <div className="sp-hero-figure" style={{ "position": "relative", "width": "440px", "height": "440px", "borderRadius": "50%", "background": "#EEF3FF", "display": "flex", "alignItems": "center", "justifyContent": "center" }}>

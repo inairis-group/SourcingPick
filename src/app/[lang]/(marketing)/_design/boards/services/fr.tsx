@@ -10,6 +10,7 @@
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
+import { sitePath } from "@/lib/i18n/site-paths";
 import { services as content } from "../../content/services";
 
 export function ServicesBoard({ lang }: { lang: Locale }) {
@@ -534,7 +535,7 @@ export function ServicesBoard({ lang }: { lang: Locale }) {
                 </div>
               </div>
               <div>
-                <Link href={`/${lang}/pricing#remuneration`} style={s[32][lang]}>
+                <Link href={sitePath(lang, "/pricing#remuneration")} style={s[32][lang]}>
                   <span>{t[92]}</span>
                   <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -565,7 +566,7 @@ export function ServicesBoard({ lang }: { lang: Locale }) {
                     {t[97]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
-                    <Link href={`/${lang}/devis`} style={s[35][lang]}>
+                    <a href={sitePath(lang, "/devis")} style={s[35][lang]}>
                       <span>{t[98]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -573,7 +574,7 @@ export function ServicesBoard({ lang }: { lang: Locale }) {
                           <path d={v[4][lang]} />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                     <a href="mailto:contact@sourcingpick.com" style={s[36][lang]}>
                       <span><span dir="ltr">{t[99]}</span></span>
                     </a>
