@@ -2671,6 +2671,13 @@
       "subtitle": "Create your account in two minutes. First request is free, no commitment.",
       "primaryButton": "Create an account",
       "secondaryButton": "See pricing"
+    },
+    "warehouseMaintenance": {
+      "eyebrow": "Our warehouse",
+      "title": "Page under maintenance",
+      "body": "Our warehouse is moving: this page is under maintenance while we move. A question about your goods? Message us on WhatsApp. You can also request a quote right away.",
+      "whatsapp": "Message us on WhatsApp",
+      "quote": "Request a quote"
     }
   },
   "factories": {

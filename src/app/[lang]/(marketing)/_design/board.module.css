@@ -84,29 +84,36 @@
 }
 
 /* ---------------------------------------------------------------------------
- * Laptop: 1100–1439. The composition is the artboard's; only the gutters give.
+ * 821–1439: the artboard, scaled.
+ *
+ * The design export's own rule (LISEZ-MOI): "Entre 820 et 1 440 px, la page
+ * est réduite en proportion, sans rien déformer." Below 1440 the frame is laid
+ * out at the artboard's 1440px and zoomed down to the window, so the header
+ * keeps its five links, the hero its illustration and the offer cards their
+ * three columns, exactly as drawn. `zoom` scales the layout box, which a
+ * transform would not, so nothing overlaps and nothing scrolls sideways.
+ *
+ * `--sp-zoom` is the window's width over 1440, set by FrameFit
+ * (frame-fit.tsx) from the width without the scrollbar. Before it runs, the
+ * same ratio is worked out here from 100vw: `tan(atan2(a, b))` is a/b as a
+ * plain number, which a length divided by a length is not yet everywhere.
+ * Viewport units are zoomed like any other length, so the frame's own
+ * full-height minimum is divided back by the same ratio.
  * ------------------------------------------------------------------------- */
 
-@media (max-width: 1439.98px) {
+@media (min-width: 820.02px) and (max-width: 1439.98px) {
   .frame {
-    /* 120/1440 and 96/1440, so the gutter shrinks with the window and the
-       content column keeps the artboard's proportion. */
-    --sp-gutter: clamp(64px, 8.33vw, 120px);
-    --sp-gutter-header: clamp(48px, 6.67vw, 96px);
+    zoom: var(--sp-zoom, tan(atan2(100vw, 1440px)));
+    min-height: calc(100dvh / var(--sp-zoom, tan(atan2(100vw, 1440px))));
   }
+}
 
-  /* The hero illustration is pinned at left:612px — an offset measured from
-     the edge of the 1440px frame, which no longer exists. The artboard sets
-     it 28px from the frame's edge, so holding it 28px from the viewport's
-     keeps the relationship the designer drew; it is the text column that
-     gets closer, not the art that moves away. (Arabic mirrors the pin
-     itself; the logical property is what keeps both honest.) Inline
-     `left:612px` has to be beaten, hence the `!important`. */
-  .frame :global(.sp-hero-art) {
-    inset-inline-end: 28px !important;
-    inset-inline-start: auto !important;
-  }
+/* ---------------------------------------------------------------------------
+ * ≤ 820: the phone composition. Everything below applies only here; above
+ * it the artboard is shown whole (scaled, above).
+ * ------------------------------------------------------------------------- */
 
+@media (max-width: 820px) {
   /* The sub-page hero figure: a fixed 440×380 box beside the heading, drawn
      `flex-shrink: 0`. Below the artboard's width it gives way to the text —
      a Russian headline has a single 700px word at 56px, and breaking a
@@ -158,17 +165,18 @@
 }
 
 /* ---------------------------------------------------------------------------
- * Fluid type: 390 → 1200.
+ * Fluid type: 390 → 820.
  *
- * Each line is (artboard size → phone size), interpolated linearly across the
- * 810px between the phone artboard and the point where the desktop size is
- * reached. The pairs that both artboards draw: 62→34 (h1), 46→26 (h2), 22→16
+ * Each line is (artboard size → phone size), on a straight line from the
+ * phone artboard at 390 to the desktop size at 1200; above 820 the artboard
+ * is scaled instead, so only the 390–820 stretch of each line is used. The
+ * pairs that both artboards draw: 62→34 (h1), 46→26 (h2), 22→16
  * (card h3), 19→16 (hero lead), 15.5→13.5 (card text; 14.5 site-wide, 13.5
  * inside the operation cards below), 16→15 (the app banner title). The rest
  * are placed on the same curve — a judgement the design does not cover.
  * ------------------------------------------------------------------------- */
 
-@media (max-width: 1199.98px) {
+@media (max-width: 820px) {
   .frame {
     --sp-fs-72: clamp(40px, calc(24.593px + 3.951vw), 72px);
     --sp-fs-64: clamp(34px, calc(19.556px + 3.704vw), 64px);
@@ -205,11 +213,11 @@
     --sp-fs-48: clamp(24px, calc(12.444px + 2.963vw), 48px);
   }
 
-  /* Below the artboard's width the illustration would sit behind the
-     headline rather than beside it — the artboard already overlaps them by
-     88px. The phone artboard puts it under the text instead, in a 300px-tall
-     strip, and drops the three floating labels; that composition is used all
-     the way up to 1200. Inline position/left/top/width/height are beaten. */
+  /* On a phone the illustration would sit behind the headline rather than
+     beside it — the artboard already overlaps them by 88px. The phone
+     artboard puts it under the text instead, in a 300px-tall strip, and
+     drops the three floating labels; that composition is used up to 820.
+     Inline position/left/top/width/height are beaten. */
   .frame :global(.sp-hero) {
     display: flex;
     flex-direction: column;
@@ -240,12 +248,14 @@
 }
 
 /* ---------------------------------------------------------------------------
- * Tablet: 768–1099. No artboard. Gutters 40, rhythm at ¾, and the wide grids
+ * Narrow windows, first pass: gutters 40, rhythm at ¾, and the wide grids
  * lose a column. Two-column pairs with a fixed track keep two columns as a
- * ratio instead of a pixel width.
+ * ratio instead of a pixel width. Used to be the tablet layout (768–1099);
+ * the export scales the artboard there instead, so this now only lays the
+ * ground the phone system below refines.
  * ------------------------------------------------------------------------- */
 
-@media (max-width: 1099.98px) {
+@media (max-width: 820px) {
   .frame {
     --sp-gutter: 40px;
     --sp-gutter-header: 32px;
@@ -337,10 +347,11 @@
 }
 
 /* ---------------------------------------------------------------------------
- * Phone: ≤ 767. The phone artboard's system.
+ * Phone: ≤ 820, where the export opens its mobile pages. The phone
+ * artboard's system.
  * ------------------------------------------------------------------------- */
 
-@media (max-width: 767.98px) {
+@media (max-width: 820px) {
   .frame {
     --sp-header-h: 64px;
     --sp-logo-h: 26px;
@@ -643,11 +654,11 @@
 }
 
 /* ---------------------------------------------------------------------------
- * The header shell: nav in a row on wide windows, a drawer below 1100.
+ * The header shell: nav in a row on wide windows, a drawer at 820 and below.
  *
- * 1100 rather than 768 because the five links, the language button, the
- * client-area link and the quote button do not fit a 1024px header in German
- * or Russian; hiding a link's label to squeeze them in is worse than a menu.
+ * Above 820 the header is the artboard's, scaled with the rest of the page,
+ * so the five links, the language button, the client-area link and the quote
+ * button always have their 1440px row, in every language.
  * ------------------------------------------------------------------------- */
 
 .burger {
@@ -667,7 +678,7 @@
   outline-offset: 2px;
 }
 
-@media (max-width: 1099.98px) {
+@media (max-width: 820px) {
   /* The transcribed nav and the two action links carry an inline `display`
      from the artboard; on a narrow window they live in the drawer instead. */
   .nav,
@@ -760,7 +771,7 @@
   border-radius: 16px;
   box-shadow: 0 18px 40px -20px rgba(14, 26, 61, 0.45);
 }
-@media (max-width: 767.98px) {
+@media (max-width: 820px) {
   .localeRoot {
     position: static;
   }
@@ -788,7 +799,7 @@
   font-weight: 600;
   cursor: pointer;
 }
-@media (max-width: 767.98px) {
+@media (max-width: 820px) {
   .localeButton {
     gap: 6px;
     min-width: 44px;
@@ -815,4 +826,22 @@
   .frame :global(.sp-scheme) {
     zoom: 0.45;
   }
+}
+
+/* Tarifs. The offer cards' type tag ("Pack sourcing"...) is drawn pinned over
+   the corner of the illustration, where it covered the drawing; the
+   transmission puts it under the illustration (section 4.5, point 12). The
+   porter moves it out of the illustration box (MOVES in port.py); here it
+   joins the card's column in flow, at its own width. Inline `position`, `top`
+   and `left` are beaten. */
+.frame :global(.sp-offer-tag) {
+  position: static !important;
+  align-self: flex-start;
+}
+
+/* Tarifs. "Ce que le prix ne comprend pas" is drawn beside the group prices,
+   which are not published (D7, NON VALIDÉ); alone, it takes the whole row
+   rather than leaving the other column empty. */
+.frame :global(.sp-solo-card) {
+  grid-column: 1 / -1;
 }

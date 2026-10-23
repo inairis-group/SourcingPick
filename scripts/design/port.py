@@ -928,6 +928,31 @@ def _sim_volume(el: Element) -> bool:
     return el.tag == "span" and text_of(el).startswith("Volume total") and find(el, "b") is not None
 
 
+def _offer_tag(el: Element) -> bool:
+    """The type tag of an offer card ("Visite et négociation", "Pack
+    sourcing", "Test de produits"), drawn pinned over the illustration's
+    top-left corner. Transmission 4.5, point 12: "le repère de type (tag) des
+    cartes d'offre est sous l'illustration" — so it is moved out of the
+    illustration box to sit under it (and styled in flow by .sp-offer-tag)."""
+    st = _style(el)
+    return (
+        el.tag == "span"
+        and "position: absolute; top: 12px; left: 12px" in st
+        and "JetBrains Mono" in st
+        and "text-transform: uppercase" in st
+    )
+
+
+def _price_exclusions_card(el: Element) -> bool:
+    """"Ce que le prix ne comprend pas". The artboard sets it beside the group
+    prices card, which is omitted (D7, NON VALIDÉ): alone in a two-column
+    grid it would leave the other column empty, so it spans both."""
+    k = kids(el)
+    return el.tag == "div" and bool(k) and k[0].tag == "h3" and text_of(k[0]).startswith(
+        "Ce que le prix ne comprend pas"
+    )
+
+
 DECORATIONS: dict[str, list[tuple]] = {
     # Where DeliverySimulator writes the figures it computes.
     "Livraisons": [
@@ -953,6 +978,8 @@ DECORATIONS: dict[str, list[tuple]] = {
         (_is_steps_grid, "sp-steps", 1),
     ],
     "Comment-ca-marche": [(_is_how_row, "sp-how-row", 6)],
+    # Moved under their illustrations by MOVES; this keeps them in flow there.
+    "Tarifs": [(_offer_tag, "sp-offer-tag", 3), (_price_exclusions_card, "sp-solo-card", 1)],
     "Contact": [(_is_contact_aside_art, "sp-contact-art", 2)],
     "404": [(_is_not_found_numeral, "sp-404-numeral", 1)],
 }
@@ -965,6 +992,8 @@ DECORATIONS: dict[str, list[tuple]] = {
 SHAPE_COUNTS: dict[tuple[str, str], dict[str, int]] = {
     # Five section heads (heading column + caption) now sit on the redrawn page.
     ("Tarifs", "fr"): {"sp-two-track": 3},
+    # The other languages keep the old Tarifs: no offer cards, no programme.
+    ("Tarifs", "en"): {"sp-offer-tag": 0, "sp-solo-card": 0},
     # The download card was redrawn ("En construction", an e-mail sign-up): the
     # old two-track and badge-row signatures no longer match. Reviewed on the
     # new board before the zeros were accepted.
@@ -1185,6 +1214,38 @@ OMIT: dict[str, list[tuple]] = {
 }
 
 
+# -- moves ----------------------------------------------------------------------
+#
+# Elements the transmission places somewhere the artboard does not. Each entry
+# is (predicate, how many it must move); the element leaves its parent and
+# becomes the sibling right after it. Only the page's own board is counted,
+# like OMIT: the other languages keep the older shape, which has none.
+
+
+MOVES: dict[str, list[tuple]] = {
+    "Tarifs": [(_offer_tag, 3)],
+}
+
+
+def _move_out(node: Element, pred) -> int:
+    """Lift every element matching `pred` out of its parent, to just after it.
+
+    One level, once: the lift is done before descending, so an element that
+    has been moved is never seen again and cannot climb further."""
+    moved = 0
+    for c in list(node.children):
+        if isinstance(c, str):
+            continue
+        lifted = [x for x in c.children if isinstance(x, Element) and pred(x)]
+        if lifted:
+            c.children = [x for x in c.children if not any(x is y for y in lifted)]
+            at = next(i for i, x in enumerate(node.children) if x is c) + 1
+            node.children[at:at] = lifted
+            moved += len(lifted)
+        moved += _move_out(c, pred)
+    return moved
+
+
 def _stem_of(path: str) -> str | None:
     name = os.path.basename(path)
     for stem, page in PAGES.items():
@@ -1224,6 +1285,13 @@ def board_parts(path: str):
             raise SystemExit(
                 f"{stem}: expected {expected} element(s) to omit ({pred.__name__}), "
                 f"found {got}. The artboard changed — update OMIT."
+            )
+    for pred, expected in MOVES.get(stem, []):
+        got = _move_out(frame, pred)
+        if os.path.basename(path) == PAGES[stem].board and got != expected:
+            raise SystemExit(
+                f"{stem}: expected {expected} element(s) to move ({pred.__name__}), "
+                f"found {got}. The artboard changed — update MOVES."
             )
     parts = kids(frame)
     footer = parts[-1]
