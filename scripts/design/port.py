@@ -1262,6 +1262,84 @@ def _move_out(node: Element, pred) -> int:
     return moved
 
 
+# -- French headings from the SEO pack ----------------------------------------
+#
+# The 2026-10 SEO pack rewrites some French headings (H1/H2) for search. They
+# are applied over the canvas's text by position — slot n of the page's French
+# strings — because the same word can be a heading and a tab ("Général" is
+# both on the FAQ). Each entry names the canvas text it replaces: if the
+# canvas changes there, the port stops instead of overwriting something else.
+# French only; the other languages keep the canvas's wording.
+FR_TEXT: dict[str, dict[int, tuple[str, str]]] = {
+    "Accueil": {
+        # H1: "Entre l'usine et le navire" carries the highlight.
+        1: ("Vos marchandises de Chine,", ""),
+        2: ("vérifiées", "Entre l’usine et le navire :"),
+        3: ("avant d’embarquer.", "réception, contrôle, consolidation et fret maritime à Guangzhou"),
+        15: ("Tout ce qui arrive à vos marchandises entre l’usine et le navire.",
+             "Six opérations dans notre entrepôt de Guangzhou (Baiyun), une trace visuelle pour chacune"),
+        51: ("Six étapes. Toutes visibles dans votre espace client.",
+             "Un suivi étape par étape dans votre espace client, de l’usine jusqu’au port d’arrivée"),
+        143: ("Des devis réels, pas des prix d’appel.",
+              "Deux taux transparents, rien d’autre : 2 % sur le sourcing, 3 % sur le fret maritime"),
+    },
+    "Comment-ca-marche": {
+        1: ("De votre demande au port d’arrivée, en six étapes.",
+            "Comment importer de Chine en six étapes : de votre demande jusqu’au port d’arrivée"),
+        52: ("Ce qu’il nous faut pour démarrer",
+             "Ce qu’il nous faut pour démarrer votre dossier d’importation"),
+        58: ("Ce que nous transmettons à vos fournisseurs",
+             "Ce que nous transmettons à vos fournisseurs chinois (adresse à Baiyun et code client)"),
+    },
+    "Tarifs": {
+        1: ("Des devis réels, ligne par ligne.",
+            "Tarifs sourcing et logistique Chine : des devis réels ligne par ligne, deux taux fixes"),
+        120: ("Ce que nous gagnons, noir sur blanc.",
+              "Notre rémunération : 2 % sur la marchandise sourcée, 3 % sur le fret maritime, aucun frais caché"),
+        136: ("Ce qui fait varier un devis", "Ce qui fait varier un devis logistique"),
+        142: ("Ce que contient chaque devis", "Ce que contient exactement chaque devis"),
+        148: ("Paiement",
+              "Conditions de paiement sécurisées (acompte de 40 % à la commande, solde avant chargement)"),
+    },
+    "FAQ": {
+        1: ("Les réponses, sans détour.",
+            "Questions fréquentes sur nos services de logistique, contrôle et sourcing à Guangzhou"),
+        # The section headings; slots 3-7 are the tabs above them, unchanged.
+        9: ("Général", "Questions générales sur Sourcing Pick et notre entrepôt de Guangzhou"),
+        18: ("Logistique", "Logistique, délais maritimes depuis Nansha, groupage et stockage à Baiyun"),
+        29: ("Contrôle", "Contrôle qualité, photos, vidéos et gestion des écarts fournisseurs"),
+        34: ("Sourcing", "Sourcing d’usines en Chine et fonctionnement de la commission de 2 %"),
+        39: ("Paiement", "Paiement (acompte 40 % / solde), traçabilité des fonds et espace client"),
+    },
+    "A-propos": {
+        1: ("Une équipe à Guangzhou, au service des importateurs.",
+            "Une équipe sur le terrain à Guangzhou, au service des importateurs francophones"),
+        3: ("Notre histoire",
+            "Notre histoire : de la recherche d’usines en 2023 à la maîtrise complète entre l’usine et le navire"),
+        7: ("Pourquoi on montre tout",
+            "Pourquoi nous montrons tout : adresse publique à Baiyun et preuves visuelles à chaque étape"),
+        9: ("L’équipe", "L’équipe Sourcing Pick à Guangzhou (direction et techniciens d’entrepôt)"),
+    },
+    "Entrepot": {
+        1: ("200 m² à Guangzhou, et une adresse que vous pouvez vérifier.",
+            "Notre entrepôt de 200 m² à Guangzhou (district de Baiyun) : réception, contrôle et chargement"),
+    },
+}
+
+
+def apply_fr_text(stem: str | None, strings: list[str]) -> list[str]:
+    out = list(strings)
+    for i, (old, new) in FR_TEXT.get(stem or "", {}).items():
+        if i >= len(out) or out[i] != old:
+            raise SystemExit(
+                f"{stem}: French slot {i} should read {old!r} before the SEO "
+                f"heading replaces it, and reads {out[i] if i < len(out) else None!r}. "
+                "The canvas changed — update FR_TEXT."
+            )
+        out[i] = new
+    return out
+
+
 def _stem_of(path: str) -> str | None:
     name = os.path.basename(path)
     for stem, page in PAGES.items():
@@ -1626,6 +1704,7 @@ def port_page(stem: str, tokens: set[str]) -> None:
         for loc in locs:
             end_i = len(text[loc]) - len(slots(groups[[g[0] for g in groups].index(locs)][1][loc][-1]))
             body[loc] = text[loc][start_i:end_i]
+    body["fr"] = apply_fr_text(stem, body["fr"])
 
     write(f"{BOARD_DIR}/content/{page.key}.ts",
           page_content(page, body, titles, variants))

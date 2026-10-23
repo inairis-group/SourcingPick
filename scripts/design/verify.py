@@ -20,7 +20,7 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from port import CANVAS, LOCALES, PAGES, aligned, locale_file
+from port import CANVAS, FR_TEXT, LOCALES, PAGES, aligned, locale_file
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:3000"
 
@@ -66,6 +66,13 @@ def fetch(path: str) -> str:
         return r.read().decode("utf-8")
 
 
+# Pages a hand-written French version replaces, with the canvas's design and
+# the SEO pack's text: nothing of the canvas's wording to compare.
+REPLACED = {
+    ("services", "fr"): "SEO pack text (services-hub-fr.tsx)",
+}
+
+
 def in_maintenance(route: str) -> bool:
     """A route that shows a maintenance notice instead of its board (see
     `IN_MAINTENANCE` in the route's page.tsx) has nothing to compare."""
@@ -86,6 +93,9 @@ def main() -> int:
             print(f"  skip {page.key:<11} in maintenance")
             continue
         for loc in LOCALES:
+            if (page.key, loc) in REPLACED:
+                print(f"  skip {page.key:<11} {loc}  {REPLACED[(page.key, loc)]}")
+                continue
             path = f"/{loc}/{page.route}".rstrip("/")
             try:
                 got = visible_text(main_of(fetch(path)))
@@ -94,6 +104,16 @@ def main() -> int:
                 print(f"  FAIL {page.key:<11} {loc}  {path}: {exc}")
                 continue
             want = text_slots(stem, loc)
+            if loc == "fr":
+                # The SEO pack's French headings (FR_TEXT in port.py) replace
+                # some canvas text: read them back as the text they replace,
+                # so the rest of the page is still held to the canvas.
+                subs = list(FR_TEXT.get(stem, {}).values())
+                back = {new: old for old, new in subs if new}
+                got = [back.get(g, g) for g in got]
+                for old, new in subs:
+                    if not new and old in want:
+                        want.remove(old)
             if want == got:
                 print(f"  ok   {page.key:<11} {loc}  {len(got)} strings")
                 continue

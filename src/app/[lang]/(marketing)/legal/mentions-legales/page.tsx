@@ -3,6 +3,7 @@ import { isLocale } from "@/lib/i18n/config";
 import { LegalBoard } from "../../_design/boards/legal";
 import { legal as content } from "../../_design/content/legal";
 import { pageAlternates } from "@/lib/seo/alternates";
+import { pageMeta } from "@/lib/seo/fr-meta";
 
 /**
  * Route for the canvas's “Mentions-legales” artboard.
@@ -15,8 +16,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/legal/ment
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   return {
-    title: content.title[lang],
-    description: content.description[lang],
+    ...pageMeta(lang, "/legal/mentions-legales", { title: content.title[lang], description: content.description[lang] }),
     alternates: pageAlternates(lang, "/legal/mentions-legales"),
   };
 }

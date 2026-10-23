@@ -9,11 +9,11 @@ import type { Locale } from "@/lib/i18n/config";
 
 export const howItWorks = {
   title: { fr: "Sourcing Pick — comment ça marche", en: "Sourcing Pick — How it works", zh: "Sourcing Pick — 服务流程", es: "Sourcing Pick — cómo funciona", de: "Sourcing Pick – So funktioniert’s", it: "Sourcing Pick — come funziona", pt: "Sourcing Pick — como funciona", nl: "Sourcing Pick — hoe het werkt", ar: "Sourcing Pick — كيف نعمل", ru: "Sourcing Pick — как это работает", tr: "Sourcing Pick — nasıl çalışır", pl: "Sourcing Pick – jak to działa" } as Record<Locale, string>,
-  description: { fr: "À chaque étape, vous savez ce que vous avez à faire, ce que nous faisons, et le statut affiché dans votre espace client.", en: "At every step, you know what you need to do, what we do, and which status is shown in your client area.", zh: "从提交需求到抵达目的港，共六个步骤。", es: "En cada etapa, usted sabe lo que tiene que hacer, lo que hacemos nosotros y qué estado muestra su área de cliente.", de: "Bei jedem Schritt wissen Sie, was Sie tun müssen, was wir tun und welcher Status in Ihrem Kundenbereich angezeigt wird.", it: "In ogni fase sapete cosa dovete fare voi, cosa facciamo noi e quale stato compare nella vostra area clienti.", pt: "Em cada etapa, sabe o que tem de fazer, o que nós fazemos e o estado apresentado na sua área de cliente.", nl: "Bij elke stap weet u wat u moet doen, wat wij doen en welke status uw klantenportaal toont.", ar: "مواعيد الاستلام: من الاثنين إلى السبت، من الساعة 9 صباحًا إلى 6 مساءً (بتوقيت الصين). ولا يتم الاستلام ليلًا ولا يوم الأحد.", ru: "На каждом этапе вы знаете, что нужно сделать вам, что делаем мы и какой статус отображается в личном кабинете.", tr: "Her aşamada sizin ne yapmanız gerektiğini, bizim ne yaptığımızı ve müşteri panelinizde hangi durumun görüneceğini bilirsiniz.", pl: "Na każdym etapie wiadomo, co należy do Państwa, co robimy my i jaki status widać w panelu klienta." } as Record<Locale, string>,
+  description: { fr: "Comment importer de Chine en six étapes : de votre demande jusqu’au port d’arrivée", en: "At every step, you know what you need to do, what we do, and which status is shown in your client area.", zh: "从提交需求到抵达目的港，共六个步骤。", es: "En cada etapa, usted sabe lo que tiene que hacer, lo que hacemos nosotros y qué estado muestra su área de cliente.", de: "Bei jedem Schritt wissen Sie, was Sie tun müssen, was wir tun und welcher Status in Ihrem Kundenbereich angezeigt wird.", it: "In ogni fase sapete cosa dovete fare voi, cosa facciamo noi e quale stato compare nella vostra area clienti.", pt: "Em cada etapa, sabe o que tem de fazer, o que nós fazemos e o estado apresentado na sua área de cliente.", nl: "Bij elke stap weet u wat u moet doen, wat wij doen en welke status uw klantenportaal toont.", ar: "مواعيد الاستلام: من الاثنين إلى السبت، من الساعة 9 صباحًا إلى 6 مساءً (بتوقيت الصين). ولا يتم الاستلام ليلًا ولا يوم الأحد.", ru: "На каждом этапе вы знаете, что нужно сделать вам, что делаем мы и какой статус отображается в личном кабинете.", tr: "Her aşamada sizin ne yapmanız gerektiğini, bizim ne yaptığımızı ve müşteri panelinizde hangi durumun görüneceğini bilirsiniz.", pl: "Na każdym etapie wiadomo, co należy do Państwa, co robimy my i jaki status widać w panelu klienta." } as Record<Locale, string>,
   text: {
     fr: [
       "Comment ça marche",
-      "De votre demande au port d’arrivée, en six étapes.",
+      "Comment importer de Chine en six étapes : de votre demande jusqu’au port d’arrivée",
       "À chaque étape, vous savez ce que vous avez à faire, ce que nous faisons, et le statut affiché dans votre espace client.",
       "Chariot élévateur chargeant un conteneur",
       "1",
@@ -64,13 +64,13 @@ export const howItWorks = {
       "Nous suivons le transport jusqu’au port d’arrivée.",
       "Espace client",
       "En transit",
-      "Ce qu’il nous faut pour démarrer",
+      "Ce qu’il nous faut pour démarrer votre dossier d’importation",
       "La liste de vos fournisseurs et leurs coordonnées",
       "Les factures pro forma ou bons de commande",
       "Le nombre de colis et le poids estimés",
       "L’adresse de livraison finale",
       "Vos consignes de contrôle : quantités, étiquettes, défauts à surveiller",
-      "Ce que nous transmettons à vos fournisseurs",
+      "Ce que nous transmettons à vos fournisseurs chinois (adresse à Baiyun et code client)",
       "L’adresse de livraison de notre entrepôt",
       "Votre code client, à inscrire sur chaque carton",
       "Les horaires de réception : du lundi au samedi, de 9 h à 18 h (heure de Chine). Aucune réception la nuit ni le dimanche.",

@@ -3,6 +3,7 @@ import { isLocale } from "@/lib/i18n/config";
 import { PricingBoard } from "../_design/boards/pricing";
 import { pricing as content } from "../_design/content/pricing";
 import { pageAlternates } from "@/lib/seo/alternates";
+import { pageMeta } from "@/lib/seo/fr-meta";
 
 /**
  * Route for the canvas's “Tarifs” artboard.
@@ -15,8 +16,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/pricing">)
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   return {
-    title: content.title[lang],
-    description: content.description[lang],
+    ...pageMeta(lang, "/pricing", { title: content.title[lang], description: content.description[lang] }),
     alternates: pageAlternates(lang, "/pricing"),
   };
 }

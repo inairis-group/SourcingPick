@@ -4,6 +4,7 @@ import { WarehouseBoard } from "../_design/boards/warehouse";
 import { warehouse as content } from "../_design/content/warehouse";
 import { WarehouseMaintenance } from "./maintenance";
 import { pageAlternates } from "@/lib/seo/alternates";
+import { pageMeta } from "@/lib/seo/fr-meta";
 
 /**
  * Route for the canvas's “Entrepot” artboard.
@@ -24,8 +25,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/entrepot">
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   return {
-    title: content.title[lang],
-    description: content.description[lang],
+    ...pageMeta(lang, "/entrepot", { title: content.title[lang], description: content.description[lang] }),
     alternates: pageAlternates(lang, "/entrepot"),
   };
 }

@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { locales } from "@/lib/i18n/config";
 import { sitePath } from "@/lib/i18n/site-paths";
 import { getSiteUrl, OTHER_APP_PAGES, PUBLIC_PAGES } from "@/lib/seo/site";
+import { SERVICE_PAGES } from "@/content/seo/service-pages";
+import { BLOG_ARTICLES } from "@/content/blog";
 
 /**
  * The sitemap of the whole host. Every language version of a page is listed
@@ -28,6 +30,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }));
   });
 
+  // French-only pages of the SEO pack: the service pages, the tool, the blog
+  // (listed only once it has articles).
+  const french = [
+    ...SERVICE_PAGES.map((p) => ({ route: `/services/${p.slug}`, changeFrequency: "weekly" as const, priority: 0.9 })),
+    { route: "/outils/simulateur-import-cbm", changeFrequency: "monthly" as const, priority: 0.9 },
+    ...(BLOG_ARTICLES.length
+      ? [
+          { route: "/blog", changeFrequency: "weekly" as const, priority: 0.7 },
+          ...BLOG_ARTICLES.map((a) => ({ route: `/blog/${a.slug}`, changeFrequency: "monthly" as const, priority: 0.7 })),
+        ]
+      : []),
+  ].map(({ route, changeFrequency, priority }) => ({
+    url: abs(sitePath("fr", route)),
+    lastModified,
+    changeFrequency,
+    priority,
+  }));
+
   const otherApp = OTHER_APP_PAGES.map(({ path, changeFrequency, priority }) => ({
     url: abs(path),
     lastModified,
@@ -35,5 +55,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority,
   }));
 
-  return [...pages, ...otherApp];
+  return [...pages, ...french, ...otherApp];
 }
