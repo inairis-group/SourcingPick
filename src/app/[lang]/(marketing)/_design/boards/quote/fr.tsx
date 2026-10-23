@@ -1,13 +1,11 @@
 // GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
-// Source: fr-Devis.dc.html (and 10 more)
+// Source: fr-Devis.dc.html (and 11 more)
 // Regenerate: npm run design:port
 /*
  * Markup, spacing and colour are the design's own, transcribed rather than
  * interpreted. Copy lives in ../../content/quote.ts, one array per locale, zipped by
  * position — sound because the artboards behind this file were checked to
  * have identical tag-and-attribute structure before anything was written.
- *
- * Locales using this shape: fr, en, zh, es, de, it, pt, nl, ar, ru, pl.
  */
 
 import Link from "next/link";
@@ -18,7 +16,7 @@ import { FileDrop } from "../../file-drop";
 import { QuoteForm } from "../../quote-form";
 import { SubmitButton } from "../../form-controls";
 
-export function QuoteBoardFR({ lang }: { lang: Locale }) {
+export function QuoteBoard({ lang }: { lang: Locale }) {
   const t = content.text[lang];
   const s = content.frStyles;
 
@@ -217,7 +215,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
                   </span>
                 </label>
                 <div>
-                  <SubmitButton style={s[20][lang]}>
+                  <SubmitButton data-pk="inert" style={s[20][lang]}>
                     <span>{t[43]}</span>
                     <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -243,26 +241,24 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
                       {t[47]}
                     </span>
                     <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "lineHeight": "1.55", "color": "#FFFFFF" }}>
-                      {t[48]}{" "}
-                      <span className="sp-placeholder" style={s[22][lang]}>{t[49]}</span>
-                      {t[50]}
+                      {t[48]}
                     </span>
                   </div>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "flex-start" }}>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "30px", "height": "30px", "borderRadius": "50%", "background": "#155DFC", "color": "#FFFFFF", "alignItems": "center", "justifyContent": "center", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "13px", "fontWeight": "600" }}>
-                      {t[51]}
+                      {t[49]}
                     </span>
                     <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "lineHeight": "1.55", "color": "#FFFFFF" }}>
-                      {t[52]}
+                      {t[50]}
                     </span>
                   </div>
                 </div>
                 <div style={{ "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "24px", "padding": "var(--sp-pad-26, 26px)", "display": "flex", "flexDirection": "column", "gap": "10px" }}>
                   <span style={{ "fontSize": "var(--sp-fs-15_5, 15.5px)", "fontWeight": "600" }}>
-                    {t[53]}
+                    {t[51]}
                   </span>
                   <a href="mailto:contact@sourcingpick.com" style={{ "fontWeight": "600" }} dir="ltr">
-                    {t[54]}
+                    {t[52]}
                   </a>
                 </div>
                 <div style={{ "display": "flex", "gap": "12px", "alignItems": "flex-start", "padding": "18px", "borderRadius": "18px", "background": "#E3F6EC", "fontSize": "14px", "lineHeight": "1.5", "color": "#145C38" }}>
@@ -270,7 +266,7 @@ export function QuoteBoardFR({ lang }: { lang: Locale }) {
                     <path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z" />
                     <path d="M8.5 12l2.5 2.5 4.5-4.5" />
                   </svg>
-                  <span>{t[55]}</span>
+                  <span>{t[53]}</span>
                 </div>
                 <img src="/design/spot-5.svg" alt="" style={{ "width": "200px", "height": "auto", "alignSelf": "center", "maxWidth": "100%" }} />
               </aside>

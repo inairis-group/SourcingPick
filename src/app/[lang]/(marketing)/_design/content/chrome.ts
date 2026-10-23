@@ -36,7 +36,7 @@ export const chrome = {
       "Change language: English",
       "EN",
       "Client area",
-      "Get a quote",
+      "Request a quotation",
     ],
     zh: [
       "Sourcing Pick 刚刚起步。与其编造客户评价，我们更愿意让您看看我们的仓库。",

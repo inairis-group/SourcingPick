@@ -10,9 +10,9 @@
 
 import type { Locale } from "@/lib/i18n/config";
 import { PricingBoardFR } from "./fr";
-import { PricingBoardTR } from "./tr";
+import { PricingBoardEN } from "./en";
 
-const BY_LOCALE: Partial<Record<Locale, typeof PricingBoardFR>> = { tr: PricingBoardTR };
+const BY_LOCALE: Partial<Record<Locale, typeof PricingBoardFR>> = { en: PricingBoardEN, zh: PricingBoardEN, es: PricingBoardEN, de: PricingBoardEN, it: PricingBoardEN, pt: PricingBoardEN, nl: PricingBoardEN, ar: PricingBoardEN, ru: PricingBoardEN, tr: PricingBoardEN, pl: PricingBoardEN };
 
 export function PricingBoard({ lang }: { lang: Locale }) {
   const Board = BY_LOCALE[lang] ?? PricingBoardFR;

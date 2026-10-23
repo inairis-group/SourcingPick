@@ -150,6 +150,18 @@ ROUTES: dict[str, str] = {
     "Transparence": "/#verite",
     "Bientôt surApp Store": "/application",
     "Bientôt surGoogle Play": "/application",
+    "En constructionApp Store": "/application",
+    "En constructionGoogle Play": "/application",
+    "Voir notre commission": "/pricing#remuneration",
+    "Réserver une visite": "/contact",
+    "Réserver les trois jours": "/contact",
+    "Demander les dates": "/contact",
+    "Demander un devis test": "/devis",
+    "Ouvrir l’espace client": "/login",
+    "Ouvrir mon espace client": "/login",
+    "Créer mon compte gratuit": "/signup",
+    "J’ai déjà un compte": "/login",
+    "conditions générales de vente": "/legal/terms",
 }
 
 # Fragments that name a section of the home page. The header carries one of
@@ -176,7 +188,7 @@ IN_PAGE = {
 
 # Anchors the canvas draws as links but which submit a form once the page is
 # real. They keep the design's appearance and gain a type.
-SUBMITS = {"Envoyer", "Envoyer ma demande"}
+SUBMITS = {"Envoyer", "Envoyer ma demande", "Être prévenu au lancement", "Enregistrer mes choix"}
 
 
 # Structure is read from one artboard per shape, and for the Turkish shape that
@@ -213,6 +225,8 @@ def french_route(node: Element, label: str, raw: str) -> str | None:
         return raw
     if not label:
         return "@home"  # the wordmark, the only anchor with no text
+    if raw.startswith("/"):
+        return raw  # the export wires every link to its route
     if label in IN_PAGE:
         return IN_PAGE[label]
     if raw.startswith("#") and raw != "#":
@@ -224,31 +238,36 @@ def french_route(node: Element, label: str, raw: str) -> str | None:
     raise SystemExit(f"unmapped link: {label!r} (href={raw!r})")
 
 
-def page_routes(stem: str) -> list[str | None]:
-    """One destination per anchor of the page, in document order.
+def group_routes(stem: str, nodes_by_loc: dict[str, list[Element]]) -> list[str | None]:
+    """One destination per anchor, read from one group's own leader.
 
-    Read from French and checked against every other language: a mismatch in
-    link count would mean the positions no longer correspond, and silently
-    shifting them is how a footer ends up linking to the wrong page.
+    Locales that share a shape share their anchors position for position; a
+    locale with a different shape (the pages whose French was redrawn before
+    the translations) is a group of its own and carries its own routes.
     """
-    whole_fr = _whole(stem, "fr")
-    fr = anchors(whole_fr)
-    routes = [french_route(a, text_of(a), a.attr("href") or "") for a in fr]
+    leader = next(iter(nodes_by_loc))
+    whole = nodes_by_loc[leader]
+    own = anchors(whole)
+    routes = [french_route(a, text_of(a), a.attr("href") or "") for a in own]
 
     # The category chips are a table of contents for this page, not navigation.
     # Resolved by text they went badly wrong: "Sourcing" and "App" matched the
     # site-wide route map and took the reader off the FAQ entirely.
-    chips = faq_chip_anchors(whole_fr)
+    chips = faq_chip_anchors(whole)
     for n, chip in enumerate(chips, start=1):
-        routes[next(i for i, a in enumerate(fr) if a is chip)] = f"#faq-group-{n}"
-    for loc in LOCALES:
-        n = len(anchors(_whole(stem, loc)))
-        if n != len(fr):
+        routes[next(i for i, a in enumerate(own) if a is chip)] = f"#faq-group-{n}"
+    for loc, nodes in nodes_by_loc.items():
+        n = len(anchors(nodes))
+        if n != len(own):
             raise SystemExit(
-                f"{stem}: the {loc} artboard has {n} links where French has "
-                f"{len(fr)}; routes cannot be carried across by position"
+                f"{stem}: the {loc} artboard has {n} links where {leader} has "
+                f"{len(own)}; routes cannot be carried across by position"
             )
     return routes
+
+
+def page_routes(stem: str) -> list[str | None]:
+    return group_routes(stem, {"fr": _whole(stem, "fr")})
 
 
 def element_ids(nodes: list[Element]) -> set[str]:
@@ -873,11 +892,31 @@ DECORATIONS: dict[str, list[tuple]] = {
     "404": [(_is_not_found_numeral, "sp-404-numeral", 1)],
 }
 
-def decorator_for(stem: str):
+# Counts for a page whose shapes disagree: the French board was redrawn before
+# the translations, so the same rule matches a different number of elements in
+# the shape French leads and in the shape the other languages share. Keyed by
+# (page, shape tag) and class name; anything not listed keeps the page-wide
+# count above.
+SHAPE_COUNTS: dict[tuple[str, str], dict[str, int]] = {
+    # Five section heads (heading column + caption) now sit on the redrawn page.
+    ("Tarifs", "fr"): {"sp-two-track": 3},
+    # The download card was redrawn ("En construction", an e-mail sign-up): the
+    # old two-track and badge-row signatures no longer match. Reviewed on the
+    # new board before the zeros were accepted.
+    ("Application", "fr"): {"sp-two-track": 0, "sp-two-track-tail": 0},
+}
+
+
+def decorator_for(stem: str, tag: str = "fr"):
     """A decorate hook for one page, plus the tally it must satisfy."""
     rules = [
         *DECORATIONS.get(stem, []),
         *((pred, cls, pages.get(stem, 0)) for pred, cls, pages in SITE_DECORATIONS),
+    ]
+    over = SHAPE_COUNTS.get((stem, tag), {})
+    rules = [
+        (pred, what, over.get(getattr(what, "__name__", what), expected))
+        for pred, what, expected in rules
     ]
     seen = [0] * len(rules)
 
@@ -892,14 +931,17 @@ def decorator_for(stem: str):
         return None
 
     def check() -> None:
-        for (pred, what, expected), got in zip(rules, seen):
-            cls = getattr(what, "__name__", what)
-            if got != expected:
-                raise SystemExit(
-                    f"{stem}: expected {expected} element(s) for {cls}, matched "
-                    f"{got}. The artboard changed — update DECORATIONS rather "
-                    "than shipping the page without its behaviour."
-                )
+        bad = [
+            f"{getattr(what, '__name__', what)}: expected {expected}, matched {got}"
+            for (pred, what, expected), got in zip(rules, seen)
+            if got != expected
+        ]
+        if bad:
+            raise SystemExit(
+                f"{stem} [{tag}]: " + "; ".join(bad) + ". The artboard changed — "
+                "update DECORATIONS or SHAPE_COUNTS rather than shipping the page "
+                "without its behaviour."
+            )
 
     return decorate, check
 
@@ -1032,8 +1074,17 @@ def write(path: str, body: str) -> None:
 def board_parts(path: str):
     """(announce strip, header, page sections, footer) for one artboard."""
     frame = [c for c in kids(find(parse(path), "x-dc")) if c.tag == "div"][0]
-    wrapper, footer = kids(frame)[0], kids(frame)[1]
-    ch = kids(wrapper)
+    parts = kids(frame)
+    footer = parts[-1]
+    ch = kids(parts[0])
+    # A page drawn on two artboards (Tarifs, 1/2 and 2/2) arrives glued: the
+    # first wrapper, the second wrapper, then the footer. The second wrapper
+    # opens with a bare spacer standing in for the seam; it carries nothing.
+    for extra in parts[1:-1]:
+        ch += [
+            c for c in kids(extra)
+            if not (c.tag == "div" and not kids(c) and _style(c).replace(" ", "") == "height:56px;")
+        ]
     return ch[0], ch[1], ch[2:], footer
 
 
@@ -1262,15 +1313,16 @@ def chrome_component(name, key, lines, em, styles, values, *, extra, src) -> str
 def port_page(stem: str, tokens: set[str]) -> None:
     page = PAGES[stem]
     groups, text, titles = aligned(stem)
-    routes = page_routes(stem)
 
     variants = []
     for locs, nodes in groups:
-        decorate, check_decorations = decorator_for(stem)
+        tag = locs[0]
+        decorate, check_decorations = decorator_for(stem, tag)
         retag, check_components = component_for(stem)
         name_for, check_names = field_namer(stem)
         tag = locs[0]
         primary = nodes[tag]
+        routes = group_routes(stem, nodes)
         sections = {loc: n[2:-1] for loc, n in nodes.items()}
         start_i = sum(len(slots(n)) for n in primary[:2])
         start_a = len(attr_stream(primary[:2]))

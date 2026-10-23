@@ -73,7 +73,7 @@ export function ContactBoard({ lang }: { lang: Locale }) {
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }}>
                     <span style={s[4][lang]}>{t[8]}</span>
                     <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "600", "lineHeight": "1.5" }}>
-                      <span className="sp-placeholder" style={s[5][lang]}>{t[9]}</span>
+                      {t[9]}
                     </span>
                   </div>
                 </div>
@@ -84,9 +84,9 @@ export function ContactBoard({ lang }: { lang: Locale }) {
                     </svg>
                   </span>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }}>
-                    <span style={s[6][lang]}>{t[10]}</span>
+                    <span style={s[5][lang]}>{t[10]}</span>
                     <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "600", "lineHeight": "1.5" }}>
-                      <span className="sp-placeholder" style={s[7][lang]}>{t[11]}</span>
+                      <span dir="ltr">{t[11]}</span>
                     </span>
                   </div>
                 </div>
@@ -100,27 +100,27 @@ export function ContactBoard({ lang }: { lang: Locale }) {
                     </svg>
                   </span>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }}>
-                    <span style={s[8][lang]}>{t[12]}</span>
+                    <span style={s[6][lang]}>{t[12]}</span>
                     <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "600", "lineHeight": "1.5" }}>
-                      <span className="sp-placeholder" style={s[9][lang]}>{t[13]}</span>
+                      {t[13]}
                     </span>
                   </div>
                 </div>
               </div>
               <div style={{ "position": "relative", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "26px", "padding": "var(--sp-pad-40, 40px)", "display": "flex", "flexDirection": "column", "gap": "20px" }}>
-                <h2 style={s[10][lang]}>{t[14]}</h2>
+                <h2 style={s[7][lang]}>{t[14]}</h2>
                 <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-r2, repeat(2, minmax(0, 1fr)))", "gap": "16px" }}>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <label htmlFor="c-name" style={{ "fontSize": "14px", "fontWeight": "600", "color": "#0E1A3D" }}>
                       {t[15]}
                     </label>
-                    <input id="c-name" placeholder="" defaultValue="" style={s[11][lang]} name="c-name" />
+                    <input id="c-name" placeholder="" defaultValue="" style={s[8][lang]} name="c-name" />
                   </div>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <label htmlFor="c-email" style={{ "fontSize": "14px", "fontWeight": "600", "color": "#0E1A3D" }}>
                       {t[16]}
                     </label>
-                    <input id="c-email" placeholder="" defaultValue="" style={s[12][lang]} name="c-email" />
+                    <input id="c-email" placeholder="" defaultValue="" style={s[9][lang]} name="c-email" />
                   </div>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "8px" }}>
@@ -148,10 +148,10 @@ export function ContactBoard({ lang }: { lang: Locale }) {
                   <label htmlFor="c-msg" style={{ "fontSize": "14px", "fontWeight": "600", "color": "#0E1A3D" }}>
                     {t[22]}
                   </label>
-                  <textarea id="c-msg" placeholder={t[23]} style={s[13][lang]} name="c-msg" />
+                  <textarea id="c-msg" placeholder={t[23]} style={s[10][lang]} name="c-msg" />
                 </div>
                 <div>
-                  <SubmitButton style={s[14][lang]}>
+                  <SubmitButton data-pk="inert" style={s[11][lang]}>
                     <span>{t[24]}</span>
                     <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -160,8 +160,8 @@ export function ContactBoard({ lang }: { lang: Locale }) {
                     </span>
                   </SubmitButton>
                 </div>
-                <img className="sp-contact-art" src="/design/spot-2.svg" alt="" style={s[15][lang]} />
-                <div className="sp-contact-art" style={s[16][lang]}>{t[25]}</div>
+                <img className="sp-contact-art" src="/design/spot-2.svg" alt="" style={s[12][lang]} />
+                <div className="sp-contact-art" style={s[13][lang]}>{t[25]}</div>
               </div>
             </section>
     </>

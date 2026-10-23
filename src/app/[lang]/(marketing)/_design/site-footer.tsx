@@ -106,11 +106,8 @@ export function SiteFooter({ lang }: { lang: Locale }) {
               </div>
               <LocaleRow lang={lang} label={t[26]} />
               <div className="sp-footer-meta" style={{ "display": "flex", "justifyContent": "space-between", "gap": "24px", "fontSize": "13.5px", "color": "#8E9BC4" }}>
-                <span>
-                  {t[39]}{" "}
-                  <span className="sp-placeholder" style={s[4][lang]}>{t[40]}</span>
-                </span>
-                <span>{t[41]}</span>
+                <span>{t[39]}</span>
+                <span>{t[40]}</span>
               </div>
             </footer>
     </>

@@ -1,20 +1,18 @@
 // GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
-// Source: fr-Comment-ca-marche.dc.html (and 10 more)
+// Source: fr-Comment-ca-marche.dc.html (and 11 more)
 // Regenerate: npm run design:port
 /*
  * Markup, spacing and colour are the design's own, transcribed rather than
  * interpreted. Copy lives in ../../content/howItWorks.ts, one array per locale, zipped by
  * position — sound because the artboards behind this file were checked to
  * have identical tag-and-attribute structure before anything was written.
- *
- * Locales using this shape: fr, en, zh, es, de, it, pt, nl, ar, ru, pl.
  */
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
 import { howItWorks as content } from "../../content/howItWorks";
 
-export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
+export function HowItWorksBoard({ lang }: { lang: Locale }) {
   const t = content.text[lang];
   const s = content.frStyles;
   const v = content.frValues;
@@ -278,10 +276,7 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
                         <path d="M12 7v5l3.5 2" />
                       </svg>
                     </span>
-                    <span>
-                      {t[61]}{" "}
-                      <span className="sp-placeholder" style={s[34][lang]}>{t[62]}</span>
-                    </span>
+                    <span>{t[61]}</span>
                   </li>
                 </ul>
                 <img src="/design/spot-5.svg" alt="" style={{ "width": "150px", "height": "auto", "alignSelf": "flex-end", "maxWidth": "100%" }} />
@@ -291,15 +286,13 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
               <div className="sp-cta-band" style={{ "position": "relative", "overflow": "hidden", "borderRadius": "32px", "background": "#155DFC", "padding": "var(--sp-pad-72, 72px)", "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "var(--sp-gap-40, 40px)", "color": "#FFFFFF" }}>
                 <div style={{ "position": "absolute", "inset": "0", "backgroundImage": "linear-gradient(30deg, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(150deg, rgba(255,255,255,0.08) 1px, transparent 1px)", "backgroundSize": "44px 25.4px" }} />
                 <div style={{ "position": "relative", "display": "flex", "flexDirection": "column", "gap": "22px", "maxWidth": "700px" }}>
-                  <h2 style={s[35][lang]}>{t[63]}</h2>
+                  <h2 style={s[34][lang]}>{t[62]}</h2>
                   <p style={{ "margin": "0", "fontSize": "var(--sp-fs-18, 18px)", "lineHeight": "1.6", "color": "#E3EBFF" }}>
-                    {t[64]}{" "}
-                    <span className="sp-placeholder" style={s[36][lang]}>{t[65]}</span>
-                    {t[66]}
+                    {t[63]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
-                    <Link href={`/${lang}/devis`} style={s[37][lang]}>
-                      <span>{t[67]}</span>
+                    <Link href={`/${lang}/devis`} style={s[35][lang]}>
+                      <span>{t[64]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                           <path d={v[0][lang]} />
@@ -307,14 +300,14 @@ export function HowItWorksBoardFR({ lang }: { lang: Locale }) {
                         </svg>
                       </span>
                     </Link>
-                    <a href="mailto:contact@sourcingpick.com" style={s[38][lang]}>
-                      <span><span dir="ltr">{t[68]}</span></span>
+                    <a href="mailto:contact@sourcingpick.com" style={s[36][lang]}>
+                      <span><span dir="ltr">{t[65]}</span></span>
                     </a>
                   </div>
                 </div>
                 <div className="sp-cta-mascot" style={{ "position": "relative", "width": "300px", "height": "300px", "flexShrink": "0" }}>
-                  <div style={s[39][lang]}>{t[69]}</div>
-                  <img src="/design/picky-arms-up.svg" alt={t[70]} style={{ "width": "300px", "height": "auto", "maxWidth": "100%" }} />
+                  <div style={s[37][lang]}>{t[66]}</div>
+                  <img src="/design/picky-arms-up.svg" alt={t[67]} style={{ "width": "300px", "height": "auto", "maxWidth": "100%" }} />
                 </div>
               </div>
             </section>

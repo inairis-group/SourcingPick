@@ -320,6 +320,22 @@ RENAME = {
 # Attributes that stay hyphenated in JSX.
 KEEP_HYPHEN = ("aria-", "data-")
 
+SVG_TAGS = {
+    "clippath": "clipPath",
+    "lineargradient": "linearGradient",
+    "radialgradient": "radialGradient",
+    "textpath": "textPath",
+    "foreignobject": "foreignObject",
+    "fegaussianblur": "feGaussianBlur",
+    "feoffset": "feOffset",
+    "feblend": "feBlend",
+    "fecolormatrix": "feColorMatrix",
+    "fecomposite": "feComposite",
+    "femerge": "feMerge",
+    "femergenode": "feMergeNode",
+    "fedropshadow": "feDropShadow",
+}
+
 # HTMLParser lowercases attribute names, which is right for HTML and wrong for
 # SVG, where `viewBox` is case-sensitive and React will warn about `viewbox`.
 SVG_CASE = {
@@ -553,7 +569,10 @@ class Emitter:
             # slots unclaimed would shift every later string on the page.
             return [pad + line for line in sub]
 
-        tag = node.tag
+        # HTMLParser lowercases tag names too; SVG's camel-cased elements need
+        # their case back or React renders an unknown element and TypeScript
+        # refuses `clippath`.
+        tag = SVG_TAGS.get(node.tag, node.tag)
         # Claimed in L10N_ATTRS order, matching `dcparse.slots`; document order
         # would shift indices on any element carrying two of them.
         claimed: dict[str, int] = {}

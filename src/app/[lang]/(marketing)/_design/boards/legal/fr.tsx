@@ -48,75 +48,94 @@ export function LegalBoard({ lang }: { lang: Locale }) {
               </nav>
               <article style={{ "display": "flex", "flexDirection": "column", "gap": "30px", "maxWidth": "820px" }}>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px" }}>
-                  <span className="sp-placeholder" style={s[0][lang]}>{t[5]}</span>
-                  <h1 style={s[1][lang]}>{t[6]}</h1>
+                  <h1 style={s[0][lang]}>{t[5]}</h1>
                   <p style={{ "margin": "0", "fontSize": "15px", "color": "#4A5578" }}>
-                    {t[7]}{" "}
-                    <span className="sp-placeholder" style={s[2][lang]}>{t[8]}</span>
+                    {t[6]}
                   </p>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[3][lang]}>{t[9]}</h2>
+                  <h2 style={s[1][lang]}>{t[7]}</h2>
                   <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[10]}{" "}
-                      <span className="sp-placeholder" style={s[4][lang]}>{t[11]}</span>
+                      {t[8]}
                     </li>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[12]}{" "}
-                      <span className="sp-placeholder" style={s[5][lang]}>{t[13]}</span>
+                      {t[9]}
                     </li>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[14]}{" "}
-                      <span className="sp-placeholder" style={s[6][lang]}>{t[15]}</span>
+                      {t[10]}
                     </li>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[16]}{" "}
-                      <span className="sp-placeholder" style={s[7][lang]}>{t[17]}</span>
+                      {t[11]}
                     </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[12]}
+                    </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[13]}
+                    </li>
+                  </ul>
+                </div>
+                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
+                  <h2 style={s[2][lang]}>{t[14]}</h2>
+                  <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[15]}
+                    </li>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[16]}
+                    </li>
+                  </ul>
+                </div>
+                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
+                  <h2 style={s[3][lang]}>{t[17]}</h2>
+                  <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
                       {t[18]}
                     </li>
                   </ul>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[8][lang]}>{t[19]}</h2>
+                  <h2 style={s[4][lang]}>{t[19]}</h2>
                   <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[20]}{" "}
-                      <span className="sp-placeholder" style={s[9][lang]}>{t[21]}</span>
+                      {t[20]}
                     </li>
                   </ul>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[10][lang]}>{t[22]}</h2>
+                  <h2 style={s[5][lang]}>{t[21]}</h2>
                   <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[23]}
-                    </li>
-                  </ul>
-                </div>
-                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[11][lang]}>{t[24]}</h2>
-                  <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
-                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[25]}{" "}
+                      {t[22]}{" "}
                       <Link href={`/${lang}/legal/privacy`} style={{ "fontWeight": "600" }}>
-                        {t[26]}
+                        {t[23]}
                       </Link>
-                      {t[27]}
+                      {t[24]}
                     </li>
                   </ul>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
-                  <h2 style={s[12][lang]}>{t[28]}</h2>
+                  <h2 style={s[6][lang]}>{t[25]}</h2>
                   <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
                     <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
-                      {t[29]}{" "}
+                      {t[26]}{" "}
                       <Link href={`/${lang}/legal/cookies`} style={{ "fontWeight": "600" }}>
-                        {t[30]}
+                        {t[27]}
                       </Link>
-                      {t[31]}
+                      {t[28]}
+                    </li>
+                  </ul>
+                </div>
+                <div style={{ "display": "flex", "flexDirection": "column", "gap": "12px", "paddingTop": "26px", "borderTop": "1px solid #DCE3F2" }}>
+                  <h2 style={s[7][lang]}>{t[29]}</h2>
+                  <ul style={{ "margin": "0", "paddingInlineStart": "20px", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
+                    <li style={{ "fontSize": "var(--sp-fs-16_5, 16.5px)", "lineHeight": "1.7", "color": "#0E1A3D" }}>
+                      {t[30]}{" "}
+                      <Link href={`/${lang}/legal/terms`} style={{ "fontWeight": "600" }}>
+                        {t[31]}
+                      </Link>
+                      {t[32]}
                     </li>
                   </ul>
                 </div>

@@ -25,7 +25,7 @@ export const notFound = {
       "This package has gone astray.",
       "The page you’re looking for doesn’t exist or has been moved.",
       "Back to homepage",
-      "Get a quote",
+      "Request a quotation",
       "?",
       "The Sourcing Pick mascot searching with a magnifying glass",
     ],

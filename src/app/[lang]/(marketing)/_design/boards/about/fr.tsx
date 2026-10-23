@@ -1,20 +1,18 @@
 // GENERATED FROM THE 2026-09 CANVAS — DO NOT EDIT BY HAND.
-// Source: fr-A-propos.dc.html (and 10 more)
+// Source: fr-A-propos.dc.html (and 11 more)
 // Regenerate: npm run design:port
 /*
  * Markup, spacing and colour are the design's own, transcribed rather than
  * interpreted. Copy lives in ../../content/about.ts, one array per locale, zipped by
  * position — sound because the artboards behind this file were checked to
  * have identical tag-and-attribute structure before anything was written.
- *
- * Locales using this shape: fr, en, zh, es, de, it, pt, nl, ar, ru, pl.
  */
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
 import { about as content } from "../../content/about";
 
-export function AboutBoardFR({ lang }: { lang: Locale }) {
+export function AboutBoard({ lang }: { lang: Locale }) {
   const t = content.text[lang];
   const s = content.frStyles;
   const v = content.frValues;
@@ -131,13 +129,11 @@ export function AboutBoardFR({ lang }: { lang: Locale }) {
                 <div style={{ "position": "relative", "display": "flex", "flexDirection": "column", "gap": "22px", "maxWidth": "700px" }}>
                   <h2 style={s[14][lang]}>{t[25]}</h2>
                   <p style={{ "margin": "0", "fontSize": "var(--sp-fs-18, 18px)", "lineHeight": "1.6", "color": "#E3EBFF" }}>
-                    {t[26]}{" "}
-                    <span className="sp-placeholder" style={s[15][lang]}>{t[27]}</span>
-                    {t[28]}
+                    {t[26]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
-                    <Link href={`/${lang}/devis`} style={s[16][lang]}>
-                      <span>{t[29]}</span>
+                    <Link href={`/${lang}/devis`} style={s[15][lang]}>
+                      <span>{t[27]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                           <path d={v[0][lang]} />
@@ -145,14 +141,14 @@ export function AboutBoardFR({ lang }: { lang: Locale }) {
                         </svg>
                       </span>
                     </Link>
-                    <a href="mailto:contact@sourcingpick.com" style={s[17][lang]}>
-                      <span><span dir="ltr">{t[30]}</span></span>
+                    <a href="mailto:contact@sourcingpick.com" style={s[16][lang]}>
+                      <span><span dir="ltr">{t[28]}</span></span>
                     </a>
                   </div>
                 </div>
                 <div className="sp-cta-mascot" style={{ "position": "relative", "width": "300px", "height": "300px", "flexShrink": "0" }}>
-                  <div style={s[18][lang]}>{t[31]}</div>
-                  <img src="/design/picky-arms-up.svg" alt={t[32]} style={{ "width": "300px", "height": "auto", "maxWidth": "100%" }} />
+                  <div style={s[17][lang]}>{t[29]}</div>
+                  <img src="/design/picky-arms-up.svg" alt={t[30]} style={{ "width": "300px", "height": "auto", "maxWidth": "100%" }} />
                 </div>
               </div>
             </section>

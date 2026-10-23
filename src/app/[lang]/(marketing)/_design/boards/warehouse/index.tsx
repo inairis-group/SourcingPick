@@ -10,9 +10,9 @@
 
 import type { Locale } from "@/lib/i18n/config";
 import { WarehouseBoardFR } from "./fr";
-import { WarehouseBoardTR } from "./tr";
+import { WarehouseBoardEN } from "./en";
 
-const BY_LOCALE: Partial<Record<Locale, typeof WarehouseBoardFR>> = { tr: WarehouseBoardTR };
+const BY_LOCALE: Partial<Record<Locale, typeof WarehouseBoardFR>> = { en: WarehouseBoardEN, zh: WarehouseBoardEN, es: WarehouseBoardEN, de: WarehouseBoardEN, it: WarehouseBoardEN, pt: WarehouseBoardEN, nl: WarehouseBoardEN, ar: WarehouseBoardEN, ru: WarehouseBoardEN, tr: WarehouseBoardEN, pl: WarehouseBoardEN };
 
 export function WarehouseBoard({ lang }: { lang: Locale }) {
   const Board = BY_LOCALE[lang] ?? WarehouseBoardFR;
