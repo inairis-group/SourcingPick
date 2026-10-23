@@ -1512,6 +1512,15 @@ def port_page(stem: str, tokens: set[str]) -> None:
               board_variant(page, tag, locs, lines, em, styles, values,
                             imports=component_imports(stem, em.components)))
 
+    # A shape that no longer exists (a language that now follows French) must
+    # not linger as a dead board that still carries the old copy.
+    keep = {"index.tsx", *(f"{tag}.tsx" for tag, *_ in variants)}
+    folder = os.path.join(ROOT, BOARD_DIR, "boards", page.key)
+    for name in os.listdir(folder):
+        if name.endswith(".tsx") and name not in keep:
+            os.remove(os.path.join(folder, name))
+            print(f"  removed stale board {page.key}/{name}")
+
     body = {}
     for tag, locs, *_ in variants:
         primary = groups[[g[0] for g in groups].index(locs)][1][tag]
