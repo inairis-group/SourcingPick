@@ -1062,7 +1062,10 @@ def _is_footer_meta(el: Element) -> bool:
 
 
 CHROME_DECORATIONS: list[tuple] = [
-    (_is_announce, "sp-announce", 1),
+    # `data-nosnippet`: Google reads this strip first on every page and was
+    # quoting it in results instead of the page's own description. Visitors
+    # still see it; search snippets skip it.
+    (_is_announce, {"className": "sp-announce", "data-nosnippet": ""}, 1),
     (_is_announce_dot, "sp-announce-dot", 1),
     (_is_footer_grid, "sp-footer-grid", 1),
     (_is_footer_meta, "sp-footer-meta", 1),
@@ -1379,6 +1382,7 @@ def emit_part(nodes, *, per_locale_nodes, start_i, start_a, offset, hrefs,
         known_sizes=_SIZES,
     )
     em.tokens = tokens
+    em.slot_offset = offset
     em.i, em.a = start_i, start_a
     lines = [ln for n in nodes for ln in em.emit(n, 3)]
     return lines, em, styles, values
@@ -1689,6 +1693,14 @@ def page_content(page, body, titles, variants) -> str:
             + f"  {tag}Values: " + value_rows(values)
             + " as Record<Locale, string>[],\n"
         )
+        if em.disclosures:
+            # [question from, answer from, end) slots of each open/close
+            # question, for structured data (the FAQ page's FAQPage).
+            extra += (
+                f"  {tag}Disclosures: ["
+                + ", ".join(f"[{a}, {b}, {c}]" for a, b, c in em.disclosures)
+                + "] as readonly (readonly [number, number, number])[],\n"
+            )
     return (
         BANNER.format(src=page.board)
         + "//\n"

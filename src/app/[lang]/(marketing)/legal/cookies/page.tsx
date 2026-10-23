@@ -13,7 +13,12 @@ import { cookies as content } from "../../_design/content/cookies";
 export async function generateMetadata({ params }: PageProps<"/[lang]/legal/cookies">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: content.title[lang], description: content.description[lang] };
+  // Not a page anyone searches for: kept out of the index, links still followed.
+  return {
+    title: content.title[lang],
+    description: content.description[lang],
+    robots: { index: false, follow: true },
+  };
 }
 
 export default async function CookiesPage({ params }: PageProps<"/[lang]/legal/cookies">) {

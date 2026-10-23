@@ -1790,4 +1790,5 @@ export const deliveries = {
   } as Record<Locale, readonly string[]>,
   frStyles: [] as Record<Locale, CSSProperties>[],
   frValues: [] as Record<Locale, string>[],
+  frDisclosures: [[135, 136, 137], [137, 138, 138], [138, 139, 139], [139, 140, 140]] as readonly (readonly [number, number, number])[],
 };

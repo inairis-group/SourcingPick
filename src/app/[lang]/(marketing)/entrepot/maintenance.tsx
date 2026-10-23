@@ -1,7 +1,10 @@
 import Image from "next/image";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { WhatsappIcon } from "@hugeicons/core-free-icons";
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
+import { WHATSAPP_URL } from "@/lib/contact/whatsapp";
 
 /**
  * What /entrepot shows while the warehouse moves: the page is in
@@ -14,10 +17,6 @@ import { getDictionary } from "@/lib/i18n/get-dictionary";
  *
  * Two ways forward while the page is away: WhatsApp, then a quote request.
  */
-
-// The number the Entrepôt artboard gives as WhatsApp ("+86 195 5817 9800 ·
-// WhatsApp"), in the international form wa.me expects.
-const WHATSAPP = "https://wa.me/8619558179800";
 
 export async function WarehouseMaintenance({ lang }: { lang: Locale }) {
   const t = (await getDictionary(lang)).marketing.warehouseMaintenance;
@@ -35,10 +34,8 @@ export async function WarehouseMaintenance({ lang }: { lang: Locale }) {
           {t.body}
         </p>
         <div style={{ "display": "flex", "flexWrap": "wrap", "gap": "14px", "marginTop": "8px" }}>
-          <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" style={{ "display": "inline-flex", "alignItems": "center", "justifyContent": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M4 20l1.3-3.9A8 8 0 1 1 8 18.7L4 20z" />
-            </svg>
+          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" style={{ "display": "inline-flex", "alignItems": "center", "justifyContent": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
+            <HugeiconsIcon icon={WhatsappIcon} size={20} strokeWidth={1.8} />
             {t.whatsapp}
           </a>
           <Link href={`/${lang}/devis`} style={{ "display": "inline-flex", "alignItems": "center", "justifyContent": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }}>

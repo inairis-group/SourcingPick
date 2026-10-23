@@ -2412,4 +2412,5 @@ export const home = {
     { fr: "M5 12h14", en: "M5 12h14", zh: "M5 12h14", es: "M5 12h14", de: "M5 12h14", it: "M5 12h14", pt: "M5 12h14", nl: "M5 12h14", ar: "M19 12H5", ru: "M5 12h14", tr: "M5 12h14", pl: "M5 12h14" },
     { fr: "M13 6l6 6-6 6", en: "M13 6l6 6-6 6", zh: "M13 6l6 6-6 6", es: "M13 6l6 6-6 6", de: "M13 6l6 6-6 6", it: "M13 6l6 6-6 6", pt: "M13 6l6 6-6 6", nl: "M13 6l6 6-6 6", ar: "M11 6l-6 6 6 6", ru: "M13 6l6 6-6 6", tr: "M13 6l6 6-6 6", pl: "M13 6l6 6-6 6" },
   ] as Record<Locale, string>[],
+  frDisclosures: [[177, 178, 179], [179, 180, 180], [180, 181, 181], [181, 182, 182], [182, 183, 183]] as readonly (readonly [number, number, number])[],
 };

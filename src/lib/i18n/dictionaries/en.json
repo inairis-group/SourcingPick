@@ -2678,7 +2678,8 @@
       "body": "Our warehouse is moving: this page is under maintenance while we move. A question about your goods? Message us on WhatsApp. You can also request a quote right away.",
       "whatsapp": "Message us on WhatsApp",
       "quote": "Request a quote"
-    }
+    },
+    "whatsappButton": "Message us on WhatsApp"
   },
   "factories": {
     "metaTitle": "For factories & suppliers",
