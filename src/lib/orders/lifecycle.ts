@@ -20,12 +20,11 @@ import type { StatusTone } from "@/components/saas/status-pill";
  * actually lives: "in transit" tells a client nothing, "arrived at port" tells
  * them when to expect the lorry.
  *
- * **Visibility is evidence, not preference.** `SaaS-Admin-Statut` draws the
- * transition menu with five entries annotated "Interne, non visible par le
- * client"; those five are marked internal below. Every other sub-state the
- * canvas draws carries no such annotation, so it is public. Where the canvas
- * is silent — the stages before preparation, which that board does not offer —
- * the same reading applies: unmarked means the client sees it.
+ * **Visibility is evidence, not preference.** `SaaS-Flux-etats` marks each
+ * sub-state public (white) or internal (grey); fifteen are internal, and they
+ * are marked so below. The transmission of 22 October 2026 (SaaS, section 3)
+ * lists them by name. `SaaS-Admin-Statut` annotates five of the same fifteen
+ * "Interne, non visible par le client".
  */
 
 export const ORDER_STATES = [
@@ -102,7 +101,7 @@ export type StageSpec = {
   state: OrderState;
   /**
    * Whether the client sees it. `false` means agents and administrators only
-   * — the five the canvas annotates "Interne, non visible par le client".
+   * — the fifteen the flow board draws in grey.
    */
   clientVisible: boolean;
 };
@@ -113,23 +112,23 @@ export const STAGES: Record<OrderStage, StageSpec> = {
   INFO_MISSING: { state: "REQUEST_RECEIVED", clientVisible: true },
 
   AGENT_ASSIGNED: { state: "AGENT_ASSIGNED", clientVisible: true },
-  SOURCING: { state: "AGENT_ASSIGNED", clientVisible: true },
-  SUPPLIERS_CONTACTED: { state: "AGENT_ASSIGNED", clientVisible: true },
-  SUPPLIER_OFFER_RECEIVED: { state: "AGENT_ASSIGNED", clientVisible: true },
+  SOURCING: { state: "AGENT_ASSIGNED", clientVisible: false },
+  SUPPLIERS_CONTACTED: { state: "AGENT_ASSIGNED", clientVisible: false },
+  SUPPLIER_OFFER_RECEIVED: { state: "AGENT_ASSIGNED", clientVisible: false },
 
   QUOTE_SENT: { state: "QUOTE_SENT", clientVisible: true },
-  QUOTE_VIEWED: { state: "QUOTE_SENT", clientVisible: true },
+  QUOTE_VIEWED: { state: "QUOTE_SENT", clientVisible: false },
   QUOTE_SIGNED: { state: "QUOTE_SENT", clientVisible: true },
-  QUOTE_DECLINED: { state: "QUOTE_SENT", clientVisible: true },
-  QUOTE_EXPIRED: { state: "QUOTE_SENT", clientVisible: true },
+  QUOTE_DECLINED: { state: "QUOTE_SENT", clientVisible: false },
+  QUOTE_EXPIRED: { state: "QUOTE_SENT", clientVisible: false },
 
   DEPOSIT_INVOICE_ISSUED: { state: "PAYMENT_PENDING", clientVisible: true },
-  TRANSFER_DECLARED: { state: "PAYMENT_PENDING", clientVisible: true },
+  TRANSFER_DECLARED: { state: "PAYMENT_PENDING", clientVisible: false },
   AWAITING_FUNDS: { state: "PAYMENT_PENDING", clientVisible: true },
-  PARTIAL_PAYMENT: { state: "PAYMENT_PENDING", clientVisible: true },
+  PARTIAL_PAYMENT: { state: "PAYMENT_PENDING", clientVisible: false },
 
   DEPOSIT_RECEIVED: { state: "PAYMENT_RECEIVED", clientVisible: true },
-  ORDER_PLACED_WITH_SUPPLIER: { state: "PAYMENT_RECEIVED", clientVisible: true },
+  ORDER_PLACED_WITH_SUPPLIER: { state: "PAYMENT_RECEIVED", clientVisible: false },
   PRODUCTION: { state: "PAYMENT_RECEIVED", clientVisible: true },
 
   PARTIALLY_RECEIVED: { state: "PREPARATION_COMPLETE", clientVisible: true },
@@ -155,7 +154,7 @@ export const STAGES: Record<OrderStage, StageSpec> = {
   FILE_CLOSED: { state: "COMPLETED", clientVisible: true },
 
   CANCELLED_BY_CLIENT: { state: "CANCELLED", clientVisible: true },
-  CANCELLED_BY_SOURCINGPICK: { state: "CANCELLED", clientVisible: true },
+  CANCELLED_BY_SOURCINGPICK: { state: "CANCELLED", clientVisible: false },
   REFUND_ISSUED: { state: "CANCELLED", clientVisible: true },
 };
 

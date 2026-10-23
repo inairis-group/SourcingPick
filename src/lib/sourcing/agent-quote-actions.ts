@@ -49,8 +49,8 @@ const AgentQuoteSchema = z
     leadTimeDays: z.coerce.number().int().positive(),
     moq: z.coerce.number().int().positive(),
     incoterm: z.enum(Incoterm),
-    depositPercentage: z.coerce.number().int().min(30).max(50).default(30),
-    validityDays: z.coerce.number().int().min(1).max(60).default(14),
+    depositPercentage: z.coerce.number().int().min(30).max(50).default(40),
+    validityDays: z.coerce.number().int().min(7).max(30).default(15),
     notes: z.string().trim().max(2000).optional().or(z.literal("")),
   })
   .refine(

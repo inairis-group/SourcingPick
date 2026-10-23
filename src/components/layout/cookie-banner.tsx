@@ -8,7 +8,7 @@ import { useDictionary } from "@/lib/i18n/client-provider";
  * RGPD-compliant cookie banner.
  *
  * Shows on every page until the user makes a choice. Choice is persisted in
- * a first-party cookie (`sp_consent`) for 1 year, then suppressed.
+ * a first-party cookie (`sp_consent`) for 6 months, then asked again.
  *
  * v1 grants/withholds only the "non-essential" bucket as a whole — analytics
  * + future marketing trackers. Essential cookies (locale, session) are not
@@ -18,7 +18,7 @@ import { useDictionary } from "@/lib/i18n/client-provider";
  */
 
 const CONSENT_COOKIE = "sp_consent";
-const CONSENT_MAX_AGE_S = 365 * 24 * 60 * 60;
+const CONSENT_MAX_AGE_S = 183 * 24 * 60 * 60;
 
 type Consent = "all" | "essential";
 

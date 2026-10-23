@@ -32,7 +32,7 @@ export const contact = {
       "Sujet",
       "Demande de devis",
       "Suivi d’une commande",
-      "Devenir fournisseur",
+      "Partenariat",
       "Autre",
       "Message",
       "Votre message…",

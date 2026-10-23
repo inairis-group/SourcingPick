@@ -109,7 +109,7 @@ export const services = {
       "4",
       "Devis",
       "Vous recevez un devis détaillé et vous validez avant toute commande.",
-      "Voir la grille de prix",
+      "Voir notre commission",
       "Train et avion esquissés",
       "Ferroviaire et aérien : à l’étude",
       "Nous ne vendrons ces modes de transport qu’une fois testés sur de vrais envois. D’ici là, nous partons uniquement par la mer.",
