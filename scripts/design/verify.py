@@ -66,10 +66,24 @@ def fetch(path: str) -> str:
         return r.read().decode("utf-8")
 
 
+def in_maintenance(route: str) -> bool:
+    """A route that shows a maintenance notice instead of its board (see
+    `IN_MAINTENANCE` in the route's page.tsx) has nothing to compare."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    src = os.path.join(here, "..", "..", "src", "app", "[lang]", "(marketing)", route, "page.tsx")
+    try:
+        return "const IN_MAINTENANCE = true" in open(src, encoding="utf-8").read()
+    except OSError:
+        return False
+
+
 def main() -> int:
     bad = 0
     for stem, page in PAGES.items():
         if page.route is None:
+            continue
+        if in_maintenance(page.route):
+            print(f"  skip {page.key:<11} in maintenance")
             continue
         for loc in LOCALES:
             path = f"/{loc}/{page.route}".rstrip("/")

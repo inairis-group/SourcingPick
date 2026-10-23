@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n/config";
 import { HomeBoard } from "./_design/boards/home";
 import { home as content } from "./_design/content/home";
+import { JsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/seo/structured-data";
 
 /**
  * Route for the canvas's “Accueil” artboard.
@@ -19,5 +20,10 @@ export async function generateMetadata({ params }: PageProps<"/[lang]">) {
 export default async function HomePage({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  return <HomeBoard lang={lang} />;
+  return (
+    <>
+      <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
+      <HomeBoard lang={lang} />
+    </>
+  );
 }

@@ -55,7 +55,9 @@ export function CookieBanner() {
   };
 
   return (
+    // data-nosnippet: a search result should quote the page, not this banner.
     <div
+      data-nosnippet=""
       role="dialog"
       aria-labelledby="cookie-banner-title"
       aria-describedby="cookie-banner-desc"

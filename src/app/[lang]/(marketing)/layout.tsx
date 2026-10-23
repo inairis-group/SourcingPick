@@ -4,6 +4,8 @@ import { SiteFooter } from "./_design/site-footer";
 import { FRAME_FIT_SCRIPT } from "./_design/frame-fit";
 import { FrameFitEffect } from "./_design/frame-fit-effect";
 import { PublicContactButton } from "@/components/marketing/public-contact-button";
+import { WhatsAppButton } from "@/components/marketing/whatsapp-button";
+import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale } from "@/lib/i18n/config";
 import { getCurrentUser } from "@/lib/auth/session";
 import styles from "./_design/board.module.css";
@@ -26,6 +28,7 @@ export default async function MarketingLayout({ children, params }: LayoutProps<
   if (!isLocale(lang)) notFound();
 
   const user = await getCurrentUser();
+  const dict = await getDictionary(lang);
 
   return (
     <>
@@ -43,6 +46,7 @@ export default async function MarketingLayout({ children, params }: LayoutProps<
             canvas — it is an operations affordance, and it hides itself once
             somebody has an account to message us from. */}
         {!user && <PublicContactButton />}
+        <WhatsAppButton label={dict.marketing.whatsappButton} aboveChat={!user} />
       </div>
     </>
   );

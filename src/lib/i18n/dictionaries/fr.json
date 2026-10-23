@@ -2678,7 +2678,8 @@
       "body": "Notre entrepôt déménage : cette page est en maintenance le temps du déménagement. Une question sur vos marchandises ? Écrivez-nous sur WhatsApp. Vous pouvez aussi demander un devis dès maintenant.",
       "whatsapp": "Nous écrire sur WhatsApp",
       "quote": "Demander un devis"
-    }
+    },
+    "whatsappButton": "Nous écrire sur WhatsApp"
   },
   "factories": {
     "metaTitle": "Pour les usines et fournisseurs",

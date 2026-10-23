@@ -21,7 +21,7 @@ export function SiteHeader({ lang }: { lang: Locale }) {
 
   return (
     <>
-            <div className="sp-announce" style={{ "minHeight": "44px", "padding": "10px 24px", "boxSizing": "border-box", "background": "#0E1A3D", "color": "#C9D3F2", "display": "flex", "alignItems": "center", "justifyContent": "center", "gap": "14px", "fontSize": "14px", "textAlign": "center" }}>
+            <div data-nosnippet="" className="sp-announce" style={{ "minHeight": "44px", "padding": "10px 24px", "boxSizing": "border-box", "background": "#0E1A3D", "color": "#C9D3F2", "display": "flex", "alignItems": "center", "justifyContent": "center", "gap": "14px", "fontSize": "14px", "textAlign": "center" }}>
               <span className="sp-announce-dot" style={{ "flexShrink": "0", "width": "8px", "height": "8px", "borderRadius": "50%", "background": "#FFC247" }} />
               <span>{t[0]}</span>
               <Link href={`/${lang}#verite`} style={{ "flexShrink": "0", "color": "#FFFFFF", "fontWeight": "600", "display": "inline-flex", "alignItems": "center", "gap": "6px" }}>

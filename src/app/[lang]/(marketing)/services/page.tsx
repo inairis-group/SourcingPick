@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n/config";
 import { ServicesBoard } from "../_design/boards/services";
 import { services as content } from "../_design/content/services";
+import { JsonLd, organizationJsonLd } from "@/lib/seo/structured-data";
 
 /**
  * Route for the canvas's “Services” artboard.
@@ -19,5 +20,10 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/services">
 export default async function ServicesPage({ params }: PageProps<"/[lang]/services">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  return <ServicesBoard lang={lang} />;
+  return (
+    <>
+      <JsonLd data={organizationJsonLd()} />
+      <ServicesBoard lang={lang} />
+    </>
+  );
 }

@@ -442,6 +442,10 @@ class Emitter:
         known_sizes: set[float] = frozenset(),
     ) -> None:
         self.known_sizes = known_sizes
+        # (first question slot, first answer slot, end) for each Disclosure.
+        self.disclosures: list[tuple[int, int, int]] = []
+        # What `slot_expr` subtracts, when the port shifts slot reads.
+        self.slot_offset = 0
         self.assets = assets
         # Given an element's `src`, says whether the drawn box keeps the
         # image's own aspect ratio — see `fluid_image`. None: never fluid.
@@ -677,7 +681,17 @@ class Emitter:
         if not retagged and _is_disclosure(node):
             self.components.add("Disclosure")
             head = f"Disclosure{'' if not attrs else ' ' + ' '.join(attrs)}"
-            inner = self.children(node, indent + 1)
+            # Which slots are the question (the header button) and which the
+            # answer (the rest), so a page can describe its questions to search
+            # engines without a second copy of the text. Emitted child by child,
+            # exactly as `children()` would, to read the slot counter between.
+            start, split, inner = self.i, None, []
+            for c in node.children:
+                inner.extend(self._node(c, indent + 1))
+                if split is None and isinstance(c, Element):
+                    split = self.i
+            o = self.slot_offset
+            self.disclosures.append((start - o, (self.i if split is None else split) - o, self.i - o))
             return [f"{pad}<{head}>", *inner, f"{pad}</Disclosure>"]
 
         if retagged:
