@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n/config";
 import { PricingBoard } from "../_design/boards/pricing";
 import { pricing as content } from "../_design/content/pricing";
+import { pageAlternates } from "@/lib/seo/alternates";
 
 /**
  * Route for the canvas's “Tarifs” artboard.
@@ -13,7 +14,11 @@ import { pricing as content } from "../_design/content/pricing";
 export async function generateMetadata({ params }: PageProps<"/[lang]/pricing">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: content.title[lang], description: content.description[lang] };
+  return {
+    title: content.title[lang],
+    description: content.description[lang],
+    alternates: pageAlternates(lang, "/pricing"),
+  };
 }
 
 export default async function PricingPage({ params }: PageProps<"/[lang]/pricing">) {

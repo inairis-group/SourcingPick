@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { WhatsappIcon } from "@hugeicons/core-free-icons";
-import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { WHATSAPP_URL } from "@/lib/contact/whatsapp";
+import { sitePath } from "@/lib/i18n/site-paths";
 
 /**
  * What /entrepot shows while the warehouse moves: the page is in
@@ -38,9 +38,9 @@ export async function WarehouseMaintenance({ lang }: { lang: Locale }) {
             <HugeiconsIcon icon={WhatsappIcon} size={20} strokeWidth={1.8} />
             {t.whatsapp}
           </a>
-          <Link href={`/${lang}/devis`} style={{ "display": "inline-flex", "alignItems": "center", "justifyContent": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }}>
+          <a href={sitePath(lang, "/devis")} style={{ "display": "inline-flex", "alignItems": "center", "justifyContent": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }}>
             {t.quote}
-          </Link>
+          </a>
         </div>
       </div>
       <div dir="ltr" style={{ "width": "560px", "height": "auto", "maxWidth": "100%" }}>

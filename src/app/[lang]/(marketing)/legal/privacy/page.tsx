@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n/config";
 import { PrivacyBoard } from "../../_design/boards/privacy";
 import { privacy as content } from "../../_design/content/privacy";
+import { pageAlternates } from "@/lib/seo/alternates";
 
 /**
  * Route for the canvas's “Confidentialite” artboard.
@@ -13,7 +14,11 @@ import { privacy as content } from "../../_design/content/privacy";
 export async function generateMetadata({ params }: PageProps<"/[lang]/legal/privacy">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: content.title[lang], description: content.description[lang] };
+  return {
+    title: content.title[lang],
+    description: content.description[lang],
+    alternates: pageAlternates(lang, "/legal/privacy"),
+  };
 }
 
 export default async function PrivacyPage({ params }: PageProps<"/[lang]/legal/privacy">) {

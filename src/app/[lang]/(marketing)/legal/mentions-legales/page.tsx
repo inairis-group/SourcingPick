@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n/config";
 import { LegalBoard } from "../../_design/boards/legal";
 import { legal as content } from "../../_design/content/legal";
+import { pageAlternates } from "@/lib/seo/alternates";
 
 /**
  * Route for the canvas's “Mentions-legales” artboard.
@@ -13,7 +14,11 @@ import { legal as content } from "../../_design/content/legal";
 export async function generateMetadata({ params }: PageProps<"/[lang]/legal/mentions-legales">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: content.title[lang], description: content.description[lang] };
+  return {
+    title: content.title[lang],
+    description: content.description[lang],
+    alternates: pageAlternates(lang, "/legal/mentions-legales"),
+  };
 }
 
 export default async function LegalNoticePage({ params }: PageProps<"/[lang]/legal/mentions-legales">) {

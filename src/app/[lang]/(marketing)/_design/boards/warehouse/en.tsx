@@ -10,8 +10,8 @@
  * Locales using this shape: en, zh, es, de, it, pt, nl, ar, ru, tr, pl.
  */
 
-import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
+import { sitePath } from "@/lib/i18n/site-paths";
 import { warehouse as content } from "../../content/warehouse";
 
 export function WarehouseBoardEN({ lang }: { lang: Locale }) {
@@ -252,7 +252,7 @@ export function WarehouseBoardEN({ lang }: { lang: Locale }) {
                     {t[38]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
-                    <Link href={`/${lang}/devis`} style={s[10][lang]}>
+                    <a href={sitePath(lang, "/devis")} style={s[10][lang]}>
                       <span>{t[39]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -260,7 +260,7 @@ export function WarehouseBoardEN({ lang }: { lang: Locale }) {
                           <path d={v[1][lang]} />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                     <a href="mailto:contact@sourcingpick.com" style={s[11][lang]}>
                       <span><span dir="ltr">{t[40]}</span></span>
                     </a>

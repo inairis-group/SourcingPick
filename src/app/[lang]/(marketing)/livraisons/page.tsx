@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n/config";
 import { DeliveriesBoard } from "../_design/boards/deliveries";
 import { deliveries as content } from "../_design/content/deliveries";
+import { pageAlternates } from "@/lib/seo/alternates";
 
 /**
  * Route for the canvas's “Livraisons” artboard.
@@ -15,7 +16,11 @@ import { deliveries as content } from "../_design/content/deliveries";
 export async function generateMetadata({ params }: PageProps<"/[lang]/livraisons">) {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: content.title[lang], description: content.description[lang] };
+  return {
+    title: content.title[lang],
+    description: content.description[lang],
+    alternates: pageAlternates(lang, "/livraisons", ["fr"]),
+  };
 }
 
 export default async function DeliveriesPage({ params }: PageProps<"/[lang]/livraisons">) {

@@ -10,6 +10,7 @@
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
+import { sitePath } from "@/lib/i18n/site-paths";
 import { quote as content } from "../../content/quote";
 import { CountrySelect } from "../../form-controls";
 import { FileDrop } from "../../file-drop";
@@ -209,7 +210,7 @@ export function QuoteBoard({ lang }: { lang: Locale }) {
                   <input type="checkbox" style={{ "margin": "3px 0 0", "width": "18px", "height": "18px", "accentColor": "#155DFC", "flexShrink": "0" }} name="consent" />
                   <span>
                     {t[41]}{" "}
-                    <Link href={`/${lang}/legal/privacy`} style={{ "fontWeight": "600" }}>
+                    <Link href={sitePath(lang, "/legal/privacy")} style={{ "fontWeight": "600" }}>
                       {t[42]}
                     </Link>
                   </span>

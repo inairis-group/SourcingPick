@@ -10,8 +10,8 @@
  * Locales using this shape: fr.
  */
 
-import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
+import { sitePath } from "@/lib/i18n/site-paths";
 import { pricing as content } from "../../content/pricing";
 import { Disclosure } from "../../disclosure";
 
@@ -148,7 +148,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </div>
                   </div>
                   <div style={{ "paddingTop": "6px", "marginTop": "auto" }}>
-                    <Link href={`/${lang}/devis`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
+                    <a href={sitePath(lang, "/devis")} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
                       <span>{t[24]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -156,7 +156,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                           <path d="M13 6l6 6-6 6" />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </article>
                 <article id="livraison" style={{ "background": "#162456", "borderRadius": "24px", "padding": "var(--sp-pad-40, 40px)", "display": "flex", "flexDirection": "column", "gap": "20px", "color": "#FFFFFF" }}>
@@ -505,7 +505,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </li>
                   </ul>
                   <div style={{ "marginTop": "auto", "paddingTop": "6px" }}>
-                    <Link href={`/${lang}/contact`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
+                    <a href={sitePath(lang, "/contact")} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
                       <span>{t[60]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -513,7 +513,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                           <path d="M13 6l6 6-6 6" />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </article>
                 <article style={{ "display": "flex", "flexDirection": "column", "gap": "20px", "padding": "var(--sp-pad-28, 28px)", "borderRadius": "24px", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
@@ -617,7 +617,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     {t[71]}
                   </p>
                   <div style={{ "marginTop": "auto", "paddingTop": "6px" }}>
-                    <Link href={`/${lang}/contact`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
+                    <a href={sitePath(lang, "/contact")} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
                       <span>{t[72]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -625,7 +625,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                           <path d="M13 6l6 6-6 6" />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </article>
                 <article style={{ "display": "flex", "flexDirection": "column", "gap": "20px", "padding": "var(--sp-pad-28, 28px)", "borderRadius": "24px", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
@@ -708,7 +708,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     </li>
                   </ul>
                   <div style={{ "marginTop": "auto", "paddingTop": "6px" }}>
-                    <Link href={`/${lang}/devis`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
+                    <a href={sitePath(lang, "/devis")} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
                       <span>{t[82]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -716,7 +716,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                           <path d="M13 6l6 6-6 6" />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </article>
               </div>
@@ -1056,7 +1056,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                   </div>
                 </div>
                 <div>
-                  <Link href={`/${lang}/contact`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
+                  <a href={sitePath(lang, "/contact")} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
                     <span>{t[118]}</span>
                     <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -1064,7 +1064,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                         <path d="M13 6l6 6-6 6" />
                       </svg>
                     </span>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </section>
@@ -1398,7 +1398,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                     {t[171]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
-                    <Link href={`/${lang}/devis`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #FFFFFF", "textAlign": "center" }}>
+                    <a href={sitePath(lang, "/devis")} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #FFFFFF", "textAlign": "center" }}>
                       <span>{t[172]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -1406,7 +1406,7 @@ export function PricingBoardFR({ lang }: { lang: Locale }) {
                           <path d="M13 6l6 6-6 6" />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                     <a href="mailto:contact@sourcingpick.com" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "transparent", "color": "#FFFFFF", "border": "1.5px solid rgba(255,255,255,0.28)", "textAlign": "center" }}>
                       <span><span dir="ltr">{t[173]}</span></span>
                     </a>

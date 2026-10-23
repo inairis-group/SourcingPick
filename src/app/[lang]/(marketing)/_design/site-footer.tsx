@@ -10,6 +10,7 @@
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
+import { sitePath } from "@/lib/i18n/site-paths";
 import { chromeFooter as content } from "./content/chromeFooter";
 import { LocaleRow } from "./locale-switch";
 
@@ -36,70 +37,70 @@ export function SiteFooter({ lang }: { lang: Locale }) {
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px" }}>
                   <span style={s[0][lang]}>{t[3]}</span>
-                  <Link href={`/${lang}/services`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/services")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[4]}
                   </Link>
-                  <Link href={`/${lang}/services`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/services")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[5]}
                   </Link>
-                  <Link href={`/${lang}/services`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/services")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[6]}
                   </Link>
-                  <Link href={`/${lang}/services`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/services")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[7]}
                   </Link>
-                  <Link href={`/${lang}/services`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/services")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[8]}
                   </Link>
-                  <Link href={`/${lang}/services`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/services")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[9]}
                   </Link>
-                  <Link href={`/${lang}/services`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/services")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[10]}
                   </Link>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px" }}>
                   <span style={s[1][lang]}>{t[11]}</span>
-                  <Link href={`/${lang}/about`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/about")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[12]}
                   </Link>
-                  <Link href={`/${lang}/entrepot`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/entrepot")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[13]}
                   </Link>
-                  <Link href={`/${lang}#verite`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/#verite")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[14]}
                   </Link>
-                  <Link href={`/${lang}/contact`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <a href={sitePath(lang, "/contact")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[15]}
-                  </Link>
+                  </a>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px" }}>
                   <span style={s[2][lang]}>{t[16]}</span>
-                  <Link href={`/${lang}/faq`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/faq")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[17]}
                   </Link>
-                  <Link href={`/${lang}/application`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <a href={sitePath(lang, "/application")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[18]}
-                  </Link>
+                  </a>
                   <a href="/connexion" style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[19]}
                   </a>
-                  <Link href={`/${lang}/devis`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <a href={sitePath(lang, "/devis")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[20]}
-                  </Link>
+                  </a>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px" }}>
                   <span style={s[3][lang]}>{t[21]}</span>
-                  <Link href={`/${lang}/legal/mentions-legales`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/legal/mentions-legales")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[22]}
                   </Link>
-                  <Link href={`/${lang}/legal/privacy`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/legal/privacy")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[23]}
                   </Link>
-                  <Link href={`/${lang}/legal/cookies`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/legal/cookies")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[24]}
                   </Link>
-                  <Link href={`/${lang}/legal/terms`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <Link href={sitePath(lang, "/legal/terms")} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[25]}
                   </Link>
                 </div>

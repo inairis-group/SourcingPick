@@ -8,8 +8,8 @@
  * have identical tag-and-attribute structure before anything was written.
  */
 
-import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
+import { sitePath } from "@/lib/i18n/site-paths";
 import { app as content } from "../../content/app";
 import { SubmitButton } from "../../form-controls";
 
@@ -28,7 +28,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
                   {t[2]}
                 </p>
                 <div style={{ "display": "flex", "alignItems": "center", "gap": "12px", "flexWrap": "wrap" }}>
-                  <Link href={`/${lang}/application`} data-pk="inert" style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
+                  <a href={sitePath(lang, "/application")} data-pk="inert" style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M12 4v12" />
                       <path d="M7 11l5 5 5-5" />
@@ -42,8 +42,8 @@ export function AppBoard({ lang }: { lang: Locale }) {
                         {t[4]}
                       </span>
                     </span>
-                  </Link>
-                  <Link href={`/${lang}/application`} data-pk="inert" style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
+                  </a>
+                  <a href={sitePath(lang, "/application")} data-pk="inert" style={{ "display": "inline-flex", "alignItems": "center", "gap": "12px", "minHeight": "56px", "padding": "0 20px", "borderRadius": "14px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M12 4v12" />
                       <path d="M7 11l5 5 5-5" />
@@ -57,7 +57,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
                         {t[6]}
                       </span>
                     </span>
-                  </Link>
+                  </a>
                   <span style={{ "display": "inline-flex", "alignItems": "center", "gap": "8px", "fontSize": "14px", "color": "#4A5578" }}>
                     <span style={{ "display": "inline-flex", "alignItems": "center", "gap": "6px", "padding": "5px 10px", "borderRadius": "999px", "background": "#FFF1CC", "color": "#7A4E00", "fontWeight": "600" }}>
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7A4E00" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

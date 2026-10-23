@@ -10,6 +10,7 @@
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
+import { sitePath } from "@/lib/i18n/site-paths";
 import { chrome as content } from "./content/chrome";
 import { LocaleSwitch } from "./locale-switch";
 import { HeaderShell } from "./header-shell";
@@ -24,7 +25,7 @@ export function SiteHeader({ lang }: { lang: Locale }) {
             <div data-nosnippet="" className="sp-announce" style={{ "minHeight": "44px", "padding": "10px 24px", "boxSizing": "border-box", "background": "#0E1A3D", "color": "#C9D3F2", "display": "flex", "alignItems": "center", "justifyContent": "center", "gap": "14px", "fontSize": "14px", "textAlign": "center" }}>
               <span className="sp-announce-dot" style={{ "flexShrink": "0", "width": "8px", "height": "8px", "borderRadius": "50%", "background": "#FFC247" }} />
               <span>{t[0]}</span>
-              <Link href={`/${lang}#verite`} style={{ "flexShrink": "0", "color": "#FFFFFF", "fontWeight": "600", "display": "inline-flex", "alignItems": "center", "gap": "6px" }}>
+              <Link href={sitePath(lang, "/#verite")} style={{ "flexShrink": "0", "color": "#FFFFFF", "fontWeight": "600", "display": "inline-flex", "alignItems": "center", "gap": "6px" }}>
                 {t[1]}{" "}
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d={v[0][lang]} />
@@ -33,23 +34,23 @@ export function SiteHeader({ lang }: { lang: Locale }) {
               </Link>
             </div>
             <HeaderShell style={{ "height": "var(--sp-header-h, 84px)", "padding": "0 var(--sp-gutter-header, 96px) 0", "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "24px", "borderBottom": "1px solid #DCE3F2", "background": "rgba(245,247,252,0.92)" }} lang={lang}>
-              <Link href={`/${lang}`} style={{ "display": "flex", "alignItems": "center", "flexShrink": "0" }} aria-label={t[2]}>
+              <Link href={sitePath(lang, "/")} style={{ "display": "flex", "alignItems": "center", "flexShrink": "0" }} aria-label={t[2]}>
                 <img src="/design/logo.svg" alt={t[3]} style={{ "height": "var(--sp-logo-h, 34px)", "width": "auto" }} />
               </Link>
               <nav style={{ "display": "flex", "alignItems": "center", "gap": "32px" }} aria-label={t[4]}>
-                <Link href={`/${lang}/services`} style={{ "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "500", "whiteSpace": "nowrap" }}>
+                <Link href={sitePath(lang, "/services")} style={{ "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "500", "whiteSpace": "nowrap" }}>
                   {t[5]}
                 </Link>
-                <Link href={`/${lang}/comment-ca-marche`} style={{ "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "500", "whiteSpace": "nowrap" }}>
+                <Link href={sitePath(lang, "/comment-ca-marche")} style={{ "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "500", "whiteSpace": "nowrap" }}>
                   {t[6]}
                 </Link>
-                <Link href={`/${lang}/entrepot`} style={{ "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "500", "whiteSpace": "nowrap" }}>
+                <Link href={sitePath(lang, "/entrepot")} style={{ "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "500", "whiteSpace": "nowrap" }}>
                   {t[7]}
                 </Link>
-                <Link href={`/${lang}/pricing`} style={{ "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "500", "whiteSpace": "nowrap" }}>
+                <Link href={sitePath(lang, "/pricing")} style={{ "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "500", "whiteSpace": "nowrap" }}>
                   {t[8]}
                 </Link>
-                <Link href={`/${lang}/faq`} style={{ "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "500", "whiteSpace": "nowrap" }}>
+                <Link href={sitePath(lang, "/faq")} style={{ "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "500", "whiteSpace": "nowrap" }}>
                   {t[9]}
                 </Link>
               </nav>
@@ -62,7 +63,7 @@ export function SiteHeader({ lang }: { lang: Locale }) {
                   </svg>
                   <span>{t[12]}</span>
                 </a>
-                <Link href={`/${lang}/devis`} style={s[1][lang]}>
+                <a href={sitePath(lang, "/devis")} style={s[1][lang]}>
                   <span>{t[13]}</span>
                   <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -70,7 +71,7 @@ export function SiteHeader({ lang }: { lang: Locale }) {
                       <path d={v[3][lang]} />
                     </svg>
                   </span>
-                </Link>
+                </a>
               </div>
             </HeaderShell>
     </>

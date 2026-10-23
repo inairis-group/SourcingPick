@@ -175,9 +175,22 @@ ROUTES: dict[str, str] = {
 HOME_FRAGMENTS = {"#verite", "#etapes"}
 
 
+def site_path(route: str) -> str:
+    """A route's address in the page's language, as JSX: French pages are at
+    the root under French addresses (/tarifs), the others at /<lang>/<route>
+    — see src/lib/i18n/site-paths.ts, which owns the table."""
+    return "{sitePath(lang, " + json.dumps(route) + ")}"
+
+
+# Routes served by the other application on the same host (the forms the team
+# reads, and the app page). Mirrors OTHER_APP_FRENCH in site-paths.ts. Emitted
+# as plain anchors: the router cannot resolve them inside this app.
+OTHER_APP_ROUTES = {"/contact", "/devis", "/application"}
+
+
 def fragment(frag: str):
     if frag in HOME_FRAGMENTS:
-        return "{`/${lang}" + frag + "`}", True
+        return site_path("/" + frag), True
     return json.dumps(frag), False
 
 
@@ -340,12 +353,12 @@ def resolve_href(path: str | None, raw: str):
         # router does not try to resolve it inside this app.
         return json.dumps(path[1:]), False
     if path in ("@home", "/"):
-        return "{`/${lang}`}", True
+        return site_path("/"), True
     if path.startswith("/#"):
-        return "{`/${lang}" + path[1:] + "`}", True
+        return site_path(path), True
     if path.startswith("#"):
         return fragment(path)
-    return "{`/${lang}" + path + "`}", True
+    return site_path(path), re.split(r"[?#]", path)[0] not in OTHER_APP_ROUTES
 
 
 # --- locale-switching chrome -------------------------------------------------
@@ -1513,11 +1526,19 @@ def chrome_content(name, src, text, styles, values) -> str:
     )
 
 
+SITE_PATH_IMPORT = 'import { sitePath } from "@/lib/i18n/site-paths";'
+
+
+def site_path_import(lines) -> list[str]:
+    return [SITE_PATH_IMPORT] if any("sitePath(" in ln for ln in lines) else []
+
+
 def chrome_component(name, key, lines, em, styles, values, *, extra, src) -> str:
     imports = []
     if em.needs_link:
         imports.append('import Link from "next/link";')
     imports.append('import type { Locale } from "@/lib/i18n/config";')
+    imports.extend(site_path_import(lines))
     imports.append(f'import {{ {key} as content }} from "./content/{key}";')
     imports.append(extra)
     reads = ["  const t = content.text[lang];"]
@@ -1653,6 +1674,7 @@ def board_variant(page, tag, locs, lines, em, styles, values, *, imports=()) -> 
     if em.needs_link:
         imports.append('import Link from "next/link";')
     imports.append('import type { Locale } from "@/lib/i18n/config";')
+    imports.extend(site_path_import(lines))
     imports.append(f'import {{ {page.key} as content }} from "../../content/{page.key}";')
     imports.extend(extra)
     reads = ["  const t = content.text[lang];"]
