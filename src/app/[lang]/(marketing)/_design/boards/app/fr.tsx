@@ -434,7 +434,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
                   </div>
                 </div>
                 <div>
-                  <Link href={`/${lang}/login`} style={s[15][lang]}>
+                  <a href="/connexion" style={s[15][lang]}>
                     <span>{t[56]}</span>
                     <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -442,7 +442,7 @@ export function AppBoard({ lang }: { lang: Locale }) {
                         <path d={v[3][lang]} />
                       </svg>
                     </span>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </section>

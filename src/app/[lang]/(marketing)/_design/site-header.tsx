@@ -55,13 +55,13 @@ export function SiteHeader({ lang }: { lang: Locale }) {
               </nav>
               <div style={{ "display": "flex", "alignItems": "center", "gap": "12px", "flexShrink": "0" }}>
                 <LocaleSwitch lang={lang} />
-                <Link href={`/${lang}/login`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "8px", "minHeight": "44px", "padding": "0 6px", "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "600", "whiteSpace": "nowrap" }}>
+                <a href="/connexion" style={{ "display": "inline-flex", "alignItems": "center", "gap": "8px", "minHeight": "44px", "padding": "0 6px", "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "600", "whiteSpace": "nowrap" }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E1A3D" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <circle cx="12" cy="8" r="4" />
                     <path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6" />
                   </svg>
                   <span>{t[12]}</span>
-                </Link>
+                </a>
                 <Link href={`/${lang}/devis`} style={s[1][lang]}>
                   <span>{t[13]}</span>
                   <span style={{ "display": "inline-flex", "flexShrink": "0" }}>

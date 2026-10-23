@@ -42,7 +42,9 @@ def convert(src, cur):
              "contact": "/contact", "a-propos": "/about", "application": "/application",
              "mentions-legales": "/legal/mentions-legales", "confidentialite": "/legal/privacy",
              "cookies": "/legal/cookies", "cgv": "/legal/terms", "livraisons": "/livraisons",
-             "404": "/", "connexion": "/login", "inscription": "/signup"}
+             "404": "/",
+             # The client area is the other application's: literal paths, no prefix.
+             "connexion": "~/connexion", "inscription": "~/inscription"}
     def href(m):
         h = m.group(1)
         if h.startswith(("mailto:", "http", "#")):

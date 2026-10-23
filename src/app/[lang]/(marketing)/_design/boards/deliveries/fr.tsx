@@ -2026,7 +2026,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                     </li>
                   </ul>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "10px" }}>
-                    <Link href={`/${lang}/signup`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "#FFC247", "color": "#0E1A3D", "border": "1.5px solid #FFC247", "textAlign": "center" }}>
+                    <a href="/inscription" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "#FFC247", "color": "#0E1A3D", "border": "1.5px solid #FFC247", "textAlign": "center" }}>
                       <span>{t[108]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -2034,10 +2034,10 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                           <path d="M13 6l6 6-6 6" />
                         </svg>
                       </span>
-                    </Link>
-                    <Link href={`/${lang}/login`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "transparent", "color": "#FFFFFF", "border": "1.5px solid rgba(255,255,255,0.28)", "textAlign": "center" }}>
+                    </a>
+                    <a href="/connexion" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "transparent", "color": "#FFFFFF", "border": "1.5px solid rgba(255,255,255,0.28)", "textAlign": "center" }}>
                       <span>{t[109]}</span>
-                    </Link>
+                    </a>
                   </div>
                   <p style={{ "margin": "0", "fontSize": "13px", "lineHeight": "1.55", "color": "#B8C4E6" }}>
                     {t[110]}
@@ -2114,7 +2114,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                     </div>
                   </div>
                   <div>
-                    <Link href={`/${lang}/login`} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #FFFFFF", "textAlign": "center" }}>
+                    <a href="/connexion" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #FFFFFF", "textAlign": "center" }}>
                       <span>{t[126]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -2122,7 +2122,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                           <path d="M13 6l6 6-6 6" />
                         </svg>
                       </span>
-                    </Link>
+                    </a>
                   </div>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "20px" }}>

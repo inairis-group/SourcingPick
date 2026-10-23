@@ -81,9 +81,9 @@ export function SiteFooter({ lang }: { lang: Locale }) {
                   <Link href={`/${lang}/application`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[18]}
                   </Link>
-                  <Link href={`/${lang}/login`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
+                  <a href="/connexion" style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[19]}
-                  </Link>
+                  </a>
                   <Link href={`/${lang}/devis`} style={{ "color": "#C3CDEB", "fontSize": "15px" }}>
                     {t[20]}
                   </Link>
