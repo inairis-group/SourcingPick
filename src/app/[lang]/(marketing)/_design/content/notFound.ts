@@ -8,7 +8,7 @@ import type { CSSProperties } from "react";
 import type { Locale } from "@/lib/i18n/config";
 
 export const notFound = {
-  title: { fr: "Sourcing Pick — page introuvable", en: "Sourcing Pick — Page not found", zh: "Sourcing Pick — 页面未找到", es: "Sourcing Pick — página no encontrada", de: "Sourcing Pick – Seite nicht gefunden", it: "Sourcing Pick — pagina non trovata", pt: "Sourcing Pick — página não encontrada", nl: "Sourcing Pick — pagina niet gevonden", ar: "Sourcing Pick — الصفحة غير موجودة", ru: "Sourcing Pick — страница не найдена", tr: "Sourcing Pick — sayfa bulunamadı", pl: "Sourcing Pick – nie znaleziono strony" } as Record<Locale, string>,
+  title: { fr: "Sourcing Pick — page introuvable", en: "Sourcing Pick — Page not found", zh: "Sourcing Pick — 找不到页面", es: "Sourcing Pick — página no encontrada", de: "Sourcing Pick – Seite nicht gefunden", it: "Sourcing Pick — pagina non trovata", pt: "Sourcing Pick — página não encontrada", nl: "Sourcing Pick — pagina niet gevonden", ar: "Sourcing Pick — الصفحة غير موجودة", ru: "Sourcing Pick — страница не найдена", tr: "Sourcing Pick — sayfa bulunamadı", pl: "Sourcing Pick – nie znaleziono strony" } as Record<Locale, string>,
   description: { fr: "Ce colis s’est égaré.", en: "This package has gone astray.", zh: "这个包裹走丢了。", es: "Este paquete se ha extraviado.", de: "Dieses Paket hat sich verirrt.", it: "Questo collo si è smarrito.", pt: "Esta encomenda extraviou-se.", nl: "Dit pakket is zoekgeraakt.", ar: "هذا الطرد ضلّ طريقه.", ru: "Эта посылка потерялась.", tr: "Bu koli yolunu kaybetti.", pl: "Ta paczka się zgubiła." } as Record<Locale, string>,
   text: {
     fr: [
@@ -30,13 +30,13 @@ export const notFound = {
       "The Sourcing Pick mascot searching with a magnifying glass",
     ],
     zh: [
-      "错误 404",
+      "404 错误",
       "这个包裹走丢了。",
-      "您要找的页面不存在或已被移动。",
+      "你要找的页面不存在，或者已经换了地方。",
       "返回首页",
       "获取报价",
       "?",
-      "Sourcing Pick 吉祥物拿着放大镜四处寻找",
+      "Sourcing Pick 吉祥物拿着放大镜在找",
     ],
     es: [
       "Error 404",

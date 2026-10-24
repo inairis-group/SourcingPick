@@ -1008,8 +1008,6 @@ DECORATIONS: dict[str, list[tuple]] = {
 SHAPE_COUNTS: dict[tuple[str, str], dict[str, int]] = {
     # Five section heads (heading column + caption) now sit on the redrawn page.
     ("Tarifs", "fr"): {"sp-two-track": 3},
-    # The other languages keep the old Tarifs: no offer cards, no programme.
-    ("Tarifs", "en"): {"sp-offer-tag": 0, "sp-solo-card": 0},
     # The download card was redrawn ("En construction", an e-mail sign-up): the
     # old two-track and badge-row signatures no longer match. Reviewed on the
     # new board before the zeros were accepted.

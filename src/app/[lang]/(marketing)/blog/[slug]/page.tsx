@@ -32,7 +32,7 @@ export default async function BlogArticlePage({ params }: PageProps<"/[lang]/blo
   return (
     <>
       {faq.length > 0 && <JsonLd data={faqJsonLd(faq)} />}
-      <SeoArticle eyebrow="Article" back={{ href: sitePath("fr", "/blog"), label: "Blog" }} h1={article.title} lead={article.lead}>
+      <SeoArticle lang="fr" eyebrow="Article" back={{ href: sitePath("fr", "/blog"), label: "Blog" }} h1={article.title} lead={article.lead}>
         <SeoMarkdown>{article.body}</SeoMarkdown>
         {faq.length > 0 && (
           <SeoMarkdown>

@@ -269,5 +269,15 @@
     "tabMessages": "Messaggi",
     "tabInvoices": "Fatture",
     "noTimeline": "L’avanzamento parte dal primo passo."
+  },
+  "marketing": {
+    "warehouseMaintenance": {
+      "eyebrow": "Il nostro magazzino",
+      "title": "Pagina in manutenzione",
+      "body": "Il nostro magazzino sta traslocando: questa pagina è in manutenzione per tutta la durata del trasloco. Una domanda sulla vostra merce? Scriveteci su WhatsApp. Potete anche richiedere subito un preventivo.",
+      "whatsapp": "Scriveteci su WhatsApp",
+      "quote": "Richiedi un preventivo"
+    },
+    "whatsappButton": "Scriveteci su WhatsApp"
   }
 }

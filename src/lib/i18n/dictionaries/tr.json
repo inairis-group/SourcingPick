@@ -269,5 +269,15 @@
     "tabMessages": "Mesajlar",
     "tabInvoices": "Faturalar",
     "noTimeline": "Takip ilk adımla başlar."
+  },
+  "marketing": {
+    "warehouseMaintenance": {
+      "eyebrow": "Depomuz",
+      "title": "Sayfa bakımda",
+      "body": "Depomuz taşınıyor: taşınma süresince bu sayfa bakımda. Mallarınızla ilgili bir sorunuz mu var? WhatsApp’tan bize yazın. Dilerseniz şimdiden fiyat teklifi de isteyebilirsiniz.",
+      "whatsapp": "WhatsApp’tan bize yazın",
+      "quote": "Teklif isteyin"
+    },
+    "whatsappButton": "WhatsApp’tan bize yazın"
   }
 }

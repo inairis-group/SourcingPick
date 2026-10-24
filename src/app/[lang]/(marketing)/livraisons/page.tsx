@@ -11,7 +11,8 @@ import { pageAlternates } from "@/lib/seo/alternates";
  * only resolves the locale and hands it over; anything added here should be
  * behaviour, never markup, or the next re-port will silently drop it.
  *
- * The page is drawn in French only; every language shows it in French.
+ * The canvas draws the page in French only; the other languages are
+ * translations of that artboard (scripts/design/translations/Livraisons).
  */
 export async function generateMetadata({ params }: PageProps<"/[lang]/livraisons">) {
   const { lang } = await params;
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/livraisons
   return {
     title: content.title[lang],
     description: content.description[lang],
-    alternates: pageAlternates(lang, "/livraisons", ["fr"]),
+    alternates: pageAlternates(lang, "/livraisons"),
   };
 }
 

@@ -269,5 +269,15 @@
     "tabMessages": "Mensajes",
     "tabInvoices": "Facturas",
     "noTimeline": "El seguimiento empieza con el primer paso."
+  },
+  "marketing": {
+    "warehouseMaintenance": {
+      "eyebrow": "Nuestro almacén",
+      "title": "Página en mantenimiento",
+      "body": "Nuestro almacén se traslada: esta página está en mantenimiento mientras dura el traslado. ¿Alguna pregunta sobre sus mercancías? Escríbanos por WhatsApp. También puede solicitar un presupuesto ahora mismo.",
+      "whatsapp": "Escríbanos por WhatsApp",
+      "quote": "Solicitar presupuesto"
+    },
+    "whatsappButton": "Escríbanos por WhatsApp"
   }
 }

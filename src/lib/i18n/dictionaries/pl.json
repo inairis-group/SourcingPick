@@ -269,5 +269,15 @@
     "tabMessages": "Wiadomości",
     "tabInvoices": "Faktury",
     "noTimeline": "Przebieg zaczyna się od pierwszego kroku."
+  },
+  "marketing": {
+    "warehouseMaintenance": {
+      "eyebrow": "Nasz magazyn",
+      "title": "Strona w trakcie prac technicznych",
+      "body": "Nasz magazyn się przeprowadza: na czas przeprowadzki ta strona jest w trakcie prac technicznych. Mają Państwo pytanie dotyczące towaru? Prosimy napisać do nas na WhatsAppie. Mogą Państwo też już teraz poprosić o wycenę.",
+      "whatsapp": "Napisz do nas na WhatsAppie",
+      "quote": "Poproś o wycenę"
+    },
+    "whatsappButton": "Napisz do nas na WhatsAppie"
   }
 }

@@ -269,5 +269,15 @@
     "tabMessages": "Nachrichten",
     "tabInvoices": "Rechnungen",
     "noTimeline": "Der Verlauf beginnt mit dem ersten Schritt."
+  },
+  "marketing": {
+    "warehouseMaintenance": {
+      "eyebrow": "Unser Lager",
+      "title": "Seite wird gewartet",
+      "body": "Unser Lager zieht um: Während des Umzugs wird diese Seite gewartet. Eine Frage zu Ihren Waren? Schreiben Sie uns auf WhatsApp. Sie können auch schon jetzt ein Angebot anfordern.",
+      "whatsapp": "Schreiben Sie uns auf WhatsApp",
+      "quote": "Angebot anfordern"
+    },
+    "whatsappButton": "Schreiben Sie uns auf WhatsApp"
   }
 }

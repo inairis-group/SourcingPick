@@ -30,11 +30,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }));
   });
 
-  // French-only pages of the SEO pack: the service pages, the tool, the blog
+  // French-only pages of the SEO pack: the service pages and the blog
   // (listed only once it has articles).
   const french = [
     ...SERVICE_PAGES.map((p) => ({ route: `/services/${p.slug}`, changeFrequency: "weekly" as const, priority: 0.9 })),
-    { route: "/outils/simulateur-import-cbm", changeFrequency: "monthly" as const, priority: 0.9 },
     ...(BLOG_ARTICLES.length
       ? [
           { route: "/blog", changeFrequency: "weekly" as const, priority: 0.7 },

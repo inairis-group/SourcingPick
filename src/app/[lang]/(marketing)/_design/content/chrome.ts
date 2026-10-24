@@ -39,8 +39,8 @@ export const chrome = {
       "Request a quotation",
     ],
     zh: [
-      "Sourcing Pick 刚刚起步。与其编造客户评价，我们更愿意让您看看我们的仓库。",
-      "我们目前的真实情况",
+      "Sourcing Pick 刚起步。客户评价我们不编，仓库直接给你看。",
+      "实际情况看这里",
       "Sourcing Pick 首页",
       "Sourcing Pick",
       "主导航",
