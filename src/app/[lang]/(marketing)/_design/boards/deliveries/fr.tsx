@@ -16,38 +16,34 @@ import { Disclosure } from "../../disclosure";
 
 export function DeliveriesBoard({ lang }: { lang: Locale }) {
   const t = content.text[lang];
+  const s = content.frStyles;
+  const v = content.frValues;
 
   return (
     <>
             <section style={{ "padding": "calc(88px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))", "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "var(--sp-gap-64, 64px)" }}>
               <style>{t[0]}</style>
               <div style={{ "display": "flex", "flexDirection": "column", "gap": "22px", "maxWidth": "640px" }}>
-                <div style={{ "display": "inline-flex", "alignSelf": "flex-start", "alignItems": "center", "gap": "8px", "background": "#FFFFFF", "padding": "6px 12px", "borderRadius": "999px", "border": "1px solid #DCE3F2", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
-                  {t[1]}
-                </div>
-                <h1 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-56, 56px)", "lineHeight": "1.06", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                  {t[2]}
-                </h1>
+                <div style={s[0][lang]}>{t[1]}</div>
+                <h1 style={s[1][lang]}>{t[2]}</h1>
                 <p style={{ "margin": "0", "fontSize": "var(--sp-fs-19, 19px)", "lineHeight": "1.6", "color": "#4A5578", "maxWidth": "600px", "textWrap": "pretty" }}>
                   {t[3]}
                 </p>
                 <div style={{ "display": "flex", "gap": "14px", "flexWrap": "wrap", "paddingTop": "6px" }}>
-                  <a href={sitePath(lang, "/devis")} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#155DFC", "color": "#FFFFFF", "border": "1.5px solid #155DFC", "textAlign": "center" }}>
+                  <a href={sitePath(lang, "/devis")} style={s[2][lang]}>
                     <span>{t[4]}</span>
                     <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M5 12h14" />
-                        <path d="M13 6l6 6-6 6" />
+                        <path d={v[0][lang]} />
+                        <path d={v[1][lang]} />
                       </svg>
                     </span>
                   </a>
-                  <a href="#simulateur" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "transparent", "color": "#0E1A3D", "border": "1.5px solid #DCE3F2", "textAlign": "center" }}>
-                    <span>{t[5]}</span>
-                  </a>
+                  <a href="#simulateur" style={s[3][lang]}><span>{t[5]}</span></a>
                 </div>
               </div>
               <div className="sp-hero-illustration" style={{ "flexShrink": "0", "width": "560px", "borderRadius": "28px", "overflow": "hidden", "border": "1px solid #DCE3F2", "boxShadow": "0 30px 60px -44px rgba(14,26,61,0.55)" }}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" width="560" height="323" style={{ "display": "block", "maxWidth": "100%", "height": "auto" }} aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" width="560" height="323" style={s[4][lang]} aria-hidden="true">
                   <defs>
                     <clipPath id="clip14"><rect width="520" height="300" rx="26" /></clipPath>
                   </defs>
@@ -285,12 +281,8 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
             </section>
             <section id="modes" style={{ "padding": "0 var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))", "display": "flex", "flexDirection": "column", "gap": "var(--sp-gap-40, 40px)" }}>
               <div style={{ "display": "flex", "flexDirection": "column", "gap": "16px", "maxWidth": "780px" }}>
-                <div style={{ "display": "inline-flex", "alignSelf": "flex-start", "alignItems": "center", "gap": "8px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
-                  {t[6]}
-                </div>
-                <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-44, 44px)", "lineHeight": "1.1", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                  {t[7]}
-                </h2>
+                <div style={s[5][lang]}>{t[6]}</div>
+                <h2 style={s[6][lang]}>{t[7]}</h2>
                 <p style={{ "margin": "0", "fontSize": "var(--sp-fs-18, 18px)", "lineHeight": "1.6", "color": "#4A5578" }}>
                   {t[8]}
                 </p>
@@ -298,7 +290,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
               <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-r4, repeat(4, minmax(0, 1fr)))", "gap": "24px", "alignItems": "stretch" }}>
                 <article style={{ "position": "relative", "display": "flex", "flexDirection": "column", "gap": "16px", "padding": "20px", "borderRadius": "24px", "background": "#F4FBF7", "border": "2px solid #1F8F55", "boxShadow": "0 24px 50px -40px rgba(14,26,61,0.5)" }}>
                   <div style={{ "borderRadius": "18px", "overflow": "hidden" }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 190" width="242" height="144" style={{ "display": "block", "maxWidth": "100%", "height": "auto" }} aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 190" width="242" height="144" style={s[7][lang]} aria-hidden="true">
                       <defs>
                         <clipPath id="clip16">
                           <rect width="320" height="190" rx="18" />
@@ -533,9 +525,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                         <path d="M10 9V5h4v4" />
                       </svg>
                     </span>
-                    <h3 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-24, 24px)", "lineHeight": "1.15", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                      {t[9]}
-                    </h3>
+                    <h3 style={s[8][lang]}>{t[9]}</h3>
                   </div>
                   <span style={{ "display": "inline-flex", "alignItems": "center", "alignSelf": "flex-start", "padding": "3px 10px", "borderRadius": "999px", "fontSize": "12.5px", "fontWeight": "600", "whiteSpace": "nowrap", "background": "#E3F6EC", "color": "#1F8F55" }}>
                     {t[10]}
@@ -543,12 +533,8 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "2px" }}>
                     <span style={{ "fontSize": "12.5px", "color": "#4A5578" }}>{t[11]}</span>
                     <div style={{ "display": "flex", "alignItems": "baseline", "gap": "8px", "flexWrap": "wrap" }}>
-                      <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-32, 32px)", "fontWeight": "700", "lineHeight": "1.1", "color": "#0E1A3D" }}>
-                        {t[12]}
-                      </span>
-                      <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "color": "#4A5578" }}>
-                        {t[13]}
-                      </span>
+                      <span style={s[9][lang]}>{t[12]}</span>
+                      <span style={s[10][lang]}>{t[13]}</span>
                     </div>
                   </div>
                   <p style={{ "margin": "0", "fontSize": "15px", "lineHeight": "1.55", "color": "#4A5578" }}>
@@ -557,7 +543,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                 </article>
                 <article style={{ "position": "relative", "display": "flex", "flexDirection": "column", "gap": "16px", "padding": "20px", "borderRadius": "24px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "boxShadow": "0 24px 50px -40px rgba(14,26,61,0.5)" }}>
                   <div style={{ "borderRadius": "18px", "overflow": "hidden" }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 190" width="242" height="144" style={{ "display": "block", "maxWidth": "100%", "height": "auto" }} aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 190" width="242" height="144" style={s[11][lang]} aria-hidden="true">
                       <defs>
                         <clipPath id="clip18">
                           <rect width="320" height="190" rx="18" />
@@ -689,19 +675,13 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                         <path d="M10.5 4.5l-.5 6L3 14.5v2l7-2 .5 4-2 1.5V21l3.5-.9 3.5.9v-1.5l-2-1.5.5-4 7 2v-2l-7-4-.5-6a1.5 1.5 0 00-3 0z" />
                       </svg>
                     </span>
-                    <h3 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-24, 24px)", "lineHeight": "1.15", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                      {t[15]}
-                    </h3>
+                    <h3 style={s[12][lang]}>{t[15]}</h3>
                   </div>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "2px" }}>
                     <span style={{ "fontSize": "12.5px", "color": "#4A5578" }}>{t[16]}</span>
                     <div style={{ "display": "flex", "alignItems": "baseline", "gap": "8px", "flexWrap": "wrap" }}>
-                      <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-32, 32px)", "fontWeight": "700", "lineHeight": "1.1", "color": "#0E1A3D" }}>
-                        {t[17]}
-                      </span>
-                      <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "color": "#4A5578" }}>
-                        {t[18]}
-                      </span>
+                      <span style={s[13][lang]}>{t[17]}</span>
+                      <span style={s[14][lang]}>{t[18]}</span>
                     </div>
                   </div>
                   <p style={{ "margin": "0", "fontSize": "15px", "lineHeight": "1.55", "color": "#4A5578" }}>
@@ -710,7 +690,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                 </article>
                 <article style={{ "position": "relative", "display": "flex", "flexDirection": "column", "gap": "16px", "padding": "20px", "borderRadius": "24px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "boxShadow": "0 24px 50px -40px rgba(14,26,61,0.5)" }}>
                   <div style={{ "borderRadius": "18px", "overflow": "hidden" }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 190" width="242" height="144" style={{ "display": "block", "maxWidth": "100%", "height": "auto" }} aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 190" width="242" height="144" style={s[15][lang]} aria-hidden="true">
                       <defs>
                         <clipPath id="clip20">
                           <rect width="320" height="190" rx="18" />
@@ -849,9 +829,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                         <circle cx="17" cy="18" r="2" />
                       </svg>
                     </span>
-                    <h3 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-24, 24px)", "lineHeight": "1.15", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                      {t[20]}
-                    </h3>
+                    <h3 style={s[16][lang]}>{t[20]}</h3>
                   </div>
                   <span style={{ "display": "inline-flex", "alignItems": "center", "alignSelf": "flex-start", "padding": "3px 10px", "borderRadius": "999px", "fontSize": "12.5px", "fontWeight": "600", "whiteSpace": "nowrap", "background": "#FBE7EB", "color": "#C8364F" }}>
                     {t[21]}
@@ -859,12 +837,8 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "2px" }}>
                     <span style={{ "fontSize": "12.5px", "color": "#4A5578" }}>{t[22]}</span>
                     <div style={{ "display": "flex", "alignItems": "baseline", "gap": "8px", "flexWrap": "wrap" }}>
-                      <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-32, 32px)", "fontWeight": "700", "lineHeight": "1.1", "color": "#0E1A3D" }}>
-                        {t[23]}
-                      </span>
-                      <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "color": "#4A5578" }}>
-                        {t[24]}
-                      </span>
+                      <span style={s[17][lang]}>{t[23]}</span>
+                      <span style={s[18][lang]}>{t[24]}</span>
                     </div>
                   </div>
                   <p style={{ "margin": "0", "fontSize": "15px", "lineHeight": "1.55", "color": "#4A5578" }}>
@@ -873,7 +847,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                 </article>
                 <article style={{ "position": "relative", "display": "flex", "flexDirection": "column", "gap": "16px", "padding": "20px", "borderRadius": "24px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "boxShadow": "0 24px 50px -40px rgba(14,26,61,0.5)" }}>
                   <div style={{ "borderRadius": "18px", "overflow": "hidden" }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 190" width="242" height="144" style={{ "display": "block", "maxWidth": "100%", "height": "auto" }} aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 190" width="242" height="144" style={s[19][lang]} aria-hidden="true">
                       <defs>
                         <clipPath id="clip22">
                           <rect width="320" height="190" rx="18" />
@@ -1031,9 +1005,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                         <path d="M15 14.2h.01" />
                       </svg>
                     </span>
-                    <h3 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-24, 24px)", "lineHeight": "1.15", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                      {t[26]}
-                    </h3>
+                    <h3 style={s[20][lang]}>{t[26]}</h3>
                   </div>
                   <span style={{ "display": "inline-flex", "alignItems": "center", "alignSelf": "flex-start", "padding": "3px 10px", "borderRadius": "999px", "fontSize": "12.5px", "fontWeight": "600", "whiteSpace": "nowrap", "background": "#FBE7EB", "color": "#C8364F" }}>
                     {t[27]}
@@ -1041,12 +1013,8 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "2px" }}>
                     <span style={{ "fontSize": "12.5px", "color": "#4A5578" }}>{t[28]}</span>
                     <div style={{ "display": "flex", "alignItems": "baseline", "gap": "8px", "flexWrap": "wrap" }}>
-                      <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-32, 32px)", "fontWeight": "700", "lineHeight": "1.1", "color": "#0E1A3D" }}>
-                        {t[29]}
-                      </span>
-                      <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "color": "#4A5578" }}>
-                        {t[30]}
-                      </span>
+                      <span style={s[21][lang]}>{t[29]}</span>
+                      <span style={s[22][lang]}>{t[30]}</span>
                     </div>
                   </div>
                   <p style={{ "margin": "0", "fontSize": "15px", "lineHeight": "1.55", "color": "#4A5578" }}>
@@ -1061,12 +1029,8 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
             <section style={{ "padding": "0 var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))", "display": "flex", "flexDirection": "column", "gap": "36px" }}>
               <style>{t[33]}</style>
               <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px", "maxWidth": "980px" }}>
-                <div style={{ "display": "inline-flex", "alignSelf": "flex-start", "alignItems": "center", "gap": "8px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
-                  {t[34]}
-                </div>
-                <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-40, 40px)", "lineHeight": "1.12", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                  {t[35]}
-                </h2>
+                <div style={s[23][lang]}>{t[34]}</div>
+                <h2 style={s[24][lang]}>{t[35]}</h2>
                 <p style={{ "margin": "0", "fontSize": "var(--sp-fs-17, 17px)", "lineHeight": "1.6", "color": "#4A5578", "maxWidth": "760px" }}>
                   {t[36]}
                 </p>
@@ -1074,20 +1038,14 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
               <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-fr-600, minmax(0, 1fr) 600px)", "gap": "24px", "alignItems": "start" }}>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "18px" }}>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "10px", "padding": "var(--sp-pad-28-30, 28px 30px)", "borderRadius": "24px", "background": "#162456", "color": "#FFFFFF" }}>
-                    <span style={{ "display": "inline-flex", "alignSelf": "flex-start", "padding": "4px 11px", "borderRadius": "999px", "background": "#FFC247", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600" }}>
-                      {t[37]}
-                    </span>
-                    <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-32, 32px)", "fontWeight": "600", "letterSpacing": "-0.03em", "lineHeight": "1.1" }}>
-                      {t[38]}
-                    </span>
+                    <span style={s[25][lang]}>{t[37]}</span>
+                    <span style={s[26][lang]}>{t[38]}</span>
                     <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "lineHeight": "1.5", "color": "#C6D2EE" }}>
                       {t[39]}
                     </span>
                   </div>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "6px", "padding": "var(--sp-pad-28-30, 28px 30px)", "borderRadius": "24px", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
-                    <span style={{ "display": "inline-flex", "alignSelf": "flex-start", "padding": "4px 11px", "borderRadius": "999px", "background": "#EAF1FF", "color": "#155DFC", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "marginBottom": "4px" }}>
-                      {t[40]}
-                    </span>
+                    <span style={s[27][lang]}>{t[40]}</span>
                     <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "14px 0", "borderTop": "1px solid #DCE3F2" }}>
                       <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "38px", "height": "38px", "borderRadius": "12px", "background": "#EAF1FF", "alignItems": "center", "justifyContent": "center" }}>
                         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#155DFC" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -1196,7 +1154,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                     </div>
                     <div style={{ "position": "absolute", "left": "300px", "top": "411px", "transform": "translate(-50%, -54%)", "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "6px" }}>
                       <span style={{ "display": "inline-flex", "borderRadius": "50%", "boxShadow": "0 0 0 10px rgba(255,194,71,0.35)" }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="96" height="96" style={{ "display": "block", "flexShrink": "0" }} aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="96" height="96" style={s[28][lang]} aria-hidden="true">
                           <defs>
                             <clipPath id="cp-cp23">
                               <rect width="240" height="240" rx="48" />
@@ -1244,23 +1202,17 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                         </span>
                       </span>
                     </div>
-                    <span style={{ "position": "absolute", "insetInlineEnd": "14px", "top": "12px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "11.5px", "fontWeight": "600", "color": "#4A5578" }}>
-                      {t[56]}
-                    </span>
+                    <span style={s[29][lang]}>{t[56]}</span>
                   </div>
                 </div>
               </div>
             </section>
-            <DeliverySimulator id="simulateur" style={{ "padding": "0 var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))" }}>
+            <DeliverySimulator id="simulateur" style={{ "padding": "0 var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))" }} lang={lang}>
               <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-fr-500, minmax(0, 1fr) 500px)", "gap": "var(--sp-gap-48, 48px)", "alignItems": "center", "padding": "var(--sp-pad-48, 48px)", "borderRadius": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "22px" }}>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px" }}>
-                    <div style={{ "display": "inline-flex", "alignSelf": "flex-start", "alignItems": "center", "gap": "8px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#155DFC" }}>
-                      {t[57]}
-                    </div>
-                    <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "calc(var(--sp-fs-40, 40px) * 0.9500)", "lineHeight": "1.12", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                      {t[58]}
-                    </h2>
+                    <div style={s[30][lang]}>{t[57]}</div>
+                    <h2 style={s[31][lang]}>{t[58]}</h2>
                     <p style={{ "margin": "0", "fontSize": "var(--sp-fs-17, 17px)", "lineHeight": "1.6", "color": "#4A5578" }}>
                       {t[59]}
                     </p>
@@ -1295,7 +1247,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                         {t[64]}
                       </span>
                       <span style={{ "display": "flex", "alignItems": "stretch", "minWidth": "0" }}>
-                        <input type="text" defaultValue={t[65]} style={{ "boxSizing": "border-box", "flex": "1", "width": "0", "minWidth": "0", "minHeight": "54px", "padding": "0 16px", "borderRadius": "14px", "border": "1.5px solid #DCE3F2", "background": "#FFFFFF", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-20, 20px)", "fontWeight": "600", "color": "#0E1A3D" }} />
+                        <input type="text" defaultValue={t[65]} style={s[32][lang]} />
                       </span>
                     </label>
                     <label style={{ "flex": "1", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
@@ -1303,10 +1255,8 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                         {t[66]}
                       </span>
                       <span style={{ "display": "flex", "alignItems": "stretch", "minWidth": "0" }}>
-                        <input type="text" defaultValue={t[67]} style={{ "boxSizing": "border-box", "flex": "1", "width": "0", "minWidth": "0", "minHeight": "54px", "padding": "0 16px", "borderRadius": "14px 0 0 14px", "border": "1.5px solid #DCE3F2", "background": "#FFFFFF", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-20, 20px)", "fontWeight": "600", "color": "#0E1A3D" }} />
-                        <span style={{ "display": "inline-flex", "alignItems": "center", "padding": "0 16px", "marginInlineStart": "-1px", "border": "1.5px solid #DCE3F2", "borderRadius": "0 14px 14px 0", "background": "#F5F7FC", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "15px", "color": "#4A5578" }}>
-                          {t[68]}
-                        </span>
+                        <input type="text" defaultValue={t[67]} style={s[33][lang]} />
+                        <span style={s[34][lang]}>{t[68]}</span>
                       </span>
                     </label>
                   </div>
@@ -1318,10 +1268,8 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                           {t[70]}
                         </span>
                         <span style={{ "display": "flex", "alignItems": "stretch", "minWidth": "0" }}>
-                          <input type="text" defaultValue={t[71]} style={{ "boxSizing": "border-box", "flex": "1", "width": "0", "minWidth": "0", "minHeight": "54px", "padding": "0 16px", "borderRadius": "14px 0 0 14px", "border": "1.5px solid #DCE3F2", "background": "#FFFFFF", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-18, 18px)", "fontWeight": "600", "color": "#0E1A3D" }} />
-                          <span style={{ "display": "inline-flex", "alignItems": "center", "padding": "0 12px", "marginInlineStart": "-1px", "border": "1.5px solid #DCE3F2", "borderRadius": "0 14px 14px 0", "background": "#F5F7FC", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "15px", "color": "#4A5578" }}>
-                            {t[72]}
-                          </span>
+                          <input type="text" defaultValue={t[71]} style={s[35][lang]} />
+                          <span style={s[36][lang]}>{t[72]}</span>
                         </span>
                       </label>
                       <label style={{ "flex": "1", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
@@ -1329,10 +1277,8 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                           {t[73]}
                         </span>
                         <span style={{ "display": "flex", "alignItems": "stretch", "minWidth": "0" }}>
-                          <input type="text" defaultValue={t[74]} style={{ "boxSizing": "border-box", "flex": "1", "width": "0", "minWidth": "0", "minHeight": "54px", "padding": "0 16px", "borderRadius": "14px 0 0 14px", "border": "1.5px solid #DCE3F2", "background": "#FFFFFF", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-18, 18px)", "fontWeight": "600", "color": "#0E1A3D" }} />
-                          <span style={{ "display": "inline-flex", "alignItems": "center", "padding": "0 12px", "marginInlineStart": "-1px", "border": "1.5px solid #DCE3F2", "borderRadius": "0 14px 14px 0", "background": "#F5F7FC", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "15px", "color": "#4A5578" }}>
-                            {t[75]}
-                          </span>
+                          <input type="text" defaultValue={t[74]} style={s[37][lang]} />
+                          <span style={s[38][lang]}>{t[75]}</span>
                         </span>
                       </label>
                       <label style={{ "flex": "1", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "8px" }}>
@@ -1340,10 +1286,8 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                           {t[76]}
                         </span>
                         <span style={{ "display": "flex", "alignItems": "stretch", "minWidth": "0" }}>
-                          <input type="text" defaultValue={t[77]} style={{ "boxSizing": "border-box", "flex": "1", "width": "0", "minWidth": "0", "minHeight": "54px", "padding": "0 16px", "borderRadius": "14px 0 0 14px", "border": "1.5px solid #DCE3F2", "background": "#FFFFFF", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "var(--sp-fs-18, 18px)", "fontWeight": "600", "color": "#0E1A3D" }} />
-                          <span style={{ "display": "inline-flex", "alignItems": "center", "padding": "0 12px", "marginInlineStart": "-1px", "border": "1.5px solid #DCE3F2", "borderRadius": "0 14px 14px 0", "background": "#F5F7FC", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "15px", "color": "#4A5578" }}>
-                            {t[78]}
-                          </span>
+                          <input type="text" defaultValue={t[77]} style={s[39][lang]} />
+                          <span style={s[40][lang]}>{t[78]}</span>
                         </span>
                       </label>
                     </div>
@@ -1369,7 +1313,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                         <span style={{ "fontSize": "13px", "color": "#4A5578", "lineHeight": "1.35" }}>
                           {t[84]}
                         </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-26, 26px)", "fontWeight": "700", "letterSpacing": "-0.03em", "lineHeight": "1.1", "color": "#0E1A3D", "whiteSpace": "nowrap" }}>
+                        <span style={s[41][lang]}>
                           {t[85]}
                           <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "600", "color": "#4A5578" }}>
                             {" "}{t[86]}
@@ -1381,15 +1325,15 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                       </div>
                       <span style={{ "flexShrink": "0", "alignSelf": "center", "display": "inline-flex", "width": "30px", "height": "30px", "borderRadius": "50%", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "alignItems": "center", "justifyContent": "center" }}>
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4A5578" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d="M5 12h14" />
-                          <path d="M13 6l6 6-6 6" />
+                          <path d={v[2][lang]} />
+                          <path d={v[3][lang]} />
                         </svg>
                       </span>
                       <div data-sim="vol" style={{ "flex": "1", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "6px", "padding": "18px 18px", "borderRadius": "18px", "background": "#F5F7FC", "border": "1.5px solid #DCE3F2", "boxSizing": "content-box" }}>
                         <span style={{ "fontSize": "13px", "color": "#4A5578", "lineHeight": "1.35" }}>
                           {t[88]}
                         </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-26, 26px)", "fontWeight": "700", "letterSpacing": "-0.03em", "lineHeight": "1.1", "color": "#0E1A3D", "whiteSpace": "nowrap" }}>
+                        <span style={s[42][lang]}>
                           {t[89]}
                           <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "600", "color": "#4A5578" }}>
                             {" "}{t[90]}
@@ -1401,15 +1345,15 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                       </div>
                       <span style={{ "flexShrink": "0", "alignSelf": "center", "display": "inline-flex", "width": "30px", "height": "30px", "borderRadius": "50%", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "alignItems": "center", "justifyContent": "center" }}>
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4A5578" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d="M5 12h14" />
-                          <path d="M13 6l6 6-6 6" />
+                          <path d={v[4][lang]} />
+                          <path d={v[5][lang]} />
                         </svg>
                       </span>
                       <div data-sim="bill" style={{ "flex": "1", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "6px", "padding": "18px 18px", "borderRadius": "18px", "background": "#EAF1FF", "border": "1.5px solid #155DFC", "boxSizing": "content-box" }}>
                         <span style={{ "fontSize": "13px", "color": "#4A5578", "lineHeight": "1.35" }}>
                           {t[92]}
                         </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-26, 26px)", "fontWeight": "700", "letterSpacing": "-0.03em", "lineHeight": "1.1", "color": "#0E1A3D", "whiteSpace": "nowrap" }}>
+                        <span style={s[43][lang]}>
                           {t[93]}
                           <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "600", "color": "#4A5578" }}>
                             {" "}{t[94]}
@@ -1422,20 +1366,16 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                     </div>
                     <span data-sim="volume" style={{ "fontSize": "13.5px", "color": "#4A5578" }}>
                       {t[96]}{" "}
-                      <b style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "color": "#0E1A3D" }}>
-                        {t[97]}
-                      </b>
+                      <b style={s[44][lang]}>{t[97]}</b>
                       {" "}{t[98]}
                     </span>
                   </div>
                 </div>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "16px", "padding": "var(--sp-pad-32, 32px)", "borderRadius": "26px", "background": "#162456", "color": "#FFFFFF" }}>
-                  <h3 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-22, 22px)", "lineHeight": "1.2", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#FFFFFF", "textWrap": "balance" }}>
-                    {t[99]}
-                  </h3>
+                  <h3 style={s[45][lang]}>{t[99]}</h3>
                   <div style={{ "display": "flex", "flexDirection": "column" }}>
                     <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "14px 16px", "borderRadius": "16px", "background": "rgba(31,143,85,0.18)", "border": "1px solid rgba(155,235,192,0.35)", "margin": "4px 0" }}>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="56" height="56" style={{ "display": "block", "flexShrink": "0" }} aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="56" height="56" style={s[46][lang]} aria-hidden="true">
                         <defs>
                           <clipPath id="cp-cp24">
                             <rect width="240" height="240" rx="48" />
@@ -1657,7 +1597,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                       </div>
                     </div>
                     <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "13px 0px", "borderBottom": "1px solid rgba(255,255,255,0.14)" }}>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="56" height="56" style={{ "display": "block", "flexShrink": "0" }} aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="56" height="56" style={s[47][lang]} aria-hidden="true">
                         <defs>
                           <clipPath id="cp-cp26">
                             <rect width="240" height="240" rx="48" />
@@ -1748,7 +1688,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                       </div>
                     </div>
                     <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "13px 0px", "borderBottom": "1px solid rgba(255,255,255,0.14)" }}>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="56" height="56" style={{ "display": "block", "flexShrink": "0" }} aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="56" height="56" style={s[48][lang]} aria-hidden="true">
                         <defs>
                           <clipPath id="cp-cp28">
                             <rect width="240" height="240" rx="48" />
@@ -1864,7 +1804,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                       </div>
                     </div>
                     <div style={{ "display": "flex", "alignItems": "center", "gap": "14px", "padding": "13px 0px", "borderBottom": "1px solid rgba(255,255,255,0.14)" }}>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="56" height="56" style={{ "display": "block", "flexShrink": "0" }} aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="56" height="56" style={s[49][lang]} aria-hidden="true">
                         <defs>
                           <clipPath id="cp-cp30">
                             <rect width="240" height="240" rx="48" />
@@ -2026,18 +1966,16 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                     </li>
                   </ul>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "10px" }}>
-                    <a href="/inscription" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "#FFC247", "color": "#0E1A3D", "border": "1.5px solid #FFC247", "textAlign": "center" }}>
+                    <a href="/inscription" style={s[50][lang]}>
                       <span>{t[108]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d="M5 12h14" />
-                          <path d="M13 6l6 6-6 6" />
+                          <path d={v[6][lang]} />
+                          <path d={v[7][lang]} />
                         </svg>
                       </span>
                     </a>
-                    <a href="/connexion" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "width": "100%", "justifyContent": "center", "boxSizing": "border-box", "minHeight": "44px", "padding": "14px 22px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-16, 16px)", "background": "transparent", "color": "#FFFFFF", "border": "1.5px solid rgba(255,255,255,0.28)", "textAlign": "center" }}>
-                      <span>{t[109]}</span>
-                    </a>
+                    <a href="/connexion" style={s[51][lang]}><span>{t[109]}</span></a>
                   </div>
                   <p style={{ "margin": "0", "fontSize": "13px", "lineHeight": "1.55", "color": "#B8C4E6" }}>
                     {t[110]}
@@ -2049,21 +1987,15 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
               <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-fr-560, minmax(0, 1fr) 560px)", "gap": "var(--sp-gap-56, 56px)", "alignItems": "center", "padding": "var(--sp-pad-56, 56px)", "borderRadius": "32px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "22px" }}>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px" }}>
-                    <div style={{ "display": "inline-flex", "alignSelf": "flex-start", "alignItems": "center", "gap": "8px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "letterSpacing": "0.08em", "textTransform": "uppercase", "color": "#8DB2FF" }}>
-                      {t[111]}
-                    </div>
-                    <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "calc(var(--sp-fs-40, 40px) * 0.9500)", "lineHeight": "1.12", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#FFFFFF", "textWrap": "balance" }}>
-                      {t[112]}
-                    </h2>
+                    <div style={s[52][lang]}>{t[111]}</div>
+                    <h2 style={s[53][lang]}>{t[112]}</h2>
                     <p style={{ "margin": "0", "fontSize": "var(--sp-fs-17, 17px)", "lineHeight": "1.6", "color": "#C6D2EE" }}>
                       {t[113]}
                     </p>
                   </div>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "10px" }}>
                     <div style={{ "display": "flex", "gap": "16px", "alignItems": "flex-start", "padding": "18px 20px", "borderRadius": "18px", "background": "rgba(255,255,255,0.06)", "border": "1px solid rgba(255,255,255,0.12)" }}>
-                      <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "38px", "height": "38px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "rgba(255,255,255,0.14)", "color": "#FFFFFF", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "700" }}>
-                        {t[114]}
-                      </span>
+                      <span style={s[54][lang]}>{t[114]}</span>
                       <div style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }}>
                         <span style={{ "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#FFFFFF" }}>
                           {t[115]}
@@ -2074,9 +2006,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                       </div>
                     </div>
                     <div style={{ "display": "flex", "gap": "16px", "alignItems": "flex-start", "padding": "18px 20px", "borderRadius": "18px", "background": "rgba(255,255,255,0.06)", "border": "1px solid rgba(255,255,255,0.12)" }}>
-                      <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "38px", "height": "38px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "rgba(255,255,255,0.14)", "color": "#FFFFFF", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "700" }}>
-                        {t[117]}
-                      </span>
+                      <span style={s[55][lang]}>{t[117]}</span>
                       <div style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }}>
                         <span style={{ "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#FFFFFF" }}>
                           {t[118]}
@@ -2087,9 +2017,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                       </div>
                     </div>
                     <div style={{ "display": "flex", "gap": "16px", "alignItems": "flex-start", "padding": "18px 20px", "borderRadius": "18px", "background": "rgba(255,255,255,0.14)", "border": "1px solid rgba(255,255,255,0.34)" }}>
-                      <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "38px", "height": "38px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FFC247", "color": "#7A4E00", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "700" }}>
-                        {t[120]}
-                      </span>
+                      <span style={s[56][lang]}>{t[120]}</span>
                       <div style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }}>
                         <span style={{ "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#FFFFFF" }}>
                           {t[121]}
@@ -2100,9 +2028,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                       </div>
                     </div>
                     <div style={{ "display": "flex", "gap": "16px", "alignItems": "flex-start", "padding": "18px 20px", "borderRadius": "18px", "background": "rgba(255,255,255,0.06)", "border": "1px solid rgba(255,255,255,0.12)" }}>
-                      <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "38px", "height": "38px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "rgba(255,255,255,0.14)", "color": "#FFFFFF", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "700" }}>
-                        {t[123]}
-                      </span>
+                      <span style={s[57][lang]}>{t[123]}</span>
                       <div style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }}>
                         <span style={{ "fontSize": "var(--sp-fs-17, 17px)", "fontWeight": "600", "color": "#FFFFFF" }}>
                           {t[124]}
@@ -2114,12 +2040,12 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                     </div>
                   </div>
                   <div>
-                    <a href="/connexion" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #FFFFFF", "textAlign": "center" }}>
+                    <a href="/connexion" style={s[58][lang]}>
                       <span>{t[126]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d="M5 12h14" />
-                          <path d="M13 6l6 6-6 6" />
+                          <path d={v[8][lang]} />
+                          <path d={v[9][lang]} />
                         </svg>
                       </span>
                     </a>
@@ -2129,16 +2055,10 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px", "padding": "var(--sp-pad-26, 26px)", "borderRadius": "24px", "background": "#FFFFFF", "color": "#0E1A3D", "boxShadow": "0 30px 60px -40px rgba(0,0,0,0.6)" }}>
                     <div style={{ "display": "flex", "alignItems": "flex-start", "justifyContent": "space-between", "gap": "12px" }}>
                       <div style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }}>
-                        <span style={{ "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12.5px", "fontWeight": "600", "color": "#4A5578" }}>
-                          {t[127]}
-                        </span>
-                        <span style={{ "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-20, 20px)", "fontWeight": "600", "letterSpacing": "-0.02em" }}>
-                          {t[128]}
-                        </span>
+                        <span style={s[59][lang]}>{t[127]}</span>
+                        <span style={s[60][lang]}>{t[128]}</span>
                       </div>
-                      <span className="sp-placeholder" style={{ "display": "inline-flex", "alignItems": "center", "padding": "1px 8px", "borderRadius": "6px", "background": "#FFF1CC", "border": "1px dashed #D99A00", "color": "#7A4E00", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "0.82em", "fontWeight": "600", "whiteSpace": "nowrap" }}>
-                        {t[129]}
-                      </span>
+                      <span className="sp-placeholder" style={s[61][lang]}>{t[129]}</span>
                     </div>
                     <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "flexWrap": "wrap" }}>
                       <span style={{ "display": "inline-flex", "alignItems": "center", "gap": "7px", "padding": "5px 12px", "borderRadius": "999px", "background": "#0B7FA814", "color": "#0B7FA8", "fontSize": "13px", "fontWeight": "600" }}>
@@ -2150,7 +2070,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                       </span>
                     </div>
                     <div>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 508 92" width="508" height="92" style={{ "display": "block", "maxWidth": "100%", "height": "auto" }} aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 508 92" width="508" height="92" style={s[62][lang]} aria-hidden="true">
                         <path d="M28 64.39999999999999 L480 64.39999999999999" stroke="#CBD5E8" strokeWidth="5" strokeLinecap="round" strokeDasharray="2 12" className="cw-dash" />
                         <path d="M28 64.39999999999999 L263.04 64.39999999999999" stroke="#155DFC" strokeWidth="5.5" strokeLinecap="round" />
                         <circle cx="28" cy="64.39999999999999" r="11" fill="#FFFFFF" stroke="#162456" strokeWidth="4" />
@@ -2225,7 +2145,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                           </g>
                         </g>
                       </svg>
-                      <div style={{ "display": "flex", "justifyContent": "space-between", "marginTop": "-6px", "fontFamily": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace", "fontSize": "12px", "fontWeight": "600", "color": "#4A5578" }}>
+                      <div style={s[63][lang]}>
                         <span>{t[132]}</span>
                         <span>{t[133]}</span>
                       </div>
@@ -2236,11 +2156,9 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
             </section>
             <section style={{ "padding": "0 var(--sp-gutter, 120px) calc(104px * var(--sp-vs, 1))", "display": "grid", "gridTemplateColumns": "var(--sp-grid-420-fr, 420px minmax(0, 1fr))", "gap": "var(--sp-gap-80, 80px)", "alignItems": "start" }}>
               <div style={{ "display": "flex", "flexDirection": "column", "gap": "22px" }}>
-                <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-40, 40px)", "lineHeight": "1.12", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#0E1A3D", "textWrap": "balance" }}>
-                  {t[134]}
-                </h2>
+                <h2 style={s[64][lang]}>{t[134]}</h2>
                 <div style={{ "width": "220px" }}>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="220" height="220" style={{ "display": "block", "flexShrink": "0" }} aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="220" height="220" style={s[65][lang]} aria-hidden="true">
                     <defs>
                       <clipPath id="cp-cp32">
                         <rect width="240" height="240" rx="48" />
@@ -2261,7 +2179,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
               </div>
               <div style={{ "display": "flex", "flexDirection": "column", "borderTop": "1px solid #DCE3F2" }}>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
-                  <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-18, 18px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="true">
+                  <button type="button" style={s[66][lang]} aria-expanded="true">
                     <span>{t[135]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#155DFC", "border": "1px solid #155DFC" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -2275,34 +2193,34 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                   </p>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
-                  <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-18, 18px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="false">
+                  <button type="button" style={s[67][lang]} aria-expanded="false">
                     <span>{t[137]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1A3D" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 5v14" />
-                        <path d="M5 12h14" />
+                        <path d={v[10][lang]} />
                       </svg>
                     </span>
                   </button>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
-                  <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-18, 18px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="false">
+                  <button type="button" style={s[68][lang]} aria-expanded="false">
                     <span>{t[138]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1A3D" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 5v14" />
-                        <path d="M5 12h14" />
+                        <path d={v[11][lang]} />
                       </svg>
                     </span>
                   </button>
                 </Disclosure>
                 <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "22px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
-                  <button type="button" style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "20px", "width": "100%", "minHeight": "44px", "padding": "0", "border": "0", "background": "transparent", "cursor": "pointer", "textAlign": "start", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontSize": "var(--sp-fs-18, 18px)", "fontWeight": "600", "color": "#0E1A3D", "boxSizing": "content-box" }} aria-expanded="false">
+                  <button type="button" style={s[69][lang]} aria-expanded="false">
                     <span>{t[139]}</span>
                     <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "34px", "height": "34px", "borderRadius": "50%", "alignItems": "center", "justifyContent": "center", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E1A3D" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 5v14" />
-                        <path d="M5 12h14" />
+                        <path d={v[12][lang]} />
                       </svg>
                     </span>
                   </button>
@@ -2313,31 +2231,27 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
               <div className="sp-cta-band" style={{ "position": "relative", "overflow": "hidden", "borderRadius": "32px", "background": "#155DFC", "padding": "var(--sp-pad-72, 72px)", "display": "flex", "alignItems": "center", "justifyContent": "space-between", "gap": "var(--sp-gap-40, 40px)", "color": "#FFFFFF" }}>
                 <div style={{ "position": "absolute", "inset": "0", "backgroundImage": "linear-gradient(30deg, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(150deg, rgba(255,255,255,0.08) 1px, transparent 1px)", "backgroundSize": "44px 25.4px" }} />
                 <div style={{ "position": "relative", "display": "flex", "flexDirection": "column", "gap": "22px", "maxWidth": "700px" }}>
-                  <h2 style={{ "margin": "0", "fontFamily": "'Unbounded', 'Trebuchet MS', sans-serif", "fontSize": "var(--sp-fs-48, 48px)", "lineHeight": "1.08", "fontWeight": "600", "letterSpacing": "-0.03em", "color": "#FFFFFF", "textWrap": "balance" }}>
-                    {t[140]}
-                  </h2>
+                  <h2 style={s[70][lang]}>{t[140]}</h2>
                   <p style={{ "margin": "0", "fontSize": "var(--sp-fs-18, 18px)", "lineHeight": "1.6", "color": "#E3EBFF" }}>
                     {t[141]}
                   </p>
                   <div style={{ "display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap" }}>
-                    <a href={sitePath(lang, "/devis")} style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "#FFFFFF", "color": "#0E1A3D", "border": "1.5px solid #FFFFFF", "textAlign": "center" }}>
+                    <a href={sitePath(lang, "/devis")} style={s[71][lang]}>
                       <span>{t[142]}</span>
                       <span style={{ "display": "inline-flex", "flexShrink": "0" }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d="M5 12h14" />
-                          <path d="M13 6l6 6-6 6" />
+                          <path d={v[13][lang]} />
+                          <path d={v[14][lang]} />
                         </svg>
                       </span>
                     </a>
-                    <a href="mailto:contact@sourcingpick.com" style={{ "display": "inline-flex", "alignItems": "center", "gap": "10px", "boxSizing": "border-box", "minHeight": "44px", "padding": "18px 28px", "borderRadius": "12px", "fontFamily": "'Onest', 'Segoe UI', system-ui, sans-serif", "fontWeight": "600", "fontSize": "var(--sp-fs-17, 17px)", "background": "transparent", "color": "#FFFFFF", "border": "1.5px solid rgba(255,255,255,0.28)", "textAlign": "center" }}>
+                    <a href="mailto:contact@sourcingpick.com" style={s[72][lang]}>
                       <span><span dir="ltr">{t[143]}</span></span>
                     </a>
                   </div>
                 </div>
                 <div className="sp-cta-mascot" style={{ "position": "relative", "width": "300px", "height": "300px", "flexShrink": "0" }}>
-                  <div style={{ "position": "absolute", "left": "-60px", "top": "6px", "maxWidth": "220px", "padding": "12px 16px", "borderRadius": "18px 18px 4px 18px", "background": "#FFFFFF", "color": "#0E1A3D", "fontSize": "15px", "fontWeight": "600", "boxShadow": "0 16px 32px -16px rgba(14,26,61,0.5)", "boxSizing": "content-box" }}>
-                    {t[144]}
-                  </div>
+                  <div style={s[73][lang]}>{t[144]}</div>
                   <img src="/design/picky-arms-up.svg" alt={t[145]} style={{ "width": "300px", "height": "auto", "maxWidth": "100%" }} />
                 </div>
               </div>

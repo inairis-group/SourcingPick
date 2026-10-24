@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import type { CSSProperties, ReactNode } from "react";
+import type { Locale } from "@/lib/i18n/config";
+import { formatNumber } from "@/lib/i18n/formatters";
 
 /**
  * The shipment simulator on /livraisons.
@@ -20,16 +22,13 @@ import type { CSSProperties, ReactNode } from "react";
  *   chargeable weight  = the higher of the two
  *   volume             = cartons × length × width × height ÷ 1 000 000 (m³)
  *
- * The page is drawn in French only, so the figures are always written the
- * French way. The drawn result cells are found through the `data-sim`
- * attributes the porter puts on them, and updated in place: the fields are
- * uncontrolled, so React has nothing to reconcile against what is typed.
+ * The figures are written the way the page's language writes numbers. The
+ * drawn result cells are found through the `data-sim` attributes the porter
+ * puts on them, and updated in place: the fields are uncontrolled, so React
+ * has nothing to reconcile against what is typed.
  */
 
 const VOLUMETRIC_DIVISOR = 6000;
-
-const number = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 1 });
-const cubic = new Intl.NumberFormat("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 function read(input: HTMLInputElement | undefined): number {
   const value = Number((input?.value ?? "").replace(/\s/g, "").replace(",", "."));
@@ -49,12 +48,23 @@ function setText(node: Text | null, value: string) {
   if (node && node.nodeValue !== value) node.nodeValue = value;
 }
 
+/**
+ * A drawn line with its figures replaced, in order: "20 × 18 kg" becomes
+ * "12 × 7,5 kg". The units and the word order stay the translation's own.
+ */
+function refill(drawn: string, figures: string[]): string {
+  let i = 0;
+  return drawn.replace(/\d+(?:[.,]\d+)?/g, (m) => (i < figures.length ? figures[i++] : m));
+}
+
 export function DeliverySimulator({
+  lang,
   id,
   className,
   style,
   children,
 }: {
+  lang: Locale;
   id?: string;
   className?: string;
   style?: CSSProperties;
@@ -78,6 +88,21 @@ export function DeliverySimulator({
     const volume = card("volume");
     if (real) real.parentElement?.setAttribute("aria-live", "polite");
 
+    const number = (n: number) => formatNumber(n, lang, { maximumFractionDigits: 1 });
+    const cubic = (n: number) => formatNumber(n, lang, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    // The drawn example's lines, read once, before anything is rewritten.
+    // Text nodes are rewritten in place, never replaced, so React keeps
+    // owning the ones it rendered.
+    const realDetail = textNode(real?.children[2]);
+    const realLine = realDetail?.nodeValue ?? "";
+    const volumeFigure = textNode(volume?.querySelector("b"));
+    const volumeLine = volumeFigure?.nodeValue ?? "";
+    const volumeTail = (volume
+      ? Array.from(volume.childNodes).reverse().find((n) => n.nodeType === Node.TEXT_NODE && n.nodeValue?.trim())
+      : null) as Text | null;
+    const volumeTailLine = volumeTail?.nodeValue ?? "";
+
     const update = () => {
       const [cartons, weight, length, width, height] = inputs.map(read);
       const ready = cartons > 0 && weight > 0 && length > 0 && width > 0 && height > 0;
@@ -89,29 +114,26 @@ export function DeliverySimulator({
       const m3 = (cartons * length * width * height) / 1_000_000;
       const dash = "—";
 
-      // [value, detail] spans of a drawn card: the figure and what it is made of.
-      const fill = (el: HTMLElement | null, figure: string, detail?: string) => {
-        if (!el) return;
-        setText(textNode(el.children[1]), figure);
-        if (detail !== undefined && el.children[2]) el.children[2].textContent = detail;
+      // The value span of a drawn card: its figure, before its unit.
+      const fill = (el: HTMLElement | null, figure: string) => {
+        if (el) setText(textNode(el.children[1]), figure);
       };
-      const dims = `${number.format(length)} × ${number.format(width)} × ${number.format(height)}`;
-      fill(real, ready ? number.format(actual) : dash, ready ? `${number.format(cartons)} × ${number.format(weight)} kg` : undefined);
-      fill(volumetric, ready ? number.format(volumetricTotal) : dash);
-      fill(chargeable, ready ? number.format(bill) : dash);
-
-      if (volume) {
-        const figure = volume.querySelector("b");
-        if (figure) figure.textContent = ready ? `${cubic.format(m3)} m³` : dash;
-        const last = Array.from(volume.childNodes).reverse().find((n) => n.nodeType === Node.TEXT_NODE && n.nodeValue?.trim());
-        if (last && ready) last.nodeValue = `· ${number.format(cartons)} × ${dims} cm`;
+      fill(real, ready ? number(actual) : dash);
+      fill(volumetric, ready ? number(volumetricTotal) : dash);
+      fill(chargeable, ready ? number(bill) : dash);
+      if (!ready) {
+        setText(volumeFigure, dash);
+        return;
       }
+      setText(realDetail, refill(realLine, [number(cartons), number(weight)]));
+      setText(volumeFigure, refill(volumeLine, [cubic(m3)]));
+      setText(volumeTail, refill(volumeTailLine, [cartons, length, width, height].map(number)));
     };
 
     section.addEventListener("input", update);
     update();
     return () => section.removeEventListener("input", update);
-  }, []);
+  }, [lang]);
 
   return (
     <section ref={root} id={id} className={className} style={style}>

@@ -201,9 +201,17 @@ def responsive(
     for name, value in decls:
         m = _PX.match(value)
         if name == "font-size" and m and base_fs and base_fs >= 15.5:
-            ratio = float(m.group(1)) / base_fs
-            token = f"--sp-fs-{_slug(str(base_fs).removesuffix('.0'))}"
-            base_px = f"{str(base_fs).removesuffix('.0')}px"
+            anchor = base_fs
+            if known_sizes and base_fs not in known_sizes:
+                # The French size is itself a retuned one (60px next to the
+                # stylesheet's 62): anchor on the size it was tuned from, as
+                # the French element's own inlined style does.
+                near = min(known_sizes, key=lambda k: abs(base_fs / k - 1))
+                if abs(base_fs / near - 1) <= 0.1:
+                    anchor = near
+            ratio = float(m.group(1)) / anchor
+            token = f"--sp-fs-{_slug(str(anchor).removesuffix('.0'))}"
+            base_px = f"{str(anchor).removesuffix('.0')}px"
             if abs(ratio - 1) < 1e-6:
                 value = f"var({token}, {value})"
             else:

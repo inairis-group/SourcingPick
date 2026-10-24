@@ -269,5 +269,15 @@
     "tabMessages": "Berichten",
     "tabInvoices": "Facturen",
     "noTimeline": "Het verloop begint bij de eerste stap."
+  },
+  "marketing": {
+    "warehouseMaintenance": {
+      "eyebrow": "Ons magazijn",
+      "title": "Pagina in onderhoud",
+      "body": "Ons magazijn verhuist: deze pagina is in onderhoud zolang de verhuizing duurt. Een vraag over uw goederen? Stuur ons een bericht via WhatsApp. U kunt ook meteen een offerte aanvragen.",
+      "whatsapp": "Stuur ons een WhatsApp",
+      "quote": "Offerte aanvragen"
+    },
+    "whatsappButton": "Stuur ons een WhatsApp"
   }
 }

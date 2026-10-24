@@ -2675,9 +2675,9 @@
     "warehouseMaintenance": {
       "eyebrow": "Our warehouse",
       "title": "Page under maintenance",
-      "body": "Our warehouse is moving: this page is under maintenance while we move. A question about your goods? Message us on WhatsApp. You can also request a quote right away.",
+      "body": "Our warehouse is moving: this page is under maintenance while we move. A question about your goods? Message us on WhatsApp. You can also request a quotation right away.",
       "whatsapp": "Message us on WhatsApp",
-      "quote": "Request a quote"
+      "quote": "Request a quotation"
     },
     "whatsappButton": "Message us on WhatsApp"
   },

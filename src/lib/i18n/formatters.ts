@@ -93,3 +93,14 @@ export function formatRelativeTime(date: Date | string, locale: Locale): string 
   }
   return formatter.format(diffSeconds, "second");
 }
+
+/**
+ * A word that agrees with a count, in CLDR plural categories ("1 carton",
+ * "3 cartons"; Russian, Polish and Arabic have more forms). `other` is the
+ * fallback for a category a language does not list.
+ */
+export type PluralForms = Partial<Record<Intl.LDMLPluralRule, string>> & { other: string };
+
+export function pluralForm(count: number, locale: Locale, forms: PluralForms): string {
+  return forms[new Intl.PluralRules(intlLocale[locale]).select(count)] ?? forms.other;
+}

@@ -38,6 +38,7 @@ export default async function ServiceDetailPage({ params }: PageProps<"/[lang]/s
   if (!page) notFound();
   return (
     <SeoArticle
+      lang="fr"
       eyebrow={page.eyebrow}
       back={{ href: sitePath("fr", "/services"), label: "Services" }}
       h1={page.h1}

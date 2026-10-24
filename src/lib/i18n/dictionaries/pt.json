@@ -269,5 +269,15 @@
     "tabMessages": "Mensagens",
     "tabInvoices": "Faturas",
     "noTimeline": "O acompanhamento começa no primeiro passo."
+  },
+  "marketing": {
+    "warehouseMaintenance": {
+      "eyebrow": "O nosso armazém",
+      "title": "Página em manutenção",
+      "body": "O nosso armazém está a mudar de instalações: esta página está em manutenção enquanto decorre a mudança. Tem alguma dúvida sobre as suas mercadorias? Escreva-nos no WhatsApp. Também pode pedir um orçamento desde já.",
+      "whatsapp": "Escreva-nos no WhatsApp",
+      "quote": "Pedir orçamento"
+    },
+    "whatsappButton": "Escreva-nos no WhatsApp"
   }
 }
