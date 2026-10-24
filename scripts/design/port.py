@@ -44,6 +44,7 @@ from emit import (
     responsive,
     split_decls,
 )
+import localize
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 CANVAS = os.environ.get(
@@ -96,7 +97,8 @@ PAGES = {
              "legal/privacy"),
         Page("Cookies", "CookiesBoard", "cookies", "Site-Cookies.dc.html", "legal/cookies"),
         Page("CGV", "TermsBoard", "terms", "Site-CGV.dc.html", "legal/terms"),
-        # Drawn in French only; the other languages show the French page.
+        # Drawn in French only; the other languages are translations of the
+        # French artboard (translations/Livraisons, see localize.py).
         Page("Livraisons", "DeliveriesBoard", "deliveries", "Site-Livraisons.dc.html",
              "livraisons"),
         Page("404", "NotFoundBoard", "notFound", "Site-404.dc.html", None),
@@ -654,9 +656,10 @@ COMPONENTS: dict[str, list[tuple]] = {
         (_is_file_drop, "FileDrop", "../../file-drop", 1, True),
     ],
     "Livraisons": [
-        # The figures of the drawn example follow the five numeric fields.
+        # The figures of the drawn example follow the five numeric fields,
+        # written the way the page's language writes numbers.
         (lambda el: el.tag == "section" and el.attr("id") == "simulateur",
-         "DeliverySimulator", "../../delivery-simulator", 1, False),
+         "DeliverySimulator", "../../delivery-simulator", 1, True),
     ],
     "FAQ": [
         # The chips work as plain anchors with no JavaScript; this adds the
@@ -1369,8 +1372,38 @@ def _omit(node: Element, pred) -> int:
     return removed
 
 
+def _locale_of(path: str) -> str:
+    m = re.match(r"^([a-z]{2})-.+\.dc\.html$", os.path.basename(path))
+    return m.group(1) if m and m.group(1) in LOCALES else "fr"
+
+
 def board_parts(path: str):
-    """(announce strip, header, page sections, footer) for one artboard."""
+    """(announce strip, header, page sections, footer) for one artboard,
+    with its translation from `translations/` written in, if it has one
+    (see localize.py)."""
+    a, h, secs, f = _canvas_parts(path)
+    stem, loc = _stem_of(path), _locale_of(path)
+    if loc == "fr":
+        return a, h, secs, f
+    chrome = localize.load("chrome", loc)
+    if chrome:
+        localize.write_text([a, h], chrome["header"], f"translations/chrome/{loc}.json (header)")
+        localize.write_text([f], chrome["footer"], f"translations/chrome/{loc}.json (footer)")
+    tr = localize.load(stem, loc) if stem else None
+    if tr:
+        where = f"translations/{stem}/{loc}.json"
+        if tr["base"] == "fr":
+            fr = _canvas_parts(os.path.join(CANVAS, locale_file(stem, "fr")))
+            secs = localize.translated_sections(fr[2], loc, tr["text"], where)
+        elif tr["base"] == "own":
+            localize.write_text(secs, tr["text"], where)
+        else:
+            raise SystemExit(f"{where}: base must be \"fr\" or \"own\"")
+    return a, h, secs, f
+
+
+def _canvas_parts(path: str):
+    """(announce strip, header, page sections, footer) as the canvas draws them."""
     frame = [c for c in kids(find(parse(path), "x-dc")) if c.tag == "div"][0]
     stem = _stem_of(path)
     for pred, expected in OMIT.get(stem, []):
@@ -1411,6 +1444,10 @@ def board_parts(path: str):
 
 
 def page_title(path: str) -> str:
+    stem, loc = _stem_of(path), _locale_of(path)
+    tr = localize.load(stem, loc) if stem and loc != "fr" else None
+    if tr and tr.get("title"):
+        return tr["title"]
     el = find(parse(path), "title")
     return text_of(el) if el else ""
 

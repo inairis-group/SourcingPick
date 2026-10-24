@@ -1251,7 +1251,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                 </div>
               </div>
             </section>
-            <DeliverySimulator id="simulateur" style={{ "padding": "0 var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))" }}>
+            <DeliverySimulator id="simulateur" style={{ "padding": "0 var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))" }} lang={lang}>
               <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-fr-500, minmax(0, 1fr) 500px)", "gap": "var(--sp-gap-48, 48px)", "alignItems": "center", "padding": "var(--sp-pad-48, 48px)", "borderRadius": "32px", "background": "#FFFFFF", "border": "1px solid #DCE3F2" }}>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "22px" }}>
                   <div style={{ "display": "flex", "flexDirection": "column", "gap": "14px" }}>
