@@ -298,7 +298,7 @@ export function SeaSimulatorForm({ lang, copy: c }: { lang: Locale; copy: SeaFor
               <NumberField lang={lang} id={`sea-${l.id}-kg`} label={c.cartons.weight} value={l.weight} step={0.1} onChange={(v) => update(l.id, { weight: v })} />
               <div className="sp-carton-remove" style={{ display: "flex", alignItems: "flex-end" }}>
                 {lines.length > 1 && (
-                  <button type="button" aria-label={`${c.cartons.remove} ${fill(c.cartons.line, { n: i + 1 })}`} onClick={() => setLines((ls) => ls.filter((x) => x.id !== l.id))} style={ty({ minHeight: "48px", padding: "0 10px", border: 0, background: "transparent", color: "#C8364F", fontFamily: BODY, fontWeight: 600, fontSize: "14px", cursor: "pointer" })}>
+                  <button type="button" aria-label={`${fill(c.cartons.line, { n: i + 1 })} — ${c.cartons.remove}`} onClick={() => setLines((ls) => ls.filter((x) => x.id !== l.id))} style={ty({ minHeight: "48px", padding: "0 10px", border: 0, background: "transparent", color: "#C8364F", fontFamily: BODY, fontWeight: 600, fontSize: "14px", cursor: "pointer" })}>
                     {c.cartons.remove}
                   </button>
                 )}
@@ -410,7 +410,7 @@ export function SeaSimulatorForm({ lang, copy: c }: { lang: Locale; copy: SeaFor
           <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             <input type="hidden" name="request" value={JSON.stringify(request)} />
             <input type="hidden" name="lang" value={lang} />
-            <input type="text" name="company_website" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-10000px", width: "1px", height: "1px", opacity: 0 }} />
+            <input type="text" name="company_website" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", width: "1px", height: "1px", overflow: "hidden", clipPath: "inset(50%)", opacity: 0, pointerEvents: "none" }} />
             <label htmlFor="sea-email" style={{ fontSize: "14px", fontWeight: 600, color: "#E3EBFF" }}>
               {c.gate.email}
             </label>

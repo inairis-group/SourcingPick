@@ -4,13 +4,20 @@
  * price. The rules are the carrier's rate card (src/lib/freight); this is how
  * they are said to the visitor.
  *
- * `{name}` placeholders are filled in by the component or the e-mail.
+ * One file per language in sea-simulator-locales/. `{name}` placeholders are
+ * filled in by the component or the e-mail.
  */
 import type { Locale } from "@/lib/i18n/config";
+import { ar } from "./sea-simulator-locales/ar";
+import { de } from "./sea-simulator-locales/de";
 import { en } from "./sea-simulator-locales/en";
 import { es } from "./sea-simulator-locales/es";
 import { fr } from "./sea-simulator-locales/fr";
 import { it } from "./sea-simulator-locales/it";
+import { nl } from "./sea-simulator-locales/nl";
+import { pl } from "./sea-simulator-locales/pl";
+import { pt } from "./sea-simulator-locales/pt";
+import { ru } from "./sea-simulator-locales/ru";
 import { tr } from "./sea-simulator-locales/tr";
 import { zh } from "./sea-simulator-locales/zh";
 
@@ -131,7 +138,7 @@ export type SeaSimulatorCopy = {
   };
 };
 
-export const SEA_SIMULATOR: Partial<Record<Locale, SeaSimulatorCopy>> & { fr: SeaSimulatorCopy } = { fr, en, zh, es, it, tr };
+export const SEA_SIMULATOR: Record<Locale, SeaSimulatorCopy> = { fr, en, zh, es, de, it, pt, nl, ar, ru, tr, pl };
 
 export function seaCopy(lang: Locale): SeaSimulatorCopy {
   return SEA_SIMULATOR[lang] ?? SEA_SIMULATOR.fr;
