@@ -1,0 +1,147 @@
+/*
+ * The motion of the previous site (the Grok build of the same design, still
+ * served for /contact and /demande), carried over to these pages: same
+ * movements, same durations, same curves. Classes are put on by
+ * motion-layer.tsx, except the hero's entrance, which is plain CSS so it
+ * plays from the first paint.
+ *
+ * Everything here is off under prefers-reduced-motion, and on a phone
+ * (≤ 820px) only the drawings of the six operations keep floating, as before.
+ */
+
+@keyframes spm-float {
+  0%, 100% { translate: 0; }
+  50% { translate: 0 -8px; }
+}
+@keyframes spm-march {
+  to { stroke-dashoffset: -48px; }
+}
+@keyframes spm-ring {
+  0% { opacity: 0.7; scale: 1; }
+  100% { opacity: 0; scale: 1.65; }
+}
+@keyframes spm-ride {
+  0% { offset-distance: 0%; }
+  100% { offset-distance: 100%; }
+}
+@keyframes spm-rise {
+  from { opacity: 0; translate: 0 16px; }
+  to { opacity: 1; translate: 0; }
+}
+@keyframes spm-rail {
+  from { scale: 1 0; }
+  to { scale: 1; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The six operations' drawings, and any drawing of that size. */
+  .spm-float {
+    transform-box: fill-box;
+    transform-origin: 50%;
+    animation: spm-float 6.5s ease-in-out infinite;
+  }
+
+  .spm-cta {
+    transition: translate 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .spm-cta:hover {
+    translate: 0 -2px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 821px) {
+  /* The hero comes in as the page opens: heading, line, buttons, then the
+     labels around the drawing. */
+  .sp-motion main > section:first-of-type :is(h1, p, a) {
+    animation: spm-rise 0.65s cubic-bezier(0.33, 1, 0.68, 1) both;
+  }
+  .sp-motion main > section:first-of-type p {
+    animation-delay: 50ms;
+  }
+  .sp-motion main > section:first-of-type a {
+    animation-delay: 100ms;
+  }
+  .sp-motion main > section:first-of-type img ~ div[style*="box-shadow"] {
+    animation: spm-rise 0.65s cubic-bezier(0.33, 1, 0.68, 1) 200ms both;
+  }
+  .sp-motion main > section:first-of-type img ~ div[style*="box-shadow"] ~ div[style*="box-shadow"] {
+    animation-delay: 250ms;
+  }
+  .sp-motion main > section:first-of-type img ~ div[style*="box-shadow"] ~ div[style*="box-shadow"] ~ div[style*="box-shadow"] {
+    animation-delay: 300ms;
+  }
+
+  .spm-hero-float {
+    transform-box: fill-box;
+    transform-origin: 50%;
+    animation: spm-float 6.5s ease-in-out infinite;
+  }
+
+  /* Headings, cards and steps further down rise into place as they come
+     into view (motion-layer.tsx flips spm-await to spm-in). */
+  .spm-await {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  .spm-in {
+    opacity: 1;
+    translate: 0;
+    transition:
+      opacity 0.7s cubic-bezier(0.33, 1, 0.68, 1),
+      translate 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  /* The home page's six-step line: the dashes march, the current step
+     rings, and a container rides the line. */
+  .spm-dash {
+    animation: spm-march 1.8s linear infinite;
+  }
+  .spm-ring {
+    transform-box: fill-box;
+    transform-origin: 50%;
+    animation: spm-ring 2.6s ease-out infinite;
+  }
+  .spm-traveler {
+    offset-rotate: 0deg;
+    animation: spm-ride 16s linear infinite;
+  }
+  [dir="rtl"] .spm-traveler {
+    animation-direction: reverse;
+  }
+
+  /* A numbered list of steps gets the line that joins its badges, drawn as
+     the list scrolls by where the browser can tie it to scrolling. */
+  .spm-rail {
+    position: relative;
+  }
+  .spm-rail::before {
+    content: "";
+    position: absolute;
+    top: var(--rail-top, 36px);
+    bottom: var(--rail-bottom, 36px);
+    inset-inline-start: var(--rail-x, 28px);
+    z-index: 0;
+    width: 2px;
+    background: linear-gradient(#155dfc, #155dfc33);
+    transform-origin: top;
+  }
+  .spm-rail-badge {
+    position: relative;
+    z-index: 1;
+  }
+  @supports (view-timeline-name: --spm) {
+    .spm-rail {
+      view-timeline: --spm-steps block;
+    }
+    .spm-rail::before {
+      animation: spm-rail linear both;
+      animation-timeline: --spm-steps;
+      animation-range: entry 8% cover 55%;
+    }
+  }
+
+  /* Nothing keeps moving in a tab nobody is looking at. */
+  html[data-spm-idle] :is(.spm-float, .spm-hero-float, .spm-dash, .spm-ring, .spm-traveler, .sp-announce-dot) {
+    animation-play-state: paused;
+  }
+}
