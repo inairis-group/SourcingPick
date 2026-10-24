@@ -703,9 +703,16 @@ class Emitter:
             return [f"{pad}<{head}>", *inner, f"{pad}</Disclosure>"]
 
         if retagged:
-            component, extra = retagged
+            component, extra, *rest = retagged
             self.components.add(component)
             attrs.extend(extra)
+            if rest and rest[0]:
+                # The stand-in renders the whole element itself (the live
+                # simulator in place of a drawn one). The drawn children are
+                # still walked, so every slot and attribute after them keeps
+                # its index, but nothing of them is emitted.
+                self.children(node, indent + 1)
+                return [f"{pad}<{component}{'' if not attrs else ' ' + ' '.join(attrs)} />"]
             tag_out = component
         elif tag == "a" and not is_link and not any(
             a.startswith("href=") for a in attrs
