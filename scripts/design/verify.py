@@ -33,7 +33,15 @@ BASE = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:3000"
 SKIP_TAGS = ("script", "style", "svg", "noscript", "template", "select")
 
 
+# Drawn sections a live component stands in for (the porter's replacing
+# COMPONENTS): the canvas's text and the component's are not comparable, so
+# both sides leave the section out. Its copy is checked where it lives.
+LIVE_SECTIONS = ("simulateur",)
+
+
 def visible_text(markup: str) -> list[str]:
+    for sid in LIVE_SECTIONS:
+        markup = re.sub(rf'<section[^>]*\bid="{sid}"[^>]*>.*?</section>', " ", markup, flags=re.S)
     for tag in SKIP_TAGS:
         markup = re.sub(rf"<{tag}\b.*?</{tag}>", " ", markup, flags=re.S | re.I)
     markup = re.sub(r"<!--.*?-->", " ", markup, flags=re.S)
@@ -153,6 +161,8 @@ def text_slots(stem: str, locale: str) -> list[str]:
         # in the step circles on the home page. And a <select>'s options are
         # generated, not designed. The HTML side drops both, so this must too.
         if n.tag in ("svg", "select"):
+            return
+        if n.tag == "section" and n.attr("id") in LIVE_SECTIONS:
             return
         # A <style> (the keyframes behind a drawn illustration) is a slot to the
         # porter but not visible text; the HTML side strips it.

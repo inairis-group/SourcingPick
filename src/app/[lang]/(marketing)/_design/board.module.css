@@ -880,6 +880,24 @@
 /* The CBM simulator's carton lines (import-simulator.tsx): name, five
    figures and the subtotal on one row; two columns on a phone, the name and
    the subtotal across both. */
+/* The sea simulator's carton lots (sea-simulator.tsx): five figures and the
+   remove button on a row; three to a row on a phone. Its estimate panel stays
+   in view beside the form, except on a phone where it follows the form. */
+.frame :global(.sp-carton-row) {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) auto;
+  gap: 10px;
+  align-items: end;
+}
+@media (max-width: 820px) {
+  .frame :global(.sp-carton-row) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .frame :global(.sp-sim-panel) {
+    position: static !important;
+  }
+}
+
 .frame :global(.sp-sim-row) {
   display: grid;
   grid-template-columns: minmax(0, 2fr) repeat(5, minmax(0, 1fr)) minmax(0, 1.3fr);

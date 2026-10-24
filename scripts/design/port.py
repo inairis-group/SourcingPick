@@ -656,10 +656,11 @@ COMPONENTS: dict[str, list[tuple]] = {
         (_is_file_drop, "FileDrop", "../../file-drop", 1, True),
     ],
     "Livraisons": [
-        # The figures of the drawn example follow the five numeric fields,
-        # written the way the page's language writes numbers.
+        # The drawn estimator is replaced by the live one: the carrier's sea
+        # rate card and its rules (src/lib/freight), the price e-mailed once
+        # the visitor asks for it. Its drawn content is not emitted.
         (lambda el: el.tag == "section" and el.attr("id") == "simulateur",
-         "DeliverySimulator", "../../delivery-simulator", 1, True),
+         "SeaSimulator", "../../sea-simulator", 1, True, True),
     ],
     "FAQ": [
         # The chips work as plain anchors with no JavaScript; this adds the
@@ -716,18 +717,18 @@ def component_for(stem: str):
     seen = [0] * len(rules)
 
     def retag(el: Element):
-        """-> (component, extra attributes) for a matching element."""
-        for i, (pred, name, _mod, _n, needs_lang) in enumerate(rules):
+        """-> (component, extra attributes, replaces its content) for a matching element."""
+        for i, (pred, name, _mod, _n, needs_lang, *replace) in enumerate(rules):
             if pred(el):
                 seen[i] += 1
                 # Only the stand-ins that render copy or a localised list are
                 # handed the locale; the generic submit button has no use for
                 # it and should not be asked to accept one.
-                return name, (["lang={lang}"] if needs_lang else [])
+                return name, (["lang={lang}"] if needs_lang else []), bool(replace and replace[0])
         return None
 
     def check() -> None:
-        for (pred, name, _mod, expected, _l), got in zip(rules, seen):
+        for (pred, name, _mod, expected, _l, *_r), got in zip(rules, seen):
             if got != expected:
                 raise SystemExit(
                     f"{stem}: expected {expected} element(s) for <{name}>, "
@@ -739,7 +740,7 @@ def component_for(stem: str):
 
 def component_imports(stem: str, used: set[str]) -> list[str]:
     """Import lines for whichever stand-ins the emitter actually produced."""
-    table = {name: mod for _p, name, mod, _n, _l in COMPONENTS.get(stem, [])}
+    table = {name: mod for _p, name, mod, _n, _l, *_r in COMPONENTS.get(stem, [])}
     table.update(GENERIC_IMPORTS)
     return [
         f'import {{ {name} }} from "{table[name]}";'
@@ -1263,14 +1264,16 @@ def _move_out(node: Element, pred) -> int:
     return moved
 
 
-# -- French headings from the SEO pack ----------------------------------------
+# -- French text that replaces the canvas's --------------------------------------
 #
-# The 2026-10 SEO pack rewrites some French headings (H1/H2) for search. They
-# are applied over the canvas's text by position — slot n of the page's French
-# strings — because the same word can be a heading and a tab ("Général" is
-# both on the FAQ). Each entry names the canvas text it replaces: if the
-# canvas changes there, the port stops instead of overwriting something else.
-# French only; the other languages keep the canvas's wording.
+# The 2026-10 SEO pack rewrites some French headings (H1/H2) for search, and
+# the indicative delivery prices follow the carrier's rate card ("Tarifs VIP
+# Europe", 30 July; see src/lib/freight). They are applied over the canvas's
+# text by position — slot n of the page's French strings — because the same
+# word can be a heading and a tab ("Général" is both on the FAQ). Each entry
+# names the canvas text it replaces: if the canvas changes there, the port
+# stops instead of overwriting something else. The other languages carry the
+# same prices in their translations (translations/<page>/<locale>.json).
 FR_TEXT: dict[str, dict[int, tuple[str, str]]] = {
     "Accueil": {
         # H1: "Entre l'usine et le navire" carries the highlight.
@@ -1301,6 +1304,27 @@ FR_TEXT: dict[str, dict[int, tuple[str, str]]] = {
         142: ("Ce que contient chaque devis", "Ce que contient exactement chaque devis"),
         148: ("Paiement",
               "Conditions de paiement sécurisées (acompte de 40 % à la commande, solde avant chargement)"),
+        # Indicative delivery prices, from the carrier's rate card (taxes included).
+        29: ("150 à 250", "44 à 56"),
+        34: ("30 à 40", "18 à 30"),
+        39: ("25 à 30", "7,4 à 18,9"),
+        43: ('Même prix que le camion. Nous ne le recommandons pas non plus.', 'Un peu moins cher que le camion. Nous ne le recommandons pas non plus.'),
+        44: ("30 à 40", "14 à 27"),
+        46: ('Prix indicatifs en RMB par kilo volumétrique : on compare le poids réel et le volume converti en kilos, le plus élevé sert de base. Le prix réel figure à part sur votre devis, au prix du marché du moment.',
+             'Prix indicatifs en RMB par kilo volumétrique, actualisation prochaine : on compare le poids réel et le volume converti en kilos, le plus élevé sert de base. Le prix réel figure à part sur votre devis, au prix du marché du moment.'),
+        159: ("C’est le moins cher des quatre modes, entre 25 et 30 RMB le kilo volumétrique. Le camion est plus risqué et le train coûte le même prix que le camion : nous ne recommandons ni l’un ni l’autre. L’avion reste utile pour un petit colis urgent.",
+              "C’est le moins cher des quatre modes, entre 7,4 et 18,9 RMB le kilo volumétrique. Le camion est plus risqué et le train coûte à peine moins cher que lui : nous ne recommandons ni l’un ni l’autre. L’avion reste utile pour un petit colis urgent."),
+    },
+    "Livraisons": {
+        12: ("25 à 30", "7,4 à 18,9"),
+        17: ("150 à 250", "44 à 56"),
+        23: ("30 à 40", "18 à 30"),
+        29: ("30 à 40", "14 à 27"),
+        31: ('Même prix que le camion. Nous ne le recommandons pas non plus.', 'Un peu moins cher que le camion. Nous ne le recommandons pas non plus.'),
+        32: ('Prix indicatifs en RMB par kilo volumétrique : on compare le poids réel et le volume converti en kilos, le plus élevé sert de base. Le prix réel figure à part sur votre devis, au prix du marché du moment.',
+             'Prix indicatifs en RMB par kilo volumétrique, actualisation prochaine : on compare le poids réel et le volume converti en kilos, le plus élevé sert de base. Le prix réel figure à part sur votre devis, au prix du marché du moment.'),
+        136: ("C’est le mode le moins cher : 25 à 30 RMB le kilo. Le camion et le train coûtent 30 à 40 RMB et nous ne les recommandons pas ; le camion est plus risqué.",
+              "C’est le mode le moins cher : 7,4 à 18,9 RMB le kilo. Le camion coûte 18 à 30 RMB et le train 14 à 27 RMB ; nous ne les recommandons pas, le camion est plus risqué."),
     },
     "FAQ": {
         1: ("Les réponses, sans détour.",
