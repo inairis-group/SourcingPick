@@ -22,33 +22,29 @@ configuration que ce script a produite.
 
 La table des adresses est dans `src/lib/i18n/site-paths.ts`.
 
-## Ordre des opérations
+## Déployer
 
-Les deux étapes se suivent sans attendre. Entre les deux, `/tarifs` (nginx,
-302 vers `/fr/pricing`) et `/fr/pricing` (application, 301 vers `/tarifs`) se
-renvoient l'un à l'autre.
+Une seule commande, sur le serveur :
 
-1. **Construire** la nouvelle version (le site reste servi par l'ancienne
-   pendant la construction) :
-   ```bash
-   cd /var/www/sourcingpick && git pull origin dev && npm ci && npm run build
-   ```
-2. **Lire le changement nginx** (le script n'écrit rien sans `--apply`) :
-   ```bash
-   F=$(grep -l "server_name sourcingpick.com" /etc/nginx/sites-enabled/* /etc/nginx/conf.d/* 2>/dev/null | head -1); echo "$F"
-   python3 /var/www/sourcingpick/scripts/deploy/nginx-fr-root.py "$F"
-   ```
-3. **Appliquer et redémarrer ensemble** :
-   ```bash
-   python3 /var/www/sourcingpick/scripts/deploy/nginx-fr-root.py "$F" --apply && nginx -t && pm2 restart sourcingpick && systemctl reload nginx
-   ```
-4. **Vérifier** :
-   ```bash
-   for p in / /tarifs /a-propos /fr/pricing /en/pricing /robots.txt /sitemap.xml /contact /demande; do printf "%-14s " $p; curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" "https://sourcingpick.com$p"; done
-   ```
-   Attendu : `/`, `/tarifs`, `/a-propos`, `/en/pricing`, `/robots.txt`,
-   `/sitemap.xml`, `/contact`, `/demande` en 200 ; `/fr/pricing` en 301 vers
-   `/tarifs`.
+```bash
+cd /var/www/sourcingpick && git pull origin dev && bash scripts/deploy/deploy.sh
+```
+
+`scripts/deploy/deploy.sh` enchaîne `npm ci`, la construction (le site reste
+servi par la version précédente pendant ce temps), le changement nginx, le
+redémarrage de l'application avec le rechargement de nginx — dans cet ordre et
+sans pause, car entre les deux `/tarifs` (nginx, 302 vers `/fr/pricing`) et
+`/fr/pricing` (application, 301 vers `/tarifs`) se renvoient l'un à l'autre —
+puis vérifie les adresses. Il s'arrête à la première étape qui échoue en disant
+laquelle ; si `nginx -t` refuse la configuration, l'ancienne est remise.
+
+Le fichier nginx est celui qui porte le marqueur de `nginx-vitrine.py`
+(« Added by scripts/deploy/nginx-vitrine.py ») : le chercher par
+`server_name` peut tomber sur un autre fichier qui déclare aussi le domaine.
+
+Attendu à la fin : `/`, `/tarifs`, `/a-propos`, `/services`, `/en/pricing`,
+`/robots.txt`, `/sitemap.xml`, `/demande`, `/contact` en 200 ; `/fr/pricing`
+en 301 vers `/tarifs`.
 
 ## Retour arrière
 
