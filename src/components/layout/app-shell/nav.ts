@@ -8,11 +8,13 @@ import type { NavIconKey } from "./nav-icons";
  *
  * This file is the allow-list. The canvas draws seven entries for a client,
  * seven for an agent and twelve for an administrator — identically on all
- * fifty boards, which was checked rather than assumed. Caystone's rule is
- * that anything the canvas does not draw is not a feature, so the surfaces
- * that used to appear here and no longer do — marketplace, auctions,
- * analytics, KYC, escrow, certifications, disputes, payouts, organizations,
- * webhooks, logins, support — are unreachable from the interface.
+ * fifty boards, which was checked rather than assumed. One entry was added
+ * since, at the owner's request: the administrator's freight calculator.
+ * Caystone's rule is that anything the canvas does not draw is not a
+ * feature, so the surfaces that used to appear here and no longer do —
+ * marketplace, auctions, analytics, KYC, escrow, certifications, disputes,
+ * payouts, organizations, webhooks, logins, support — are unreachable from
+ * the interface.
  *
  * Their route files still exist and are guarded by `hidden-routes.ts`, which
  * turns them into 404s. Deleting them is a separate decision with data
@@ -145,6 +147,15 @@ function buildNav(role: Role, lang: string, dict: Dictionary): AppNav | null {
         items: [
           { key: "dashboard", href: `${base}/admin`, label: n.dashboard, icon: "grid" },
           { key: "requests", href: `${base}/admin/requests`, label: n.requests, icon: "list" },
+          {
+            // The one entry the canvas does not draw: the team prices
+            // shipments here with the public simulator's engine, and reads
+            // the requests the simulator receives (asked for in 2026-10).
+            key: "freight",
+            href: `${base}/admin/freight-calculator`,
+            label: dict.admin.freightCalculator.title,
+            icon: "calculator",
+          },
           { key: "quotes", href: `${base}/admin/quotes`, label: n.quotations, icon: "document" },
           { key: "orders", href: `${base}/admin/orders`, label: n.orders, icon: "cube" },
           { key: "invoices", href: `${base}/admin/invoices`, label: n.invoices, icon: "euro" },

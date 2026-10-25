@@ -279,5 +279,14 @@
       "quote": "Poproś o wycenę"
     },
     "whatsappButton": "Napisz do nas na WhatsAppie"
+  },
+  "admin": {
+    "freightCalculator": {
+      "title": "Kalkulator transportu",
+      "intro": "Ten sam rachunek co w publicznym symulatorze, ze szczegółową ceną na ekranie.",
+      "result": "Obliczona cena",
+      "requests": "Zapytania z kalkulatora",
+      "requestsEmpty": "Brak zapytań."
+    }
   }
 }

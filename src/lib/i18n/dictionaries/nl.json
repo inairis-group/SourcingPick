@@ -279,5 +279,14 @@
       "quote": "Offerte aanvragen"
     },
     "whatsappButton": "Stuur ons een WhatsApp"
+  },
+  "admin": {
+    "freightCalculator": {
+      "title": "Vrachtcalculator",
+      "intro": "Dezelfde berekening als de openbare simulator, met de gedetailleerde prijs op het scherm.",
+      "result": "Berekende prijs",
+      "requests": "Aanvragen via de calculator",
+      "requestsEmpty": "Nog geen aanvragen."
+    }
   }
 }

@@ -2367,6 +2367,13 @@
       "message": "Précisions",
       "phone": "Téléphone",
       "files": "Pièces jointes"
+    },
+    "freightCalculator": {
+      "title": "Simulateur de transport",
+      "intro": "Le même calcul que le simulateur public, avec le prix détaillé à l’écran.",
+      "result": "Prix calculé",
+      "requests": "Demandes reçues par le simulateur",
+      "requestsEmpty": "Aucune demande pour l’instant."
     }
   },
   "attachments": {

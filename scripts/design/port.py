@@ -656,11 +656,12 @@ COMPONENTS: dict[str, list[tuple]] = {
         (_is_file_drop, "FileDrop", "../../file-drop", 1, True),
     ],
     "Livraisons": [
-        # The drawn estimator is replaced by the live one: the carrier's sea
-        # rate card and its rules (src/lib/freight), the price e-mailed once
-        # the visitor asks for it. Its drawn content is not emitted.
+        # The drawn estimator is replaced by the live one: the carrier's rate
+        # card for sea, air, truck and rail and its rules (src/lib/freight),
+        # the price e-mailed once the visitor asks for it. Its drawn content
+        # is not emitted.
         (lambda el: el.tag == "section" and el.attr("id") == "simulateur",
-         "SeaSimulator", "../../sea-simulator", 1, True, True),
+         "FreightSimulator", "../../freight-simulator", 1, True, True),
     ],
     "FAQ": [
         # The chips work as plain anchors with no JavaScript; this adds the

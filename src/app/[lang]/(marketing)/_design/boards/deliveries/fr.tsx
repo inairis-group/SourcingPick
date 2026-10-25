@@ -12,7 +12,7 @@ import type { Locale } from "@/lib/i18n/config";
 import { sitePath } from "@/lib/i18n/site-paths";
 import { deliveries as content } from "../../content/deliveries";
 import { Disclosure } from "../../disclosure";
-import { SeaSimulator } from "../../sea-simulator";
+import { FreightSimulator } from "../../freight-simulator";
 
 export function DeliveriesBoard({ lang }: { lang: Locale }) {
   const t = content.text[lang];
@@ -1207,7 +1207,7 @@ export function DeliveriesBoard({ lang }: { lang: Locale }) {
                 </div>
               </div>
             </section>
-            <SeaSimulator id="simulateur" style={{ "padding": "0 var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))" }} lang={lang} />
+            <FreightSimulator id="simulateur" style={{ "padding": "0 var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))" }} lang={lang} />
             <section style={{ "padding": "0 var(--sp-gutter, 120px) calc(88px * var(--sp-vs, 1))" }}>
               <div style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-fr-560, minmax(0, 1fr) 560px)", "gap": "var(--sp-gap-56, 56px)", "alignItems": "center", "padding": "var(--sp-pad-56, 56px)", "borderRadius": "32px", "background": "#0E1A3D", "color": "#FFFFFF" }}>
                 <div style={{ "display": "flex", "flexDirection": "column", "gap": "22px" }}>

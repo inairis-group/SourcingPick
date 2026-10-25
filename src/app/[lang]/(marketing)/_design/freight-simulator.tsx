@@ -1,23 +1,23 @@
 import type { CSSProperties } from "react";
 import type { Locale } from "@/lib/i18n/config";
-import { seaCopy } from "@/content/freight/sea-simulator";
+import { freightCopy, freightFormCopy } from "@/content/freight/simulator";
 import { DISPLAY, localType } from "./locale-type";
-import { SeaSimulatorForm } from "./sea-simulator-form";
+import { FreightSimulatorForm } from "./freight-simulator-form";
 
 /**
- * The sea simulator on /livraisons, in place of the estimator the canvas
+ * The freight simulator on /livraisons, in place of the estimator the canvas
  * draws there (the porter emits this component for `section#simulateur`).
  *
- * The form and its estimate panel run in the browser (sea-simulator-form.tsx);
- * under them, every rule of the carrier's sea rate card, in plain words,
- * rendered here so it is in the page for readers and search engines alike.
+ * The form and its panel run in the browser (freight-simulator-form.tsx);
+ * under them, every rule of the carrier's rate card, in plain words, rendered
+ * here so it is in the page for readers and search engines alike.
  */
-export function SeaSimulator({ lang, id, style }: { lang: Locale; id?: string; style?: CSSProperties }) {
-  const { rules, email, ...form } = seaCopy(lang);
+export function FreightSimulator({ lang, id, style }: { lang: Locale; id?: string; style?: CSSProperties }) {
+  const { rules } = freightCopy(lang);
 
   return (
     <section id={id} style={style}>
-      <SeaSimulatorForm lang={lang} copy={{ ...form, sep: email.sep }} />
+      <FreightSimulatorForm lang={lang} copy={freightFormCopy(lang)} />
 
       <div style={{ marginTop: "24px", padding: "var(--sp-pad-48, 48px)", borderRadius: "32px", background: "#FFFFFF", border: "1px solid #DCE3F2", display: "flex", flexDirection: "column", gap: "14px" }}>
         <h2 style={localType(lang, { margin: 0, fontFamily: DISPLAY, fontSize: "var(--sp-fs-28, 28px)", lineHeight: 1.2, fontWeight: 600, letterSpacing: "-0.03em", color: "#0E1A3D" })}>{rules.title}</h2>
