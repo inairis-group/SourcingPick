@@ -4,62 +4,62 @@ import type { Locale } from "@/lib/i18n/config";
 /**
  * `<title>` and meta description of the French pages, from the 2026-10 SEO
  * pack (matrix, part 1 and 2), keyed by route. The titles already end with
- * "| Sourcing Pick", so they are absolute — the layout's title template would
+ * "| SourcingPick", so they are absolute — the layout's title template would
  * otherwise add the name a second time. The other languages keep the
  * canvas's titles.
  */
 export const FR_META: Readonly<Record<string, { title: string; description?: string }>> = {
   "/": {
-    title: "Sourcing, Consolidation & Logistique Chine (Guangzhou) | Sourcing Pick",
+    title: "Sourcing, Consolidation & Logistique Chine (Guangzhou) | SourcingPick",
     description:
       "Entre l’usine et le navire : réception, contrôle qualité photo/vidéo, consolidation, caisses NIMP 15 et fret maritime depuis Guangzhou (Nansha). Commission 2% / 3%.",
   },
   "/services": {
-    title: "Services Logistiques à Guangzhou : Contrôle, Groupage & Fret | Sourcing Pick",
+    title: "Services Logistiques à Guangzhou : Contrôle, Groupage & Fret | SourcingPick",
     description:
       "Nos 6 opérations dans notre entrepôt de Baiyun (Guangzhou) : réception multi-fournisseurs, contrôle qualité, consolidation, caisses NIMP 15, empotage et fret Nansha.",
   },
   "/comment-ca-marche": {
-    title: "Importer de Chine en 6 Étapes : du Devis au Navire | Sourcing Pick",
+    title: "Importer de Chine en 6 Étapes : du Devis au Navire | SourcingPick",
     description:
       "De votre demande de devis jusqu’au départ du conteneur à Nansha : découvrez les 6 étapes d’une importation suivie en photo et vidéo dans votre espace client.",
   },
   "/entrepot": {
-    title: "Notre Entrepôt Logistique à Guangzhou (Baiyun) – 200 m² | Sourcing Pick",
+    title: "Notre Entrepôt Logistique à Guangzhou (Baiyun) – 200 m² | SourcingPick",
     description:
       "Découvrez notre entrepôt de 200 m² dans le district de Baiyun à Guangzhou : 4 techniciens sur place pour réceptionner, contrôler, consolider et charger vos conteneurs.",
   },
   "/pricing": {
-    title: "Tarifs Sourcing Chine (2%) & Fret Maritime (3%) sur Devis | Sourcing Pick",
+    title: "Tarifs Sourcing Chine (2%) & Fret Maritime (3%) sur Devis | SourcingPick",
     description:
       "Des devis réels ligne par ligne : 2 % de commission sur le sourcing fournisseur, 3 % sur le fret maritime Nansha, 0 € de frais de dossier. Acompte 40 % à la commande.",
   },
   "/faq": {
-    title: "Questions Fréquentes : Importation, Groupage & Sourcing Chine | Sourcing Pick",
+    title: "Questions Fréquentes : Importation, Groupage & Sourcing Chine | SourcingPick",
     description:
       "Toutes nos réponses sans détour : délais maritimes depuis Nansha, groupage de conteneur, contrôle qualité à Guangzhou, stockage, paiement 40/60 et commission 2%/3%.",
   },
   "/about": {
-    title: "À Propos de Sourcing Pick : Notre Équipe à Guangzhou | Sourcing Pick",
+    title: "À Propos de SourcingPick : Notre Équipe à Guangzhou | SourcingPick",
     description:
-      "Fondée en 2023 à Guangzhou par Adam et Xie Wei, Sourcing Pick sécurise vos importations entre l’usine et le navire avec 4 techniciens dans notre entrepôt de Baiyun.",
+      "Fondée en 2023 à Guangzhou par Adam et Xie Wei, SourcingPick sécurise vos importations entre l’usine et le navire avec 4 techniciens dans notre entrepôt de Baiyun.",
   },
   "/legal/mentions-legales": {
-    title: "Mentions Légales – Hangzhou Qiyuan Ying Technology | Sourcing Pick",
+    title: "Mentions Légales – Hangzhou Qiyuan Ying Technology | SourcingPick",
     description:
-      "Mentions légales du site sourcingpick.com et de l’application Sourcing Pick, édités par Hangzhou Qiyuan Ying Technology Information Co., Ltd. à Guangzhou.",
+      "Mentions légales du site sourcingpick.com et de l’application SourcingPick, édités par Hangzhou Qiyuan Ying Technology Information Co., Ltd. à Guangzhou.",
   },
   "/legal/terms": {
-    title: "Conditions Générales de Vente et d’Utilisation (CGV) | Sourcing Pick",
+    title: "Conditions Générales de Vente et d’Utilisation (CGV) | SourcingPick",
     description:
-      "Consultez les conditions générales de vente des prestations de réception, contrôle, consolidation, sourcing (2%) et fret maritime (3%) de Sourcing Pick.",
+      "Consultez les conditions générales de vente des prestations de réception, contrôle, consolidation, sourcing (2%) et fret maritime (3%) de SourcingPick.",
   },
   "/legal/privacy": {
-    title: "Politique de Confidentialité & Protection des Données | Sourcing Pick",
+    title: "Politique de Confidentialité & Protection des Données | SourcingPick",
     description:
-      "Politique de confidentialité de Sourcing Pick : protection stricte de vos données commerciales, factures fournisseurs et documents d’importation.",
+      "Politique de confidentialité de SourcingPick : protection stricte de vos données commerciales, factures fournisseurs et documents d’importation.",
   },
-  "/legal/cookies": { title: "Politique de Gestion des Cookies | Sourcing Pick" },
+  "/legal/cookies": { title: "Politique de Gestion des Cookies | SourcingPick" },
 };
 
 /** The page's title and description: the SEO pack's in French, `fallback` otherwise. */

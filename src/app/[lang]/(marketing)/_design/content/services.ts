@@ -8,7 +8,7 @@ import type { CSSProperties } from "react";
 import type { Locale } from "@/lib/i18n/config";
 
 export const services = {
-  title: { fr: "Sourcing Pick — services", en: "Sourcing Pick — Services", zh: "Sourcing Pick — 服务", es: "Sourcing Pick — servicios", de: "Sourcing Pick – Leistungen", it: "Sourcing Pick — servizi", pt: "Sourcing Pick — serviços", nl: "Sourcing Pick — diensten", ar: "Sourcing Pick — الخدمات", ru: "Sourcing Pick — услуги", tr: "Sourcing Pick — hizmetler", pl: "Sourcing Pick – usługi" } as Record<Locale, string>,
+  title: { fr: "SourcingPick — services", en: "SourcingPick — Services", zh: "SourcingPick — 服务", es: "SourcingPick — servicios", de: "SourcingPick – Leistungen", it: "SourcingPick — servizi", pt: "SourcingPick — serviços", nl: "SourcingPick — diensten", ar: "SourcingPick — الخدمات", ru: "SourcingPick — услуги", tr: "SourcingPick — hizmetler", pl: "SourcingPick – usługi" } as Record<Locale, string>,
   description: { fr: "Entre l’usine et le navire, vos marchandises passent par notre entrepôt de Baiyun. Voici exactement ce que nous y faisons, et ce que vous recevez à chaque étape.", en: "Between the factory and the ship, your goods pass through our warehouse in Baiyun. Here is exactly what we do there, and what you receive at each step.", zh: "在广州，我们做六件事，件件有记录。", es: "Entre la fábrica y el buque, sus mercancías pasan por nuestro almacén de Baiyun. Esto es exactamente lo que hacemos allí y lo que usted recibe en cada etapa.", de: "Zwischen Fabrik und Schiff durchlaufen Ihre Waren unser Lager in Baiyun. Hier sehen Sie genau, was wir dort tun – und was Sie bei jedem Schritt erhalten.", it: "Tra la fabbrica e la nave, la vostra merce passa dal nostro magazzino di Baiyun. Ecco esattamente cosa facciamo lì, e cosa ricevete in ogni fase.", pt: "Entre a fábrica e o navio, as suas mercadorias passam pelo nosso armazém de Baiyun. Eis exatamente o que lá fazemos e o que recebe em cada etapa.", nl: "Tussen de fabriek en het schip passeren uw goederen ons magazijn in Baiyun. Dit is precies wat we daar doen, en wat u bij elke stap ontvangt.", ar: "بين المصنع والسفينة، تمرّ بضائعك بمستودعنا في بايون. إليك بالضبط ما نقوم به هناك، وما تحصل عليه في كل مرحلة.", ru: "На пути от фабрики до судна ваши товары проходят через наш склад в районе Байюнь. Вот что именно мы там делаем и что вы получаете на каждом этапе.", tr: "Fabrikadan gemiye giden yolda mallarınız Baiyun’daki depomuzdan geçer. İşte orada tam olarak ne yaptığımız ve her aşamada neler aldığınız.", pl: "W drodze z fabryki na statek towar przechodzi przez nasz magazyn w Baiyun. Oto dokładnie, co tam robimy i co otrzymują Państwo na każdym etapie." } as Record<Locale, string>,
   text: {
     fr: [
@@ -113,7 +113,7 @@ export const services = {
       "Demander un devis",
       "contact@sourcingpick.com",
       "On s’occupe du reste !",
-      "La mascotte Sourcing Pick, bras levés",
+      "La mascotte SourcingPick, bras levés",
     ],
     en: [
       "Services",
@@ -217,7 +217,7 @@ export const services = {
       "Request a quotation",
       "contact@sourcingpick.com",
       "We’ll handle the rest!",
-      "The Sourcing Pick mascot with its arms raised",
+      "The SourcingPick mascot with its arms raised",
     ],
     zh: [
       "服务",
@@ -321,7 +321,7 @@ export const services = {
       "获取报价",
       "contact@sourcingpick.com",
       "剩下的交给我们！",
-      "举起双手的 Sourcing Pick 吉祥物",
+      "举起双手的 SourcingPick 吉祥物",
     ],
     es: [
       "Servicios",
@@ -425,7 +425,7 @@ export const services = {
       "Solicitar presupuesto",
       "contact@sourcingpick.com",
       "¡Nos encargamos del resto!",
-      "La mascota de Sourcing Pick, con los brazos en alto",
+      "La mascota de SourcingPick, con los brazos en alto",
     ],
     de: [
       "Leistungen",
@@ -529,7 +529,7 @@ export const services = {
       "Angebot anfordern",
       "contact@sourcingpick.com",
       "Den Rest übernehmen wir!",
-      "Das Maskottchen von Sourcing Pick mit erhobenen Armen",
+      "Das Maskottchen von SourcingPick mit erhobenen Armen",
     ],
     it: [
       "Servizi",
@@ -633,7 +633,7 @@ export const services = {
       "Richiedi un preventivo",
       "contact@sourcingpick.com",
       "Al resto pensiamo noi!",
-      "La mascotte di Sourcing Pick a braccia alzate",
+      "La mascotte di SourcingPick a braccia alzate",
     ],
     pt: [
       "Serviços",
@@ -737,7 +737,7 @@ export const services = {
       "Pedir orçamento",
       "contact@sourcingpick.com",
       "Nós tratamos do resto!",
-      "A mascote da Sourcing Pick, de braços no ar",
+      "A mascote da SourcingPick, de braços no ar",
     ],
     nl: [
       "Diensten",
@@ -841,7 +841,7 @@ export const services = {
       "Offerte aanvragen",
       "contact@sourcingpick.com",
       "Wij regelen de rest!",
-      "De mascotte van Sourcing Pick met de armen omhoog",
+      "De mascotte van SourcingPick met de armen omhoog",
     ],
     ar: [
       "الخدمات",
@@ -945,7 +945,7 @@ export const services = {
       "اطلب عرض سعر",
       "contact@sourcingpick.com",
       "والباقي علينا!",
-      "تميمة Sourcing Pick رافعةً ذراعيها",
+      "تميمة SourcingPick رافعةً ذراعيها",
     ],
     ru: [
       "Услуги",
@@ -1049,7 +1049,7 @@ export const services = {
       "Запросить расчёт",
       "contact@sourcingpick.com",
       "Остальное — наша забота!",
-      "Талисман Sourcing Pick с поднятыми руками",
+      "Талисман SourcingPick с поднятыми руками",
     ],
     tr: [
       "Hizmetler",
@@ -1153,7 +1153,7 @@ export const services = {
       "Teklif isteyin",
       "contact@sourcingpick.com",
       "Gerisini biz hallederiz!",
-      "Kollarını kaldırmış Sourcing Pick maskotu",
+      "Kollarını kaldırmış SourcingPick maskotu",
     ],
     pl: [
       "Usługi",
@@ -1257,7 +1257,7 @@ export const services = {
       "Poproś o wycenę",
       "contact@sourcingpick.com",
       "Resztą zajmiemy się my!",
-      "Maskotka Sourcing Pick z uniesionymi rękami",
+      "Maskotka SourcingPick z uniesionymi rękami",
     ],
   } as Record<Locale, readonly string[]>,
   frStyles: [

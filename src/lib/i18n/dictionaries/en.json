@@ -3705,7 +3705,7 @@
       "GOODS_DELIVERED": "Goods delivered",
       "FILE_CLOSED": "File closed",
       "CANCELLED_BY_CLIENT": "Cancelled by the client",
-      "CANCELLED_BY_SOURCINGPICK": "Cancelled by Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "Cancelled by SourcingPick",
       "REFUND_ISSUED": "Refund issued"
     }
   }

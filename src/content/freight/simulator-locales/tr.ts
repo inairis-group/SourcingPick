@@ -51,7 +51,7 @@ export const tr: FreightSimulatorCopy = {
     reinforceHint: "m³ başına 15 $, Guangzhou’daki depomuzda.",
     add: "+ Ürün ekleyin",
     remove: "Kaldır",
-    summary: "{m3} · gerçek {real} · hacimsel {volumetric} · faturalanacak {chargeable}",
+    summary: "{m3} · hacimsel {volumetric}",
     goodsReset: "Mal listesi taşıma türüne göre değişir: her ürünün mal türünü kontrol edin.",
   },
   goods: {
@@ -104,16 +104,11 @@ export const tr: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, ilk sayfadan sonraki her sayfa için +50 RMB (sayfa başına 5 ürün).",
   },
   calc: {
-    title: "Nasıl hesaplanıyor",
-    real: "Gerçek ağırlık",
     volumetric: "Hacimsel ağırlık",
     formula: "U × G × Y ÷ 6.000",
-    chargeable: "Faturalanacak ağırlık",
-    chargeableHint: "Koli koli, üçünden en yükseği",
     bracket: "Kademe",
     billed: "{kg} kg faturalanır",
     volume: "Toplam hacim: {m3}",
-    cartons: "{n} koli",
   },
   estimate: {
     title: "Tahmininiz",
@@ -259,8 +254,8 @@ export const tr: FreightSimulatorCopy = {
     sep: ": ",
     subject: "Navlun tahmininiz: {total}",
     subjectQuote: "Navlun teklifi talebiniz",
-    heading: "Sourcing Pick tahmininiz",
-    headingQuote: "Sourcing Pick teklif talebiniz",
+    heading: "SourcingPick tahmininiz",
+    headingQuote: "SourcingPick teklif talebiniz",
     intro: "Taşıyıcımızın Avrupa tarifesi ve tüm kurallarıyla hesaplanan sevkiyatınızın ayrıntıları aşağıdadır.",
     introQuote: "Talebinizi aldık. Bize ilettiğiniz bilgiler aşağıda; size bir teklifle döneceğiz.",
     summary: {
@@ -288,7 +283,7 @@ export const tr: FreightSimulatorCopy = {
       reinforcement: "Ahşap güçlendirme ({m3} m³ × {rate} $)",
     },
     subtotal: "Ara toplam",
-    commission: "Sourcing Pick komisyonu (%3)",
+    commission: "SourcingPick komisyonu (%3)",
     total: "Tahmini toplam",
     notIncludedTitle: "Dâhil olmayanlar",
     notIncluded: [
@@ -299,8 +294,8 @@ export const tr: FreightSimulatorCopy = {
     disclaimer:
       "Taşıyıcımızın güncel tarifesiyle hazırlanmış yaklaşık fiyat (tarife yakında güncellenecek). Kesin fiyat teklifinizde yer alır.",
     quoteNext: "Size ayrıntılı bir teklifle döneceğiz.",
-    signup: "Tekliflerinizi takip etmek için Sourcing Pick hesabınızı oluşturun:",
+    signup: "Tekliflerinizi takip etmek için SourcingPick hesabınızı oluşturun:",
     signupCta: "Hesabınızı oluşturun",
-    footer: "Sourcing Pick · Guangzhou · contact@sourcingpick.com",
+    footer: "SourcingPick · Guangzhou · contact@sourcingpick.com",
   },
 };

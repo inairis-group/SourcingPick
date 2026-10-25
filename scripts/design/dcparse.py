@@ -32,6 +32,13 @@ class Element:
         return None
 
 
+# The brand is written SourcingPick, in one word, as its logo and its legal
+# notice write it; the canvas sometimes splits it. Normalised as it is read,
+# so the porter writes it right and the verifier compares like with like.
+def brand(s: str) -> str:
+    return re.sub(r"Sourcing\s+Pick", "SourcingPick", s)
+
+
 class _Builder(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
@@ -39,13 +46,13 @@ class _Builder(HTMLParser):
         self.stack = [self.root]
 
     def handle_starttag(self, tag, attrs):
-        el = Element(tag, list(attrs))
+        el = Element(tag, [(k, brand(v) if v else v) for k, v in attrs])
         self.stack[-1].children.append(el)
         if tag not in VOID:
             self.stack.append(el)
 
     def handle_startendtag(self, tag, attrs):
-        self.stack[-1].children.append(Element(tag, list(attrs)))
+        self.stack[-1].children.append(Element(tag, [(k, brand(v) if v else v) for k, v in attrs]))
 
     def handle_endtag(self, tag):
         for i in range(len(self.stack) - 1, 0, -1):
@@ -54,7 +61,7 @@ class _Builder(HTMLParser):
                 return
 
     def handle_data(self, data):
-        self.stack[-1].children.append(data)
+        self.stack[-1].children.append(brand(data))
 
 
 def parse(path: str) -> Element:

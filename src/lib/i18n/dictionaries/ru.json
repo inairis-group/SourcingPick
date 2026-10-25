@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Груз доставлен",
       "FILE_CLOSED": "Дело закрыто",
       "CANCELLED_BY_CLIENT": "Отменено клиентом",
-      "CANCELLED_BY_SOURCINGPICK": "Отменено Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "Отменено SourcingPick",
       "REFUND_ISSUED": "Возврат произведён"
     }
   },

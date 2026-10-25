@@ -51,7 +51,7 @@ export const es: FreightSimulatorCopy = {
     reinforceHint: "15 $ por m³, en nuestro almacén de Guangzhou.",
     add: "+ Añadir un producto",
     remove: "Eliminar",
-    summary: "{m3} · {real} reales · {volumetric} volumétricos · {chargeable} facturables",
+    summary: "{m3} · {volumetric} volumétricos",
     goodsReset: "La lista de mercancías depende del modo: compruebe el tipo de cada producto.",
   },
   goods: {
@@ -104,16 +104,11 @@ export const es: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, +50 RMB por cada página después de la primera (5 productos por página).",
   },
   calc: {
-    title: "Cómo se calcula",
-    real: "Peso real",
     volumetric: "Peso volumétrico",
     formula: "L × An × Al ÷ 6000",
-    chargeable: "Peso facturable",
-    chargeableHint: "Caja por caja, el mayor de los tres",
     bracket: "Tramo",
     billed: "se facturan {kg} kg",
     volume: "Volumen total: {m3}",
-    cartons: "{n} cajas",
   },
   estimate: {
     title: "Su estimación",
@@ -259,8 +254,8 @@ export const es: FreightSimulatorCopy = {
     sep: ": ",
     subject: "Su estimación de transporte: {total}",
     subjectQuote: "Su solicitud de presupuesto de transporte",
-    heading: "Su estimación de Sourcing Pick",
-    headingQuote: "Su solicitud de presupuesto de Sourcing Pick",
+    heading: "Su estimación de SourcingPick",
+    headingQuote: "Su solicitud de presupuesto de SourcingPick",
     intro: "Este es el detalle de su envío, calculado con la tabla de tarifas para Europa de nuestro transportista y todas sus reglas.",
     introQuote: "Hemos recibido su solicitud. Esto es lo que nos ha indicado; nos pondremos en contacto con usted con un presupuesto.",
     summary: {
@@ -288,7 +283,7 @@ export const es: FreightSimulatorCopy = {
       reinforcement: "Refuerzo de madera ({m3} m³ × {rate} $)",
     },
     subtotal: "Subtotal",
-    commission: "Comisión de Sourcing Pick (3 %)",
+    commission: "Comisión de SourcingPick (3 %)",
     total: "Total estimado",
     notIncludedTitle: "No incluido",
     notIncluded: [
@@ -299,8 +294,8 @@ export const es: FreightSimulatorCopy = {
     disclaimer:
       "Precio orientativo, calculado con la tabla de tarifas actual de nuestro transportista (que se actualizará próximamente). El precio en firme figura en su presupuesto.",
     quoteNext: "Nos pondremos en contacto con usted con un presupuesto detallado.",
-    signup: "Cree su cuenta de Sourcing Pick para hacer el seguimiento de sus presupuestos:",
+    signup: "Cree su cuenta de SourcingPick para hacer el seguimiento de sus presupuestos:",
     signupCta: "Crear mi cuenta",
-    footer: "Sourcing Pick · Guangzhou · contact@sourcingpick.com",
+    footer: "SourcingPick · Guangzhou · contact@sourcingpick.com",
   },
 };

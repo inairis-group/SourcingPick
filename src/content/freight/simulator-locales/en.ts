@@ -51,7 +51,7 @@ export const en: FreightSimulatorCopy = {
     reinforceHint: "$15 per m³, at our Guangzhou warehouse.",
     add: "+ Add a product",
     remove: "Remove",
-    summary: "{m3} · {real} actual · {volumetric} volumetric · {chargeable} chargeable",
+    summary: "{m3} · {volumetric} volumetric",
     goodsReset: "The list of goods depends on the transport mode: check the type of each product.",
   },
   goods: {
@@ -104,16 +104,11 @@ export const en: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, +50 RMB per page after the first (5 products per page).",
   },
   calc: {
-    title: "How it’s calculated",
-    real: "Actual weight",
     volumetric: "Volumetric weight",
     formula: "L × W × H ÷ 6,000",
-    chargeable: "Chargeable weight",
-    chargeableHint: "Carton by carton, the highest of the three",
     bracket: "Weight bracket",
     billed: "billed {kg} kg",
     volume: "Total volume: {m3}",
-    cartons: "{n} cartons",
   },
   estimate: {
     title: "Your estimate",
@@ -259,8 +254,8 @@ export const en: FreightSimulatorCopy = {
     sep: ": ",
     subject: "Your shipping estimate: {total}",
     subjectQuote: "Your shipping quotation request",
-    heading: "Your Sourcing Pick estimate",
-    headingQuote: "Your Sourcing Pick quotation request",
+    heading: "Your SourcingPick estimate",
+    headingQuote: "Your SourcingPick quotation request",
     intro: "Here is the breakdown of your shipment, calculated with our carrier’s Europe rate card and all its rules.",
     introQuote: "We have received your request. Here is what you told us; we’ll get back to you with a quotation.",
     summary: {
@@ -288,7 +283,7 @@ export const en: FreightSimulatorCopy = {
       reinforcement: "Wood reinforcement ({m3} m³ × ${rate})",
     },
     subtotal: "Subtotal",
-    commission: "Sourcing Pick commission (3%)",
+    commission: "SourcingPick commission (3%)",
     total: "Estimated total",
     notIncludedTitle: "Not included",
     notIncluded: [
@@ -299,8 +294,8 @@ export const en: FreightSimulatorCopy = {
     disclaimer:
       "Indicative price, based on our carrier’s current rate card (to be updated soon). The firm price is shown on your quotation.",
     quoteNext: "We’ll get back to you with a detailed quotation.",
-    signup: "Create your Sourcing Pick account to track your quotations:",
+    signup: "Create your SourcingPick account to track your quotations:",
     signupCta: "Create my account",
-    footer: "Sourcing Pick · Guangzhou · contact@sourcingpick.com",
+    footer: "SourcingPick · Guangzhou · contact@sourcingpick.com",
   },
 };

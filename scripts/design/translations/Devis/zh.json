@@ -1,6 +1,6 @@
 {
  "base": "own",
- "title": "Sourcing Pick — 获取报价",
+ "title": "SourcingPick — 获取报价",
  "text": [
   "申请报价",
   "说说你要发的货，我们给你出一份详细报价。",
@@ -43,7 +43,7 @@
   "支持 PDF、JPG、PNG",
   "补充说明",
   "验货要求、送货限制……",
-  "我同意 Sourcing Pick 使用以上信息为我出报价。",
+  "我同意 SourcingPick 使用以上信息为我出报价。",
   "隐私政策",
   "提交需求",
   "接下来呢？",

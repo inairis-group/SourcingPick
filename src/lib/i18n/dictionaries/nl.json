@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Goederen geleverd",
       "FILE_CLOSED": "Dossier gesloten",
       "CANCELLED_BY_CLIENT": "Geannuleerd door de klant",
-      "CANCELLED_BY_SOURCINGPICK": "Geannuleerd door Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "Geannuleerd door SourcingPick",
       "REFUND_ISSUED": "Terugbetaling gedaan"
     }
   },

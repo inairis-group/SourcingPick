@@ -51,7 +51,7 @@ export const ar: FreightSimulatorCopy = {
     reinforceHint: "15 $ لكل م³، في مستودعنا في قوانغتشو.",
     add: "+ أضف منتجًا",
     remove: "إزالة",
-    summary: "{m3} · الفعلي {real} · الحجمي {volumetric} · المحتسب {chargeable}",
+    summary: "{m3} · الحجمي {volumetric}",
     goodsReset: "تختلف قائمة البضائع حسب وسيلة النقل: تحقّق من نوع كل منتج.",
   },
   goods: {
@@ -104,16 +104,11 @@ export const ar: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB، مع 50 RMB إضافية عن كل صفحة بعد الأولى (5 منتجات في كل صفحة).",
   },
   calc: {
-    title: "طريقة الحساب",
-    real: "الوزن الفعلي",
     volumetric: "الوزن الحجمي",
     formula: "الطول × العرض × الارتفاع ÷ 6,000",
-    chargeable: "الوزن المحتسب",
-    chargeableHint: "كرتونةً كرتونةً، يُعتمد الأعلى بين الأوزان الثلاثة",
     bracket: "الشريحة",
     billed: "يُحتسب {kg} كغ",
     volume: "الحجم الإجمالي: {m3}",
-    cartons: "عدد الكراتين: {n}",
   },
   estimate: {
     title: "تقدير شحنتك",
@@ -259,8 +254,8 @@ export const ar: FreightSimulatorCopy = {
     sep: ": ",
     subject: "تقدير تكلفة شحنتك: {total}",
     subjectQuote: "طلبك لعرض سعر الشحن",
-    heading: "تقديرك من Sourcing Pick",
-    headingQuote: "طلبك لعرض سعر من Sourcing Pick",
+    heading: "تقديرك من SourcingPick",
+    headingQuote: "طلبك لعرض سعر من SourcingPick",
     intro: "إليك تفاصيل شحنتك، محسوبةً وفق جدول أسعار ناقلنا إلى أوروبا وجميع قواعده.",
     introQuote: "لقد تلقّينا طلبك. إليك البيانات التي أرسلتها إلينا؛ وسنعود إليك بعرض سعر.",
     summary: {
@@ -288,7 +283,7 @@ export const ar: FreightSimulatorCopy = {
       reinforcement: "التدعيم بالخشب ({m3} م³ × {rate} $)",
     },
     subtotal: "المجموع الفرعي",
-    commission: "عمولة Sourcing Pick (3%)",
+    commission: "عمولة SourcingPick (3%)",
     total: "الإجمالي التقديري",
     notIncludedTitle: "غير مشمول",
     notIncluded: [
@@ -299,8 +294,8 @@ export const ar: FreightSimulatorCopy = {
     disclaimer:
       "سعر تقديري، محسوب وفق جدول الأسعار الحالي لدى ناقلنا (وسيُحدَّث قريبًا). ويرد السعر النهائي في عرض السعر.",
     quoteNext: "سنعود إليك بعرض سعر مفصّل.",
-    signup: "أنشئ حسابك في Sourcing Pick لمتابعة عروض أسعارك:",
+    signup: "أنشئ حسابك في SourcingPick لمتابعة عروض أسعارك:",
     signupCta: "أنشئ حسابي",
-    footer: "Sourcing Pick · قوانغتشو · contact@sourcingpick.com",
+    footer: "SourcingPick · قوانغتشو · contact@sourcingpick.com",
   },
 };

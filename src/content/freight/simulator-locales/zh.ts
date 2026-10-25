@@ -51,7 +51,7 @@ export const zh: FreightSimulatorCopy = {
     reinforceHint: "每 m³ 15 美元，在我们广州仓库做。",
     add: "+ 添加产品",
     remove: "删除",
-    summary: "{m3} · 实重 {real} · 体积重 {volumetric} · 计费重 {chargeable}",
+    summary: "{m3} · 体积重 {volumetric}",
     goodsReset: "货物类型的选项跟着运输方式变：检查一下每个产品选的类型。",
   },
   goods: {
@@ -104,16 +104,11 @@ export const zh: FreightSimulatorCopy = {
     declarationHintSea: "350 元，第一页之后每页加 50 元（每页 5 个产品）。",
   },
   calc: {
-    title: "怎么算的",
-    real: "实重",
     volumetric: "体积重",
     formula: "长 × 宽 × 高 ÷ 6000",
-    chargeable: "计费重",
-    chargeableHint: "逐箱比较，取三者中最大的",
     bracket: "重量段",
     billed: "按 {kg} kg 计费",
     volume: "总体积：{m3}",
-    cartons: "{n} 箱",
   },
   estimate: {
     title: "你的估算结果",
@@ -259,8 +254,8 @@ export const zh: FreightSimulatorCopy = {
     sep: "：",
     subject: "你的运费估算：{total}",
     subjectQuote: "你的运费报价申请",
-    heading: "你的 Sourcing Pick 运费估算",
-    headingQuote: "你的 Sourcing Pick 报价申请",
+    heading: "你的 SourcingPick 运费估算",
+    headingQuote: "你的 SourcingPick 报价申请",
     intro: "这是你这票货的费用明细，是按我们承运商的欧洲运价表和它的全部规则算出来的。",
     introQuote: "你的申请我们收到了。下面是你填的信息；我们之后会给你发报价。",
     summary: {
@@ -288,7 +283,7 @@ export const zh: FreightSimulatorCopy = {
       reinforcement: "木架加固（{m3} m³ × {rate} 美元）",
     },
     subtotal: "小计",
-    commission: "Sourcing Pick 佣金（3%）",
+    commission: "SourcingPick 佣金（3%）",
     total: "预估总价",
     notIncludedTitle: "不包括",
     notIncluded: [
@@ -299,8 +294,8 @@ export const zh: FreightSimulatorCopy = {
     disclaimer:
       "这是参考价，按我们承运商现在的运价表算的（运价表近期会更新）。最终价格以你的报价单为准。",
     quoteNext: "我们之后会给你发一份详细报价。",
-    signup: "注册 Sourcing Pick 账号，随时跟进你的报价：",
+    signup: "注册 SourcingPick 账号，随时跟进你的报价：",
     signupCta: "注册账号",
-    footer: "Sourcing Pick · Guangzhou · contact@sourcingpick.com",
+    footer: "SourcingPick · Guangzhou · contact@sourcingpick.com",
   },
 };

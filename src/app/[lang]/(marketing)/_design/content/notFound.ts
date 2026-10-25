@@ -8,7 +8,7 @@ import type { CSSProperties } from "react";
 import type { Locale } from "@/lib/i18n/config";
 
 export const notFound = {
-  title: { fr: "Sourcing Pick — page introuvable", en: "Sourcing Pick — Page not found", zh: "Sourcing Pick — 找不到页面", es: "Sourcing Pick — página no encontrada", de: "Sourcing Pick – Seite nicht gefunden", it: "Sourcing Pick — pagina non trovata", pt: "Sourcing Pick — página não encontrada", nl: "Sourcing Pick — pagina niet gevonden", ar: "Sourcing Pick — الصفحة غير موجودة", ru: "Sourcing Pick — страница не найдена", tr: "Sourcing Pick — sayfa bulunamadı", pl: "Sourcing Pick – nie znaleziono strony" } as Record<Locale, string>,
+  title: { fr: "SourcingPick — page introuvable", en: "SourcingPick — Page not found", zh: "SourcingPick — 找不到页面", es: "SourcingPick — página no encontrada", de: "SourcingPick – Seite nicht gefunden", it: "SourcingPick — pagina non trovata", pt: "SourcingPick — página não encontrada", nl: "SourcingPick — pagina niet gevonden", ar: "SourcingPick — الصفحة غير موجودة", ru: "SourcingPick — страница не найдена", tr: "SourcingPick — sayfa bulunamadı", pl: "SourcingPick – nie znaleziono strony" } as Record<Locale, string>,
   description: { fr: "Ce colis s’est égaré.", en: "This package has gone astray.", zh: "这个包裹走丢了。", es: "Este paquete se ha extraviado.", de: "Dieses Paket hat sich verirrt.", it: "Questo collo si è smarrito.", pt: "Esta encomenda extraviou-se.", nl: "Dit pakket is zoekgeraakt.", ar: "هذا الطرد ضلّ طريقه.", ru: "Эта посылка потерялась.", tr: "Bu koli yolunu kaybetti.", pl: "Ta paczka się zgubiła." } as Record<Locale, string>,
   text: {
     fr: [
@@ -18,7 +18,7 @@ export const notFound = {
       "Retour à l’accueil",
       "Demander un devis",
       "?",
-      "La mascotte Sourcing Pick cherche à la loupe",
+      "La mascotte SourcingPick cherche à la loupe",
     ],
     en: [
       "Error 404",
@@ -27,7 +27,7 @@ export const notFound = {
       "Back to homepage",
       "Request a quotation",
       "?",
-      "The Sourcing Pick mascot searching with a magnifying glass",
+      "The SourcingPick mascot searching with a magnifying glass",
     ],
     zh: [
       "404 错误",
@@ -36,7 +36,7 @@ export const notFound = {
       "返回首页",
       "获取报价",
       "?",
-      "Sourcing Pick 吉祥物拿着放大镜在找",
+      "SourcingPick 吉祥物拿着放大镜在找",
     ],
     es: [
       "Error 404",
@@ -45,7 +45,7 @@ export const notFound = {
       "Volver al inicio",
       "Solicitar presupuesto",
       "?",
-      "La mascota de Sourcing Pick buscando con una lupa",
+      "La mascota de SourcingPick buscando con una lupa",
     ],
     de: [
       "Fehler 404",
@@ -54,7 +54,7 @@ export const notFound = {
       "Zur Startseite",
       "Angebot anfordern",
       "?",
-      "Das Maskottchen von Sourcing Pick sucht mit der Lupe",
+      "Das Maskottchen von SourcingPick sucht mit der Lupe",
     ],
     it: [
       "Errore 404",
@@ -63,7 +63,7 @@ export const notFound = {
       "Torna alla home",
       "Richiedi un preventivo",
       "?",
-      "La mascotte di Sourcing Pick cerca con la lente d’ingrandimento",
+      "La mascotte di SourcingPick cerca con la lente d’ingrandimento",
     ],
     pt: [
       "Erro 404",
@@ -72,7 +72,7 @@ export const notFound = {
       "Voltar à página inicial",
       "Pedir orçamento",
       "?",
-      "A mascote da Sourcing Pick procura com uma lupa",
+      "A mascote da SourcingPick procura com uma lupa",
     ],
     nl: [
       "Fout 404",
@@ -81,7 +81,7 @@ export const notFound = {
       "Naar de startpagina",
       "Offerte aanvragen",
       "?",
-      "De mascotte van Sourcing Pick zoekt met een loep",
+      "De mascotte van SourcingPick zoekt met een loep",
     ],
     ar: [
       "خطأ 404",
@@ -90,7 +90,7 @@ export const notFound = {
       "العودة إلى الرئيسية",
       "اطلب عرض سعر",
       "?",
-      "تميمة Sourcing Pick تبحث بعدسة مكبّرة",
+      "تميمة SourcingPick تبحث بعدسة مكبّرة",
     ],
     ru: [
       "Ошибка 404",
@@ -99,7 +99,7 @@ export const notFound = {
       "На главную",
       "Запросить расчёт",
       "?",
-      "Талисман Sourcing Pick что-то ищет с лупой",
+      "Талисман SourcingPick что-то ищет с лупой",
     ],
     tr: [
       "Hata 404",
@@ -108,7 +108,7 @@ export const notFound = {
       "Ana sayfaya dönün",
       "Teklif isteyin",
       "?",
-      "Büyüteçle arama yapan Sourcing Pick maskotu",
+      "Büyüteçle arama yapan SourcingPick maskotu",
     ],
     pl: [
       "Błąd 404",
@@ -117,7 +117,7 @@ export const notFound = {
       "Wróć na stronę główną",
       "Poproś o wycenę",
       "?",
-      "Maskotka Sourcing Pick szuka z lupą",
+      "Maskotka SourcingPick szuka z lupą",
     ],
   } as Record<Locale, readonly string[]>,
   frStyles: [

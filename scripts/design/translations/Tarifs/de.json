@@ -78,7 +78,7 @@
   "Vor dem Versand getestet",
   "Auf Anfrage",
   "je nach Produkt und Stückzahl",
-  "Sie bestellen über Sourcing Pick. Wir nehmen die Ware in Guangzhou an, öffnen die Kartons und testen Ihre Produkte für Sie. Das Ergebnis sehen Sie vor dem Versand.",
+  "Sie bestellen über SourcingPick. Wir nehmen die Ware in Guangzhou an, öffnen die Kartons und testen Ihre Produkte für Sie. Das Ergebnis sehen Sie vor dem Versand.",
   "Annahme Ihrer Bestellung in unserem Lager in Guangzhou",
   "Öffnen der Kartons und Sichtprüfung jedes Produkts",
   "Funktionstests nach Ihren Kriterien, gemeinsam mit Ihnen festgelegt",
@@ -97,7 +97,7 @@
   "Preisverhandlung an Ihrer Seite, auf Chinesisch",
   "Dolmetschen zwischen Französisch und Chinesisch bei den Terminen",
   "Unterstützung beim Visum",
-  "Die App von Sourcing Pick gratis dazu, sobald sie startet",
+  "Die App von SourcingPick gratis dazu, sobald sie startet",
   "Ein Monat",
   "31 Tage",
   "5.000 €",
@@ -108,7 +108,7 @@
   "Muster während Ihres Aufenthalts angefordert, erhalten und getestet",
   "Erste Bestellung vor Ihrer Rückreise vorbereitet",
   "Unterstützung beim Visum für einen Aufenthalt von 31 Tagen",
-  "Die App von Sourcing Pick gratis dazu, sobald sie startet",
+  "Die App von SourcingPick gratis dazu, sobald sie startet",
   "Was nicht im Preis enthalten ist",
   "Er deckt unsere Begleitung ab. Die Reisekosten tragen Sie selbst:",
   "Internationale Flüge und Fahrten in China: Schnellzug, Flugzeug, Taxi, Fahrer",
@@ -136,7 +136,7 @@
   "Bearbeitungs- oder Abonnementgebühr",
   "Angebot einholen, Konto eröffnen, uns eine Bestellung anvertrauen: Außer der Provision zahlen Sie nichts.",
   "Die Sätze von 2 % und 3 % hängen nicht vom Bestellwert ab: keine Staffelung, keine Rabatte im Einzelfall. Kaufen Sie direkt bei Ihren Lieferanten ein, fallen nur die 3 % auf die Fracht an.",
-  "Die Lieferantensuche für Bestellungen über Sourcing Pick ist in der Provision enthalten. Die Einzelleistungen sind optional und werden zum angegebenen Preis berechnet – unabhängig davon, ob eine Bestellung folgt.",
+  "Die Lieferantensuche für Bestellungen über SourcingPick ist in der Provision enthalten. Die Einzelleistungen sind optional und werden zum angegebenen Preis berechnet – unabhängig davon, ob eine Bestellung folgt.",
   "Was den Angebotspreis beeinflusst",
   "Volumen und Gewicht Ihrer Waren",
   "Anzahl der zu bündelnden Lieferanten",
@@ -168,7 +168,7 @@
   "Sind beim Paket „10 Lieferanten in 3 Tagen“ Besuche enthalten?",
   "Ja. In drei Tagen besuchen wir für Sie zehn Lieferanten in Guangdong, für 1.900 €, Verpflegung, Fahrten und Hotel inklusive. Zu jedem erhalten Sie Fotos, Video, Preis, Mindestmenge und Lieferzeiten. Bei mehr als zehn Lieferanten erstellen wir ein Angebot.",
   "Was umfasst die Begleitung in China?",
-  "Ein Programm aus Fabrikbesuchen und Lieferantenterminen, bei denen wir an Ihrer Seite übersetzen und verhandeln, dazu Unterstützung beim Visum und die App von Sourcing Pick gratis. Flüge, Hotel, Verpflegung und Fahrten tragen Sie selbst.",
+  "Ein Programm aus Fabrikbesuchen und Lieferantenterminen, bei denen wir an Ihrer Seite übersetzen und verhandeln, dazu Unterstützung beim Visum und die App von SourcingPick gratis. Flüge, Hotel, Verpflegung und Fahrten tragen Sie selbst.",
   "Wie funktioniert der Produkttest?",
   "Sie bestellen über uns. Wir nehmen die Ware in Guangzhou an, öffnen die Kartons und testen Ihre Produkte nach Ihren Kriterien. Vor dem Versand erhalten Sie Fotos, Videos und einen Bericht. Der Preis hängt vom Produkt und von der Anzahl der getesteten Stücke ab und wird Ihnen in einem Angebot genannt.",
   "Erzählen Sie uns von Ihrer nächsten Bestellung.",
@@ -176,6 +176,6 @@
   "Angebot anfordern",
   "contact@sourcingpick.com",
   "Den Rest übernehmen wir!",
-  "Das Maskottchen von Sourcing Pick mit erhobenen Armen"
+  "Das Maskottchen von SourcingPick mit erhobenen Armen"
  ]
 }

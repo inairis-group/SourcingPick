@@ -1331,7 +1331,7 @@ FR_TEXT: dict[str, dict[int, tuple[str, str]]] = {
         1: ("Les réponses, sans détour.",
             "Questions fréquentes sur nos services de logistique, contrôle et sourcing à Guangzhou"),
         # The section headings; slots 3-7 are the tabs above them, unchanged.
-        9: ("Général", "Questions générales sur Sourcing Pick et notre entrepôt de Guangzhou"),
+        9: ("Général", "Questions générales sur SourcingPick et notre entrepôt de Guangzhou"),
         18: ("Logistique", "Logistique, délais maritimes depuis Nansha, groupage et stockage à Baiyun"),
         29: ("Contrôle", "Contrôle qualité, photos, vidéos et gestion des écarts fournisseurs"),
         34: ("Sourcing", "Sourcing d’usines en Chine et fonctionnement de la commission de 2 %"),
@@ -1344,7 +1344,7 @@ FR_TEXT: dict[str, dict[int, tuple[str, str]]] = {
             "Notre histoire : de la recherche d’usines en 2023 à la maîtrise complète entre l’usine et le navire"),
         7: ("Pourquoi on montre tout",
             "Pourquoi nous montrons tout : adresse publique à Baiyun et preuves visuelles à chaque étape"),
-        9: ("L’équipe", "L’équipe Sourcing Pick à Guangzhou (direction et techniciens d’entrepôt)"),
+        9: ("L’équipe", "L’équipe SourcingPick à Guangzhou (direction et techniciens d’entrepôt)"),
     },
     "Entrepot": {
         1: ("200 m² à Guangzhou, et une adresse que vous pouvez vérifier.",

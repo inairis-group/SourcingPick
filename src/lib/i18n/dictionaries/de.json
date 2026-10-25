@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Ware zugestellt",
       "FILE_CLOSED": "Vorgang abgeschlossen",
       "CANCELLED_BY_CLIENT": "Vom Kunden storniert",
-      "CANCELLED_BY_SOURCINGPICK": "Von Sourcing Pick storniert",
+      "CANCELLED_BY_SOURCINGPICK": "Von SourcingPick storniert",
       "REFUND_ISSUED": "Erstattung erfolgt"
     }
   },

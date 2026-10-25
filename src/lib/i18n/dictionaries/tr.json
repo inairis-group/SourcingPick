@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Mal teslim edildi",
       "FILE_CLOSED": "Dosya kapatıldı",
       "CANCELLED_BY_CLIENT": "Müşteri iptal etti",
-      "CANCELLED_BY_SOURCINGPICK": "Sourcing Pick iptal etti",
+      "CANCELLED_BY_SOURCINGPICK": "SourcingPick iptal etti",
       "REFUND_ISSUED": "İade yapıldı"
     }
   },

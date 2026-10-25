@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Mercadoria entregue",
       "FILE_CLOSED": "Processo encerrado",
       "CANCELLED_BY_CLIENT": "Cancelado pelo cliente",
-      "CANCELLED_BY_SOURCINGPICK": "Cancelado pela Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "Cancelado pela SourcingPick",
       "REFUND_ISSUED": "Reembolso efetuado"
     }
   },

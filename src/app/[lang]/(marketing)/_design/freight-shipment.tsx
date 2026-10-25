@@ -302,7 +302,7 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
               </div>
               {w.cartons > 0 && (
                 <p aria-live="polite" style={{ margin: 0, fontFamily: MONO, fontSize: "13px", lineHeight: 1.5, color: "#155DFC" }}>
-                  {fill(c.products.summary, { m3: m3(w.volume), real: kg(w.real), volumetric: kg(w.volumetric), chargeable: kg(w.chargeable) })}
+                  {fill(c.products.summary, { m3: m3(w.volume), volumetric: kg(w.volumetric) })}
                 </p>
               )}
             </div>
@@ -324,23 +324,12 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
         </label>
       )}
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        <span style={LABEL}>{c.calc.title}</span>
-        <div style={{ display: "grid", gridTemplateColumns: "var(--sp-grid-r3, repeat(3, minmax(0, 1fr)))", gap: "12px" }} aria-live="polite">
-          {[
-            [c.calc.real, s.totals.real, fill(c.calc.cartons, { n: n(s.totals.cartons, 0) })],
-            [c.calc.volumetric, s.totals.volumetric, c.calc.formula],
-            [c.calc.chargeable, s.totals.chargeable, c.calc.chargeableHint],
-          ].map(([label, value, detail], k) => (
-            <div key={k} style={{ display: "flex", flexDirection: "column", gap: "6px", padding: "18px", borderRadius: "18px", background: k === 2 ? "#EAF1FF" : "#F5F7FC", border: `1.5px solid ${k === 2 ? "#155DFC" : "#DCE3F2"}` }}>
-              <span style={{ fontSize: "13px", fontWeight: 600, color: "#4A5578" }}>{label as string}</span>
-              <span style={{ fontFamily: MONO, fontSize: "var(--sp-fs-24, 24px)", fontWeight: 600, color: "#0E1A3D" }}>
-                {n(value as number)} <span style={{ fontSize: "15px", color: "#4A5578" }}>kg</span>
-              </span>
-              <span style={{ fontSize: "12.5px", lineHeight: 1.45, color: "#4A5578" }}>{detail as string}</span>
-            </div>
-          ))}
-        </div>
+      <div aria-live="polite" style={{ display: "flex", flexDirection: "column", gap: "6px", padding: "18px", borderRadius: "18px", background: "#EAF1FF", border: "1.5px solid #155DFC" }}>
+        <span style={{ fontSize: "13px", fontWeight: 600, color: "#4A5578" }}>{c.calc.volumetric}</span>
+        <span style={{ fontFamily: MONO, fontSize: "var(--sp-fs-24, 24px)", fontWeight: 600, color: "#0E1A3D" }}>
+          {n(s.totals.volumetric)} <span style={{ fontSize: "15px", color: "#4A5578" }}>kg</span>
+        </span>
+        <span style={{ fontSize: "12.5px", lineHeight: 1.45, color: "#4A5578" }}>{c.calc.formula}</span>
         <span style={{ fontSize: "13.5px", color: "#4A5578" }}>
           {fill(c.calc.volume, { m3: m3(s.totals.volume) })} · {c.calc.bracket} {s.bracket.label} kg · {fill(c.calc.billed, { kg: n(s.bracket.billedKg) })}
         </span>

@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Towar dostarczony",
       "FILE_CLOSED": "Sprawa zamknięta",
       "CANCELLED_BY_CLIENT": "Anulowane przez klienta",
-      "CANCELLED_BY_SOURCINGPICK": "Anulowane przez Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "Anulowane przez SourcingPick",
       "REFUND_ISSUED": "Zwrot zrealizowany"
     }
   },

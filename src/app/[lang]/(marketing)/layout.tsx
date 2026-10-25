@@ -4,6 +4,7 @@ import { SiteFooter } from "./_design/site-footer";
 import { FRAME_FIT_SCRIPT } from "./_design/frame-fit";
 import { FrameFitEffect } from "./_design/frame-fit-effect";
 import { MotionLayer } from "./_design/motion-layer";
+import { StepStack } from "./_design/step-stack";
 import { PublicContactButton } from "@/components/marketing/public-contact-button";
 import { WhatsAppButton } from "@/components/marketing/whatsapp-button";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -44,6 +45,7 @@ export default async function MarketingLayout({ children, params }: LayoutProps<
         </div>
         {/* The previous site's motion, on the same design (motion-layer.tsx). */}
         <MotionLayer />
+        <StepStack />
         <SiteFooter lang={lang} />
         {/* Partner #17: lightweight pre-signup contact dock. Not part of the
             canvas — it is an operations affordance, and it hides itself once

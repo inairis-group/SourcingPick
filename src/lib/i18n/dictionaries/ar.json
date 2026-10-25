@@ -3685,7 +3685,7 @@
       "GOODS_DELIVERED": "تم تسليم البضاعة",
       "FILE_CLOSED": "تم إغلاق الملف",
       "CANCELLED_BY_CLIENT": "ألغاه العميل",
-      "CANCELLED_BY_SOURCINGPICK": "ألغته Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "ألغته SourcingPick",
       "REFUND_ISSUED": "تم رد المبلغ"
     }
   }

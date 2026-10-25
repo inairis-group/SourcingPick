@@ -3705,7 +3705,7 @@
       "GOODS_DELIVERED": "Marchandise livrée",
       "FILE_CLOSED": "Dossier clos",
       "CANCELLED_BY_CLIENT": "Annulé par le client",
-      "CANCELLED_BY_SOURCINGPICK": "Annulé par Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "Annulé par SourcingPick",
       "REFUND_ISSUED": "Remboursement effectué"
     }
   }

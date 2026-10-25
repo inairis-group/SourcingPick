@@ -8,7 +8,7 @@ import type { CSSProperties } from "react";
 import type { Locale } from "@/lib/i18n/config";
 
 export const howItWorks = {
-  title: { fr: "Sourcing Pick — comment ça marche", en: "Sourcing Pick — How it works", zh: "Sourcing Pick — 服务流程", es: "Sourcing Pick — cómo funciona", de: "Sourcing Pick – So funktioniert’s", it: "Sourcing Pick — come funziona", pt: "Sourcing Pick — como funciona", nl: "Sourcing Pick — hoe het werkt", ar: "Sourcing Pick — كيف نعمل", ru: "Sourcing Pick — как это работает", tr: "Sourcing Pick — nasıl çalışır", pl: "Sourcing Pick – jak to działa" } as Record<Locale, string>,
+  title: { fr: "SourcingPick — comment ça marche", en: "SourcingPick — How it works", zh: "SourcingPick — 服务流程", es: "SourcingPick — cómo funciona", de: "SourcingPick – So funktioniert’s", it: "SourcingPick — come funziona", pt: "SourcingPick — como funciona", nl: "SourcingPick — hoe het werkt", ar: "SourcingPick — كيف نعمل", ru: "SourcingPick — как это работает", tr: "SourcingPick — nasıl çalışır", pl: "SourcingPick – jak to działa" } as Record<Locale, string>,
   description: { fr: "Comment importer de Chine en six étapes : de votre demande jusqu’au port d’arrivée", en: "At every step, you know what you need to do, what we do, and which status is shown in your client area.", zh: "从你提需求，到货抵达目的港，一共六步。", es: "En cada etapa, usted sabe lo que tiene que hacer, lo que hacemos nosotros y qué estado muestra su área de cliente.", de: "Bei jedem Schritt wissen Sie, was Sie tun müssen, was wir tun und welcher Status in Ihrem Kundenbereich angezeigt wird.", it: "In ogni fase sapete cosa dovete fare voi, cosa facciamo noi e quale stato compare nella vostra area clienti.", pt: "Em cada etapa, sabe o que tem de fazer, o que nós fazemos e o estado apresentado na sua área de cliente.", nl: "Bij elke stap weet u wat u moet doen, wat wij doen en welke status uw klantenportaal toont.", ar: "مواعيد الاستلام: من الاثنين إلى السبت، من الساعة 9 صباحًا إلى 6 مساءً (بتوقيت الصين). ولا يتم الاستلام ليلًا ولا يوم الأحد.", ru: "На каждом этапе вы знаете, что нужно сделать вам, что делаем мы и какой статус отображается в личном кабинете.", tr: "Her aşamada sizin ne yapmanız gerektiğini, bizim ne yaptığımızı ve müşteri panelinizde hangi durumun görüneceğini bilirsiniz.", pl: "Na każdym etapie wiadomo, co należy do Państwa, co robimy my i jaki status widać w panelu klienta." } as Record<Locale, string>,
   text: {
     fr: [
@@ -79,7 +79,7 @@ export const howItWorks = {
       "Demander un devis",
       "contact@sourcingpick.com",
       "On s’occupe du reste !",
-      "La mascotte Sourcing Pick, bras levés",
+      "La mascotte SourcingPick, bras levés",
     ],
     en: [
       "How it works",
@@ -149,7 +149,7 @@ export const howItWorks = {
       "Request a quotation",
       "contact@sourcingpick.com",
       "We’ll handle the rest!",
-      "The Sourcing Pick mascot with its arms raised",
+      "The SourcingPick mascot with its arms raised",
     ],
     zh: [
       "服务流程",
@@ -219,7 +219,7 @@ export const howItWorks = {
       "获取报价",
       "contact@sourcingpick.com",
       "剩下的交给我们！",
-      "举起双手的 Sourcing Pick 吉祥物",
+      "举起双手的 SourcingPick 吉祥物",
     ],
     es: [
       "Cómo funciona",
@@ -289,7 +289,7 @@ export const howItWorks = {
       "Solicitar presupuesto",
       "contact@sourcingpick.com",
       "¡Nos encargamos del resto!",
-      "La mascota de Sourcing Pick, con los brazos en alto",
+      "La mascota de SourcingPick, con los brazos en alto",
     ],
     de: [
       "So funktioniert’s",
@@ -359,7 +359,7 @@ export const howItWorks = {
       "Angebot anfordern",
       "contact@sourcingpick.com",
       "Den Rest übernehmen wir!",
-      "Das Maskottchen von Sourcing Pick mit erhobenen Armen",
+      "Das Maskottchen von SourcingPick mit erhobenen Armen",
     ],
     it: [
       "Come funziona",
@@ -429,7 +429,7 @@ export const howItWorks = {
       "Richiedi un preventivo",
       "contact@sourcingpick.com",
       "Al resto pensiamo noi!",
-      "La mascotte di Sourcing Pick a braccia alzate",
+      "La mascotte di SourcingPick a braccia alzate",
     ],
     pt: [
       "Como funciona",
@@ -499,7 +499,7 @@ export const howItWorks = {
       "Pedir orçamento",
       "contact@sourcingpick.com",
       "Nós tratamos do resto!",
-      "A mascote da Sourcing Pick, de braços no ar",
+      "A mascote da SourcingPick, de braços no ar",
     ],
     nl: [
       "Hoe het werkt",
@@ -569,7 +569,7 @@ export const howItWorks = {
       "Offerte aanvragen",
       "contact@sourcingpick.com",
       "Wij regelen de rest!",
-      "De mascotte van Sourcing Pick met de armen omhoog",
+      "De mascotte van SourcingPick met de armen omhoog",
     ],
     ar: [
       "كيف نعمل",
@@ -639,7 +639,7 @@ export const howItWorks = {
       "اطلب عرض سعر",
       "contact@sourcingpick.com",
       "والباقي علينا!",
-      "تميمة Sourcing Pick رافعةً ذراعيها",
+      "تميمة SourcingPick رافعةً ذراعيها",
     ],
     ru: [
       "Как это работает",
@@ -709,7 +709,7 @@ export const howItWorks = {
       "Запросить расчёт",
       "contact@sourcingpick.com",
       "Остальное — наша забота!",
-      "Талисман Sourcing Pick с поднятыми руками",
+      "Талисман SourcingPick с поднятыми руками",
     ],
     tr: [
       "Nasıl çalışır",
@@ -779,7 +779,7 @@ export const howItWorks = {
       "Teklif isteyin",
       "contact@sourcingpick.com",
       "Gerisini biz hallederiz!",
-      "Kollarını kaldırmış Sourcing Pick maskotu",
+      "Kollarını kaldırmış SourcingPick maskotu",
     ],
     pl: [
       "Jak to działa",
@@ -849,7 +849,7 @@ export const howItWorks = {
       "Poproś o wycenę",
       "contact@sourcingpick.com",
       "Resztą zajmiemy się my!",
-      "Maskotka Sourcing Pick z uniesionymi rękami",
+      "Maskotka SourcingPick z uniesionymi rękami",
     ],
   } as Record<Locale, readonly string[]>,
   frStyles: [

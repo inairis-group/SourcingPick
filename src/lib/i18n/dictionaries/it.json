@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Merce consegnata",
       "FILE_CLOSED": "Pratica chiusa",
       "CANCELLED_BY_CLIENT": "Annullato dal cliente",
-      "CANCELLED_BY_SOURCINGPICK": "Annullato da Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "Annullato da SourcingPick",
       "REFUND_ISSUED": "Rimborso effettuato"
     }
   },

@@ -19,7 +19,7 @@ export type BlogArticle = {
   date: string;
   /** The H1. */
   title: string;
-  /** <title>, ending with "| Sourcing Pick". */
+  /** <title>, ending with "| SourcingPick". */
   metaTitle: string;
   metaDescription: string;
   /** The opening paragraph(s), Markdown. */

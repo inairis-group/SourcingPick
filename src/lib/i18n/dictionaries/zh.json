@@ -3685,7 +3685,7 @@
       "GOODS_DELIVERED": "货物已送达",
       "FILE_CLOSED": "档案已关闭",
       "CANCELLED_BY_CLIENT": "客户已取消",
-      "CANCELLED_BY_SOURCINGPICK": "Sourcing Pick 已取消",
+      "CANCELLED_BY_SOURCINGPICK": "SourcingPick 已取消",
       "REFUND_ISSUED": "已退款"
     }
   }
