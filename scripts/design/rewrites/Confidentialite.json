@@ -1,0 +1,200 @@
+{
+ "fr": {
+  "6": [
+   "Dernière mise à jour : 24 septembre 2026",
+   "Dernière mise à jour : 25 octobre 2026"
+  ],
+  "13": [
+   "Paiements : traités par Stripe. Nous ne conservons pas vos numéros de carte.",
+   "Paiements : par virement bancaire, sur facture. Nous ne collectons aucune donnée de carte bancaire."
+  ],
+  "22": [
+   "Vercel (hébergement), Stripe (paiement) et OpenSign (signature électronique). Le stockage de vos fichiers et l’envoi de nos emails sont assurés par nos propres moyens, sans sous-traitant supplémentaire. Chaque prestataire n’accède qu’aux données nécessaires à sa prestation.",
+   "Vercel (hébergement) et OpenSign (signature électronique). Le stockage de vos fichiers et l’envoi de nos emails sont assurés par nos propres moyens, sans sous-traitant supplémentaire. Chaque prestataire n’accède qu’aux données nécessaires à sa prestation."
+  ],
+  "29": [
+   "Déposés par nos prestataires : Stripe au moment du paiement, pour détecter la fraude ; OpenSign au moment de la signature, pour authentifier la session. Ils ne servent qu’à ces opérations.",
+   "Déposés par notre prestataire de signature électronique, OpenSign, au moment où vous signez un devis, pour authentifier la session. Ils ne servent qu’à cette opération."
+  ]
+ },
+ "en": {
+  "6": [
+   "Last updated: 24 September 2026",
+   "Last updated: 25 October 2026"
+  ],
+  "13": [
+   "Payments: processed by Stripe. We do not store your card numbers.",
+   "Payments: by bank transfer, on invoice. We do not collect any bank card details."
+  ],
+  "22": [
+   "Vercel (hosting), Stripe (payment) and OpenSign (electronic signature). Your files are stored and our emails are sent with our own means, with no further subcontractor. Each provider only accesses the data its service requires.",
+   "Vercel (hosting) and OpenSign (electronic signature). Your files are stored and our emails are sent with our own means, with no further subcontractor. Each provider only accesses the data its service requires."
+  ],
+  "29": [
+   "Set by our providers: Stripe at the moment of payment, to detect fraud; OpenSign at the moment of signing, to authenticate the session. They serve those operations only.",
+   "Set by our electronic signature provider, OpenSign, when you sign a quotation, to authenticate the session. They serve that operation only."
+  ]
+ },
+ "es": {
+  "6": [
+   "Última actualización: 24 de septiembre de 2026",
+   "Última actualización: 25 de octubre de 2026"
+  ],
+  "13": [
+   "Pagos: procesados por Stripe. No conservamos sus números de tarjeta.",
+   "Pagos: por transferencia bancaria, contra factura. No recopilamos ningún dato de tarjeta bancaria."
+  ],
+  "22": [
+   "Vercel (alojamiento), Stripe (pago) y OpenSign (firma electrónica). El almacenamiento de sus archivos y el envío de nuestros correos los asumimos con medios propios, sin subcontratista adicional. Cada proveedor solo accede a los datos necesarios para su prestación.",
+   "Vercel (alojamiento) y OpenSign (firma electrónica). El almacenamiento de sus archivos y el envío de nuestros correos los asumimos con medios propios, sin subcontratista adicional. Cada proveedor solo accede a los datos necesarios para su prestación."
+  ],
+  "29": [
+   "Depositadas por nuestros proveedores: Stripe en el momento del pago, para detectar fraudes; OpenSign en el momento de la firma, para autenticar la sesión. Solo sirven para esas operaciones.",
+   "Depositadas por nuestro proveedor de firma electrónica, OpenSign, en el momento en que usted firma un presupuesto, para autenticar la sesión. Solo sirven para esa operación."
+  ]
+ },
+ "de": {
+  "6": [
+   "Zuletzt aktualisiert: 24. September 2026",
+   "Zuletzt aktualisiert: 25. Oktober 2026"
+  ],
+  "13": [
+   "Zahlungen: Abwicklung über Stripe. Wir speichern Ihre Kartennummern nicht.",
+   "Zahlungen: per Banküberweisung, auf Rechnung. Wir erheben keinerlei Kartendaten."
+  ],
+  "22": [
+   "Vercel (Hosting), Stripe (Zahlung) und OpenSign (elektronische Signatur). Die Speicherung Ihrer Dateien und der Versand unserer E-Mails erfolgen mit eigenen Mitteln, ohne weiteren Auftragsverarbeiter. Jeder Dienstleister greift nur auf die für seine Leistung nötigen Daten zu.",
+   "Vercel (Hosting) und OpenSign (elektronische Signatur). Die Speicherung Ihrer Dateien und der Versand unserer E-Mails erfolgen mit eigenen Mitteln, ohne weiteren Auftragsverarbeiter. Jeder Dienstleister greift nur auf die für seine Leistung nötigen Daten zu."
+  ],
+  "29": [
+   "Von unseren Dienstleistern gesetzt: Stripe beim Bezahlen, zur Betrugserkennung; OpenSign beim Unterzeichnen, zur Authentifizierung der Sitzung. Sie dienen nur diesen Vorgängen.",
+   "Von unserem Dienstleister für elektronische Signaturen, OpenSign, gesetzt, wenn Sie ein Angebot unterzeichnen, zur Authentifizierung der Sitzung. Sie dienen nur diesem Vorgang."
+  ]
+ },
+ "it": {
+  "6": [
+   "Ultimo aggiornamento: 24 settembre 2026",
+   "Ultimo aggiornamento: 25 ottobre 2026"
+  ],
+  "13": [
+   "Pagamenti: gestiti da Stripe. Non conserviamo i numeri delle vostre carte.",
+   "Pagamenti: con bonifico bancario, su fattura. Non raccogliamo alcun dato di carte bancarie."
+  ],
+  "22": [
+   "Vercel (hosting), Stripe (pagamento) e OpenSign (firma elettronica). L’archiviazione dei vostri file e l’invio delle nostre email sono gestiti con mezzi propri, senza ulteriori subappaltatori. Ogni fornitore accede solo ai dati necessari alla sua prestazione.",
+   "Vercel (hosting) e OpenSign (firma elettronica). L’archiviazione dei vostri file e l’invio delle nostre email sono gestiti con mezzi propri, senza ulteriori subappaltatori. Ogni fornitore accede solo ai dati necessari alla sua prestazione."
+  ],
+  "29": [
+   "Installati dai nostri fornitori: Stripe al momento del pagamento, per rilevare le frodi; OpenSign al momento della firma, per autenticare la sessione. Servono solo a queste operazioni.",
+   "Installati dal nostro fornitore di firma elettronica, OpenSign, nel momento in cui firmate un preventivo, per autenticare la sessione. Servono solo a questa operazione."
+  ]
+ },
+ "pt": {
+  "6": [
+   "Última atualização: 24 de setembro de 2026",
+   "Última atualização: 25 de outubro de 2026"
+  ],
+  "13": [
+   "Pagamentos: processados pela Stripe. Não guardamos os números dos seus cartões.",
+   "Pagamentos: por transferência bancária, mediante fatura. Não recolhemos quaisquer dados de cartão bancário."
+  ],
+  "22": [
+   "Vercel (alojamento), Stripe (pagamento) e OpenSign (assinatura eletrónica). O armazenamento dos seus ficheiros e o envio dos nossos emails são assegurados por meios próprios, sem subcontratante adicional. Cada prestador acede apenas aos dados necessários à sua prestação.",
+   "Vercel (alojamento) e OpenSign (assinatura eletrónica). O armazenamento dos seus ficheiros e o envio dos nossos emails são assegurados por meios próprios, sem subcontratante adicional. Cada prestador acede apenas aos dados necessários à sua prestação."
+  ],
+  "29": [
+   "Colocados pelos nossos prestadores: a Stripe no momento do pagamento, para detetar fraude; a OpenSign no momento da assinatura, para autenticar a sessão. Servem apenas para essas operações.",
+   "Colocados pelo nosso prestador de assinatura eletrónica, a OpenSign, no momento em que assina um orçamento, para autenticar a sessão. Servem apenas para essa operação."
+  ]
+ },
+ "nl": {
+  "6": [
+   "Laatst bijgewerkt: 24 september 2026",
+   "Laatst bijgewerkt: 25 oktober 2026"
+  ],
+  "13": [
+   "Betalingen: verwerkt door Stripe. We bewaren uw kaartnummers niet.",
+   "Betalingen: via bankoverschrijving, op factuur. We verzamelen geen betaalkaartgegevens."
+  ],
+  "22": [
+   "Vercel (hosting), Stripe (betaling) en OpenSign (elektronische handtekening). De opslag van uw bestanden en het versturen van onze e-mails doen we met eigen middelen, zonder verdere onderaannemer. Elke dienstverlener krijgt alleen toegang tot de gegevens die zijn dienst vereist.",
+   "Vercel (hosting) en OpenSign (elektronische handtekening). De opslag van uw bestanden en het versturen van onze e-mails doen we met eigen middelen, zonder verdere onderaannemer. Elke dienstverlener krijgt alleen toegang tot de gegevens die zijn dienst vereist."
+  ],
+  "29": [
+   "Geplaatst door onze dienstverleners: Stripe bij de betaling, om fraude op te sporen; OpenSign bij de ondertekening, om de sessie te authenticeren. Ze dienen alleen daarvoor.",
+   "Geplaatst door onze dienstverlener voor elektronische handtekeningen, OpenSign, wanneer u een offerte ondertekent, om de sessie te authenticeren. Ze dienen alleen daarvoor."
+  ]
+ },
+ "ar": {
+  "6": [
+   "آخر تحديث: 24 سبتمبر 2026",
+   "آخر تحديث: 25 أكتوبر 2026"
+  ],
+  "13": [
+   "المدفوعات: تعالجها Stripe. ولا نحتفظ بأرقام بطاقاتك.",
+   "المدفوعات: بتحويل مصرفي، بموجب فاتورة. ولا نجمع أي بيانات خاصة بالبطاقات المصرفية."
+  ],
+  "22": [
+   "Vercel (الاستضافة) وStripe (الدفع) وOpenSign (التوقيع الإلكتروني). أما تخزين ملفاتك وإرسال رسائلنا فنتولاهما بوسائلنا الخاصة، دون مقاول من الباطن إضافي. ولا يطّلع أي مزوّد إلا على البيانات اللازمة لخدمته.",
+   "Vercel (الاستضافة) وOpenSign (التوقيع الإلكتروني). أما تخزين ملفاتك وإرسال رسائلنا فنتولاهما بوسائلنا الخاصة، دون مقاول من الباطن إضافي. ولا يطّلع أي مزوّد إلا على البيانات اللازمة لخدمته."
+  ],
+  "29": [
+   "يضعها مزوّدونا: Stripe لحظة الدفع لكشف الاحتيال، وOpenSign لحظة التوقيع للتحقق من الجلسة. ولا تُستخدم إلا لهاتين العمليتين.",
+   "يضعها مزوّد التوقيع الإلكتروني لدينا، OpenSign، لحظة توقيعك على عرض سعر، للتحقق من الجلسة. ولا تُستخدم إلا لهذه العملية."
+  ]
+ },
+ "ru": {
+  "6": [
+   "Последнее обновление: 24 сентября 2026 г.",
+   "Последнее обновление: 25 октября 2026 г."
+  ],
+  "13": [
+   "Платежи: их обрабатывает Stripe. Мы не храним номера ваших карт.",
+   "Платежи: банковским переводом по счету. Мы не собираем никаких данных банковских карт."
+  ],
+  "22": [
+   "Vercel (хостинг), Stripe (платежи) и OpenSign (электронная подпись). Хранение ваших файлов и рассылку писем мы обеспечиваем собственными средствами, без дополнительных подрядчиков. Каждый поставщик получает доступ только к данным, необходимым для его услуги.",
+   "Vercel (хостинг) и OpenSign (электронная подпись). Хранение ваших файлов и рассылку писем мы обеспечиваем собственными средствами, без дополнительных подрядчиков. Каждый поставщик получает доступ только к данным, необходимым для его услуги."
+  ],
+  "29": [
+   "Устанавливаемые нашими поставщиками: Stripe в момент оплаты — для выявления мошенничества; OpenSign в момент подписания — для аутентификации сессии. Служат только для этих операций.",
+   "Устанавливаемые нашим поставщиком электронной подписи OpenSign в момент, когда вы подписываете расчёт, — для аутентификации сессии. Служат только для этой операции."
+  ]
+ },
+ "tr": {
+  "6": [
+   "Son güncelleme: 24 Eylül 2026",
+   "Son güncelleme: 25 Ekim 2026"
+  ],
+  "13": [
+   "Ödemeler: Stripe tarafından işlenir. Kart numaralarınızı saklamayız.",
+   "Ödemeler: fatura üzerine banka havalesiyle yapılır. Hiçbir banka kartı verisi toplamayız."
+  ],
+  "22": [
+   "Vercel (barındırma), Stripe (ödeme) ve OpenSign (elektronik imza). Dosyalarınızın saklanması ve e-postalarımızın gönderimi kendi imkânlarımızla yapılır, ek bir alt yüklenici yoktur. Her sağlayıcı yalnızca hizmeti için gerekli verilere erişir.",
+   "Vercel (barındırma) ve OpenSign (elektronik imza). Dosyalarınızın saklanması ve e-postalarımızın gönderimi kendi imkânlarımızla yapılır, ek bir alt yüklenici yoktur. Her sağlayıcı yalnızca hizmeti için gerekli verilere erişir."
+  ],
+  "29": [
+   "Sağlayıcılarımız tarafından yerleştirilenler: ödeme anında Stripe, dolandırıcılığı saptamak için; imza anında OpenSign, oturumu doğrulamak için. Yalnızca bu işlemler için kullanılır.",
+   "Elektronik imza sağlayıcımız OpenSign tarafından, bir fiyat teklifini imzaladığınız anda, oturumu doğrulamak için yerleştirilir. Yalnızca bu işlem için kullanılır."
+  ]
+ },
+ "pl": {
+  "6": [
+   "Ostatnia aktualizacja: 24 września 2026",
+   "Ostatnia aktualizacja: 25 października 2026"
+  ],
+  "13": [
+   "Płatności: obsługiwane przez Stripe. Nie przechowujemy numerów Państwa kart.",
+   "Płatności: przelewem bankowym, na podstawie faktury. Nie zbieramy żadnych danych kart płatniczych."
+  ],
+  "22": [
+   "Vercel (hosting), Stripe (płatności) i OpenSign (podpis elektroniczny). Przechowywanie Państwa plików i wysyłkę naszych wiadomości realizujemy własnymi środkami, bez dodatkowego podwykonawcy. Każdy dostawca ma dostęp wyłącznie do danych niezbędnych do swojej usługi.",
+   "Vercel (hosting) i OpenSign (podpis elektroniczny). Przechowywanie Państwa plików i wysyłkę naszych wiadomości realizujemy własnymi środkami, bez dodatkowego podwykonawcy. Każdy dostawca ma dostęp wyłącznie do danych niezbędnych do swojej usługi."
+  ],
+  "29": [
+   "Zapisywane przez naszych dostawców: Stripe w chwili płatności, do wykrywania oszustw; OpenSign w chwili podpisu, do uwierzytelnienia sesji. Służą wyłącznie tym operacjom.",
+   "Zapisywane przez naszego dostawcę podpisu elektronicznego, OpenSign, w chwili podpisywania przez Państwa wyceny, do uwierzytelnienia sesji. Służą wyłącznie tej operacji."
+  ]
+ }
+}

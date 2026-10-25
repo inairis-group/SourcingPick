@@ -51,7 +51,7 @@ export const ru: FreightSimulatorCopy = {
     reinforceHint: "15 $ за м³, на нашем складе в Гуанчжоу.",
     add: "+ Добавить товар",
     remove: "Удалить",
-    summary: "{m3} · реальный вес {real} · объемный {volumetric} · оплачиваемый {chargeable}",
+    summary: "{m3} · объемный вес {volumetric}",
     goodsReset: "Список типов товара зависит от способа доставки: проверьте тип каждого товара.",
   },
   goods: {
@@ -104,16 +104,12 @@ export const ru: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, +50 RMB за каждую страницу после первой (5 товаров на странице).",
   },
   calc: {
-    title: "Как это считается",
-    real: "Реальный вес",
+    title: "Оплачиваемый вес",
+    rule: "Большее из реального и объемного веса (Д × Ш × В ÷ 6 000), не менее 12 кг на коробку.",
     volumetric: "Объемный вес",
-    formula: "Д × Ш × В ÷ 6 000",
-    chargeable: "Оплачиваемый вес",
-    chargeableHint: "По каждой коробке берется наибольшее из трех значений",
     bracket: "Весовой диапазон",
     billed: "к оплате {kg} кг",
     volume: "Общий объем: {m3}",
-    cartons: "Коробок: {n}",
   },
   estimate: {
     title: "Ваша оценка",
@@ -259,8 +255,8 @@ export const ru: FreightSimulatorCopy = {
     sep: ": ",
     subject: "Ваша оценка стоимости доставки: {total}",
     subjectQuote: "Ваш запрос на расчёт стоимости доставки",
-    heading: "Ваша оценка от Sourcing Pick",
-    headingQuote: "Ваш запрос на расчёт в Sourcing Pick",
+    heading: "Ваша оценка от SourcingPick",
+    headingQuote: "Ваш запрос на расчёт в SourcingPick",
     intro: "Ниже — детализация вашей отправки, рассчитанная по тарифной сетке нашего перевозчика для Европы со всеми ее правилами.",
     introQuote: "Мы получили ваш запрос. Ниже — данные, которые вы указали; мы свяжемся с вами и пришлем расчёт.",
     summary: {
@@ -288,7 +284,7 @@ export const ru: FreightSimulatorCopy = {
       reinforcement: "Деревянная обрешетка ({m3} м³ × {rate} $)",
     },
     subtotal: "Подытог",
-    commission: "Комиссия Sourcing Pick (3%)",
+    commission: "Комиссия SourcingPick (3%)",
     total: "Итого, ориентировочно",
     notIncludedTitle: "Не входит в цену",
     notIncluded: [
@@ -299,8 +295,8 @@ export const ru: FreightSimulatorCopy = {
     disclaimer:
       "Цена ориентировочная, рассчитана по текущей тарифной сетке нашего перевозчика (скоро обновится). Окончательная цена указывается в вашем расчёте.",
     quoteNext: "Мы свяжемся с вами и пришлем подробный расчёт.",
-    signup: "Создайте аккаунт Sourcing Pick, чтобы следить за своими расчётами:",
+    signup: "Создайте аккаунт SourcingPick, чтобы следить за своими расчётами:",
     signupCta: "Создать аккаунт",
-    footer: "Sourcing Pick · Гуанчжоу · contact@sourcingpick.com",
+    footer: "SourcingPick · Гуанчжоу · contact@sourcingpick.com",
   },
 };

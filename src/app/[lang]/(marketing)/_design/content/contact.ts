@@ -8,7 +8,7 @@ import type { CSSProperties } from "react";
 import type { Locale } from "@/lib/i18n/config";
 
 export const contact = {
-  title: { fr: "Sourcing Pick — contact", en: "Sourcing Pick — Contact", zh: "Sourcing Pick — 联系我们", es: "Sourcing Pick — contacto", de: "Sourcing Pick – Kontakt", it: "Sourcing Pick — contatti", pt: "Sourcing Pick — contactos", nl: "Sourcing Pick — contact", ar: "Sourcing Pick — اتصل بنا", ru: "Sourcing Pick — контакты", tr: "Sourcing Pick — iletişim", pl: "Sourcing Pick – kontakt" } as Record<Locale, string>,
+  title: { fr: "SourcingPick — contact", en: "SourcingPick — Contact", zh: "SourcingPick — 联系我们", es: "SourcingPick — contacto", de: "SourcingPick – Kontakt", it: "SourcingPick — contatti", pt: "SourcingPick — contactos", nl: "SourcingPick — contact", ar: "SourcingPick — اتصل بنا", ru: "SourcingPick — контакты", tr: "SourcingPick — iletişim", pl: "SourcingPick – kontakt" } as Record<Locale, string>,
   description: { fr: "Une question ? Écrivez-nous.", en: "Got a question? Write to us.", zh: "有问题？给我们留言。", es: "¿Alguna pregunta? Escríbanos.", de: "Fragen? Schreiben Sie uns.", it: "Una domanda? Scriveteci.", pt: "Tem alguma dúvida? Escreva-nos.", nl: "Een vraag? Stuur ons een bericht.", ar: "لديك سؤال؟ راسلنا.", ru: "Есть вопрос? Напишите нам.", tr: "Bir sorunuz mu var? Bize yazın.", pl: "Pytania? Czekamy na wiadomość." } as Record<Locale, string>,
   text: {
     fr: [

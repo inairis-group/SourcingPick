@@ -68,7 +68,7 @@ export type FreightSimulatorCopy = {
     reinforceHint: string;
     add: string;
     remove: string;
-    /** Under each product: "{m3} · {real} réels · {volumetric} volumétriques · {chargeable} facturables" */
+    /** Under each product: "{m3} · {volumetric} volumétriques" */
     summary: string;
     /** Shown when a mode change reset a product's class. */
     goodsReset: string;
@@ -77,17 +77,14 @@ export type FreightSimulatorCopy = {
   goods: Record<Mode, Partial<Record<GoodsKey, string>>>;
   options: { declaration: string; declarationHint: string; declarationHintSea: string };
   calc: {
+    /** Over the weight the price is worked out on. */
     title: string;
-    real: string;
+    /** Under it: the heavier of the real and the volumetric weight. */
+    rule: string;
     volumetric: string;
-    /** Under the volumetric weight: how it is worked out. */
-    formula: string;
-    chargeable: string;
-    chargeableHint: string;
     bracket: string;
     billed: string;
     volume: string;
-    cartons: string;
   };
   estimate: {
     title: string;

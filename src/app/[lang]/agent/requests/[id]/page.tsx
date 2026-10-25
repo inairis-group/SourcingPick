@@ -47,7 +47,7 @@ export default async function AgentRequestDetailPage({
     where: { id, agentId: agent.id },
     include: {
       products: true,
-      clientOrg: { select: { displayName: true, country: true, city: true } },
+      clientOrg: { select: { displayName: true, country: true, city: true, clientCode: true } },
       createdBy: {
         select: { firstName: true, lastName: true, email: true, phone: true },
       },
@@ -176,6 +176,7 @@ export default async function AgentRequestDetailPage({
         </div>
         <p className="text-sm text-muted mt-1">
           {dict.agent.requests.clientLabel} · {req.clientOrg.displayName} ({req.clientOrg.city}, {req.clientOrg.country})
+          {req.clientOrg.clientCode && <span className="font-mono"> · {req.clientOrg.clientCode}</span>}
         </p>
       </header>
 

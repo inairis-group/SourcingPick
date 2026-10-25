@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Ware zugestellt",
       "FILE_CLOSED": "Vorgang abgeschlossen",
       "CANCELLED_BY_CLIENT": "Vom Kunden storniert",
-      "CANCELLED_BY_SOURCINGPICK": "Von Sourcing Pick storniert",
+      "CANCELLED_BY_SOURCINGPICK": "Von SourcingPick storniert",
       "REFUND_ISSUED": "Erstattung erfolgt"
     }
   },
@@ -257,7 +257,17 @@
       "colState": "Status",
       "colAmount": "Betrag",
       "open": "Öffnen",
-      "ordersEmpty": "Keine laufenden Aufträge."
+      "ordersEmpty": "Keine laufenden Aufträge.",
+      "warehouse": {
+        "title": "Lageradresse für Ihre Lieferanten",
+        "intro": "Geben Sie diese Adresse an Ihre Lieferanten weiter: Dorthin liefern sie Ihre Waren, die wir annehmen und prüfen.",
+        "chinese": "Auf Chinesisch, für Ihre Lieferanten",
+        "latin": "In lateinischer Schrift",
+        "hours": "Annahmezeiten",
+        "phone": "Telefon des Lagers",
+        "code": "Ihr Kundencode",
+        "codeHint": "Muss auf jedem Karton stehen: Daran erkennen wir Ihre Packstücke beim Wareneingang."
+      }
     }
   },
   "orders": {

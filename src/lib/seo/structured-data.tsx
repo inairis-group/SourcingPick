@@ -19,7 +19,7 @@ export function organizationJsonLd(): Json {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${site}/#organization`,
-    name: "Sourcing Pick",
+    name: "SourcingPick",
     legalName: "Hangzhou Qiyuan Ying Technology Information Co., Ltd.",
     url: `${site}/`,
     logo: `${site}/logo.svg`,
@@ -42,7 +42,7 @@ export function websiteJsonLd(): Json {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${site}/#website`,
-    name: "Sourcing Pick",
+    name: "SourcingPick",
     url: `${site}/`,
     publisher: { "@id": `${site}/#organization` },
   };

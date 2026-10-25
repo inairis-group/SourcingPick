@@ -651,9 +651,13 @@
     margin-block-end: 45vh;
   }
 
+  /* The fade is on the card's content, not the card: a card is still
+     arriving while it slides over the parked one, and a half-transparent
+     card let the two cards' text show through each other. The card itself
+     stays opaque and hides the one under it. */
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
-      .sp-step-card {
+      .sp-step-card > * {
         animation: fade-up linear both;
         animation-timeline: view();
         animation-range: entry 5% entry 60%;

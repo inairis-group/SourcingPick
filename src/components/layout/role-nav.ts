@@ -422,7 +422,7 @@ export function navForRole(role: Role, lang: string, dict: Dictionary): NavGroup
         },
       ];
     case "SHIPPER":
-      // Expéditeur Sourcing Pick. Deliberately the narrowest nav of any role:
+      // Expéditeur SourcingPick. Deliberately the narrowest nav of any role:
       // §8 of the spec asks for maximum simplicity, and §1.2 means there is no
       // client-facing surface for them to reach at all. Shipments is the whole
       // job; Messages is the only channel to the internal team.

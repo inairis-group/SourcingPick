@@ -98,7 +98,17 @@
       "colState": "État",
       "colAmount": "Montant",
       "open": "Ouvrir",
-      "ordersEmpty": "Aucune commande en cours."
+      "ordersEmpty": "Aucune commande en cours.",
+      "warehouse": {
+        "title": "Adresse de l’entrepôt pour vos fournisseurs",
+        "intro": "Donnez cette adresse à vos fournisseurs : ils y livrent vos marchandises, que nous réceptionnons et contrôlons.",
+        "chinese": "En chinois, pour vos fournisseurs",
+        "latin": "En lettres latines",
+        "hours": "Horaires de réception",
+        "phone": "Téléphone de l’entrepôt",
+        "code": "Votre code client",
+        "codeHint": "À écrire sur chaque carton : c’est ainsi que nous reconnaissons vos colis à l’arrivée."
+      }
     },
     "requests": {
       "eyebrow": "Sourcing à la demande",
@@ -3705,7 +3715,7 @@
       "GOODS_DELIVERED": "Marchandise livrée",
       "FILE_CLOSED": "Dossier clos",
       "CANCELLED_BY_CLIENT": "Annulé par le client",
-      "CANCELLED_BY_SOURCINGPICK": "Annulé par Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "Annulé par SourcingPick",
       "REFUND_ISSUED": "Remboursement effectué"
     }
   }

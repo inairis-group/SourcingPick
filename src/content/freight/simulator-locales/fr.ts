@@ -51,7 +51,7 @@ export const fr: FreightSimulatorCopy = {
     reinforceHint: "15 $ par m³, dans notre entrepôt de Guangzhou.",
     add: "+ Ajouter un produit",
     remove: "Retirer",
-    summary: "{m3} · {real} réels · {volumetric} volumétriques · {chargeable} facturables",
+    summary: "{m3} · {volumetric} volumétriques",
     goodsReset: "La liste des marchandises dépend du mode : vérifiez le type de chaque produit.",
   },
   goods: {
@@ -104,16 +104,12 @@ export const fr: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, +50 RMB par page au-delà de la première (5 produits par page).",
   },
   calc: {
-    title: "Comment c’est calculé",
-    real: "Poids réel",
+    title: "Poids facturé",
+    rule: "Le plus lourd entre le poids réel et le poids volumétrique (L × l × h ÷ 6 000), avec 12 kg minimum par carton.",
     volumetric: "Poids volumétrique",
-    formula: "L × l × h ÷ 6 000",
-    chargeable: "Poids facturable",
-    chargeableHint: "Carton par carton, le plus élevé des trois",
     bracket: "Tranche",
     billed: "facturé {kg} kg",
     volume: "Volume total : {m3}",
-    cartons: "{n} cartons",
   },
   estimate: {
     title: "Votre estimation",
@@ -259,8 +255,8 @@ export const fr: FreightSimulatorCopy = {
     sep: " : ",
     subject: "Votre estimation de transport : {total}",
     subjectQuote: "Votre demande de devis de transport",
-    heading: "Votre estimation Sourcing Pick",
-    headingQuote: "Votre demande de devis Sourcing Pick",
+    heading: "Votre estimation SourcingPick",
+    headingQuote: "Votre demande de devis SourcingPick",
     intro: "Voici le détail de votre envoi, calculé avec la grille Europe de notre transporteur et toutes ses règles.",
     introQuote: "Nous avons bien reçu votre demande. Voici ce que vous nous avez indiqué ; nous revenons vers vous avec un devis.",
     summary: {
@@ -288,7 +284,7 @@ export const fr: FreightSimulatorCopy = {
       reinforcement: "Renforcement bois ({m3} m³ × {rate} $)",
     },
     subtotal: "Sous-total",
-    commission: "Commission Sourcing Pick (3 %)",
+    commission: "Commission SourcingPick (3 %)",
     total: "Total estimé",
     notIncludedTitle: "Non compris",
     notIncluded: [
@@ -299,8 +295,8 @@ export const fr: FreightSimulatorCopy = {
     disclaimer:
       "Prix indicatif, établi avec la grille actuelle de notre transporteur (actualisation prochaine). Le prix ferme figure sur votre devis.",
     quoteNext: "Nous revenons vers vous avec un devis détaillé.",
-    signup: "Créez votre compte Sourcing Pick pour suivre vos devis :",
+    signup: "Créez votre compte SourcingPick pour suivre vos devis :",
     signupCta: "Créer mon compte",
-    footer: "Sourcing Pick · Guangzhou · contact@sourcingpick.com",
+    footer: "SourcingPick · Guangzhou · contact@sourcingpick.com",
   },
 };

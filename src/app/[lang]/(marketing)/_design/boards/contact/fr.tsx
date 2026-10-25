@@ -10,6 +10,7 @@
 
 import type { Locale } from "@/lib/i18n/config";
 import { contact as content } from "../../content/contact";
+import { AddressGate } from "../../address-gate";
 import { SubmitButton } from "../../form-controls";
 
 export function ContactBoard({ lang }: { lang: Locale }) {
@@ -50,7 +51,7 @@ export function ContactBoard({ lang }: { lang: Locale }) {
                       <circle cx="12" cy="9.5" r="2.5" />
                     </svg>
                   </span>
-                  <div style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }}>
+                  <AddressGate style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }} lang={lang}>
                     <span style={s[3][lang]}>{t[5]}</span>
                     <span style={{ "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "600", "lineHeight": "1.5" }}>
                       <span lang="zh-Hans" style={{ "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif" }}>
@@ -61,7 +62,7 @@ export function ContactBoard({ lang }: { lang: Locale }) {
                         {t[7]}
                       </span>
                     </span>
-                  </div>
+                  </AddressGate>
                 </div>
                 <div style={{ "display": "flex", "gap": "16px", "alignItems": "flex-start", "padding": "22px", "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "20px" }}>
                   <span style={{ "flexShrink": "0", "display": "inline-flex", "width": "44px", "height": "44px", "borderRadius": "12px", "background": "#EAF1FF", "alignItems": "center", "justifyContent": "center" }}>

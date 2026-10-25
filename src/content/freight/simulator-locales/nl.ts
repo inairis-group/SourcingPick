@@ -51,7 +51,7 @@ export const nl: FreightSimulatorCopy = {
     reinforceHint: "$ 15 per m³, in ons magazijn in Guangzhou.",
     add: "+ Product toevoegen",
     remove: "Verwijderen",
-    summary: "{m3} · {real} werkelijk · {volumetric} volumetrisch · {chargeable} belastbaar",
+    summary: "{m3} · {volumetric} volumetrisch",
     goodsReset: "De lijst met soorten goederen verschilt per vervoerswijze: controleer de soort van elk product.",
   },
   goods: {
@@ -104,16 +104,12 @@ export const nl: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, +50 RMB per pagina na de eerste (5 producten per pagina).",
   },
   calc: {
-    title: "Zo wordt het berekend",
-    real: "Werkelijk gewicht",
+    title: "Gefactureerd gewicht",
+    rule: "Het hoogste van het werkelijke gewicht en het volumegewicht (L × B × H ÷ 6.000), met minimaal 12 kg per doos.",
     volumetric: "Volumegewicht",
-    formula: "L × B × H ÷ 6.000",
-    chargeable: "Belastbaar gewicht",
-    chargeableHint: "Per doos, het hoogste van de drie",
     bracket: "Staffel",
     billed: "{kg} kg gefactureerd",
     volume: "Totaal volume: {m3}",
-    cartons: "{n} dozen",
   },
   estimate: {
     title: "Uw schatting",
@@ -259,8 +255,8 @@ export const nl: FreightSimulatorCopy = {
     sep: ": ",
     subject: "Uw schatting voor transport: {total}",
     subjectQuote: "Uw aanvraag voor een transportofferte",
-    heading: "Uw schatting van Sourcing Pick",
-    headingQuote: "Uw offerteaanvraag bij Sourcing Pick",
+    heading: "Uw schatting van SourcingPick",
+    headingQuote: "Uw offerteaanvraag bij SourcingPick",
     intro: "Hier is de uitsplitsing van uw zending, berekend met de Europese tarieftabel van onze vervoerder en al zijn regels.",
     introQuote: "Wij hebben uw aanvraag goed ontvangen. Hieronder staat wat u ons hebt doorgegeven; wij komen bij u terug met een offerte.",
     summary: {
@@ -288,7 +284,7 @@ export const nl: FreightSimulatorCopy = {
       reinforcement: "Houten versteviging ({m3} m³ × $ {rate})",
     },
     subtotal: "Subtotaal",
-    commission: "Commissie Sourcing Pick (3%)",
+    commission: "Commissie SourcingPick (3%)",
     total: "Geschat totaal",
     notIncludedTitle: "Niet inbegrepen",
     notIncluded: [
@@ -299,8 +295,8 @@ export const nl: FreightSimulatorCopy = {
     disclaimer:
       "Richtprijs, opgesteld met de huidige tarieftabel van onze vervoerder (wordt binnenkort bijgewerkt). De definitieve prijs staat in uw offerte.",
     quoteNext: "Wij komen bij u terug met een gedetailleerde offerte.",
-    signup: "Maak uw Sourcing Pick-account aan om uw offertes te volgen:",
+    signup: "Maak uw SourcingPick-account aan om uw offertes te volgen:",
     signupCta: "Mijn account aanmaken",
-    footer: "Sourcing Pick · Guangzhou · contact@sourcingpick.com",
+    footer: "SourcingPick · Guangzhou · contact@sourcingpick.com",
   },
 };

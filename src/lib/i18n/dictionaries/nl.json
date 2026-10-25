@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Goederen geleverd",
       "FILE_CLOSED": "Dossier gesloten",
       "CANCELLED_BY_CLIENT": "Geannuleerd door de klant",
-      "CANCELLED_BY_SOURCINGPICK": "Geannuleerd door Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "Geannuleerd door SourcingPick",
       "REFUND_ISSUED": "Terugbetaling gedaan"
     }
   },
@@ -257,7 +257,17 @@
       "colState": "Status",
       "colAmount": "Bedrag",
       "open": "Openen",
-      "ordersEmpty": "Geen lopende orders."
+      "ordersEmpty": "Geen lopende orders.",
+      "warehouse": {
+        "title": "Adres van het magazijn voor uw leveranciers",
+        "intro": "Geef dit adres aan uw leveranciers: zij leveren uw goederen daar af, en wij ontvangen en controleren ze.",
+        "chinese": "In het Chinees, voor uw leveranciers",
+        "latin": "In Latijnse letters",
+        "hours": "Ontvangsttijden",
+        "phone": "Telefoon magazijn",
+        "code": "Uw klantcode",
+        "codeHint": "Te vermelden op elke doos: zo herkennen wij uw pakketten bij aankomst."
+      }
     }
   },
   "orders": {

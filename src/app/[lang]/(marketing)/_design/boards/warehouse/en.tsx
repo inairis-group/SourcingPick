@@ -13,6 +13,7 @@
 import type { Locale } from "@/lib/i18n/config";
 import { sitePath } from "@/lib/i18n/site-paths";
 import { warehouse as content } from "../../content/warehouse";
+import { AddressGate } from "../../address-gate";
 
 export function WarehouseBoardEN({ lang }: { lang: Locale }) {
   const t = content.text[lang];
@@ -60,7 +61,7 @@ export function WarehouseBoardEN({ lang }: { lang: Locale }) {
               </div>
             </section>
             <section style={{ "padding": "calc(72px * var(--sp-vs, 1)) var(--sp-gutter, 120px) calc(72px * var(--sp-vs, 1))", "display": "grid", "gridTemplateColumns": "var(--sp-grid-fr-fr, minmax(0, 1fr) minmax(0, 1fr))", "gap": "24px" }}>
-              <div style={{ "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "24px", "padding": "var(--sp-pad-36-40, 36px 40px)", "display": "flex", "flexDirection": "column", "gap": "10px" }}>
+              <AddressGate style={{ "background": "#FFFFFF", "border": "1px solid #DCE3F2", "borderRadius": "24px", "padding": "var(--sp-pad-36-40, 36px 40px)", "display": "flex", "flexDirection": "column", "gap": "10px" }} lang={lang}>
                 <h2 style={s[6][lang]}>{t[12]}</h2>
                 <span lang="zh-Hans" style={{ "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif", "fontSize": "var(--sp-fs-20, 20px)", "fontWeight": "600", "paddingTop": "8px" }}>
                   {t[13]}
@@ -117,7 +118,7 @@ export function WarehouseBoardEN({ lang }: { lang: Locale }) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </AddressGate>
               <div style={{ "position": "relative", "borderRadius": "24px", "overflow": "hidden", "background": "#E6ECF8", "border": "1px solid #DCE3F2", "minHeight": "420px", "backgroundImage": "linear-gradient(0deg, rgba(21,93,252,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(21,93,252,0.06) 1px, transparent 1px)", "backgroundSize": "36px 36px", "display": "flex", "alignItems": "center", "justifyContent": "center" }} role="img" aria-label={t[21]}>
                 <div style={{ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "12px", "padding": "0 40px", "textAlign": "center" }}>
                   <span style={{ "display": "inline-flex", "width": "64px", "height": "64px", "borderRadius": "50%", "background": "#155DFC", "alignItems": "center", "justifyContent": "center", "boxShadow": "0 0 0 12px rgba(21,93,252,0.15)" }}>

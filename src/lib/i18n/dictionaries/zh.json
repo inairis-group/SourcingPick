@@ -98,7 +98,17 @@
       "colState": "状态",
       "colAmount": "金额",
       "open": "打开",
-      "ordersEmpty": "暂无进行中的订单。"
+      "ordersEmpty": "暂无进行中的订单。",
+      "warehouse": {
+        "title": "给供应商的仓库地址",
+        "intro": "把这个地址发给您的供应商：他们把货送到这里，由我们收货并验货。",
+        "chinese": "中文版，发给供应商",
+        "latin": "拼音版",
+        "hours": "收货时间",
+        "phone": "仓库电话",
+        "code": "您的客户编码",
+        "codeHint": "每个纸箱上都要写上：货到仓库时，我们就靠它认出您的货。"
+      }
     },
     "requests": {
       "eyebrow": "按需采购",
@@ -3685,7 +3695,7 @@
       "GOODS_DELIVERED": "货物已送达",
       "FILE_CLOSED": "档案已关闭",
       "CANCELLED_BY_CLIENT": "客户已取消",
-      "CANCELLED_BY_SOURCINGPICK": "Sourcing Pick 已取消",
+      "CANCELLED_BY_SOURCINGPICK": "SourcingPick 已取消",
       "REFUND_ISSUED": "已退款"
     }
   }

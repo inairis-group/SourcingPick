@@ -5,7 +5,7 @@ import { requireRole } from "@/lib/permissions/guards";
 import { isLocale } from "@/lib/i18n/config";
 
 /**
- * Expéditeur Sourcing Pick.
+ * Expéditeur SourcingPick.
  *
  * No onboarding redirect, unlike the client/factory shells: shipper accounts
  * are provisioned by the internal team rather than self-registering, so there

@@ -106,11 +106,11 @@ export const SERVICES_HUB = {
       ],
     },
     {
-      title: "Expédition maritime depuis le port de Nansha (Guangzhou)",
+      title: "Expédition maritime depuis les grands ports de Chine",
       lead:
-        "Départ direct depuis le **port en eau profonde de Nansha (Guangzhou)** vers la France, l’Europe, l’Afrique francophone et l’international.",
+        "Départ depuis le grand port de Chine le plus adapté, à commencer par **Nansha (Guangzhou)**, le plus grand, ou Xiamen et les ports du nord et du sud, vers la France, l’Europe, l’Afrique francophone et l’international.",
       weDo: [
-        "Réservation de l’espace (booking) sur le navire au départ de Nansha, au prix réel du marché (notre commission est fixe : **3 % sur le fret**).",
+        "Réservation de l’espace (booking) sur le navire au départ du port choisi, au prix réel du marché (notre commission est fixe : **3 % sur le fret**).",
         "Établissement et validation des documents d’exportation chinois et du *Bill of Lading* (B/L).",
         "Suivi du conteneur en mer jusqu’au port d’arrivée.",
         "**Dédouanement à l’arrivée (en option sur mesure) :** selon ce qui vous arrange, nous confions le dédouanement import à notre transitaire partenaire ou nous transmettons l’ensemble des documents au vôtre.",
@@ -121,7 +121,7 @@ export const SERVICES_HUB = {
       ],
       more: {
         href: "/services/transport-maritime-nansha",
-        label: "En savoir plus sur le fret maritime depuis le port de Nansha",
+        label: "En savoir plus sur le fret maritime depuis la Chine",
       },
     },
   ] satisfies HubStep[],

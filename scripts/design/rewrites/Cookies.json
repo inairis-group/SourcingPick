@@ -1,0 +1,200 @@
+{
+ "fr": {
+  "6": [
+   "Dernière mise à jour : 24 septembre 2026",
+   "Dernière mise à jour : 25 octobre 2026"
+  ],
+  "37": [
+   "Stripe, OpenSign",
+   "OpenSign"
+  ],
+  "38": [
+   "Sécuriser le paiement et la signature électronique",
+   "Sécuriser la signature électronique"
+  ],
+  "59": [
+   "Stripe et OpenSign, déposés seulement quand vous payez ou signez.",
+   "OpenSign, déposé seulement quand vous signez un devis."
+  ]
+ },
+ "en": {
+  "6": [
+   "Last updated: 24 September 2026",
+   "Last updated: 25 October 2026"
+  ],
+  "37": [
+   "Stripe, OpenSign",
+   "OpenSign"
+  ],
+  "38": [
+   "Secure payment and electronic signature",
+   "Secure electronic signature"
+  ],
+  "59": [
+   "Stripe and OpenSign, set only when you pay or sign.",
+   "OpenSign, set only when you sign a quotation."
+  ]
+ },
+ "es": {
+  "6": [
+   "Última actualización: 24 de septiembre de 2026",
+   "Última actualización: 25 de octubre de 2026"
+  ],
+  "37": [
+   "Stripe, OpenSign",
+   "OpenSign"
+  ],
+  "38": [
+   "Asegurar el pago y la firma electrónica",
+   "Asegurar la firma electrónica"
+  ],
+  "59": [
+   "Stripe y OpenSign, instaladas solo cuando usted paga o firma.",
+   "OpenSign, instaladas solo cuando usted firma un presupuesto."
+  ]
+ },
+ "de": {
+  "6": [
+   "Zuletzt aktualisiert: 24. September 2026",
+   "Zuletzt aktualisiert: 25. Oktober 2026"
+  ],
+  "37": [
+   "Stripe, OpenSign",
+   "OpenSign"
+  ],
+  "38": [
+   "Zahlung und elektronische Signatur absichern",
+   "Elektronische Signatur absichern"
+  ],
+  "59": [
+   "Stripe und OpenSign, nur beim Bezahlen oder Signieren gesetzt.",
+   "OpenSign, nur beim Unterzeichnen eines Angebots gesetzt."
+  ]
+ },
+ "it": {
+  "6": [
+   "Ultimo aggiornamento: 24 settembre 2026",
+   "Ultimo aggiornamento: 25 ottobre 2026"
+  ],
+  "37": [
+   "Stripe, OpenSign",
+   "OpenSign"
+  ],
+  "38": [
+   "Rendere sicuri il pagamento e la firma elettronica",
+   "Rendere sicura la firma elettronica"
+  ],
+  "59": [
+   "Stripe e OpenSign, installati solo quando pagate o firmate.",
+   "OpenSign, installato solo quando firmate un preventivo."
+  ]
+ },
+ "pt": {
+  "6": [
+   "Última atualização: 24 de setembro de 2026",
+   "Última atualização: 25 de outubro de 2026"
+  ],
+  "37": [
+   "Stripe, OpenSign",
+   "OpenSign"
+  ],
+  "38": [
+   "Garantir o pagamento e a assinatura eletrónica",
+   "Garantir a assinatura eletrónica"
+  ],
+  "59": [
+   "Stripe e OpenSign, instalados apenas quando paga ou assina.",
+   "OpenSign, instalados apenas quando assina um orçamento."
+  ]
+ },
+ "nl": {
+  "6": [
+   "Laatst bijgewerkt: 24 september 2026",
+   "Laatst bijgewerkt: 25 oktober 2026"
+  ],
+  "37": [
+   "Stripe, OpenSign",
+   "OpenSign"
+  ],
+  "38": [
+   "Betaling en elektronische handtekening beveiligen",
+   "Elektronische handtekening beveiligen"
+  ],
+  "59": [
+   "Stripe en OpenSign, alleen geplaatst wanneer u betaalt of tekent.",
+   "OpenSign, alleen geplaatst wanneer u een offerte tekent."
+  ]
+ },
+ "ar": {
+  "6": [
+   "آخر تحديث: 24 سبتمبر 2026",
+   "آخر تحديث: 25 أكتوبر 2026"
+  ],
+  "37": [
+   "Stripe, OpenSign",
+   "OpenSign"
+  ],
+  "38": [
+   "تأمين الدفع والتوقيع الإلكتروني",
+   "تأمين التوقيع الإلكتروني"
+  ],
+  "59": [
+   "Stripe وOpenSign، ولا تُحفظ إلا عند الدفع أو التوقيع.",
+   "OpenSign، ولا تُحفظ إلا عند توقيعك على عرض سعر."
+  ]
+ },
+ "ru": {
+  "6": [
+   "Последнее обновление: 24 сентября 2026 г.",
+   "Последнее обновление: 25 октября 2026 г."
+  ],
+  "37": [
+   "Stripe, OpenSign",
+   "OpenSign"
+  ],
+  "38": [
+   "Защита платежа и электронной подписи",
+   "Защита электронной подписи"
+  ],
+  "59": [
+   "Stripe и OpenSign, устанавливаются только при оплате или подписании.",
+   "OpenSign, устанавливается только при подписании расчёта."
+  ]
+ },
+ "tr": {
+  "6": [
+   "Son güncelleme: 24 Eylül 2026",
+   "Son güncelleme: 25 Ekim 2026"
+  ],
+  "37": [
+   "Stripe, OpenSign",
+   "OpenSign"
+  ],
+  "38": [
+   "Ödemeyi ve elektronik imzayı güvenceye almak",
+   "Elektronik imzayı güvenceye almak"
+  ],
+  "59": [
+   "Stripe ve OpenSign, yalnızca ödeme veya imza sırasında bırakılır.",
+   "OpenSign, yalnızca bir fiyat teklifini imzaladığınızda bırakılır."
+  ]
+ },
+ "pl": {
+  "6": [
+   "Ostatnia aktualizacja: 24 września 2026",
+   "Ostatnia aktualizacja: 25 października 2026"
+  ],
+  "37": [
+   "Stripe, OpenSign",
+   "OpenSign"
+  ],
+  "38": [
+   "Zabezpieczenie płatności i podpisu elektronicznego",
+   "Zabezpieczenie podpisu elektronicznego"
+  ],
+  "59": [
+   "Stripe i OpenSign, zapisywane tylko przy płatności lub podpisie.",
+   "OpenSign, zapisywane tylko przy podpisywaniu wyceny."
+  ]
+ }
+}

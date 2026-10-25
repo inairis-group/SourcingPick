@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Mercadoria entregue",
       "FILE_CLOSED": "Processo encerrado",
       "CANCELLED_BY_CLIENT": "Cancelado pelo cliente",
-      "CANCELLED_BY_SOURCINGPICK": "Cancelado pela Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "Cancelado pela SourcingPick",
       "REFUND_ISSUED": "Reembolso efetuado"
     }
   },
@@ -257,7 +257,17 @@
       "colState": "Estado",
       "colAmount": "Montante",
       "open": "Abrir",
-      "ordersEmpty": "Não há encomendas em curso."
+      "ordersEmpty": "Não há encomendas em curso.",
+      "warehouse": {
+        "title": "Morada do armazém para os seus fornecedores",
+        "intro": "Dê esta morada aos seus fornecedores: é aí que entregam as suas mercadorias, que nós rececionamos e inspecionamos.",
+        "chinese": "Em chinês, para os seus fornecedores",
+        "latin": "Em alfabeto latino",
+        "hours": "Horário de receção",
+        "phone": "Telefone do armazém",
+        "code": "O seu código de cliente",
+        "codeHint": "A inscrever em cada caixa: é assim que reconhecemos os seus volumes à chegada."
+      }
     }
   },
   "orders": {

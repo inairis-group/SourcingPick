@@ -12,6 +12,7 @@ import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
 import { sitePath } from "@/lib/i18n/site-paths";
 import { home as content } from "../../content/home";
+import { AddressGate } from "../../address-gate";
 import { Disclosure } from "../../disclosure";
 
 export function HomeBoard({ lang }: { lang: Locale }) {
@@ -382,13 +383,13 @@ export function HomeBoard({ lang }: { lang: Locale }) {
                       <circle cx="12" cy="9.5" r="2.5" />
                     </svg>
                   </span>
-                  <div style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }}>
+                  <AddressGate style={{ "display": "flex", "flexDirection": "column", "gap": "4px" }} lang={lang}>
                     <span style={s[35][lang]}>{t[80]}</span>
                     <span lang="zh-Hans" style={{ "fontFamily": "'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif", "fontSize": "var(--sp-fs-16, 16px)", "fontWeight": "600", "color": "#0E1A3D" }}>
                       {t[81]}
                     </span>
                     <span style={{ "fontSize": "14.5px", "color": "#4A5578" }}>{t[82]}</span>
-                  </div>
+                  </AddressGate>
                 </div>
                 <img src="/design/picky-verified-badge.svg" alt={t[83]} style={{ "width": "230px", "height": "auto", "maxWidth": "100%" }} />
               </div>

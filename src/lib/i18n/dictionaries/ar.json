@@ -98,7 +98,17 @@
       "colState": "الحالة",
       "colAmount": "المبلغ",
       "open": "فتح",
-      "ordersEmpty": "لا توجد أوامر قيد التنفيذ."
+      "ordersEmpty": "لا توجد أوامر قيد التنفيذ.",
+      "warehouse": {
+        "title": "عنوان المستودع لمورّديك",
+        "intro": "أعطِ هذا العنوان لمورّديك: يسلّمون إليه بضائعك، فنستلمها ونفحصها.",
+        "chinese": "بالصينية، لمورّديك",
+        "latin": "بالحروف اللاتينية",
+        "hours": "مواعيد الاستلام",
+        "phone": "هاتف المستودع",
+        "code": "رمز العميل الخاص بك",
+        "codeHint": "اكتبه على كل كرتونة: هكذا نتعرّف على طرودك عند وصولها."
+      }
     },
     "requests": {
       "eyebrow": "توريد عند الطلب",
@@ -3685,7 +3695,7 @@
       "GOODS_DELIVERED": "تم تسليم البضاعة",
       "FILE_CLOSED": "تم إغلاق الملف",
       "CANCELLED_BY_CLIENT": "ألغاه العميل",
-      "CANCELLED_BY_SOURCINGPICK": "ألغته Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "ألغته SourcingPick",
       "REFUND_ISSUED": "تم رد المبلغ"
     }
   }

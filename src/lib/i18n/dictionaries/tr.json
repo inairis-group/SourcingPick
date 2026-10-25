@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Mal teslim edildi",
       "FILE_CLOSED": "Dosya kapatıldı",
       "CANCELLED_BY_CLIENT": "Müşteri iptal etti",
-      "CANCELLED_BY_SOURCINGPICK": "Sourcing Pick iptal etti",
+      "CANCELLED_BY_SOURCINGPICK": "SourcingPick iptal etti",
       "REFUND_ISSUED": "İade yapıldı"
     }
   },
@@ -257,7 +257,17 @@
       "colState": "Durum",
       "colAmount": "Tutar",
       "open": "Aç",
-      "ordersEmpty": "Devam eden sipariş yok."
+      "ordersEmpty": "Devam eden sipariş yok.",
+      "warehouse": {
+        "title": "Tedarikçileriniz için depo adresi",
+        "intro": "Bu adresi tedarikçilerinize verin: mallarınızı buraya teslim ederler, biz de teslim alıp kontrol ederiz.",
+        "chinese": "Çince, tedarikçileriniz için",
+        "latin": "Latin harfleriyle",
+        "hours": "Mal kabul saatleri",
+        "phone": "Depo telefonu",
+        "code": "Müşteri kodunuz",
+        "codeHint": "Her kolinin üzerine yazılacak: kolilerinizi varışta bu sayede tanırız."
+      }
     }
   },
   "orders": {

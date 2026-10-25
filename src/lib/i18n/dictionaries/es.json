@@ -218,7 +218,7 @@
       "GOODS_DELIVERED": "Mercancía entregada",
       "FILE_CLOSED": "Expediente cerrado",
       "CANCELLED_BY_CLIENT": "Cancelado por el cliente",
-      "CANCELLED_BY_SOURCINGPICK": "Cancelado por Sourcing Pick",
+      "CANCELLED_BY_SOURCINGPICK": "Cancelado por SourcingPick",
       "REFUND_ISSUED": "Reembolso efectuado"
     }
   },
@@ -257,7 +257,17 @@
       "colState": "Estado",
       "colAmount": "Importe",
       "open": "Abrir",
-      "ordersEmpty": "No hay pedidos en curso."
+      "ordersEmpty": "No hay pedidos en curso.",
+      "warehouse": {
+        "title": "Dirección del almacén para sus proveedores",
+        "intro": "Facilite esta dirección a sus proveedores: allí entregan sus mercancías, que nosotros recibimos e inspeccionamos.",
+        "chinese": "En chino, para sus proveedores",
+        "latin": "En caracteres latinos",
+        "hours": "Horario de recepción",
+        "phone": "Teléfono del almacén",
+        "code": "Su código de cliente",
+        "codeHint": "Debe indicarse en cada caja: así reconocemos sus bultos a su llegada."
+      }
     }
   },
   "orders": {
