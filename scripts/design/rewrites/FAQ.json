@@ -12,6 +12,10 @@
    "Ils dépendent de la production chez vos fournisseurs et du prochain départ depuis Nansha. Comptez 2 à 3 mois entre la commande et la livraison. L’estimation précise figure dans votre devis.",
    "Ils dépendent de la production chez vos fournisseurs et du prochain départ depuis le port choisi. Comptez 2 à 3 mois entre la commande et la livraison. L’estimation précise figure dans votre devis."
   ],
+  "28": [
+   "Ils sont à l’étude. Nous ne les proposerons qu’une fois testés sur de vrais envois.",
+   "Nous les proposons, comme le camion. L’avion convient à un petit colis urgent ; le camion et le train sont possibles, mais nous les déconseillons. Le simulateur de la page Livraisons vous donne une estimation pour chacun."
+  ],
   "41": [
    "Acompte de 40 % à la commande, solde avant le chargement du conteneur. Par virement ou par carte, depuis votre espace client.",
    "Acompte de 40 % à la commande, solde avant le chargement du conteneur. Par virement, sur facture."
@@ -29,6 +33,10 @@
   "20": [
    "They depend on production at your suppliers and on the next sailing from Nansha. Allow 2 to 3 months between order and delivery. The precise estimate is in your quotation.",
    "They depend on production at your suppliers and on the next sailing from the chosen port. Allow 2 to 3 months between order and delivery. The precise estimate is in your quotation."
+  ],
+  "28": [
+   "We’re looking into them. We’ll only offer them once they’ve been tested on real shipments.",
+   "We offer both, as well as road freight. Air freight suits a small, urgent package; road and rail are possible, but we advise against them. The calculator on the Shipping page gives you an estimate for each."
   ],
   "41": [
    "A deposit of 40% on order, the balance before the container is loaded. By bank transfer or card, from your client area.",
@@ -48,6 +56,10 @@
    "Dependen de la producción en sus proveedores y de la próxima salida desde Nansha. Calcule de 2 a 3 meses entre el pedido y la entrega. La estimación exacta figura en su presupuesto.",
    "Dependen de la producción en sus proveedores y de la próxima salida desde el puerto elegido. Calcule de 2 a 3 meses entre el pedido y la entrega. La estimación exacta figura en su presupuesto."
   ],
+  "28": [
+   "Están en estudio. Solo los ofreceremos cuando los hayamos probado con envíos reales.",
+   "Los ofrecemos, igual que el camión. El avión es adecuado para un paquete pequeño urgente; el camión y el tren son posibles, pero los desaconsejamos. El simulador de la página Envíos le da una estimación para cada uno."
+  ],
   "41": [
    "Anticipo del 40 % al hacer el pedido y saldo antes de la carga del contenedor. Por transferencia o con tarjeta, desde su área de cliente.",
    "Anticipo del 40 % al hacer el pedido y saldo antes de la carga del contenedor. Por transferencia, contra factura."
@@ -65,6 +77,10 @@
   "20": [
    "Sie hängen von der Produktion bei Ihren Lieferanten und vom nächsten Abgang ab Nansha ab. Rechnen Sie mit 2 bis 3 Monaten zwischen Bestellung und Lieferung. Die genaue Schätzung steht in Ihrem Angebot.",
    "Sie hängen von der Produktion bei Ihren Lieferanten und vom nächsten Abgang ab dem gewählten Hafen ab. Rechnen Sie mit 2 bis 3 Monaten zwischen Bestellung und Lieferung. Die genaue Schätzung steht in Ihrem Angebot."
+  ],
+  "28": [
+   "Diese Optionen evaluieren wir derzeit. Wir bieten sie erst an, wenn wir sie mit echten Sendungen getestet haben.",
+   "Beides bieten wir an, ebenso den Lkw. Das Flugzeug eignet sich für ein kleines, eiliges Paket; Lkw und Zug sind möglich, wir raten jedoch davon ab. Der Frachtrechner auf der Seite „Versand“ gibt Ihnen für jede Transportart eine Schätzung."
   ],
   "41": [
    "Anzahlung von 40 % bei Auftragserteilung, Restzahlung vor der Beladung des Containers. Per Überweisung oder Karte, über Ihren Kundenbereich.",
@@ -84,6 +100,10 @@
    "Dipendono dalla produzione presso i vostri fornitori e dalla prossima partenza da Nansha. Calcolate da 2 a 3 mesi tra l’ordine e la consegna. La stima precisa è indicata nel preventivo.",
    "Dipendono dalla produzione presso i vostri fornitori e dalla prossima partenza dal porto scelto. Calcolate da 2 a 3 mesi tra l’ordine e la consegna. La stima precisa è indicata nel preventivo."
   ],
+  "28": [
+   "Sono allo studio. Li offriremo solo dopo averli testati su spedizioni reali.",
+   "Li offriamo, come il camion. L’aereo è adatto a un piccolo collo urgente; il camion e il treno sono possibili, ma li sconsigliamo. Il simulatore della pagina Spedizioni vi fornisce una stima per ciascuno."
+  ],
   "41": [
    "Acconto del 40% all’ordine, saldo prima del carico del container. Con bonifico o carta, dalla vostra area clienti.",
    "Acconto del 40% all’ordine, saldo prima del carico del container. Con bonifico, su fattura."
@@ -101,6 +121,10 @@
   "20": [
    "Dependem da produção nos seus fornecedores e da próxima partida de Nansha. Conte com 2 a 3 meses entre a encomenda e a entrega. A estimativa exata consta do seu orçamento.",
    "Dependem da produção nos seus fornecedores e da próxima partida do porto escolhido. Conte com 2 a 3 meses entre a encomenda e a entrega. A estimativa exata consta do seu orçamento."
+  ],
+  "28": [
+   "Estão em estudo. Só os disponibilizaremos depois de testados em envios reais.",
+   "Disponibilizamo-los, tal como o camião. O avião é adequado para um pacote pequeno e urgente; o camião e o comboio são possíveis, mas desaconselhamo-los. O simulador da página Envios dá-lhe uma estimativa para cada um."
   ],
   "41": [
    "Adiantamento de 40% com a encomenda, saldo antes do carregamento do contentor. Por transferência ou por cartão, na sua área de cliente.",
@@ -120,6 +144,10 @@
    "Ze hangen af van de productie bij uw leveranciers en van het eerstvolgende vertrek uit Nansha. Reken op 2 tot 3 maanden tussen bestelling en levering. De precieze schatting staat in uw offerte.",
    "Ze hangen af van de productie bij uw leveranciers en van het eerstvolgende vertrek uit de gekozen haven. Reken op 2 tot 3 maanden tussen bestelling en levering. De precieze schatting staat in uw offerte."
   ],
+  "28": [
+   "Die zijn in onderzoek. We bieden ze pas aan als ze getest zijn met echte zendingen.",
+   "Die bieden we aan, net als de vrachtwagen. Het vliegtuig is geschikt voor een klein, dringend pakket; de vrachtwagen en de trein zijn mogelijk, maar die raden wij af. De vrachtcalculator op de pagina Verzending geeft u voor elk een schatting."
+  ],
   "41": [
    "Een aanbetaling van 40% bij bestelling, het restbedrag vóór de belading van de container. Via bankoverschrijving of per kaart, vanuit uw klantenportaal.",
    "Een aanbetaling van 40% bij bestelling, het restbedrag vóór de belading van de container. Via bankoverschrijving, op factuur."
@@ -137,6 +165,10 @@
   "20": [
    "تعتمد على الإنتاج لدى مورّديك وعلى موعد الإبحار التالي من نانشا. احسب من شهرين إلى ثلاثة أشهر بين الطلب والتسليم. التقدير الدقيق مذكور في عرض السعر.",
    "تعتمد على الإنتاج لدى مورّديك وعلى موعد الإبحار التالي من الميناء المختار. احسب من شهرين إلى ثلاثة أشهر بين الطلب والتسليم. التقدير الدقيق مذكور في عرض السعر."
+  ],
+  "28": [
+   "هما قيد الدراسة. ولن نقدّمهما إلا بعد تجربتهما على شحنات حقيقية.",
+   "نقدّمهما، كما نقدّم الشاحنة. فالطائرة مناسبة لطرد صغير عاجل؛ أما الشاحنة والقطار فممكنان، لكننا لا نوصي بهما. ويعطيك المحاكي في صفحة «الشحن» تقديرًا لكلٍّ منها."
   ],
   "41": [
    "دفعة مقدمة قدرها 40% عند تقديم الطلبية، والمبلغ المتبقي قبل تحميل الحاوية. بالتحويل المصرفي أو بالبطاقة، من حساب العميل.",
@@ -156,6 +188,10 @@
    "Они зависят от производства у ваших поставщиков и от ближайшего отхода судна из Наньша. Рассчитывайте на 2–3 месяца от заказа до доставки. Точная оценка указана в расчёте.",
    "Они зависят от производства у ваших поставщиков и от ближайшего отхода судна из выбранного порта. Рассчитывайте на 2–3 месяца от заказа до доставки. Точная оценка указана в расчёте."
   ],
+  "28": [
+   "Эти варианты пока в проработке. Мы начнем их предлагать только после тестирования на реальных отправках.",
+   "Мы их предлагаем, как и доставку грузовиком. Самолет подходит для небольшого срочного груза; грузовик и поезд возможны, но мы их не рекомендуем. Калькулятор на странице «Доставка» даст вам оценку по каждому варианту."
+  ],
   "41": [
    "Предоплата 40% при заказе, остаток оплаты — до загрузки контейнера. Банковским переводом или картой, из личного кабинета.",
    "Предоплата 40% при заказе, остаток оплаты — до загрузки контейнера. Банковским переводом по счету."
@@ -174,6 +210,10 @@
    "Tedarikçilerinizdeki üretime ve Nansha’dan kalkacak ilk sefere bağlı. Siparişten teslimata 2 ila 3 ay hesaplayın. Kesin tahmin teklifinizde yer alır.",
    "Tedarikçilerinizdeki üretime ve seçilen limandan kalkacak ilk sefere bağlı. Siparişten teslimata 2 ila 3 ay hesaplayın. Kesin tahmin teklifinizde yer alır."
   ],
+  "28": [
+   "İnceleme aşamasındalar. Gerçek sevkiyatlarda test etmeden bunları sunmayacağız.",
+   "Kamyon gibi bunları da sunuyoruz. Uçak küçük ve acil bir koli için uygundur; kamyon ve tren de mümkün, ancak bunları önermiyoruz. Teslimat sayfasındaki simülatör size her biri için bir tahmin verir."
+  ],
   "41": [
    "Sipariş sırasında %40 ön ödeme, konteyner yüklenmeden önce kalan tutar. Havale veya kartla, müşteri panelinizden.",
    "Sipariş sırasında %40 ön ödeme, konteyner yüklenmeden önce kalan tutar. Fatura üzerine havaleyle."
@@ -191,6 +231,10 @@
   "20": [
    "Zależą od produkcji u Państwa dostawców i od najbliższego wyjścia statku z Nansha. Prosimy liczyć od 2 do 3 miesięcy od zamówienia do dostawy. Dokładny szacunek podajemy w wycenie.",
    "Zależą od produkcji u Państwa dostawców i od najbliższego wyjścia statku z wybranego portu. Prosimy liczyć od 2 do 3 miesięcy od zamówienia do dostawy. Dokładny szacunek podajemy w wycenie."
+  ],
+  "28": [
+   "Są w fazie analizy. Nie zaoferujemy ich przed przetestowaniem na rzeczywistych wysyłkach.",
+   "Oferujemy oba, podobnie jak transport ciężarówką. Samolot sprawdzi się przy małej, pilnej paczce; ciężarówka i pociąg są możliwe, ale je odradzamy. Kalkulator na stronie „Dostawa” poda Państwu szacunkowy koszt każdego z nich."
   ],
   "41": [
    "Zaliczka 40% przy zamówieniu, pozostała kwota przed załadunkiem kontenera. Przelewem lub kartą, z panelu klienta.",

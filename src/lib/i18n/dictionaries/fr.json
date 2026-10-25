@@ -105,7 +105,9 @@
         "chinese": "En chinois, pour vos fournisseurs",
         "latin": "En lettres latines",
         "hours": "Horaires de réception",
-        "phone": "Téléphone de l’entrepôt"
+        "phone": "Téléphone de l’entrepôt",
+        "code": "Votre code client",
+        "codeHint": "À écrire sur chaque carton : c’est ainsi que nous reconnaissons vos colis à l’arrivée."
       }
     },
     "requests": {

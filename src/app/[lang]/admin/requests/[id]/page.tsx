@@ -48,6 +48,7 @@ export default async function AdminRequestDetailPage({
           country: true,
           city: true,
           kycStatus: true,
+          clientCode: true,
         },
       },
       createdBy: {
@@ -194,6 +195,9 @@ export default async function AdminRequestDetailPage({
             </Link>
             {req.clientOrg.legalName !== req.clientOrg.displayName && (
               <span className="text-faint"> · {req.clientOrg.legalName}</span>
+            )}
+            {req.clientOrg.clientCode && (
+              <span className="font-mono text-faint"> · {req.clientOrg.clientCode}</span>
             )}
           </Detail>
           <Detail label={tA.locationLabel}>

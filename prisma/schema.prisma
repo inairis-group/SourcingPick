@@ -858,6 +858,11 @@ model Organization {
   instagramUrl            String?
   facebookUrl             String?
   linkedinUrl             String?
+  /// A client's reception code ("SP-" and six digits): suppliers write it on
+  /// every carton they deliver to the warehouse, which is how the team knows
+  /// whose goods arrived. Given at sign-up (src/lib/org/client-code.ts); null
+  /// for every organisation that is not a client.
+  clientCode              String?   @unique
   kycStatus               KycStatus @default(PENDING)
   /// Partner round 4 — set true when the org was created by an agent
   /// on behalf of an off-platform factory (typically a Chinese factory

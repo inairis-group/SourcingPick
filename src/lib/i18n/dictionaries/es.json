@@ -264,7 +264,9 @@
         "chinese": "En chino, para sus proveedores",
         "latin": "En caracteres latinos",
         "hours": "Horario de recepción",
-        "phone": "Teléfono del almacén"
+        "phone": "Teléfono del almacén",
+        "code": "Su código de cliente",
+        "codeHint": "Debe indicarse en cada caja: así reconocemos sus bultos a su llegada."
       }
     }
   },

@@ -16,6 +16,18 @@
    "Départ du port de Nansha, à Guangzhou, vers l’Europe. Vous suivez le conteneur dans votre espace client.",
    "Départ vers l’Europe depuis Nansha, Xiamen ou un autre grand port de Chine. Vous suivez le conteneur dans votre espace client."
   ],
+  "47": [
+   "À l’étude",
+   "Aussi proposés"
+  ],
+  "48": [
+   "Ferroviaire et aérien",
+   "Avion, camion et train"
+  ],
+  "49": [
+   "Pas encore proposés. Nous ne les vendrons qu’une fois testés sur de vrais envois.",
+   "L’avion pour un petit colis urgent ; le camion et le train sont possibles, mais nous les déconseillons. Le simulateur estime chacun."
+  ],
   "72": [
    "Conteneur chargé par notre équipe, départ du port de Nansha.",
    "Conteneur chargé par notre équipe, départ du grand port le plus adapté."
@@ -23,6 +35,14 @@
   "88": [
    "Départs maritimes depuis le port de Nansha",
    "Logistique propriétaire à Dongguan, départs depuis les grands ports de Chine"
+  ],
+  "92": [
+   "Pas de prix de fret affichés : ils changent chaque semaine, vous recevez un devis réel",
+   "Pas de prix ferme avant votre devis : le simulateur donne une estimation, le devis le prix réel"
+  ],
+  "94": [
+   "Pas de train ni d’avion tant que ce n’est pas testé",
+   "Pas de commission cachée : elle figure sur une ligne à part de votre devis"
   ],
   "157": [
    "Fret maritime Nansha → Europe",
@@ -54,6 +74,18 @@
    "Sailing from the port of Nansha in Guangzhou to Europe. You track the container in your client area.",
    "Sailing to Europe from Nansha, Xiamen or another major Chinese port. You track the container in your client area."
   ],
+  "47": [
+   "Under review",
+   "Also available"
+  ],
+  "48": [
+   "Rail and air freight",
+   "Air, road and rail freight"
+  ],
+  "49": [
+   "Not offered yet. We’ll only sell them once we’ve tested them on real shipments.",
+   "Air freight for a small, urgent package; road and rail are possible, but we advise against them. The shipping calculator gives an estimate for each."
+  ],
   "72": [
    "Container loaded by our team and shipped from the port of Nansha.",
    "Container loaded by our team and shipped from the most suitable major port."
@@ -61,6 +93,14 @@
   "88": [
    "Sailings from the port of Nansha",
    "In-house logistics in Dongguan, sailings from China’s major ports"
+  ],
+  "92": [
+   "No freight prices on display: they change every week, so you get a real quotation",
+   "No firm price before your quotation: the shipping calculator gives an estimate, your quotation the actual price"
+  ],
+  "94": [
+   "No rail or air freight until they’ve been tested",
+   "No hidden commission: it appears on its own line in your quotation"
   ],
   "157": [
    "Ocean freight Nansha → Europe",
@@ -92,6 +132,18 @@
    "Salida desde el puerto de Nansha, en Guangzhou, rumbo a Europa. Puede seguir el contenedor en su área de cliente.",
    "Salida rumbo a Europa desde Nansha, Xiamen u otro gran puerto de China. Puede seguir el contenedor en su área de cliente."
   ],
+  "47": [
+   "En estudio",
+   "También disponibles"
+  ],
+  "48": [
+   "Ferroviario y aéreo",
+   "Avión, camión y tren"
+  ],
+  "49": [
+   "Todavía no los ofrecemos. Solo los venderemos cuando los hayamos probado con envíos reales.",
+   "El avión, para un paquete pequeño urgente; el camión y el tren son posibles, pero los desaconsejamos. El simulador da una estimación para cada uno."
+  ],
   "72": [
    "Contenedor cargado por nuestro equipo y salida desde el puerto de Nansha.",
    "Contenedor cargado por nuestro equipo y salida desde el gran puerto más adecuado."
@@ -99,6 +151,14 @@
   "88": [
    "Salidas marítimas desde el puerto de Nansha",
    "Logística propia en Dongguan, salidas desde los grandes puertos de China"
+  ],
+  "92": [
+   "Ni precios de flete publicados: cambian cada semana; usted recibe un presupuesto real",
+   "Ni precio firme antes de su presupuesto: el simulador da una estimación; el presupuesto, el precio real"
+  ],
+  "94": [
+   "Ni tren ni avión mientras no estén probados",
+   "Ni comisión oculta: figura en una línea aparte de su presupuesto"
   ],
   "157": [
    "Flete marítimo Nansha → Europa",
@@ -130,6 +190,18 @@
    "Abfahrt vom Hafen Nansha in Guangzhou nach Europa. Den Container verfolgen Sie in Ihrem Kundenbereich.",
    "Abfahrt nach Europa ab Nansha, Xiamen oder einem anderen großen Hafen Chinas. Den Container verfolgen Sie in Ihrem Kundenbereich."
   ],
+  "47": [
+   "In Evaluierung",
+   "Ebenfalls im Angebot"
+  ],
+  "48": [
+   "Bahn- und Luftfracht",
+   "Flugzeug, Lkw und Zug"
+  ],
+  "49": [
+   "Noch nicht verfügbar. Wir bieten sie erst an, wenn wir sie mit echten Sendungen getestet haben.",
+   "Das Flugzeug für ein kleines, eiliges Paket; Lkw und Zug sind möglich, wir raten jedoch davon ab. Der Frachtrechner liefert für jede Transportart eine Schätzung."
+  ],
   "72": [
    "Container von unserem Team beladen, Abfahrt ab Hafen Nansha.",
    "Container von unserem Team beladen, Abfahrt ab dem am besten geeigneten großen Hafen."
@@ -137,6 +209,14 @@
   "88": [
    "Verschiffung ab dem Hafen Nansha",
    "Eigene Logistik in Dongguan, Abfahrten ab den großen Häfen Chinas"
+  ],
+  "92": [
+   "Keine veröffentlichten Frachtpreise: Diese ändern sich jede Woche, Sie erhalten ein echtes Angebot",
+   "Kein Festpreis vor Ihrem Angebot: Der Frachtrechner liefert eine Schätzung, das Angebot den tatsächlichen Preis"
+  ],
+  "94": [
+   "Keine Bahn- oder Luftfracht, solange sie nicht getestet ist",
+   "Keine versteckte Provision: Sie steht als eigene Position in Ihrem Angebot"
   ],
   "157": [
    "Seefracht Nansha → Europa",
@@ -168,6 +248,18 @@
    "Partenza dal porto di Nansha, a Guangzhou, verso l’Europa. Seguite il container nella vostra area clienti.",
    "Partenza verso l’Europa da Nansha, Xiamen o un altro grande porto cinese. Seguite il container nella vostra area clienti."
   ],
+  "47": [
+   "Allo studio",
+   "Disponibili anche"
+  ],
+  "48": [
+   "Trasporto ferroviario e aereo",
+   "Aereo, camion e treno"
+  ],
+  "49": [
+   "Per ora non li offriamo. Li venderemo solo dopo averli testati su spedizioni reali.",
+   "L’aereo per un piccolo collo urgente; il camion e il treno sono possibili, ma li sconsigliamo. Il simulatore fornisce una stima per ciascuno."
+  ],
   "72": [
    "Container caricato dal nostro team, partenza dal porto di Nansha.",
    "Container caricato dal nostro team, partenza dal grande porto più adatto."
@@ -175,6 +267,14 @@
   "88": [
    "Partenze via mare dal porto di Nansha",
    "Logistica propria a Dongguan, partenze dai grandi porti cinesi"
+  ],
+  "92": [
+   "Nessun prezzo del nolo pubblicato: cambia ogni settimana, ricevete un preventivo reale",
+   "Nessun prezzo vincolante prima del vostro preventivo: il simulatore fornisce una stima, il preventivo il prezzo reale"
+  ],
+  "94": [
+   "Niente treno né aereo finché non saranno testati",
+   "Nessuna commissione nascosta: è indicata in una voce a parte del vostro preventivo"
   ],
   "157": [
    "Nolo marittimo Nansha → Europa",
@@ -206,6 +306,18 @@
    "Partida do porto de Nansha, em Guangzhou, para a Europa. Acompanha o seu contentor na sua área de cliente.",
    "Partida para a Europa a partir de Nansha, Xiamen ou outro grande porto da China. Acompanha o seu contentor na sua área de cliente."
   ],
+  "47": [
+   "Em estudo",
+   "Também disponíveis"
+  ],
+  "48": [
+   "Ferroviário e aéreo",
+   "Avião, camião e comboio"
+  ],
+  "49": [
+   "Ainda não disponíveis. Só os venderemos depois de testados em envios reais.",
+   "O avião para um pacote pequeno e urgente; o camião e o comboio são possíveis, mas desaconselhamo-los. O simulador dá uma estimativa para cada um."
+  ],
   "72": [
    "Contentor carregado pela nossa equipa, partida do porto de Nansha.",
    "Contentor carregado pela nossa equipa, partida do grande porto mais adequado."
@@ -213,6 +325,14 @@
   "88": [
    "Partidas por via marítima a partir do porto de Nansha",
    "Logística própria em Dongguan, partidas a partir dos grandes portos da China"
+  ],
+  "92": [
+   "Nada de preços de frete publicados: mudam todas as semanas, por isso recebe um orçamento real",
+   "Nada de preço definitivo antes do seu orçamento: o simulador dá uma estimativa; o orçamento, o preço real"
+  ],
+  "94": [
+   "Nada de comboio nem de avião enquanto não estiverem testados",
+   "Nada de comissão escondida: aparece numa linha à parte do seu orçamento"
   ],
   "157": [
    "Frete marítimo Nansha → Europa",
@@ -244,6 +364,18 @@
    "Vertrek vanuit de haven van Nansha in Guangzhou naar Europa. U volgt de container in uw klantenportaal.",
    "Vertrek naar Europa vanuit Nansha, Xiamen of een andere grote haven van China. U volgt de container in uw klantenportaal."
   ],
+  "47": [
+   "In onderzoek",
+   "Ook beschikbaar"
+  ],
+  "48": [
+   "Spoor en luchtvracht",
+   "Vliegtuig, vrachtwagen en trein"
+  ],
+  "49": [
+   "Nog niet beschikbaar. We verkopen ze pas als ze getest zijn met echte zendingen.",
+   "Het vliegtuig voor een klein, dringend pakket; de vrachtwagen en de trein zijn mogelijk, maar die raden wij af. De vrachtcalculator geeft voor elk een schatting."
+  ],
   "72": [
    "Container geladen door ons team, vertrek vanuit de haven van Nansha.",
    "Container geladen door ons team, vertrek vanuit de meest geschikte grote haven."
@@ -251,6 +383,14 @@
   "88": [
    "Verscheping vanuit de haven van Nansha",
    "Eigen logistiek in Dongguan, vertrek vanuit de grote havens van China"
+  ],
+  "92": [
+   "Geen vrachtprijzen op de site: die veranderen elke week, u krijgt een echte offerte",
+   "Geen definitieve prijs vóór uw offerte: de vrachtcalculator geeft een schatting, de offerte de werkelijke prijs"
+  ],
+  "94": [
+   "Geen spoor- of luchtvracht zolang dat niet getest is",
+   "Geen verborgen commissie: die staat op een aparte regel in uw offerte"
   ],
   "157": [
    "Zeevracht Nansha → Europa",
@@ -282,6 +422,18 @@
    "الانطلاق من ميناء نانشا في قوانغتشو نحو أوروبا. وتتابع الحاوية في حساب العميل.",
    "الانطلاق نحو أوروبا من نانشا أو شيامن أو ميناء صيني كبير آخر. وتتابع الحاوية في حساب العميل."
   ],
+  "47": [
+   "قيد الدراسة",
+   "متاحة أيضًا"
+  ],
+  "48": [
+   "السكك الحديدية والشحن الجوي",
+   "الطائرة والشاحنة والقطار"
+  ],
+  "49": [
+   "لا نقدّم هاتين الخدمتين بعد، ولن نبيعهما إلا بعد تجربتهما على شحنات حقيقية.",
+   "الطائرة لطرد صغير عاجل؛ أما الشاحنة والقطار فممكنان، لكننا لا نوصي بهما. ويقدّر المحاكي تكلفة كلٍّ منها."
+  ],
   "72": [
    "يحمّل فريقنا الحاوية، ثم تنطلق من ميناء نانشا.",
    "يحمّل فريقنا الحاوية، ثم تنطلق من الميناء الكبير الأنسب."
@@ -289,6 +441,14 @@
   "88": [
    "انطلاق الشحنات البحرية من ميناء نانشا",
    "لوجستياتنا الخاصة في دونغقوان، والانطلاق من كبرى موانئ الصين"
+  ],
+  "92": [
+   "لا أسعار شحن معلنة: فهي تتغيّر كل أسبوع، وتتلقّى بدلًا منها عرض سعر حقيقيًا",
+   "لا سعر نهائي قبل عرض السعر: المحاكي يعطي تقديرًا، وعرض السعر يحدّد السعر الفعلي"
+  ],
+  "94": [
+   "لا قطار ولا طائرة ما لم نجرّبهما",
+   "لا عمولة خفية: تظهر في بند مستقل من عرض السعر"
   ],
   "157": [
    "الشحن البحري نانشا ← أوروبا",
@@ -320,6 +480,18 @@
    "Отправка из порта Наньша (Гуанчжоу) в Европу. Вы отслеживаете контейнер в личном кабинете.",
    "Отправка в Европу из Наньша, Сямэня или другого крупного порта Китая. Вы отслеживаете контейнер в личном кабинете."
   ],
+  "47": [
+   "В проработке",
+   "Также предлагаем"
+  ],
+  "48": [
+   "Ж/д и авиаперевозки",
+   "Самолет, грузовик и поезд"
+  ],
+  "49": [
+   "Пока не предлагаются. Мы начнем их продавать только после тестирования на реальных отправках.",
+   "Самолет — для небольшого срочного груза; грузовик и поезд возможны, но мы их не рекомендуем. Калькулятор оценит каждый вариант."
+  ],
   "72": [
    "Загрузка контейнера силами нашей команды, отправка из порта Наньша.",
    "Загрузка контейнера силами нашей команды, отправка из наиболее подходящего крупного порта."
@@ -327,6 +499,14 @@
   "88": [
    "Морские отправки из порта Наньша",
    "Собственная логистика в Дунгуане, отправки из крупных портов Китая"
+  ],
+  "92": [
+   "Опубликованных цен на фрахт: они меняются каждую неделю, поэтому вы получаете реальный расчёт",
+   "Окончательной цены до получения расчёта: калькулятор дает оценку, а расчёт — реальную цену"
+  ],
+  "94": [
+   "Ж/д и авиаперевозок, пока они не протестированы",
+   "Скрытой комиссии: она указана отдельной строкой в вашем расчёте"
   ],
   "157": [
    "Морской фрахт Наньша → Европа",
@@ -358,6 +538,18 @@
    "Guangzhou’daki Nansha Limanı’ndan Avrupa’ya yola çıkış. Konteyneri müşteri panelinizden takip edersiniz.",
    "Nansha, Xiamen veya Çin’in başka bir büyük limanından Avrupa’ya yola çıkış. Konteyneri müşteri panelinizden takip edersiniz."
   ],
+  "47": [
+   "İnceleniyor",
+   "Ayrıca sunuluyor"
+  ],
+  "48": [
+   "Demiryolu ve hava kargo",
+   "Uçak, kamyon ve tren"
+  ],
+  "49": [
+   "Henüz sunulmuyor. Gerçek sevkiyatlarda test etmeden satışa sunmayacağız.",
+   "Küçük ve acil bir koli için uçak; kamyon ve tren de mümkün, ancak bunları önermiyoruz. Simülatör her biri için tahmin verir."
+  ],
   "72": [
    "Konteyner ekibimiz tarafından yüklenir ve Nansha Limanı’ndan yola çıkar.",
    "Konteyner ekibimiz tarafından yüklenir ve en uygun büyük limandan yola çıkar."
@@ -365,6 +557,14 @@
   "88": [
    "Nansha Limanı’ndan deniz yoluyla sevkiyat",
    "Dongguan’da kendi lojistiğimiz, Çin’in büyük limanlarından sevkiyat"
+  ],
+  "92": [
+   "Sitede navlun fiyatı yok: fiyatlar her hafta değişir, size gerçek bir fiyat teklifi gönderilir",
+   "Fiyat teklifiniz hazır olmadan kesin fiyat yok: simülatör tahmini, teklif ise gerçek fiyatı verir"
+  ],
+  "94": [
+   "Test edilene kadar tren ya da uçak yok",
+   "Gizli komisyon yok: fiyat teklifinizde ayrı bir kalemde yer alır"
   ],
   "157": [
    "Deniz navlunu Nansha → Avrupa",
@@ -396,6 +596,18 @@
    "Wypłynięcie z portu Nansha w Guangzhou do Europy. Kontener mogą Państwo śledzić w panelu klienta.",
    "Wypłynięcie do Europy z Nansha, Xiamen lub innego głównego portu w Chinach. Kontener mogą Państwo śledzić w panelu klienta."
   ],
+  "47": [
+   "Analizujemy",
+   "Również w ofercie"
+  ],
+  "48": [
+   "Kolej i fracht lotniczy",
+   "Samolot, ciężarówka i pociąg"
+  ],
+  "49": [
+   "Jeszcze ich nie oferujemy. Nie będziemy ich sprzedawać przed przetestowaniem na rzeczywistych wysyłkach.",
+   "Samolot sprawdzi się przy małej, pilnej paczce; ciężarówka i pociąg są możliwe, ale je odradzamy. Kalkulator podaje szacunkowy koszt każdego z nich."
+  ],
   "72": [
    "Nasz zespół ładuje kontener, który wypływa z portu Nansha.",
    "Nasz zespół ładuje kontener, który wypływa z najdogodniejszego z głównych portów."
@@ -403,6 +615,14 @@
   "88": [
    "Wysyłki morskie z portu Nansha",
    "Własna logistyka w Dongguan, wysyłki morskie z głównych portów Chin"
+  ],
+  "92": [
+   "Żadnych cen frachtu na stronie: zmieniają się co tydzień, więc otrzymują Państwo rzeczywistą wycenę",
+   "Żadnej wiążącej ceny, zanim otrzymają Państwo wycenę: kalkulator podaje szacunkowy koszt, a wycena – rzeczywistą cenę"
+  ],
+  "94": [
+   "Żadnej kolei ani frachtu lotniczego, dopóki ich nie przetestujemy",
+   "Żadnej ukrytej prowizji: wykazujemy ją w wycenie jako osobną pozycję"
   ],
   "157": [
    "Fracht morski Nansha → Europa",

@@ -264,7 +264,9 @@
         "chinese": "Em chinês, para os seus fornecedores",
         "latin": "Em alfabeto latino",
         "hours": "Horário de receção",
-        "phone": "Telefone do armazém"
+        "phone": "Telefone do armazém",
+        "code": "O seu código de cliente",
+        "codeHint": "A inscrever em cada caixa: é assim que reconhecemos os seus volumes à chegada."
       }
     }
   },

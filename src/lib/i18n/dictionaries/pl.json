@@ -264,7 +264,9 @@
         "chinese": "Po chińsku, dla Państwa dostawców",
         "latin": "Alfabetem łacińskim",
         "hours": "Godziny przyjmowania towaru",
-        "phone": "Telefon do magazynu"
+        "phone": "Telefon do magazynu",
+        "code": "Państwa kod klienta",
+        "codeHint": "Należy go umieścić na każdym kartonie: po nim rozpoznajemy Państwa paczki, gdy docierają do magazynu."
       }
     }
   },

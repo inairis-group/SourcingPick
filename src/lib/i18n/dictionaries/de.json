@@ -264,7 +264,9 @@
         "chinese": "Auf Chinesisch, für Ihre Lieferanten",
         "latin": "In lateinischer Schrift",
         "hours": "Annahmezeiten",
-        "phone": "Telefon des Lagers"
+        "phone": "Telefon des Lagers",
+        "code": "Ihr Kundencode",
+        "codeHint": "Muss auf jedem Karton stehen: Daran erkennen wir Ihre Packstücke beim Wareneingang."
       }
     }
   },

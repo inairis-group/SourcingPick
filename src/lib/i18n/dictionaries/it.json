@@ -264,7 +264,9 @@
         "chinese": "In cinese, per i vostri fornitori",
         "latin": "In caratteri latini",
         "hours": "Orari di ricevimento merci",
-        "phone": "Telefono del magazzino"
+        "phone": "Telefono del magazzino",
+        "code": "Il vostro codice cliente",
+        "codeHint": "Da riportare su ogni cartone: è così che riconosciamo i vostri colli all’arrivo."
       }
     }
   },

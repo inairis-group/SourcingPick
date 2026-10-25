@@ -2,13 +2,16 @@ import { Children, isValidElement } from "react";
 import type { CSSProperties, ReactElement, ReactNode } from "react";
 import type { Locale } from "@/lib/i18n/config";
 import { addressGateCopy } from "@/content/site/address-gate";
+import { AddressRequestForm } from "./address-request-form";
 
 /**
  * Where the canvas draws the warehouse address (the home page's "Notre
  * entrepôt" card, the contact page, the warehouse page), the address is only
  * given to clients who have signed up. This keeps the drawn card — its title,
  * and on the warehouse page the hours, phone and e-mail under it — and puts,
- * in place of the address, a line saying so with the way to sign up.
+ * in place of the address, a line saying so, a form that sends the address by
+ * e-mail (the sign-up the site links to is another application's, which cannot
+ * show it), and the links to sign up or sign in.
  *
  * The address is the child in Chinese (`lang="zh-Hans"`) and the line in Latin
  * letters that follows it; on the contact page both sit inside one span. Both
@@ -36,7 +39,7 @@ export function AddressGate({
       <section
         key="gate"
         id="adresse-apres-inscription"
-        style={{ display: "flex", flexDirection: "column", gap: "6px", paddingTop: "4px" }}
+        style={{ display: "flex", flexDirection: "column", gap: "10px", paddingTop: "4px" }}
       >
         <span
           style={{
@@ -49,6 +52,19 @@ export function AddressGate({
           {c.title}
         </span>
         <span style={{ fontSize: "14.5px", lineHeight: 1.5, color: "#4A5578" }}>{c.body}</span>
+        <AddressRequestForm
+          lang={lang}
+          copy={{
+            open: c.open,
+            name: c.name,
+            email: c.email,
+            phone: c.phone,
+            submit: c.submit,
+            sending: c.sending,
+            sent: c.sent,
+            errors: c.errors,
+          }}
+        />
         <span
           style={{
             display: "flex",

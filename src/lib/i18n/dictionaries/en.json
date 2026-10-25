@@ -105,7 +105,9 @@
         "chinese": "In Chinese, for your suppliers",
         "latin": "In Latin characters",
         "hours": "Receiving hours",
-        "phone": "Warehouse phone"
+        "phone": "Warehouse phone",
+        "code": "Your client code",
+        "codeHint": "To be written on every carton: that’s how we identify your packages on arrival."
       }
     },
     "requests": {

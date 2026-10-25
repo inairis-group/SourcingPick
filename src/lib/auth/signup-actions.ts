@@ -13,6 +13,7 @@ import { dashboardPathForRole } from "@/lib/auth/redirects";
 import { appLocaleFor, defaultLocale, isLocale, type Locale } from "@/lib/i18n/config";
 import { storeFile, StorageError } from "@/lib/storage/local";
 import { passwordSchema } from "@/lib/auth/password-policy";
+import { newClientCode } from "@/lib/org/client-code";
 
 const ClientSignupSchema = z.object({
   firstName: z.string().trim().min(1, "First name is required.").max(80),
@@ -92,6 +93,7 @@ export async function signupClientAction(
           city: "",
           address: "",
           kycStatus: KycStatus.PENDING,
+          clientCode: await newClientCode(tx),
         },
       });
 
@@ -247,6 +249,7 @@ export async function signupAccountAction(
           address: "",
           vatNumber: data.vatNumber || null,
           kycStatus: KycStatus.PENDING,
+          clientCode: await newClientCode(tx),
         },
       });
       const user = await tx.user.create({

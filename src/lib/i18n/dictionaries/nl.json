@@ -264,7 +264,9 @@
         "chinese": "In het Chinees, voor uw leveranciers",
         "latin": "In Latijnse letters",
         "hours": "Ontvangsttijden",
-        "phone": "Telefoon magazijn"
+        "phone": "Telefoon magazijn",
+        "code": "Uw klantcode",
+        "codeHint": "Te vermelden op elke doos: zo herkennen wij uw pakketten bij aankomst."
       }
     }
   },

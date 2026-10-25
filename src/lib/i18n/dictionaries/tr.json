@@ -264,7 +264,9 @@
         "chinese": "Çince, tedarikçileriniz için",
         "latin": "Latin harfleriyle",
         "hours": "Mal kabul saatleri",
-        "phone": "Depo telefonu"
+        "phone": "Depo telefonu",
+        "code": "Müşteri kodunuz",
+        "codeHint": "Her kolinin üzerine yazılacak: kolilerinizi varışta bu sayede tanırız."
       }
     }
   },

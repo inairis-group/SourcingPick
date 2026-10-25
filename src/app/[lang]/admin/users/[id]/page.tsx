@@ -45,7 +45,7 @@ export default async function AdminUserDetailPage({
       twoFactorEnabled: true,
       lastSeenAt: true,
       createdAt: true,
-      organization: { select: { displayName: true, type: true } },
+      organization: { select: { displayName: true, type: true, clientCode: true } },
     },
   });
   if (!user) notFound();
@@ -70,6 +70,7 @@ export default async function AdminUserDetailPage({
           </h1>
           <p className="text-sm text-muted">
             {user.email} · {user.organization.displayName}
+            {user.organization.clientCode && <span className="font-mono"> · {user.organization.clientCode}</span>}
           </p>
           <p className="text-xs text-faint mt-1">
             {t.createdOn} {formatDate(user.createdAt, lang, "medium")}
