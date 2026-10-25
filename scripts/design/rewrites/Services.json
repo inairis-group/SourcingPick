@@ -1,0 +1,112 @@
+{
+ "fr": {
+  "68": [
+   "Départ du port de Nansha, à Guangzhou, vers l’Europe.",
+   "Départ vers l’Europe depuis Nansha, Xiamen ou un autre grand port de Chine."
+  ],
+  "70": [
+   "Réservation de la place sur un navire au départ de Nansha",
+   "Réservation de la place sur un navire, au départ du port le plus adapté"
+  ]
+ },
+ "en": {
+  "68": [
+   "Sailing from the port of Nansha in Guangzhou to Europe.",
+   "Sailing to Europe from Nansha, Xiamen or another major Chinese port."
+  ],
+  "70": [
+   "Booking space on a vessel leaving Nansha",
+   "Booking space on a vessel leaving from the most suitable port"
+  ]
+ },
+ "es": {
+  "68": [
+   "Salida desde el puerto de Nansha, en Guangzhou, rumbo a Europa.",
+   "Salida rumbo a Europa desde Nansha, Xiamen u otro gran puerto de China."
+  ],
+  "70": [
+   "Reserva de espacio en un buque con salida desde Nansha",
+   "Reserva de espacio en un buque con salida desde el puerto más adecuado"
+  ]
+ },
+ "de": {
+  "68": [
+   "Abfahrt vom Hafen Nansha in Guangzhou nach Europa.",
+   "Abfahrt nach Europa ab Nansha, Xiamen oder einem anderen großen Hafen Chinas."
+  ],
+  "70": [
+   "Buchung von Schiffsraum ab Nansha",
+   "Buchung von Schiffsraum ab dem geeignetsten Hafen"
+  ]
+ },
+ "it": {
+  "68": [
+   "Partenza dal porto di Nansha, a Guangzhou, verso l’Europa.",
+   "Partenza verso l’Europa da Nansha, Xiamen o un altro grande porto cinese."
+  ],
+  "70": [
+   "Prenotazione dello spazio su una nave in partenza da Nansha",
+   "Prenotazione dello spazio su una nave in partenza dal porto più adatto"
+  ]
+ },
+ "pt": {
+  "68": [
+   "Partida do porto de Nansha, em Guangzhou, para a Europa.",
+   "Partida para a Europa a partir de Nansha, Xiamen ou outro grande porto da China."
+  ],
+  "70": [
+   "Reserva de espaço num navio com partida de Nansha",
+   "Reserva de espaço num navio com partida do porto mais adequado"
+  ]
+ },
+ "nl": {
+  "68": [
+   "Vertrek vanuit de haven van Nansha in Guangzhou naar Europa.",
+   "Vertrek naar Europa vanuit Nansha, Xiamen of een andere grote haven van China."
+  ],
+  "70": [
+   "Boeken van scheepsruimte met vertrek uit Nansha",
+   "Boeken van scheepsruimte met vertrek uit de meest geschikte haven"
+  ]
+ },
+ "ar": {
+  "68": [
+   "الانطلاق من ميناء نانشا في قوانغتشو نحو أوروبا.",
+   "الانطلاق نحو أوروبا من نانشا أو شيامن أو ميناء صيني كبير آخر."
+  ],
+  "70": [
+   "حجز مكان على سفينة تنطلق من نانشا",
+   "حجز مكان على سفينة تنطلق من الميناء الأنسب"
+  ]
+ },
+ "ru": {
+  "68": [
+   "Отправка из порта Наньша (Гуанчжоу) в Европу.",
+   "Отправка в Европу из Наньша, Сямэня или другого крупного порта Китая."
+  ],
+  "70": [
+   "Бронирование места на судне, отходящем из порта Наньша",
+   "Бронирование места на судне, отходящем из наиболее подходящего порта"
+  ]
+ },
+ "tr": {
+  "68": [
+   "Guangzhou’daki Nansha Limanı’ndan Avrupa’ya yola çıkış.",
+   "Nansha, Xiamen veya Çin’in başka bir büyük limanından Avrupa’ya yola çıkış."
+  ],
+  "70": [
+   "Nansha’dan kalkan bir gemide yer rezervasyonu",
+   "En uygun limandan kalkan bir gemide yer rezervasyonu"
+  ]
+ },
+ "pl": {
+  "68": [
+   "Wypłynięcie z portu Nansha w Guangzhou do Europy.",
+   "Wypłynięcie do Europy z Nansha, Xiamen lub innego głównego portu w Chinach."
+  ],
+  "70": [
+   "Rezerwacja miejsca na statku wypływającym z portu Nansha",
+   "Rezerwacja miejsca na statku wypływającym z najdogodniejszego portu"
+  ]
+ }
+}

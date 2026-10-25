@@ -104,8 +104,9 @@ export const de: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, +50 RMB pro Seite ab der zweiten (5 Produkte pro Seite).",
   },
   calc: {
+    title: "Abgerechnetes Gewicht",
+    rule: "Das höhere von tatsächlichem Gewicht und Volumengewicht (L × B × H ÷ 6.000), mindestens 12 kg pro Karton.",
     volumetric: "Volumengewicht",
-    formula: "L × B × H ÷ 6.000",
     bracket: "Staffel",
     billed: "abgerechnet: {kg} kg",
     volume: "Gesamtvolumen: {m3}",

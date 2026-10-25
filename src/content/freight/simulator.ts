@@ -77,9 +77,11 @@ export type FreightSimulatorCopy = {
   goods: Record<Mode, Partial<Record<GoodsKey, string>>>;
   options: { declaration: string; declarationHint: string; declarationHintSea: string };
   calc: {
+    /** Over the weight the price is worked out on. */
+    title: string;
+    /** Under it: the heavier of the real and the volumetric weight. */
+    rule: string;
     volumetric: string;
-    /** Under the volumetric weight: how it is worked out. */
-    formula: string;
     bracket: string;
     billed: string;
     volume: string;

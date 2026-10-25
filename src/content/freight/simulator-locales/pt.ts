@@ -104,8 +104,9 @@ export const pt: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, +50 RMB por página além da primeira (5 produtos por página).",
   },
   calc: {
+    title: "Peso faturado",
+    rule: "O maior entre o peso real e o peso volumétrico (C × L × A ÷ 6 000), com um mínimo de 12 kg por caixa.",
     volumetric: "Peso volumétrico",
-    formula: "C × L × A ÷ 6 000",
     bracket: "Escalão",
     billed: "{kg} kg faturados",
     volume: "Volume total: {m3}",

@@ -257,7 +257,15 @@
       "colState": "Status",
       "colAmount": "Kwota",
       "open": "Otwórz",
-      "ordersEmpty": "Brak zamówień w toku."
+      "ordersEmpty": "Brak zamówień w toku.",
+      "warehouse": {
+        "title": "Adres magazynu dla Państwa dostawców",
+        "intro": "Prosimy przekazać ten adres dostawcom: to tam dostarczają Państwa towar, który przyjmujemy i kontrolujemy.",
+        "chinese": "Po chińsku, dla Państwa dostawców",
+        "latin": "Alfabetem łacińskim",
+        "hours": "Godziny przyjmowania towaru",
+        "phone": "Telefon do magazynu"
+      }
     }
   },
   "orders": {

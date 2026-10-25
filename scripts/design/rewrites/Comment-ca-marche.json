@@ -1,0 +1,112 @@
+{
+ "fr": {
+  "23": [
+   "Vous payez l’acompte par carte ou par virement.",
+   "Vous payez l’acompte par virement, sur facture."
+  ],
+  "41": [
+   "Nous chargeons le conteneur et le faisons partir du port de Nansha.",
+   "Nous chargeons le conteneur et le faisons partir du grand port de Chine le plus adapté."
+  ]
+ },
+ "en": {
+  "23": [
+   "You pay the deposit by card or bank transfer.",
+   "You pay the deposit by bank transfer, on invoice."
+  ],
+  "41": [
+   "We load the container and ship it from the port of Nansha.",
+   "We load the container and ship it from the most suitable major Chinese port."
+  ]
+ },
+ "es": {
+  "23": [
+   "Paga el anticipo con tarjeta o por transferencia.",
+   "Paga el anticipo por transferencia, contra factura."
+  ],
+  "41": [
+   "Cargamos el contenedor y organizamos su salida desde el puerto de Nansha.",
+   "Cargamos el contenedor y organizamos su salida desde el gran puerto de China más adecuado."
+  ]
+ },
+ "de": {
+  "23": [
+   "Sie leisten die Anzahlung per Karte oder Überweisung.",
+   "Sie leisten die Anzahlung per Überweisung, auf Rechnung."
+  ],
+  "41": [
+   "Wir beladen den Container und verschiffen ihn ab dem Hafen Nansha.",
+   "Wir beladen den Container und verschiffen ihn ab dem am besten geeigneten großen Hafen Chinas."
+  ]
+ },
+ "it": {
+  "23": [
+   "Pagate l’acconto con carta o bonifico.",
+   "Pagate l’acconto con bonifico, su fattura."
+  ],
+  "41": [
+   "Carichiamo il container e lo facciamo partire dal porto di Nansha.",
+   "Carichiamo il container e lo facciamo partire dal grande porto cinese più adatto."
+  ]
+ },
+ "pt": {
+  "23": [
+   "Paga o seu adiantamento por cartão ou por transferência.",
+   "Paga o seu adiantamento por transferência, mediante fatura."
+  ],
+  "41": [
+   "Carregamos o contentor e expedimo-lo do porto de Nansha.",
+   "Carregamos o contentor e expedimo-lo do grande porto da China mais adequado."
+  ]
+ },
+ "nl": {
+  "23": [
+   "U betaalt de aanbetaling per kaart of via bankoverschrijving.",
+   "U betaalt de aanbetaling via bankoverschrijving, op factuur."
+  ],
+  "41": [
+   "Wij laden de container en verschepen die vanuit de haven van Nansha.",
+   "Wij laden de container en verschepen die vanuit de meest geschikte grote haven van China."
+  ]
+ },
+ "ar": {
+  "23": [
+   "تسدّد الدفعة المقدمة بالبطاقة أو بالتحويل المصرفي.",
+   "تسدّد الدفعة المقدمة بالتحويل المصرفي، بموجب فاتورة."
+  ],
+  "41": [
+   "نحمّل الحاوية ونشحنها من ميناء نانشا.",
+   "نحمّل الحاوية ونشحنها من أنسب موانئ الصين الكبرى."
+  ]
+ },
+ "ru": {
+  "23": [
+   "Вы вносите предоплату картой или банковским переводом.",
+   "Вы вносите предоплату банковским переводом по счету."
+  ],
+  "41": [
+   "Мы загружаем контейнер и отправляем его из порта Наньша.",
+   "Мы загружаем контейнер и отправляем его из наиболее подходящего крупного порта Китая."
+  ]
+ },
+ "tr": {
+  "23": [
+   "Ön ödemeyi kartla veya havaleyle yaparsınız.",
+   "Ön ödemeyi fatura üzerine havaleyle yaparsınız."
+  ],
+  "41": [
+   "Konteyneri yükler ve Nansha Limanı’ndan yola çıkarırız.",
+   "Konteyneri yükler ve Çin’in en uygun büyük limanından yola çıkarırız."
+  ]
+ },
+ "pl": {
+  "23": [
+   "Wpłacają Państwo zaliczkę kartą lub przelewem.",
+   "Wpłacają Państwo zaliczkę przelewem, na podstawie faktury."
+  ],
+  "41": [
+   "Ładujemy kontener i wysyłamy go z portu Nansha.",
+   "Ładujemy kontener i wysyłamy go z najdogodniejszego z głównych portów Chin."
+  ]
+ }
+}

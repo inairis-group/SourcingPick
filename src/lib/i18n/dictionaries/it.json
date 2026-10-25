@@ -257,7 +257,15 @@
       "colState": "Stato",
       "colAmount": "Importo",
       "open": "Apri",
-      "ordersEmpty": "Nessun ordine in corso."
+      "ordersEmpty": "Nessun ordine in corso.",
+      "warehouse": {
+        "title": "Indirizzo del magazzino per i vostri fornitori",
+        "intro": "Comunicate questo indirizzo ai vostri fornitori: è lì che consegnano la vostra merce, che noi riceviamo e controlliamo.",
+        "chinese": "In cinese, per i vostri fornitori",
+        "latin": "In caratteri latini",
+        "hours": "Orari di ricevimento merci",
+        "phone": "Telefono del magazzino"
+      }
     }
   },
   "orders": {

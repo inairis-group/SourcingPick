@@ -257,7 +257,15 @@
       "colState": "Estado",
       "colAmount": "Importe",
       "open": "Abrir",
-      "ordersEmpty": "No hay pedidos en curso."
+      "ordersEmpty": "No hay pedidos en curso.",
+      "warehouse": {
+        "title": "Dirección del almacén para sus proveedores",
+        "intro": "Facilite esta dirección a sus proveedores: allí entregan sus mercancías, que nosotros recibimos e inspeccionamos.",
+        "chinese": "En chino, para sus proveedores",
+        "latin": "En caracteres latinos",
+        "hours": "Horario de recepción",
+        "phone": "Teléfono del almacén"
+      }
     }
   },
   "orders": {

@@ -104,8 +104,9 @@ export const en: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, +50 RMB per page after the first (5 products per page).",
   },
   calc: {
+    title: "Billed weight",
+    rule: "The heavier of the actual weight and the volumetric weight (L × W × H ÷ 6,000), with a minimum of 12 kg per carton.",
     volumetric: "Volumetric weight",
-    formula: "L × W × H ÷ 6,000",
     bracket: "Weight bracket",
     billed: "billed {kg} kg",
     volume: "Total volume: {m3}",

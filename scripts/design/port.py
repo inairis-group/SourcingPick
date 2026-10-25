@@ -643,7 +643,36 @@ def _is_file_drop(el: Element) -> bool:
     return el.tag == "div" and "dashed" in (el.attr("style") or "")
 
 
+def _holds_address(el: Element) -> bool:
+    """The card that draws the warehouse address: the address in Chinese is
+    one of its children, or sits inside one (the contact page draws it and its
+    Latin spelling in a single span)."""
+    if el.tag != "div":
+        return False
+    for c in kids(el):
+        if c.attr("lang") == "zh-Hans":
+            return True
+        if c.tag == "span" and any(g.attr("lang") == "zh-Hans" for g in kids(c)):
+            return True
+    return False
+
+
+def _is_faq_sourcing_list(el: Element) -> bool:
+    """The list of the FAQ's sourcing questions, read by its first question."""
+    return el.tag == "div" and any(
+        any(g.tag == "button" for g in kids(c)) and text_of(c).startswith("Je n’ai pas encore de fournisseur")
+        for c in kids(el)
+    )
+
+
+# The warehouse address is given to signed-up clients only (25 October): the
+# card keeps its title and, on the warehouse page, its hours and contacts.
+_ADDRESS_GATE = (_holds_address, "AddressGate", "../../address-gate", 1, True)
+
 COMPONENTS: dict[str, list[tuple]] = {
+    "Accueil": [_ADDRESS_GATE],
+    "Contact": [_ADDRESS_GATE],
+    "Entrepot": [_ADDRESS_GATE],
     "Devis": [
         # Owns the action and the pending/error state.
         (_is_quote_form, "QuoteForm", "../../quote-form", 1, True),
@@ -667,6 +696,8 @@ COMPONENTS: dict[str, list[tuple]] = {
         # The chips work as plain anchors with no JavaScript; this adds the
         # moving active state the canvas can only draw one frame of.
         (_is_faq_chip_row, "FaqCategories", "../../faq-categories", 1, False),
+        # One question more than the canvas: suppliers that do not suit.
+        (_is_faq_sourcing_list, "FaqExtraItem", "../../faq-extra-item", 1, True),
     ],
 }
 
@@ -1332,7 +1363,7 @@ FR_TEXT: dict[str, dict[int, tuple[str, str]]] = {
             "Questions fréquentes sur nos services de logistique, contrôle et sourcing à Guangzhou"),
         # The section headings; slots 3-7 are the tabs above them, unchanged.
         9: ("Général", "Questions générales sur SourcingPick et notre entrepôt de Guangzhou"),
-        18: ("Logistique", "Logistique, délais maritimes depuis Nansha, groupage et stockage à Baiyun"),
+        18: ("Logistique", "Logistique, délais maritimes depuis les ports chinois, groupage et stockage à Baiyun"),
         29: ("Contrôle", "Contrôle qualité, photos, vidéos et gestion des écarts fournisseurs"),
         34: ("Sourcing", "Sourcing d’usines en Chine et fonctionnement de la commission de 2 %"),
         39: ("Paiement", "Paiement (acompte 40 % / solde), traçabilité des fonds et espace client"),
@@ -1343,7 +1374,7 @@ FR_TEXT: dict[str, dict[int, tuple[str, str]]] = {
         3: ("Notre histoire",
             "Notre histoire : de la recherche d’usines en 2023 à la maîtrise complète entre l’usine et le navire"),
         7: ("Pourquoi on montre tout",
-            "Pourquoi nous montrons tout : adresse publique à Baiyun et preuves visuelles à chaque étape"),
+            "Pourquoi nous montrons tout : un vrai entrepôt à Baiyun et des preuves visuelles à chaque étape"),
         9: ("L’équipe", "L’équipe SourcingPick à Guangzhou (direction et techniciens d’entrepôt)"),
     },
     "Entrepot": {
@@ -1363,6 +1394,50 @@ def apply_fr_text(stem: str | None, strings: list[str]) -> list[str]:
                 "The canvas changed — update FR_TEXT."
             )
         out[i] = new
+    return out
+
+
+# -- corrections in every language ----------------------------------------------
+#
+# What was decided after the export, for all twelve languages at once: the
+# departure ports (Nansha is the largest, not the only one), our own logistics
+# in Dongguan and partners in China's large cities, the warehouse address given
+# once a client has signed up, payment by bank transfer on invoice (no payment
+# on the platform), and the clause on suppliers that do not suit (25 October).
+# `rewrites/<page>.json` maps each locale to {slot: [what the slot reads, what
+# replaces it]}, applied after FR_TEXT and the translations; as with FR_TEXT a
+# slot that no longer reads what is expected stops the port. A language whose
+# copy comes from translations/<page>/<locale>.json is corrected there, in its
+# source, not here.
+REWRITES = os.path.join(os.path.dirname(__file__), "rewrites")
+
+
+def apply_rewrites(stem: str, body: dict[str, list[str]]) -> dict[str, list[str]]:
+    path = os.path.join(REWRITES, f"{stem}.json")
+    if not os.path.exists(path):
+        return body
+    with open(path, encoding="utf-8") as fh:
+        table = json.load(fh)
+    out = dict(body)
+    for loc, slots in table.items():
+        if loc not in out:
+            raise SystemExit(f"rewrites/{stem}.json: unknown locale {loc!r}")
+        if loc != "fr" and localize.load(stem, loc):
+            raise SystemExit(
+                f"rewrites/{stem}.json: {loc} comes from translations/{stem}/{loc}.json; "
+                "correct it there instead."
+            )
+        strings = list(out[loc])
+        for key, (old, new) in slots.items():
+            i = int(key)
+            if i >= len(strings) or strings[i] != old:
+                raise SystemExit(
+                    f"rewrites/{stem}.json: {loc} slot {i} should read {old!r} "
+                    f"and reads {strings[i] if i < len(strings) else None!r}. "
+                    "The canvas or a translation changed — update the rewrite."
+                )
+            strings[i] = new
+        out[loc] = strings
     return out
 
 
@@ -1765,6 +1840,7 @@ def port_page(stem: str, tokens: set[str]) -> None:
             end_i = len(text[loc]) - len(slots(groups[[g[0] for g in groups].index(locs)][1][loc][-1]))
             body[loc] = text[loc][start_i:end_i]
     body["fr"] = apply_fr_text(stem, body["fr"])
+    body = apply_rewrites(stem, body)
 
     write(f"{BOARD_DIR}/content/{page.key}.ts",
           page_content(page, body, titles, variants))

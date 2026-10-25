@@ -257,7 +257,15 @@
       "colState": "Durum",
       "colAmount": "Tutar",
       "open": "Aç",
-      "ordersEmpty": "Devam eden sipariş yok."
+      "ordersEmpty": "Devam eden sipariş yok.",
+      "warehouse": {
+        "title": "Tedarikçileriniz için depo adresi",
+        "intro": "Bu adresi tedarikçilerinize verin: mallarınızı buraya teslim ederler, biz de teslim alıp kontrol ederiz.",
+        "chinese": "Çince, tedarikçileriniz için",
+        "latin": "Latin harfleriyle",
+        "hours": "Mal kabul saatleri",
+        "phone": "Depo telefonu"
+      }
     }
   },
   "orders": {

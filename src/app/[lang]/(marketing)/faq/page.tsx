@@ -5,6 +5,7 @@ import { faq as content } from "../_design/content/faq";
 import { faqJsonLd, JsonLd } from "@/lib/seo/structured-data";
 import { pageAlternates } from "@/lib/seo/alternates";
 import { pageMeta } from "@/lib/seo/fr-meta";
+import { faqSuppliersCopy } from "@/content/site/faq-suppliers";
 
 /**
  * Route for the canvas's “FAQ” artboard.
@@ -32,6 +33,8 @@ export default async function FaqPage({ params }: PageProps<"/[lang]/faq">) {
     question: t.slice(q, a).join(" ").trim(),
     answer: t.slice(a, end).join(" ").trim(),
   }));
+  // The question the page adds to the canvas's (faq-extra-item.tsx).
+  pairs.push(faqSuppliersCopy[lang]);
   return (
     <>
       <JsonLd data={faqJsonLd(pairs.filter((p) => p.question && p.answer))} />

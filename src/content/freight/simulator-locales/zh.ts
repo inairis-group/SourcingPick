@@ -104,8 +104,9 @@ export const zh: FreightSimulatorCopy = {
     declarationHintSea: "350 元，第一页之后每页加 50 元（每页 5 个产品）。",
   },
   calc: {
+    title: "计费重量",
+    rule: "实重和体积重（长 × 宽 × 高 ÷ 6000）取较大者，每箱最低 12 kg。",
     volumetric: "体积重",
-    formula: "长 × 宽 × 高 ÷ 6000",
     bracket: "重量段",
     billed: "按 {kg} kg 计费",
     volume: "总体积：{m3}",

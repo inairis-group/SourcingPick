@@ -257,7 +257,15 @@
       "colState": "Status",
       "colAmount": "Bedrag",
       "open": "Openen",
-      "ordersEmpty": "Geen lopende orders."
+      "ordersEmpty": "Geen lopende orders.",
+      "warehouse": {
+        "title": "Adres van het magazijn voor uw leveranciers",
+        "intro": "Geef dit adres aan uw leveranciers: zij leveren uw goederen daar af, en wij ontvangen en controleren ze.",
+        "chinese": "In het Chinees, voor uw leveranciers",
+        "latin": "In Latijnse letters",
+        "hours": "Ontvangsttijden",
+        "phone": "Telefoon magazijn"
+      }
     }
   },
   "orders": {

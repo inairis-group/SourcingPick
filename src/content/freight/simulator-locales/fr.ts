@@ -104,8 +104,9 @@ export const fr: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, +50 RMB par page au-delà de la première (5 produits par page).",
   },
   calc: {
+    title: "Poids facturé",
+    rule: "Le plus lourd entre le poids réel et le poids volumétrique (L × l × h ÷ 6 000), avec 12 kg minimum par carton.",
     volumetric: "Poids volumétrique",
-    formula: "L × l × h ÷ 6 000",
     bracket: "Tranche",
     billed: "facturé {kg} kg",
     volume: "Volume total : {m3}",

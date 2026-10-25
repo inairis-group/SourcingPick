@@ -98,7 +98,15 @@
       "colState": "État",
       "colAmount": "Montant",
       "open": "Ouvrir",
-      "ordersEmpty": "Aucune commande en cours."
+      "ordersEmpty": "Aucune commande en cours.",
+      "warehouse": {
+        "title": "Adresse de l’entrepôt pour vos fournisseurs",
+        "intro": "Donnez cette adresse à vos fournisseurs : ils y livrent vos marchandises, que nous réceptionnons et contrôlons.",
+        "chinese": "En chinois, pour vos fournisseurs",
+        "latin": "En lettres latines",
+        "hours": "Horaires de réception",
+        "phone": "Téléphone de l’entrepôt"
+      }
     },
     "requests": {
       "eyebrow": "Sourcing à la demande",

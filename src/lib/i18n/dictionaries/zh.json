@@ -98,7 +98,15 @@
       "colState": "状态",
       "colAmount": "金额",
       "open": "打开",
-      "ordersEmpty": "暂无进行中的订单。"
+      "ordersEmpty": "暂无进行中的订单。",
+      "warehouse": {
+        "title": "给供应商的仓库地址",
+        "intro": "把这个地址发给您的供应商：他们把货送到这里，由我们收货并验货。",
+        "chinese": "中文版，发给供应商",
+        "latin": "拼音版",
+        "hours": "收货时间",
+        "phone": "仓库电话"
+      }
     },
     "requests": {
       "eyebrow": "按需采购",

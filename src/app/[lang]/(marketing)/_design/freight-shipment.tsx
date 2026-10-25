@@ -325,13 +325,13 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
       )}
 
       <div aria-live="polite" style={{ display: "flex", flexDirection: "column", gap: "6px", padding: "18px", borderRadius: "18px", background: "#EAF1FF", border: "1.5px solid #155DFC" }}>
-        <span style={{ fontSize: "13px", fontWeight: 600, color: "#4A5578" }}>{c.calc.volumetric}</span>
+        <span style={{ fontSize: "13px", fontWeight: 600, color: "#4A5578" }}>{c.calc.title}</span>
         <span style={{ fontFamily: MONO, fontSize: "var(--sp-fs-24, 24px)", fontWeight: 600, color: "#0E1A3D" }}>
-          {n(s.totals.volumetric)} <span style={{ fontSize: "15px", color: "#4A5578" }}>kg</span>
+          {n(s.bracket.billedKg)} <span style={{ fontSize: "15px", color: "#4A5578" }}>kg</span>
         </span>
-        <span style={{ fontSize: "12.5px", lineHeight: 1.45, color: "#4A5578" }}>{c.calc.formula}</span>
+        <span style={{ fontSize: "12.5px", lineHeight: 1.45, color: "#4A5578" }}>{c.calc.rule}</span>
         <span style={{ fontSize: "13.5px", color: "#4A5578" }}>
-          {fill(c.calc.volume, { m3: m3(s.totals.volume) })} · {c.calc.bracket} {s.bracket.label} kg · {fill(c.calc.billed, { kg: n(s.bracket.billedKg) })}
+          {fill(c.calc.volume, { m3: m3(s.totals.volume) })} · {c.calc.volumetric} {kg(s.totals.volumetric)} · {c.calc.bracket} {s.bracket.label} kg
         </span>
       </div>
     </div>

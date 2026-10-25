@@ -1,0 +1,420 @@
+{
+ "fr": {
+  "0": [
+   "Guangzhou → Nansha → Europe",
+   "Guangzhou → ports de Chine → Europe"
+  ],
+  "4": [
+   "SourcingPick réceptionne vos commandes dans son entrepôt de Guangzhou, contrôle chaque colis, consolide, renforce, charge le conteneur et l’expédie depuis le port de Nansha vers l’Europe. Des photos à chaque étape, le suivi dans votre espace client.",
+   "SourcingPick réceptionne vos commandes dans son entrepôt de Guangzhou, contrôle chaque colis, consolide, renforce, charge le conteneur et l’expédie vers l’Europe depuis les grands ports de Chine, dont Nansha. Des photos à chaque étape, le suivi dans votre espace client."
+  ],
+  "12": [
+   "Quai · port de Nansha",
+   "Quai · port de départ"
+  ],
+  "40": [
+   "Départ du port de Nansha, à Guangzhou, vers l’Europe. Vous suivez le conteneur dans votre espace client.",
+   "Départ vers l’Europe depuis Nansha, Xiamen ou un autre grand port de Chine. Vous suivez le conteneur dans votre espace client."
+  ],
+  "72": [
+   "Conteneur chargé par notre équipe, départ du port de Nansha.",
+   "Conteneur chargé par notre équipe, départ du grand port le plus adapté."
+  ],
+  "88": [
+   "Départs maritimes depuis le port de Nansha",
+   "Logistique propriétaire à Dongguan, départs depuis les grands ports de Chine"
+  ],
+  "157": [
+   "Fret maritime Nansha → Europe",
+   "Fret maritime Chine → Europe"
+  ],
+  "172": [
+   "Paiement : acompte de 40 % à la commande, solde avant le chargement du conteneur. Virement ou carte bancaire.",
+   "Paiement : acompte de 40 % à la commande, solde avant le chargement du conteneur. Par virement, sur facture."
+  ],
+  "178": [
+   "Parce que tout est vérifiable : l’adresse de l’entrepôt est publique, chaque étape est photographiée et chaque document reste dans votre espace client. Vous jugez sur pièces, pas sur des promesses.",
+   "Parce que tout est vérifiable : l’adresse de l’entrepôt vous est communiquée dès votre inscription, chaque étape est photographiée et chaque document reste dans votre espace client. Vous jugez sur pièces, pas sur des promesses."
+  ]
+ },
+ "en": {
+  "0": [
+   "Guangzhou → Nansha → Europe",
+   "Guangzhou → Chinese ports → Europe"
+  ],
+  "4": [
+   "SourcingPick receives your orders at its Guangzhou warehouse, inspects every package, consolidates and reinforces your goods, loads the container and ships it from the port of Nansha to Europe. Photos at every step, tracking in your client area.",
+   "SourcingPick receives your orders at its Guangzhou warehouse, inspects every package, consolidates and reinforces your goods, loads the container and ships it to Europe from China’s major ports, including Nansha. Photos at every step, tracking in your client area."
+  ],
+  "12": [
+   "Quay · port of Nansha",
+   "Quay · port of departure"
+  ],
+  "40": [
+   "Sailing from the port of Nansha in Guangzhou to Europe. You track the container in your client area.",
+   "Sailing to Europe from Nansha, Xiamen or another major Chinese port. You track the container in your client area."
+  ],
+  "72": [
+   "Container loaded by our team and shipped from the port of Nansha.",
+   "Container loaded by our team and shipped from the most suitable major port."
+  ],
+  "88": [
+   "Sailings from the port of Nansha",
+   "In-house logistics in Dongguan, sailings from China’s major ports"
+  ],
+  "157": [
+   "Ocean freight Nansha → Europe",
+   "Ocean freight China → Europe"
+  ],
+  "172": [
+   "Payment: a deposit of 40% on order, the balance before the container is loaded. Bank transfer or card.",
+   "Payment: a deposit of 40% on order, the balance before the container is loaded. Bank transfer, on invoice."
+  ],
+  "178": [
+   "Because everything can be checked: the warehouse address is public, every step is photographed and every document stays in your client area. You judge by the evidence, not by promises.",
+   "Because everything can be checked: the warehouse address is given to you as soon as you sign up, every step is photographed and every document stays in your client area. You judge by the evidence, not by promises."
+  ]
+ },
+ "es": {
+  "0": [
+   "Guangzhou → Nansha → Europa",
+   "Guangzhou → puertos de China → Europa"
+  ],
+  "4": [
+   "SourcingPick recibe sus pedidos en el almacén que tiene en Guangzhou, inspecciona cada bulto, consolida, refuerza el embalaje, carga el contenedor y lo envía desde el puerto de Nansha hasta Europa. Fotos en cada etapa y seguimiento en su área de cliente.",
+   "SourcingPick recibe sus pedidos en el almacén que tiene en Guangzhou, inspecciona cada bulto, consolida, refuerza el embalaje, carga el contenedor y lo envía a Europa desde los grandes puertos de China, entre ellos Nansha. Fotos en cada etapa y seguimiento en su área de cliente."
+  ],
+  "12": [
+   "Muelle · puerto de Nansha",
+   "Muelle · puerto de salida"
+  ],
+  "40": [
+   "Salida desde el puerto de Nansha, en Guangzhou, rumbo a Europa. Puede seguir el contenedor en su área de cliente.",
+   "Salida rumbo a Europa desde Nansha, Xiamen u otro gran puerto de China. Puede seguir el contenedor en su área de cliente."
+  ],
+  "72": [
+   "Contenedor cargado por nuestro equipo y salida desde el puerto de Nansha.",
+   "Contenedor cargado por nuestro equipo y salida desde el gran puerto más adecuado."
+  ],
+  "88": [
+   "Salidas marítimas desde el puerto de Nansha",
+   "Logística propia en Dongguan, salidas desde los grandes puertos de China"
+  ],
+  "157": [
+   "Flete marítimo Nansha → Europa",
+   "Flete marítimo China → Europa"
+  ],
+  "172": [
+   "Pago: anticipo del 40 % al hacer el pedido y saldo antes de la carga del contenedor. Transferencia bancaria o tarjeta.",
+   "Pago: anticipo del 40 % al hacer el pedido y saldo antes de la carga del contenedor. Transferencia bancaria, contra factura."
+  ],
+  "178": [
+   "Porque todo se puede verificar: la dirección del almacén es pública, cada etapa se fotografía y cada documento queda guardado en su área de cliente. Usted juzga por los hechos, no por las promesas.",
+   "Porque todo se puede verificar: la dirección del almacén se le facilita en cuanto se registra, cada etapa se fotografía y cada documento queda guardado en su área de cliente. Usted juzga por los hechos, no por las promesas."
+  ]
+ },
+ "de": {
+  "0": [
+   "Guangzhou → Nansha → Europa",
+   "Guangzhou → chinesische Häfen → Europa"
+  ],
+  "4": [
+   "SourcingPick nimmt Ihre Waren in seinem Lager in Guangzhou an, prüft jedes Packstück, konsolidiert, verstärkt die Verpackung, belädt den Container und verschifft ihn vom Hafen Nansha nach Europa. Fotos bei jedem Schritt, Sendungsverfolgung in Ihrem Kundenbereich.",
+   "SourcingPick nimmt Ihre Waren in seinem Lager in Guangzhou an, prüft jedes Packstück, konsolidiert, verstärkt die Verpackung, belädt den Container und verschifft ihn von den großen Häfen Chinas, darunter Nansha, nach Europa. Fotos bei jedem Schritt, Sendungsverfolgung in Ihrem Kundenbereich."
+  ],
+  "12": [
+   "Kai · Hafen Nansha",
+   "Kai · Abgangshafen"
+  ],
+  "40": [
+   "Abfahrt vom Hafen Nansha in Guangzhou nach Europa. Den Container verfolgen Sie in Ihrem Kundenbereich.",
+   "Abfahrt nach Europa ab Nansha, Xiamen oder einem anderen großen Hafen Chinas. Den Container verfolgen Sie in Ihrem Kundenbereich."
+  ],
+  "72": [
+   "Container von unserem Team beladen, Abfahrt ab Hafen Nansha.",
+   "Container von unserem Team beladen, Abfahrt ab dem am besten geeigneten großen Hafen."
+  ],
+  "88": [
+   "Verschiffung ab dem Hafen Nansha",
+   "Eigene Logistik in Dongguan, Abfahrten ab den großen Häfen Chinas"
+  ],
+  "157": [
+   "Seefracht Nansha → Europa",
+   "Seefracht China → Europa"
+  ],
+  "172": [
+   "Zahlung: Anzahlung von 40 % bei Auftragserteilung, Restzahlung vor der Beladung des Containers. Banküberweisung oder Kartenzahlung.",
+   "Zahlung: Anzahlung von 40 % bei Auftragserteilung, Restzahlung vor der Beladung des Containers. Per Banküberweisung, auf Rechnung."
+  ],
+  "178": [
+   "Weil alles überprüfbar ist: Die Lageradresse ist öffentlich, jeder Schritt wird fotografiert und jedes Dokument bleibt in Ihrem Kundenbereich. Sie urteilen anhand von Belegen, nicht von Versprechen.",
+   "Weil alles überprüfbar ist: Die Lageradresse erhalten Sie gleich bei Ihrer Registrierung, jeder Schritt wird fotografiert und jedes Dokument bleibt in Ihrem Kundenbereich. Sie urteilen anhand von Belegen, nicht von Versprechen."
+  ]
+ },
+ "it": {
+  "0": [
+   "Guangzhou → Nansha → Europa",
+   "Guangzhou → porti cinesi → Europa"
+  ],
+  "4": [
+   "SourcingPick riceve la vostra merce nel suo magazzino di Guangzhou, controlla ogni collo, consolida, rinforza gli imballaggi, carica il container e lo spedisce dal porto di Nansha verso l’Europa. Foto in ogni fase, tracciamento nella vostra area clienti.",
+   "SourcingPick riceve la vostra merce nel suo magazzino di Guangzhou, controlla ogni collo, consolida, rinforza gli imballaggi, carica il container e lo spedisce verso l’Europa dai grandi porti della Cina, tra cui Nansha. Foto in ogni fase, tracciamento nella vostra area clienti."
+  ],
+  "12": [
+   "Banchina · porto di Nansha",
+   "Banchina · porto di partenza"
+  ],
+  "40": [
+   "Partenza dal porto di Nansha, a Guangzhou, verso l’Europa. Seguite il container nella vostra area clienti.",
+   "Partenza verso l’Europa da Nansha, Xiamen o un altro grande porto cinese. Seguite il container nella vostra area clienti."
+  ],
+  "72": [
+   "Container caricato dal nostro team, partenza dal porto di Nansha.",
+   "Container caricato dal nostro team, partenza dal grande porto più adatto."
+  ],
+  "88": [
+   "Partenze via mare dal porto di Nansha",
+   "Logistica propria a Dongguan, partenze dai grandi porti cinesi"
+  ],
+  "157": [
+   "Nolo marittimo Nansha → Europa",
+   "Nolo marittimo Cina → Europa"
+  ],
+  "172": [
+   "Pagamento: acconto del 40% all’ordine, saldo prima del carico del container. Bonifico o carta di credito.",
+   "Pagamento: acconto del 40% all’ordine, saldo prima del carico del container. Con bonifico, su fattura."
+  ],
+  "178": [
+   "Perché tutto è verificabile: l’indirizzo del magazzino è pubblico, ogni fase viene fotografata e ogni documento resta nella vostra area clienti. Giudicate dai fatti, non dalle promesse.",
+   "Perché tutto è verificabile: l’indirizzo del magazzino vi viene comunicato non appena vi registrate, ogni fase viene fotografata e ogni documento resta nella vostra area clienti. Giudicate dai fatti, non dalle promesse."
+  ]
+ },
+ "pt": {
+  "0": [
+   "Guangzhou → Nansha → Europa",
+   "Guangzhou → portos da China → Europa"
+  ],
+  "4": [
+   "A SourcingPick recebe as suas encomendas no armazém de Guangzhou, inspeciona cada volume, consolida, reforça as embalagens, carrega o contentor e expede-o do porto de Nansha para a Europa. Fotos em cada etapa e seguimento na sua área de cliente.",
+   "A SourcingPick recebe as suas encomendas no armazém de Guangzhou, inspeciona cada volume, consolida, reforça as embalagens, carrega o contentor e expede-o para a Europa a partir dos grandes portos da China, entre os quais Nansha. Fotos em cada etapa e seguimento na sua área de cliente."
+  ],
+  "12": [
+   "Cais · porto de Nansha",
+   "Cais · porto de partida"
+  ],
+  "40": [
+   "Partida do porto de Nansha, em Guangzhou, para a Europa. Acompanha o seu contentor na sua área de cliente.",
+   "Partida para a Europa a partir de Nansha, Xiamen ou outro grande porto da China. Acompanha o seu contentor na sua área de cliente."
+  ],
+  "72": [
+   "Contentor carregado pela nossa equipa, partida do porto de Nansha.",
+   "Contentor carregado pela nossa equipa, partida do grande porto mais adequado."
+  ],
+  "88": [
+   "Partidas por via marítima a partir do porto de Nansha",
+   "Logística própria em Dongguan, partidas a partir dos grandes portos da China"
+  ],
+  "157": [
+   "Frete marítimo Nansha → Europa",
+   "Frete marítimo China → Europa"
+  ],
+  "172": [
+   "Pagamento: adiantamento de 40% com a encomenda, saldo antes do carregamento do contentor. Transferência bancária ou cartão.",
+   "Pagamento: adiantamento de 40% com a encomenda, saldo antes do carregamento do contentor. Transferência bancária, mediante fatura."
+  ],
+  "178": [
+   "Porque tudo é verificável: a morada do armazém é pública, cada etapa é fotografada e cada documento fica na sua área de cliente. Pode avaliar com base em factos, não em promessas.",
+   "Porque tudo é verificável: a morada do armazém é-lhe comunicada assim que se regista, cada etapa é fotografada e cada documento fica na sua área de cliente. Pode avaliar com base em factos, não em promessas."
+  ]
+ },
+ "nl": {
+  "0": [
+   "Guangzhou → Nansha → Europa",
+   "Guangzhou → Chinese havens → Europa"
+  ],
+  "4": [
+   "SourcingPick ontvangt uw bestellingen in het eigen magazijn in Guangzhou, controleert elk pakket, consolideert, verstevigt, laadt de container en verscheept die vanuit de haven van Nansha naar Europa. Foto’s bij elke stap, tracking in uw klantenportaal.",
+   "SourcingPick ontvangt uw bestellingen in het eigen magazijn in Guangzhou, controleert elk pakket, consolideert, verstevigt, laadt de container en verscheept die vanuit de grote havens van China, waaronder Nansha, naar Europa. Foto’s bij elke stap, tracking in uw klantenportaal."
+  ],
+  "12": [
+   "Kade · haven van Nansha",
+   "Kade · vertrekhaven"
+  ],
+  "40": [
+   "Vertrek vanuit de haven van Nansha in Guangzhou naar Europa. U volgt de container in uw klantenportaal.",
+   "Vertrek naar Europa vanuit Nansha, Xiamen of een andere grote haven van China. U volgt de container in uw klantenportaal."
+  ],
+  "72": [
+   "Container geladen door ons team, vertrek vanuit de haven van Nansha.",
+   "Container geladen door ons team, vertrek vanuit de meest geschikte grote haven."
+  ],
+  "88": [
+   "Verscheping vanuit de haven van Nansha",
+   "Eigen logistiek in Dongguan, vertrek vanuit de grote havens van China"
+  ],
+  "157": [
+   "Zeevracht Nansha → Europa",
+   "Zeevracht China → Europa"
+  ],
+  "172": [
+   "Betaling: aanbetaling van 40% bij bestelling, restbedrag vóór de belading van de container. Via bankoverschrijving of per kaart.",
+   "Betaling: aanbetaling van 40% bij bestelling, restbedrag vóór de belading van de container. Via bankoverschrijving, op factuur."
+  ],
+  "178": [
+   "Omdat alles controleerbaar is: het adres van het magazijn is openbaar, elke stap wordt gefotografeerd en elk document blijft in uw klantenportaal. U oordeelt op basis van bewijs, niet op basis van beloftes.",
+   "Omdat alles controleerbaar is: het adres van het magazijn krijgt u zodra u zich registreert, elke stap wordt gefotografeerd en elk document blijft in uw klantenportaal. U oordeelt op basis van bewijs, niet op basis van beloftes."
+  ]
+ },
+ "ar": {
+  "0": [
+   "قوانغتشو ← نانشا ← أوروبا",
+   "قوانغتشو ← موانئ الصين ← أوروبا"
+  ],
+  "4": [
+   "تستلم SourcingPick طلبياتك في مستودعها بقوانغتشو، وتفحص كل طرد، وتجمّع الشحنات، وتدعّم التغليف، ثم تحمّل الحاوية وتشحنها من ميناء نانشا إلى أوروبا. صور في كل مرحلة، والتتبّع في حساب العميل.",
+   "تستلم SourcingPick طلبياتك في مستودعها بقوانغتشو، وتفحص كل طرد، وتجمّع الشحنات، وتدعّم التغليف، ثم تحمّل الحاوية وتشحنها إلى أوروبا من كبرى موانئ الصين، ومنها نانشا. صور في كل مرحلة، والتتبّع في حساب العميل."
+  ],
+  "12": [
+   "الرصيف · ميناء نانشا",
+   "الرصيف · ميناء الانطلاق"
+  ],
+  "40": [
+   "الانطلاق من ميناء نانشا في قوانغتشو نحو أوروبا. وتتابع الحاوية في حساب العميل.",
+   "الانطلاق نحو أوروبا من نانشا أو شيامن أو ميناء صيني كبير آخر. وتتابع الحاوية في حساب العميل."
+  ],
+  "72": [
+   "يحمّل فريقنا الحاوية، ثم تنطلق من ميناء نانشا.",
+   "يحمّل فريقنا الحاوية، ثم تنطلق من الميناء الكبير الأنسب."
+  ],
+  "88": [
+   "انطلاق الشحنات البحرية من ميناء نانشا",
+   "لوجستياتنا الخاصة في دونغقوان، والانطلاق من كبرى موانئ الصين"
+  ],
+  "157": [
+   "الشحن البحري نانشا ← أوروبا",
+   "الشحن البحري الصين ← أوروبا"
+  ],
+  "172": [
+   "الدفع: دفعة مقدمة قدرها 40% عند تقديم الطلبية، والمبلغ المتبقي قبل تحميل الحاوية. بتحويل مصرفي أو ببطاقة مصرفية.",
+   "الدفع: دفعة مقدمة قدرها 40% عند تقديم الطلبية، والمبلغ المتبقي قبل تحميل الحاوية. بتحويل مصرفي، بموجب فاتورة."
+  ],
+  "178": [
+   "لأن كل شيء قابل للتحقق: عنوان المستودع معلن، وكل مرحلة موثّقة بالصور، وكل مستند محفوظ في حساب العميل. تحكم بناءً على الأدلة، لا على الوعود.",
+   "لأن كل شيء قابل للتحقق: نرسل إليك عنوان المستودع فور تسجيلك، وكل مرحلة موثّقة بالصور، وكل مستند محفوظ في حساب العميل. تحكم بناءً على الأدلة، لا على الوعود."
+  ]
+ },
+ "ru": {
+  "0": [
+   "Гуанчжоу → Наньша → Европа",
+   "Гуанчжоу → порты Китая → Европа"
+  ],
+  "4": [
+   "SourcingPick принимает ваши товары на своем складе в Гуанчжоу, проверяет каждое грузовое место, консолидирует груз, усиливает упаковку, загружает контейнер и отправляет его из порта Наньша в Европу. Фото на каждом этапе, отслеживание — в личном кабинете.",
+   "SourcingPick принимает ваши товары на своем складе в Гуанчжоу, проверяет каждое грузовое место, консолидирует груз, усиливает упаковку, загружает контейнер и отправляет его в Европу из крупных портов Китая, включая Наньша. Фото на каждом этапе, отслеживание — в личном кабинете."
+  ],
+  "12": [
+   "Причал · порт Наньша",
+   "Причал · порт отправки"
+  ],
+  "40": [
+   "Отправка из порта Наньша (Гуанчжоу) в Европу. Вы отслеживаете контейнер в личном кабинете.",
+   "Отправка в Европу из Наньша, Сямэня или другого крупного порта Китая. Вы отслеживаете контейнер в личном кабинете."
+  ],
+  "72": [
+   "Загрузка контейнера силами нашей команды, отправка из порта Наньша.",
+   "Загрузка контейнера силами нашей команды, отправка из наиболее подходящего крупного порта."
+  ],
+  "88": [
+   "Морские отправки из порта Наньша",
+   "Собственная логистика в Дунгуане, отправки из крупных портов Китая"
+  ],
+  "157": [
+   "Морской фрахт Наньша → Европа",
+   "Морской фрахт Китай → Европа"
+  ],
+  "172": [
+   "Порядок оплаты: предоплата 40% при заказе, остаток оплаты — до загрузки контейнера. Банковский перевод или карта.",
+   "Порядок оплаты: предоплата 40% при заказе, остаток оплаты — до загрузки контейнера. Банковский перевод по счету."
+  ],
+  "178": [
+   "Потому что всё можно проверить: адрес склада опубликован, каждый этап фотографируется, а все документы хранятся в вашем личном кабинете. Вы судите по фактам, а не по обещаниям.",
+   "Потому что всё можно проверить: адрес склада мы сообщаем вам сразу после регистрации, каждый этап фотографируется, а все документы хранятся в вашем личном кабинете. Вы судите по фактам, а не по обещаниям."
+  ]
+ },
+ "tr": {
+  "0": [
+   "Guangzhou → Nansha → Avrupa",
+   "Guangzhou → Çin limanları → Avrupa"
+  ],
+  "4": [
+   "SourcingPick, siparişlerinizi Guangzhou’daki deposunda teslim alır, her koliyi kontrol eder, konsolide eder, ambalajı güçlendirir, konteyneri yükler ve Nansha Limanı’ndan Avrupa’ya gönderir. Her aşamada fotoğraf, takip ise müşteri panelinizde.",
+   "SourcingPick, siparişlerinizi Guangzhou’daki deposunda teslim alır, her koliyi kontrol eder, konsolide eder, ambalajı güçlendirir, konteyneri yükler ve Nansha da dâhil olmak üzere Çin’in büyük limanlarından Avrupa’ya gönderir. Her aşamada fotoğraf, takip ise müşteri panelinizde."
+  ],
+  "12": [
+   "Rıhtım · Nansha Limanı",
+   "Rıhtım · çıkış limanı"
+  ],
+  "40": [
+   "Guangzhou’daki Nansha Limanı’ndan Avrupa’ya yola çıkış. Konteyneri müşteri panelinizden takip edersiniz.",
+   "Nansha, Xiamen veya Çin’in başka bir büyük limanından Avrupa’ya yola çıkış. Konteyneri müşteri panelinizden takip edersiniz."
+  ],
+  "72": [
+   "Konteyner ekibimiz tarafından yüklenir ve Nansha Limanı’ndan yola çıkar.",
+   "Konteyner ekibimiz tarafından yüklenir ve en uygun büyük limandan yola çıkar."
+  ],
+  "88": [
+   "Nansha Limanı’ndan deniz yoluyla sevkiyat",
+   "Dongguan’da kendi lojistiğimiz, Çin’in büyük limanlarından sevkiyat"
+  ],
+  "157": [
+   "Deniz navlunu Nansha → Avrupa",
+   "Deniz navlunu Çin → Avrupa"
+  ],
+  "172": [
+   "Ödeme: sipariş sırasında %40 ön ödeme, konteyner yüklenmeden önce kalan tutar. Banka havalesi veya kartla.",
+   "Ödeme: sipariş sırasında %40 ön ödeme, konteyner yüklenmeden önce kalan tutar. Fatura üzerine banka havalesiyle."
+  ],
+  "178": [
+   "Çünkü her şey doğrulanabilir: deponun adresi herkese açık, her aşama fotoğraflanıyor ve her belge müşteri panelinizde saklanıyor. Vaatlere değil, somut kanıtlara bakarak karar verirsiniz.",
+   "Çünkü her şey doğrulanabilir: deponun adresi kayıt olduğunuz anda size iletiliyor, her aşama fotoğraflanıyor ve her belge müşteri panelinizde saklanıyor. Vaatlere değil, somut kanıtlara bakarak karar verirsiniz."
+  ]
+ },
+ "pl": {
+  "0": [
+   "Guangzhou → Nansha → Europa",
+   "Guangzhou → chińskie porty → Europa"
+  ],
+  "4": [
+   "SourcingPick przyjmuje zamówiony przez Państwa towar w swoim magazynie w Guangzhou, kontroluje każdą paczkę, konsoliduje, wzmacnia opakowania, ładuje kontener i wysyła go z portu Nansha do Europy. Zdjęcia na każdym etapie, śledzenie w panelu klienta.",
+   "SourcingPick przyjmuje zamówiony przez Państwa towar w swoim magazynie w Guangzhou, kontroluje każdą paczkę, konsoliduje, wzmacnia opakowania, ładuje kontener i wysyła go do Europy z głównych portów Chin, w tym z Nansha. Zdjęcia na każdym etapie, śledzenie w panelu klienta."
+  ],
+  "12": [
+   "Nabrzeże · port Nansha",
+   "Nabrzeże · port wysyłki"
+  ],
+  "40": [
+   "Wypłynięcie z portu Nansha w Guangzhou do Europy. Kontener mogą Państwo śledzić w panelu klienta.",
+   "Wypłynięcie do Europy z Nansha, Xiamen lub innego głównego portu w Chinach. Kontener mogą Państwo śledzić w panelu klienta."
+  ],
+  "72": [
+   "Nasz zespół ładuje kontener, który wypływa z portu Nansha.",
+   "Nasz zespół ładuje kontener, który wypływa z najdogodniejszego z głównych portów."
+  ],
+  "88": [
+   "Wysyłki morskie z portu Nansha",
+   "Własna logistyka w Dongguan, wysyłki morskie z głównych portów Chin"
+  ],
+  "157": [
+   "Fracht morski Nansha → Europa",
+   "Fracht morski Chiny → Europa"
+  ],
+  "172": [
+   "Płatność: zaliczka 40% przy zamówieniu, pozostała kwota przed załadunkiem kontenera. Przelew lub karta płatnicza.",
+   "Płatność: zaliczka 40% przy zamówieniu, pozostała kwota przed załadunkiem kontenera. Przelew bankowy na podstawie faktury."
+  ],
+  "178": [
+   "Ponieważ wszystko można sprawdzić: adres magazynu jest publicznie dostępny, każdy etap jest fotografowany, a każdy dokument pozostaje w panelu klienta. Oceniają Państwo fakty, a nie obietnice.",
+   "Ponieważ wszystko można sprawdzić: adres magazynu przekazujemy Państwu zaraz po rejestracji, każdy etap jest fotografowany, a każdy dokument pozostaje w panelu klienta. Oceniają Państwo fakty, a nie obietnice."
+  ]
+ }
+}

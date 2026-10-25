@@ -20,7 +20,10 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from port import CANVAS, FR_TEXT, LOCALES, PAGES, aligned, locale_file
+import json
+
+from dcparse import L10N_ATTRS, slots
+from port import CANVAS, FR_TEXT, LOCALES, PAGES, REWRITES, _holds_address, aligned, locale_file
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:3000"
 
@@ -35,8 +38,11 @@ SKIP_TAGS = ("script", "style", "svg", "noscript", "template", "select")
 
 # Drawn sections a live component stands in for (the porter's replacing
 # COMPONENTS): the canvas's text and the component's are not comparable, so
-# both sides leave the section out. Its copy is checked where it lives.
-LIVE_SECTIONS = ("simulateur",)
+# both sides leave the section out. Its copy is checked where it lives. The
+# two after it are blocks our components add (the line that replaces the
+# warehouse address, the FAQ's question on suppliers): the page side drops
+# them, and the artboard side drops the address they stand in for.
+LIVE_SECTIONS = ("simulateur", "adresse-apres-inscription", "faq-fournisseurs")
 
 
 def visible_text(markup: str) -> list[str]:
@@ -150,25 +156,52 @@ def text_slots(stem: str, locale: str) -> list[str]:
     groups, _, _ = aligned(stem)
     nodes = next(n[locale] for locs, n in groups if locale in locs)
     out: list[str] = []
+    # The corrections the porter writes over the canvas (rewrites/<page>.json),
+    # by slot: the walk counts slots as `slots()` does — attributes, then
+    # text — so a text node is read as the page should now say it.
+    path = os.path.join(REWRITES, f"{stem}.json")
+    fixes = json.load(open(path, encoding="utf-8")).get(locale, {}) if os.path.exists(path) else {}
+    at = [0]
+
+    def skip(n):
+        at[0] += len(slots(n)) if not isinstance(n, str) else (1 if n.strip() else 0)
 
     def walk(n):
         if isinstance(n, str):
             s = re.sub(r"\s+", " ", n.strip())
             if s:
-                out.append(s)
+                fix = fixes.get(str(at[0]))
+                out.append(re.sub(r"\s+", " ", fix[1]).strip() if fix else s)
+                at[0] += 1
             return
         # `<text>` inside an illustration is drawn, not written: the numerals
         # in the step circles on the home page. And a <select>'s options are
         # generated, not designed. The HTML side drops both, so this must too.
         if n.tag in ("svg", "select"):
-            return
+            return skip(n)
         if n.tag == "section" and n.attr("id") in LIVE_SECTIONS:
-            return
+            return skip(n)
         # A <style> (the keyframes behind a drawn illustration) is a slot to the
         # porter but not visible text; the HTML side strips it.
         if n.tag == "style":
+            return skip(n)
+        for name in L10N_ATTRS:
+            if n.attr(name):
+                at[0] += 1
+        kids = list(n.children)
+        if _holds_address(n):
+            # The address (in Chinese, then in Latin letters, or both in one
+            # span) is not on the page: AddressGate stands in for it.
+            els = [c for c in kids if not isinstance(c, str)]
+            first = next(c for c in els if c.attr("lang") == "zh-Hans" or any(
+                not isinstance(g, str) and g.attr("lang") == "zh-Hans" for g in c.children))
+            gone = {id(first)}
+            if first.attr("lang") == "zh-Hans":
+                gone.add(id(els[els.index(first) + 1]))
+            for c in kids:
+                (skip if id(c) in gone else walk)(c)
             return
-        for c in n.children:
+        for c in kids:
             walk(c)
 
     for n in nodes[2:-1]:

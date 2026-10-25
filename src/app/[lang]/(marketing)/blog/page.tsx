@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/blog">) {
   if (lang !== "fr" || !isLocale(lang) || BLOG_ARTICLES.length === 0) return {};
   return {
     title: { absolute: "Blog : importer de Chine, entre l’usine et le navire | SourcingPick" },
-    description: "Consolidation, contrôle qualité, caisses NIMP 15, fret depuis Nansha, sourcing : nos guides pour importer de Chine.",
+    description: "Consolidation, contrôle qualité, caisses NIMP 15, fret maritime, sourcing : nos guides pour importer de Chine.",
     alternates: pageAlternates(lang, "/blog", ["fr"]),
   };
 }

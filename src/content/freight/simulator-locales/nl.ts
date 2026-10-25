@@ -104,8 +104,9 @@ export const nl: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, +50 RMB per pagina na de eerste (5 producten per pagina).",
   },
   calc: {
+    title: "Gefactureerd gewicht",
+    rule: "Het hoogste van het werkelijke gewicht en het volumegewicht (L × B × H ÷ 6.000), met minimaal 12 kg per doos.",
     volumetric: "Volumegewicht",
-    formula: "L × B × H ÷ 6.000",
     bracket: "Staffel",
     billed: "{kg} kg gefactureerd",
     volume: "Totaal volume: {m3}",

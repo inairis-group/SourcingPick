@@ -21,6 +21,7 @@ import { getDictionary, type Dictionary } from "@/lib/i18n/get-dictionary";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { formatEUR } from "@/lib/i18n/formatters";
 import { STATE_TONE, STAGES, type OrderStage, type OrderState } from "@/lib/orders/lifecycle";
+import { WAREHOUSE_ADDRESS_ZH, WAREHOUSE_PHONE, warehouseAddress } from "@/content/warehouse-address";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/client/dashboard">) {
   const { lang } = await params;
@@ -177,6 +178,23 @@ export default async function ClientDashboardPage({
           empty={<EmptyLine>{t.ordersEmpty}</EmptyLine>}
         />
       </Card>
+
+      {/* The public pages give the warehouse address after sign-up: here. */}
+      <Panel title={t.warehouse.title} subtitle={t.warehouse.intro}>
+        <dl className="m-0 grid gap-4 sm:grid-cols-2">
+          {[
+            [t.warehouse.chinese, <span key="zh" lang="zh-Hans">{WAREHOUSE_ADDRESS_ZH}</span>],
+            [t.warehouse.latin, warehouseAddress[lang].latin],
+            [t.warehouse.hours, warehouseAddress[lang].hours],
+            [t.warehouse.phone, <span key="tel" dir="ltr">{WAREHOUSE_PHONE}</span>],
+          ].map(([label, value], i) => (
+            <div key={i} className="flex flex-col gap-1">
+              <dt className="text-muted text-[13.5px]">{label}</dt>
+              <dd className="text-fg text-md m-0 font-semibold">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </Panel>
     </>
   );
 }

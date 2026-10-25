@@ -104,8 +104,9 @@ export const tr: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, ilk sayfadan sonraki her sayfa için +50 RMB (sayfa başına 5 ürün).",
   },
   calc: {
+    title: "Faturalanan ağırlık",
+    rule: "Gerçek ağırlık ile hacimsel ağırlıktan büyük olanı (U × G × Y ÷ 6.000), koli başına en az 12 kg.",
     volumetric: "Hacimsel ağırlık",
-    formula: "U × G × Y ÷ 6.000",
     bracket: "Kademe",
     billed: "{kg} kg faturalanır",
     volume: "Toplam hacim: {m3}",

@@ -98,7 +98,15 @@
       "colState": "Status",
       "colAmount": "Amount",
       "open": "Open",
-      "ordersEmpty": "No open orders."
+      "ordersEmpty": "No open orders.",
+      "warehouse": {
+        "title": "Warehouse address for your suppliers",
+        "intro": "Give this address to your suppliers: they deliver your goods there, and we receive and inspect them.",
+        "chinese": "In Chinese, for your suppliers",
+        "latin": "In Latin characters",
+        "hours": "Receiving hours",
+        "phone": "Warehouse phone"
+      }
     },
     "requests": {
       "eyebrow": "Sourcing on demand",

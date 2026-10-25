@@ -12,17 +12,17 @@ export const FR_META: Readonly<Record<string, { title: string; description?: str
   "/": {
     title: "Sourcing, Consolidation & Logistique Chine (Guangzhou) | SourcingPick",
     description:
-      "Entre l’usine et le navire : réception, contrôle qualité photo/vidéo, consolidation, caisses NIMP 15 et fret maritime depuis Guangzhou (Nansha). Commission 2% / 3%.",
+      "Entre l’usine et le navire : réception, contrôle qualité photo/vidéo, consolidation, caisses NIMP 15 et fret maritime depuis les grands ports de Chine. Commission 2% / 3%.",
   },
   "/services": {
     title: "Services Logistiques à Guangzhou : Contrôle, Groupage & Fret | SourcingPick",
     description:
-      "Nos 6 opérations dans notre entrepôt de Baiyun (Guangzhou) : réception multi-fournisseurs, contrôle qualité, consolidation, caisses NIMP 15, empotage et fret Nansha.",
+      "Nos 6 opérations dans notre entrepôt de Baiyun (Guangzhou) : réception multi-fournisseurs, contrôle qualité, consolidation, caisses NIMP 15, empotage et fret maritime.",
   },
   "/comment-ca-marche": {
     title: "Importer de Chine en 6 Étapes : du Devis au Navire | SourcingPick",
     description:
-      "De votre demande de devis jusqu’au départ du conteneur à Nansha : découvrez les 6 étapes d’une importation suivie en photo et vidéo dans votre espace client.",
+      "De votre demande de devis jusqu’au départ du conteneur : découvrez les 6 étapes d’une importation suivie en photo et vidéo dans votre espace client.",
   },
   "/entrepot": {
     title: "Notre Entrepôt Logistique à Guangzhou (Baiyun) – 200 m² | SourcingPick",
@@ -32,12 +32,12 @@ export const FR_META: Readonly<Record<string, { title: string; description?: str
   "/pricing": {
     title: "Tarifs Sourcing Chine (2%) & Fret Maritime (3%) sur Devis | SourcingPick",
     description:
-      "Des devis réels ligne par ligne : 2 % de commission sur le sourcing fournisseur, 3 % sur le fret maritime Nansha, 0 € de frais de dossier. Acompte 40 % à la commande.",
+      "Des devis réels ligne par ligne : 2 % de commission sur le sourcing fournisseur, 3 % sur le fret maritime, 0 € de frais de dossier. Acompte 40 % à la commande.",
   },
   "/faq": {
     title: "Questions Fréquentes : Importation, Groupage & Sourcing Chine | SourcingPick",
     description:
-      "Toutes nos réponses sans détour : délais maritimes depuis Nansha, groupage de conteneur, contrôle qualité à Guangzhou, stockage, paiement 40/60 et commission 2%/3%.",
+      "Toutes nos réponses sans détour : délais maritimes depuis la Chine, groupage de conteneur, contrôle qualité à Guangzhou, stockage, paiement 40/60 et commission 2%/3%.",
   },
   "/about": {
     title: "À Propos de SourcingPick : Notre Équipe à Guangzhou | SourcingPick",

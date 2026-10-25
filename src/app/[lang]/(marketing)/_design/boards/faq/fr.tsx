@@ -12,6 +12,7 @@ import type { Locale } from "@/lib/i18n/config";
 import { faq as content } from "../../content/faq";
 import { Disclosure } from "../../disclosure";
 import { FaqCategories } from "../../faq-categories";
+import { FaqExtraItem } from "../../faq-extra-item";
 
 export function FaqBoard({ lang }: { lang: Locale }) {
   const t = content.text[lang];
@@ -223,7 +224,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
               </div>
               <div className="sp-faq-group" id="faq-group-4" style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-300-fr, 300px minmax(0, 1fr))", "gap": "var(--sp-gap-56, 56px)", "padding": "var(--sp-pad-40-0, 40px 0)", "borderTop": "1px solid #DCE3F2" }}>
                 <h2 style={s[16][lang]}>{t[34]}</h2>
-                <div style={{ "display": "flex", "flexDirection": "column" }}>
+                <FaqExtraItem style={{ "display": "flex", "flexDirection": "column" }} lang={lang}>
                   <Disclosure style={{ "borderBottom": "1px solid #DCE3F2", "padding": "18px 0", "display": "flex", "flexDirection": "column", "gap": "12px" }}>
                     <button type="button" style={s[17][lang]} aria-expanded="true">
                       <span>{t[35]}</span>
@@ -252,7 +253,7 @@ export function FaqBoard({ lang }: { lang: Locale }) {
                       {t[38]}
                     </p>
                   </Disclosure>
-                </div>
+                </FaqExtraItem>
               </div>
               <div className="sp-faq-group" id="faq-group-5" style={{ "display": "grid", "gridTemplateColumns": "var(--sp-grid-300-fr, 300px minmax(0, 1fr))", "gap": "var(--sp-gap-56, 56px)", "padding": "var(--sp-pad-40-0, 40px 0)", "borderTop": "1px solid #DCE3F2" }}>
                 <h2 style={s[19][lang]}>{t[39]}</h2>

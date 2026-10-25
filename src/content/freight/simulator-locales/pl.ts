@@ -105,8 +105,9 @@ export const pl: FreightSimulatorCopy = {
     declarationHintSea: "350 RMB, +50 RMB za każdą stronę po pierwszej (5 produktów na stronę).",
   },
   calc: {
+    title: "Waga rozliczeniowa",
+    rule: "Wyższa z dwóch wag: rzeczywistej i gabarytowej (D × S × W ÷ 6000), minimum 12 kg na karton.",
     volumetric: "Waga gabarytowa",
-    formula: "D × S × W ÷ 6000",
     bracket: "Przedział",
     billed: "rozliczane jako {kg} kg",
     volume: "Łączna objętość: {m3}",
