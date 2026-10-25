@@ -279,5 +279,14 @@
       "quote": "Angebot anfordern"
     },
     "whatsappButton": "Schreiben Sie uns auf WhatsApp"
+  },
+  "admin": {
+    "freightCalculator": {
+      "title": "Frachtrechner",
+      "intro": "Dieselbe Berechnung wie im öffentlichen Simulator, mit dem detaillierten Preis auf dem Bildschirm.",
+      "result": "Berechneter Preis",
+      "requests": "Anfragen aus dem Rechner",
+      "requestsEmpty": "Noch keine Anfragen."
+    }
   }
 }

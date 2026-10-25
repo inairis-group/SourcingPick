@@ -2347,6 +2347,13 @@
       "message": "补充说明",
       "phone": "电话",
       "files": "附件"
+    },
+    "freightCalculator": {
+      "title": "运费计算器",
+      "intro": "和公开模拟器一样的算法，详细价格直接显示在屏幕上。",
+      "result": "计算结果",
+      "requests": "模拟器收到的询价",
+      "requestsEmpty": "暂时还没有询价。"
     }
   },
   "attachments": {

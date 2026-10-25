@@ -2367,6 +2367,13 @@
       "message": "Further details",
       "phone": "Phone",
       "files": "Attachments"
+    },
+    "freightCalculator": {
+      "title": "Freight calculator",
+      "intro": "The same calculation as the public simulator, with the detailed price on screen.",
+      "result": "Calculated price",
+      "requests": "Requests from the simulator",
+      "requestsEmpty": "No requests yet."
     }
   },
   "attachments": {

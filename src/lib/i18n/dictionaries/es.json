@@ -279,5 +279,14 @@
       "quote": "Solicitar presupuesto"
     },
     "whatsappButton": "Escríbanos por WhatsApp"
+  },
+  "admin": {
+    "freightCalculator": {
+      "title": "Simulador de transporte",
+      "intro": "El mismo cálculo que el simulador público, con el precio detallado en pantalla.",
+      "result": "Precio calculado",
+      "requests": "Solicitudes recibidas por el simulador",
+      "requestsEmpty": "Todavía no hay solicitudes."
+    }
   }
 }

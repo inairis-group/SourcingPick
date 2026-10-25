@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { Children, cloneElement, isValidElement, useEffect, useId, useRef, useState } from "react";
 import type { CSSProperties, ReactElement, ReactNode } from "react";
 import type { Locale } from "@/lib/i18n/config";
+import { sitePath } from "@/lib/i18n/site-paths";
 import styles from "./board.module.css";
 
 /**
@@ -12,7 +13,8 @@ import styles from "./board.module.css";
  * The porter swaps the transcribed `<header>` for this component (see
  * `header_retag` in scripts/design/port.py) and hands it every attribute and
  * child unchanged: the wordmark, the five-link nav, and the actions cluster
- * of language menu, client-area link and quote button. All of it stays
+ * of language menu, client-area link and quote button — plus a link to the
+ * freight simulator, which the canvas does not draw. All of it stays
  * server-rendered; this file only adds the hamburger and, while it is open,
  * the drawer.
  *
@@ -47,6 +49,26 @@ const MENU_LABEL: Record<Locale, string> = {
   tr: "Menüyü aç",
   pl: "Otwórz menu",
 };
+
+// The freight simulator (/livraisons#simulateur) has no link in the canvas's
+// five; it gets one after "Tarifs", in the nav and in the drawer, styled as
+// its neighbours.
+const SIMULATOR_LABEL: Record<Locale, string> = {
+  fr: "Simulateur",
+  en: "Simulator",
+  zh: "运费估算",
+  es: "Simulador",
+  de: "Frachtrechner",
+  it: "Simulatore",
+  pt: "Simulador",
+  nl: "Simulator",
+  ar: "حاسبة الشحن",
+  ru: "Калькулятор",
+  tr: "Simülatör",
+  pl: "Kalkulator",
+};
+/** Position of "Tarifs" among the canvas's nav links: the simulator follows it. */
+const PRICING_LINK = 3;
 
 type El = ReactElement<{ style?: CSSProperties; className?: string; children?: ReactNode }>;
 
@@ -142,6 +164,15 @@ export function HeaderShell({
   // asserts this shape (`assert_header_shape`), so the destructuring is safe.
   const [logo, nav, actions] = Children.toArray(children).map(asElement);
   const [locale, login, quote] = Children.toArray(actions?.props.children).map(asElement);
+  const canvasLinks = Children.toArray(nav?.props.children).map(asElement);
+  const pricing = canvasLinks[PRICING_LINK];
+  const links = pricing
+    ? [
+        ...canvasLinks.slice(0, PRICING_LINK + 1),
+        cloneElement(pricing as ReactElement<{ href?: string }>, { key: "simulator", href: `${sitePath(lang, "/livraisons")}#simulateur` }, SIMULATOR_LABEL[lang]),
+        ...canvasLinks.slice(PRICING_LINK + 1),
+      ]
+    : canvasLinks;
 
   const desktopOnly = (el: El | null) =>
     el &&
@@ -160,7 +191,7 @@ export function HeaderShell({
   return (
     <header style={style} className={styles.header} data-menu={open ? "open" : undefined}>
       {logo}
-      {nav && cloneElement(nav, { className: styles.nav })}
+      {nav && cloneElement(nav, { className: styles.nav }, links)}
       {actions &&
         cloneElement(actions, {}, [
           locale,
@@ -223,7 +254,7 @@ export function HeaderShell({
                 aria-label={nav.props["aria-label" as keyof typeof nav.props] as string}
                 className={styles.drawerNav}
               >
-                {Children.toArray(nav.props.children).map((c) => asRow(asElement(c)))}
+                {links.map((c) => asRow(c as El | null))}
               </nav>
             )}
             <div className={styles.drawerActions}>

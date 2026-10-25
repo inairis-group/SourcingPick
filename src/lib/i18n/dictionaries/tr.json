@@ -279,5 +279,14 @@
       "quote": "Teklif isteyin"
     },
     "whatsappButton": "WhatsApp’tan bize yazın"
+  },
+  "admin": {
+    "freightCalculator": {
+      "title": "Nakliye hesaplayıcı",
+      "intro": "Herkese açık simülatörle aynı hesaplama; ayrıntılı fiyat ekranda.",
+      "result": "Hesaplanan fiyat",
+      "requests": "Simülatörden gelen talepler",
+      "requestsEmpty": "Henüz talep yok."
+    }
   }
 }
