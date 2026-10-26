@@ -9,8 +9,9 @@ import { FreightSimulatorForm } from "./freight-simulator-form";
  * draws there (the porter emits this component for `section#simulateur`).
  *
  * The form and its panel run in the browser (freight-simulator-form.tsx);
- * under them, every rule of the carrier's rate card, in plain words, rendered
- * here so it is in the page for readers and search engines alike.
+ * under them, every rule of the carrier's rate card, in plain words and line
+ * by line, rendered here so it is in the page for readers and search engines
+ * alike.
  */
 export function FreightSimulator({ lang, id, style }: { lang: Locale; id?: string; style?: CSSProperties }) {
   const { rules } = freightCopy(lang);
@@ -26,7 +27,14 @@ export function FreightSimulator({ lang, id, style }: { lang: Locale; id?: strin
           {rules.sections.map((s, i) => (
             <details key={s.title} open={i === 0} style={{ borderRadius: "16px", border: "1px solid #DCE3F2", background: "#F5F7FC", padding: "0 18px" }}>
               <summary style={{ cursor: "pointer", minHeight: "52px", display: "flex", alignItems: "center", fontSize: "16px", fontWeight: 600, color: "#0E1A3D" }}>{s.title}</summary>
-              <p style={{ margin: "0 0 16px", fontSize: "15px", lineHeight: 1.65, color: "#4A5578" }}>{s.text}</p>
+              <p style={{ margin: s.items ? "0 0 8px" : "0 0 16px", fontSize: "15px", lineHeight: 1.65, color: "#4A5578" }}>{s.text}</p>
+              {s.items && (
+                <ul style={{ margin: "0 0 16px", paddingInlineStart: "20px", display: "flex", flexDirection: "column", gap: "6px", fontSize: "15px", lineHeight: 1.6, color: "#4A5578" }}>
+                  {s.items.map((x) => (
+                    <li key={x}>{x}</li>
+                  ))}
+                </ul>
+              )}
             </details>
           ))}
         </div>

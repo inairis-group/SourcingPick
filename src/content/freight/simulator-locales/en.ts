@@ -4,17 +4,19 @@ export const en: FreightSimulatorCopy = {
   eyebrow: "Shipping calculator",
   title: "How much would your shipment cost?",
   intro:
-    "Enter your address and your products: we calculate the volumetric weight of each one and apply our carrier’s Europe rate card. The detailed price is sent to you by email.",
+    "Enter your address and your products: we calculate the chargeable weight, choose the line that suits your cartons and apply our carrier’s Europe rate card. The detailed price is sent to you by email.",
   mode: {
     label: "Transport mode",
-    names: { sea: "Sea", air: "Air", truck: "Road", rail: "Rail" },
+    names: { sea: "Sea", air: "Air", container: "Full container", truck: "Road", rail: "Rail" },
     recommended: "Recommended",
     discouraged: "Not recommended",
+    onQuote: "On quotation",
     hints: {
-      sea: "The cheapest, and the one we recommend: 40 to 45 days end to end.",
-      air: "The fastest: 7 to 10 working days. For a small or urgent shipment.",
-      truck: "Riskier: we don’t recommend it. About 16 to 20 days.",
-      rail: "We don’t recommend it either. 35 to 38 days after the train departs.",
+      sea: "The cheapest, and the one we recommend. Parcels: 40 to 45 days end to end; large parcels and pallets: 30 to 40 days after the ship departs.",
+      air: "The fastest: 7 to 10 working days, 9 to 12 days for large parcels. For a small or urgent shipment.",
+      container: "A 20ft, 40ft or 40ft HC container just for your goods. Price on quotation.",
+      truck: "Riskier: we don’t recommend it. On quotation only, about 16 to 20 days.",
+      rail: "We don’t recommend it either. On quotation only, 35 to 38 days after the train departs.",
     },
   },
   formula: {
@@ -26,10 +28,17 @@ export const en: FreightSimulatorCopy = {
       customs: "Carried as far as customs on arrival; you clear the goods through customs and collect them. Price on quotation.",
     },
   },
+  container: {
+    type: "Container type",
+    types: { "20": "20ft (about 28 m³)", "40": "40ft (about 58 m³)", "40hc": "40ft HC (about 68 m³)" },
+    count: "Number of containers",
+    hint: "Describe your products with what you already know: we’ll get back to you with a quotation.",
+  },
   address: {
     title: "Delivery address",
     street: "Address",
     postcode: "Postcode",
+    postcodeHint: "It sets the delivery zone for large parcels and pallets.",
     city: "City",
     country: "Country",
   },
@@ -45,6 +54,7 @@ export const en: FreightSimulatorCopy = {
     height: "Height (cm)",
     weight: "Weight (kg)",
     cartonHint: "Dimensions and weight of one carton.",
+    cartonHintContainer: "Dimensions and weight of one carton, if you know them.",
     units: "Number of units",
     battery: "Contains a battery",
     reinforce: "Reinforce with wood",
@@ -74,38 +84,46 @@ export const en: FreightSimulatorCopy = {
       kg7: "+7 RMB/kg: clothing, shoes, textiles, phones, computers, tablets, drones",
       refused: "Refused: liquids, powders, standalone batteries, counterfeits…",
     },
-    truck: {
+    quoted: {
       ordinary: "General cargo",
-      kg1: "+1 RMB/kg: leather, kitchen utensils, LED lighting, toys, headphones, Bluetooth products…",
-      kg2: "+2 RMB/kg: hardware, beauty devices, dashcams, GPS, pens, adult products…",
-      kg3: "+3 RMB/kg: wigs, textiles (excluding clothing and shoes)",
-      kg4: "+4 RMB/kg: tablets",
-      kg5: "+5 RMB/kg: clothing, socks, trousers, solar panels, disposable e-cigarettes",
-      kg8: "+8 RMB/kg: shoes",
-      pieces: "Watches, USB sticks, consoles, memory cards: +3 RMB per piece",
-      phones: "Mobile phones: +8 RMB per phone",
-      quote: "Glasses, luggage, drones, robot vacuums, wooden items…: price on quotation",
-      refused: "Refused: liquids, powders, standalone batteries, counterfeits…",
-    },
-    rail: {
-      ordinary: "General cargo",
-      kg1: "+1 RMB/kg: kitchenware, lighting, ceramics, wood, tools, cameras, drones…",
-      kg2: "+2 RMB/kg: bags, leather, fabrics, bed linen, socks, cosmetics…",
-      kg4: "+4 RMB/kg: clothing, shoes, underwear, swimwear…",
-      phones: "Mobile phones: +3 RMB per phone",
-      scooters: "Scooters, treadmills: +€7.50 per unit",
-      bikes: "Bikes: +€75 per unit",
+      kg1: "Kitchenware, lighting, ceramics, wood, tools, electronics…",
+      kg3: "Bags, leather, fabrics, bed linen, cosmetics…",
+      kg4: "Clothing, shoes, underwear…",
+      phones: "Mobile phones",
+      scooters: "Scooters, treadmills",
+      bikes: "Bikes",
       refused: "Refused: liquids, powders, standalone batteries, counterfeits…",
     },
   },
   options: {
     declaration: "Separate export declaration",
-    declarationHint: "350 RMB per shipment.",
-    declarationHintSea: "350 RMB, +50 RMB per page after the first (5 products per page).",
+    declarationHints: {
+      sea: "350 RMB, +50 RMB per page after the first (5 products per page).",
+      seaHeavy: "350 RMB, +50 RMB per page after the first (5 products per page).",
+      air: "350 RMB per shipment.",
+      airHeavy: "200 RMB, +50 RMB per page after the first (6 products per page).",
+    },
+  },
+  lines: {
+    label: "Line",
+    names: {
+      sea: "Sea, parcel line (UPS or DPD)",
+      seaHeavy: "Sea, large parcels and pallets",
+      air: "Air, parcel line (UPS)",
+      airHeavy: "Air, large parcels (DHL or FedEx)",
+    },
+    hints: {
+      sea: "Your cartons are delivered by UPS or DPD, as the carrier chooses.",
+      seaHeavy:
+        "One carton is too heavy or too large for UPS and DPD: the whole shipment goes as large parcels, delivered by truck, at the price for your postcode’s zone.",
+      air: "Your cartons are delivered by UPS, after a direct flight from mainland China.",
+      airHeavy:
+        "One carton exceeds 30 kg or UPS’s dimensions: the whole shipment goes as large parcels, billed at least 45 kg per piece.",
+    },
   },
   calc: {
     title: "Billed weight",
-    rule: "The heavier of the actual weight and the volumetric weight (L × W × H ÷ 6,000), with a minimum of 12 kg per carton.",
+    rule: "The heavier of the actual weight and the volumetric weight (L × W × H ÷ 6,000), with a minimum of 12 kg per carton (45 kg for large parcels by air), rounded up to the next kilo.",
     volumetric: "Volumetric weight",
     bracket: "Weight bracket",
     billed: "billed {kg} kg",
@@ -116,14 +134,20 @@ export const en: FreightSimulatorCopy = {
     delayLabel: "Transit time",
     delays: {
       sea: "40 to 45 days end to end",
+      seaHeavy: "30 to 40 days after the ship departs",
       air: "7 to 10 working days",
+      airHeavy: "9 to 12 days",
+      container: "Confirmed with your quotation",
       truck: "About 16 to 20 days",
-      rail: "35 to 38 days after departure",
+      rail: "35 to 38 days after the train departs",
     },
     surcharges: "Added to your shipment",
-    oversize: "Oversize packages: {n}",
+    oversize: "Oversize cartons, carrier fee: {n}",
+    crate: "Parcels in wooden crates, carrier fee: {n}",
+    overlength: "Pieces over 2.40 m: {n}",
+    extraNames: "Products beyond 5: {n}",
     singleCarton: "Single-package shipment",
-    battery: "Products with batteries",
+    batteryRates: "Battery rates (air, large parcels)",
     reinforcement: "Wood reinforcement: {m3}",
     declaration: "Separate export declaration",
   },
@@ -131,18 +155,24 @@ export const en: FreightSimulatorCopy = {
     title: "Price on quotation",
     reasons: {
       formula: "For FOB or up to customs, pricing is by quotation: we’ll reply by email.",
-      country: "This mode doesn’t deliver to this country with taxes included: pricing is by quotation.",
+      mode: "Road and rail are on quotation only: we’ll reply by email.",
+      container: "A full container is priced by quotation, depending on the port of arrival and the date: we’ll reply by email.",
+      country: "This line doesn’t deliver to this country with taxes included: pricing is by quotation.",
+      postcode:
+        "Enter your postcode: it sets the price for large parcels and pallets. Islands and remote areas are on quotation.",
       air_battery:
-        "By air, products with batteries go on a line reserved for Amazon and logistics warehouses: pricing is by quotation.",
-      too_many_products: "Beyond 5 different products, pricing is by quotation.",
-      goods_quote: "These goods are priced by quotation.",
+        "By air, standard cartons with batteries go on a line reserved for Amazon and logistics warehouses: pricing is by quotation.",
+      heavy_goods:
+        "Large parcels by sea are for general cargo only, without batteries: pricing is by quotation.",
+      out_of_gauge: "A carton exceeds the large-parcel limits, in weight or in dimensions: pricing is by quotation.",
+      too_many_products: "Beyond 5 different products on the parcel line, pricing is by quotation.",
+      too_many_pieces: "The large-parcel air line takes at most 40 pieces per shipment: pricing is by quotation.",
     },
   },
   warnings: {
     refusedGoods: "One of your products is not accepted for this transport mode.",
-    refusedCarton:
-      "A carton exceeds the limits (65 kg, 270 cm on one side, or length + 2 × (width + height) over 400 cm): it must be repacked.",
     noProducts: "Enter at least one product, with its cartons, their dimensions and their weight.",
+    noProductsContainer: "Enter at least one product and its number of cartons.",
   },
   gate: {
     locked: "The price appears after sign-up",
@@ -159,7 +189,7 @@ export const en: FreightSimulatorCopy = {
     cta: "See the price",
     ctaQuote: "Get my quotation",
     already: "I already have an account",
-    note: "Indicative prices; the rate card will be updated soon. The firm price is shown on your quotation.",
+    note: "Indicative prices, based on our carrier’s current rate card. The firm price is shown on your quotation.",
     sending: "Sending…",
     sent: "Sent to {email}. Now create your account to access your quotations.",
     sentQuote: "Request received: we’ll reply to {email}. Now create your account to track your quotations.",
@@ -173,57 +203,117 @@ export const en: FreightSimulatorCopy = {
   rules: {
     title: "How we calculate your price",
     intro:
-      "The price comes from our carrier’s Europe rate cards: sea, air, road and rail. Here are their rules, as they apply to your shipment.",
+      "The price comes from our carrier’s current Europe rate card. Here are all its rules, line by line, as they apply to your shipment.",
     sections: [
+      {
+        title: "Transport lines and transit times",
+        text: "Your shipment goes on the line that suits its cartons: the calculator chooses it for you and shows you which one.",
+        items: [
+          "Sea, parcel line: delivery by UPS or DPD, as the carrier chooses. 40 to 45 days end to end.",
+          "Sea, large parcels and pallets: delivery by truck, at the price for your postcode’s zone. 30 to 40 days after the ship departs, not counting port congestion and customs inspections.",
+          "Air, parcel line: direct flights every day from mainland China, delivery by UPS. 7 to 10 working days.",
+          "Air, large parcels: delivery by DHL in Germany and by FedEx elsewhere. 9 to 12 days, with no compensation for delays.",
+          "Full container (20ft, 40ft, 40ft HC), road and rail: on quotation. We don’t recommend road, which is riskier, or rail.",
+        ],
+      },
+      {
+        title: "When the shipment goes as large parcels",
+        text: "A single oversize carton is enough for the whole shipment to move to its mode’s large-parcel line.",
+        items: [
+          "By sea: a carton of 40 kg or more, one side over 120 cm with a second over 60 cm, one side of 274 cm or more, or length + 2 × (width + height) over 300 cm.",
+          "By air: a carton over 30 kg, one side of 274 cm or more, or length + 2 × (width + height) over 300 cm.",
+          "Large-parcel limits by sea: 1,500 kg actual or 1,000 kg volumetric per piece, 390 × 210 × 210 cm. By air: 990 kg per piece, 300 × 200 × 170 cm (at most 180 cm high when stood upright), 40 pieces per shipment. Beyond that, on quotation.",
+        ],
+      },
       {
         title: "Chargeable weight",
         text:
-          "Each carton is billed at the highest of three weights: its actual weight, its volumetric weight (length × width × height in cm ÷ 6,000) and 12 kg. The cartons of all your products are then added together.",
-      },
-      {
-        title: "Modes and transit times",
-        text:
-          "Sea: 40 to 45 days end to end, the cheapest and the one we recommend. Air: 7 to 10 working days, for a small or urgent shipment. Road: about 16 to 20 days; it’s riskier and we don’t recommend it. Rail: 35 to 38 days after the train departs; we don’t recommend it either. We choose the carrier for the final leg.",
+          "Each carton is billed at the highest of three weights: its actual weight, its volumetric weight (length × width × height in cm ÷ 6,000) and its line’s minimum, 12 kg per carton and 45 kg per piece for large parcels by air. The cartons of all your products are added together, then rounded up to the next kilo. The weight used is the one measured at our warehouse in China.",
       },
       {
         title: "Weight brackets",
-        text:
-          "The price per kilo goes down as the total weight goes up. Sea: 21 to 70 kg, 71 to 299 kg, 300 kg and over. Air: 21 to 69 kg, 70 to 99 kg, 100 to 299 kg, 300 kg and over. Road: 30 to 70 kg, 71 to 100 kg, 101 to 499 kg, 500 kg and over (300 kg and over to the United Kingdom). Rail: 45 to 74 kg, 75 to 299 kg, 300 kg and over. A shipment is billed for at least 21 kg by sea and by air, 30 kg by road and 45 kg by rail.",
+        text: "The price per kilo goes down as the shipment’s total weight goes up, and the shipment is billed for at least the start of the first bracket.",
+        items: [
+          "Sea, parcel line: 21 to 70 kg, 71 to 299 kg, 300 kg and over.",
+          "Sea, large parcels and pallets: 30 to 49 kg, 50 to 99 kg, 100 to 199 kg, 200 to 299 kg, 300 to 500 kg, 501 to 1,000 kg, 1,001 to 1,500 kg, 1,501 to 2,000 kg, 2,001 to 2,999 kg, 3,000 kg and over.",
+          "Air, parcel line: 21 to 69 kg, 70 to 99 kg, 100 to 299 kg, 300 kg and over.",
+          "Air, large parcels: 45 to 70 kg, 71 to 100 kg, 101 to 499 kg, 500 kg and over.",
+        ],
+      },
+      {
+        title: "Countries and zones served",
+        text: "Delivery with duties and taxes included, within the European Union.",
+        items: [
+          "Sea, parcel line: 22 countries, the whole European Union except Estonia, Latvia, Croatia, Cyprus and Malta.",
+          "Sea, large parcels and pallets: 24 countries, the whole European Union except Greece, Cyprus and Malta, by postcode zone (A, B or C); islands and remote areas are not served.",
+          "Air, parcels and large parcels: 24 countries, the whole European Union except Estonia, Cyprus and Malta.",
+          "Elsewhere, including the United Kingdom, Switzerland and Norway: on quotation.",
+        ],
       },
       {
         title: "Delivery terms",
         text:
-          "Delivered, taxes included (DDP): delivery to your address, duties and import VAT included; at most 5 different products per shipment by sea, air and rail. FOB: the goods are handed over at the port or airport of departure in China, and your freight forwarder takes over. Up to customs: we carry the goods as far as customs on arrival; you clear them through customs and collect them. For FOB and up to customs, pricing is by quotation.",
+          "Delivered, taxes included (DDP): delivery to your address, duties and import VAT included. FOB: the goods are handed over at the port or airport of departure in China, and your freight forwarder takes over. Up to customs: we carry the goods as far as customs on arrival; you clear them through customs and collect them. For FOB and up to customs, pricing is by quotation.",
       },
       {
-        title: "Countries served",
+        title: "Number of products",
         text:
-          "Each mode delivers to its own list of European countries; the United Kingdom is served by road only. If the mode you choose doesn’t deliver to your country, pricing is by quotation.",
+          "On the parcel lines, at most 5 different products per shipment; beyond that, pricing is by quotation. On the large-parcel lines, each product beyond the fifth is charged: 30 RMB by sea, 35 RMB by air.",
       },
       {
         title: "Surcharges by type of goods",
         text:
-          "Each mode has its own surcharges, per chargeable kilo of the product concerned or per unit; the list in the form changes with the mode and uses the examples from the rate card. Sea: +1, +3 or +4 RMB/kg; phones +3 RMB per piece, scooters and treadmills +€7.50 per unit, bikes +€75 per unit. Rail: +1, +2 or +4 RMB/kg, and the same per-unit surcharges. Air: +1, +2, +3, +5 or +7 RMB/kg. Road: from +1 to +8 RMB/kg; watches, USB sticks, consoles and memory cards +3 RMB per piece, phones +8 RMB per piece; glasses, luggage, drones and wooden items on quotation. Surcharges are cumulative.",
+          "Per chargeable kilo of the product concerned, or per unit; they are cumulative. The list in the form changes with the mode and uses the examples from the rate card.",
+        items: [
+          "Sea, parcel line: +1 RMB/kg (kitchenware, lighting, ceramics, wood, tools, cameras, drones…), +3 RMB/kg (bags, leather, fabrics, bed linen, cosmetics…), +4 RMB/kg (clothing, shoes, underwear…); phones +3 RMB per piece, scooters and treadmills +€7.50 per unit, bikes +€75 per unit.",
+          "Air, parcels and large parcels: +1 RMB/kg (wood, hardware, metal, cases and cables…), +2 RMB/kg (lighting, ceramics, cosmetics, beauty devices, cameras…), +3 RMB/kg (toys, leather), +5 RMB/kg (watches, e-cigarettes without liquid), +7 RMB/kg (clothing, shoes, textiles, phones, computers, tablets, drones). For wood, bamboo, weakly magnetic products and desiccants, this surcharge is at least 200 RMB per shipment.",
+          "Sea, large parcels and pallets: general cargo only, without batteries; otherwise, on quotation.",
+        ],
       },
       {
         title: "Products with batteries",
-        text:
-          "Accepted by sea and by rail. By road: +100 RMB per shipment. By air, they go on a line departing from Hong Kong that is reserved for Amazon and logistics warehouses: pricing is by quotation.",
+        items: [
+          "Sea, parcel line: accepted, at the same rate.",
+          "Air, parcel line: on quotation; the battery line departing from Hong Kong only delivers to Amazon and logistics warehouses.",
+          "Air, large parcels: accepted, on the battery rate card, which is more expensive.",
+          "Sea, large parcels and pallets: on quotation.",
+          "Never: standalone batteries, power banks, batteries over 100 Wh.",
+        ],
+        text: "Tick “Contains a battery” for each product concerned.",
       },
       {
-        title: "Oversize packages",
-        text:
-          "Refused: over 65 kg, one side over 270 cm, or length + 2 × (width + height) over 400 cm. For each carton, the highest surcharge applies: 130 RMB between 30 and 40 kg, or if the longest side exceeds 100 cm or the second-longest exceeds 76 cm; 600 RMB over 40 kg; 120 RMB if length + 2 × (width + height) is between 266 and 320 cm, 900 RMB between 321 and 400 cm. A single-package shipment: +80 RMB (+50 RMB by road to the United Kingdom).",
+        title: "Carrier fees on the parcel lines",
+        text: "For each carton, the highest fee that applies.",
+        items: [
+          "UPS (air, and sea outside Germany, France, Italy and Spain): 240 RMB if one side reaches 100 cm, if the second reaches 76 cm, or if the carton weighs more than 24 kg. Wooden crate or packaging other than a carton: €45 per parcel.",
+          "DPD (sea to Germany, France, Italy and Spain): 350 RMB over 31 kg or with a side over 120 cm; otherwise 50 RMB over 25 kg volumetric or 150 litres, or if two sides exceed 60 cm. Wooden or metal crate: 80 RMB per parcel.",
+          "Single-carton shipment: +50 RMB, by sea and by air (except large parcels by sea).",
+        ],
+      },
+      {
+        title: "Large parcels and pallets by sea",
+        text: "They are delivered by truck and need suitable access.",
+        items: [
+          "Piece over 2.40 m: +300 RMB; over 3.50 m: +600 RMB; ×1.2 in zone B and ×1.4 in zone C. To the Netherlands, a piece over 2.40 m in a shipment of more than one tonne: €250 per piece.",
+          "The shipment goes either all in wooden crates or all in cartons (a mix is at your own risk); from 2 cartons, it is palletised.",
+          "Delivery to the ground floor, accessible to a heavy goods vehicle; 30 minutes of unloading included, then €59.50 per hour.",
+          "Piece over 2.20 m or one tonne: arrange a means of unloading (not a hand pallet truck), otherwise at least €250. Tail lift on request: at least €150. Non-stackable goods: €200.",
+          "Above 2,500 kg actual or 1,250 kg volumetric, the shipment is split into several consignments. To Romania, above 500 kg, a UIT number is required.",
+        ],
       },
       {
         title: "Wood reinforcement",
         text:
-          "For fragile goods, we reinforce the cartons with wood at our Guangzhou warehouse: $15 per m³ of the reinforced product.",
+          "For fragile goods, we reinforce the cartons with wood at our Guangzhou warehouse: $15 per m³ of the reinforced product. On the parcel lines, a reinforced carton counts as a crate: UPS charges €45 and DPD 80 RMB per parcel. For large parcels by air, a crate or pallet over 40 kg must have feet of at least 10 cm for the forklift.",
       },
       {
         title: "Separate export declaration",
-        text:
-          "350 RMB per shipment; by sea, +50 RMB per page after the first (5 lines per page). By road, the export paperwork is prepared free of charge.",
+        items: [
+          "Sea, parcels and large parcels: 350 RMB, +50 RMB per page after the first (5 products per page).",
+          "Air, parcel line: 350 RMB per shipment.",
+          "Air, large parcels: 200 RMB, +50 RMB per page after the first (6 products per page).",
+        ],
+        text: "On request, with the official export documents.",
       },
       {
         title: "Our commission",
@@ -231,23 +321,38 @@ export const en: FreightSimulatorCopy = {
       },
       {
         title: "What the price doesn’t include",
-        text:
-          "Remote areas (surcharge passed on as invoiced by the carrier), change of address, customs inspection fees, insurance, and our other warehouse services in Guangzhou (receiving, inspection, loading), priced on your quotation.",
+        items: [
+          "Remote areas: 10 RMB/kg, at least 480 RMB per shipment, on the UPS lines; check your postcode.",
+          "Change of address, signed proof of delivery (30 RMB per UPS parcel, 50 RMB per shipment for large parcels by sea).",
+          "Customs inspection (for large parcels by sea: €1,000 for unloading, €260 for sorting, the rest at cost), fumigation, inspection report (machinery: 680 RMB).",
+          "Delivery conditions for large parcels: waiting time, tail lift, non-stackable goods.",
+          "Insurance, and our other warehouse services in Guangzhou (receiving, inspection, loading), priced on your quotation.",
+        ],
+        text: "These costs depend on your shipment; they appear on your quotation if they apply.",
       },
       {
         title: "Refused goods",
         text:
-          "Liquids, powders, counterfeits, standalone batteries, power banks, electric unicycles, tobacco, foodstuffs, medicines, corrosive, flammable or explosive products, weapons. Sensitive goods found during the pre-export check cost a 3,000 RMB fine, plus the return and 8 RMB/kg in handling.",
+          "Liquids, powders, counterfeits, standalone batteries, power banks, electric unicycles, tobacco, foodstuffs, medicines, corrosive, flammable or explosive products, weapons. Undeclared sensitive goods (wood, magnets, liquids, pastes…) found during the pre-export check cost a 3,000 RMB fine, plus the return and 8 RMB/kg in handling.",
       },
       {
-        title: "Packaging",
-        text:
-          "All products must be marked MADE IN CHINA; textiles, leather, luggage and shoes must also carry a composition and care label. Avoid yellow adhesive tape.",
+        title: "Packaging and labelling",
+        items: [
+          "Cartons in good condition, with no damp or deformation. On the parcel lines, packaging other than a carton is charged the carrier’s crate fee.",
+          "The words MADE IN CHINA on every product; a sewn-in composition label on textiles, leather, luggage and shoes.",
+          "CE marking on products that require it in the European Union: without it, customs may hold the shipment.",
+          "A “heavy parcel” label above 15 kg, and no yellow adhesive tape.",
+        ],
+        text: "Your goods must meet the import standards of the destination country.",
       },
       {
-        title: "In case of loss",
-        text:
-          "Sea and rail: for loss or goods held at customs, compensation based on the declared value, up to 20 RMB per kilo, with no refund of the freight; damage is not compensated. Air and road: 40 RMB per kilo for loss before UPS takes charge of the goods or for seizure at customs, then UPS’s rules apply, up to 100 USD per shipment. For valuable goods, take out insurance.",
+        title: "In case of loss or damage",
+        items: [
+          "Sea: for loss or goods held at customs, compensation based on the declared value, up to 20 RMB per kilo, with no refund of the freight; damage is not compensated.",
+          "Air: 40 RMB per kilo for loss before UPS takes charge of the goods or for seizure at customs, with no refund of the freight; after that, UPS’s rules apply, up to 100 USD per shipment.",
+          "A damaged or incomplete parcel must be reported within 14 days of delivery. Delays are not compensated.",
+        ],
+        text: "For valuable goods, take out insurance.",
       },
     ],
   },
@@ -261,6 +366,8 @@ export const en: FreightSimulatorCopy = {
     introQuote: "We have received your request. Here is what you told us; we’ll get back to you with a quotation.",
     summary: {
       mode: "Transport mode",
+      line: "Line",
+      container: "Containers",
       formula: "Delivery terms",
       address: "Delivery address",
       cartons: "Cartons",
@@ -272,14 +379,17 @@ export const en: FreightSimulatorCopy = {
     },
     productsTitle: "Your products",
     product: "{name}: {cartons} cartons · {m3} · {chargeable} chargeable",
+    productCount: "{name}: {cartons} cartons",
     items: {
       freight: "Freight ({kg} kg × {rate} RMB/kg)",
       goods: "Goods surcharge, {product} ({kg} kg × {rate} RMB/kg)",
       pieces: "{product}: {units} × {rate} RMB",
       units: "{product}: {units} × €{rate}",
       singleCarton: "Single-package shipment",
-      oversize: "Oversize packages ({cartons} cartons)",
-      battery: "Products with batteries",
+      oversize: "Oversize cartons, carrier fee ({cartons} cartons)",
+      crate: "Parcels in wooden crates, carrier fee ({cartons} parcels)",
+      overlength: "Pieces over 2.40 m ({pieces})",
+      extraNames: "Products beyond 5 ({names} × {rate} RMB)",
       declaration: "Separate export declaration ({pages} page(s))",
       reinforcement: "Wood reinforcement ({m3} m³ × ${rate})",
     },
@@ -288,12 +398,12 @@ export const en: FreightSimulatorCopy = {
     total: "Estimated total",
     notIncludedTitle: "Not included",
     notIncluded: [
-      "Remote areas, change of address, customs inspection fees",
+      "Remote areas (10 RMB/kg, at least 480 RMB on the UPS lines), change of address, customs inspection fees",
+      "Large parcels by sea: waiting time, tail lift and non-stackable goods, depending on the delivery",
       "Insurance",
       "Our other warehouse services in Guangzhou (receiving, inspection, loading), priced on your quotation",
     ],
-    disclaimer:
-      "Indicative price, based on our carrier’s current rate card (to be updated soon). The firm price is shown on your quotation.",
+    disclaimer: "Indicative price, based on our carrier’s current rate card. The firm price is shown on your quotation.",
     quoteNext: "We’ll get back to you with a detailed quotation.",
     signup: "Create your SourcingPick account to track your quotations:",
     signupCta: "Create my account",

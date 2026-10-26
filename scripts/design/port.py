@@ -1300,7 +1300,9 @@ def _move_out(node: Element, pred) -> int:
 #
 # The 2026-10 SEO pack rewrites some French headings (H1/H2) for search, and
 # the indicative delivery prices follow the carrier's rate card ("Tarifs VIP
-# Europe", 30 July; see src/lib/freight). They are applied over the canvas's
+# Europe", 26 October, with our margin per kilo; see src/lib/freight): the
+# parcel lines' range, the large-parcel lines from their lowest rate, and the
+# full container, truck and rail on quote. They are applied over the canvas's
 # text by position — slot n of the page's French strings — because the same
 # word can be a heading and a tab ("Général" is both on the FAQ). Each entry
 # names the canvas text it replaces: if the canvas changes there, the port
@@ -1337,26 +1339,32 @@ FR_TEXT: dict[str, dict[int, tuple[str, str]]] = {
         148: ("Paiement",
               "Conditions de paiement sécurisées (acompte de 40 % à la commande, solde avant chargement)"),
         # Indicative delivery prices, from the carrier's rate card (taxes included).
-        29: ("150 à 250", "44 à 56"),
-        34: ("30 à 40", "18 à 30"),
-        39: ("25 à 30", "7,4 à 18,9"),
-        43: ('Même prix que le camion. Nous ne le recommandons pas non plus.', 'Un peu moins cher que le camion. Nous ne le recommandons pas non plus.'),
-        44: ("30 à 40", "14 à 27"),
+        29: ("150 à 250", "44 à 53"),
+        34: ("30 à 40", "Sur devis"),
+        35: ("RMB / kg", "selon votre envoi"),
+        39: ("25 à 30", "10,9 à 20,5"),
+        43: ('Même prix que le camion. Nous ne le recommandons pas non plus.', 'Nous ne le recommandons pas non plus.'),
+        44: ("30 à 40", "Sur devis"),
+        45: ("RMB / kg", "selon votre envoi"),
         46: ('Prix indicatifs en RMB par kilo volumétrique : on compare le poids réel et le volume converti en kilos, le plus élevé sert de base. Le prix réel figure à part sur votre devis, au prix du marché du moment.',
-             'Prix indicatifs en RMB par kilo volumétrique, actualisation prochaine : on compare le poids réel et le volume converti en kilos, le plus élevé sert de base. Le prix réel figure à part sur votre devis, au prix du marché du moment.'),
+             'Prix indicatifs en RMB par kilo facturable, livré droits et taxes compris : on compare le poids réel et le volume converti en kilos, le plus élevé sert de base. Grands colis et palettes : dès 10,3 RMB/kg en bateau et 47 RMB/kg en avion, selon la destination. Conteneur complet, camion et train : sur devis. Le prix réel figure à part sur votre devis.'),
         159: ("C’est le moins cher des quatre modes, entre 25 et 30 RMB le kilo volumétrique. Le camion est plus risqué et le train coûte le même prix que le camion : nous ne recommandons ni l’un ni l’autre. L’avion reste utile pour un petit colis urgent.",
-              "C’est le moins cher des quatre modes, entre 7,4 et 18,9 RMB le kilo volumétrique. Le camion est plus risqué et le train coûte à peine moins cher que lui : nous ne recommandons ni l’un ni l’autre. L’avion reste utile pour un petit colis urgent."),
+              "C’est le mode le moins cher pour vos colis : 10,9 à 20,5 RMB le kilo, dès 10,3 RMB en grands colis et palettes. Le camion, plus risqué, et le train se font sur devis : nous ne recommandons ni l’un ni l’autre. L’avion reste utile pour un petit colis urgent."),
     },
     "Livraisons": {
-        12: ("25 à 30", "7,4 à 18,9"),
-        17: ("150 à 250", "44 à 56"),
-        23: ("30 à 40", "18 à 30"),
-        29: ("30 à 40", "14 à 27"),
-        31: ('Même prix que le camion. Nous ne le recommandons pas non plus.', 'Un peu moins cher que le camion. Nous ne le recommandons pas non plus.'),
+        3: ("Bateau, avion, camion ou train : comparez des prix indicatifs avant même de demander un devis, puis suivez votre marchandise étape par étape depuis votre espace client.",
+            "Bateau, avion, conteneur complet, camion ou train : comparez des prix indicatifs avant même de demander un devis, puis suivez votre marchandise étape par étape depuis votre espace client."),
+        12: ("25 à 30", "10,9 à 20,5"),
+        17: ("150 à 250", "44 à 53"),
+        23: ("30 à 40", "Sur devis"),
+        24: ("RMB / kg", "selon votre envoi"),
+        29: ("30 à 40", "Sur devis"),
+        30: ("RMB / kg", "selon votre envoi"),
+        31: ('Même prix que le camion. Nous ne le recommandons pas non plus.', 'Nous ne le recommandons pas non plus.'),
         32: ('Prix indicatifs en RMB par kilo volumétrique : on compare le poids réel et le volume converti en kilos, le plus élevé sert de base. Le prix réel figure à part sur votre devis, au prix du marché du moment.',
-             'Prix indicatifs en RMB par kilo volumétrique, actualisation prochaine : on compare le poids réel et le volume converti en kilos, le plus élevé sert de base. Le prix réel figure à part sur votre devis, au prix du marché du moment.'),
+             'Prix indicatifs en RMB par kilo facturable, livré droits et taxes compris : on compare le poids réel et le volume converti en kilos, le plus élevé sert de base. Grands colis et palettes : dès 10,3 RMB/kg en bateau et 47 RMB/kg en avion, selon la destination. Conteneur complet, camion et train : sur devis. Le prix réel figure à part sur votre devis.'),
         136: ("C’est le mode le moins cher : 25 à 30 RMB le kilo. Le camion et le train coûtent 30 à 40 RMB et nous ne les recommandons pas ; le camion est plus risqué.",
-              "C’est le mode le moins cher : 7,4 à 18,9 RMB le kilo. Le camion coûte 18 à 30 RMB et le train 14 à 27 RMB ; nous ne les recommandons pas, le camion est plus risqué."),
+              "C’est le mode le moins cher : 10,9 à 20,5 RMB le kilo pour vos colis, dès 10,3 RMB en grands colis et palettes. Le camion et le train se font sur devis et nous ne les recommandons pas ; le camion est plus risqué."),
     },
     "FAQ": {
         1: ("Les réponses, sans détour.",

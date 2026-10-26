@@ -55,11 +55,14 @@ export function FreightSimulatorForm({ lang, copy: c }: { lang: Locale; copy: Fr
             <span style={{ fontSize: "15px", fontWeight: 600 }}>
               {c.mode.names[s.mode]} · {c.formula.names[s.formula]}
             </span>
+            {s.line && <span style={{ fontSize: "13.5px", color: "#E3EBFF" }}>{c.lines.names[s.line]}</span>}
             <span style={{ fontSize: "13.5px", color: "#C3CDEB" }}>
-              {c.estimate.delayLabel}{c.sep}{c.estimate.delays[s.mode]}
+              {c.estimate.delayLabel}{c.sep}{c.estimate.delays[s.line ?? s.mode]}
             </span>
             <span style={{ fontFamily: MONO, fontSize: "13.5px", color: "#FFC247" }}>
-              {n(s.bracket.billedKg)} kg · {s.bracket.label} kg
+              {s.mode === "container"
+                ? `${n(s.container.count, 0)} × ${c.container.types[s.container.type]}`
+                : `${n(s.billedKg)} kg${s.bracket ? ` · ${s.bracket.label} kg` : ""}`}
             </span>
           </div>
         </div>

@@ -2,7 +2,7 @@
  * The simulator's request as the browser sends it (JSON), checked and bounded
  * before it is priced: anything malformed is refused rather than repaired.
  */
-import { ALL_COUNTRIES, FORMULAS, MODES, type Formula, type GoodsKey, type Mode } from "./modes";
+import { ALL_COUNTRIES, CONTAINER_TYPES, FORMULAS, MODES, type ContainerType, type Formula, type GoodsKey, type Mode } from "./modes";
 import type { FreightRequest } from "./estimate";
 
 const num = (v: unknown, max: number) => {
@@ -28,18 +28,29 @@ export function parseFreightRequest(raw: unknown): FreightRequest | null {
       length: num(x.length, 1_000),
       width: num(x.width, 1_000),
       height: num(x.height, 1_000),
-      weight: num(x.weight, 1_000),
+      weight: num(x.weight, 5_000),
       units: Math.round(num(x.units, 1_000_000)),
       battery: x.battery === true,
       reinforce: x.reinforce === true,
     };
   });
-  if (products.some((p) => p.cartons > 0 && (!p.length || !p.width || !p.height || !p.weight))) return null;
+  const mode = r.mode as Mode;
+  // A container is quoted from what the visitor knows: the dimensions of its
+  // cartons may be left out. Everywhere else they are what the price is made of.
+  if (mode !== "container" && products.some((p) => p.cartons > 0 && (!p.length || !p.width || !p.height || !p.weight))) return null;
+  let container: FreightRequest["container"] = null;
+  if (mode === "container") {
+    const x = (r.container ?? {}) as Record<string, unknown>;
+    const count = Math.round(num(x.count, 100));
+    if (!CONTAINER_TYPES.includes(x.type as ContainerType) || count < 1) return null;
+    container = { type: x.type as ContainerType, count };
+  }
   return {
     formula: r.formula as Formula,
-    mode: r.mode as Mode,
+    mode,
     address: { street: text(a.street, 200), postcode: text(a.postcode, 20), city: text(a.city, 100), country },
     products,
     declaration: r.declaration === true,
+    container,
   };
 }
