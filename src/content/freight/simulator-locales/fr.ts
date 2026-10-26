@@ -4,17 +4,19 @@ export const fr: FreightSimulatorCopy = {
   eyebrow: "Simulateur de transport",
   title: "Combien coûterait votre envoi ?",
   intro:
-    "Indiquez votre adresse et vos produits : nous calculons le poids volumétrique de chacun et appliquons la grille Europe de notre transporteur. Le prix détaillé vous est envoyé par e-mail.",
+    "Indiquez votre adresse et vos produits : nous calculons le poids facturable, choisissons la ligne qui convient à vos cartons et appliquons la grille Europe de notre transporteur. Le prix détaillé vous est envoyé par e-mail.",
   mode: {
     label: "Mode de transport",
-    names: { sea: "Bateau", air: "Avion", truck: "Camion", rail: "Train" },
+    names: { sea: "Bateau", air: "Avion", container: "Conteneur complet", truck: "Camion", rail: "Train" },
     recommended: "Recommandé",
     discouraged: "Déconseillé",
+    onQuote: "Sur devis",
     hints: {
-      sea: "Le moins cher, et notre recommandation : 40 à 45 jours de bout en bout.",
-      air: "Le plus rapide : 7 à 10 jours ouvrés. Pour un envoi petit ou urgent.",
-      truck: "Plus risqué : nous le déconseillons. Environ 16 à 20 jours.",
-      rail: "Nous le déconseillons aussi. 35 à 38 jours après le départ du train.",
+      sea: "Le moins cher, et notre recommandation. Colis : 40 à 45 jours de bout en bout ; grands colis et palettes : 30 à 40 jours après le départ du bateau.",
+      air: "Le plus rapide : 7 à 10 jours ouvrés, 9 à 12 jours pour les grands colis. Pour un envoi petit ou urgent.",
+      container: "Un conteneur 20 pieds, 40 pieds ou 40 pieds HC rien que pour vos marchandises. Prix sur devis.",
+      truck: "Plus risqué : nous le déconseillons. Sur devis seulement, 16 à 20 jours environ.",
+      rail: "Nous le déconseillons aussi. Sur devis seulement, 35 à 38 jours après le départ du train.",
     },
   },
   formula: {
@@ -26,10 +28,17 @@ export const fr: FreightSimulatorCopy = {
       customs: "Acheminé jusqu’à la douane d’arrivée ; vous dédouanez et récupérez la marchandise. Prix sur devis.",
     },
   },
+  container: {
+    type: "Type de conteneur",
+    types: { "20": "20 pieds (environ 28 m³)", "40": "40 pieds (environ 58 m³)", "40hc": "40 pieds HC (environ 68 m³)" },
+    count: "Nombre de conteneurs",
+    hint: "Décrivez vos produits avec ce que vous savez déjà : nous revenons vers vous avec un devis.",
+  },
   address: {
     title: "Adresse de livraison",
     street: "Adresse",
     postcode: "Code postal",
+    postcodeHint: "Il fixe la zone de livraison des grands colis et palettes.",
     city: "Ville",
     country: "Pays",
   },
@@ -45,6 +54,7 @@ export const fr: FreightSimulatorCopy = {
     height: "Haut. (cm)",
     weight: "Poids (kg)",
     cartonHint: "Dimensions et poids d’un carton.",
+    cartonHintContainer: "Dimensions et poids d’un carton, si vous les connaissez.",
     units: "Nombre d’unités",
     battery: "Contient une batterie",
     reinforce: "Renforcer au bois",
@@ -74,38 +84,46 @@ export const fr: FreightSimulatorCopy = {
       kg7: "+7 RMB/kg : vêtements, chaussures, textiles, téléphones, ordinateurs, tablettes, drones",
       refused: "Refusé : liquides, poudres, batteries seules, contrefaçons…",
     },
-    truck: {
+    quoted: {
       ordinary: "Marchandise ordinaire",
-      kg1: "+1 RMB/kg : cuir, ustensiles de cuisine, luminaires LED, jouets, casques audio, produits Bluetooth…",
-      kg2: "+2 RMB/kg : quincaillerie, appareils de beauté, dashcams, GPS, stylos, articles pour adultes…",
-      kg3: "+3 RMB/kg : perruques, textiles (hors vêtements et chaussures)",
-      kg4: "+4 RMB/kg : tablettes",
-      kg5: "+5 RMB/kg : vêtements, chaussettes, pantalons, panneaux solaires, cigarettes électroniques jetables",
-      kg8: "+8 RMB/kg : chaussures",
-      pieces: "Montres, clés USB, consoles, cartes mémoire : +3 RMB la pièce",
-      phones: "Téléphones portables : +8 RMB par téléphone",
-      quote: "Lunettes, bagagerie, drones, robots aspirateurs, articles en bois… : sur devis",
-      refused: "Refusé : liquides, poudres, batteries seules, contrefaçons…",
-    },
-    rail: {
-      ordinary: "Marchandise ordinaire",
-      kg1: "+1 RMB/kg : cuisine, luminaires, céramique, bois, outillage, caméras, drones…",
-      kg2: "+2 RMB/kg : sacs, cuir, tissus, linge de lit, chaussettes, cosmétiques…",
-      kg4: "+4 RMB/kg : vêtements, chaussures, sous-vêtements, maillots de bain…",
-      phones: "Téléphones portables : +3 RMB par téléphone",
-      scooters: "Trottinettes, tapis de course : +7,5 € l’unité",
-      bikes: "Vélos : +75 € l’unité",
+      kg1: "Cuisine, luminaires, céramique, bois, outillage, électronique…",
+      kg3: "Sacs, cuir, tissus, linge de lit, cosmétiques…",
+      kg4: "Vêtements, chaussures, sous-vêtements…",
+      phones: "Téléphones portables",
+      scooters: "Trottinettes, tapis de course",
+      bikes: "Vélos",
       refused: "Refusé : liquides, poudres, batteries seules, contrefaçons…",
     },
   },
   options: {
     declaration: "Déclaration d’export séparée",
-    declarationHint: "350 RMB par expédition.",
-    declarationHintSea: "350 RMB, +50 RMB par page au-delà de la première (5 produits par page).",
+    declarationHints: {
+      sea: "350 RMB, +50 RMB par page au-delà de la première (5 produits par page).",
+      seaHeavy: "350 RMB, +50 RMB par page au-delà de la première (5 produits par page).",
+      air: "350 RMB par envoi.",
+      airHeavy: "200 RMB, +50 RMB par page au-delà de la première (6 produits par page).",
+    },
+  },
+  lines: {
+    label: "Ligne",
+    names: {
+      sea: "Bateau, ligne colis (UPS ou DPD)",
+      seaHeavy: "Bateau, grands colis et palettes",
+      air: "Avion, ligne colis (UPS)",
+      airHeavy: "Avion, grands colis (DHL ou FedEx)",
+    },
+    hints: {
+      sea: "Vos cartons sont livrés par UPS ou DPD, au choix du transporteur.",
+      seaHeavy:
+        "Un carton est trop lourd ou trop grand pour UPS et DPD : tout l’envoi part en grands colis, livré par camion, au prix de la zone de votre code postal.",
+      air: "Vos cartons sont livrés par UPS, depuis un vol direct au départ de la Chine continentale.",
+      airHeavy:
+        "Un carton dépasse 30 kg ou les dimensions d’UPS : tout l’envoi part en grands colis, facturé au moins 45 kg par pièce.",
+    },
   },
   calc: {
     title: "Poids facturé",
-    rule: "Le plus lourd entre le poids réel et le poids volumétrique (L × l × h ÷ 6 000), avec 12 kg minimum par carton.",
+    rule: "Le plus lourd entre le poids réel et le poids volumétrique (L × l × h ÷ 6 000), avec 12 kg minimum par carton (45 kg en avion grands colis), arrondi au kilo supérieur.",
     volumetric: "Poids volumétrique",
     bracket: "Tranche",
     billed: "facturé {kg} kg",
@@ -116,14 +134,20 @@ export const fr: FreightSimulatorCopy = {
     delayLabel: "Délai",
     delays: {
       sea: "40 à 45 jours de bout en bout",
+      seaHeavy: "30 à 40 jours après le départ du bateau",
       air: "7 à 10 jours ouvrés",
+      airHeavy: "9 à 12 jours",
+      container: "Confirmé avec votre devis",
       truck: "16 à 20 jours environ",
-      rail: "35 à 38 jours après le départ",
+      rail: "35 à 38 jours après le départ du train",
     },
     surcharges: "S’ajoutent à votre envoi",
-    oversize: "Colis hors normes : {n}",
-    singleCarton: "Expédition d’un seul colis",
-    battery: "Produits avec batterie",
+    oversize: "Cartons hors format, frais du transporteur : {n}",
+    crate: "Colis en caisse bois, frais du transporteur : {n}",
+    overlength: "Pièces de plus de 2,40 m : {n}",
+    extraNames: "Produits au-delà de 5 : {n}",
+    singleCarton: "Envoi d’un seul colis",
+    batteryRates: "Grille batterie (avion, grands colis)",
     reinforcement: "Renforcement bois : {m3}",
     declaration: "Déclaration d’export séparée",
   },
@@ -131,18 +155,24 @@ export const fr: FreightSimulatorCopy = {
     title: "Prix sur devis",
     reasons: {
       formula: "En FOB ou jusqu’à la douane, le prix se fait sur devis : nous vous répondons par e-mail.",
-      country: "Ce mode ne livre pas ce pays en taxes incluses : le prix se fait sur devis.",
+      mode: "Le camion et le train se font sur devis seulement : nous vous répondons par e-mail.",
+      container: "Un conteneur complet se fait sur devis, selon le port d’arrivée et la date : nous vous répondons par e-mail.",
+      country: "Cette ligne ne livre pas ce pays en taxes incluses : le prix se fait sur devis.",
+      postcode:
+        "Indiquez votre code postal : il fixe le prix des grands colis et palettes. Les îles et les zones éloignées se font sur devis.",
       air_battery:
-        "Par avion, les produits avec batterie passent par une ligne réservée aux entrepôts Amazon et logistiques : le prix se fait sur devis.",
-      too_many_products: "Au-delà de 5 produits différents, le prix se fait sur devis.",
-      goods_quote: "Cette marchandise se chiffre sur devis.",
+        "En avion, les cartons standard avec batterie passent par une ligne réservée aux entrepôts Amazon et logistiques : le prix se fait sur devis.",
+      heavy_goods:
+        "Les grands colis en bateau ne prennent que de la marchandise ordinaire, sans batterie : le prix se fait sur devis.",
+      out_of_gauge: "Un carton dépasse les limites des grands colis, en poids ou en dimensions : le prix se fait sur devis.",
+      too_many_products: "Au-delà de 5 produits différents sur la ligne colis, le prix se fait sur devis.",
+      too_many_pieces: "La ligne avion grands colis prend 40 pièces au plus par envoi : le prix se fait sur devis.",
     },
   },
   warnings: {
     refusedGoods: "Une de vos marchandises n’est pas acceptée par ce mode de transport.",
-    refusedCarton:
-      "Un carton dépasse les limites (65 kg, 270 cm sur un côté, ou longueur + 2 × (largeur + hauteur) au-delà de 400 cm) : il doit être reconditionné.",
     noProducts: "Indiquez au moins un produit, avec ses cartons, leurs dimensions et leur poids.",
+    noProductsContainer: "Indiquez au moins un produit et son nombre de cartons.",
   },
   gate: {
     locked: "Le prix s’affiche après inscription",
@@ -159,7 +189,7 @@ export const fr: FreightSimulatorCopy = {
     cta: "Voir le prix",
     ctaQuote: "Recevoir mon devis",
     already: "J’ai déjà un compte",
-    note: "Prix indicatifs, actualisation prochaine de la grille. Le prix ferme figure sur votre devis.",
+    note: "Prix indicatifs, selon la grille actuelle de notre transporteur. Le prix ferme figure sur votre devis.",
     sending: "Envoi…",
     sent: "C’est envoyé à {email}. Créez maintenant votre compte pour retrouver vos devis.",
     sentQuote: "Demande reçue : nous vous répondons à {email}. Créez maintenant votre compte pour suivre vos devis.",
@@ -173,57 +203,117 @@ export const fr: FreightSimulatorCopy = {
   rules: {
     title: "Comment nous calculons votre tarif",
     intro:
-      "Le prix vient des grilles Europe de notre transporteur : bateau, avion, camion et train. Voici leurs règles, telles qu’elles s’appliquent à votre envoi.",
+      "Le prix vient de la grille Europe en vigueur de notre transporteur. Voici toutes ses règles, ligne par ligne, telles qu’elles s’appliquent à votre envoi.",
     sections: [
+      {
+        title: "Les lignes de transport et leurs délais",
+        text: "Votre envoi part sur la ligne qui convient à ses cartons : le simulateur la choisit pour vous et vous l’indique.",
+        items: [
+          "Bateau, ligne colis : livraison par UPS ou DPD, au choix du transporteur. 40 à 45 jours de bout en bout.",
+          "Bateau, grands colis et palettes : livraison par camion, au prix de la zone de votre code postal. 30 à 40 jours après le départ du bateau, hors congestion portuaire et contrôle douanier.",
+          "Avion, ligne colis : vols directs tous les jours depuis la Chine continentale, livraison par UPS. 7 à 10 jours ouvrés.",
+          "Avion, grands colis : livraison par DHL en Allemagne et par FedEx ailleurs. 9 à 12 jours, sans indemnisation des retards.",
+          "Conteneur complet (20 pieds, 40 pieds, 40 pieds HC), camion et train : sur devis. Nous déconseillons le camion, plus risqué, et le train.",
+        ],
+      },
+      {
+        title: "Quand l’envoi passe en grands colis",
+        text: "Il suffit d’un carton hors format pour que tout l’envoi passe sur la ligne grands colis de son mode.",
+        items: [
+          "En bateau : un carton de 40 kg ou plus, un côté de plus de 120 cm avec un deuxième de plus de 60 cm, un côté de 274 cm ou plus, ou longueur + 2 × (largeur + hauteur) au-delà de 300 cm.",
+          "En avion : un carton de plus de 30 kg, un côté de 274 cm ou plus, ou longueur + 2 × (largeur + hauteur) au-delà de 300 cm.",
+          "Limites des grands colis en bateau : 1 500 kg réels ou 1 000 kg volumétriques par pièce, 390 × 210 × 210 cm. En avion : 990 kg par pièce, 300 × 200 × 170 cm (180 cm de haut au plus une fois debout), 40 pièces par envoi. Au-delà, sur devis.",
+        ],
+      },
       {
         title: "Le poids facturable",
         text:
-          "Chaque carton est facturé au plus élevé de trois poids : son poids réel, son poids volumétrique (longueur × largeur × hauteur en cm ÷ 6 000) et 12 kg. On additionne ensuite les cartons de tous vos produits.",
-      },
-      {
-        title: "Les modes et leurs délais",
-        text:
-          "Bateau : 40 à 45 jours de bout en bout, le moins cher et notre recommandation. Avion : 7 à 10 jours ouvrés, pour un envoi petit ou urgent. Camion : 16 à 20 jours environ, plus risqué, nous le déconseillons. Train : 35 à 38 jours après le départ du train, nous le déconseillons aussi. C’est nous qui choisissons le transporteur de la dernière étape.",
+          "Chaque carton est facturé au plus élevé de trois poids : son poids réel, son poids volumétrique (longueur × largeur × hauteur en cm ÷ 6 000) et le minimum de sa ligne, 12 kg par carton et 45 kg par pièce en avion grands colis. On additionne les cartons de tous vos produits, puis on arrondit au kilo supérieur. Le poids retenu est celui mesuré dans notre entrepôt en Chine.",
       },
       {
         title: "Les tranches de poids",
-        text:
-          "Le prix au kilo baisse avec le poids total. Bateau : 21 à 70 kg, 71 à 299 kg, 300 kg et plus. Avion : 21 à 69 kg, 70 à 99 kg, 100 à 299 kg, 300 kg et plus. Camion : 30 à 70 kg, 71 à 100 kg, 101 à 499 kg, 500 kg et plus (300 kg et plus vers le Royaume-Uni). Train : 45 à 74 kg, 75 à 299 kg, 300 kg et plus. Une expédition est facturée au moins 21 kg en bateau et en avion, 30 kg en camion et 45 kg en train.",
+        text: "Le prix au kilo baisse avec le poids total de l’envoi, qui est facturé au moins le début de la première tranche.",
+        items: [
+          "Bateau, ligne colis : 21 à 70 kg, 71 à 299 kg, 300 kg et plus.",
+          "Bateau, grands colis et palettes : 30 à 49 kg, 50 à 99 kg, 100 à 199 kg, 200 à 299 kg, 300 à 500 kg, 501 à 1 000 kg, 1 001 à 1 500 kg, 1 501 à 2 000 kg, 2 001 à 2 999 kg, 3 000 kg et plus.",
+          "Avion, ligne colis : 21 à 69 kg, 70 à 99 kg, 100 à 299 kg, 300 kg et plus.",
+          "Avion, grands colis : 45 à 70 kg, 71 à 100 kg, 101 à 499 kg, 500 kg et plus.",
+        ],
+      },
+      {
+        title: "Les pays et les zones livrés",
+        text: "Livraison droits et taxes compris, dans l’Union européenne.",
+        items: [
+          "Bateau, ligne colis : 22 pays, toute l’Union européenne sauf l’Estonie, la Lettonie, la Croatie, Chypre et Malte.",
+          "Bateau, grands colis et palettes : 24 pays, toute l’Union européenne sauf la Grèce, Chypre et Malte, par zone de code postal (A, B ou C) ; les îles et les zones éloignées ne sont pas desservies.",
+          "Avion, colis et grands colis : 24 pays, toute l’Union européenne sauf l’Estonie, Chypre et Malte.",
+          "Ailleurs, dont le Royaume-Uni, la Suisse et la Norvège : sur devis.",
+        ],
       },
       {
         title: "Les formules",
         text:
-          "Livré, taxes incluses (DDP) : livraison à votre adresse, droits et TVA d’importation compris ; au plus 5 produits différents par expédition en bateau, en avion et en train. FOB : la marchandise est remise au port ou à l’aéroport de départ en Chine, votre transitaire prend le relais. Jusqu’à la douane : nous l’acheminons jusqu’à la douane d’arrivée, vous la dédouanez et la récupérez. En FOB et jusqu’à la douane, le prix se fait sur devis.",
+          "Livré, taxes incluses (DDP) : livraison à votre adresse, droits et TVA d’importation compris. FOB : la marchandise est remise au port ou à l’aéroport de départ en Chine, votre transitaire prend le relais. Jusqu’à la douane : nous l’acheminons jusqu’à la douane d’arrivée, vous la dédouanez et la récupérez. En FOB et jusqu’à la douane, le prix se fait sur devis.",
       },
       {
-        title: "Les pays livrés",
+        title: "Le nombre de produits",
         text:
-          "Chaque mode livre sa propre liste de pays d’Europe ; le Royaume-Uni est livré en camion seulement. Si le mode choisi ne livre pas votre pays, le prix se fait sur devis.",
+          "Sur les lignes colis, 5 produits différents au plus par envoi ; au-delà, le prix se fait sur devis. Sur les lignes grands colis, chaque produit au-delà du cinquième est facturé : 30 RMB en bateau, 35 RMB en avion.",
       },
       {
         title: "Les suppléments selon la marchandise",
         text:
-          "Chaque mode a ses suppléments, au kilo facturable du produit concerné ou à l’unité ; la liste du formulaire change avec le mode et reprend les exemples de la grille. Bateau : +1, +3 ou +4 RMB/kg ; téléphones +3 RMB pièce, trottinettes et tapis de course +7,5 € l’unité, vélos +75 € l’unité. Train : +1, +2 ou +4 RMB/kg, et les mêmes suppléments à l’unité. Avion : +1, +2, +3, +5 ou +7 RMB/kg. Camion : de +1 à +8 RMB/kg ; montres, clés USB, consoles et cartes mémoire +3 RMB pièce, téléphones +8 RMB pièce ; lunettes, bagagerie, drones et articles en bois sur devis. Les suppléments se cumulent.",
+          "Au kilo facturable du produit concerné, ou à l’unité ; ils se cumulent. La liste du formulaire change avec le mode et reprend les exemples de la grille.",
+        items: [
+          "Bateau, ligne colis : +1 RMB/kg (cuisine, luminaires, céramique, bois, outillage, caméras, drones…), +3 RMB/kg (sacs, cuir, tissus, linge de lit, cosmétiques…), +4 RMB/kg (vêtements, chaussures, sous-vêtements…) ; téléphones +3 RMB pièce, trottinettes et tapis de course +7,5 € l’unité, vélos +75 € l’unité.",
+          "Avion, colis et grands colis : +1 RMB/kg (bois, quincaillerie, métal, coques et câbles…), +2 RMB/kg (luminaires, céramique, cosmétiques, appareils de beauté, caméras…), +3 RMB/kg (jouets, cuir), +5 RMB/kg (montres, cigarettes électroniques sans liquide), +7 RMB/kg (vêtements, chaussures, textiles, téléphones, ordinateurs, tablettes, drones). Pour le bois, le bambou, les produits faiblement aimantés et les dessiccants, ce supplément est d’au moins 200 RMB par envoi.",
+          "Bateau, grands colis et palettes : marchandise ordinaire seulement, sans batterie ; sinon, sur devis.",
+        ],
       },
       {
         title: "Les produits avec batterie",
-        text:
-          "Acceptés en bateau et en train. En camion : +100 RMB par expédition. En avion, ils passent par une ligne au départ de Hong Kong réservée aux entrepôts Amazon et logistiques : le prix se fait sur devis.",
+        items: [
+          "Bateau, ligne colis : acceptés, au même tarif.",
+          "Avion, ligne colis : sur devis ; la ligne batterie au départ de Hong Kong ne livre que les entrepôts Amazon et logistiques.",
+          "Avion, grands colis : acceptés, sur la grille batterie, plus chère.",
+          "Bateau, grands colis et palettes : sur devis.",
+          "Jamais : batteries seules, batteries externes, batteries de plus de 100 Wh.",
+        ],
+        text: "Cochez « Contient une batterie » pour chaque produit concerné.",
       },
       {
-        title: "Les colis hors normes",
-        text:
-          "Refusés : plus de 65 kg, un côté de plus de 270 cm, ou longueur + 2 × (largeur + hauteur) au-delà de 400 cm. Par carton, le supplément le plus élevé s’applique : 130 RMB entre 30 et 40 kg, ou si le plus grand côté dépasse 100 cm ou le deuxième 76 cm ; 600 RMB au-delà de 40 kg ; 120 RMB si longueur + 2 × (largeur + hauteur) est entre 266 et 320 cm, 900 RMB entre 321 et 400 cm. Une expédition d’un seul colis : +80 RMB (+50 RMB en camion vers le Royaume-Uni).",
+        title: "Les frais des transporteurs sur les lignes colis",
+        text: "Par carton, le frais le plus élevé qui s’applique.",
+        items: [
+          "UPS (avion, et bateau hors Allemagne, France, Italie et Espagne) : 240 RMB si un côté atteint 100 cm, si le deuxième atteint 76 cm, ou si le carton pèse plus de 24 kg. Caisse en bois ou emballage autre qu’un carton : 45 € par colis.",
+          "DPD (bateau vers l’Allemagne, la France, l’Italie et l’Espagne) : 350 RMB au-delà de 31 kg ou d’un côté de 120 cm ; sinon 50 RMB au-delà de 25 kg volumétriques ou de 150 litres, ou si deux côtés dépassent 60 cm. Caisse en bois ou en métal : 80 RMB par colis.",
+          "Envoi d’un seul carton : +50 RMB, en bateau et en avion (sauf grands colis en bateau).",
+        ],
+      },
+      {
+        title: "Les grands colis et palettes en bateau",
+        text: "Livrés par camion, ils demandent un accès adapté.",
+        items: [
+          "Pièce de plus de 2,40 m : +300 RMB ; de plus de 3,50 m : +600 RMB ; ×1,2 en zone B et ×1,4 en zone C. Vers les Pays-Bas, une pièce de plus de 2,40 m sur un envoi de plus d’une tonne : 250 € par pièce.",
+          "L’envoi part tout en caisses bois ou tout en cartons (un mélange est à vos risques) ; à partir de 2 cartons, il est mis sur palette.",
+          "Livraison au rez-de-chaussée, accessible à un poids lourd ; 30 minutes de déchargement comprises, puis 59,5 € de l’heure.",
+          "Pièce de plus de 2,20 m ou d’une tonne : prévoyez un moyen de déchargement (pas un transpalette manuel), sinon 250 € au moins. Hayon élévateur sur demande : 150 € au moins. Marchandise non gerbable : 200 €.",
+          "Au-delà de 2 500 kg réels ou de 1 250 kg volumétriques, l’envoi est scindé en plusieurs expéditions. Vers la Roumanie, au-delà de 500 kg, un numéro UIT est demandé.",
+        ],
       },
       {
         title: "Le renforcement au bois",
         text:
-          "Pour les marchandises fragiles, nous renforçons les cartons au bois dans notre entrepôt de Guangzhou : 15 $ par m³ du produit renforcé.",
+          "Pour les marchandises fragiles, nous renforçons les cartons au bois dans notre entrepôt de Guangzhou : 15 $ par m³ du produit renforcé. Sur les lignes colis, un carton renforcé compte comme une caisse : UPS facture 45 € et DPD 80 RMB par colis. En avion grands colis, une caisse ou une palette de plus de 40 kg doit avoir des pieds d’au moins 10 cm pour le chariot élévateur.",
       },
       {
         title: "La déclaration d’export séparée",
-        text:
-          "350 RMB par expédition ; en bateau, +50 RMB par page au-delà de la première (5 lignes par page). En camion, le dossier d’export est établi sans frais.",
+        items: [
+          "Bateau, colis et grands colis : 350 RMB, +50 RMB par page au-delà de la première (5 produits par page).",
+          "Avion, ligne colis : 350 RMB par envoi.",
+          "Avion, grands colis : 200 RMB, +50 RMB par page au-delà de la première (6 produits par page).",
+        ],
+        text: "Sur demande, avec les documents d’export officiels.",
       },
       {
         title: "Notre commission",
@@ -231,23 +321,38 @@ export const fr: FreightSimulatorCopy = {
       },
       {
         title: "Ce que le prix ne comprend pas",
-        text:
-          "Zones éloignées (supplément refacturé sur la facture du transporteur), changement d’adresse, frais de contrôle douanier, assurance, et nos autres prestations d’entrepôt à Guangzhou (réception, vérification, chargement), chiffrées sur votre devis.",
+        items: [
+          "Zones éloignées : 10 RMB/kg, 480 RMB au moins par envoi, sur les lignes UPS ; vérifiez votre code postal.",
+          "Changement d’adresse, preuve de livraison signée (30 RMB par colis UPS, 50 RMB par envoi en grands colis bateau).",
+          "Contrôle douanier (en grands colis bateau : 1 000 € de déchargement, 260 € de tri, le reste au réel), fumigation, rapport d’inspection (machines : 680 RMB).",
+          "Les conditions de livraison des grands colis : attente, hayon, marchandise non gerbable.",
+          "L’assurance, et nos autres prestations d’entrepôt à Guangzhou (réception, vérification, chargement), chiffrées sur votre devis.",
+        ],
+        text: "Ces frais dépendent de votre envoi ; ils figurent sur votre devis s’ils s’appliquent.",
       },
       {
         title: "Les marchandises refusées",
         text:
-          "Liquides, poudres, contrefaçons, batteries seules, batteries externes, gyroroues, tabac, denrées alimentaires, médicaments, produits corrosifs, inflammables ou explosifs, armes. Une marchandise sensible découverte au contrôle avant l’export coûte 3 000 RMB d’amende, le retour et 8 RMB/kg de manutention.",
+          "Liquides, poudres, contrefaçons, batteries seules, batteries externes, gyroroues, tabac, denrées alimentaires, médicaments, produits corrosifs, inflammables ou explosifs, armes. Une marchandise sensible non déclarée (bois, aimant, liquide, pâte…) découverte au contrôle avant l’export coûte 3 000 RMB d’amende, le retour et 8 RMB/kg de manutention.",
       },
       {
-        title: "L’emballage",
-        text:
-          "Tous les produits portent la mention MADE IN CHINA ; les textiles, le cuir, les bagages et les chaussures, une étiquette de composition et d’entretien. Évitez le ruban adhésif jaune.",
+        title: "L’emballage et l’étiquetage",
+        items: [
+          "Des cartons en bon état, sans humidité ni déformation. Sur les lignes colis, un emballage autre qu’un carton paie les frais de caisse du transporteur.",
+          "La mention MADE IN CHINA sur chaque produit ; une étiquette de composition cousue sur les textiles, le cuir, les bagages et les chaussures.",
+          "Le marquage CE sur les produits qui l’exigent dans l’Union européenne : sans lui, la douane peut bloquer l’envoi.",
+          "Une étiquette « colis lourd » au-delà de 15 kg, et pas de ruban adhésif jaune.",
+        ],
+        text: "Votre marchandise doit respecter les normes d’importation du pays de destination.",
       },
       {
-        title: "En cas de perte",
-        text:
-          "Bateau et train : perte ou blocage en douane indemnisé sur la valeur déclarée, dans la limite de 20 RMB par kilo, sans remboursement du transport ; les dommages ne sont pas indemnisés. Avion et camion : 40 RMB par kilo en cas de perte avant la prise en charge par UPS ou de saisie en douane, puis les règles d’UPS, dans la limite de 100 USD par expédition. Pour une marchandise de valeur, prévoyez une assurance.",
+        title: "En cas de perte ou de dommage",
+        items: [
+          "Bateau : perte ou blocage en douane indemnisé sur la valeur déclarée, au plus 20 RMB par kilo, sans remboursement du transport ; les dommages ne sont pas indemnisés.",
+          "Avion : 40 RMB par kilo en cas de perte avant la prise en charge par UPS ou de saisie en douane, sans remboursement du transport ; ensuite, les règles d’UPS, au plus 100 USD par envoi.",
+          "Un colis abîmé ou incomplet se signale dans les 14 jours après la livraison. Les retards ne sont pas indemnisés.",
+        ],
+        text: "Pour une marchandise de valeur, prévoyez une assurance.",
       },
     ],
   },
@@ -261,6 +366,8 @@ export const fr: FreightSimulatorCopy = {
     introQuote: "Nous avons bien reçu votre demande. Voici ce que vous nous avez indiqué ; nous revenons vers vous avec un devis.",
     summary: {
       mode: "Mode",
+      line: "Ligne",
+      container: "Conteneurs",
       formula: "Formule",
       address: "Adresse de livraison",
       cartons: "Cartons",
@@ -272,14 +379,17 @@ export const fr: FreightSimulatorCopy = {
     },
     productsTitle: "Vos produits",
     product: "{name} : {cartons} cartons · {m3} · {chargeable} facturables",
+    productCount: "{name} : {cartons} cartons",
     items: {
       freight: "Transport ({kg} kg × {rate} RMB/kg)",
       goods: "Supplément marchandise, {product} ({kg} kg × {rate} RMB/kg)",
       pieces: "{product} : {units} × {rate} RMB",
       units: "{product} : {units} × {rate} €",
-      singleCarton: "Expédition d’un seul colis",
-      oversize: "Colis hors normes ({cartons} cartons)",
-      battery: "Produits avec batterie",
+      singleCarton: "Envoi d’un seul colis",
+      oversize: "Cartons hors format, frais du transporteur ({cartons} cartons)",
+      crate: "Colis en caisse bois, frais du transporteur ({cartons} colis)",
+      overlength: "Pièces de plus de 2,40 m ({pieces})",
+      extraNames: "Produits au-delà de 5 ({names} × {rate} RMB)",
       declaration: "Déclaration d’export séparée ({pages} page(s))",
       reinforcement: "Renforcement bois ({m3} m³ × {rate} $)",
     },
@@ -288,12 +398,12 @@ export const fr: FreightSimulatorCopy = {
     total: "Total estimé",
     notIncludedTitle: "Non compris",
     notIncluded: [
-      "Zones éloignées, changement d’adresse, frais de contrôle douanier",
+      "Zones éloignées (10 RMB/kg, 480 RMB au moins sur les lignes UPS), changement d’adresse, frais de contrôle douanier",
+      "Grands colis en bateau : attente, hayon et marchandise non gerbable, selon la livraison",
       "Assurance",
       "Nos autres prestations d’entrepôt à Guangzhou (réception, vérification, chargement), chiffrées sur votre devis",
     ],
-    disclaimer:
-      "Prix indicatif, établi avec la grille actuelle de notre transporteur (actualisation prochaine). Le prix ferme figure sur votre devis.",
+    disclaimer: "Prix indicatif, établi avec la grille actuelle de notre transporteur. Le prix ferme figure sur votre devis.",
     quoteNext: "Nous revenons vers vous avec un devis détaillé.",
     signup: "Créez votre compte SourcingPick pour suivre vos devis :",
     signupCta: "Créer mon compte",

@@ -52,8 +52,19 @@ export function AdminFreightCalculator({ lang, copy: c, labels }: { lang: Locale
       <aside className="rounded-2xl border border-line bg-surface p-5 sm:p-6 lg:sticky lg:top-6 flex flex-col gap-4" aria-live="polite" aria-busy={pending}>
         <h2 className="text-lg font-semibold text-headline">{labels.result}</h2>
         <p className="text-sm text-muted">
-          {c.mode.names[s.mode]} · {c.formula.names[s.formula]} · {c.estimate.delays[s.mode]}
+          {c.mode.names[s.mode]} · {c.formula.names[s.formula]} · {c.estimate.delays[s.line ?? s.mode]}
         </p>
+        {s.line && (
+          <p className="text-sm">
+            <b>{c.lines.names[s.line]}</b>
+            {s.zone ? ` · zone ${s.zone}` : ""}
+          </p>
+        )}
+        {s.mode === "container" && (
+          <p className="text-sm font-mono">
+            {n(s.container.count, 0)} × {c.container.types[s.container.type]}
+          </p>
+        )}
         {s.blocking && <p className="text-sm text-warning">{s.blocking}</p>}
         {result && result.ok && result.priced && !s.blocking && (
           <div className="flex flex-col gap-2">
@@ -94,9 +105,11 @@ export function AdminFreightCalculator({ lang, copy: c, labels }: { lang: Locale
           <div className="flex flex-col gap-1">
             <p className="font-semibold">{c.quote.title}</p>
             <p className="text-sm text-muted">{c.quote.reasons[result.reason]}</p>
-            <p className="text-sm font-mono">
-              {n(result.billedKg, 1)} kg · {result.bracket} kg
-            </p>
+            {result.bracket && (
+              <p className="text-sm font-mono">
+                {n(result.billedKg, 1)} kg · {result.bracket} kg
+              </p>
+            )}
           </div>
         )}
         {surcharges.length > 0 && (

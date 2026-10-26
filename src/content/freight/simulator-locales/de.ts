@@ -4,17 +4,19 @@ export const de: FreightSimulatorCopy = {
   eyebrow: "Frachtrechner",
   title: "Was würde Ihre Sendung kosten?",
   intro:
-    "Geben Sie Ihre Adresse und Ihre Produkte an: Wir berechnen für jedes Produkt das Volumengewicht und wenden den Europa-Tarif unseres Spediteurs an. Den detaillierten Preis erhalten Sie per E-Mail.",
+    "Geben Sie Ihre Adresse und Ihre Produkte an: Wir berechnen das Abrechnungsgewicht, wählen die passende Linie für Ihre Kartons und wenden den Europa-Tarif unseres Spediteurs an. Den detaillierten Preis erhalten Sie per E-Mail.",
   mode: {
     label: "Transportart",
-    names: { sea: "Schiff", air: "Flugzeug", truck: "Lkw", rail: "Zug" },
+    names: { sea: "Schiff", air: "Flugzeug", container: "Vollcontainer", truck: "Lkw", rail: "Zug" },
     recommended: "Empfohlen",
     discouraged: "Nicht empfohlen",
+    onQuote: "Auf Anfrage",
     hints: {
-      sea: "Am günstigsten – und unsere Empfehlung: insgesamt 40 bis 45 Tage.",
-      air: "Am schnellsten: 7 bis 10 Arbeitstage. Für eine kleine oder eilige Sendung.",
-      truck: "Riskanter: Wir empfehlen ihn nicht. Etwa 16 bis 20 Tage.",
-      rail: "Auch ihn empfehlen wir nicht. 35 bis 38 Tage nach Abfahrt des Zuges.",
+      sea: "Am günstigsten – und unsere Empfehlung. Pakete: insgesamt 40 bis 45 Tage; große Packstücke und Paletten: 30 bis 40 Tage nach Abfahrt des Schiffs.",
+      air: "Am schnellsten: 7 bis 10 Arbeitstage, 9 bis 12 Tage für große Packstücke. Für eine kleine oder eilige Sendung.",
+      container: "Ein 20-Fuß-, 40-Fuß- oder 40-Fuß-HC-Container nur für Ihre Waren. Preis auf Anfrage.",
+      truck: "Riskanter: Wir empfehlen ihn nicht. Nur auf Anfrage, etwa 16 bis 20 Tage.",
+      rail: "Auch ihn empfehlen wir nicht. Nur auf Anfrage, 35 bis 38 Tage nach Abfahrt des Zuges.",
     },
   },
   formula: {
@@ -26,10 +28,17 @@ export const de: FreightSimulatorCopy = {
       customs: "Transport bis zum Zoll am Ankunftsort; Sie verzollen die Ware und holen sie ab. Preis auf Anfrage.",
     },
   },
+  container: {
+    type: "Containertyp",
+    types: { "20": "20 Fuß (ca. 28 m³)", "40": "40 Fuß (ca. 58 m³)", "40hc": "40 Fuß HC (ca. 68 m³)" },
+    count: "Anzahl der Container",
+    hint: "Beschreiben Sie Ihre Produkte mit dem, was Sie bereits wissen: Wir melden uns mit einem Angebot bei Ihnen.",
+  },
   address: {
     title: "Lieferadresse",
     street: "Adresse",
     postcode: "PLZ",
+    postcodeHint: "Sie legt die Lieferzone für große Packstücke und Paletten fest.",
     city: "Ort",
     country: "Land",
   },
@@ -45,6 +54,7 @@ export const de: FreightSimulatorCopy = {
     height: "Höhe (cm)",
     weight: "Gewicht (kg)",
     cartonHint: "Maße und Gewicht eines Kartons.",
+    cartonHintContainer: "Maße und Gewicht eines Kartons, sofern Sie sie kennen.",
     units: "Stückzahl",
     battery: "Enthält eine Batterie",
     reinforce: "Mit Holz verstärken",
@@ -74,38 +84,46 @@ export const de: FreightSimulatorCopy = {
       kg7: "+7 RMB/kg: Kleidung, Schuhe, Textilien, Telefone, Computer, Tablets, Drohnen",
       refused: "Nicht angenommen: Flüssigkeiten, Pulver, lose Batterien, Fälschungen…",
     },
-    truck: {
+    quoted: {
       ordinary: "Standardware",
-      kg1: "+1 RMB/kg: Leder, Küchenutensilien, LED-Leuchten, Spielzeug, Kopfhörer, Bluetooth-Produkte…",
-      kg2: "+2 RMB/kg: Eisenwaren, Kosmetikgeräte, Dashcams, GPS-Geräte, Stifte, Erotikartikel…",
-      kg3: "+3 RMB/kg: Perücken, Textilien (außer Kleidung und Schuhen)",
-      kg4: "+4 RMB/kg: Tablets",
-      kg5: "+5 RMB/kg: Kleidung, Socken, Hosen, Solarmodule, Einweg-E-Zigaretten",
-      kg8: "+8 RMB/kg: Schuhe",
-      pieces: "Uhren, USB-Sticks, Konsolen, Speicherkarten: +3 RMB pro Stück",
-      phones: "Mobiltelefone: +8 RMB pro Telefon",
-      quote: "Brillen, Gepäck, Drohnen, Saugroboter, Holzartikel…: auf Anfrage",
-      refused: "Nicht angenommen: Flüssigkeiten, Pulver, lose Batterien, Fälschungen…",
-    },
-    rail: {
-      ordinary: "Standardware",
-      kg1: "+1 RMB/kg: Küche, Leuchten, Keramik, Holz, Werkzeug, Kameras, Drohnen…",
-      kg2: "+2 RMB/kg: Taschen, Leder, Stoffe, Bettwäsche, Socken, Kosmetik…",
-      kg4: "+4 RMB/kg: Kleidung, Schuhe, Unterwäsche, Badebekleidung…",
-      phones: "Mobiltelefone: +3 RMB pro Telefon",
-      scooters: "Roller, Laufbänder: +7,50 € pro Stück",
-      bikes: "Fahrräder: +75 € pro Stück",
+      kg1: "Küche, Leuchten, Keramik, Holz, Werkzeug, Elektronik…",
+      kg3: "Taschen, Leder, Stoffe, Bettwäsche, Kosmetik…",
+      kg4: "Kleidung, Schuhe, Unterwäsche…",
+      phones: "Mobiltelefone",
+      scooters: "Roller, Laufbänder",
+      bikes: "Fahrräder",
       refused: "Nicht angenommen: Flüssigkeiten, Pulver, lose Batterien, Fälschungen…",
     },
   },
   options: {
     declaration: "Separate Ausfuhranmeldung",
-    declarationHint: "350 RMB pro Sendung.",
-    declarationHintSea: "350 RMB, +50 RMB pro Seite ab der zweiten (5 Produkte pro Seite).",
+    declarationHints: {
+      sea: "350 RMB, +50 RMB pro Seite ab der zweiten (5 Produkte pro Seite).",
+      seaHeavy: "350 RMB, +50 RMB pro Seite ab der zweiten (5 Produkte pro Seite).",
+      air: "350 RMB pro Sendung.",
+      airHeavy: "200 RMB, +50 RMB pro Seite ab der zweiten (6 Produkte pro Seite).",
+    },
+  },
+  lines: {
+    label: "Linie",
+    names: {
+      sea: "Schiff, Paketlinie (UPS oder DPD)",
+      seaHeavy: "Schiff, große Packstücke und Paletten",
+      air: "Flugzeug, Paketlinie (UPS)",
+      airHeavy: "Flugzeug, große Packstücke (DHL oder FedEx)",
+    },
+    hints: {
+      sea: "Ihre Kartons werden von UPS oder DPD zugestellt, nach Wahl des Spediteurs.",
+      seaHeavy:
+        "Ein Karton ist für UPS und DPD zu schwer oder zu groß: Die gesamte Sendung geht als große Packstücke, per Lkw zugestellt, zum Preis der Zone Ihrer Postleitzahl.",
+      air: "Ihre Kartons werden von UPS zugestellt, nach einem Direktflug ab Festlandchina.",
+      airHeavy:
+        "Ein Karton überschreitet 30 kg oder die Maße von UPS: Die gesamte Sendung geht als große Packstücke, berechnet mit mindestens 45 kg pro Packstück.",
+    },
   },
   calc: {
     title: "Abgerechnetes Gewicht",
-    rule: "Das höhere von tatsächlichem Gewicht und Volumengewicht (L × B × H ÷ 6.000), mindestens 12 kg pro Karton.",
+    rule: "Das höhere von tatsächlichem Gewicht und Volumengewicht (L × B × H ÷ 6.000), mindestens 12 kg pro Karton (45 kg bei großen Packstücken per Flugzeug), auf das nächste volle Kilo aufgerundet.",
     volumetric: "Volumengewicht",
     bracket: "Staffel",
     billed: "abgerechnet: {kg} kg",
@@ -116,14 +134,20 @@ export const de: FreightSimulatorCopy = {
     delayLabel: "Laufzeit",
     delays: {
       sea: "insgesamt 40 bis 45 Tage",
+      seaHeavy: "30 bis 40 Tage nach Abfahrt des Schiffs",
       air: "7 bis 10 Arbeitstage",
+      airHeavy: "9 bis 12 Tage",
+      container: "wird mit Ihrem Angebot bestätigt",
       truck: "etwa 16 bis 20 Tage",
-      rail: "35 bis 38 Tage nach Abfahrt",
+      rail: "35 bis 38 Tage nach Abfahrt des Zuges",
     },
     surcharges: "Zusätzlich für Ihre Sendung",
-    oversize: "Sperrige oder schwere Packstücke: {n}",
+    oversize: "Sperrige oder schwere Kartons, Gebühr des Zustellers: {n}",
+    crate: "Packstücke in Holzkisten, Gebühr des Zustellers: {n}",
+    overlength: "Packstücke über 2,40 m: {n}",
+    extraNames: "Produkte über 5 hinaus: {n}",
     singleCarton: "Sendung mit nur einem Packstück",
-    battery: "Produkte mit Batterie",
+    batteryRates: "Batterietarif (Flugzeug, große Packstücke)",
     reinforcement: "Holzverstärkung: {m3}",
     declaration: "Separate Ausfuhranmeldung",
   },
@@ -131,18 +155,24 @@ export const de: FreightSimulatorCopy = {
     title: "Preis auf Anfrage",
     reasons: {
       formula: "Bei FOB oder „Bis zum Zoll“ erstellen wir Ihnen ein Angebot: Wir antworten Ihnen per E-Mail.",
-      country: "Mit dieser Transportart beliefern wir dieses Land nicht verzollt und versteuert: Wir erstellen Ihnen ein Angebot.",
+      mode: "Lkw und Zug gibt es nur auf Anfrage: Wir antworten Ihnen per E-Mail.",
+      container: "Für einen Vollcontainer erstellen wir Ihnen ein Angebot, je nach Ankunftshafen und Termin: Wir antworten Ihnen per E-Mail.",
+      country: "Diese Linie beliefert dieses Land nicht verzollt und versteuert: Wir erstellen Ihnen ein Angebot.",
+      postcode:
+        "Geben Sie Ihre Postleitzahl an: Sie bestimmt den Preis für große Packstücke und Paletten. Für Inseln und abgelegene Gebiete erstellen wir Ihnen ein Angebot.",
       air_battery:
-        "Per Flugzeug laufen Produkte mit Batterie über eine Linie, die nur an Amazon- und Logistiklager liefert: Wir erstellen Ihnen ein Angebot.",
-      too_many_products: "Bei mehr als 5 verschiedenen Produkten erstellen wir Ihnen ein Angebot.",
-      goods_quote: "Für diese Ware erstellen wir Ihnen ein Angebot.",
+        "Per Flugzeug laufen Standardkartons mit Batterie über eine Linie, die nur an Amazon- und Logistiklager liefert: Wir erstellen Ihnen ein Angebot.",
+      heavy_goods:
+        "Bei großen Packstücken per Schiff wird nur Standardware ohne Batterie angenommen: Wir erstellen Ihnen ein Angebot.",
+      out_of_gauge: "Ein Karton überschreitet die Grenzwerte für große Packstücke, beim Gewicht oder bei den Maßen: Wir erstellen Ihnen ein Angebot.",
+      too_many_products: "Bei mehr als 5 verschiedenen Produkten auf der Paketlinie erstellen wir Ihnen ein Angebot.",
+      too_many_pieces: "Die Flugzeuglinie für große Packstücke nimmt höchstens 40 Packstücke pro Sendung an: Wir erstellen Ihnen ein Angebot.",
     },
   },
   warnings: {
     refusedGoods: "Eine Ihrer Waren wird mit dieser Transportart nicht angenommen.",
-    refusedCarton:
-      "Ein Karton überschreitet die Grenzwerte (65 kg, 270 cm auf einer Seite oder Länge + 2 × (Breite + Höhe) über 400 cm): Er muss neu verpackt werden.",
     noProducts: "Geben Sie mindestens ein Produkt mit seinen Kartons sowie deren Maßen und Gewicht an.",
+    noProductsContainer: "Geben Sie mindestens ein Produkt und die Anzahl seiner Kartons an.",
   },
   gate: {
     locked: "Preis sichtbar nach Registrierung",
@@ -159,7 +189,7 @@ export const de: FreightSimulatorCopy = {
     cta: "Preis anzeigen",
     ctaQuote: "Angebot erhalten",
     already: "Ich habe schon ein Konto",
-    note: "Richtpreise – der Tarif wird demnächst aktualisiert. Den verbindlichen Preis finden Sie in Ihrem Angebot.",
+    note: "Richtpreise nach dem aktuellen Tarif unseres Spediteurs. Den verbindlichen Preis finden Sie in Ihrem Angebot.",
     sending: "Wird gesendet…",
     sent: "Gesendet an {email}. Erstellen Sie jetzt Ihr Konto, um Ihre Angebote jederzeit wiederzufinden.",
     sentQuote: "Anfrage erhalten: Wir antworten Ihnen per E-Mail an {email}. Erstellen Sie jetzt Ihr Konto, um Ihre Angebote im Blick zu behalten.",
@@ -173,57 +203,117 @@ export const de: FreightSimulatorCopy = {
   rules: {
     title: "So berechnen wir Ihren Preis",
     intro:
-      "Der Preis stammt aus den Europa-Tarifen unseres Spediteurs für Schiff, Flugzeug, Lkw und Zug. Hier sind ihre Regeln, so wie sie für Ihre Sendung gelten.",
+      "Der Preis stammt aus dem geltenden Europa-Tarif unseres Spediteurs. Hier sind alle seine Regeln, Linie für Linie, so wie sie für Ihre Sendung gelten.",
     sections: [
+      {
+        title: "Die Transportlinien und ihre Laufzeiten",
+        text: "Ihre Sendung läuft über die Linie, die zu ihren Kartons passt: Der Rechner wählt sie für Sie aus und zeigt sie Ihnen an.",
+        items: [
+          "Schiff, Paketlinie: Zustellung durch UPS oder DPD, nach Wahl des Spediteurs. Insgesamt 40 bis 45 Tage.",
+          "Schiff, große Packstücke und Paletten: Zustellung per Lkw, zum Preis der Zone Ihrer Postleitzahl. 30 bis 40 Tage nach Abfahrt des Schiffs, Hafenstaus und Zollkontrollen nicht eingerechnet.",
+          "Flugzeug, Paketlinie: täglich Direktflüge ab Festlandchina, Zustellung durch UPS. 7 bis 10 Arbeitstage.",
+          "Flugzeug, große Packstücke: Zustellung durch DHL in Deutschland und durch FedEx in allen anderen Ländern. 9 bis 12 Tage, ohne Entschädigung bei Verspätungen.",
+          "Vollcontainer (20 Fuß, 40 Fuß, 40 Fuß HC), Lkw und Zug: auf Anfrage. Den Lkw, der riskanter ist, und den Zug empfehlen wir nicht.",
+        ],
+      },
+      {
+        title: "Wann die Sendung als große Packstücke geht",
+        text: "Ein einziger sperriger oder schwerer Karton genügt, damit die gesamte Sendung auf die Linie für große Packstücke ihrer Transportart wechselt.",
+        items: [
+          "Per Schiff: ein Karton ab 40 kg, eine Seite über 120 cm zusammen mit einer zweiten über 60 cm, eine Seite ab 274 cm oder Länge + 2 × (Breite + Höhe) über 300 cm.",
+          "Per Flugzeug: ein Karton über 30 kg, eine Seite ab 274 cm oder Länge + 2 × (Breite + Höhe) über 300 cm.",
+          "Grenzwerte für große Packstücke per Schiff: 1.500 kg tatsächliches Gewicht oder 1.000 kg Volumengewicht pro Packstück, 390 × 210 × 210 cm. Per Flugzeug: 990 kg pro Packstück, 300 × 200 × 170 cm (aufrecht gestellt höchstens 180 cm hoch), 40 Packstücke pro Sendung. Darüber hinaus auf Anfrage.",
+        ],
+      },
       {
         title: "Das Abrechnungsgewicht",
         text:
-          "Jeder Karton wird nach dem höchsten von drei Gewichten berechnet: seinem tatsächlichen Gewicht, seinem Volumengewicht (Länge × Breite × Höhe in cm ÷ 6.000) und 12 kg. Anschließend werden die Kartons aller Ihrer Produkte addiert.",
-      },
-      {
-        title: "Die Transportarten und ihre Laufzeiten",
-        text:
-          "Schiff: insgesamt 40 bis 45 Tage, am günstigsten und unsere Empfehlung. Flugzeug: 7 bis 10 Arbeitstage, für eine kleine oder eilige Sendung. Lkw: etwa 16 bis 20 Tage, riskanter, wir empfehlen ihn nicht. Zug: 35 bis 38 Tage nach Abfahrt des Zuges, auch ihn empfehlen wir nicht. Den Zusteller für die letzte Etappe wählen wir aus.",
+          "Jeder Karton wird nach dem höchsten von drei Gewichten berechnet: seinem tatsächlichen Gewicht, seinem Volumengewicht (Länge × Breite × Höhe in cm ÷ 6.000) und dem Mindestgewicht seiner Linie, 12 kg pro Karton und 45 kg pro Packstück bei großen Packstücken per Flugzeug. Die Kartons aller Ihrer Produkte werden addiert und dann auf das nächste volle Kilo aufgerundet. Maßgeblich ist das in unserem Lager in China gemessene Gewicht.",
       },
       {
         title: "Die Gewichtsstaffeln",
-        text:
-          "Der Kilopreis sinkt mit dem Gesamtgewicht. Schiff: 21 bis 70 kg, 71 bis 299 kg, ab 300 kg. Flugzeug: 21 bis 69 kg, 70 bis 99 kg, 100 bis 299 kg, ab 300 kg. Lkw: 30 bis 70 kg, 71 bis 100 kg, 101 bis 499 kg, ab 500 kg (ab 300 kg ins Vereinigte Königreich). Zug: 45 bis 74 kg, 75 bis 299 kg, ab 300 kg. Eine Sendung wird mit mindestens 21 kg per Schiff und Flugzeug, 30 kg per Lkw und 45 kg per Zug berechnet.",
+        text: "Der Kilopreis sinkt mit dem Gesamtgewicht der Sendung, die mindestens mit dem Anfang der ersten Staffel berechnet wird.",
+        items: [
+          "Schiff, Paketlinie: 21 bis 70 kg, 71 bis 299 kg, ab 300 kg.",
+          "Schiff, große Packstücke und Paletten: 30 bis 49 kg, 50 bis 99 kg, 100 bis 199 kg, 200 bis 299 kg, 300 bis 500 kg, 501 bis 1.000 kg, 1.001 bis 1.500 kg, 1.501 bis 2.000 kg, 2.001 bis 2.999 kg, ab 3.000 kg.",
+          "Flugzeug, Paketlinie: 21 bis 69 kg, 70 bis 99 kg, 100 bis 299 kg, ab 300 kg.",
+          "Flugzeug, große Packstücke: 45 bis 70 kg, 71 bis 100 kg, 101 bis 499 kg, ab 500 kg.",
+        ],
+      },
+      {
+        title: "Die Lieferländer und -zonen",
+        text: "Lieferung verzollt und versteuert innerhalb der Europäischen Union.",
+        items: [
+          "Schiff, Paketlinie: 22 Länder, die gesamte Europäische Union außer Estland, Lettland, Kroatien, Zypern und Malta.",
+          "Schiff, große Packstücke und Paletten: 24 Länder, die gesamte Europäische Union außer Griechenland, Zypern und Malta, nach Postleitzahlzone (A, B oder C); Inseln und abgelegene Gebiete werden nicht beliefert.",
+          "Flugzeug, Pakete und große Packstücke: 24 Länder, die gesamte Europäische Union außer Estland, Zypern und Malta.",
+          "Andere Länder, darunter das Vereinigte Königreich, die Schweiz und Norwegen: auf Anfrage.",
+        ],
       },
       {
         title: "Die Lieferbedingungen",
         text:
-          "Geliefert, verzollt (DDP): Lieferung an Ihre Adresse, Zölle und Einfuhrumsatzsteuer inklusive; per Schiff, Flugzeug und Zug höchstens 5 verschiedene Produkte pro Sendung. FOB: Die Ware wird im Abgangshafen oder am Abflughafen in China übergeben, Ihr eigener Spediteur übernimmt ab dort. Bis zum Zoll: Wir bringen die Ware bis zum Zoll am Ankunftsort, Sie verzollen sie und holen sie ab. Bei FOB und „Bis zum Zoll“ erstellen wir Ihnen ein Angebot.",
+          "Geliefert, verzollt (DDP): Lieferung an Ihre Adresse, Zölle und Einfuhrumsatzsteuer inklusive. FOB: Die Ware wird im Abgangshafen oder am Abflughafen in China übergeben, Ihr eigener Spediteur übernimmt ab dort. Bis zum Zoll: Wir bringen die Ware bis zum Zoll am Ankunftsort, Sie verzollen sie und holen sie ab. Bei FOB und „Bis zum Zoll“ erstellen wir Ihnen ein Angebot.",
       },
       {
-        title: "Die Lieferländer",
+        title: "Die Anzahl der Produkte",
         text:
-          "Jede Transportart beliefert ihre eigene Liste europäischer Länder; das Vereinigte Königreich wird nur per Lkw beliefert. Beliefert die gewählte Transportart Ihr Land nicht, erstellen wir Ihnen ein Angebot.",
+          "Auf den Paketlinien höchstens 5 verschiedene Produkte pro Sendung; darüber hinaus erstellen wir Ihnen ein Angebot. Auf den Linien für große Packstücke wird jedes Produkt ab dem sechsten berechnet: 30 RMB per Schiff, 35 RMB per Flugzeug.",
       },
       {
         title: "Zuschläge je nach Ware",
         text:
-          "Jede Transportart hat ihre eigenen Zuschläge, pro abgerechnetem Kilo des betreffenden Produkts oder pro Stück; die Liste im Formular ändert sich mit der Transportart und übernimmt die Beispiele aus dem Tarif. Schiff: +1, +3 oder +4 RMB/kg; Telefone +3 RMB pro Stück, Roller und Laufbänder +7,50 € pro Stück, Fahrräder +75 € pro Stück. Zug: +1, +2 oder +4 RMB/kg und dieselben Zuschläge pro Stück. Flugzeug: +1, +2, +3, +5 oder +7 RMB/kg. Lkw: von +1 bis +8 RMB/kg; Uhren, USB-Sticks, Konsolen und Speicherkarten +3 RMB pro Stück, Telefone +8 RMB pro Stück; Brillen, Gepäck, Drohnen und Holzartikel auf Anfrage. Die Zuschläge addieren sich.",
+          "Pro abgerechnetem Kilo des betreffenden Produkts oder pro Stück; sie addieren sich. Die Liste im Formular ändert sich mit der Transportart und übernimmt die Beispiele aus dem Tarif.",
+        items: [
+          "Schiff, Paketlinie: +1 RMB/kg (Küche, Leuchten, Keramik, Holz, Werkzeug, Kameras, Drohnen…), +3 RMB/kg (Taschen, Leder, Stoffe, Bettwäsche, Kosmetik…), +4 RMB/kg (Kleidung, Schuhe, Unterwäsche…); Telefone +3 RMB pro Stück, Roller und Laufbänder +7,50 € pro Stück, Fahrräder +75 € pro Stück.",
+          "Flugzeug, Pakete und große Packstücke: +1 RMB/kg (Holz, Eisenwaren, Metall, Hüllen und Kabel…), +2 RMB/kg (Leuchten, Keramik, Kosmetik, Kosmetikgeräte, Kameras…), +3 RMB/kg (Spielzeug, Leder), +5 RMB/kg (Uhren, E-Zigaretten ohne Liquid), +7 RMB/kg (Kleidung, Schuhe, Textilien, Telefone, Computer, Tablets, Drohnen). Für Holz, Bambus, schwach magnetische Produkte und Trockenmittel beträgt dieser Zuschlag mindestens 200 RMB pro Sendung.",
+          "Schiff, große Packstücke und Paletten: nur Standardware ohne Batterie; sonst auf Anfrage.",
+        ],
       },
       {
         title: "Produkte mit Batterie",
-        text:
-          "Per Schiff und Zug werden sie angenommen. Per Lkw: +100 RMB pro Sendung. Per Flugzeug laufen sie über eine Linie ab Hong Kong, die nur an Amazon- und Logistiklager liefert: Wir erstellen Ihnen ein Angebot.",
+        items: [
+          "Schiff, Paketlinie: angenommen, zum selben Tarif.",
+          "Flugzeug, Paketlinie: auf Anfrage; die Batterielinie ab Hong Kong liefert nur an Amazon- und Logistiklager.",
+          "Flugzeug, große Packstücke: angenommen, zum teureren Batterietarif.",
+          "Schiff, große Packstücke und Paletten: auf Anfrage.",
+          "Nie: lose Batterien, Powerbanks, Batterien über 100 Wh.",
+        ],
+        text: "Kreuzen Sie bei jedem betroffenen Produkt „Enthält eine Batterie“ an.",
       },
       {
-        title: "Sperrige oder schwere Packstücke",
-        text:
-          "Nicht angenommen: mehr als 65 kg, eine Seite über 270 cm oder Länge + 2 × (Breite + Höhe) über 400 cm. Pro Karton gilt der höchste Zuschlag: 130 RMB zwischen 30 und 40 kg oder wenn die längste Seite 100 cm bzw. die zweitlängste 76 cm überschreitet; 600 RMB über 40 kg; 120 RMB, wenn Länge + 2 × (Breite + Höhe) zwischen 266 und 320 cm liegt, 900 RMB zwischen 321 und 400 cm. Sendung mit nur einem Packstück: +80 RMB (+50 RMB per Lkw ins Vereinigte Königreich).",
+        title: "Die Gebühren der Zusteller auf den Paketlinien",
+        text: "Pro Karton gilt die höchste zutreffende Gebühr.",
+        items: [
+          "UPS (Flugzeug sowie Schiff in andere Länder als Deutschland, Frankreich, Italien und Spanien): 240 RMB, wenn eine Seite 100 cm erreicht, wenn die zweite 76 cm erreicht oder wenn der Karton mehr als 24 kg wiegt. Holzkiste oder eine andere Verpackung als ein Karton: 45 € pro Packstück.",
+          "DPD (Schiff nach Deutschland, Frankreich, Italien und Spanien): 350 RMB über 31 kg oder bei einer Seite über 120 cm; sonst 50 RMB über 25 kg Volumengewicht oder 150 Liter oder wenn zwei Seiten 60 cm überschreiten. Holz- oder Metallkiste: 80 RMB pro Packstück.",
+          "Sendung mit nur einem Karton: +50 RMB, per Schiff und per Flugzeug (außer große Packstücke per Schiff).",
+        ],
+      },
+      {
+        title: "Große Packstücke und Paletten per Schiff",
+        text: "Sie werden per Lkw zugestellt und brauchen eine geeignete Zufahrt.",
+        items: [
+          "Packstück über 2,40 m: +300 RMB; über 3,50 m: +600 RMB; ×1,2 in Zone B und ×1,4 in Zone C. In die Niederlande, für ein Packstück über 2,40 m in einer Sendung über einer Tonne: 250 € pro Packstück.",
+          "Die Sendung geht ganz in Holzkisten oder ganz in Kartons (eine Mischung auf Ihr eigenes Risiko); ab 2 Kartons wird sie palettiert.",
+          "Lieferung ins Erdgeschoss, für einen Lkw zugänglich; 30 Minuten Entladen inklusive, danach 59,50 € pro Stunde.",
+          "Packstück über 2,20 m oder über einer Tonne: Sorgen Sie für ein Entlademittel (keinen Handhubwagen), sonst mindestens 250 €. Ladebordwand auf Wunsch: mindestens 150 €. Nicht stapelbare Ware: 200 €.",
+          "Über 2.500 kg tatsächlichem Gewicht oder 1.250 kg Volumengewicht wird die Sendung auf mehrere Transporte aufgeteilt. Nach Rumänien wird über 500 kg eine UIT-Nummer verlangt.",
+        ],
       },
       {
         title: "Die Holzverstärkung",
         text:
-          "Für zerbrechliche Waren verstärken wir die Kartons in unserem Lager in Guangzhou mit Holz: 15 $ pro m³ des verstärkten Produkts.",
+          "Für zerbrechliche Waren verstärken wir die Kartons in unserem Lager in Guangzhou mit Holz: 15 $ pro m³ des verstärkten Produkts. Auf den Paketlinien zählt ein verstärkter Karton als Kiste: UPS berechnet 45 € und DPD 80 RMB pro Packstück. Bei großen Packstücken per Flugzeug muss eine Kiste oder Palette über 40 kg Füße von mindestens 10 cm für den Gabelstapler haben.",
       },
       {
         title: "Die separate Ausfuhranmeldung",
-        text:
-          "350 RMB pro Sendung; per Schiff +50 RMB pro Seite ab der zweiten (5 Zeilen pro Seite). Per Lkw werden die Exportunterlagen kostenlos erstellt.",
+        items: [
+          "Schiff, Pakete und große Packstücke: 350 RMB, +50 RMB pro Seite ab der zweiten (5 Produkte pro Seite).",
+          "Flugzeug, Paketlinie: 350 RMB pro Sendung.",
+          "Flugzeug, große Packstücke: 200 RMB, +50 RMB pro Seite ab der zweiten (6 Produkte pro Seite).",
+        ],
+        text: "Auf Wunsch, mit den offiziellen Ausfuhrdokumenten.",
       },
       {
         title: "Unsere Provision",
@@ -231,23 +321,38 @@ export const de: FreightSimulatorCopy = {
       },
       {
         title: "Was nicht im Preis enthalten ist",
-        text:
-          "Abgelegene Gebiete (Zuschlag gemäß Rechnung des Spediteurs weiterberechnet), Adressänderung, Kosten einer Zollkontrolle, Versicherung sowie unsere weiteren Lagerleistungen in Guangzhou (Wareneingang, Prüfung, Beladung), die in Ihrem Angebot kalkuliert werden.",
+        items: [
+          "Abgelegene Gebiete: 10 RMB/kg, mindestens 480 RMB pro Sendung, auf den UPS-Linien; prüfen Sie Ihre Postleitzahl.",
+          "Adressänderung, unterschriebener Zustellnachweis (30 RMB pro UPS-Paket, 50 RMB pro Sendung bei großen Packstücken per Schiff).",
+          "Zollkontrolle (bei großen Packstücken per Schiff: 1.000 € Entladen, 260 € Sortieren, der Rest nach tatsächlichem Aufwand), Begasung, Prüfbericht (Maschinen: 680 RMB).",
+          "Die Lieferbedingungen für große Packstücke: Wartezeit, Ladebordwand, nicht stapelbare Ware.",
+          "Die Versicherung sowie unsere weiteren Lagerleistungen in Guangzhou (Wareneingang, Prüfung, Beladung), die in Ihrem Angebot kalkuliert werden.",
+        ],
+        text: "Diese Kosten hängen von Ihrer Sendung ab; falls sie anfallen, stehen sie in Ihrem Angebot.",
       },
       {
         title: "Nicht angenommene Waren",
         text:
-          "Flüssigkeiten, Pulver, Fälschungen, lose Batterien, Powerbanks, Elektro-Einräder, Tabak, Lebensmittel, Medikamente, ätzende, entzündliche oder explosive Produkte, Waffen. Wird bei der Kontrolle vor dem Export eine sensible Ware entdeckt, kostet das 3.000 RMB Strafe, die Rücksendung und 8 RMB/kg Handling.",
+          "Flüssigkeiten, Pulver, Fälschungen, lose Batterien, Powerbanks, Elektro-Einräder, Tabak, Lebensmittel, Medikamente, ätzende, entzündliche oder explosive Produkte, Waffen. Wird bei der Kontrolle vor dem Export eine nicht angemeldete sensible Ware (Holz, Magnet, Flüssigkeit, Paste…) entdeckt, kostet das 3.000 RMB Strafe, die Rücksendung und 8 RMB/kg Handling.",
       },
       {
-        title: "Die Verpackung",
-        text:
-          "Alle Produkte tragen den Hinweis MADE IN CHINA; Textilien, Leder, Gepäck und Schuhe ein Etikett mit Materialzusammensetzung und Pflegehinweisen. Vermeiden Sie gelbes Klebeband.",
+        title: "Verpackung und Kennzeichnung",
+        items: [
+          "Kartons in gutem Zustand, ohne Feuchtigkeit oder Verformung. Auf den Paketlinien wird für eine andere Verpackung als einen Karton die Kistengebühr des Zustellers fällig.",
+          "Der Hinweis MADE IN CHINA auf jedem Produkt; ein eingenähtes Etikett mit der Materialzusammensetzung an Textilien, Leder, Gepäck und Schuhen.",
+          "Die CE-Kennzeichnung auf Produkten, die sie in der Europäischen Union benötigen: Ohne sie kann der Zoll die Sendung festhalten.",
+          "Ein Etikett „schweres Packstück“ über 15 kg und kein gelbes Klebeband.",
+        ],
+        text: "Ihre Ware muss den Einfuhrnormen des Bestimmungslandes entsprechen.",
       },
       {
-        title: "Bei Verlust",
-        text:
-          "Schiff und Zug: Verlust oder Festhalten der Ware beim Zoll wird auf Basis des angegebenen Warenwerts entschädigt, höchstens 20 RMB pro Kilo, ohne Erstattung der Transportkosten; Schäden werden nicht entschädigt. Flugzeug und Lkw: 40 RMB pro Kilo bei Verlust vor der Übernahme durch UPS oder bei Beschlagnahme durch den Zoll, danach gelten die Regeln von UPS, höchstens 100 USD pro Sendung. Schließen Sie für wertvolle Ware eine Versicherung ab.",
+        title: "Bei Verlust oder Beschädigung",
+        items: [
+          "Schiff: Verlust oder Festhalten der Ware beim Zoll wird auf Basis des angegebenen Warenwerts entschädigt, höchstens 20 RMB pro Kilo, ohne Erstattung der Transportkosten; Schäden werden nicht entschädigt.",
+          "Flugzeug: 40 RMB pro Kilo bei Verlust vor der Übernahme durch UPS oder bei Beschlagnahme durch den Zoll, ohne Erstattung der Transportkosten; danach gelten die Regeln von UPS, höchstens 100 USD pro Sendung.",
+          "Ein beschädigtes oder unvollständiges Packstück muss innerhalb von 14 Tagen nach der Lieferung gemeldet werden. Verspätungen werden nicht entschädigt.",
+        ],
+        text: "Schließen Sie für wertvolle Ware eine Versicherung ab.",
       },
     ],
   },
@@ -261,6 +366,8 @@ export const de: FreightSimulatorCopy = {
     introQuote: "Wir haben Ihre Anfrage erhalten. Hier sind Ihre Angaben; wir melden uns mit einem Angebot bei Ihnen.",
     summary: {
       mode: "Transportart",
+      line: "Linie",
+      container: "Container",
       formula: "Lieferbedingung",
       address: "Lieferadresse",
       cartons: "Kartons",
@@ -272,14 +379,17 @@ export const de: FreightSimulatorCopy = {
     },
     productsTitle: "Ihre Produkte",
     product: "{name}: {cartons} Kartons · {m3} · Abrechnungsgewicht {chargeable}",
+    productCount: "{name}: {cartons} Kartons",
     items: {
       freight: "Fracht ({kg} kg × {rate} RMB/kg)",
       goods: "Produktzuschlag, {product} ({kg} kg × {rate} RMB/kg)",
       pieces: "{product}: {units} × {rate} RMB",
       units: "{product}: {units} × {rate} €",
       singleCarton: "Sendung mit nur einem Packstück",
-      oversize: "Sperrige oder schwere Packstücke ({cartons} Kartons)",
-      battery: "Produkte mit Batterie",
+      oversize: "Sperrige oder schwere Kartons, Gebühr des Zustellers ({cartons} Kartons)",
+      crate: "Packstücke in Holzkisten, Gebühr des Zustellers ({cartons} Packstücke)",
+      overlength: "Packstücke über 2,40 m ({pieces})",
+      extraNames: "Produkte über 5 hinaus ({names} × {rate} RMB)",
       declaration: "Separate Ausfuhranmeldung ({pages} Seite(n))",
       reinforcement: "Holzverstärkung ({m3} m³ × {rate} $)",
     },
@@ -288,12 +398,12 @@ export const de: FreightSimulatorCopy = {
     total: "Geschätzter Gesamtbetrag",
     notIncludedTitle: "Nicht enthalten",
     notIncluded: [
-      "Abgelegene Gebiete, Adressänderung, Kosten einer Zollkontrolle",
+      "Abgelegene Gebiete (10 RMB/kg, mindestens 480 RMB auf den UPS-Linien), Adressänderung, Kosten einer Zollkontrolle",
+      "Große Packstücke per Schiff: Wartezeit, Ladebordwand und nicht stapelbare Ware, je nach Lieferung",
       "Versicherung",
       "Unsere weiteren Lagerleistungen in Guangzhou (Wareneingang, Prüfung, Beladung), in Ihrem Angebot kalkuliert",
     ],
-    disclaimer:
-      "Richtpreis, berechnet mit dem aktuellen Tarif unseres Spediteurs (wird demnächst aktualisiert). Den verbindlichen Preis finden Sie in Ihrem Angebot.",
+    disclaimer: "Richtpreis, berechnet mit dem aktuellen Tarif unseres Spediteurs. Den verbindlichen Preis finden Sie in Ihrem Angebot.",
     quoteNext: "Wir melden uns mit einem detaillierten Angebot bei Ihnen.",
     signup: "Erstellen Sie Ihr Konto bei SourcingPick, um Ihre Angebote im Blick zu behalten:",
     signupCta: "Konto erstellen",

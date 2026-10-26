@@ -47,19 +47,31 @@ export default function FreightEstimateEmail({
   const total = estimate.priced ? formatMoney(estimate.total, lang) : "";
   const signupUrl = `${getSiteUrl()}/inscription`;
   const productName = (name: string, i: number) => name || fill(c.products.item, { n: i + 1 });
+  // A container's cartons may come without their dimensions: no weights then.
+  const measured = w.real > 0;
   const rows: [string, string][] = [
     [c.email.summary.mode, c.mode.names[request.mode]],
+    ...(estimate.line ? [[c.email.summary.line, c.lines.names[estimate.line]] as [string, string]] : []),
+    ...(request.container
+      ? [[c.email.summary.container, `${n(request.container.count, 0)} × ${c.container.types[request.container.type]}`] as [string, string]]
+      : []),
     [c.email.summary.formula, c.formula.names[request.formula]],
     [c.email.summary.address, [a.street, [a.postcode, a.city].filter(Boolean).join(" "), countryName(a.country, lang)].filter(Boolean).join(", ")],
-    [c.email.summary.cartons, `${n(w.cartons, 0)} · ${m3(w.volume)}`],
-    [c.email.summary.real, formatKg(w.real, lang)],
-    [c.email.summary.volumetric, formatKg(w.volumetric, lang)],
-    [
-      c.email.summary.chargeable,
-      formatKg(w.chargeable, lang) + (estimate.billedKg > w.chargeable ? ` → ${fill(c.calc.billed, { kg: n(estimate.billedKg, 1) })}` : ""),
-    ],
-    [c.email.summary.bracket, `${estimate.bracket} kg` + (estimate.priced ? ` · ${n(estimate.rate)} RMB/kg` : "")],
-    [c.email.summary.delay, c.estimate.delays[request.mode]],
+    ...((measured
+      ? [
+          [c.email.summary.cartons, `${n(w.cartons, 0)} · ${m3(w.volume)}`],
+          [c.email.summary.real, formatKg(w.real, lang)],
+          [c.email.summary.volumetric, formatKg(w.volumetric, lang)],
+          [
+            c.email.summary.chargeable,
+            formatKg(w.chargeable, lang) + (estimate.billedKg > w.chargeable ? ` → ${fill(c.calc.billed, { kg: n(estimate.billedKg, 1) })}` : ""),
+          ],
+        ]
+      : [[c.email.summary.cartons, n(w.cartons, 0)]]) as [string, string][]),
+    ...(estimate.bracket
+      ? [[c.email.summary.bracket, `${estimate.bracket} kg` + (estimate.priced ? ` · ${n(estimate.rate)} RMB/kg` : "")] as [string, string]]
+      : []),
+    [c.email.summary.delay, c.estimate.delays[estimate.line ?? request.mode]],
   ];
   const cell = { color: "#1f2937", fontSize: "14px", lineHeight: "20px", margin: 0, padding: "6px 0" } as const;
 
@@ -98,12 +110,14 @@ export default function FreightEstimateEmail({
           {estimate.products.map((p, i) => (
             <Text key={i} style={{ ...cell, color: "#4A5578", padding: "2px 0" }}>
               ·{" "}
-              {fill(c.email.product, {
-                name: productName(p.name, i),
-                cartons: n(p.cartons, 0),
-                m3: m3(p.volume),
-                chargeable: formatKg(p.chargeable, lang),
-              })}
+              {measured
+                ? fill(c.email.product, {
+                    name: productName(p.name, i),
+                    cartons: n(p.cartons, 0),
+                    m3: m3(p.volume),
+                    chargeable: formatKg(p.chargeable, lang),
+                  })
+                : fill(c.email.productCount, { name: productName(p.name, i), cartons: n(p.cartons, 0) })}
             </Text>
           ))}
 

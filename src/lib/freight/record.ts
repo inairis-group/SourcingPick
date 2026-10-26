@@ -5,7 +5,7 @@ import { emitNotificationToMany } from "@/lib/notifications/emit";
 import { generateUniqueReference } from "@/lib/sourcing/reference";
 import { formatNumber } from "@/lib/i18n/formatters";
 import type { Locale } from "@/lib/i18n/config";
-import { freightCopy } from "@/content/freight/simulator";
+import { freightCopy, goodsLabel } from "@/content/freight/simulator";
 import type { FreightEstimate, FreightRequest } from "./estimate";
 import { formatAmount, formatKg, formatMoney } from "./format";
 
@@ -36,18 +36,24 @@ export async function recordFreightLead(args: {
     const a = request.address;
     const lines = [
       `${FREIGHT_LEAD_PREFIX} ${c.mode.names[request.mode]}, ${c.formula.names[request.formula]}.`,
+      estimate.line ? `Ligne : ${c.lines.names[estimate.line]}${estimate.zone ? `, zone ${estimate.zone}` : ""}.` : "",
+      request.container ? `Conteneurs : ${request.container.count} × ${c.container.types[request.container.type]}.` : "",
       `Adresse : ${[a.street, `${a.postcode} ${a.city}`.trim(), a.country].filter(Boolean).join(", ")}`,
       ...estimate.products.map((p, i) => {
         const src = request.products.filter((x) => x.cartons > 0)[i];
         const extras = [
-          c.goods[request.mode][src.goods],
+          goodsLabel(c, request.mode, src.goods),
           src.units ? `${src.units} unités` : "",
           src.battery ? "avec batterie" : "",
           src.reinforce ? "à renforcer au bois" : "",
         ].filter(Boolean);
-        return `· ${names[i]} : ${p.cartons} cartons de ${n(src.length)} × ${n(src.width)} × ${n(src.height)} cm, ${n(src.weight)} kg — ${m3(p.volume)}, ${formatKg(p.chargeable, "fr")} facturables (${extras.join(", ")})`;
+        // A container's cartons may come without their dimensions.
+        const measured = src.length && src.width && src.height && src.weight;
+        return measured
+          ? `· ${names[i]} : ${p.cartons} cartons de ${n(src.length)} × ${n(src.width)} × ${n(src.height)} cm, ${n(src.weight)} kg — ${m3(p.volume)}, ${formatKg(p.chargeable, "fr")} facturables (${extras.join(", ")})`
+          : `· ${names[i]} : ${p.cartons} cartons, dimensions non indiquées (${extras.join(", ")})`;
       }),
-      `Total : ${estimate.weights.cartons} cartons, ${m3(estimate.weights.volume)}, réel ${formatKg(estimate.weights.real, "fr")}, volumétrique ${formatKg(estimate.weights.volumetric, "fr")}, facturé ${formatKg(estimate.billedKg, "fr")} (tranche ${estimate.bracket} kg).`,
+      `Total : ${estimate.weights.cartons} cartons, ${m3(estimate.weights.volume)}, réel ${formatKg(estimate.weights.real, "fr")}, volumétrique ${formatKg(estimate.weights.volumetric, "fr")}, facturé ${formatKg(estimate.billedKg, "fr")}${estimate.bracket ? ` (tranche ${estimate.bracket} kg)` : ""}.`,
       request.declaration ? "Déclaration d’export séparée demandée." : "",
       estimate.priced
         ? [

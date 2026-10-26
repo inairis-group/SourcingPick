@@ -4,17 +4,19 @@ export const pt: FreightSimulatorCopy = {
   eyebrow: "Simulador de transporte",
   title: "Quanto custaria o seu envio?",
   intro:
-    "Indique o seu endereço e os seus produtos: calculamos o peso volumétrico de cada um e aplicamos a tabela para a Europa da nossa transportadora. O preço detalhado é-lhe enviado por e-mail.",
+    "Indique o seu endereço e os seus produtos: calculamos o peso faturável, escolhemos a linha adequada às suas caixas e aplicamos a tabela para a Europa da nossa transportadora. O preço detalhado é-lhe enviado por e-mail.",
   mode: {
     label: "Modo de transporte",
-    names: { sea: "Barco", air: "Avião", truck: "Camião", rail: "Comboio" },
+    names: { sea: "Barco", air: "Avião", container: "Contentor completo", truck: "Camião", rail: "Comboio" },
     recommended: "Recomendado",
     discouraged: "Desaconselhado",
+    onQuote: "Mediante orçamento",
     hints: {
-      sea: "O mais barato, e o que recomendamos: 40 a 45 dias de ponta a ponta.",
-      air: "O mais rápido: 7 a 10 dias úteis. Para um envio pequeno ou urgente.",
-      truck: "Mais arriscado: desaconselhamo-lo. Cerca de 16 a 20 dias.",
-      rail: "Também o desaconselhamos. 35 a 38 dias após a partida do comboio.",
+      sea: "O mais barato, e o que recomendamos. Encomendas: 40 a 45 dias de ponta a ponta; grandes volumes e paletes: 30 a 40 dias após a partida do barco.",
+      air: "O mais rápido: 7 a 10 dias úteis, 9 a 12 dias para os grandes volumes. Para um envio pequeno ou urgente.",
+      container: "Um contentor de 20 pés, 40 pés ou 40 pés HC só para as suas mercadorias. Preço mediante orçamento.",
+      truck: "Mais arriscado: desaconselhamo-lo. Apenas mediante orçamento, cerca de 16 a 20 dias.",
+      rail: "Também o desaconselhamos. Apenas mediante orçamento, 35 a 38 dias após a partida do comboio.",
     },
   },
   formula: {
@@ -26,10 +28,17 @@ export const pt: FreightSimulatorCopy = {
       customs: "Transportado até à alfândega de chegada; o desalfandegamento e o levantamento da mercadoria ficam a seu cargo. Preço mediante orçamento.",
     },
   },
+  container: {
+    type: "Tipo de contentor",
+    types: { "20": "20 pés (cerca de 28 m³)", "40": "40 pés (cerca de 58 m³)", "40hc": "40 pés HC (cerca de 68 m³)" },
+    count: "Número de contentores",
+    hint: "Descreva os seus produtos com o que já sabe: entraremos em contacto consigo com um orçamento.",
+  },
   address: {
     title: "Endereço de entrega",
     street: "Endereço",
     postcode: "Código postal",
+    postcodeHint: "Determina a zona de entrega dos grandes volumes e paletes.",
     city: "Localidade",
     country: "País",
   },
@@ -45,6 +54,7 @@ export const pt: FreightSimulatorCopy = {
     height: "Alt. (cm)",
     weight: "Peso (kg)",
     cartonHint: "Dimensões e peso de uma caixa.",
+    cartonHintContainer: "Dimensões e peso de uma caixa, se os souber.",
     units: "Número de unidades",
     battery: "Contém bateria",
     reinforce: "Reforçar com madeira",
@@ -74,38 +84,46 @@ export const pt: FreightSimulatorCopy = {
       kg7: "+7 RMB/kg: vestuário, calçado, têxteis, telemóveis, computadores, tablets, drones",
       refused: "Recusado: líquidos, pós, baterias soltas, contrafações…",
     },
-    truck: {
+    quoted: {
       ordinary: "Mercadoria comum",
-      kg1: "+1 RMB/kg: couro, utensílios de cozinha, iluminação LED, brinquedos, auscultadores, produtos Bluetooth…",
-      kg2: "+2 RMB/kg: ferragens, aparelhos de beleza, dashcams, GPS, canetas, artigos para adultos…",
-      kg3: "+3 RMB/kg: perucas, têxteis (exceto vestuário e calçado)",
-      kg4: "+4 RMB/kg: tablets",
-      kg5: "+5 RMB/kg: vestuário, meias, calças, painéis solares, cigarros eletrónicos descartáveis",
-      kg8: "+8 RMB/kg: calçado",
-      pieces: "Relógios, pens USB, consolas, cartões de memória: +3 RMB por peça",
-      phones: "Telemóveis: +8 RMB por telemóvel",
-      quote: "Óculos, malas de viagem, drones, robôs aspiradores, artigos de madeira…: mediante orçamento",
-      refused: "Recusado: líquidos, pós, baterias soltas, contrafações…",
-    },
-    rail: {
-      ordinary: "Mercadoria comum",
-      kg1: "+1 RMB/kg: cozinha, iluminação, cerâmica, madeira, ferramentas, câmaras, drones…",
-      kg2: "+2 RMB/kg: sacos, couro, tecidos, roupa de cama, meias, cosméticos…",
-      kg4: "+4 RMB/kg: vestuário, calçado, roupa interior, fatos de banho…",
-      phones: "Telemóveis: +3 RMB por telemóvel",
-      scooters: "Trotinetes, passadeiras de corrida: +7,50 € por unidade",
-      bikes: "Bicicletas: +75 € por unidade",
+      kg1: "Cozinha, iluminação, cerâmica, madeira, ferramentas, eletrónica…",
+      kg3: "Sacos, couro, tecidos, roupa de cama, cosméticos…",
+      kg4: "Vestuário, calçado, roupa interior…",
+      phones: "Telemóveis",
+      scooters: "Trotinetes, passadeiras de corrida",
+      bikes: "Bicicletas",
       refused: "Recusado: líquidos, pós, baterias soltas, contrafações…",
     },
   },
   options: {
     declaration: "Declaração de exportação separada",
-    declarationHint: "350 RMB por envio.",
-    declarationHintSea: "350 RMB, +50 RMB por página além da primeira (5 produtos por página).",
+    declarationHints: {
+      sea: "350 RMB, +50 RMB por página além da primeira (5 produtos por página).",
+      seaHeavy: "350 RMB, +50 RMB por página além da primeira (5 produtos por página).",
+      air: "350 RMB por envio.",
+      airHeavy: "200 RMB, +50 RMB por página além da primeira (6 produtos por página).",
+    },
+  },
+  lines: {
+    label: "Linha",
+    names: {
+      sea: "Barco, linha de encomendas (UPS ou DPD)",
+      seaHeavy: "Barco, grandes volumes e paletes",
+      air: "Avião, linha de encomendas (UPS)",
+      airHeavy: "Avião, grandes volumes (DHL ou FedEx)",
+    },
+    hints: {
+      sea: "As suas caixas são entregues pela UPS ou pela DPD, à escolha da transportadora.",
+      seaHeavy:
+        "Uma caixa é demasiado pesada ou demasiado grande para a UPS e a DPD: todo o envio segue como grandes volumes, entregue por camião, ao preço da zona do seu código postal.",
+      air: "As suas caixas são entregues pela UPS, após um voo direto com partida da China continental.",
+      airHeavy:
+        "Uma caixa excede 30 kg ou as dimensões da UPS: todo o envio segue como grandes volumes, faturado por um mínimo de 45 kg por volume.",
+    },
   },
   calc: {
     title: "Peso faturado",
-    rule: "O maior entre o peso real e o peso volumétrico (C × L × A ÷ 6 000), com um mínimo de 12 kg por caixa.",
+    rule: "O maior entre o peso real e o peso volumétrico (C × L × A ÷ 6 000), com um mínimo de 12 kg por caixa (45 kg na linha de grandes volumes por avião), arredondado ao quilo superior.",
     volumetric: "Peso volumétrico",
     bracket: "Escalão",
     billed: "{kg} kg faturados",
@@ -116,14 +134,20 @@ export const pt: FreightSimulatorCopy = {
     delayLabel: "Prazo",
     delays: {
       sea: "40 a 45 dias de ponta a ponta",
+      seaHeavy: "30 a 40 dias após a partida do barco",
       air: "7 a 10 dias úteis",
+      airHeavy: "9 a 12 dias",
+      container: "Confirmado no seu orçamento",
       truck: "cerca de 16 a 20 dias",
-      rail: "35 a 38 dias após a partida",
+      rail: "35 a 38 dias após a partida do comboio",
     },
     surcharges: "Acrescem ao seu envio",
-    oversize: "Volumes fora de norma: {n}",
+    oversize: "Caixas fora de norma, taxa da transportadora: {n}",
+    crate: "Volumes em caixa de madeira, taxa da transportadora: {n}",
+    overlength: "Volumes com mais de 2,40 m: {n}",
+    extraNames: "Produtos além de 5: {n}",
     singleCarton: "Envio de um único volume",
-    battery: "Produtos com bateria",
+    batteryRates: "Tabela para baterias (avião, grandes volumes)",
     reinforcement: "Reforço em madeira: {m3}",
     declaration: "Declaração de exportação separada",
   },
@@ -131,18 +155,25 @@ export const pt: FreightSimulatorCopy = {
     title: "Preço mediante orçamento",
     reasons: {
       formula: "Em FOB ou até à alfândega, fazemos um orçamento: respondemos-lhe por e-mail.",
-      country: "Este modo não entrega neste país com impostos incluídos: fazemos um orçamento.",
+      mode: "O camião e o comboio são apenas mediante orçamento: respondemos-lhe por e-mail.",
+      container:
+        "Um contentor completo é mediante orçamento, consoante o porto de chegada e a data: respondemos-lhe por e-mail.",
+      country: "Esta linha não entrega neste país com impostos incluídos: fazemos um orçamento.",
+      postcode:
+        "Indique o seu código postal: determina o preço dos grandes volumes e paletes. Para as ilhas e as zonas remotas, fazemos um orçamento.",
       air_battery:
-        "Por avião, os produtos com bateria seguem por uma linha reservada aos armazéns Amazon e aos armazéns logísticos: fazemos um orçamento.",
-      too_many_products: "Acima de 5 produtos diferentes, fazemos um orçamento.",
-      goods_quote: "Para esta mercadoria, fazemos um orçamento.",
+        "Por avião, as caixas standard com bateria seguem por uma linha reservada aos armazéns Amazon e aos armazéns logísticos: fazemos um orçamento.",
+      heavy_goods:
+        "Os grandes volumes por barco só aceitam mercadoria comum, sem bateria: fazemos um orçamento.",
+      out_of_gauge: "Uma caixa excede os limites dos grandes volumes, em peso ou em dimensões: fazemos um orçamento.",
+      too_many_products: "Acima de 5 produtos diferentes na linha de encomendas, fazemos um orçamento.",
+      too_many_pieces: "A linha de grandes volumes por avião aceita no máximo 40 volumes por envio: fazemos um orçamento.",
     },
   },
   warnings: {
     refusedGoods: "Uma das suas mercadorias não é aceite por este modo de transporte.",
-    refusedCarton:
-      "Uma caixa excede os limites (65 kg, 270 cm num dos lados, ou comprimento + 2 × (largura + altura) acima de 400 cm): tem de ser reembalada.",
     noProducts: "Indique pelo menos um produto, com as respetivas caixas, dimensões e peso.",
+    noProductsContainer: "Indique pelo menos um produto e o respetivo número de caixas.",
   },
   gate: {
     locked: "O preço aparece após o registo",
@@ -159,7 +190,7 @@ export const pt: FreightSimulatorCopy = {
     cta: "Ver o preço",
     ctaQuote: "Receber o meu orçamento",
     already: "Já tenho conta",
-    note: "Preços indicativos, tabela a atualizar em breve. O preço definitivo consta do seu orçamento.",
+    note: "Preços indicativos, segundo a tabela atual da nossa transportadora. O preço definitivo consta do seu orçamento.",
     sending: "A enviar…",
     sent: "Enviado para {email}. Crie agora a sua conta para ter acesso aos seus orçamentos.",
     sentQuote: "Pedido recebido: respondemos-lhe para {email}. Crie agora a sua conta para acompanhar os seus orçamentos.",
@@ -173,57 +204,117 @@ export const pt: FreightSimulatorCopy = {
   rules: {
     title: "Como calculamos o seu preço",
     intro:
-      "O preço vem das tabelas para a Europa da nossa transportadora: barco, avião, camião e comboio. Eis as suas regras, tal como se aplicam ao seu envio.",
+      "O preço vem da tabela para a Europa em vigor da nossa transportadora. Eis todas as suas regras, linha a linha, tal como se aplicam ao seu envio.",
     sections: [
+      {
+        title: "As linhas de transporte e os respetivos prazos",
+        text: "O seu envio segue pela linha adequada às suas caixas: o simulador escolhe-a por si e indica-lha.",
+        items: [
+          "Barco, linha de encomendas: entrega pela UPS ou pela DPD, à escolha da transportadora. 40 a 45 dias de ponta a ponta.",
+          "Barco, grandes volumes e paletes: entrega por camião, ao preço da zona do seu código postal. 30 a 40 dias após a partida do barco, sem contar com congestionamento portuário e controlo aduaneiro.",
+          "Avião, linha de encomendas: voos diretos todos os dias a partir da China continental, entrega pela UPS. 7 a 10 dias úteis.",
+          "Avião, grandes volumes: entrega pela DHL na Alemanha e pela FedEx nos restantes países. 9 a 12 dias, sem indemnização por atrasos.",
+          "Contentor completo (20 pés, 40 pés, 40 pés HC), camião e comboio: mediante orçamento. Desaconselhamos o camião, mais arriscado, e o comboio.",
+        ],
+      },
+      {
+        title: "Quando o envio passa a grandes volumes",
+        text: "Basta uma caixa fora de norma para que todo o envio passe para a linha de grandes volumes do seu modo.",
+        items: [
+          "Por barco: uma caixa de 40 kg ou mais, um lado com mais de 120 cm e um segundo com mais de 60 cm, um lado de 274 cm ou mais, ou comprimento + 2 × (largura + altura) acima de 300 cm.",
+          "Por avião: uma caixa com mais de 30 kg, um lado de 274 cm ou mais, ou comprimento + 2 × (largura + altura) acima de 300 cm.",
+          "Limites dos grandes volumes por barco: 1 500 kg reais ou 1 000 kg volumétricos por volume, 390 × 210 × 210 cm. Por avião: 990 kg por volume, 300 × 200 × 170 cm (no máximo 180 cm de altura na posição vertical), 40 volumes por envio. Acima disso, mediante orçamento.",
+        ],
+      },
       {
         title: "O peso faturável",
         text:
-          "Cada caixa é faturada pelo mais elevado de três pesos: o seu peso real, o seu peso volumétrico (comprimento × largura × altura em cm ÷ 6 000) e 12 kg. Depois, somam-se as caixas de todos os seus produtos.",
-      },
-      {
-        title: "Os modos e os respetivos prazos",
-        text:
-          "Barco: 40 a 45 dias de ponta a ponta, o mais barato e o que recomendamos. Avião: 7 a 10 dias úteis, para um envio pequeno ou urgente. Camião: cerca de 16 a 20 dias, mais arriscado, desaconselhamo-lo. Comboio: 35 a 38 dias após a partida do comboio, também o desaconselhamos. Somos nós que escolhemos a transportadora da última etapa.",
+          "Cada caixa é faturada pelo mais elevado de três pesos: o seu peso real, o seu peso volumétrico (comprimento × largura × altura em cm ÷ 6 000) e o mínimo da sua linha, 12 kg por caixa e 45 kg por volume na linha de grandes volumes por avião. Somam-se as caixas de todos os seus produtos e, depois, arredonda-se ao quilo superior. O peso considerado é o medido no nosso armazém na China.",
       },
       {
         title: "Os escalões de peso",
-        text:
-          "O preço por quilo baixa com o peso total. Barco: 21 a 70 kg, 71 a 299 kg, 300 kg ou mais. Avião: 21 a 69 kg, 70 a 99 kg, 100 a 299 kg, 300 kg ou mais. Camião: 30 a 70 kg, 71 a 100 kg, 101 a 499 kg, 500 kg ou mais (300 kg ou mais para o Reino Unido). Comboio: 45 a 74 kg, 75 a 299 kg, 300 kg ou mais. Um envio é faturado por um mínimo de 21 kg por barco e por avião, de 30 kg por camião e de 45 kg por comboio.",
+        text: "O preço por quilo baixa com o peso total do envio, que é faturado, no mínimo, pelo início do primeiro escalão.",
+        items: [
+          "Barco, linha de encomendas: 21 a 70 kg, 71 a 299 kg, 300 kg ou mais.",
+          "Barco, grandes volumes e paletes: 30 a 49 kg, 50 a 99 kg, 100 a 199 kg, 200 a 299 kg, 300 a 500 kg, 501 a 1 000 kg, 1 001 a 1 500 kg, 1 501 a 2 000 kg, 2 001 a 2 999 kg, 3 000 kg ou mais.",
+          "Avião, linha de encomendas: 21 a 69 kg, 70 a 99 kg, 100 a 299 kg, 300 kg ou mais.",
+          "Avião, grandes volumes: 45 a 70 kg, 71 a 100 kg, 101 a 499 kg, 500 kg ou mais.",
+        ],
+      },
+      {
+        title: "Os países e as zonas servidos",
+        text: "Entrega com direitos e impostos incluídos, na União Europeia.",
+        items: [
+          "Barco, linha de encomendas: 22 países, toda a União Europeia exceto a Estónia, a Letónia, a Croácia, Chipre e Malta.",
+          "Barco, grandes volumes e paletes: 24 países, toda a União Europeia exceto a Grécia, Chipre e Malta, por zona de código postal (A, B ou C); as ilhas e as zonas remotas não são servidas.",
+          "Avião, encomendas e grandes volumes: 24 países, toda a União Europeia exceto a Estónia, Chipre e Malta.",
+          "Noutros destinos, incluindo o Reino Unido, a Suíça e a Noruega: mediante orçamento.",
+        ],
       },
       {
         title: "As modalidades",
         text:
-          "Entregue, impostos incluídos (DDP): entrega no seu endereço, com direitos e IVA na importação incluídos; no máximo 5 produtos diferentes por envio, por barco, por avião e por comboio. FOB: a mercadoria é entregue no porto ou no aeroporto de partida na China, e o seu transitário assume a partir daí. Até à alfândega: transportamo-la até à alfândega de chegada, e o desalfandegamento e o levantamento ficam a seu cargo. Em FOB e até à alfândega, fazemos um orçamento.",
+          "Entregue, impostos incluídos (DDP): entrega no seu endereço, com direitos e IVA na importação incluídos. FOB: a mercadoria é entregue no porto ou no aeroporto de partida na China, e o seu transitário assume a partir daí. Até à alfândega: transportamo-la até à alfândega de chegada, e o desalfandegamento e o levantamento ficam a seu cargo. Em FOB e até à alfândega, fazemos um orçamento.",
       },
       {
-        title: "Os países servidos",
+        title: "O número de produtos",
         text:
-          "Cada modo serve a sua própria lista de países da Europa; o Reino Unido só é servido por camião. Se o modo escolhido não servir o seu país, fazemos um orçamento.",
+          "Nas linhas de encomendas, no máximo 5 produtos diferentes por envio; acima disso, fazemos um orçamento. Nas linhas de grandes volumes, cada produto além do quinto é faturado: 30 RMB por barco, 35 RMB por avião.",
       },
       {
         title: "As sobretaxas consoante a mercadoria",
         text:
-          "Cada modo tem as suas sobretaxas, por quilo faturável do produto em causa ou à unidade; a lista do formulário muda com o modo e segue os exemplos da tabela. Barco: +1, +3 ou +4 RMB/kg; telemóveis +3 RMB por peça, trotinetes e passadeiras de corrida +7,50 € por unidade, bicicletas +75 € por unidade. Comboio: +1, +2 ou +4 RMB/kg, e as mesmas sobretaxas à unidade. Avião: +1, +2, +3, +5 ou +7 RMB/kg. Camião: de +1 a +8 RMB/kg; relógios, pens USB, consolas e cartões de memória +3 RMB por peça, telemóveis +8 RMB por peça; óculos, malas de viagem, drones e artigos de madeira mediante orçamento. As sobretaxas acumulam-se.",
+          "Por quilo faturável do produto em causa, ou à unidade; acumulam-se. A lista do formulário muda com o modo e segue os exemplos da tabela.",
+        items: [
+          "Barco, linha de encomendas: +1 RMB/kg (cozinha, iluminação, cerâmica, madeira, ferramentas, câmaras, drones…), +3 RMB/kg (sacos, couro, tecidos, roupa de cama, cosméticos…), +4 RMB/kg (vestuário, calçado, roupa interior…); telemóveis +3 RMB por peça, trotinetes e passadeiras de corrida +7,50 € por unidade, bicicletas +75 € por unidade.",
+          "Avião, encomendas e grandes volumes: +1 RMB/kg (madeira, ferragens, metal, capas e cabos…), +2 RMB/kg (iluminação, cerâmica, cosméticos, aparelhos de beleza, câmaras…), +3 RMB/kg (brinquedos, couro), +5 RMB/kg (relógios, cigarros eletrónicos sem líquido), +7 RMB/kg (vestuário, calçado, têxteis, telemóveis, computadores, tablets, drones). Para a madeira, o bambu, os produtos levemente magnetizados e os dessecantes, esta sobretaxa é de pelo menos 200 RMB por envio.",
+          "Barco, grandes volumes e paletes: apenas mercadoria comum, sem bateria; caso contrário, mediante orçamento.",
+        ],
       },
       {
         title: "Os produtos com bateria",
-        text:
-          "Aceites por barco e por comboio. Por camião: +100 RMB por envio. Por avião, seguem por uma linha com partida de Hong Kong reservada aos armazéns Amazon e aos armazéns logísticos: fazemos um orçamento.",
+        items: [
+          "Barco, linha de encomendas: aceites, com a mesma tarifa.",
+          "Avião, linha de encomendas: mediante orçamento; a linha de baterias com partida de Hong Kong só entrega nos armazéns Amazon e nos armazéns logísticos.",
+          "Avião, grandes volumes: aceites, com a tabela para baterias, mais cara.",
+          "Barco, grandes volumes e paletes: mediante orçamento.",
+          "Nunca: baterias soltas, baterias externas, baterias com mais de 100 Wh.",
+        ],
+        text: "Assinale «Contém bateria» em cada produto em causa.",
       },
       {
-        title: "Os volumes fora de norma",
-        text:
-          "Recusados: mais de 65 kg, um lado com mais de 270 cm, ou comprimento + 2 × (largura + altura) acima de 400 cm. Por caixa, aplica-se a sobretaxa mais elevada: 130 RMB entre 30 e 40 kg, ou se o lado maior exceder 100 cm ou o segundo maior 76 cm; 600 RMB acima de 40 kg; 120 RMB se comprimento + 2 × (largura + altura) estiver entre 266 e 320 cm, 900 RMB entre 321 e 400 cm. Um envio de um único volume: +80 RMB (+50 RMB por camião para o Reino Unido).",
+        title: "As taxas das transportadoras nas linhas de encomendas",
+        text: "Por caixa, aplica-se a taxa aplicável mais elevada.",
+        items: [
+          "UPS (avião, e barco exceto Alemanha, França, Itália e Espanha): 240 RMB se um lado atingir 100 cm, se o segundo atingir 76 cm, ou se a caixa pesar mais de 24 kg. Caixa de madeira ou embalagem que não seja uma caixa de cartão: 45 € por volume.",
+          "DPD (barco para a Alemanha, a França, a Itália e a Espanha): 350 RMB acima de 31 kg ou de um lado de 120 cm; caso contrário, 50 RMB acima de 25 kg volumétricos ou de 150 litros, ou se dois lados excederem 60 cm. Caixa de madeira ou de metal: 80 RMB por volume.",
+          "Envio de uma única caixa: +50 RMB, por barco e por avião (exceto grandes volumes por barco).",
+        ],
+      },
+      {
+        title: "Os grandes volumes e paletes por barco",
+        text: "Entregues por camião, exigem um acesso adequado.",
+        items: [
+          "Volume com mais de 2,40 m: +300 RMB; com mais de 3,50 m: +600 RMB; ×1,2 na zona B e ×1,4 na zona C. Para os Países Baixos, um volume com mais de 2,40 m num envio de mais de uma tonelada: 250 € por volume.",
+          "O envio segue todo em caixas de madeira ou todo em caixas de cartão (uma mistura é por sua conta e risco); a partir de 2 caixas, é colocado em palete.",
+          "Entrega no rés-do-chão, com acesso para um veículo pesado; 30 minutos de descarga incluídos, depois 59,50 € por hora.",
+          "Volume com mais de 2,20 m ou de uma tonelada: preveja um meio de descarga (não um porta-paletes manual); caso contrário, pelo menos 250 €. Plataforma elevatória a pedido: pelo menos 150 €. Mercadoria não empilhável: 200 €.",
+          "Acima de 2 500 kg reais ou de 1 250 kg volumétricos, o envio é dividido em várias expedições. Para a Roménia, acima de 500 kg, é pedido um número UIT.",
+        ],
       },
       {
         title: "O reforço em madeira",
         text:
-          "Para as mercadorias frágeis, reforçamos as caixas com madeira no nosso armazém em Guangzhou: 15 US$ por m³ do produto reforçado.",
+          "Para as mercadorias frágeis, reforçamos as caixas com madeira no nosso armazém em Guangzhou: 15 US$ por m³ do produto reforçado. Nas linhas de encomendas, uma caixa reforçada conta como uma caixa de madeira: a UPS fatura 45 € e a DPD 80 RMB por volume. Na linha de grandes volumes por avião, uma caixa de madeira ou uma palete com mais de 40 kg tem de ter pés de pelo menos 10 cm para o empilhador.",
       },
       {
         title: "A declaração de exportação separada",
-        text:
-          "350 RMB por envio; por barco, +50 RMB por página além da primeira (5 linhas por página). Por camião, a documentação de exportação é preparada sem custos.",
+        items: [
+          "Barco, encomendas e grandes volumes: 350 RMB, +50 RMB por página além da primeira (5 produtos por página).",
+          "Avião, linha de encomendas: 350 RMB por envio.",
+          "Avião, grandes volumes: 200 RMB, +50 RMB por página além da primeira (6 produtos por página).",
+        ],
+        text: "A pedido, com os documentos de exportação oficiais.",
       },
       {
         title: "A nossa comissão",
@@ -231,23 +322,38 @@ export const pt: FreightSimulatorCopy = {
       },
       {
         title: "O que o preço não inclui",
-        text:
-          "Zonas remotas (sobretaxa refaturada conforme a fatura da transportadora), mudança de endereço, custos de controlo aduaneiro, seguro e os nossos outros serviços de armazém em Guangzhou (receção, verificação, carregamento), com o preço indicado no seu orçamento.",
+        items: [
+          "Zonas remotas: 10 RMB/kg, pelo menos 480 RMB por envio, nas linhas UPS; verifique o seu código postal.",
+          "Mudança de endereço, prova de entrega assinada (30 RMB por volume UPS, 50 RMB por envio em grandes volumes por barco).",
+          "Controlo aduaneiro (em grandes volumes por barco: 1 000 € de descarga, 260 € de triagem, o resto ao custo real), fumigação, relatório de inspeção (máquinas: 680 RMB).",
+          "As condições de entrega dos grandes volumes: espera, plataforma elevatória, mercadoria não empilhável.",
+          "O seguro e os nossos outros serviços de armazém em Guangzhou (receção, verificação, carregamento), com o preço indicado no seu orçamento.",
+        ],
+        text: "Estes custos dependem do seu envio; constam do seu orçamento, se se aplicarem.",
       },
       {
         title: "As mercadorias recusadas",
         text:
-          "Líquidos, pós, contrafações, baterias soltas, baterias externas, monociclos elétricos, tabaco, produtos alimentares, medicamentos, produtos corrosivos, inflamáveis ou explosivos, armas. Uma mercadoria sensível descoberta no controlo antes da exportação custa uma multa de 3 000 RMB, a devolução e 8 RMB/kg de manuseamento.",
+          "Líquidos, pós, contrafações, baterias soltas, baterias externas, monociclos elétricos, tabaco, produtos alimentares, medicamentos, produtos corrosivos, inflamáveis ou explosivos, armas. Uma mercadoria sensível não declarada (madeira, íman, líquido, pasta…) descoberta no controlo antes da exportação custa uma multa de 3 000 RMB, a devolução e 8 RMB/kg de manuseamento.",
       },
       {
-        title: "A embalagem",
-        text:
-          "Todos os produtos levam a menção MADE IN CHINA; os têxteis, o couro, a bagagem e o calçado, uma etiqueta de composição e de cuidados. Evite fita adesiva amarela.",
+        title: "A embalagem e a etiquetagem",
+        items: [
+          "Caixas de cartão em bom estado, sem humidade nem deformações. Nas linhas de encomendas, uma embalagem que não seja uma caixa de cartão paga a taxa de caixa de madeira da transportadora.",
+          "A menção MADE IN CHINA em cada produto; uma etiqueta de composição cosida nos têxteis, no couro, na bagagem e no calçado.",
+          "A marcação CE nos produtos que a exigem na União Europeia: sem ela, a alfândega pode bloquear o envio.",
+          "Uma etiqueta «volume pesado» acima de 15 kg, e nada de fita adesiva amarela.",
+        ],
+        text: "A sua mercadoria tem de cumprir as normas de importação do país de destino.",
       },
       {
-        title: "Em caso de perda",
-        text:
-          "Barco e comboio: perda ou retenção na alfândega indemnizada com base no valor declarado, até 20 RMB por quilo, sem reembolso do transporte; os danos não são indemnizados. Avião e camião: 40 RMB por quilo em caso de perda antes da recolha pela UPS ou de apreensão na alfândega e, depois, as regras da UPS, até 100 USD por envio. Para mercadoria de valor, contrate um seguro.",
+        title: "Em caso de perda ou dano",
+        items: [
+          "Barco: perda ou retenção na alfândega indemnizada com base no valor declarado, até 20 RMB por quilo, sem reembolso do transporte; os danos não são indemnizados.",
+          "Avião: 40 RMB por quilo em caso de perda antes da recolha pela UPS ou de apreensão na alfândega, sem reembolso do transporte; depois, as regras da UPS, até 100 USD por envio.",
+          "Um volume danificado ou incompleto deve ser comunicado nos 14 dias seguintes à entrega. Os atrasos não são indemnizados.",
+        ],
+        text: "Para mercadoria de valor, contrate um seguro.",
       },
     ],
   },
@@ -261,6 +367,8 @@ export const pt: FreightSimulatorCopy = {
     introQuote: "Recebemos o seu pedido. Eis o que nos indicou; entraremos em contacto consigo com um orçamento.",
     summary: {
       mode: "Modo",
+      line: "Linha",
+      container: "Contentores",
       formula: "Modalidade",
       address: "Endereço de entrega",
       cartons: "Caixas",
@@ -272,14 +380,17 @@ export const pt: FreightSimulatorCopy = {
     },
     productsTitle: "Os seus produtos",
     product: "{name}: {cartons} caixas · {m3} · {chargeable} faturáveis",
+    productCount: "{name}: {cartons} caixas",
     items: {
       freight: "Transporte ({kg} kg × {rate} RMB/kg)",
       goods: "Sobretaxa de mercadoria, {product} ({kg} kg × {rate} RMB/kg)",
       pieces: "{product}: {units} × {rate} RMB",
       units: "{product}: {units} × {rate} €",
       singleCarton: "Envio de um único volume",
-      oversize: "Volumes fora de norma ({cartons} caixas)",
-      battery: "Produtos com bateria",
+      oversize: "Caixas fora de norma, taxa da transportadora ({cartons} caixas)",
+      crate: "Volumes em caixa de madeira, taxa da transportadora ({cartons} volumes)",
+      overlength: "Volumes com mais de 2,40 m ({pieces})",
+      extraNames: "Produtos além de 5 ({names} × {rate} RMB)",
       declaration: "Declaração de exportação separada ({pages} página(s))",
       reinforcement: "Reforço em madeira ({m3} m³ × {rate} US$)",
     },
@@ -288,12 +399,13 @@ export const pt: FreightSimulatorCopy = {
     total: "Total estimado",
     notIncludedTitle: "Não incluído",
     notIncluded: [
-      "Zonas remotas, mudança de endereço, custos de controlo aduaneiro",
+      "Zonas remotas (10 RMB/kg, pelo menos 480 RMB nas linhas UPS), mudança de endereço, custos de controlo aduaneiro",
+      "Grandes volumes por barco: espera, plataforma elevatória e mercadoria não empilhável, consoante a entrega",
       "Seguro",
       "Os nossos outros serviços de armazém em Guangzhou (receção, verificação, carregamento), com o preço indicado no seu orçamento",
     ],
     disclaimer:
-      "Preço indicativo, calculado com a tabela atual da nossa transportadora (a atualizar em breve). O preço definitivo consta do seu orçamento.",
+      "Preço indicativo, calculado com a tabela atual da nossa transportadora. O preço definitivo consta do seu orçamento.",
     quoteNext: "Entraremos em contacto consigo com um orçamento detalhado.",
     signup: "Crie a sua conta SourcingPick para acompanhar os seus orçamentos:",
     signupCta: "Criar a minha conta",

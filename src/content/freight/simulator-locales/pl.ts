@@ -4,17 +4,19 @@ export const pl: FreightSimulatorCopy = {
   eyebrow: "Kalkulator kosztów transportu",
   title: "Ile kosztowałaby Państwa wysyłka?",
   intro:
-    "Prosimy podać adres i produkty: obliczamy wagę gabarytową każdego z nich i stosujemy cennik naszego przewoźnika dla Europy. Szczegółową cenę wysyłamy Państwu e-mailem.",
+    "Prosimy podać adres i produkty: obliczamy wagę rozliczeniową, wybieramy linię odpowiednią dla Państwa kartonów i stosujemy cennik naszego przewoźnika dla Europy. Szczegółową cenę wysyłamy Państwu e-mailem.",
   mode: {
     label: "Rodzaj transportu",
-    names: { sea: "Statek", air: "Samolot", truck: "Ciężarówka", rail: "Pociąg" },
+    names: { sea: "Statek", air: "Samolot", container: "Pełny kontener", truck: "Ciężarówka", rail: "Pociąg" },
     recommended: "Polecamy",
     discouraged: "Odradzamy",
+    onQuote: "Na zapytanie",
     hints: {
-      sea: "Najtańszy i właśnie ten polecamy: łącznie od 40 do 45 dni.",
-      air: "Najszybszy: od 7 do 10 dni roboczych. Dla małej lub pilnej wysyłki.",
-      truck: "Bardziej ryzykowna: nie polecamy jej. Około 16–20 dni.",
-      rail: "Jego również nie polecamy. Od 35 do 38 dni po odjeździe pociągu.",
+      sea: "Najtańszy i właśnie ten polecamy. Paczki: łącznie od 40 do 45 dni; duże paczki i palety: od 30 do 40 dni po wypłynięciu statku.",
+      air: "Najszybszy: od 7 do 10 dni roboczych, od 9 do 12 dni dla dużych paczek. Dla małej lub pilnej wysyłki.",
+      container: "Kontener 20-stopowy, 40-stopowy lub 40-stopowy HC wyłącznie na Państwa towar. Cenę podajemy w indywidualnej wycenie.",
+      truck: "Bardziej ryzykowna: nie polecamy jej. Wyłącznie wycena indywidualna, około 16–20 dni.",
+      rail: "Jego również nie polecamy. Wyłącznie wycena indywidualna, od 35 do 38 dni po odjeździe pociągu.",
     },
   },
   formula: {
@@ -27,10 +29,17 @@ export const pl: FreightSimulatorCopy = {
         "Transport do urzędu celnego w miejscu przybycia; odprawę celną i odbiór towaru zapewniają Państwo. Cenę podajemy w indywidualnej wycenie.",
     },
   },
+  container: {
+    type: "Typ kontenera",
+    types: { "20": "20-stopowy (około 28 m³)", "40": "40-stopowy (około 58 m³)", "40hc": "40-stopowy HC (około 68 m³)" },
+    count: "Liczba kontenerów",
+    hint: "Prosimy opisać produkty na podstawie informacji, które już Państwo mają: odezwiemy się do Państwa z wyceną.",
+  },
   address: {
     title: "Adres dostawy",
     street: "Adres",
     postcode: "Kod pocztowy",
+    postcodeHint: "Określa strefę dostawy dla dużych paczek i palet.",
     city: "Miejscowość",
     country: "Kraj",
   },
@@ -46,6 +55,7 @@ export const pl: FreightSimulatorCopy = {
     height: "Wys. (cm)",
     weight: "Waga (kg)",
     cartonHint: "Wymiary i waga jednego kartonu.",
+    cartonHintContainer: "Wymiary i waga jednego kartonu, jeśli je Państwo znają.",
     units: "Liczba sztuk",
     battery: "Zawiera baterię",
     reinforce: "Wzmocnienie drewnem",
@@ -75,38 +85,46 @@ export const pl: FreightSimulatorCopy = {
       kg7: "+7 RMB/kg: odzież, obuwie, tekstylia, telefony, komputery, tablety, drony",
       refused: "Nieprzyjmowane: płyny, proszki, baterie luzem, podróbki…",
     },
-    truck: {
+    quoted: {
       ordinary: "Towar standardowy",
-      kg1: "+1 RMB/kg: skóra, przybory kuchenne, oświetlenie LED, zabawki, słuchawki, urządzenia Bluetooth…",
-      kg2: "+2 RMB/kg: artykuły żelazne, urządzenia kosmetyczne, wideorejestratory, GPS, długopisy, artykuły dla dorosłych…",
-      kg3: "+3 RMB/kg: peruki, tekstylia (oprócz odzieży i obuwia)",
-      kg4: "+4 RMB/kg: tablety",
-      kg5: "+5 RMB/kg: odzież, skarpety, spodnie, panele słoneczne, jednorazowe e-papierosy",
-      kg8: "+8 RMB/kg: obuwie",
-      pieces: "Zegarki, pamięci USB, konsole, karty pamięci: +3 RMB za sztukę",
-      phones: "Telefony komórkowe: +8 RMB za telefon",
-      quote: "Okulary, bagaż, drony, roboty odkurzające, artykuły z drewna…: wycena indywidualna",
-      refused: "Nieprzyjmowane: płyny, proszki, baterie luzem, podróbki…",
-    },
-    rail: {
-      ordinary: "Towar standardowy",
-      kg1: "+1 RMB/kg: kuchnia, oświetlenie, ceramika, drewno, narzędzia, kamery, drony…",
-      kg2: "+2 RMB/kg: torby, skóra, tkaniny, pościel, skarpety, kosmetyki…",
-      kg4: "+4 RMB/kg: odzież, obuwie, bielizna, stroje kąpielowe…",
-      phones: "Telefony komórkowe: +3 RMB za telefon",
-      scooters: "Hulajnogi, bieżnie: +7,50 € za sztukę",
-      bikes: "Rowery: +75 € za sztukę",
+      kg1: "Kuchnia, oświetlenie, ceramika, drewno, narzędzia, elektronika…",
+      kg3: "Torby, skóra, tkaniny, pościel, kosmetyki…",
+      kg4: "Odzież, obuwie, bielizna…",
+      phones: "Telefony komórkowe",
+      scooters: "Hulajnogi, bieżnie",
+      bikes: "Rowery",
       refused: "Nieprzyjmowane: płyny, proszki, baterie luzem, podróbki…",
     },
   },
   options: {
     declaration: "Osobna deklaracja eksportowa",
-    declarationHint: "350 RMB za wysyłkę.",
-    declarationHintSea: "350 RMB, +50 RMB za każdą stronę po pierwszej (5 produktów na stronę).",
+    declarationHints: {
+      sea: "350 RMB, +50 RMB za każdą stronę po pierwszej (5 produktów na stronę).",
+      seaHeavy: "350 RMB, +50 RMB za każdą stronę po pierwszej (5 produktów na stronę).",
+      air: "350 RMB za wysyłkę.",
+      airHeavy: "200 RMB, +50 RMB za każdą stronę po pierwszej (6 produktów na stronę).",
+    },
+  },
+  lines: {
+    label: "Linia",
+    names: {
+      sea: "Statek, linia paczkowa (UPS lub DPD)",
+      seaHeavy: "Statek, duże paczki i palety",
+      air: "Samolot, linia paczkowa (UPS)",
+      airHeavy: "Samolot, duże paczki (DHL lub FedEx)",
+    },
+    hints: {
+      sea: "Państwa kartony dostarcza UPS lub DPD, według wyboru przewoźnika.",
+      seaHeavy:
+        "Jeden z kartonów jest za ciężki lub za duży dla UPS i DPD: cała wysyłka jest nadawana jako duże paczki, dostarczana ciężarówką, po cenie strefy Państwa kodu pocztowego.",
+      air: "Państwa kartony dostarcza UPS po bezpośrednim locie z Chin kontynentalnych.",
+      airHeavy:
+        "Jeden z kartonów przekracza 30 kg lub wymiary UPS: cała wysyłka jest nadawana jako duże paczki, rozliczane jako co najmniej 45 kg za sztukę.",
+    },
   },
   calc: {
     title: "Waga rozliczeniowa",
-    rule: "Wyższa z dwóch wag: rzeczywistej i gabarytowej (D × S × W ÷ 6000), minimum 12 kg na karton.",
+    rule: "Wyższa z dwóch wag: rzeczywistej i gabarytowej (D × S × W ÷ 6000), minimum 12 kg na karton (45 kg dla dużych paczek samolotem), zaokrąglona w górę do pełnego kilograma.",
     volumetric: "Waga gabarytowa",
     bracket: "Przedział",
     billed: "rozliczane jako {kg} kg",
@@ -117,14 +135,20 @@ export const pl: FreightSimulatorCopy = {
     delayLabel: "Czas transportu",
     delays: {
       sea: "łącznie od 40 do 45 dni",
+      seaHeavy: "od 30 do 40 dni po wypłynięciu statku",
       air: "od 7 do 10 dni roboczych",
+      airHeavy: "od 9 do 12 dni",
+      container: "potwierdzimy w wycenie",
       truck: "około 16–20 dni",
-      rail: "od 35 do 38 dni po odjeździe",
+      rail: "od 35 do 38 dni po odjeździe pociągu",
     },
     surcharges: "Do wysyłki doliczamy",
-    oversize: "Paczki niestandardowe: {n}",
+    oversize: "Kartony niestandardowe, opłata przewoźnika: {n}",
+    crate: "Paczki w skrzyniach drewnianych, opłata przewoźnika: {n}",
+    overlength: "Sztuki dłuższe niż 2,40 m: {n}",
+    extraNames: "Produkty powyżej 5: {n}",
     singleCarton: "Wysyłka jednej paczki",
-    battery: "Produkty z baterią",
+    batteryRates: "Cennik dla produktów z baterią (samolot, duże paczki)",
     reinforcement: "Wzmocnienie drewnem: {m3}",
     declaration: "Osobna deklaracja eksportowa",
   },
@@ -132,19 +156,28 @@ export const pl: FreightSimulatorCopy = {
     title: "Wycena indywidualna",
     reasons: {
       formula: "W wariantach FOB i „Do odprawy celnej” cenę podajemy w indywidualnej wycenie: odpowiemy Państwu e-mailem.",
+      mode: "Dla ciężarówki i pociągu cenę podajemy wyłącznie w indywidualnej wycenie: odpowiemy Państwu e-mailem.",
+      container:
+        "Dla pełnego kontenera cenę podajemy w indywidualnej wycenie, zależnie od portu docelowego i terminu: odpowiemy Państwu e-mailem.",
       country:
-        "W wariancie z cłem i podatkami w cenie ten rodzaj transportu nie obsługuje tego kraju: cenę podajemy w indywidualnej wycenie.",
+        "W wariancie z cłem i podatkami w cenie ta linia nie obsługuje tego kraju: cenę podajemy w indywidualnej wycenie.",
+      postcode:
+        "Prosimy podać kod pocztowy: od niego zależy cena dużych paczek i palet. Dla wysp i obszarów oddalonych cenę podajemy w indywidualnej wycenie.",
       air_battery:
-        "W transporcie lotniczym produkty z baterią wysyłamy linią przeznaczoną wyłącznie dla magazynów Amazon i magazynów logistycznych: cenę podajemy w indywidualnej wycenie.",
-      too_many_products: "Przy ponad 5 różnych produktach cenę podajemy w indywidualnej wycenie.",
-      goods_quote: "Dla tego towaru cenę podajemy w indywidualnej wycenie.",
+        "W transporcie lotniczym standardowe kartony z baterią wysyłamy linią przeznaczoną wyłącznie dla magazynów Amazon i magazynów logistycznych: cenę podajemy w indywidualnej wycenie.",
+      heavy_goods:
+        "Linia dużych paczek statkiem przyjmuje wyłącznie towar standardowy, bez baterii: cenę podajemy w indywidualnej wycenie.",
+      out_of_gauge:
+        "Jeden z kartonów przekracza limity dużych paczek pod względem wagi lub wymiarów: cenę podajemy w indywidualnej wycenie.",
+      too_many_products: "Przy ponad 5 różnych produktach na linii paczkowej cenę podajemy w indywidualnej wycenie.",
+      too_many_pieces:
+        "Linia lotnicza dla dużych paczek przyjmuje maksymalnie 40 sztuk na wysyłkę: cenę podajemy w indywidualnej wycenie.",
     },
   },
   warnings: {
     refusedGoods: "Jeden z Państwa towarów nie jest przyjmowany w tym rodzaju transportu.",
-    refusedCarton:
-      "Jeden z kartonów przekracza limity (65 kg, 270 cm na jednym boku lub długość + 2 × (szerokość + wysokość) powyżej 400 cm): trzeba go przepakować.",
     noProducts: "Prosimy podać co najmniej jeden produkt wraz z kartonami, ich wymiarami i wagą.",
+    noProductsContainer: "Prosimy podać co najmniej jeden produkt i liczbę jego kartonów.",
   },
   gate: {
     locked: "Cena wyświetli się po rejestracji",
@@ -161,7 +194,7 @@ export const pl: FreightSimulatorCopy = {
     cta: "Zobacz cenę",
     ctaQuote: "Otrzymaj wycenę",
     already: "Mam już konto",
-    note: "Ceny orientacyjne, cennik wkrótce zostanie zaktualizowany. Wiążącą cenę podajemy w wycenie.",
+    note: "Ceny orientacyjne, według obecnego cennika naszego przewoźnika. Wiążącą cenę podajemy w wycenie.",
     sending: "Wysyłanie…",
     sent: "Wysłaliśmy wiadomość na adres {email}. Prosimy teraz założyć konto, aby mieć dostęp do swoich wycen.",
     sentQuote: "Otrzymaliśmy zapytanie: odpowiemy na adres {email}. Prosimy teraz założyć konto, aby śledzić swoje wyceny.",
@@ -175,57 +208,117 @@ export const pl: FreightSimulatorCopy = {
   rules: {
     title: "Jak obliczamy Państwa cenę",
     intro:
-      "Cena wynika z cenników naszego przewoźnika dla Europy: dla transportu statkiem, samolotem, ciężarówką i pociągiem. Oto ich zasady w odniesieniu do Państwa wysyłki.",
+      "Cena wynika z obowiązującego cennika naszego przewoźnika dla Europy. Oto wszystkie jego zasady, linia po linii, w odniesieniu do Państwa wysyłki.",
     sections: [
+      {
+        title: "Linie transportowe i czas transportu",
+        text: "Państwa wysyłka trafia na linię odpowiednią dla jej kartonów: kalkulator wybiera ją za Państwa i ją wskazuje.",
+        items: [
+          "Statek, linia paczkowa: dostawa przez UPS lub DPD, według wyboru przewoźnika. Łącznie od 40 do 45 dni.",
+          "Statek, duże paczki i palety: dostawa ciężarówką, po cenie strefy Państwa kodu pocztowego. Od 30 do 40 dni po wypłynięciu statku, nie licząc zatorów w portach i kontroli celnej.",
+          "Samolot, linia paczkowa: codzienne loty bezpośrednie z Chin kontynentalnych, dostawa przez UPS. Od 7 do 10 dni roboczych.",
+          "Samolot, duże paczki: dostawa przez DHL w Niemczech i przez FedEx w pozostałych krajach. Od 9 do 12 dni, bez odszkodowania za opóźnienia.",
+          "Pełny kontener (20-stopowy, 40-stopowy, 40-stopowy HC), ciężarówka i pociąg: wycena indywidualna. Odradzamy ciężarówkę, bardziej ryzykowną, oraz pociąg.",
+        ],
+      },
+      {
+        title: "Kiedy wysyłka przechodzi na linię dużych paczek",
+        text: "Wystarczy jeden karton niestandardowy, by cała wysyłka przeszła na linię dużych paczek w danym rodzaju transportu.",
+        items: [
+          "Statkiem: karton o wadze 40 kg lub więcej, jeden bok dłuższy niż 120 cm przy drugim dłuższym niż 60 cm, bok o długości 274 cm lub więcej albo długość + 2 × (szerokość + wysokość) powyżej 300 cm.",
+          "Samolotem: karton cięższy niż 30 kg, bok o długości 274 cm lub więcej albo długość + 2 × (szerokość + wysokość) powyżej 300 cm.",
+          "Limity dużych paczek statkiem: 1500 kg wagi rzeczywistej lub 1000 kg wagi gabarytowej na sztukę, 390 × 210 × 210 cm. Samolotem: 990 kg na sztukę, 300 × 200 × 170 cm (maksymalnie 180 cm wysokości po postawieniu pionowo), 40 sztuk na wysyłkę. Powyżej tych limitów – wycena indywidualna.",
+        ],
+      },
       {
         title: "Waga rozliczeniowa",
         text:
-          "Każdy karton rozliczamy według najwyższej z trzech wartości: jego wagi rzeczywistej, wagi gabarytowej (długość × szerokość × wysokość w cm ÷ 6000) oraz 12 kg. Następnie sumujemy kartony wszystkich Państwa produktów.",
-      },
-      {
-        title: "Rodzaje transportu i terminy",
-        text:
-          "Statek: łącznie od 40 do 45 dni, najtańszy i właśnie ten polecamy. Samolot: od 7 do 10 dni roboczych, dla małej lub pilnej wysyłki. Ciężarówka: około 16–20 dni, bardziej ryzykowna – nie polecamy jej. Pociąg: od 35 do 38 dni po odjeździe pociągu – jego również nie polecamy. Przewoźnika na ostatnim etapie wybieramy my.",
+          "Każdy karton rozliczamy według najwyższej z trzech wartości: jego wagi rzeczywistej, wagi gabarytowej (długość × szerokość × wysokość w cm ÷ 6000) oraz minimum dla jego linii – 12 kg na karton i 45 kg na sztukę w przypadku dużych paczek samolotem. Sumujemy kartony wszystkich Państwa produktów, a następnie zaokrąglamy wynik w górę do pełnego kilograma. Liczy się waga zmierzona w naszym magazynie w Chinach.",
       },
       {
         title: "Przedziały wagowe",
-        text:
-          "Cena za kilogram spada wraz z łączną wagą. Statek: od 21 do 70 kg, od 71 do 299 kg, 300 kg i więcej. Samolot: od 21 do 69 kg, od 70 do 99 kg, od 100 do 299 kg, 300 kg i więcej. Ciężarówka: od 30 do 70 kg, od 71 do 100 kg, od 101 do 499 kg, 500 kg i więcej (300 kg i więcej przy wysyłce do Wielkiej Brytanii). Pociąg: od 45 do 74 kg, od 75 do 299 kg, 300 kg i więcej. Każda wysyłka jest rozliczana jako co najmniej 21 kg statkiem i samolotem, 30 kg ciężarówką i 45 kg pociągiem.",
+        text: "Cena za kilogram spada wraz z łączną wagą wysyłki, która jest rozliczana co najmniej według dolnej granicy pierwszego przedziału.",
+        items: [
+          "Statek, linia paczkowa: od 21 do 70 kg, od 71 do 299 kg, 300 kg i więcej.",
+          "Statek, duże paczki i palety: od 30 do 49 kg, od 50 do 99 kg, od 100 do 199 kg, od 200 do 299 kg, od 300 do 500 kg, od 501 do 1000 kg, od 1001 do 1500 kg, od 1501 do 2000 kg, od 2001 do 2999 kg, 3000 kg i więcej.",
+          "Samolot, linia paczkowa: od 21 do 69 kg, od 70 do 99 kg, od 100 do 299 kg, 300 kg i więcej.",
+          "Samolot, duże paczki: od 45 do 70 kg, od 71 do 100 kg, od 101 do 499 kg, 500 kg i więcej.",
+        ],
+      },
+      {
+        title: "Kraje i strefy dostawy",
+        text: "Dostawa z cłem i podatkami w cenie, na terenie Unii Europejskiej.",
+        items: [
+          "Statek, linia paczkowa: 22 kraje, cała Unia Europejska z wyjątkiem Estonii, Łotwy, Chorwacji, Cypru i Malty.",
+          "Statek, duże paczki i palety: 24 kraje, cała Unia Europejska z wyjątkiem Grecji, Cypru i Malty, według strefy kodu pocztowego (A, B lub C); wyspy i obszary oddalone nie są obsługiwane.",
+          "Samolot, paczki i duże paczki: 24 kraje, cała Unia Europejska z wyjątkiem Estonii, Cypru i Malty.",
+          "Pozostałe kraje, w tym Wielka Brytania, Szwajcaria i Norwegia: wycena indywidualna.",
+        ],
       },
       {
         title: "Warianty dostawy",
         text:
-          "Dostawa, cło i podatki w cenie (DDP): dostarczamy towar pod Państwa adres, a cło i VAT importowy są wliczone w cenę; przy transporcie statkiem, samolotem i pociągiem maksymalnie 5 różnych produktów na wysyłkę. FOB: towar jest przekazywany w porcie lub na lotnisku wysyłki w Chinach, a dalej przejmuje go Państwa spedytor. Do odprawy celnej: transportujemy towar do urzędu celnego w miejscu przybycia, a odprawę celną i odbiór zapewniają Państwo. W wariantach FOB i „Do odprawy celnej” cenę podajemy w indywidualnej wycenie.",
+          "Dostawa, cło i podatki w cenie (DDP): dostarczamy towar pod Państwa adres, a cło i VAT importowy są wliczone w cenę. FOB: towar jest przekazywany w porcie lub na lotnisku wysyłki w Chinach, a dalej przejmuje go Państwa spedytor. Do odprawy celnej: transportujemy towar do urzędu celnego w miejscu przybycia, a odprawę celną i odbiór zapewniają Państwo. W wariantach FOB i „Do odprawy celnej” cenę podajemy w indywidualnej wycenie.",
       },
       {
-        title: "Kraje dostawy",
+        title: "Liczba produktów",
         text:
-          "Każdy rodzaj transportu obsługuje własną listę krajów europejskich; do Wielkiej Brytanii dostarczamy wyłącznie ciężarówką. Jeśli wybrany rodzaj transportu nie obsługuje Państwa kraju, cenę podajemy w indywidualnej wycenie.",
+          "Na liniach paczkowych maksymalnie 5 różnych produktów na wysyłkę; powyżej tej liczby cenę podajemy w indywidualnej wycenie. Na liniach dużych paczek każdy produkt powyżej piątego jest płatny: 30 RMB statkiem, 35 RMB samolotem.",
       },
       {
         title: "Dopłaty zależne od rodzaju towaru",
         text:
-          "Każdy rodzaj transportu ma własne dopłaty, liczone za kilogram rozliczeniowy danego produktu lub za sztukę; lista w formularzu zmienia się wraz z rodzajem transportu i zawiera przykłady z cennika. Statek: +1, +3 lub +4 RMB/kg; telefony +3 RMB za sztukę, hulajnogi i bieżnie +7,50 € za sztukę, rowery +75 € za sztukę. Pociąg: +1, +2 lub +4 RMB/kg oraz te same dopłaty za sztukę. Samolot: +1, +2, +3, +5 lub +7 RMB/kg. Ciężarówka: od +1 do +8 RMB/kg; zegarki, pamięci USB, konsole i karty pamięci +3 RMB za sztukę, telefony +8 RMB za sztukę; okulary, bagaż, drony i artykuły z drewna – wycena indywidualna. Dopłaty sumują się.",
+          "Liczone za kilogram rozliczeniowy danego produktu lub za sztukę; dopłaty sumują się. Lista w formularzu zmienia się wraz z rodzajem transportu i zawiera przykłady z cennika.",
+        items: [
+          "Statek, linia paczkowa: +1 RMB/kg (kuchnia, oświetlenie, ceramika, drewno, narzędzia, kamery, drony…), +3 RMB/kg (torby, skóra, tkaniny, pościel, kosmetyki…), +4 RMB/kg (odzież, obuwie, bielizna…); telefony +3 RMB za sztukę, hulajnogi i bieżnie +7,50 € za sztukę, rowery +75 € za sztukę.",
+          "Samolot, paczki i duże paczki: +1 RMB/kg (drewno, artykuły żelazne, wyroby metalowe, etui i kable…), +2 RMB/kg (oświetlenie, ceramika, kosmetyki, urządzenia kosmetyczne, kamery…), +3 RMB/kg (zabawki, skóra), +5 RMB/kg (zegarki, e-papierosy bez płynu), +7 RMB/kg (odzież, obuwie, tekstylia, telefony, komputery, tablety, drony). W przypadku drewna, bambusa, produktów słabo namagnesowanych i pochłaniaczy wilgoci dopłata ta wynosi co najmniej 200 RMB za wysyłkę.",
+          "Statek, duże paczki i palety: wyłącznie towar standardowy, bez baterii; w przeciwnym razie wycena indywidualna.",
+        ],
       },
       {
         title: "Produkty z baterią",
-        text:
-          "Przyjmowane przy transporcie statkiem i pociągiem. Ciężarówką: +100 RMB za wysyłkę. Samolotem wysyłamy je linią z Hong Kongu, przeznaczoną wyłącznie dla magazynów Amazon i magazynów logistycznych: cenę podajemy w indywidualnej wycenie.",
+        items: [
+          "Statek, linia paczkowa: przyjmowane, według tej samej stawki.",
+          "Samolot, linia paczkowa: wycena indywidualna; linia dla produktów z baterią z Hong Kongu dostarcza wyłącznie do magazynów Amazon i magazynów logistycznych.",
+          "Samolot, duże paczki: przyjmowane, według droższego cennika dla produktów z baterią.",
+          "Statek, duże paczki i palety: wycena indywidualna.",
+          "Nigdy: baterie luzem, powerbanki, baterie o pojemności powyżej 100 Wh.",
+        ],
+        text: "Prosimy zaznaczyć „Zawiera baterię” przy każdym takim produkcie.",
       },
       {
-        title: "Paczki niestandardowe",
-        text:
-          "Nie są przyjmowane paczki powyżej 65 kg, z bokiem dłuższym niż 270 cm lub takie, w których długość + 2 × (szerokość + wysokość) przekracza 400 cm. Dla każdego kartonu naliczana jest najwyższa z dopłat: 130 RMB przy wadze od 30 do 40 kg albo gdy najdłuższy bok przekracza 100 cm lub drugi co do długości 76 cm; 600 RMB powyżej 40 kg; 120 RMB, gdy długość + 2 × (szerokość + wysokość) wynosi od 266 do 320 cm, 900 RMB – od 321 do 400 cm. Wysyłka jednej paczki: +80 RMB (+50 RMB przy transporcie ciężarówką do Wielkiej Brytanii).",
+        title: "Opłaty przewoźników na liniach paczkowych",
+        text: "Dla każdego kartonu naliczana jest najwyższa z mających zastosowanie opłat.",
+        items: [
+          "UPS (samolot oraz statek poza Niemcami, Francją, Włochami i Hiszpanią): 240 RMB, jeśli jeden bok ma co najmniej 100 cm, drugi co do długości co najmniej 76 cm lub karton waży ponad 24 kg. Skrzynia drewniana lub opakowanie inne niż karton: 45 € za paczkę.",
+          "DPD (statek do Niemiec, Francji, Włoch i Hiszpanii): 350 RMB powyżej 31 kg lub przy boku dłuższym niż 120 cm; w pozostałych przypadkach 50 RMB powyżej 25 kg wagi gabarytowej lub 150 litrów albo gdy dwa boki przekraczają 60 cm. Skrzynia drewniana lub metalowa: 80 RMB za paczkę.",
+          "Wysyłka jednego kartonu: +50 RMB, statkiem i samolotem (z wyjątkiem dużych paczek statkiem).",
+        ],
+      },
+      {
+        title: "Duże paczki i palety statkiem",
+        text: "Są dostarczane ciężarówką, dlatego wymagają odpowiedniego dojazdu.",
+        items: [
+          "Sztuka dłuższa niż 2,40 m: +300 RMB; dłuższa niż 3,50 m: +600 RMB; ×1,2 w strefie B i ×1,4 w strefie C. Do Holandii sztuka dłuższa niż 2,40 m w wysyłce powyżej jednej tony: 250 € za sztukę.",
+          "Cała wysyłka jest nadawana albo w skrzyniach drewnianych, albo w kartonach (połączenie obu – na Państwa ryzyko); od 2 kartonów jest układana na palecie.",
+          "Dostawa na parter, z dojazdem dla samochodu ciężarowego; 30 minut rozładunku w cenie, potem 59,50 € za godzinę.",
+          "Sztuka dłuższa niż 2,20 m lub ważąca ponad tonę: prosimy zapewnić sprzęt do rozładunku (nie ręczny wózek paletowy), w przeciwnym razie co najmniej 250 €. Winda załadowcza na życzenie: co najmniej 150 €. Towar niepiętrowalny: 200 €.",
+          "Powyżej 2500 kg wagi rzeczywistej lub 1250 kg wagi gabarytowej wysyłka jest dzielona na kilka przesyłek. Do Rumunii powyżej 500 kg wymagany jest numer UIT.",
+        ],
       },
       {
         title: "Wzmocnienie drewnem",
         text:
-          "W przypadku delikatnych towarów wzmacniamy kartony drewnem w naszym magazynie w Guangzhou: 15 $ za m³ wzmacnianego produktu.",
+          "W przypadku delikatnych towarów wzmacniamy kartony drewnem w naszym magazynie w Guangzhou: 15 $ za m³ wzmacnianego produktu. Na liniach paczkowych wzmocniony karton liczy się jako skrzynia: UPS nalicza 45 €, a DPD 80 RMB za paczkę. W przypadku dużych paczek samolotem skrzynia lub paleta cięższa niż 40 kg musi mieć nóżki o wysokości co najmniej 10 cm dla wózka widłowego.",
       },
       {
         title: "Osobna deklaracja eksportowa",
-        text:
-          "350 RMB za wysyłkę; przy transporcie statkiem +50 RMB za każdą stronę po pierwszej (5 pozycji na stronę). Przy transporcie ciężarówką dokumentację eksportową przygotowujemy bezpłatnie.",
+        items: [
+          "Statek, paczki i duże paczki: 350 RMB, +50 RMB za każdą stronę po pierwszej (5 produktów na stronę).",
+          "Samolot, linia paczkowa: 350 RMB za wysyłkę.",
+          "Samolot, duże paczki: 200 RMB, +50 RMB za każdą stronę po pierwszej (6 produktów na stronę).",
+        ],
+        text: "Na życzenie, z oficjalnymi dokumentami eksportowymi.",
       },
       {
         title: "Nasza prowizja",
@@ -233,23 +326,38 @@ export const pl: FreightSimulatorCopy = {
       },
       {
         title: "Czego cena nie obejmuje",
-        text:
-          "Obszary oddalone (dopłata refakturowana na podstawie faktury przewoźnika), zmiana adresu, opłaty za kontrolę celną, ubezpieczenie oraz nasze pozostałe usługi magazynowe w Guangzhou (przyjęcie, kontrola, załadunek), które podajemy w wycenie.",
+        items: [
+          "Obszary oddalone: 10 RMB/kg, co najmniej 480 RMB za wysyłkę, na liniach UPS; prosimy sprawdzić swój kod pocztowy.",
+          "Zmiana adresu, podpisane potwierdzenie dostawy (30 RMB za paczkę UPS, 50 RMB za wysyłkę dużych paczek statkiem).",
+          "Kontrola celna (przy dużych paczkach statkiem: 1000 € za rozładunek, 260 € za sortowanie, reszta według rzeczywistych kosztów), fumigacja, raport z inspekcji (maszyny: 680 RMB).",
+          "Warunki dostawy dużych paczek: oczekiwanie, winda załadowcza, towar niepiętrowalny.",
+          "Ubezpieczenie oraz nasze pozostałe usługi magazynowe w Guangzhou (przyjęcie, kontrola, załadunek), które podajemy w wycenie.",
+        ],
+        text: "Te koszty zależą od Państwa wysyłki; jeśli mają zastosowanie, podajemy je w wycenie.",
       },
       {
         title: "Towary nieprzyjmowane",
         text:
-          "Płyny, proszki, podróbki, baterie luzem, powerbanki, monocykle elektryczne, wyroby tytoniowe, żywność, leki, produkty żrące, łatwopalne lub wybuchowe, broń. Jeśli podczas kontroli przed eksportem zostanie wykryty towar wrażliwy, kosztuje to 3000 RMB kary, zwrot towaru oraz 8 RMB/kg opłaty manipulacyjnej.",
+          "Płyny, proszki, podróbki, baterie luzem, powerbanki, monocykle elektryczne, wyroby tytoniowe, żywność, leki, produkty żrące, łatwopalne lub wybuchowe, broń. Jeśli podczas kontroli przed eksportem zostanie wykryty niezadeklarowany towar wrażliwy (drewno, magnes, płyn, pasta…), kosztuje to 3000 RMB kary, zwrot towaru oraz 8 RMB/kg opłaty manipulacyjnej.",
       },
       {
-        title: "Opakowanie",
-        text:
-          "Wszystkie produkty muszą mieć oznaczenie MADE IN CHINA, a tekstylia, wyroby skórzane, bagaż i obuwie – także etykietę ze składem i sposobem konserwacji. Prosimy nie używać żółtej taśmy klejącej.",
+        title: "Opakowanie i oznakowanie",
+        items: [
+          "Kartony w dobrym stanie, bez śladów wilgoci i odkształceń. Na liniach paczkowych za opakowanie inne niż karton naliczana jest opłata przewoźnika za skrzynię.",
+          "Oznaczenie MADE IN CHINA na każdym produkcie; na tekstyliach, wyrobach skórzanych, bagażu i obuwiu – wszyta etykieta ze składem.",
+          "Oznakowanie CE na produktach, które w Unii Europejskiej go wymagają: bez niego urząd celny może zatrzymać wysyłkę.",
+          "Etykieta „ciężka paczka” powyżej 15 kg i żadnej żółtej taśmy klejącej.",
+        ],
+        text: "Towar musi spełniać normy importowe kraju docelowego.",
       },
       {
-        title: "W razie utraty",
-        text:
-          "Statek i pociąg: utrata lub zatrzymanie przez urząd celny – odszkodowanie według zadeklarowanej wartości, maksymalnie 20 RMB za kilogram, bez zwrotu kosztów transportu; uszkodzenia nie podlegają odszkodowaniu. Samolot i ciężarówka: 40 RMB za kilogram w razie utraty przed przejęciem przesyłki przez UPS lub zajęcia przez urząd celny, a później obowiązują zasady UPS, maksymalnie 100 USD za wysyłkę. W przypadku wartościowego towaru prosimy zadbać o ubezpieczenie.",
+        title: "W razie utraty lub uszkodzenia",
+        items: [
+          "Statek: utrata lub zatrzymanie przez urząd celny – odszkodowanie według zadeklarowanej wartości, maksymalnie 20 RMB za kilogram, bez zwrotu kosztów transportu; uszkodzenia nie podlegają odszkodowaniu.",
+          "Samolot: 40 RMB za kilogram w razie utraty przed przejęciem przesyłki przez UPS lub zajęcia przez urząd celny, bez zwrotu kosztów transportu; później obowiązują zasady UPS, maksymalnie 100 USD za wysyłkę.",
+          "Uszkodzoną lub niekompletną paczkę należy zgłosić w ciągu 14 dni od dostawy. Opóźnienia nie podlegają odszkodowaniu.",
+        ],
+        text: "W przypadku wartościowego towaru prosimy zadbać o ubezpieczenie.",
       },
     ],
   },
@@ -263,6 +371,8 @@ export const pl: FreightSimulatorCopy = {
     introQuote: "Otrzymaliśmy Państwa zapytanie. Oto podane przez Państwa informacje; odezwiemy się do Państwa z wyceną.",
     summary: {
       mode: "Rodzaj transportu",
+      line: "Linia",
+      container: "Kontenery",
       formula: "Wariant dostawy",
       address: "Adres dostawy",
       cartons: "Kartony",
@@ -274,14 +384,17 @@ export const pl: FreightSimulatorCopy = {
     },
     productsTitle: "Państwa produkty",
     product: "{name}: liczba kartonów {cartons} · {m3} · waga rozliczeniowa {chargeable}",
+    productCount: "{name}: liczba kartonów {cartons}",
     items: {
       freight: "Transport ({kg} kg × {rate} RMB/kg)",
       goods: "Dopłata za rodzaj towaru – {product} ({kg} kg × {rate} RMB/kg)",
       pieces: "{product}: {units} × {rate} RMB",
       units: "{product}: {units} × {rate} €",
       singleCarton: "Wysyłka jednej paczki",
-      oversize: "Paczki niestandardowe ({cartons} szt.)",
-      battery: "Produkty z baterią",
+      oversize: "Kartony niestandardowe, opłata przewoźnika ({cartons} szt.)",
+      crate: "Paczki w skrzyniach drewnianych, opłata przewoźnika ({cartons} szt.)",
+      overlength: "Sztuki dłuższe niż 2,40 m ({pieces})",
+      extraNames: "Produkty powyżej 5 ({names} × {rate} RMB)",
       declaration: "Osobna deklaracja eksportowa ({pages} str.)",
       reinforcement: "Wzmocnienie drewnem ({m3} m³ × {rate} $)",
     },
@@ -290,12 +403,12 @@ export const pl: FreightSimulatorCopy = {
     total: "Szacunkowa suma",
     notIncludedTitle: "Cena nie obejmuje",
     notIncluded: [
-      "Obszary oddalone, zmiana adresu, opłaty za kontrolę celną",
+      "Obszary oddalone (10 RMB/kg, co najmniej 480 RMB na liniach UPS), zmiana adresu, opłaty za kontrolę celną",
+      "Duże paczki statkiem: oczekiwanie, winda załadowcza i towar niepiętrowalny, zależnie od warunków dostawy",
       "Ubezpieczenie",
       "Nasze pozostałe usługi magazynowe w Guangzhou (przyjęcie, kontrola, załadunek), podane w wycenie",
     ],
-    disclaimer:
-      "Cena orientacyjna, obliczona według obecnego cennika naszego przewoźnika (wkrótce zostanie zaktualizowany). Wiążącą cenę podajemy w wycenie.",
+    disclaimer: "Cena orientacyjna, obliczona według obecnego cennika naszego przewoźnika. Wiążącą cenę podajemy w wycenie.",
     quoteNext: "Odezwiemy się do Państwa ze szczegółową wyceną.",
     signup: "Prosimy założyć konto SourcingPick, aby śledzić swoje wyceny:",
     signupCta: "Załóż konto",

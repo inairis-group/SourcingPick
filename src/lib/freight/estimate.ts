@@ -1,37 +1,45 @@
 /**
  * The price of a shipment from China to Europe, from the carrier's rate card
- * "Tarifs VIP Europe" (30 July) and its rules, plus our 3 % commission on
- * everything it adds up.
+ * "Tarifs VIP Europe" (26 October) and its rules, with our margin per kilo
+ * (rates.ts) and our 3 % commission on everything it adds up.
  *
- * Priced: delivered to the address, taxes included (DDP), by sea, air, truck
- * or rail. Taken as a request and quoted by hand: FOB and delivery to customs
- * (no price on the card), a country the mode does not serve, air goods with a
- * battery (their line serves Amazon and third-party warehouses only), more
- * than five different products where the card caps them, and the classes the
- * card prices "on consultation".
+ * Priced: delivered to the address, taxes included (DDP), by sea or air, on
+ * the line the cartons call for (modes.ts: the parcel lines, or the
+ * large-parcel lines when a carton is too big or too heavy for UPS and DPD).
+ * Taken as a request and quoted by hand: a full container, truck and rail,
+ * FOB and delivery to customs, a country or a postcode the line does not
+ * serve, a carton beyond the large-parcel limits, and the other cases of
+ * `routeOf`.
  *
  * Server side only — never import this from a client component.
  */
 import {
   COMMISSION_RATE,
-  DECLARATION_EXTRA_PAGE_SEA,
-  DECLARATION_FEE,
-  DECLARATION_LINES_PER_PAGE,
+  DECLARATION,
+  EXTRA_NAME_FEE,
+  MAX_DDP_PRODUCTS,
+  MIN_KG_DEFAULT,
+  MIN_KG_PER_CARTON,
   REINFORCEMENT_USD_PER_M3,
   SINGLE_CARTON_FEE,
-  SINGLE_CARTON_FEE_UK_TRUCK,
-  TRUCK_BATTERY_FEE,
   bracketOf,
+  carrierFees,
+  carrierOf,
   goodsClass,
-  quoteReason,
+  overlengthFee,
+  routeOf,
+  wholeKg,
+  type ContainerType,
   type Formula,
+  type Line,
   type Mode,
   type QuoteReason,
 } from "./modes";
 import { ratesFor } from "./rates";
+import type { SeaHeavyZone } from "./sea-heavy-zones";
+import { productWeights, totalWeights, type Product, type ProductWeights } from "./weights";
 
 export type { QuoteReason } from "./modes";
-import { cartonRefused, oversizeSurcharge, productWeights, totalWeights, type Product, type ProductWeights } from "./weights";
 
 export type Address = { street: string; postcode: string; city: string; country: string };
 
@@ -40,15 +48,28 @@ export type FreightRequest = {
   mode: Mode;
   address: Address;
   products: Product[];
-  /** A separate export declaration (sea, air, rail). */
+  /** A separate export declaration. */
   declaration: boolean;
+  /** The full containers asked for (mode "container"), quoted by hand. */
+  container: { type: ContainerType; count: number } | null;
 };
 
 export type Currency = "RMB" | "EUR" | "USD";
 export type Money = Record<Currency, number>;
 
 export type LineItem = {
-  key: "freight" | "goods" | "pieces" | "units" | "singleCarton" | "oversize" | "battery" | "declaration" | "reinforcement";
+  key:
+    | "freight"
+    | "goods"
+    | "pieces"
+    | "units"
+    | "singleCarton"
+    | "oversize"
+    | "crate"
+    | "overlength"
+    | "extraNames"
+    | "declaration"
+    | "reinforcement";
   amount: number;
   currency: Currency;
   /** Figures for the line's wording: kilos, rate, units, pages… */
@@ -58,18 +79,33 @@ export type LineItem = {
 };
 
 type Weighed = {
+  /** The card's line the shipment takes; null for the quoted modes. */
+  line: Line | null;
+  /** The postcode zone, on the large-parcel sea line. */
+  zone: SeaHeavyZone | null;
   /** One entry per product with cartons, in the request's order. */
   products: (ProductWeights & { name: string })[];
   /** The shipment's weights, all products together. */
   weights: ProductWeights;
   billedKg: number;
-  bracket: string;
+  /** The weight bracket's label; null without a line. */
+  bracket: string | null;
 };
 
 export type FreightEstimate =
-  | (Weighed & { ok: true; priced: true; rate: number; items: LineItem[]; subtotal: Money; commission: Money; total: Money })
+  | (Weighed & {
+      ok: true;
+      priced: true;
+      line: Line;
+      bracket: string;
+      rate: number;
+      items: LineItem[];
+      subtotal: Money;
+      commission: Money;
+      total: Money;
+    })
   | (Weighed & { ok: true; priced: false; reason: QuoteReason })
-  | { ok: false; reason: "no_products" | "invalid_goods" | "refused_goods" | "refused_carton" };
+  | { ok: false; reason: "no_products" | "invalid_goods" | "refused_goods" };
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
 const money = (rmb = 0, eur = 0, usd = 0): Money => ({ RMB: round2(rmb), EUR: round2(eur), USD: round2(usd) });
@@ -80,27 +116,30 @@ export function estimateFreight(req: FreightRequest): FreightEstimate {
   const classes = products.map((p) => goodsClass(req.mode, p.goods));
   if (classes.some((g) => !g)) return { ok: false, reason: "invalid_goods" };
   if (classes.some((g) => g?.kind === "refused")) return { ok: false, reason: "refused_goods" };
-  if (products.some(cartonRefused)) return { ok: false, reason: "refused_carton" };
 
   const country = req.address.country;
-  const total = totalWeights(products);
-  const { billedKg, index, label } = bracketOf(req.mode, country, total.chargeable);
+  const { line, zone, reason } = routeOf({ formula: req.formula, mode: req.mode, country, postcode: req.address.postcode, products });
+  const minKg = line ? MIN_KG_PER_CARTON[line] : MIN_KG_DEFAULT;
+  const total = totalWeights(products, minKg);
+  const bracket = line ? bracketOf(line, total.chargeable) : null;
   const weighed: Weighed = {
-    products: products.map((p) => ({ name: p.name, ...productWeights(p) })),
+    line,
+    zone,
+    products: products.map((p) => ({ name: p.name, ...productWeights(p, minKg) })),
     weights: total,
-    billedKg: round2(billedKg),
-    bracket: label,
+    billedKg: bracket ? bracket.billedKg : wholeKg(total.chargeable),
+    bracket: bracket?.label ?? null,
   };
 
-  const reason = quoteReason({ ...req, country, products });
-  const rates = ratesFor(req.mode, country);
-  if (reason || !rates) return { ...weighed, ok: true, priced: false, reason: reason ?? "country" };
+  const rates = line ? ratesFor(line, country, { battery: products.some((p) => p.battery), zone }) : undefined;
+  if (reason || !line || !bracket || !rates) return { ...weighed, ok: true, priced: false, reason: reason ?? "country" };
 
-  const rate = rates[index];
+  const rate = rates[bracket.index];
   const items: LineItem[] = [];
   const add = (item: LineItem) => {
     if (item.amount > 0) items.push({ ...item, amount: round2(item.amount) });
   };
+  const cartonsOf = (p: Product) => Math.round(p.cartons);
 
   add({ key: "freight", amount: weighed.billedKg * rate, currency: "RMB", detail: { kg: weighed.billedKg, rate } });
   products.forEach((p, i) => {
@@ -110,22 +149,54 @@ export function estimateFreight(req: FreightRequest): FreightEstimate {
     if (g.kind === "piece") add({ key: "pieces", amount: p.units * g.amount, currency: "RMB", detail: { units: p.units, rate: g.amount }, product: i });
     if (g.kind === "eur") add({ key: "units", amount: p.units * g.amount, currency: "EUR", detail: { units: p.units, rate: g.amount }, product: i });
   });
-  if (total.cartons === 1) {
-    add({ key: "singleCarton", amount: req.mode === "truck" && country === "GB" ? SINGLE_CARTON_FEE_UK_TRUCK : SINGLE_CARTON_FEE, currency: "RMB", detail: {} });
+  if (total.cartons === 1 && line !== "seaHeavy") add({ key: "singleCarton", amount: SINGLE_CARTON_FEE, currency: "RMB", detail: {} });
+
+  // The parcel lines' last-leg carrier: its fee for a carton out of format,
+  // and for one that is not a plain cardboard box (reinforced with wood).
+  if (line === "sea" || line === "air") {
+    const carrier = carrierOf(line, country);
+    const sized = products.filter((p) => carrierFees(carrier, p, false).size > 0);
+    add({
+      key: "oversize",
+      amount: sized.reduce((s, p) => s + carrierFees(carrier, p, false).size * cartonsOf(p), 0),
+      currency: "RMB",
+      detail: { cartons: sized.reduce((s, p) => s + cartonsOf(p), 0) },
+    });
+    const crated = products.filter((p) => p.reinforce);
+    const crate = carrierFees(carrier, products[0], true).crate!;
+    add({
+      key: "crate",
+      amount: crated.reduce((s, p) => s + crate.amount * cartonsOf(p), 0),
+      currency: crate.currency,
+      detail: { cartons: crated.reduce((s, p) => s + cartonsOf(p), 0), rate: crate.amount },
+    });
   }
-  const oversized = products.filter((p) => oversizeSurcharge(p) > 0);
-  add({
-    key: "oversize",
-    amount: oversized.reduce((s, p) => s + oversizeSurcharge(p) * Math.round(p.cartons), 0),
-    currency: "RMB",
-    detail: { cartons: oversized.reduce((s, p) => s + Math.round(p.cartons), 0) },
-  });
-  if (req.mode === "truck" && products.some((p) => p.battery)) add({ key: "battery", amount: TRUCK_BATTERY_FEE, currency: "RMB", detail: {} });
-  if (req.declaration && req.mode !== "truck") {
-    const pages = Math.max(1, Math.ceil(products.length / DECLARATION_LINES_PER_PAGE));
-    const extra = req.mode === "sea" ? (pages - 1) * DECLARATION_EXTRA_PAGE_SEA : 0;
-    add({ key: "declaration", amount: DECLARATION_FEE + extra, currency: "RMB", detail: { pages: req.mode === "sea" ? pages : 1 } });
+
+  // The large-parcel sea line's fee for a piece over 2.4 m.
+  if (line === "seaHeavy" && zone) {
+    const long = products.map((p) => ({ p, fee: overlengthFee(p, zone, country, weighed.billedKg) })).filter((x) => x.fee);
+    if (long.length) {
+      add({
+        key: "overlength",
+        amount: long.reduce((s, x) => s + x.fee!.amount * cartonsOf(x.p), 0),
+        currency: long[0].fee!.currency,
+        detail: { pieces: long.reduce((s, x) => s + cartonsOf(x.p), 0) },
+      });
+    }
   }
+
+  // The large-parcel lines take more than five product names, at a fee for each.
+  if ((line === "seaHeavy" || line === "airHeavy") && products.length > MAX_DDP_PRODUCTS) {
+    const extra = products.length - MAX_DDP_PRODUCTS;
+    add({ key: "extraNames", amount: extra * EXTRA_NAME_FEE[line], currency: "RMB", detail: { names: extra, rate: EXTRA_NAME_FEE[line] } });
+  }
+
+  if (req.declaration) {
+    const d = DECLARATION[line];
+    const pages = Math.max(1, Math.ceil(products.length / d.linesPerPage));
+    add({ key: "declaration", amount: d.fee + (pages - 1) * d.extraPage, currency: "RMB", detail: { pages: d.extraPage ? pages : 1 } });
+  }
+
   const reinforced = round2(weighed.products.filter((_, i) => products[i].reinforce).reduce((s, w) => s + w.volume, 0));
   add({ key: "reinforcement", amount: reinforced * REINFORCEMENT_USD_PER_M3, currency: "USD", detail: { m3: reinforced, rate: REINFORCEMENT_USD_PER_M3 } });
 
@@ -136,6 +207,8 @@ export function estimateFreight(req: FreightRequest): FreightEstimate {
     ...weighed,
     ok: true,
     priced: true,
+    line,
+    bracket: bracket.label,
     rate,
     items,
     subtotal,

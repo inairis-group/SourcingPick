@@ -4,17 +4,19 @@ export const tr: FreightSimulatorCopy = {
   eyebrow: "Sevkiyat simülatörü",
   title: "Sevkiyatınız ne kadara mal olur?",
   intro:
-    "Adresinizi ve ürünlerinizi girin: her birinin hacimsel ağırlığını hesaplar ve taşıyıcımızın Avrupa tarifesini uygularız. Ayrıntılı fiyat size e-postayla gönderilir.",
+    "Adresinizi ve ürünlerinizi girin: faturalanacak ağırlığı hesaplar, kolilerinize uygun hattı seçer ve taşıyıcımızın Avrupa tarifesini uygularız. Ayrıntılı fiyat size e-postayla gönderilir.",
   mode: {
     label: "Taşıma türü",
-    names: { sea: "Gemi", air: "Uçak", truck: "Kamyon", rail: "Tren" },
+    names: { sea: "Gemi", air: "Uçak", container: "Tam konteyner", truck: "Kamyon", rail: "Tren" },
     recommended: "Önerilen",
     discouraged: "Önerilmez",
+    onQuote: "Teklife göre",
     hints: {
-      sea: "En ucuzu, önerdiğimiz de bu: uçtan uca 40 ila 45 gün.",
-      air: "En hızlısı: 7 ila 10 iş günü. Küçük ya da acil bir sevkiyat için.",
-      truck: "Daha riskli: önermiyoruz. Yaklaşık 16 ila 20 gün.",
-      rail: "Bunu da önermiyoruz. Trenin kalkışından sonra 35 ila 38 gün.",
+      sea: "En ucuzu, önerdiğimiz de bu. Koliler: uçtan uca 40 ila 45 gün; büyük koliler ve paletler: geminin kalkışından sonra 30 ila 40 gün.",
+      air: "En hızlısı: 7 ila 10 iş günü, büyük koliler için 9 ila 12 gün. Küçük ya da acil bir sevkiyat için.",
+      container: "Yalnızca sizin mallarınıza ayrılmış 20 ft, 40 ft ya da 40 ft HC bir konteyner. Fiyat teklifle belirlenir.",
+      truck: "Daha riskli: önermiyoruz. Yalnızca teklifle, yaklaşık 16 ila 20 gün.",
+      rail: "Bunu da önermiyoruz. Yalnızca teklifle, trenin kalkışından sonra 35 ila 38 gün.",
     },
   },
   formula: {
@@ -26,10 +28,17 @@ export const tr: FreightSimulatorCopy = {
       customs: "Mallar varış gümrüğüne kadar taşınır; gümrükleme işlemlerini siz yapar ve malları teslim alırsınız. Fiyat teklifle belirlenir.",
     },
   },
+  container: {
+    type: "Konteyner tipi",
+    types: { "20": "20 ft (yaklaşık 28 m³)", "40": "40 ft (yaklaşık 58 m³)", "40hc": "40 ft HC (yaklaşık 68 m³)" },
+    count: "Konteyner sayısı",
+    hint: "Ürünlerinizi şu an bildiğiniz kadarıyla tanımlayın: size bir teklifle döneceğiz.",
+  },
   address: {
     title: "Teslimat adresi",
     street: "Adres",
     postcode: "Posta kodu",
+    postcodeHint: "Büyük koliler ve paletler için teslimat bölgesini belirler.",
     city: "Şehir",
     country: "Ülke",
   },
@@ -45,6 +54,7 @@ export const tr: FreightSimulatorCopy = {
     height: "Yük. (cm)",
     weight: "Ağırlık (kg)",
     cartonHint: "Tek bir kolinin ölçüleri ve ağırlığı.",
+    cartonHintContainer: "Biliyorsanız, tek bir kolinin ölçüleri ve ağırlığı.",
     units: "Adet sayısı",
     battery: "Batarya içerir",
     reinforce: "Ahşapla güçlendirme",
@@ -74,38 +84,46 @@ export const tr: FreightSimulatorCopy = {
       kg7: "+7 RMB/kg: giysiler, ayakkabılar, tekstil ürünleri, telefonlar, bilgisayarlar, tabletler, dronlar",
       refused: "Kabul edilmez: sıvılar, tozlar, tek başına bataryalar, sahte ürünler…",
     },
-    truck: {
+    quoted: {
       ordinary: "Genel kargo",
-      kg1: "+1 RMB/kg: deri, mutfak gereçleri, LED aydınlatma, oyuncaklar, kulaklıklar, Bluetooth ürünleri…",
-      kg2: "+2 RMB/kg: hırdavat, güzellik cihazları, araç kameraları, GPS cihazları, kalemler, yetişkin ürünleri…",
-      kg3: "+3 RMB/kg: peruklar, tekstil ürünleri (giysi ve ayakkabı hariç)",
-      kg4: "+4 RMB/kg: tabletler",
-      kg5: "+5 RMB/kg: giysiler, çoraplar, pantolonlar, güneş panelleri, tek kullanımlık elektronik sigaralar",
-      kg8: "+8 RMB/kg: ayakkabılar",
-      pieces: "Saatler, USB bellekler, oyun konsolları, hafıza kartları: adet başına +3 RMB",
-      phones: "Cep telefonları: telefon başına +8 RMB",
-      quote: "Gözlükler, valizler, dronlar, robot süpürgeler, ahşap ürünler…: fiyat teklifle belirlenir",
-      refused: "Kabul edilmez: sıvılar, tozlar, tek başına bataryalar, sahte ürünler…",
-    },
-    rail: {
-      ordinary: "Genel kargo",
-      kg1: "+1 RMB/kg: mutfak gereçleri, aydınlatma, seramik, ahşap, el aletleri, kameralar, dronlar…",
-      kg2: "+2 RMB/kg: çantalar, deri, kumaşlar, yatak takımları, çoraplar, kozmetikler…",
-      kg4: "+4 RMB/kg: giysiler, ayakkabılar, iç çamaşırları, mayolar…",
-      phones: "Cep telefonları: telefon başına +3 RMB",
-      scooters: "Scooter, koşu bandı: adet başına +7,50 €",
-      bikes: "Bisikletler: adet başına +75 €",
+      kg1: "Mutfak gereçleri, aydınlatma, seramik, ahşap, el aletleri, elektronik…",
+      kg3: "Çantalar, deri, kumaşlar, yatak takımları, kozmetikler…",
+      kg4: "Giysiler, ayakkabılar, iç çamaşırları…",
+      phones: "Cep telefonları",
+      scooters: "Scooter, koşu bandı",
+      bikes: "Bisikletler",
       refused: "Kabul edilmez: sıvılar, tozlar, tek başına bataryalar, sahte ürünler…",
     },
   },
   options: {
     declaration: "Ayrı ihracat beyannamesi",
-    declarationHint: "Sevkiyat başına 350 RMB.",
-    declarationHintSea: "350 RMB, ilk sayfadan sonraki her sayfa için +50 RMB (sayfa başına 5 ürün).",
+    declarationHints: {
+      sea: "350 RMB, ilk sayfadan sonraki her sayfa için +50 RMB (sayfa başına 5 ürün).",
+      seaHeavy: "350 RMB, ilk sayfadan sonraki her sayfa için +50 RMB (sayfa başına 5 ürün).",
+      air: "Sevkiyat başına 350 RMB.",
+      airHeavy: "200 RMB, ilk sayfadan sonraki her sayfa için +50 RMB (sayfa başına 6 ürün).",
+    },
+  },
+  lines: {
+    label: "Hat",
+    names: {
+      sea: "Gemi, koli hattı (UPS veya DPD)",
+      seaHeavy: "Gemi, büyük koliler ve paletler",
+      air: "Uçak, koli hattı (UPS)",
+      airHeavy: "Uçak, büyük koliler (DHL veya FedEx)",
+    },
+    hints: {
+      sea: "Kolileriniz, taşıyıcının seçimine göre UPS veya DPD ile teslim edilir.",
+      seaHeavy:
+        "Bir koli UPS ve DPD için fazla ağır ya da fazla büyük: sevkiyatın tamamı büyük koli olarak gider, kamyonla teslim edilir ve posta kodunuzun bölgesine göre fiyatlandırılır.",
+      air: "Kolileriniz, Çin anakarasından kalkan direkt bir uçuşun ardından UPS ile teslim edilir.",
+      airHeavy:
+        "Bir koli 30 kg’ı ya da UPS ölçülerini aşıyor: sevkiyatın tamamı büyük koli olarak gider ve parça başına en az 45 kg üzerinden faturalanır.",
+    },
   },
   calc: {
     title: "Faturalanan ağırlık",
-    rule: "Gerçek ağırlık ile hacimsel ağırlıktan büyük olanı (U × G × Y ÷ 6.000), koli başına en az 12 kg.",
+    rule: "Gerçek ağırlık ile hacimsel ağırlıktan büyük olanı (U × G × Y ÷ 6.000), koli başına en az 12 kg (uçakla büyük kolilerde 45 kg), bir üst kiloya yuvarlanır.",
     volumetric: "Hacimsel ağırlık",
     bracket: "Kademe",
     billed: "{kg} kg faturalanır",
@@ -116,14 +134,20 @@ export const tr: FreightSimulatorCopy = {
     delayLabel: "Teslim süresi",
     delays: {
       sea: "40 ila 45 gün, uçtan uca",
+      seaHeavy: "Geminin kalkışından sonra 30 ila 40 gün",
       air: "7 ila 10 iş günü",
+      airHeavy: "9 ila 12 gün",
+      container: "Teklifinizle birlikte teyit edilir",
       truck: "Yaklaşık 16 ila 20 gün",
-      rail: "Kalkıştan sonra 35 ila 38 gün",
+      rail: "Trenin kalkışından sonra 35 ila 38 gün",
     },
     surcharges: "Sevkiyatınıza eklenenler",
-    oversize: "Standart dışı koliler: {n}",
+    oversize: "Standart dışı koliler, taşıyıcı ücreti: {n}",
+    crate: "Ahşap sandıklı koliler, taşıyıcı ücreti: {n}",
+    overlength: "2,40 m’den uzun parçalar: {n}",
+    extraNames: "5’i aşan ürünler: {n}",
     singleCarton: "Tek kolilik sevkiyat",
-    battery: "Bataryalı ürünler",
+    batteryRates: "Batarya tarifesi (uçak, büyük koliler)",
     reinforcement: "Ahşap güçlendirme: {m3}",
     declaration: "Ayrı ihracat beyannamesi",
   },
@@ -131,18 +155,24 @@ export const tr: FreightSimulatorCopy = {
     title: "Fiyat teklifle belirlenir",
     reasons: {
       formula: "FOB seçeneğinde ve gümrüğe kadar teslimde fiyat teklifle belirlenir: size e-postayla yanıt veririz.",
-      country: "Bu taşıma türü, bu ülkeye vergiler dâhil teslimat yapmıyor: fiyat teklifle belirlenir.",
+      mode: "Kamyon ve trende fiyat yalnızca teklifle belirlenir: size e-postayla yanıt veririz.",
+      container: "Tam konteynerin fiyatı, varış limanına ve tarihe göre teklifle belirlenir: size e-postayla yanıt veririz.",
+      country: "Bu hat, bu ülkeye vergiler dâhil teslimat yapmıyor: fiyat teklifle belirlenir.",
+      postcode:
+        "Posta kodunuzu girin: büyük koliler ve paletlerin fiyatını o belirler. Adalar ve uzak bölgeler için fiyat teklifle belirlenir.",
       air_battery:
-        "Uçakla gönderilen bataryalı ürünler, yalnızca Amazon depolarına ve lojistik depolarına teslimat yapan bir hattan gider: fiyat teklifle belirlenir.",
-      too_many_products: "5’ten fazla farklı ürün olduğunda fiyat teklifle belirlenir.",
-      goods_quote: "Bu malın fiyatı teklifle belirlenir.",
+        "Uçakla gönderilen bataryalı standart koliler, yalnızca Amazon depolarına ve lojistik depolarına teslimat yapan bir hattan gider: fiyat teklifle belirlenir.",
+      heavy_goods:
+        "Gemiyle büyük koli hattı yalnızca bataryasız genel kargo kabul eder: fiyat teklifle belirlenir.",
+      out_of_gauge: "Bir koli, ağırlık ya da ölçü bakımından büyük koli sınırlarını aşıyor: fiyat teklifle belirlenir.",
+      too_many_products: "Koli hattında 5’ten fazla farklı ürün olduğunda fiyat teklifle belirlenir.",
+      too_many_pieces: "Uçakla büyük koli hattı sevkiyat başına en fazla 40 parça kabul eder: fiyat teklifle belirlenir.",
     },
   },
   warnings: {
     refusedGoods: "Mallarınızdan biri bu taşıma türüyle kabul edilmiyor.",
-    refusedCarton:
-      "Bir koli sınırları aşıyor (65 kg, bir kenarda 270 cm ya da uzunluk + 2 × (genişlik + yükseklik) toplamı 400 cm’nin üzerinde): yeniden paketlenmesi gerekir.",
     noProducts: "En az bir ürün girin; kolilerini, ölçülerini ve ağırlıklarını da belirtin.",
+    noProductsContainer: "En az bir ürün ve koli sayısını girin.",
   },
   gate: {
     locked: "Fiyat, kayıttan sonra görünür",
@@ -159,7 +189,7 @@ export const tr: FreightSimulatorCopy = {
     cta: "Fiyatı görün",
     ctaQuote: "Teklifinizi alın",
     already: "Zaten hesabım var",
-    note: "Yaklaşık fiyatlar; tarife yakında güncellenecek. Kesin fiyat teklifinizde yer alır.",
+    note: "Yaklaşık fiyatlar, taşıyıcımızın güncel tarifesine göre. Kesin fiyat teklifinizde yer alır.",
     sending: "Gönderiliyor…",
     sent: "{email} adresine gönderildi. Tekliflerinize ulaşmak için şimdi hesabınızı oluşturun.",
     sentQuote: "Talebiniz alındı: {email} adresine yanıt vereceğiz. Tekliflerinizi takip etmek için şimdi hesabınızı oluşturun.",
@@ -173,57 +203,117 @@ export const tr: FreightSimulatorCopy = {
   rules: {
     title: "Fiyatınızı nasıl hesaplıyoruz",
     intro:
-      "Fiyat, taşıyıcımızın gemi, uçak, kamyon ve tren için Avrupa tarifelerinden gelir. Bu tarifelerin kuralları, sevkiyatınıza uygulandıkları biçimiyle aşağıda.",
+      "Fiyat, taşıyıcımızın yürürlükteki Avrupa tarifesinden gelir. Bu tarifenin tüm kuralları, hat hat ve sevkiyatınıza uygulandıkları biçimiyle aşağıda.",
     sections: [
+      {
+        title: "Taşıma hatları ve teslim süreleri",
+        text: "Sevkiyatınız, kolilerine uygun hattan gider: simülatör bu hattı sizin için seçer ve size gösterir.",
+        items: [
+          "Gemi, koli hattı: taşıyıcının seçimine göre UPS veya DPD ile teslimat. Uçtan uca 40 ila 45 gün.",
+          "Gemi, büyük koliler ve paletler: posta kodunuzun bölgesine göre fiyatlandırılan kamyonla teslimat. Geminin kalkışından sonra 30 ila 40 gün; liman yoğunluğu ve gümrük kontrolü hariç.",
+          "Uçak, koli hattı: Çin anakarasından her gün direkt uçuşlar, UPS ile teslimat. 7 ila 10 iş günü.",
+          "Uçak, büyük koliler: Almanya’da DHL, diğer ülkelerde FedEx ile teslimat. 9 ila 12 gün; gecikmeler tazmin edilmez.",
+          "Tam konteyner (20 ft, 40 ft, 40 ft HC), kamyon ve tren: fiyat teklifle belirlenir. Daha riskli olan kamyonu ve treni önermiyoruz.",
+        ],
+      },
+      {
+        title: "Sevkiyat ne zaman büyük koli hattına geçer",
+        text: "Standart dışı tek bir koli, sevkiyatın tamamının o taşıma türünün büyük koli hattına geçmesi için yeterlidir.",
+        items: [
+          "Gemiyle: 40 kg veya daha ağır bir koli; bir kenarı 120 cm’yi, ikinci kenarı 60 cm’yi aşan; bir kenarı 274 cm veya daha uzun; ya da uzunluk + 2 × (genişlik + yükseklik) toplamı 300 cm’yi aşan bir koli.",
+          "Uçakla: 30 kg’dan ağır, bir kenarı 274 cm veya daha uzun ya da uzunluk + 2 × (genişlik + yükseklik) toplamı 300 cm’yi aşan bir koli.",
+          "Gemiyle büyük koli sınırları: parça başına 1.500 kg gerçek ya da 1.000 kg hacimsel ağırlık, 390 × 210 × 210 cm. Uçakla: parça başına 990 kg, 300 × 200 × 170 cm (dik konumda en fazla 180 cm yükseklik), sevkiyat başına 40 parça. Bunların üzerinde fiyat teklifle belirlenir.",
+        ],
+      },
       {
         title: "Faturalanacak ağırlık",
         text:
-          "Her koli, üç ağırlıktan en yükseği üzerinden faturalanır: gerçek ağırlığı, hacimsel ağırlığı (cm cinsinden uzunluk × genişlik × yükseklik ÷ 6.000) ve 12 kg. Ardından tüm ürünlerinizin kolileri toplanır.",
-      },
-      {
-        title: "Taşıma türleri ve teslim süreleri",
-        text:
-          "Gemi: uçtan uca 40 ila 45 gün; en ucuzu ve önerdiğimiz seçenek. Uçak: 7 ila 10 iş günü; küçük ya da acil bir sevkiyat için. Kamyon: yaklaşık 16 ila 20 gün; daha riskli, önermiyoruz. Tren: trenin kalkışından sonra 35 ila 38 gün; bunu da önermiyoruz. Son aşamanın taşıyıcısını biz seçeriz.",
+          "Her koli, üç ağırlıktan en yükseği üzerinden faturalanır: gerçek ağırlığı, hacimsel ağırlığı (cm cinsinden uzunluk × genişlik × yükseklik ÷ 6.000) ve hattının asgari ağırlığı, yani koli başına 12 kg, uçakla büyük kolilerde parça başına 45 kg. Tüm ürünlerinizin kolileri toplanır, ardından bir üst kiloya yuvarlanır. Esas alınan ağırlık, Çin’deki depomuzda ölçülen ağırlıktır.",
       },
       {
         title: "Ağırlık kademeleri",
-        text:
-          "Kilo fiyatı, toplam ağırlık arttıkça düşer. Gemi: 21 ila 70 kg, 71 ila 299 kg, 300 kg ve üzeri. Uçak: 21 ila 69 kg, 70 ila 99 kg, 100 ila 299 kg, 300 kg ve üzeri. Kamyon: 30 ila 70 kg, 71 ila 100 kg, 101 ila 499 kg, 500 kg ve üzeri (Birleşik Krallık için 300 kg ve üzeri). Tren: 45 ila 74 kg, 75 ila 299 kg, 300 kg ve üzeri. Bir sevkiyat gemi ve uçakla en az 21 kg, kamyonla en az 30 kg, trenle en az 45 kg üzerinden faturalanır.",
+        text: "Kilo fiyatı, sevkiyatın toplam ağırlığı arttıkça düşer; sevkiyat en az ilk kademenin başlangıç ağırlığı üzerinden faturalanır.",
+        items: [
+          "Gemi, koli hattı: 21 ila 70 kg, 71 ila 299 kg, 300 kg ve üzeri.",
+          "Gemi, büyük koliler ve paletler: 30 ila 49 kg, 50 ila 99 kg, 100 ila 199 kg, 200 ila 299 kg, 300 ila 500 kg, 501 ila 1.000 kg, 1.001 ila 1.500 kg, 1.501 ila 2.000 kg, 2.001 ila 2.999 kg, 3.000 kg ve üzeri.",
+          "Uçak, koli hattı: 21 ila 69 kg, 70 ila 99 kg, 100 ila 299 kg, 300 kg ve üzeri.",
+          "Uçak, büyük koliler: 45 ila 70 kg, 71 ila 100 kg, 101 ila 499 kg, 500 kg ve üzeri.",
+        ],
+      },
+      {
+        title: "Teslimat yapılan ülkeler ve bölgeler",
+        text: "Avrupa Birliği içinde, gümrük vergileri ve diğer vergiler dâhil teslimat.",
+        items: [
+          "Gemi, koli hattı: 22 ülke; Estonya, Letonya, Hırvatistan, Kıbrıs ve Malta dışında tüm Avrupa Birliği.",
+          "Gemi, büyük koliler ve paletler: 24 ülke; Yunanistan, Kıbrıs ve Malta dışında tüm Avrupa Birliği, posta kodu bölgesine göre (A, B veya C); adalara ve uzak bölgelere teslimat yapılmaz.",
+          "Uçak, koliler ve büyük koliler: 24 ülke; Estonya, Kıbrıs ve Malta dışında tüm Avrupa Birliği.",
+          "Birleşik Krallık, İsviçre ve Norveç dâhil diğer ülkeler: fiyat teklifle belirlenir.",
+        ],
       },
       {
         title: "Teslim şekilleri",
         text:
-          "Vergiler dâhil teslim (DDP): adresinize teslimat, gümrük vergileri ve ithalat KDV’si dâhil; gemi, uçak ve trenle sevkiyat başına en fazla 5 farklı ürün. FOB: mallar Çin’deki çıkış limanında ya da havalimanında teslim edilir, işi sizin nakliye firmanız devralır. Gümrüğe kadar: malları varış gümrüğüne kadar biz taşırız, gümrükleme işlemlerini siz yapar ve malları teslim alırsınız. FOB seçeneğinde ve gümrüğe kadar teslimde fiyat teklifle belirlenir.",
+          "Vergiler dâhil teslim (DDP): adresinize teslimat, gümrük vergileri ve ithalat KDV’si dâhil. FOB: mallar Çin’deki çıkış limanında ya da havalimanında teslim edilir, işi sizin nakliye firmanız devralır. Gümrüğe kadar: malları varış gümrüğüne kadar biz taşırız, gümrükleme işlemlerini siz yapar ve malları teslim alırsınız. FOB seçeneğinde ve gümrüğe kadar teslimde fiyat teklifle belirlenir.",
       },
       {
-        title: "Teslimat yapılan ülkeler",
+        title: "Ürün sayısı",
         text:
-          "Her taşıma türünün teslimat yaptığı Avrupa ülkelerinin listesi kendine özgüdür; Birleşik Krallık’a yalnızca kamyonla teslimat yapılır. Seçtiğiniz taşıma türü ülkenize teslimat yapmıyorsa fiyat teklifle belirlenir.",
+          "Koli hatlarında sevkiyat başına en fazla 5 farklı ürün; bunun üzerinde fiyat teklifle belirlenir. Büyük koli hatlarında beşinciden sonraki her ürün ücretlendirilir: gemiyle 30 RMB, uçakla 35 RMB.",
       },
       {
         title: "Mal türüne göre ek ücretler",
         text:
-          "Her taşıma türünün kendi ek ücretleri vardır: ilgili ürünün faturalanacak kilosu başına ya da adet başına uygulanır; formdaki liste taşıma türüne göre değişir ve tarifedeki örnekleri içerir. Gemi: +1, +3 veya +4 RMB/kg; telefonlar adet başına +3 RMB, scooter ve koşu bantları adet başına +7,50 €, bisikletler adet başına +75 €. Tren: +1, +2 veya +4 RMB/kg ve adet başına aynı ek ücretler. Uçak: +1, +2, +3, +5 veya +7 RMB/kg. Kamyon: +1 ila +8 RMB/kg; saatler, USB bellekler, oyun konsolları ve hafıza kartları adet başına +3 RMB, telefonlar adet başına +8 RMB; gözlükler, valizler, dronlar ve ahşap ürünler için fiyat teklifle belirlenir. Ek ücretler birbirine eklenir.",
+          "İlgili ürünün faturalanacak kilosu başına ya da adet başına uygulanır ve birbirine eklenir. Formdaki liste taşıma türüne göre değişir ve tarifedeki örnekleri içerir.",
+        items: [
+          "Gemi, koli hattı: +1 RMB/kg (mutfak gereçleri, aydınlatma, seramik, ahşap, el aletleri, kameralar, dronlar…), +3 RMB/kg (çantalar, deri, kumaşlar, yatak takımları, kozmetikler…), +4 RMB/kg (giysiler, ayakkabılar, iç çamaşırları…); telefonlar adet başına +3 RMB, scooter ve koşu bantları adet başına +7,50 €, bisikletler adet başına +75 €.",
+          "Uçak, koliler ve büyük koliler: +1 RMB/kg (ahşap, hırdavat, metal, kılıflar ve kablolar…), +2 RMB/kg (aydınlatma, seramik, kozmetikler, güzellik cihazları, kameralar…), +3 RMB/kg (oyuncaklar, deri), +5 RMB/kg (saatler, sıvısız elektronik sigaralar), +7 RMB/kg (giysiler, ayakkabılar, tekstil ürünleri, telefonlar, bilgisayarlar, tabletler, dronlar). Ahşap, bambu, zayıf manyetik ürünler ve nem alıcılar için bu ek ücret sevkiyat başına en az 200 RMB’dir.",
+          "Gemi, büyük koliler ve paletler: yalnızca bataryasız genel kargo; aksi hâlde fiyat teklifle belirlenir.",
+        ],
       },
       {
         title: "Bataryalı ürünler",
-        text:
-          "Gemi ve trenle kabul edilir. Kamyonla: sevkiyat başına +100 RMB. Uçakla, Hong Kong’dan kalkan ve yalnızca Amazon depolarına ve lojistik depolarına teslimat yapan bir hattan gider: fiyat teklifle belirlenir.",
+        items: [
+          "Gemi, koli hattı: aynı fiyattan kabul edilir.",
+          "Uçak, koli hattı: fiyat teklifle belirlenir; Hong Kong’dan kalkan batarya hattı yalnızca Amazon depolarına ve lojistik depolarına teslimat yapar.",
+          "Uçak, büyük koliler: daha pahalı olan batarya tarifesiyle kabul edilir.",
+          "Gemi, büyük koliler ve paletler: fiyat teklifle belirlenir.",
+          "Hiçbir zaman: tek başına bataryalar, taşınabilir şarj cihazları (powerbank), 100 Wh’nin üzerindeki bataryalar.",
+        ],
+        text: "İlgili her ürün için “Batarya içerir” kutusunu işaretleyin.",
       },
       {
-        title: "Standart dışı koliler",
-        text:
-          "Kabul edilmez: 65 kg’dan ağır, bir kenarı 270 cm’den uzun ya da uzunluk + 2 × (genişlik + yükseklik) toplamı 400 cm’yi aşan koliler. Her koli için en yüksek ek ücret uygulanır: 30 ile 40 kg arasında ya da en uzun kenar 100 cm’yi veya ikinci kenar 76 cm’yi aşıyorsa 130 RMB; 40 kg’ın üzerinde 600 RMB; uzunluk + 2 × (genişlik + yükseklik) 266 ile 320 cm arasındaysa 120 RMB, 321 ile 400 cm arasındaysa 900 RMB. Tek kolilik sevkiyat: +80 RMB (Birleşik Krallık’a kamyonla +50 RMB).",
+        title: "Koli hatlarında taşıyıcı ücretleri",
+        text: "Her koli için, uygulanan ücretlerden en yükseği.",
+        items: [
+          "UPS (uçak ve Almanya, Fransa, İtalya ve İspanya dışındaki ülkelere gemi): bir kenar 100 cm’ye ya da ikinci kenar 76 cm’ye ulaşırsa veya koli 24 kg’dan ağırsa 240 RMB. Ahşap sandık ya da koli dışında bir ambalaj: koli başına 45 €.",
+          "DPD (Almanya, Fransa, İtalya ve İspanya’ya gemi): 31 kg’ı ya da bir kenarda 120 cm’yi aşarsa 350 RMB; aksi hâlde 25 kg hacimsel ağırlığı ya da 150 litreyi aşarsa veya iki kenar 60 cm’yi geçerse 50 RMB. Ahşap ya da metal sandık: koli başına 80 RMB.",
+          "Tek kolilik sevkiyat: gemi ve uçakla +50 RMB (gemiyle büyük koliler hariç).",
+        ],
+      },
+      {
+        title: "Gemiyle büyük koliler ve paletler",
+        text: "Kamyonla teslim edildikleri için uygun bir erişim gerektirirler.",
+        items: [
+          "2,40 m’den uzun parça: +300 RMB; 3,50 m’den uzun: +600 RMB; B bölgesinde ×1,2, C bölgesinde ×1,4. Hollanda’ya, bir tondan ağır bir sevkiyatta 2,40 m’den uzun parça: parça başına 250 €.",
+          "Sevkiyatın tamamı ya ahşap sandıklarla ya da kolilerle gider (karışık gönderimin riski size aittir); 2 koliden itibaren paletlenir.",
+          "Ağır vasıtanın erişebileceği zemin katta teslimat; 30 dakikalık boşaltma dâhil, sonrası saatlik 59,50 €.",
+          "2,20 m’den uzun ya da bir tondan ağır parça: bir boşaltma ekipmanı sağlayın (manuel transpalet değil), aksi hâlde en az 250 €. İstek üzerine hidrolik kapak: en az 150 €. İstiflenemeyen mal: 200 €.",
+          "2.500 kg gerçek ya da 1.250 kg hacimsel ağırlığın üzerinde sevkiyat birkaç gönderiye bölünür. Romanya’ya 500 kg’ın üzerindeki sevkiyatlarda UIT numarası istenir.",
+        ],
       },
       {
         title: "Ahşapla güçlendirme",
         text:
-          "Kırılabilir mallar için kolileri Guangzhou’daki depomuzda ahşapla güçlendiririz: güçlendirilen ürün için m³ başına 15 $.",
+          "Kırılabilir mallar için kolileri Guangzhou’daki depomuzda ahşapla güçlendiririz: güçlendirilen ürün için m³ başına 15 $. Koli hatlarında güçlendirilmiş bir koli sandık sayılır: UPS koli başına 45 €, DPD 80 RMB ücret alır. Uçakla büyük kolilerde 40 kg’dan ağır bir sandık ya da paletin, forklift için en az 10 cm yüksekliğinde ayakları olmalıdır.",
       },
       {
         title: "Ayrı ihracat beyannamesi",
-        text:
-          "Sevkiyat başına 350 RMB; gemiyle, ilk sayfadan sonraki her sayfa için +50 RMB (sayfa başına 5 satır). Kamyonla, ihracat dosyası ücretsiz hazırlanır.",
+        items: [
+          "Gemi, koliler ve büyük koliler: 350 RMB, ilk sayfadan sonraki her sayfa için +50 RMB (sayfa başına 5 ürün).",
+          "Uçak, koli hattı: sevkiyat başına 350 RMB.",
+          "Uçak, büyük koliler: 200 RMB, ilk sayfadan sonraki her sayfa için +50 RMB (sayfa başına 6 ürün).",
+        ],
+        text: "İstek üzerine, resmî ihracat belgeleriyle.",
       },
       {
         title: "Komisyonumuz",
@@ -231,23 +321,38 @@ export const tr: FreightSimulatorCopy = {
       },
       {
         title: "Fiyata dâhil olmayanlar",
-        text:
-          "Uzak bölgeler (ek ücret, taşıyıcının faturası üzerinden yansıtılır), adres değişikliği, gümrük kontrolü masrafları, sigorta ve teklifinizde fiyatlandırılan, Guangzhou’daki diğer depo hizmetlerimiz (mal kabul, kontrol, yükleme).",
+        items: [
+          "Uzak bölgeler: UPS hatlarında 10 RMB/kg, sevkiyat başına en az 480 RMB; posta kodunuzu kontrol edin.",
+          "Adres değişikliği, imzalı teslimat belgesi (UPS kolisi başına 30 RMB, gemiyle büyük koli sevkiyatı başına 50 RMB).",
+          "Gümrük kontrolü (gemiyle büyük kolilerde: 1.000 € boşaltma, 260 € ayrıştırma, kalanı gerçek maliyet üzerinden), fümigasyon, denetim raporu (makineler: 680 RMB).",
+          "Büyük kolilerin teslimat koşulları: bekleme, hidrolik kapak, istiflenemeyen mal.",
+          "Sigorta ve teklifinizde fiyatlandırılan, Guangzhou’daki diğer depo hizmetlerimiz (mal kabul, kontrol, yükleme).",
+        ],
+        text: "Bu masraflar sevkiyatınıza bağlıdır; uygulanırlarsa teklifinizde yer alır.",
       },
       {
         title: "Kabul edilmeyen mallar",
         text:
-          "Sıvılar, tozlar, sahte ürünler, tek başına bataryalar, taşınabilir şarj cihazları (powerbank), elektrikli tek tekerlekler, tütün, gıda ürünleri, ilaçlar, aşındırıcı, yanıcı veya patlayıcı ürünler, silahlar. İhracat öncesi kontrolde tespit edilen hassas bir mal için 3.000 RMB para cezası, geri gönderim masrafı ve 8 RMB/kg elleçleme ücreti ödenir.",
+          "Sıvılar, tozlar, sahte ürünler, tek başına bataryalar, taşınabilir şarj cihazları (powerbank), elektrikli tek tekerlekler, tütün, gıda ürünleri, ilaçlar, aşındırıcı, yanıcı veya patlayıcı ürünler, silahlar. İhracat öncesi kontrolde tespit edilen, beyan edilmemiş hassas bir mal (ahşap, mıknatıs, sıvı, macun…) için 3.000 RMB para cezası, geri gönderim masrafı ve 8 RMB/kg elleçleme ücreti ödenir.",
       },
       {
-        title: "Ambalaj",
-        text:
-          "Tüm ürünlerin üzerinde MADE IN CHINA ibaresi bulunmalı; tekstil, deri, bavul ve ayakkabılarda ayrıca içerik ve bakım etiketi olmalı. Sarı koli bandından kaçının.",
+        title: "Ambalaj ve etiketleme",
+        items: [
+          "İyi durumda, nemsiz ve deforme olmamış koliler. Koli hatlarında koli dışındaki bir ambalaj için taşıyıcının sandık ücreti ödenir.",
+          "Her üründe MADE IN CHINA ibaresi; tekstil, deri, bavul ve ayakkabılarda dikili bir içerik etiketi.",
+          "Avrupa Birliği’nde CE işareti gerektiren ürünlerde bu işaret: o olmadan gümrük sevkiyatı durdurabilir.",
+          "15 kg’ın üzerindeki kolilerde “ağır koli” etiketi; sarı koli bandı kullanılmamalı.",
+        ],
+        text: "Mallarınız, varış ülkesinin ithalat standartlarına uygun olmalıdır.",
       },
       {
-        title: "Kayıp durumunda",
-        text:
-          "Gemi ve tren: kayıp ya da gümrükte takılma durumunda beyan edilen değer üzerinden, kilo başına en fazla 20 RMB tazminat ödenir; navlun iade edilmez; hasarlar tazmin edilmez. Uçak ve kamyon: mallar UPS’e teslim edilmeden önce kaybolursa ya da gümrükte el konulursa kilo başına 40 RMB, sonrasında UPS kuralları, sevkiyat başına en fazla 100 USD. Değerli mallar için sigorta yaptırın.",
+        title: "Kayıp ya da hasar durumunda",
+        items: [
+          "Gemi: kayıp ya da gümrükte takılma durumunda beyan edilen değer üzerinden, kilo başına en fazla 20 RMB tazminat ödenir; navlun iade edilmez; hasarlar tazmin edilmez.",
+          "Uçak: mallar UPS’e teslim edilmeden önce kaybolursa ya da gümrükte el konulursa kilo başına 40 RMB, navlun iade edilmez; sonrasında UPS kuralları, sevkiyat başına en fazla 100 USD.",
+          "Hasarlı ya da eksik bir koli, teslimattan sonraki 14 gün içinde bildirilmelidir. Gecikmeler tazmin edilmez.",
+        ],
+        text: "Değerli mallar için sigorta yaptırın.",
       },
     ],
   },
@@ -261,6 +366,8 @@ export const tr: FreightSimulatorCopy = {
     introQuote: "Talebinizi aldık. Bize ilettiğiniz bilgiler aşağıda; size bir teklifle döneceğiz.",
     summary: {
       mode: "Taşıma türü",
+      line: "Hat",
+      container: "Konteynerler",
       formula: "Teslim şekli",
       address: "Teslimat adresi",
       cartons: "Koliler",
@@ -272,14 +379,17 @@ export const tr: FreightSimulatorCopy = {
     },
     productsTitle: "Ürünleriniz",
     product: "{name}: {cartons} koli · {m3} · faturalanacak {chargeable}",
+    productCount: "{name}: {cartons} koli",
     items: {
       freight: "Navlun ({kg} kg × {rate} RMB/kg)",
       goods: "{product} için mal türü ek ücreti ({kg} kg × {rate} RMB/kg)",
       pieces: "{product}: {units} × {rate} RMB",
       units: "{product}: {units} × {rate} €",
       singleCarton: "Tek kolilik sevkiyat",
-      oversize: "Standart dışı koliler ({cartons} koli)",
-      battery: "Bataryalı ürünler",
+      oversize: "Standart dışı koliler, taşıyıcı ücreti ({cartons} koli)",
+      crate: "Ahşap sandıklı koliler, taşıyıcı ücreti ({cartons} koli)",
+      overlength: "2,40 m’den uzun parçalar ({pieces})",
+      extraNames: "5’i aşan ürünler ({names} × {rate} RMB)",
       declaration: "Ayrı ihracat beyannamesi ({pages} sayfa)",
       reinforcement: "Ahşap güçlendirme ({m3} m³ × {rate} $)",
     },
@@ -288,12 +398,12 @@ export const tr: FreightSimulatorCopy = {
     total: "Tahmini toplam",
     notIncludedTitle: "Dâhil olmayanlar",
     notIncluded: [
-      "Uzak bölgeler, adres değişikliği, gümrük kontrolü masrafları",
+      "Uzak bölgeler (UPS hatlarında 10 RMB/kg, en az 480 RMB), adres değişikliği, gümrük kontrolü masrafları",
+      "Gemiyle büyük koliler: teslimata göre bekleme, hidrolik kapak ve istiflenemeyen mal",
       "Sigorta",
       "Guangzhou’daki diğer depo hizmetlerimiz (mal kabul, kontrol, yükleme), teklifinizde fiyatlandırılır",
     ],
-    disclaimer:
-      "Taşıyıcımızın güncel tarifesiyle hazırlanmış yaklaşık fiyat (tarife yakında güncellenecek). Kesin fiyat teklifinizde yer alır.",
+    disclaimer: "Taşıyıcımızın güncel tarifesiyle hazırlanmış yaklaşık fiyat. Kesin fiyat teklifinizde yer alır.",
     quoteNext: "Size ayrıntılı bir teklifle döneceğiz.",
     signup: "Tekliflerinizi takip etmek için SourcingPick hesabınızı oluşturun:",
     signupCta: "Hesabınızı oluşturun",

@@ -4,28 +4,39 @@ import { useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import type { Locale } from "@/lib/i18n/config";
 import { formatNumber } from "@/lib/i18n/formatters";
-import type { FreightFormCopy } from "@/content/freight/simulator";
+import { goodsLabel, type FreightFormCopy } from "@/content/freight/simulator";
 import {
   ALL_COUNTRIES,
+  CONTAINER_TYPES,
   DISCOURAGED,
   FORMULAS,
   GOODS,
+  MAX_DDP_PRODUCTS,
+  MIN_KG_DEFAULT,
+  MIN_KG_PER_CARTON,
   MODES,
+  PRICED_MODES,
   bracketOf,
+  carrierFees,
+  carrierOf,
   goodsClass,
-  quoteReason,
+  routeOf,
   servesCountry,
+  sides,
+  wholeKg,
+  type ContainerType,
   type Formula,
   type Mode,
 } from "@/lib/freight/modes";
-import { cartonRefused, oversizeSurcharge, productWeights, totalWeights, type Product } from "@/lib/freight/weights";
+import { productWeights, totalWeights, type Product } from "@/lib/freight/weights";
 import { BODY, DISPLAY, MONO, localType } from "./locale-type";
 
 /**
  * The shipment the freight simulator describes — mode, formula, address and
  * products — and its fields. Shared by the public simulator (price by e-mail)
  * and the admin's (price on screen); each adds its own panel. No prices here:
- * the weights, the bracket and the surcharges that will apply, as you type.
+ * the line the cartons call for, the weights, the bracket and the surcharges
+ * that will apply, as you type.
  */
 
 type Row = Product & { id: number };
@@ -47,6 +58,7 @@ const newRow = (id: number, example = false): Row => ({
 export const MODE_PICTURES: Record<Mode, string> = {
   sea: "/design/container-ship.svg",
   air: "/design/train-plane-sketch.svg",
+  container: "/design/forklift-loading.svg",
   truck: "/design/truck-unloading.svg",
   rail: "/design/train-plane-sketch.svg",
 };
@@ -60,6 +72,7 @@ export function useShipment(copy: FreightFormCopy) {
   const [formula, setFormula] = useState<Formula>("ddp");
   const [address, setAddress] = useState({ street: "", postcode: "", city: "", country: "FR" });
   const [rows, setRows] = useState<Row[]>([newRow(1, true)]);
+  const [container, setContainer] = useState<{ type: ContainerType; count: number }>({ type: "40", count: 1 });
   const [declaration, setDeclaration] = useState(false);
   const [goodsReset, setGoodsReset] = useState(false);
 
@@ -76,21 +89,33 @@ export function useShipment(copy: FreightFormCopy) {
   const remove = (id: number) => setRows((rs) => rs.filter((r) => r.id !== id));
 
   const active = rows.filter((r) => r.cartons > 0);
-  const totals = totalWeights(active);
-  const bracket = bracketOf(mode, address.country, totals.chargeable);
+  // The line the cartons call for, decided as the server will.
+  const { line, zone, reason } = routeOf({ formula, mode, country: address.country, postcode: address.postcode, products: active });
+  const minKg = line ? MIN_KG_PER_CARTON[line] : MIN_KG_DEFAULT;
+  const totals = totalWeights(active, minKg);
+  const bracket = line ? bracketOf(line, totals.chargeable) : null;
+  const billedKg = bracket ? bracket.billedKg : wholeKg(totals.chargeable);
   const refusedGoods = active.some((r) => goodsClass(mode, r.goods)?.kind === "refused");
-  const refusedCarton = active.some(cartonRefused);
-  const complete = active.length > 0 && active.every((r) => r.length && r.width && r.height && r.weight);
-  const reason = quoteReason({ formula, mode, country: address.country, products: active });
+  const complete = active.length > 0 && (mode === "container" || active.every((r) => r.length && r.width && r.height && r.weight));
   const blocking = refusedGoods
     ? copy.warnings.refusedGoods
-    : refusedCarton
-      ? copy.warnings.refusedCarton
-      : !complete
-        ? copy.warnings.noProducts
-        : null;
+    : !complete
+      ? mode === "container"
+        ? copy.warnings.noProductsContainer
+        : copy.warnings.noProducts
+      : null;
 
-  const oversize = active.reduce((s, r) => s + (oversizeSurcharge(r) ? Math.round(r.cartons) : 0), 0);
+  // What will be added, counted as the server will price it.
+  const cartonsOf = (r: Row) => Math.round(r.cartons);
+  const parcel = line === "sea" || line === "air" ? carrierOf(line, address.country) : null;
+  const added = {
+    oversize: parcel ? active.filter((r) => carrierFees(parcel, r, false).size > 0).reduce((s, r) => s + cartonsOf(r), 0) : 0,
+    crate: parcel ? active.filter((r) => r.reinforce).reduce((s, r) => s + cartonsOf(r), 0) : 0,
+    overlength: line === "seaHeavy" ? active.filter((r) => sides(r).a > 240).reduce((s, r) => s + cartonsOf(r), 0) : 0,
+    extraNames: line === "seaHeavy" || line === "airHeavy" ? Math.max(0, active.length - MAX_DDP_PRODUCTS) : 0,
+    singleCarton: Boolean(line && line !== "seaHeavy" && totals.cartons === 1),
+    batteryRates: line === "airHeavy" && active.some((r) => r.battery),
+  };
   const reinforcedM3 = active.filter((r) => r.reinforce).reduce((s, r) => s + productWeights(r).volume, 0);
 
   const request = {
@@ -98,13 +123,14 @@ export function useShipment(copy: FreightFormCopy) {
     mode,
     address,
     products: rows.map((r) => ({ name: r.name, goods: r.goods, cartons: r.cartons, length: r.length, width: r.width, height: r.height, weight: r.weight, units: r.units, battery: r.battery, reinforce: r.reinforce })),
-    declaration: declaration && mode !== "truck",
+    declaration: declaration && line !== null,
+    container: mode === "container" ? container : null,
   };
 
   return {
     mode, setMode, formula, setFormula, address, setAddress, rows, update, add, remove,
-    declaration, setDeclaration, goodsReset,
-    active, totals, bracket, reason, blocking, oversize, reinforcedM3, request,
+    container, setContainer, declaration, setDeclaration, goodsReset,
+    active, line, zone, totals, bracket, billedKg, reason, blocking, added, reinforcedM3, request,
   };
 }
 
@@ -200,7 +226,7 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
           lang={lang}
           value={s.mode}
           onChange={s.setMode}
-          options={MODES.map((m) => ({ value: m, label: c.mode.names[m], tag: m === "sea" ? c.mode.recommended : DISCOURAGED.includes(m) ? c.mode.discouraged : undefined }))}
+          options={MODES.map((m) => ({ value: m, label: c.mode.names[m], tag: m === "sea" ? c.mode.recommended : m === "container" ? c.mode.onQuote : DISCOURAGED.includes(m) ? c.mode.discouraged : undefined }))}
         />
         <p style={HINT}>{c.mode.hints[s.mode]}</p>
       </div>
@@ -210,6 +236,25 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
         <Segmented lang={lang} value={s.formula} onChange={s.setFormula} options={FORMULAS.map((f) => ({ value: f, label: c.formula.names[f] }))} />
         <p style={HINT}>{c.formula.hints[s.formula]}</p>
       </div>
+
+      {s.mode === "container" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1fr)", gap: "10px", alignItems: "end" }}>
+            <label style={{ display: "flex", flexDirection: "column", gap: "6px", minWidth: 0 }}>
+              <span style={ty(SMALL_LABEL)}>{c.container.type}</span>
+              <select value={s.container.type} onChange={(e) => s.setContainer({ ...s.container, type: e.target.value as ContainerType })} style={SELECT}>
+                {CONTAINER_TYPES.map((t) => (
+                  <option key={t} value={t}>
+                    {c.container.types[t]}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <NumberField lang={lang} id={`${idPrefix}-containers`} label={c.container.count} value={s.container.count} onChange={(v) => s.setContainer({ ...s.container, count: Math.max(1, Math.round(v)) })} />
+          </div>
+          <p style={HINT}>{c.container.hint}</p>
+        </div>
+      )}
 
       <fieldset style={{ margin: 0, padding: 0, border: 0, display: "flex", flexDirection: "column", gap: "10px", minWidth: 0 }}>
         <legend style={{ ...LABEL, padding: 0, marginBottom: "10px" }}>{c.address.title}</legend>
@@ -227,13 +272,14 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
             <input name="city" autoComplete="address-level2" value={s.address.city} onChange={(e) => setAddr({ city: e.target.value })} style={TEXT_INPUT} />
           </label>
         </div>
+        {s.mode === "sea" && <p style={HINT}>{c.address.postcodeHint}</p>}
         <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
           <span style={ty(SMALL_LABEL)}>{c.address.country}</span>
           <select value={s.address.country} onChange={(e) => setAddr({ country: e.target.value })} style={SELECT}>
             {countries.map((iso) => (
               <option key={iso} value={iso}>
                 {countryName(iso)}
-                {s.formula === "ddp" && !servesCountry(s.mode, iso) ? ` (${c.quote.title})` : ""}
+                {s.formula === "ddp" && PRICED_MODES.includes(s.mode) && !servesCountry(s.mode, iso) ? ` (${c.quote.title})` : ""}
               </option>
             ))}
           </select>
@@ -266,7 +312,7 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
                 <select value={r.goods} onChange={(e) => s.update(r.id, { goods: e.target.value as Row["goods"] })} style={SELECT}>
                   {GOODS[s.mode].map((cls) => (
                     <option key={cls.key} value={cls.key}>
-                      {c.goods[s.mode][cls.key] ?? cls.key}
+                      {goodsLabel(c, s.mode, cls.key)}
                     </option>
                   ))}
                 </select>
@@ -279,7 +325,7 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
                   <NumberField lang={lang} id={`${id}-h`} label={c.products.height} value={r.height} onChange={(v) => s.update(r.id, { height: v })} />
                   <NumberField lang={lang} id={`${id}-kg`} label={c.products.weight} value={r.weight} step={0.1} onChange={(v) => s.update(r.id, { weight: v })} />
                 </div>
-                <p style={{ ...HINT, marginTop: "6px" }}>{c.products.cartonHint}</p>
+                <p style={{ ...HINT, marginTop: "6px" }}>{s.mode === "container" ? c.products.cartonHintContainer : c.products.cartonHint}</p>
               </div>
               {(g?.kind === "piece" || g?.kind === "eur") && (
                 <div style={{ maxWidth: "220px" }}>
@@ -313,27 +359,37 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
         </button>
       </div>
 
-      {s.mode !== "truck" && (
+      {s.line && (
         <label style={CHECK}>
           <input type="checkbox" checked={s.declaration} onChange={(e) => s.setDeclaration(e.target.checked)} style={BOX} />
           <span>
             {c.options.declaration}
             <br />
-            <span style={HINT}>{s.mode === "sea" ? c.options.declarationHintSea : c.options.declarationHint}</span>
+            <span style={HINT}>{c.options.declarationHints[s.line]}</span>
           </span>
         </label>
       )}
 
-      <div aria-live="polite" style={{ display: "flex", flexDirection: "column", gap: "6px", padding: "18px", borderRadius: "18px", background: "#EAF1FF", border: "1.5px solid #155DFC" }}>
-        <span style={{ fontSize: "13px", fontWeight: 600, color: "#4A5578" }}>{c.calc.title}</span>
-        <span style={{ fontFamily: MONO, fontSize: "var(--sp-fs-24, 24px)", fontWeight: 600, color: "#0E1A3D" }}>
-          {n(s.bracket.billedKg)} <span style={{ fontSize: "15px", color: "#4A5578" }}>kg</span>
-        </span>
-        <span style={{ fontSize: "12.5px", lineHeight: 1.45, color: "#4A5578" }}>{c.calc.rule}</span>
-        <span style={{ fontSize: "13.5px", color: "#4A5578" }}>
-          {fill(c.calc.volume, { m3: m3(s.totals.volume) })} · {c.calc.volumetric} {kg(s.totals.volumetric)} · {c.calc.bracket} {s.bracket.label} kg
-        </span>
-      </div>
+      {s.mode !== "container" && (
+        <div aria-live="polite" style={{ display: "flex", flexDirection: "column", gap: "6px", padding: "18px", borderRadius: "18px", background: "#EAF1FF", border: "1.5px solid #155DFC" }}>
+          {s.line && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px", paddingBottom: "10px", marginBottom: "4px", borderBottom: "1px solid #C9D8FB" }}>
+              <span style={{ fontSize: "13px", fontWeight: 600, color: "#4A5578" }}>{c.lines.label}</span>
+              <span style={{ fontSize: "16px", fontWeight: 600, color: "#0E1A3D" }}>{c.lines.names[s.line]}</span>
+              <span style={{ fontSize: "12.5px", lineHeight: 1.45, color: "#4A5578" }}>{c.lines.hints[s.line]}</span>
+            </div>
+          )}
+          <span style={{ fontSize: "13px", fontWeight: 600, color: "#4A5578" }}>{c.calc.title}</span>
+          <span style={{ fontFamily: MONO, fontSize: "var(--sp-fs-24, 24px)", fontWeight: 600, color: "#0E1A3D" }}>
+            {n(s.billedKg)} <span style={{ fontSize: "15px", color: "#4A5578" }}>kg</span>
+          </span>
+          <span style={{ fontSize: "12.5px", lineHeight: 1.45, color: "#4A5578" }}>{c.calc.rule}</span>
+          <span style={{ fontSize: "13.5px", color: "#4A5578" }}>
+            {fill(c.calc.volume, { m3: m3(s.totals.volume) })} · {c.calc.volumetric} {kg(s.totals.volumetric)}
+            {s.bracket ? ` · ${c.calc.bracket} ${s.bracket.label} kg` : ""}
+          </span>
+        </div>
+      )}
     </div>
   );
 }
@@ -341,10 +397,14 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
 /** What will be added to the shipment, as words: no prices. */
 export function surchargeList(c: FreightFormCopy, s: Shipment, lang: Locale): string[] {
   const m3 = formatNumber(s.reinforcedM3, lang, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const count = (template: string, v: number) => (v > 0 ? fill(template, { n: formatNumber(v, lang) }) : null);
   return [
-    s.oversize ? fill(c.estimate.oversize, { n: formatNumber(s.oversize, lang) }) : null,
-    s.totals.cartons === 1 ? c.estimate.singleCarton : null,
-    s.mode === "truck" && s.active.some((r) => r.battery) ? c.estimate.battery : null,
+    s.added.batteryRates ? c.estimate.batteryRates : null,
+    count(c.estimate.oversize, s.added.oversize),
+    count(c.estimate.crate, s.added.crate),
+    count(c.estimate.overlength, s.added.overlength),
+    count(c.estimate.extraNames, s.added.extraNames),
+    s.added.singleCarton ? c.estimate.singleCarton : null,
     s.reinforcedM3 > 0 ? fill(c.estimate.reinforcement, { m3: `${m3} m³` }) : null,
     s.request.declaration ? c.estimate.declaration : null,
   ].filter(Boolean) as string[];
