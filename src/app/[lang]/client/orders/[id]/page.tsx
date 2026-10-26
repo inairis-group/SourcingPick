@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { AttachmentContext, OrderStatus, Role, ThreadContextType } from "@prisma/client";
+import { AttachmentContext, FreightQuoteStatus, OrderStatus, Role, ThreadContextType } from "@prisma/client";
 import { Link } from "@/components/ui/link";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
@@ -20,6 +20,9 @@ import { ClientShipmentProgress } from "@/components/shipments/client-progress";
 import { getClientVisibleShipmentEvents } from "@/lib/shipments/queries";
 import { getShippingQuoteForBuyer } from "@/lib/shipments/quote-acceptance";
 import { FreightQuotePanel } from "./_components/freight-quote-panel";
+import { freightCopy } from "@/content/freight/simulator";
+import { describeTransport, quoteStanding } from "@/lib/freight-quotes/describe";
+import type { FreightRequest } from "@/lib/freight/estimate";
 import { ContextThread } from "@/components/messaging/context-thread";
 import { MediaGrid } from "@/components/attachments/media-grid";
 import { OrderActions } from "./_components/order-actions";
@@ -118,6 +121,15 @@ export default async function ClientOrderDetailPage({
   // Null unless a shipper has actually priced this leg — the panel is not a
   // placeholder for freight that hasn't been quoted yet.
   const freight = await getShippingQuoteForBuyer(order.id);
+  // Freight quotes the team sent from the freight calculator for this order
+  // (the client answers them on their own page).
+  const freightQuotes = await prisma.freightQuote.findMany({
+    where: { orderId: order.id, organizationId: user.organizationId, status: { not: FreightQuoteStatus.CANCELLED } },
+    orderBy: { createdAt: "desc" },
+    select: { id: true, reference: true, status: true, mode: true, line: true, amountEurCents: true, validUntil: true, request: true },
+  });
+  const fq = dict.client.freightQuote;
+  const freightWords = freightCopy(lang);
   // `true` is the access control: the internal sub-states are dropped in the
   // query, so nothing downstream has to remember to hide them.
   const stageEvents = await orderTimeline(order.id, true);
@@ -221,6 +233,36 @@ export default async function ClientOrderDetailPage({
           lang={lang}
           copy={dict.client.orders as unknown as Record<string, string>}
         />
+      )}
+
+      {freightQuotes.length > 0 && (
+        <section className="border-line bg-surface mt-6 rounded-lg border p-5">
+          <h2 className="text-headline m-0 text-sm font-semibold">{fq.orderPanelTitle}</h2>
+          <ul className="m-0 mt-3 flex list-none flex-col p-0">
+            {freightQuotes.map((q) => {
+              const status = quoteStanding(q.status, q.validUntil);
+              return (
+                <li key={q.id} className="border-line-subtle flex flex-wrap items-center justify-between gap-3 border-t py-2.5 text-sm first:border-t-0">
+                  <span className="min-w-0">
+                    <span className="font-mono">{q.reference}</span>
+                    <span className="text-muted">
+                      {" · "}
+                      {describeTransport(freightWords, { mode: q.mode, line: q.line, container: (q.request as unknown as FreightRequest)?.container ?? null })}
+                      {" · "}
+                      {fq.status[status as keyof typeof fq.status]}
+                    </span>
+                  </span>
+                  <span className="flex items-center gap-4">
+                    <b className="tabular-nums">{formatEUR(q.amountEurCents / 100, lang)}</b>
+                    <Link href={`/${lang}/client/freight-quotes/${q.id}`} variant="inline" className="font-semibold">
+                      {fq.open}
+                    </Link>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
       )}
 
       <ClientShipmentProgress events={shipmentEvents} lang={lang} dict={dict} />

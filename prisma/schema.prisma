@@ -770,6 +770,7 @@ model User {
   deletionRequestsReviewed  AccountDeletionRequest[] @relation("DeletionReviewer")
   guestConversations        GuestConversation[]      @relation("GuestChatLinkedUser")
   quoteRequests             QuoteRequest[]           @relation("QuoteRequestLinkedUser")
+  freightQuotesCreated      FreightQuote[]           @relation("FreightQuoteAuthor")
 
   @@index([organizationId])
   @@index([role, deletedAt])
@@ -931,6 +932,8 @@ model Organization {
 
   shipmentsAsShipper Shipment[]          @relation("ShipmentShipperOrg")
   marketplaceReviews MarketplaceReview[] @relation("ReviewAuthorOrg")
+
+  freightQuotes FreightQuote[] @relation("FreightQuoteClientOrg")
 
   payoutsReceived Payout[] @relation("PayoutPayeeOrg")
 
@@ -1288,14 +1291,15 @@ model Order {
   /// honest answer, and inventing one would put a fabricated history in front
   /// of a client. `stage` may be null on its own — a state with no sub-state
   /// yet is a legitimate position.
-  state  OrderState?
-  stage  OrderStage?
+  state OrderState?
+  stage OrderStage?
 
   invoices        Invoice[]
   escrows         EscrowTransaction[]
   forwarderTokens ForwarderUploadToken[]
   disputes        Dispute[]
   stageEvents     OrderStageEvent[]
+  freightQuotes   FreightQuote[]         @relation("FreightQuoteOrder")
 
   @@index([state, clientOrgId])
   @@index([status, factoryOrgId])
@@ -1594,9 +1598,82 @@ model Invoice {
 
   escrow EscrowTransaction?
 
+  /// The freight quote this invoice bills, when it came from one.
+  freightQuote FreightQuote? @relation("FreightQuoteInvoice")
+
   @@index([organizationId, status])
   @@index([status, dueAt])
   @@index([type, issuedAt])
+}
+
+/// Where a freight quote stands. Expiry is not a status: a SENT quote past its
+/// `validUntil` simply can no longer be accepted.
+enum FreightQuoteStatus {
+  SENT
+  ACCEPTED
+  DECLINED
+  CANCELLED
+}
+
+/// A freight quote the team sends a client from the freight calculator
+/// (/admin/freight-calculator): the calculator's request and its price,
+/// frozen, converted to euros at the day's rate when it is made, for a client
+/// organisation and, when it is the transport of one, an order.
+///
+/// The client accepts it (or declines, with a reason) in their space; the
+/// acceptance issues the SHIPPING invoice for exactly the euro amount quoted.
+/// Nothing is billed before the client has agreed to the figure.
+model FreightQuote {
+  id             String             @id @default(cuid(2))
+  reference      String             @unique // DTR-XXXXXX
+  organizationId String
+  organization   Organization       @relation("FreightQuoteClientOrg", fields: [organizationId], references: [id], onDelete: Restrict)
+  /// The order this freight is for; null for a client shipping without one.
+  orderId        String?
+  order          Order?             @relation("FreightQuoteOrder", fields: [orderId], references: [id], onDelete: Restrict)
+  createdById    String?
+  createdBy      User?              @relation("FreightQuoteAuthor", fields: [createdById], references: [id], onDelete: SetNull)
+  status         FreightQuoteStatus @default(SENT)
+
+  /// The calculator's request as it was priced (src/lib/freight/request.ts),
+  /// and its estimate (src/lib/freight/estimate.ts), frozen.
+  request            Json
+  estimate           Json
+  mode               String
+  formula            String
+  /// The rate card's line; null for the modes quoted by hand.
+  line               String?
+  destinationCountry String
+
+  /// The calculator's price, commission included, by currency, in minor
+  /// units; all zero when the calculator had no price (full container,
+  /// truck, rail, FOB…) and the team set the amount themselves.
+  rmbCents       Int      @default(0)
+  eurPartCents   Int      @default(0)
+  usdCents       Int      @default(0)
+  /// The day's rates the conversion used, EUR per 1 CNY / 1 USD × 1 000 000.
+  fxCnyEurMicros Int?
+  fxUsdEurMicros Int?
+  /// What the client accepts and is invoiced, in euro cents.
+  amountEurCents Int
+  validUntil     DateTime
+  /// Shown to the client with the quote.
+  notes          String?
+
+  acceptedAt    DateTime?
+  acceptedById  String?
+  declinedAt    DateTime?
+  declineReason String?
+  cancelledAt   DateTime?
+  invoiceId     String?   @unique
+  invoice       Invoice?  @relation("FreightQuoteInvoice", fields: [invoiceId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, status])
+  @@index([orderId])
+  @@index([status, createdAt])
 }
 
 model EscrowTransaction {

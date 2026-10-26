@@ -43,6 +43,8 @@ export type NotificationVars = {
     | "guest_chat_reply"
     | "freight_brief_needed"
     | "freight_quote_accepted"
+    | "freight_quote_received"
+    | "freight_quote_declined"
     | "freight_settled"
     | "freight_settlement_pending"
     | "support_ticket_resolved"
@@ -169,6 +171,26 @@ const SYSTEM_TITLES: Record<
     en: "Buyer accepted the freight quote",
     zh: "买家已接受运费报价",
     ar: "قبل المشتري عرض سعر الشحن"
+  },
+  freight_quote_received: {
+    fr: "Nouveau devis transport à valider",
+    en: "New freight quote awaiting your answer",
+    zh: "有新的运费报价等你确认",
+    ar: "عرض سعر شحن جديد بانتظار ردّك",
+    es: "Nuevo presupuesto de transporte por validar",
+    de: "Neues Frachtangebot wartet auf Ihre Antwort",
+    it: "Nuovo preventivo di trasporto da confermare",
+    pt: "Novo orçamento de transporte por validar",
+    nl: "Nieuwe vrachtofferte wacht op uw antwoord",
+    ru: "Новое предложение по доставке ждёт вашего ответа",
+    tr: "Yanıtınızı bekleyen yeni nakliye teklifi",
+    pl: "Nowa wycena transportu czeka na Państwa odpowiedź"
+  },
+  freight_quote_declined: {
+    fr: "Devis transport refusé par le client",
+    en: "Client declined the freight quote",
+    zh: "客户拒绝了运费报价",
+    ar: "رفض العميل عرض سعر الشحن"
   },
   freight_settled: {
     fr: "Règlement transport envoyé",

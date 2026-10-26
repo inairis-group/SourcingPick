@@ -268,6 +268,66 @@
         "code": "Müşteri kodunuz",
         "codeHint": "Her kolinin üzerine yazılacak: kolilerinizi varışta bu sayede tanırız."
       }
+    },
+    "freightQuote": {
+      "title": "Navlun teklifi {reference}",
+      "intro": "Navlun fiyatınız burada. Teklifi kabul ettiğinizde ilgili navlun faturasını alırsınız.",
+      "reference": "Referans",
+      "amount": "Tutar",
+      "validUntil": "Son geçerlilik tarihi",
+      "order": "Sipariş",
+      "mode": "Taşıma türü",
+      "line": "Hat",
+      "formula": "Teslim şekli",
+      "delay": "Teslim süresi",
+      "destination": "Teslimat",
+      "cartons": "Koliler",
+      "billedWeight": "Faturalanan ağırlık",
+      "container": "Konteynerler",
+      "products": "Ürünler",
+      "notes": "Ekibimizden mesaj",
+      "status": {
+        "SENT": "Yanıtınızı bekliyor",
+        "ACCEPTED": "Kabul edildi",
+        "DECLINED": "Reddedildi",
+        "CANCELLED": "İptal edildi",
+        "EXPIRED": "Süresi doldu"
+      },
+      "accept": "Teklifi kabul et",
+      "accepting": "Onaylanıyor…",
+      "acceptHint": "{amount} tutarındaki navlun faturası, onayınızla birlikte hemen oluşturulur.",
+      "decline": "Reddet",
+      "declineReason": "Bu teklifi neden reddediyorsunuz?",
+      "declineSubmit": "Reddimi gönder",
+      "back": "Geri",
+      "accepted": "Teklif kabul edildi. {invoice} numaralı faturanız hazır.",
+      "seeInvoices": "Faturalarımı gör",
+      "seeOrder": "Siparişi gör",
+      "declined": "Bu teklifi reddettiniz. Ekibimiz size geri dönecek.",
+      "expired": "Bu teklifin süresi doldu: yeni bir fiyat için bize ulaşın.",
+      "cancelled": "Bu teklif ekibimiz tarafından iptal edildi.",
+      "errors": {
+        "not_found": "Bu teklif bulunamadı.",
+        "not_open": "Bu teklif artık yanıtınızı beklemiyor.",
+        "expired": "Bu teklifin süresi doldu: yeni bir fiyat için bize ulaşın.",
+        "order_freight_billed": "Bu siparişin navlunu zaten faturalandı.",
+        "reason_required": "Neden reddettiğinizi birkaç kelimeyle belirtin.",
+        "generic": "Bir hata oluştu. Tekrar deneyin."
+      },
+      "pendingTitle": "Yanıtınızı bekleyen navlun teklifleri",
+      "pendingItem": "{reference} · {transport} · {amount}",
+      "open": "Teklifi gör",
+      "orderPanelTitle": "Bu siparişin navlunu",
+      "email": {
+        "subject": "Navlun teklifiniz {reference}: {amount}",
+        "heading": "Navlun teklifiniz",
+        "intro": "Ekibimiz navlun fiyatınızı hazırladı. Teklifi kontrol edin ve müşteri alanınızda kabul edin: fatura, onayınızla birlikte hemen oluşturulur.",
+        "amount": "Tutar",
+        "notesTitle": "Ekibimizden mesaj",
+        "cta": "Teklifi görün ve kabul edin",
+        "footer": "SourcingPick · contact@sourcingpick.com",
+        "sep": ": "
+      }
     }
   },
   "orders": {
@@ -296,7 +356,67 @@
       "intro": "Herkese açık simülatörle aynı hesaplama; ayrıntılı fiyat ekranda.",
       "result": "Hesaplanan fiyat",
       "requests": "Simülatörden gelen talepler",
-      "requestsEmpty": "Henüz talep yok."
+      "requestsEmpty": "Henüz talep yok.",
+      "quote": {
+        "title": "Müşteriye navlun teklifi",
+        "intro": "Bu hesaplamayı teklif olarak gönderin: müşteri teklifi kendi alanında kabul eder ve navlun faturası, bu teklifin euro tutarı üzerinden otomatik olarak oluşturulur.",
+        "client": "Müşteri",
+        "clientSearch": "Ad, e-posta veya müşteri kodu (SP-…)",
+        "clientNone": "Müşteri bulunamadı.",
+        "change": "Değiştir",
+        "order": "Sipariş",
+        "noOrder": "Siparişsiz (yalnızca navlun)",
+        "orderBilled": "navlun zaten faturalandı",
+        "prices": "Hesaplayıcı fiyatı, komisyon dâhil",
+        "noPrice": "Hesaplayıcının bu talep için bir fiyatı yok (fiyat teklifle belirlenir): tutarı kendiniz girin.",
+        "rateCny": "1 RMB’nin € karşılığı",
+        "rateUsd": "1 $’ın € karşılığı",
+        "rateEcb": "Avrupa Merkez Bankası’nın {date} tarihli kuru",
+        "rateEnv": "Sunucu yapılandırmasındaki kur",
+        "rateNone": "Günün kuru alınamadı: kuru kendiniz girin.",
+        "converted": "Euroya çevrilmiş",
+        "amount": "Teklif tutarı (€)",
+        "amountHint": "Müşterinin kabul edeceği ve kendisine faturalanacak tutar budur. Bu tutarı ayarlayabilirsiniz (kâr marjı, konteyner…).",
+        "validUntil": "Son geçerlilik tarihi",
+        "notes": "Müşteriye mesaj (isteğe bağlı)",
+        "send": "Teklifi müşteriye gönder",
+        "sending": "Gönderiliyor…",
+        "sent": "{reference} teklifi gönderildi: {client}.",
+        "needResult": "Önce hesaplayıcıda geçerli bir sevkiyat tanımlayın.",
+        "errors": {
+          "invalid_request": "Tanımlanan sevkiyat geçerli değil: hesaplayıcıyı kontrol edin.",
+          "client_not_found": "Bu müşteri yok ya da bir müşteri hesabı değil.",
+          "order_not_found": "Bu sipariş bu müşteriye ait değil.",
+          "order_freight_billed": "Bu siparişin navlunu zaten faturalandı.",
+          "invalid_amount": "Euro cinsinden bir tutar girin.",
+          "invalid_rate": "Bir döviz kuru eksik ya da hatalı görünüyor.",
+          "invalid_validity": "Geçerlilik tarihi ileri bir tarih olmalı (en fazla bir yıl sonrası).",
+          "generic": "Teklif gönderilemedi. Tekrar deneyin."
+        },
+        "listTitle": "Gönderilen navlun teklifleri",
+        "listEmpty": "Henüz navlun teklifi yok.",
+        "cols": {
+          "reference": "Referans",
+          "date": "Tarih",
+          "client": "Müşteri",
+          "order": "Sipariş",
+          "transport": "Taşıma",
+          "amount": "Tutar",
+          "validUntil": "Son geçerlilik",
+          "status": "Durum",
+          "invoice": "Fatura"
+        },
+        "status": {
+          "SENT": "Gönderildi",
+          "ACCEPTED": "Kabul edildi",
+          "DECLINED": "Reddedildi",
+          "CANCELLED": "İptal edildi",
+          "EXPIRED": "Süresi doldu"
+        },
+        "cancel": "İptal et",
+        "cancelConfirm": "Bu teklif iptal edilsin mi? Müşteri artık teklifi kabul edemeyecek.",
+        "declinedReason": "Ret gerekçesi: {reason}"
+      }
     }
   }
 }

@@ -268,6 +268,66 @@
         "code": "Uw klantcode",
         "codeHint": "Te vermelden op elke doos: zo herkennen wij uw pakketten bij aankomst."
       }
+    },
+    "freightQuote": {
+      "title": "Transportofferte {reference}",
+      "intro": "Hier is de prijs van uw transport. Als u de offerte accepteert, ontvangt u de bijbehorende transportfactuur.",
+      "reference": "Referentie",
+      "amount": "Bedrag",
+      "validUntil": "Geldig tot",
+      "order": "Order",
+      "mode": "Vervoerswijze",
+      "line": "Lijn",
+      "formula": "Formule",
+      "delay": "Levertijd",
+      "destination": "Levering",
+      "cartons": "Dozen",
+      "billedWeight": "Gefactureerd gewicht",
+      "container": "Containers",
+      "products": "Producten",
+      "notes": "Bericht van ons team",
+      "status": {
+        "SENT": "Te bevestigen",
+        "ACCEPTED": "Geaccepteerd",
+        "DECLINED": "Geweigerd",
+        "CANCELLED": "Geannuleerd",
+        "EXPIRED": "Verlopen"
+      },
+      "accept": "Offerte accepteren",
+      "accepting": "Bevestigen…",
+      "acceptHint": "De transportfactuur van {amount} wordt aangemaakt zodra u akkoord gaat.",
+      "decline": "Weigeren",
+      "declineReason": "Waarom weigert u deze offerte?",
+      "declineSubmit": "Mijn weigering versturen",
+      "back": "Terug",
+      "accepted": "Offerte geaccepteerd. Uw factuur {invoice} staat klaar.",
+      "seeInvoices": "Mijn facturen bekijken",
+      "seeOrder": "Order bekijken",
+      "declined": "U hebt deze offerte geweigerd. Ons team neemt contact met u op.",
+      "expired": "Deze offerte is verlopen: neem contact met ons op voor een nieuwe prijs.",
+      "cancelled": "Deze offerte is door ons team geannuleerd.",
+      "errors": {
+        "not_found": "Deze offerte is niet gevonden.",
+        "not_open": "Deze offerte wacht niet meer op uw antwoord.",
+        "expired": "Deze offerte is verlopen: neem contact met ons op voor een nieuwe prijs.",
+        "order_freight_billed": "Het transport van deze order is al gefactureerd.",
+        "reason_required": "Laat ons in een paar woorden weten waarom u weigert.",
+        "generic": "Er is iets misgegaan. Probeer het opnieuw."
+      },
+      "pendingTitle": "Te bevestigen transportoffertes",
+      "pendingItem": "{reference} · {transport} · {amount}",
+      "open": "Offerte bekijken",
+      "orderPanelTitle": "Transport van deze order",
+      "email": {
+        "subject": "Uw transportofferte {reference}: {amount}",
+        "heading": "Uw transportofferte",
+        "intro": "Ons team heeft de prijs van uw transport opgesteld. Controleer en accepteer de offerte in uw klantomgeving: de factuur wordt aangemaakt zodra u akkoord gaat.",
+        "amount": "Bedrag",
+        "notesTitle": "Bericht van ons team",
+        "cta": "Offerte bekijken en accepteren",
+        "footer": "SourcingPick · contact@sourcingpick.com",
+        "sep": ": "
+      }
     }
   },
   "orders": {
@@ -296,7 +356,67 @@
       "intro": "Dezelfde berekening als de openbare simulator, met de gedetailleerde prijs op het scherm.",
       "result": "Berekende prijs",
       "requests": "Aanvragen via de calculator",
-      "requestsEmpty": "Nog geen aanvragen."
+      "requestsEmpty": "Nog geen aanvragen.",
+      "quote": {
+        "title": "Transportofferte voor een klant",
+        "intro": "Verstuur deze berekening als offerte: de klant accepteert die in zijn klantomgeving en de transportfactuur wordt automatisch aangemaakt voor het eurobedrag van deze offerte.",
+        "client": "Klant",
+        "clientSearch": "Naam, e-mail of klantcode (SP-…)",
+        "clientNone": "Geen klant gevonden.",
+        "change": "Wijzigen",
+        "order": "Order",
+        "noOrder": "Zonder order (alleen transport)",
+        "orderBilled": "transport al gefactureerd",
+        "prices": "Prijs van de calculator, commissie inbegrepen",
+        "noPrice": "De calculator heeft geen prijs voor deze aanvraag (op offerte): vul het bedrag zelf in.",
+        "rateCny": "Koers 1 RMB in €",
+        "rateUsd": "Koers 1 $ in €",
+        "rateEcb": "Koers van de Europese Centrale Bank van {date}",
+        "rateEnv": "Koers uit de serverconfiguratie",
+        "rateNone": "Dagkoers niet beschikbaar: vul die zelf in.",
+        "converted": "Omgerekend naar euro",
+        "amount": "Offertebedrag (€)",
+        "amountHint": "Dit is het bedrag dat de klant accepteert en dat hem gefactureerd wordt. U kunt het aanpassen (marge, container…).",
+        "validUntil": "Geldig tot",
+        "notes": "Bericht voor de klant (optioneel)",
+        "send": "Offerte naar de klant versturen",
+        "sending": "Verzenden…",
+        "sent": "Offerte {reference} verstuurd naar {client}.",
+        "needResult": "Beschrijf eerst een geldige zending in de calculator.",
+        "errors": {
+          "invalid_request": "De beschreven zending is niet geldig: controleer de calculator.",
+          "client_not_found": "Deze klant bestaat niet of is geen klantaccount.",
+          "order_not_found": "Deze order hoort niet bij deze klant.",
+          "order_freight_billed": "Het transport van deze order is al gefactureerd.",
+          "invalid_amount": "Vul een bedrag in euro in.",
+          "invalid_rate": "Er ontbreekt een wisselkoers of een koers lijkt onjuist.",
+          "invalid_validity": "De geldigheidsdatum moet in de toekomst liggen (hoogstens een jaar).",
+          "generic": "De offerte kon niet worden verstuurd. Probeer het opnieuw."
+        },
+        "listTitle": "Verstuurde transportoffertes",
+        "listEmpty": "Nog geen transportoffertes.",
+        "cols": {
+          "reference": "Referentie",
+          "date": "Datum",
+          "client": "Klant",
+          "order": "Order",
+          "transport": "Transport",
+          "amount": "Bedrag",
+          "validUntil": "Geldig tot",
+          "status": "Status",
+          "invoice": "Factuur"
+        },
+        "status": {
+          "SENT": "Verstuurd",
+          "ACCEPTED": "Geaccepteerd",
+          "DECLINED": "Geweigerd",
+          "CANCELLED": "Geannuleerd",
+          "EXPIRED": "Verlopen"
+        },
+        "cancel": "Annuleren",
+        "cancelConfirm": "Deze offerte annuleren? De klant kan deze dan niet meer accepteren.",
+        "declinedReason": "Reden van weigering: {reason}"
+      }
     }
   }
 }

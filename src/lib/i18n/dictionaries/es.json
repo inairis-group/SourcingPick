@@ -268,6 +268,66 @@
         "code": "Su código de cliente",
         "codeHint": "Debe indicarse en cada caja: así reconocemos sus bultos a su llegada."
       }
+    },
+    "freightQuote": {
+      "title": "Presupuesto de transporte {reference}",
+      "intro": "Este es el precio de su transporte. Al aceptarlo, recibirá la factura de transporte correspondiente.",
+      "reference": "Referencia",
+      "amount": "Importe",
+      "validUntil": "Válido hasta",
+      "order": "Pedido",
+      "mode": "Modo",
+      "line": "Línea",
+      "formula": "Modalidad",
+      "delay": "Plazo",
+      "destination": "Entrega",
+      "cartons": "Cajas",
+      "billedWeight": "Peso facturado",
+      "container": "Contenedores",
+      "products": "Productos",
+      "notes": "Mensaje de nuestro equipo",
+      "status": {
+        "SENT": "Por validar",
+        "ACCEPTED": "Aceptado",
+        "DECLINED": "Rechazado",
+        "CANCELLED": "Cancelado",
+        "EXPIRED": "Caducado"
+      },
+      "accept": "Aceptar el presupuesto",
+      "accepting": "Validando…",
+      "acceptHint": "La factura de transporte de {amount} se crea en cuanto usted lo acepte.",
+      "decline": "Rechazar",
+      "declineReason": "¿Por qué rechaza este presupuesto?",
+      "declineSubmit": "Enviar mi rechazo",
+      "back": "Atrás",
+      "accepted": "Presupuesto aceptado. Su factura {invoice} ya está disponible.",
+      "seeInvoices": "Ver mis facturas",
+      "seeOrder": "Ver el pedido",
+      "declined": "Ha rechazado este presupuesto. Nuestro equipo se pondrá en contacto con usted.",
+      "expired": "Este presupuesto ha caducado: contáctenos para obtener un nuevo precio.",
+      "cancelled": "Nuestro equipo ha cancelado este presupuesto.",
+      "errors": {
+        "not_found": "No se encuentra este presupuesto.",
+        "not_open": "Este presupuesto ya no está pendiente de su respuesta.",
+        "expired": "Este presupuesto ha caducado: contáctenos para obtener un nuevo precio.",
+        "order_freight_billed": "El transporte de este pedido ya está facturado.",
+        "reason_required": "Indique en pocas palabras por qué lo rechaza.",
+        "generic": "Se ha producido un error. Vuelva a intentarlo."
+      },
+      "pendingTitle": "Presupuestos de transporte por validar",
+      "pendingItem": "{reference} · {transport} · {amount}",
+      "open": "Ver el presupuesto",
+      "orderPanelTitle": "Transporte de este pedido",
+      "email": {
+        "subject": "Su presupuesto de transporte {reference}: {amount}",
+        "heading": "Su presupuesto de transporte",
+        "intro": "Nuestro equipo ha preparado el precio de su transporte. Revíselo y acéptelo en su área de cliente: la factura se crea en cuanto usted lo acepte.",
+        "amount": "Importe",
+        "notesTitle": "Mensaje de nuestro equipo",
+        "cta": "Ver y aceptar el presupuesto",
+        "footer": "SourcingPick · contact@sourcingpick.com",
+        "sep": ": "
+      }
     }
   },
   "orders": {
@@ -296,7 +356,67 @@
       "intro": "El mismo cálculo que el simulador público, con el precio detallado en pantalla.",
       "result": "Precio calculado",
       "requests": "Solicitudes recibidas por el simulador",
-      "requestsEmpty": "Todavía no hay solicitudes."
+      "requestsEmpty": "Todavía no hay solicitudes.",
+      "quote": {
+        "title": "Presupuesto de transporte para un cliente",
+        "intro": "Envíe este cálculo como presupuesto: el cliente lo acepta en su área de cliente y la factura de transporte se crea automáticamente, por el importe en euros de este presupuesto.",
+        "client": "Cliente",
+        "clientSearch": "Nombre, correo electrónico o código de cliente (SP-…)",
+        "clientNone": "No se ha encontrado ningún cliente.",
+        "change": "Cambiar",
+        "order": "Pedido",
+        "noOrder": "Sin pedido (solo transporte)",
+        "orderBilled": "transporte ya facturado",
+        "prices": "Precio del simulador, comisión incluida",
+        "noPrice": "El simulador no tiene precio para esta solicitud (bajo presupuesto): indique usted mismo el importe.",
+        "rateCny": "Tipo de cambio 1 RMB en €",
+        "rateUsd": "Tipo de cambio 1 $ en €",
+        "rateEcb": "Tipo de cambio del Banco Central Europeo del {date}",
+        "rateEnv": "Tipo de cambio de la configuración del servidor",
+        "rateNone": "Tipo de cambio del día no disponible: introdúzcalo.",
+        "converted": "Convertido a euros",
+        "amount": "Importe del presupuesto (€)",
+        "amountHint": "Este es el importe que el cliente acepta y que se le facturará. Puede ajustarlo (margen, contenedor…).",
+        "validUntil": "Válido hasta",
+        "notes": "Mensaje para el cliente (opcional)",
+        "send": "Enviar el presupuesto al cliente",
+        "sending": "Enviando…",
+        "sent": "Presupuesto {reference} enviado a {client}.",
+        "needResult": "Describa primero un envío válido en el simulador.",
+        "errors": {
+          "invalid_request": "El envío descrito no es válido: revise el simulador.",
+          "client_not_found": "Este cliente no existe o no es una cuenta de cliente.",
+          "order_not_found": "Este pedido no pertenece a este cliente.",
+          "order_freight_billed": "El transporte de este pedido ya está facturado.",
+          "invalid_amount": "Indique un importe en euros.",
+          "invalid_rate": "Falta un tipo de cambio o parece incorrecto.",
+          "invalid_validity": "La fecha de validez debe ser futura (un año como máximo).",
+          "generic": "No se ha podido enviar el presupuesto. Vuelva a intentarlo."
+        },
+        "listTitle": "Presupuestos de transporte enviados",
+        "listEmpty": "Todavía no hay presupuestos de transporte.",
+        "cols": {
+          "reference": "Referencia",
+          "date": "Fecha",
+          "client": "Cliente",
+          "order": "Pedido",
+          "transport": "Transporte",
+          "amount": "Importe",
+          "validUntil": "Válido hasta",
+          "status": "Estado",
+          "invoice": "Factura"
+        },
+        "status": {
+          "SENT": "Enviado",
+          "ACCEPTED": "Aceptado",
+          "DECLINED": "Rechazado",
+          "CANCELLED": "Cancelado",
+          "EXPIRED": "Caducado"
+        },
+        "cancel": "Cancelar",
+        "cancelConfirm": "¿Cancelar este presupuesto? El cliente ya no podrá aceptarlo.",
+        "declinedReason": "Motivo del rechazo: {reason}"
+      }
     }
   }
 }

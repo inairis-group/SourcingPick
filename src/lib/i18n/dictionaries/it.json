@@ -268,6 +268,66 @@
         "code": "Il vostro codice cliente",
         "codeHint": "Da riportare su ogni cartone: è così che riconosciamo i vostri colli all’arrivo."
       }
+    },
+    "freightQuote": {
+      "title": "Preventivo di trasporto {reference}",
+      "intro": "Ecco il prezzo del vostro trasporto. Accettando il preventivo, riceverete la relativa fattura di trasporto.",
+      "reference": "Riferimento",
+      "amount": "Importo",
+      "validUntil": "Valido fino al",
+      "order": "Ordine",
+      "mode": "Modalità",
+      "line": "Linea",
+      "formula": "Formula",
+      "delay": "Tempi",
+      "destination": "Consegna",
+      "cartons": "Cartoni",
+      "billedWeight": "Peso fatturato",
+      "container": "Container",
+      "products": "Prodotti",
+      "notes": "Messaggio del nostro team",
+      "status": {
+        "SENT": "Da confermare",
+        "ACCEPTED": "Accettato",
+        "DECLINED": "Rifiutato",
+        "CANCELLED": "Annullato",
+        "EXPIRED": "Scaduto"
+      },
+      "accept": "Accetta il preventivo",
+      "accepting": "Conferma in corso…",
+      "acceptHint": "La fattura di trasporto di {amount} viene creata non appena accettate.",
+      "decline": "Rifiuta",
+      "declineReason": "Perché rifiutate questo preventivo?",
+      "declineSubmit": "Invia il mio rifiuto",
+      "back": "Indietro",
+      "accepted": "Preventivo accettato. La vostra fattura {invoice} è disponibile.",
+      "seeInvoices": "Vedi le mie fatture",
+      "seeOrder": "Vedi l’ordine",
+      "declined": "Avete rifiutato questo preventivo. Il nostro team vi ricontatterà.",
+      "expired": "Questo preventivo è scaduto: contattateci per un nuovo prezzo.",
+      "cancelled": "Questo preventivo è stato annullato dal nostro team.",
+      "errors": {
+        "not_found": "Impossibile trovare questo preventivo.",
+        "not_open": "Questo preventivo non è più in attesa della vostra risposta.",
+        "expired": "Questo preventivo è scaduto: contattateci per un nuovo prezzo.",
+        "order_freight_billed": "Il trasporto di questo ordine è già stato fatturato.",
+        "reason_required": "Indicate in poche parole perché rifiutate.",
+        "generic": "Si è verificato un errore. Riprovate."
+      },
+      "pendingTitle": "Preventivi di trasporto da confermare",
+      "pendingItem": "{reference} · {transport} · {amount}",
+      "open": "Vedi il preventivo",
+      "orderPanelTitle": "Trasporto di questo ordine",
+      "email": {
+        "subject": "Il vostro preventivo di trasporto {reference}: {amount}",
+        "heading": "Il vostro preventivo di trasporto",
+        "intro": "Il nostro team ha preparato il prezzo del vostro trasporto. Verificatelo e accettatelo nella vostra area cliente: la fattura viene creata non appena accettate.",
+        "amount": "Importo",
+        "notesTitle": "Messaggio del nostro team",
+        "cta": "Vedi e accetta il preventivo",
+        "footer": "SourcingPick · contact@sourcingpick.com",
+        "sep": ": "
+      }
     }
   },
   "orders": {
@@ -296,7 +356,67 @@
       "intro": "Lo stesso calcolo del simulatore pubblico, con il prezzo dettagliato a schermo.",
       "result": "Prezzo calcolato",
       "requests": "Richieste ricevute dal simulatore",
-      "requestsEmpty": "Ancora nessuna richiesta."
+      "requestsEmpty": "Ancora nessuna richiesta.",
+      "quote": {
+        "title": "Preventivo di trasporto per un cliente",
+        "intro": "Invia questo calcolo come preventivo: il cliente lo accetta nella sua area cliente e la fattura di trasporto viene creata automaticamente, per l’importo in euro di questo preventivo.",
+        "client": "Cliente",
+        "clientSearch": "Nome, email o codice cliente (SP-…)",
+        "clientNone": "Nessun cliente trovato.",
+        "change": "Cambia",
+        "order": "Ordine",
+        "noOrder": "Senza ordine (solo trasporto)",
+        "orderBilled": "trasporto già fatturato",
+        "prices": "Prezzo del simulatore, commissione inclusa",
+        "noPrice": "Il simulatore non ha un prezzo per questa richiesta (su preventivo): inserisci tu l’importo.",
+        "rateCny": "Cambio 1 RMB in €",
+        "rateUsd": "Cambio 1 $ in €",
+        "rateEcb": "Cambio della Banca centrale europea del {date}",
+        "rateEnv": "Cambio dalla configurazione del server",
+        "rateNone": "Cambio del giorno non disponibile: inseriscilo.",
+        "converted": "Convertito in euro",
+        "amount": "Importo del preventivo (€)",
+        "amountHint": "È questo l’importo che il cliente accetta e che gli verrà fatturato. Puoi modificarlo (margine, container…).",
+        "validUntil": "Valido fino al",
+        "notes": "Messaggio per il cliente (facoltativo)",
+        "send": "Invia il preventivo al cliente",
+        "sending": "Invio…",
+        "sent": "Preventivo {reference} inviato a {client}.",
+        "needResult": "Descrivi prima una spedizione valida nel simulatore.",
+        "errors": {
+          "invalid_request": "La spedizione descritta non è valida: controlla il simulatore.",
+          "client_not_found": "Questo cliente non esiste o non è un account cliente.",
+          "order_not_found": "Questo ordine non appartiene a questo cliente.",
+          "order_freight_billed": "Il trasporto di questo ordine è già stato fatturato.",
+          "invalid_amount": "Indica un importo in euro.",
+          "invalid_rate": "Un tasso di cambio manca o sembra errato.",
+          "invalid_validity": "La data di validità deve essere nel futuro (al massimo tra un anno).",
+          "generic": "Non è stato possibile inviare il preventivo. Riprova."
+        },
+        "listTitle": "Preventivi di trasporto inviati",
+        "listEmpty": "Ancora nessun preventivo di trasporto.",
+        "cols": {
+          "reference": "Riferimento",
+          "date": "Data",
+          "client": "Cliente",
+          "order": "Ordine",
+          "transport": "Trasporto",
+          "amount": "Importo",
+          "validUntil": "Valido fino al",
+          "status": "Stato",
+          "invoice": "Fattura"
+        },
+        "status": {
+          "SENT": "Inviato",
+          "ACCEPTED": "Accettato",
+          "DECLINED": "Rifiutato",
+          "CANCELLED": "Annullato",
+          "EXPIRED": "Scaduto"
+        },
+        "cancel": "Annulla",
+        "cancelConfirm": "Annullare questo preventivo? Il cliente non potrà più accettarlo.",
+        "declinedReason": "Motivo del rifiuto: {reason}"
+      }
     }
   }
 }

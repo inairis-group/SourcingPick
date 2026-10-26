@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import {
   AttachmentContext,
+  FreightQuoteStatus,
   OrderStatus,
   QuoteStatus,
   Role,
@@ -23,6 +24,9 @@ import { formatEUR } from "@/lib/i18n/formatters";
 import { STATE_TONE, STAGES, type OrderStage, type OrderState } from "@/lib/orders/lifecycle";
 import { WAREHOUSE_ADDRESS_ZH, WAREHOUSE_PHONE, warehouseAddress } from "@/content/warehouse-address";
 import { ensureClientCode } from "@/lib/org/client-code";
+import { freightCopy } from "@/content/freight/simulator";
+import { describeTransport } from "@/lib/freight-quotes/describe";
+import type { FreightRequest } from "@/lib/freight/estimate";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/client/dashboard">) {
   const { lang } = await params;
@@ -77,6 +81,13 @@ export default async function ClientDashboardPage({
   const { openRequests, quotesToSign, inTransit, docsThisWeek, toPay, orders } =
     await dashboardData(org);
   const clientCode = await ensureClientCode(org);
+  // Freight quotes the team sent and the client has not answered yet.
+  const freightQuotes = await prisma.freightQuote.findMany({
+    where: { organizationId: org, status: FreightQuoteStatus.SENT, validUntil: { gte: new Date() } },
+    orderBy: { createdAt: "desc" },
+    select: { id: true, reference: true, mode: true, line: true, amountEurCents: true, request: true },
+  });
+  const freight = freightCopy(lang);
 
   // The canvas's "what we need from you" list: quotations waiting for a
   // signature, then deposits waiting for a payment. Both are things only the
@@ -93,6 +104,15 @@ export default async function ClientDashboardPage({
       title: t.payDeposit.replace("{ref}", o.reference),
       detail: `${o.request.title} · ${formatEUR(o.depositCents, lang)}`,
       href: `/${lang}/client/orders/${o.id}`,
+    })),
+    ...freightQuotes.map((fq) => ({
+      key: `f-${fq.id}`,
+      title: dict.client.freightQuote.pendingTitle,
+      detail: dict.client.freightQuote.pendingItem
+        .replace("{reference}", fq.reference)
+        .replace("{transport}", describeTransport(freight, { mode: fq.mode, line: fq.line, container: (fq.request as unknown as FreightRequest)?.container ?? null }))
+        .replace("{amount}", formatEUR(fq.amountEurCents / 100, lang)),
+      href: `/${lang}/client/freight-quotes/${fq.id}`,
     })),
   ];
 

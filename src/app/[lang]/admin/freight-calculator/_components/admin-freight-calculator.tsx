@@ -9,6 +9,7 @@ import { formatAmount, formatMoney } from "@/lib/freight/format";
 import type { FreightEstimate } from "@/lib/freight/estimate";
 import type { FreightFormCopy } from "@/content/freight/simulator";
 import { ShipmentFields, fill, surchargeList, useShipment } from "@/app/[lang]/(marketing)/_design/freight-shipment";
+import { FreightQuoteComposer, type QuoteComposerCopy } from "./freight-quote-composer";
 
 type Labels = {
   result: string;
@@ -18,12 +19,14 @@ type Labels = {
   total: string;
   rateRow: string;
   productsTitle: string;
+  quote: QuoteComposerCopy;
 };
 
 /**
  * The admin's calculator: the public simulator's fields, and a panel that
  * shows the price line by line. The shipment is priced on the server
- * (calculateFreightAsAdmin) a moment after each change.
+ * (calculateFreightAsAdmin) a moment after each change. Under the price, the
+ * result can be sent to a client as a freight quote (FreightQuoteComposer).
  */
 export function AdminFreightCalculator({ lang, copy: c, labels }: { lang: Locale; copy: FreightFormCopy; labels: Labels }) {
   const s = useShipment(c);
@@ -49,7 +52,8 @@ export function AdminFreightCalculator({ lang, copy: c, labels }: { lang: Locale
       <div className="rounded-2xl border border-line bg-surface p-5 sm:p-6 min-w-0">
         <ShipmentFields lang={lang} copy={c} s={s} idPrefix="admin" />
       </div>
-      <aside className="rounded-2xl border border-line bg-surface p-5 sm:p-6 lg:sticky lg:top-6 flex flex-col gap-4" aria-live="polite" aria-busy={pending}>
+      <div className="flex flex-col gap-6 min-w-0">
+      <aside className="rounded-2xl border border-line bg-surface p-5 sm:p-6 flex flex-col gap-4" aria-live="polite" aria-busy={pending}>
         <h2 className="text-lg font-semibold text-headline">{labels.result}</h2>
         <p className="text-sm text-muted">
           {c.mode.names[s.mode]} · {c.formula.names[s.formula]} · {c.estimate.delays[s.line ?? s.mode]}
@@ -120,6 +124,8 @@ export function AdminFreightCalculator({ lang, copy: c, labels }: { lang: Locale
           </ul>
         )}
       </aside>
+      <FreightQuoteComposer lang={lang} copy={labels.quote} request={s.request} result={result} blocked={Boolean(s.blocking)} />
+      </div>
     </div>
   );
 }

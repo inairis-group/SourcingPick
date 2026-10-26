@@ -268,6 +268,66 @@
         "code": "O seu código de cliente",
         "codeHint": "A inscrever em cada caixa: é assim que reconhecemos os seus volumes à chegada."
       }
+    },
+    "freightQuote": {
+      "title": "Orçamento de transporte {reference}",
+      "intro": "Eis o preço do seu transporte. Ao aceitá-lo, recebe a fatura de transporte correspondente.",
+      "reference": "Referência",
+      "amount": "Montante",
+      "validUntil": "Válido até",
+      "order": "Encomenda",
+      "mode": "Modo",
+      "line": "Linha",
+      "formula": "Modalidade",
+      "delay": "Prazo",
+      "destination": "Entrega",
+      "cartons": "Caixas",
+      "billedWeight": "Peso faturado",
+      "container": "Contentores",
+      "products": "Produtos",
+      "notes": "Mensagem da nossa equipa",
+      "status": {
+        "SENT": "Por validar",
+        "ACCEPTED": "Aceite",
+        "DECLINED": "Recusado",
+        "CANCELLED": "Cancelado",
+        "EXPIRED": "Expirado"
+      },
+      "accept": "Aceitar o orçamento",
+      "accepting": "A validar…",
+      "acceptHint": "A fatura de transporte de {amount} é criada assim que aceitar.",
+      "decline": "Recusar",
+      "declineReason": "Por que motivo recusa este orçamento?",
+      "declineSubmit": "Enviar a minha recusa",
+      "back": "Voltar",
+      "accepted": "Orçamento aceite. A sua fatura {invoice} está disponível.",
+      "seeInvoices": "Ver as minhas faturas",
+      "seeOrder": "Ver a encomenda",
+      "declined": "Recusou este orçamento. A nossa equipa vai entrar em contacto consigo.",
+      "expired": "Este orçamento expirou: contacte-nos para obter um novo preço.",
+      "cancelled": "Este orçamento foi cancelado pela nossa equipa.",
+      "errors": {
+        "not_found": "Este orçamento não foi encontrado.",
+        "not_open": "Este orçamento já não está a aguardar a sua resposta.",
+        "expired": "Este orçamento expirou: contacte-nos para obter um novo preço.",
+        "order_freight_billed": "O transporte desta encomenda já está faturado.",
+        "reason_required": "Indique em poucas palavras por que motivo recusa.",
+        "generic": "Ocorreu um erro. Tente novamente."
+      },
+      "pendingTitle": "Orçamentos de transporte por validar",
+      "pendingItem": "{reference} · {transport} · {amount}",
+      "open": "Ver o orçamento",
+      "orderPanelTitle": "Transporte desta encomenda",
+      "email": {
+        "subject": "O seu orçamento de transporte {reference}: {amount}",
+        "heading": "O seu orçamento de transporte",
+        "intro": "A nossa equipa preparou o preço do seu transporte. Verifique-o e aceite-o na sua área de cliente: a fatura é criada assim que aceitar.",
+        "amount": "Montante",
+        "notesTitle": "Mensagem da nossa equipa",
+        "cta": "Ver e aceitar o orçamento",
+        "footer": "SourcingPick · contact@sourcingpick.com",
+        "sep": ": "
+      }
     }
   },
   "orders": {
@@ -296,7 +356,67 @@
       "intro": "O mesmo cálculo do simulador público, com o preço detalhado no ecrã.",
       "result": "Preço calculado",
       "requests": "Pedidos recebidos pelo simulador",
-      "requestsEmpty": "Ainda não há pedidos."
+      "requestsEmpty": "Ainda não há pedidos.",
+      "quote": {
+        "title": "Orçamento de transporte para um cliente",
+        "intro": "Envie este cálculo como orçamento: o cliente aceita-o na área de cliente e a fatura de transporte é criada automaticamente, pelo montante em euros deste orçamento.",
+        "client": "Cliente",
+        "clientSearch": "Nome, email ou código de cliente (SP-…)",
+        "clientNone": "Nenhum cliente encontrado.",
+        "change": "Alterar",
+        "order": "Encomenda",
+        "noOrder": "Sem encomenda (só transporte)",
+        "orderBilled": "transporte já faturado",
+        "prices": "Preço do simulador, comissão incluída",
+        "noPrice": "O simulador não tem preço para este pedido (mediante orçamento): introduza o montante manualmente.",
+        "rateCny": "Câmbio 1 RMB em €",
+        "rateUsd": "Câmbio 1 $ em €",
+        "rateEcb": "Câmbio do Banco Central Europeu de {date}",
+        "rateEnv": "Câmbio da configuração do servidor",
+        "rateNone": "Câmbio do dia indisponível: introduza-o.",
+        "converted": "Convertido em euros",
+        "amount": "Montante do orçamento (€)",
+        "amountHint": "É este o montante que o cliente aceita e que lhe será faturado. Pode ajustá-lo (margem, contentor…).",
+        "validUntil": "Válido até",
+        "notes": "Mensagem para o cliente (opcional)",
+        "send": "Enviar o orçamento ao cliente",
+        "sending": "A enviar…",
+        "sent": "Orçamento {reference} enviado a {client}.",
+        "needResult": "Descreva primeiro um envio válido no simulador.",
+        "errors": {
+          "invalid_request": "O envio descrito não é válido: verifique o simulador.",
+          "client_not_found": "Este cliente não existe ou não é uma conta de cliente.",
+          "order_not_found": "Esta encomenda não pertence a este cliente.",
+          "order_freight_billed": "O transporte desta encomenda já está faturado.",
+          "invalid_amount": "Indique um montante em euros.",
+          "invalid_rate": "Uma taxa de câmbio está em falta ou parece incorreta.",
+          "invalid_validity": "A data de validade tem de ser no futuro (um ano, no máximo).",
+          "generic": "Não foi possível enviar o orçamento. Tente novamente."
+        },
+        "listTitle": "Orçamentos de transporte enviados",
+        "listEmpty": "Ainda não há orçamentos de transporte.",
+        "cols": {
+          "reference": "Referência",
+          "date": "Data",
+          "client": "Cliente",
+          "order": "Encomenda",
+          "transport": "Transporte",
+          "amount": "Montante",
+          "validUntil": "Válido até",
+          "status": "Estado",
+          "invoice": "Fatura"
+        },
+        "status": {
+          "SENT": "Enviado",
+          "ACCEPTED": "Aceite",
+          "DECLINED": "Recusado",
+          "CANCELLED": "Cancelado",
+          "EXPIRED": "Expirado"
+        },
+        "cancel": "Cancelar",
+        "cancelConfirm": "Cancelar este orçamento? O cliente deixará de poder aceitá-lo.",
+        "declinedReason": "Motivo da recusa: {reason}"
+      }
     }
   }
 }
