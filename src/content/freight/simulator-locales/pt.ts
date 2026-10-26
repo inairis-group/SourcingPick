@@ -14,16 +14,17 @@ export const pt: FreightSimulatorCopy = {
     hints: {
       sea: "O mais barato, e o que recomendamos. Encomendas: 40 a 45 dias de ponta a ponta; grandes volumes e paletes: 30 a 40 dias após a partida do barco.",
       air: "O mais rápido: 7 a 10 dias úteis, 9 a 12 dias para os grandes volumes. Para um envio pequeno ou urgente.",
-      container: "Um contentor de 20 pés, 40 pés ou 40 pés HC só para as suas mercadorias. Preço mediante orçamento.",
+      container: "Um contentor de 20 pés, 40 pés ou 40 pés HC só para as suas mercadorias, entregue em qualquer parte do mundo, em DDP, DAP ou FOB. Preço mediante orçamento.",
       truck: "Mais arriscado: desaconselhamo-lo. Apenas mediante orçamento, cerca de 16 a 20 dias.",
       rail: "Também o desaconselhamos. Apenas mediante orçamento, 35 a 38 dias após a partida do comboio.",
     },
   },
   formula: {
     label: "Modalidade",
-    names: { ddp: "Entregue, impostos incluídos", fob: "FOB", customs: "Até à alfândega" },
+    names: { ddp: "Entregue, impostos incluídos", dap: "Entregue, impostos a seu cargo", fob: "FOB", customs: "Até à alfândega" },
     hints: {
       ddp: "Entregue no seu endereço, com direitos e IVA na importação incluídos (DDP).",
+      dap: "Entregue no seu endereço; os direitos e impostos de importação ficam a seu cargo (DAP). Preço mediante orçamento.",
       fob: "Entregue no porto ou no aeroporto de partida na China; o seu transitário assume a partir daí. Preço mediante orçamento.",
       customs: "Transportado até à alfândega de chegada; o desalfandegamento e o levantamento da mercadoria ficam a seu cargo. Preço mediante orçamento.",
     },
@@ -157,7 +158,7 @@ export const pt: FreightSimulatorCopy = {
       formula: "Em FOB ou até à alfândega, fazemos um orçamento: respondemos-lhe por e-mail.",
       mode: "O camião e o comboio são apenas mediante orçamento: respondemos-lhe por e-mail.",
       container:
-        "Um contentor completo é mediante orçamento, consoante o porto de chegada e a data: respondemos-lhe por e-mail.",
+        "Um contentor completo é mediante orçamento, consoante o destino, a modalidade e a data: respondemos-lhe por e-mail.",
       country: "Esta linha não entrega neste país com impostos incluídos: fazemos um orçamento.",
       postcode:
         "Indique o seu código postal: determina o preço dos grandes volumes e paletes. Para as ilhas e as zonas remotas, fazemos um orçamento.",
@@ -214,7 +215,8 @@ export const pt: FreightSimulatorCopy = {
           "Barco, grandes volumes e paletes: entrega por camião, ao preço da zona do seu código postal. 30 a 40 dias após a partida do barco, sem contar com congestionamento portuário e controlo aduaneiro.",
           "Avião, linha de encomendas: voos diretos todos os dias a partir da China continental, entrega pela UPS. 7 a 10 dias úteis.",
           "Avião, grandes volumes: entrega pela DHL na Alemanha e pela FedEx nos restantes países. 9 a 12 dias, sem indemnização por atrasos.",
-          "Contentor completo (20 pés, 40 pés, 40 pés HC), camião e comboio: mediante orçamento. Desaconselhamos o camião, mais arriscado, e o comboio.",
+          "Contentor completo (20 pés, 40 pés, 40 pés HC): entregue em qualquer parte do mundo, em DDP, DAP ou FOB, mediante orçamento.",
+          "Camião e comboio: mediante orçamento. Desaconselhamo-los; o camião é mais arriscado.",
         ],
       },
       {
@@ -249,12 +251,13 @@ export const pt: FreightSimulatorCopy = {
           "Barco, grandes volumes e paletes: 24 países, toda a União Europeia exceto a Grécia, Chipre e Malta, por zona de código postal (A, B ou C); as ilhas e as zonas remotas não são servidas.",
           "Avião, encomendas e grandes volumes: 24 países, toda a União Europeia exceto a Estónia, Chipre e Malta.",
           "Noutros destinos, incluindo o Reino Unido, a Suíça e a Noruega: mediante orçamento.",
+          "Contentor completo: para qualquer parte do mundo, mediante orçamento.",
         ],
       },
       {
         title: "As modalidades",
         text:
-          "Entregue, impostos incluídos (DDP): entrega no seu endereço, com direitos e IVA na importação incluídos. FOB: a mercadoria é entregue no porto ou no aeroporto de partida na China, e o seu transitário assume a partir daí. Até à alfândega: transportamo-la até à alfândega de chegada, e o desalfandegamento e o levantamento ficam a seu cargo. Em FOB e até à alfândega, fazemos um orçamento.",
+          "Entregue, impostos incluídos (DDP): entrega no seu endereço, com direitos e IVA na importação incluídos. FOB: a mercadoria é entregue no porto ou no aeroporto de partida na China, e o seu transitário assume a partir daí. Até à alfândega: transportamo-la até à alfândega de chegada, e o desalfandegamento e o levantamento ficam a seu cargo. Em FOB e até à alfândega, fazemos um orçamento. Um contentor completo faz-se em DDP, em DAP (entregue no seu endereço, com os direitos e impostos de importação a seu cargo) ou em FOB, mediante orçamento.",
       },
       {
         title: "O número de produtos",

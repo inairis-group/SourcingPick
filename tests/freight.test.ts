@@ -6,6 +6,7 @@ import { estimateFreight, type FreightRequest } from "../src/lib/freight/estimat
 import { GOODS, LINE_BRACKETS, LINE_GROUPS, MODES, bracketOf, carrierFees, heavyCarton, routeOf } from "../src/lib/freight/modes";
 import { RATES, ratesFor } from "../src/lib/freight/rates";
 import { SEA_HEAVY_ZONES, seaHeavyZone } from "../src/lib/freight/sea-heavy-zones";
+import { parseFreightRequest } from "../src/lib/freight/request";
 import { productWeights } from "../src/lib/freight/weights";
 import type { Product } from "../src/lib/freight/weights";
 
@@ -238,6 +239,19 @@ test("taken as a request, not priced", () => {
   assert.equal(reason(estimateFreight({ ...base, mode: "air", address: to("DE"), products: [product({ length: 310, weight: 35 })] })), "out_of_gauge");
   assert.equal(reason(estimateFreight({ ...base, products: [product({ length: 400, weight: 100 })] })), "out_of_gauge");
   assert.equal(reason(estimateFreight({ ...base, products: [product({ weight: 1600 })] })), "out_of_gauge");
+});
+
+test("a full container: DDP, DAP or FOB, anywhere in the world; the other modes keep their formulas and countries", () => {
+  const raw = (patch: Record<string, unknown>) => ({ ...base, ...patch, address: { ...base.address, ...(patch.address as object) } });
+  const container = { mode: "container", container: { type: "20", count: 2 } };
+  for (const formula of ["ddp", "dap", "fob"]) assert.ok(parseFreightRequest(raw({ ...container, formula })), formula);
+  assert.equal(parseFreightRequest(raw({ ...container, formula: "customs" })), null);
+  assert.equal(parseFreightRequest(raw({ formula: "dap" })), null);
+  const usa = parseFreightRequest(raw({ ...container, formula: "dap", address: { country: "US" } }));
+  assert.ok(usa && usa.container?.count === 2);
+  assert.equal(reason(estimateFreight(usa)), "container");
+  assert.equal(parseFreightRequest(raw({ address: { country: "US" } })), null);
+  assert.equal(parseFreightRequest(raw({ ...container, address: { country: "CN" } })), null);
 });
 
 test("refused goods and classes another mode does not have", () => {

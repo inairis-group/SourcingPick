@@ -14,16 +14,17 @@ export const de: FreightSimulatorCopy = {
     hints: {
       sea: "Am günstigsten – und unsere Empfehlung. Pakete: insgesamt 40 bis 45 Tage; große Packstücke und Paletten: 30 bis 40 Tage nach Abfahrt des Schiffs.",
       air: "Am schnellsten: 7 bis 10 Arbeitstage, 9 bis 12 Tage für große Packstücke. Für eine kleine oder eilige Sendung.",
-      container: "Ein 20-Fuß-, 40-Fuß- oder 40-Fuß-HC-Container nur für Ihre Waren. Preis auf Anfrage.",
+      container: "Ein 20-Fuß-, 40-Fuß- oder 40-Fuß-HC-Container nur für Ihre Waren, weltweit geliefert, als DDP, DAP oder FOB. Preis auf Anfrage.",
       truck: "Riskanter: Wir empfehlen ihn nicht. Nur auf Anfrage, etwa 16 bis 20 Tage.",
       rail: "Auch ihn empfehlen wir nicht. Nur auf Anfrage, 35 bis 38 Tage nach Abfahrt des Zuges.",
     },
   },
   formula: {
     label: "Lieferbedingung",
-    names: { ddp: "Geliefert, verzollt", fob: "FOB", customs: "Bis zum Zoll" },
+    names: { ddp: "Geliefert, verzollt", dap: "Geliefert, unverzollt", fob: "FOB", customs: "Bis zum Zoll" },
     hints: {
       ddp: "An Ihre Adresse geliefert, Zölle und Einfuhrumsatzsteuer inklusive (DDP).",
+      dap: "An Ihre Adresse geliefert; Zölle und Einfuhrabgaben tragen Sie (DAP). Preis auf Anfrage.",
       fob: "Übergabe im Abgangshafen oder am Abflughafen in China; Ihr eigener Spediteur übernimmt ab dort. Preis auf Anfrage.",
       customs: "Transport bis zum Zoll am Ankunftsort; Sie verzollen die Ware und holen sie ab. Preis auf Anfrage.",
     },
@@ -156,7 +157,7 @@ export const de: FreightSimulatorCopy = {
     reasons: {
       formula: "Bei FOB oder „Bis zum Zoll“ erstellen wir Ihnen ein Angebot: Wir antworten Ihnen per E-Mail.",
       mode: "Lkw und Zug gibt es nur auf Anfrage: Wir antworten Ihnen per E-Mail.",
-      container: "Für einen Vollcontainer erstellen wir Ihnen ein Angebot, je nach Ankunftshafen und Termin: Wir antworten Ihnen per E-Mail.",
+      container: "Für einen Vollcontainer erstellen wir Ihnen ein Angebot, je nach Ziel, Lieferbedingung und Termin: Wir antworten Ihnen per E-Mail.",
       country: "Diese Linie beliefert dieses Land nicht verzollt und versteuert: Wir erstellen Ihnen ein Angebot.",
       postcode:
         "Geben Sie Ihre Postleitzahl an: Sie bestimmt den Preis für große Packstücke und Paletten. Für Inseln und abgelegene Gebiete erstellen wir Ihnen ein Angebot.",
@@ -213,7 +214,8 @@ export const de: FreightSimulatorCopy = {
           "Schiff, große Packstücke und Paletten: Zustellung per Lkw, zum Preis der Zone Ihrer Postleitzahl. 30 bis 40 Tage nach Abfahrt des Schiffs, Hafenstaus und Zollkontrollen nicht eingerechnet.",
           "Flugzeug, Paketlinie: täglich Direktflüge ab Festlandchina, Zustellung durch UPS. 7 bis 10 Arbeitstage.",
           "Flugzeug, große Packstücke: Zustellung durch DHL in Deutschland und durch FedEx in allen anderen Ländern. 9 bis 12 Tage, ohne Entschädigung bei Verspätungen.",
-          "Vollcontainer (20 Fuß, 40 Fuß, 40 Fuß HC), Lkw und Zug: auf Anfrage. Den Lkw, der riskanter ist, und den Zug empfehlen wir nicht.",
+          "Vollcontainer (20 Fuß, 40 Fuß, 40 Fuß HC): weltweit geliefert, als DDP, DAP oder FOB, auf Anfrage.",
+          "Lkw und Zug: auf Anfrage. Wir empfehlen beide nicht, der Lkw ist riskanter.",
         ],
       },
       {
@@ -248,12 +250,13 @@ export const de: FreightSimulatorCopy = {
           "Schiff, große Packstücke und Paletten: 24 Länder, die gesamte Europäische Union außer Griechenland, Zypern und Malta, nach Postleitzahlzone (A, B oder C); Inseln und abgelegene Gebiete werden nicht beliefert.",
           "Flugzeug, Pakete und große Packstücke: 24 Länder, die gesamte Europäische Union außer Estland, Zypern und Malta.",
           "Andere Länder, darunter das Vereinigte Königreich, die Schweiz und Norwegen: auf Anfrage.",
+          "Vollcontainer: weltweit, auf Anfrage.",
         ],
       },
       {
         title: "Die Lieferbedingungen",
         text:
-          "Geliefert, verzollt (DDP): Lieferung an Ihre Adresse, Zölle und Einfuhrumsatzsteuer inklusive. FOB: Die Ware wird im Abgangshafen oder am Abflughafen in China übergeben, Ihr eigener Spediteur übernimmt ab dort. Bis zum Zoll: Wir bringen die Ware bis zum Zoll am Ankunftsort, Sie verzollen sie und holen sie ab. Bei FOB und „Bis zum Zoll“ erstellen wir Ihnen ein Angebot.",
+          "Geliefert, verzollt (DDP): Lieferung an Ihre Adresse, Zölle und Einfuhrumsatzsteuer inklusive. FOB: Die Ware wird im Abgangshafen oder am Abflughafen in China übergeben, Ihr eigener Spediteur übernimmt ab dort. Bis zum Zoll: Wir bringen die Ware bis zum Zoll am Ankunftsort, Sie verzollen sie und holen sie ab. Bei FOB und „Bis zum Zoll“ erstellen wir Ihnen ein Angebot. Einen Vollcontainer liefern wir als DDP, als DAP (an Ihre Adresse geliefert, Zölle und Einfuhrabgaben tragen Sie) oder als FOB, auf Anfrage.",
       },
       {
         title: "Die Anzahl der Produkte",

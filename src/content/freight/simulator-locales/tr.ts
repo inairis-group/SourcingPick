@@ -14,16 +14,17 @@ export const tr: FreightSimulatorCopy = {
     hints: {
       sea: "En ucuzu, önerdiğimiz de bu. Koliler: uçtan uca 40 ila 45 gün; büyük koliler ve paletler: geminin kalkışından sonra 30 ila 40 gün.",
       air: "En hızlısı: 7 ila 10 iş günü, büyük koliler için 9 ila 12 gün. Küçük ya da acil bir sevkiyat için.",
-      container: "Yalnızca sizin mallarınıza ayrılmış 20 ft, 40 ft ya da 40 ft HC bir konteyner. Fiyat teklifle belirlenir.",
+      container: "Yalnızca sizin mallarınıza ayrılmış 20 ft, 40 ft ya da 40 ft HC bir konteyner; dünyanın her yerine DDP, DAP veya FOB olarak teslim. Fiyat teklifle belirlenir.",
       truck: "Daha riskli: önermiyoruz. Yalnızca teklifle, yaklaşık 16 ila 20 gün.",
       rail: "Bunu da önermiyoruz. Yalnızca teklifle, trenin kalkışından sonra 35 ila 38 gün.",
     },
   },
   formula: {
     label: "Teslim şekli",
-    names: { ddp: "Vergiler dâhil teslim", fob: "FOB", customs: "Gümrüğe kadar" },
+    names: { ddp: "Vergiler dâhil teslim", dap: "Teslim, vergiler size ait", fob: "FOB", customs: "Gümrüğe kadar" },
     hints: {
       ddp: "Adresinize teslim; gümrük vergileri ve ithalat KDV’si dâhil (DDP).",
+      dap: "Adresinize teslim; gümrük vergileri ve ithalat vergileri size aittir (DAP). Fiyat teklifle belirlenir.",
       fob: "Mallar Çin’deki çıkış limanında ya da havalimanında teslim edilir; işi sizin nakliye firmanız devralır. Fiyat teklifle belirlenir.",
       customs: "Mallar varış gümrüğüne kadar taşınır; gümrükleme işlemlerini siz yapar ve malları teslim alırsınız. Fiyat teklifle belirlenir.",
     },
@@ -156,7 +157,7 @@ export const tr: FreightSimulatorCopy = {
     reasons: {
       formula: "FOB seçeneğinde ve gümrüğe kadar teslimde fiyat teklifle belirlenir: size e-postayla yanıt veririz.",
       mode: "Kamyon ve trende fiyat yalnızca teklifle belirlenir: size e-postayla yanıt veririz.",
-      container: "Tam konteynerin fiyatı, varış limanına ve tarihe göre teklifle belirlenir: size e-postayla yanıt veririz.",
+      container: "Tam konteynerin fiyatı, varış noktasına, teslim şekline ve tarihe göre teklifle belirlenir: size e-postayla yanıt veririz.",
       country: "Bu hat, bu ülkeye vergiler dâhil teslimat yapmıyor: fiyat teklifle belirlenir.",
       postcode:
         "Posta kodunuzu girin: büyük koliler ve paletlerin fiyatını o belirler. Adalar ve uzak bölgeler için fiyat teklifle belirlenir.",
@@ -213,7 +214,8 @@ export const tr: FreightSimulatorCopy = {
           "Gemi, büyük koliler ve paletler: posta kodunuzun bölgesine göre fiyatlandırılan kamyonla teslimat. Geminin kalkışından sonra 30 ila 40 gün; liman yoğunluğu ve gümrük kontrolü hariç.",
           "Uçak, koli hattı: Çin anakarasından her gün direkt uçuşlar, UPS ile teslimat. 7 ila 10 iş günü.",
           "Uçak, büyük koliler: Almanya’da DHL, diğer ülkelerde FedEx ile teslimat. 9 ila 12 gün; gecikmeler tazmin edilmez.",
-          "Tam konteyner (20 ft, 40 ft, 40 ft HC), kamyon ve tren: fiyat teklifle belirlenir. Daha riskli olan kamyonu ve treni önermiyoruz.",
+          "Tam konteyner (20 ft, 40 ft, 40 ft HC): dünyanın her yerine DDP, DAP veya FOB olarak teslim; fiyat teklifle belirlenir.",
+          "Kamyon ve tren: fiyat teklifle belirlenir. İkisini de önermiyoruz; kamyon daha risklidir.",
         ],
       },
       {
@@ -248,12 +250,13 @@ export const tr: FreightSimulatorCopy = {
           "Gemi, büyük koliler ve paletler: 24 ülke; Yunanistan, Kıbrıs ve Malta dışında tüm Avrupa Birliği, posta kodu bölgesine göre (A, B veya C); adalara ve uzak bölgelere teslimat yapılmaz.",
           "Uçak, koliler ve büyük koliler: 24 ülke; Estonya, Kıbrıs ve Malta dışında tüm Avrupa Birliği.",
           "Birleşik Krallık, İsviçre ve Norveç dâhil diğer ülkeler: fiyat teklifle belirlenir.",
+          "Tam konteyner: dünyanın her yerine, fiyat teklifle belirlenir.",
         ],
       },
       {
         title: "Teslim şekilleri",
         text:
-          "Vergiler dâhil teslim (DDP): adresinize teslimat, gümrük vergileri ve ithalat KDV’si dâhil. FOB: mallar Çin’deki çıkış limanında ya da havalimanında teslim edilir, işi sizin nakliye firmanız devralır. Gümrüğe kadar: malları varış gümrüğüne kadar biz taşırız, gümrükleme işlemlerini siz yapar ve malları teslim alırsınız. FOB seçeneğinde ve gümrüğe kadar teslimde fiyat teklifle belirlenir.",
+          "Vergiler dâhil teslim (DDP): adresinize teslimat, gümrük vergileri ve ithalat KDV’si dâhil. FOB: mallar Çin’deki çıkış limanında ya da havalimanında teslim edilir, işi sizin nakliye firmanız devralır. Gümrüğe kadar: malları varış gümrüğüne kadar biz taşırız, gümrükleme işlemlerini siz yapar ve malları teslim alırsınız. FOB seçeneğinde ve gümrüğe kadar teslimde fiyat teklifle belirlenir. Tam konteyneri DDP, DAP (adresinize teslim, gümrük vergileri ve ithalat vergileri size ait) veya FOB olarak sunuyoruz; fiyat teklifle belirlenir.",
       },
       {
         title: "Ürün sayısı",

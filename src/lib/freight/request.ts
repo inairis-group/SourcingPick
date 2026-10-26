@@ -2,7 +2,7 @@
  * The simulator's request as the browser sends it (JSON), checked and bounded
  * before it is priced: anything malformed is refused rather than repaired.
  */
-import { ALL_COUNTRIES, CONTAINER_TYPES, FORMULAS, MODES, type ContainerType, type Formula, type GoodsKey, type Mode } from "./modes";
+import { CONTAINER_TYPES, MODES, countriesFor, formulasFor, type ContainerType, type Formula, type GoodsKey, type Mode } from "./modes";
 import type { FreightRequest } from "./estimate";
 
 const num = (v: unknown, max: number) => {
@@ -14,10 +14,10 @@ const text = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slic
 export function parseFreightRequest(raw: unknown): FreightRequest | null {
   if (!raw || typeof raw !== "object") return null;
   const r = raw as Record<string, unknown>;
-  if (!FORMULAS.includes(r.formula as Formula) || !MODES.includes(r.mode as Mode)) return null;
+  if (!MODES.includes(r.mode as Mode) || !formulasFor(r.mode as Mode).includes(r.formula as Formula)) return null;
   const a = (r.address ?? {}) as Record<string, unknown>;
   const country = text(a.country, 2).toUpperCase();
-  if (!ALL_COUNTRIES.includes(country)) return null;
+  if (!countriesFor(r.mode as Mode).includes(country)) return null;
   if (!Array.isArray(r.products) || r.products.length === 0 || r.products.length > 30) return null;
   const products = r.products.map((p) => {
     const x = (p ?? {}) as Record<string, unknown>;

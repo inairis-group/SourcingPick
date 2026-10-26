@@ -14,16 +14,17 @@ export const es: FreightSimulatorCopy = {
     hints: {
       sea: "El más económico, y el que recomendamos. Paquetes: de 40 a 45 días de principio a fin; bultos grandes y palés: de 30 a 40 días después de la salida del barco.",
       air: "El más rápido: de 7 a 10 días hábiles, de 9 a 12 días para los bultos grandes. Para un envío pequeño o urgente.",
-      container: "Un contenedor de 20 pies, 40 pies o 40 pies HC solo para sus mercancías. Precio bajo presupuesto.",
+      container: "Un contenedor de 20 pies, 40 pies o 40 pies HC solo para sus mercancías, entregado en cualquier parte del mundo, en DDP, DAP o FOB. Precio bajo presupuesto.",
       truck: "Más arriesgado: no lo recomendamos. Solo bajo presupuesto, unos 16 a 20 días.",
       rail: "Tampoco lo recomendamos. Solo bajo presupuesto, de 35 a 38 días después de la salida del tren.",
     },
   },
   formula: {
     label: "Modalidad",
-    names: { ddp: "Entregado, impuestos incluidos", fob: "FOB", customs: "Hasta la aduana" },
+    names: { ddp: "Entregado, impuestos incluidos", dap: "Entregado, impuestos a su cargo", fob: "FOB", customs: "Hasta la aduana" },
     hints: {
       ddp: "Entregado en su dirección, con derechos e IVA de importación incluidos (DDP).",
+      dap: "Entregado en su dirección; los derechos e impuestos de importación corren a su cargo (DAP). Precio bajo presupuesto.",
       fob: "Entregado en el puerto o el aeropuerto de salida en China; su transitario se encarga del resto. Precio bajo presupuesto.",
       customs: "Transportado hasta la aduana de llegada; usted realiza el despacho de aduanas y recoge la mercancía. Precio bajo presupuesto.",
     },
@@ -157,7 +158,7 @@ export const es: FreightSimulatorCopy = {
       formula: "En FOB o hasta la aduana, el precio se fija en un presupuesto: le respondemos por correo electrónico.",
       mode: "El camión y el tren solo se ofrecen bajo presupuesto: le respondemos por correo electrónico.",
       container:
-        "Para un contenedor completo, el precio se fija en un presupuesto, según el puerto de llegada y la fecha: le respondemos por correo electrónico.",
+        "Para un contenedor completo, el precio se fija en un presupuesto, según el destino, la modalidad y la fecha: le respondemos por correo electrónico.",
       country: "Esta línea no entrega en este país con impuestos incluidos: el precio se fija en un presupuesto.",
       postcode:
         "Indique su código postal: determina el precio de los bultos grandes y palés. Para las islas y las zonas remotas, el precio se fija en un presupuesto.",
@@ -214,7 +215,8 @@ export const es: FreightSimulatorCopy = {
           "Barco, bultos grandes y palés: entrega en camión, al precio de la zona de su código postal. De 30 a 40 días después de la salida del barco, sin contar la congestión portuaria ni el control aduanero.",
           "Avión, línea de paquetería: vuelos directos todos los días desde China continental, entrega por UPS. De 7 a 10 días hábiles.",
           "Avión, bultos grandes: entrega por DHL en Alemania y por FedEx en los demás países. De 9 a 12 días, sin indemnización por retrasos.",
-          "Contenedor completo (20 pies, 40 pies, 40 pies HC), camión y tren: bajo presupuesto. No recomendamos el camión, más arriesgado, ni el tren.",
+          "Contenedor completo (20 pies, 40 pies, 40 pies HC): entregado en cualquier parte del mundo, en DDP, DAP o FOB, bajo presupuesto.",
+          "Camión y tren: bajo presupuesto. No los recomendamos; el camión es más arriesgado.",
         ],
       },
       {
@@ -249,12 +251,13 @@ export const es: FreightSimulatorCopy = {
           "Barco, bultos grandes y palés: 24 países, toda la Unión Europea salvo Grecia, Chipre y Malta, por zona de código postal (A, B o C); no se da servicio a las islas ni a las zonas remotas.",
           "Avión, paquetería y bultos grandes: 24 países, toda la Unión Europea salvo Estonia, Chipre y Malta.",
           "En otros destinos, incluidos el Reino Unido, Suiza y Noruega: bajo presupuesto.",
+          "Contenedor completo: a cualquier parte del mundo, bajo presupuesto.",
         ],
       },
       {
         title: "Las modalidades",
         text:
-          "Entregado, impuestos incluidos (DDP): entrega en su dirección, con derechos e IVA de importación incluidos. FOB: la mercancía se entrega en el puerto o el aeropuerto de salida en China, y su transitario se encarga del resto. Hasta la aduana: la transportamos hasta la aduana de llegada, y usted realiza el despacho de aduanas y la recoge. En FOB y hasta la aduana, el precio se fija en un presupuesto.",
+          "Entregado, impuestos incluidos (DDP): entrega en su dirección, con derechos e IVA de importación incluidos. FOB: la mercancía se entrega en el puerto o el aeropuerto de salida en China, y su transitario se encarga del resto. Hasta la aduana: la transportamos hasta la aduana de llegada, y usted realiza el despacho de aduanas y la recoge. En FOB y hasta la aduana, el precio se fija en un presupuesto. Un contenedor completo se ofrece en DDP, en DAP (entregado en su dirección, con los derechos e impuestos de importación a su cargo) o en FOB, bajo presupuesto.",
       },
       {
         title: "El número de productos",

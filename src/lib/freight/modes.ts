@@ -8,7 +8,8 @@
  *
  * Source: the carrier's rate card "Tarifs VIP Europe" of 26 October. Sea and
  * air are priced from it; it has no price for truck, rail or a full
- * container, so those are quoted by hand.
+ * container, so those are quoted by hand. A full container goes anywhere in
+ * the world, in DDP, DAP or FOB.
  */
 import { SEA_HEAVY_ZONES, seaHeavyZone } from "./sea-heavy-zones";
 
@@ -22,11 +23,18 @@ export const PRICED_MODES: readonly Mode[] = ["sea", "air"];
 /**
  * ddp: delivered to the address, duties and taxes paid — priced from the card.
  * fob: handed over at the port or airport of departure in China; customs:
- * carried to customs on arrival, the client collects. Neither has a price on
- * the card: the request is taken and quoted by hand.
+ * carried to customs on arrival, the client collects; dap: delivered to the
+ * address, import duties and taxes for the client (full container only).
+ * Only DDP by sea and air has a price on the card: the rest is taken and
+ * quoted by hand.
  */
-export type Formula = "ddp" | "fob" | "customs";
-export const FORMULAS: readonly Formula[] = ["ddp", "fob", "customs"];
+export type Formula = "ddp" | "dap" | "fob" | "customs";
+export const FORMULAS: readonly Formula[] = ["ddp", "dap", "fob", "customs"];
+
+/** The formulas a mode offers: a full container in DDP, DAP or FOB. */
+export function formulasFor(mode: Mode): readonly Formula[] {
+  return mode === "container" ? ["ddp", "dap", "fob"] : ["ddp", "fob", "customs"];
+}
 
 /** A full container, quoted by hand until its prices are set. */
 export type ContainerType = "20" | "40" | "40hc";
@@ -72,6 +80,22 @@ const QUOTED_COUNTRIES = ["GB", "MC", "EE", "LV", "HR", "NO", "CH"];
 export const ALL_COUNTRIES: readonly string[] = [
   ...new Set([...Object.values(LINE_GROUPS).flatMap((g) => g.flat()), ...Object.keys(SEA_HEAVY_ZONES), ...QUOTED_COUNTRIES]),
 ];
+
+/** Where a full container goes: anywhere in the world but China, where it leaves from. */
+const WORLD_COUNTRIES: readonly string[] = (
+  "AD AE AF AG AI AL AM AO AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BW BY BZ CA CC CD CF " +
+  "CG CH CI CK CL CM CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG " +
+  "GH GI GL GM GN GP GQ GR GT GU GW GY HK HN HR HT HU ID IE IL IM IN IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW " +
+  "KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE " +
+  "NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ " +
+  "SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG US UY UZ VA VC VE VG VI VN VU " +
+  "WF WS XK YE YT ZA ZM ZW"
+).split(" ");
+
+/** The countries the address picker offers for a mode. */
+export function countriesFor(mode: Mode): readonly string[] {
+  return mode === "container" ? WORLD_COUNTRIES : ALL_COUNTRIES;
+}
 
 export function lineServes(line: Line, country: string): boolean {
   return line === "seaHeavy" ? country in SEA_HEAVY_ZONES : LINE_GROUPS[line].some((g) => g.includes(country));

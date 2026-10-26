@@ -14,16 +14,17 @@ export const it: FreightSimulatorCopy = {
     hints: {
       sea: "La più economica, ed è quella che consigliamo. Colli: da 40 a 45 giorni in tutto; grandi colli e pallet: da 30 a 40 giorni dopo la partenza della nave.",
       air: "Il più rapido: da 7 a 10 giorni lavorativi, da 9 a 12 giorni per i grandi colli. Per una spedizione piccola o urgente.",
-      container: "Un container da 20 piedi, 40 piedi o 40 piedi HC solo per le vostre merci. Prezzo su preventivo.",
+      container: "Un container da 20 piedi, 40 piedi o 40 piedi HC solo per le vostre merci, consegnato in tutto il mondo, in DDP, DAP o FOB. Prezzo su preventivo.",
       truck: "Più rischioso: non lo consigliamo. Solo su preventivo, da 16 a 20 giorni circa.",
       rail: "Anche questo non lo consigliamo. Solo su preventivo, da 35 a 38 giorni dopo la partenza del treno.",
     },
   },
   formula: {
     label: "Formula",
-    names: { ddp: "Consegnato, tasse incluse", fob: "FOB", customs: "Fino alla dogana" },
+    names: { ddp: "Consegnato, tasse incluse", dap: "Consegnato, tasse a vostro carico", fob: "FOB", customs: "Fino alla dogana" },
     hints: {
       ddp: "Consegnato al vostro indirizzo, dazi e IVA all’importazione compresi (DDP).",
+      dap: "Consegnato al vostro indirizzo; dazi e tasse all’importazione restano a vostro carico (DAP). Prezzo su preventivo.",
       fob: "Consegnato al porto o all’aeroporto di partenza in Cina; poi subentra il vostro spedizioniere. Prezzo su preventivo.",
       customs: "Trasportato fino alla dogana di arrivo; voi sdoganate e ritirate la merce. Prezzo su preventivo.",
     },
@@ -157,7 +158,7 @@ export const it: FreightSimulatorCopy = {
       formula: "In FOB o fino alla dogana, il prezzo è su preventivo: vi rispondiamo via email.",
       mode: "Camion e treno sono solo su preventivo: vi rispondiamo via email.",
       container:
-        "Per un container completo il prezzo è su preventivo, in base al porto di arrivo e alla data: vi rispondiamo via email.",
+        "Per un container completo il prezzo è su preventivo, in base alla destinazione, alla resa e alla data: vi rispondiamo via email.",
       country: "Questa linea non consegna in questo paese con tasse incluse: il prezzo è su preventivo.",
       postcode:
         "Indicate il vostro CAP: determina il prezzo dei grandi colli e dei pallet. Per le isole e le zone remote il prezzo è su preventivo.",
@@ -214,7 +215,8 @@ export const it: FreightSimulatorCopy = {
           "Nave, grandi colli e pallet: consegna in camion, al prezzo della zona del vostro CAP. Da 30 a 40 giorni dopo la partenza della nave, esclusi congestione portuale e controllo doganale.",
           "Aereo, linea colli: voli diretti tutti i giorni dalla Cina continentale, consegna tramite UPS. Da 7 a 10 giorni lavorativi.",
           "Aereo, grandi colli: consegna tramite DHL in Germania e tramite FedEx altrove. Da 9 a 12 giorni, senza indennizzo per i ritardi.",
-          "Container completo (20 piedi, 40 piedi, 40 piedi HC), camion e treno: su preventivo. Sconsigliamo il camion, più rischioso, e il treno.",
+          "Container completo (20 piedi, 40 piedi, 40 piedi HC): consegnato in tutto il mondo, in DDP, DAP o FOB, su preventivo.",
+          "Camion e treno: su preventivo. Li sconsigliamo; il camion è più rischioso.",
         ],
       },
       {
@@ -249,12 +251,13 @@ export const it: FreightSimulatorCopy = {
           "Nave, grandi colli e pallet: 24 paesi, tutta l’Unione europea tranne Grecia, Cipro e Malta, per zona di CAP (A, B o C); le isole e le zone remote non sono servite.",
           "Aereo, colli e grandi colli: 24 paesi, tutta l’Unione europea tranne Estonia, Cipro e Malta.",
           "Altrove, compresi Regno Unito, Svizzera e Norvegia: su preventivo.",
+          "Container completo: in tutto il mondo, su preventivo.",
         ],
       },
       {
         title: "Le formule",
         text:
-          "Consegnato, tasse incluse (DDP): consegna al vostro indirizzo, dazi e IVA all’importazione compresi. FOB: la merce viene consegnata al porto o all’aeroporto di partenza in Cina, poi subentra il vostro spedizioniere. Fino alla dogana: la trasportiamo fino alla dogana di arrivo, voi la sdoganate e la ritirate. In FOB e fino alla dogana, il prezzo è su preventivo.",
+          "Consegnato, tasse incluse (DDP): consegna al vostro indirizzo, dazi e IVA all’importazione compresi. FOB: la merce viene consegnata al porto o all’aeroporto di partenza in Cina, poi subentra il vostro spedizioniere. Fino alla dogana: la trasportiamo fino alla dogana di arrivo, voi la sdoganate e la ritirate. In FOB e fino alla dogana, il prezzo è su preventivo. Un container completo si fa in DDP, in DAP (consegnato al vostro indirizzo, dazi e tasse all’importazione a vostro carico) o in FOB, su preventivo.",
       },
       {
         title: "Il numero di prodotti",

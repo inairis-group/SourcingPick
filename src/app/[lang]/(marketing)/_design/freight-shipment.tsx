@@ -6,10 +6,8 @@ import type { Locale } from "@/lib/i18n/config";
 import { formatNumber } from "@/lib/i18n/formatters";
 import { goodsLabel, type FreightFormCopy } from "@/content/freight/simulator";
 import {
-  ALL_COUNTRIES,
   CONTAINER_TYPES,
   DISCOURAGED,
-  FORMULAS,
   GOODS,
   MAX_DDP_PRODUCTS,
   MIN_KG_DEFAULT,
@@ -19,6 +17,8 @@ import {
   bracketOf,
   carrierFees,
   carrierOf,
+  countriesFor,
+  formulasFor,
   goodsClass,
   routeOf,
   servesCountry,
@@ -77,11 +77,14 @@ export function useShipment(copy: FreightFormCopy) {
   const [goodsReset, setGoodsReset] = useState(false);
 
   // A class another mode does not have goes back to "ordinary", and the
-  // visitor is told to check.
+  // visitor is told to check; a formula or a country the mode does not offer
+  // goes back to the first one (DDP, France).
   const setMode = (next: Mode) => {
     const updated = rows.map((r) => (goodsClass(next, r.goods) ? r : { ...r, goods: "ordinary" as const, units: 0 }));
     setGoodsReset(updated.some((r, i) => r !== rows[i]));
     setRows(updated);
+    if (!formulasFor(next).includes(formula)) setFormula("ddp");
+    if (!countriesFor(next).includes(address.country)) setAddress({ ...address, country: "FR" });
     setModeState(next);
   };
   const update = (id: number, patch: Partial<Row>) => setRows((rs) => rs.map((r) => (r.id === id ? { ...r, ...patch } : r)));
@@ -215,7 +218,7 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
     }
   }, [lang]);
   const countryName = (iso: string) => regions?.of(iso) ?? iso;
-  const countries = [...ALL_COUNTRIES].sort((a, b) => countryName(a).localeCompare(countryName(b), lang));
+  const countries = [...countriesFor(s.mode)].sort((a, b) => countryName(a).localeCompare(countryName(b), lang));
   const setAddr = (patch: Partial<Shipment["address"]>) => s.setAddress({ ...s.address, ...patch });
 
   return (
@@ -233,7 +236,7 @@ export function ShipmentFields({ lang, copy: c, s, idPrefix = "sim" }: { lang: L
 
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         <span style={LABEL}>{c.formula.label}</span>
-        <Segmented lang={lang} value={s.formula} onChange={s.setFormula} options={FORMULAS.map((f) => ({ value: f, label: c.formula.names[f] }))} />
+        <Segmented lang={lang} value={s.formula} onChange={s.setFormula} options={formulasFor(s.mode).map((f) => ({ value: f, label: c.formula.names[f] }))} />
         <p style={HINT}>{c.formula.hints[s.formula]}</p>
       </div>
 

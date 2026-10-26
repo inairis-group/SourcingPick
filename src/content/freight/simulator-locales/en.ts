@@ -14,16 +14,17 @@ export const en: FreightSimulatorCopy = {
     hints: {
       sea: "The cheapest, and the one we recommend. Parcels: 40 to 45 days end to end; large parcels and pallets: 30 to 40 days after the ship departs.",
       air: "The fastest: 7 to 10 working days, 9 to 12 days for large parcels. For a small or urgent shipment.",
-      container: "A 20ft, 40ft or 40ft HC container just for your goods. Price on quotation.",
+      container: "A 20ft, 40ft or 40ft HC container just for your goods, delivered anywhere in the world, in DDP, DAP or FOB. Price on quotation.",
       truck: "Riskier: we don’t recommend it. On quotation only, about 16 to 20 days.",
       rail: "We don’t recommend it either. On quotation only, 35 to 38 days after the train departs.",
     },
   },
   formula: {
     label: "Delivery terms",
-    names: { ddp: "Delivered, taxes included", fob: "FOB", customs: "Up to customs" },
+    names: { ddp: "Delivered, taxes included", dap: "Delivered, taxes not included", fob: "FOB", customs: "Up to customs" },
     hints: {
       ddp: "Delivered to your address, duties and import VAT included (DDP).",
+      dap: "Delivered to your address; import duties and taxes are paid by you (DAP). Price on quotation.",
       fob: "Handed over at the port or airport of departure in China; your freight forwarder takes over from there. Price on quotation.",
       customs: "Carried as far as customs on arrival; you clear the goods through customs and collect them. Price on quotation.",
     },
@@ -156,7 +157,7 @@ export const en: FreightSimulatorCopy = {
     reasons: {
       formula: "For FOB or up to customs, pricing is by quotation: we’ll reply by email.",
       mode: "Road and rail are on quotation only: we’ll reply by email.",
-      container: "A full container is priced by quotation, depending on the port of arrival and the date: we’ll reply by email.",
+      container: "A full container is priced by quotation, depending on the destination, the delivery terms and the date: we’ll reply by email.",
       country: "This line doesn’t deliver to this country with taxes included: pricing is by quotation.",
       postcode:
         "Enter your postcode: it sets the price for large parcels and pallets. Islands and remote areas are on quotation.",
@@ -213,7 +214,8 @@ export const en: FreightSimulatorCopy = {
           "Sea, large parcels and pallets: delivery by truck, at the price for your postcode’s zone. 30 to 40 days after the ship departs, not counting port congestion and customs inspections.",
           "Air, parcel line: direct flights every day from mainland China, delivery by UPS. 7 to 10 working days.",
           "Air, large parcels: delivery by DHL in Germany and by FedEx elsewhere. 9 to 12 days, with no compensation for delays.",
-          "Full container (20ft, 40ft, 40ft HC), road and rail: on quotation. We don’t recommend road, which is riskier, or rail.",
+          "Full container (20ft, 40ft, 40ft HC): delivered anywhere in the world, in DDP, DAP or FOB, on quotation.",
+          "Road and rail: on quotation. We don’t recommend them; road is riskier.",
         ],
       },
       {
@@ -248,12 +250,13 @@ export const en: FreightSimulatorCopy = {
           "Sea, large parcels and pallets: 24 countries, the whole European Union except Greece, Cyprus and Malta, by postcode zone (A, B or C); islands and remote areas are not served.",
           "Air, parcels and large parcels: 24 countries, the whole European Union except Estonia, Cyprus and Malta.",
           "Elsewhere, including the United Kingdom, Switzerland and Norway: on quotation.",
+          "Full container: anywhere in the world, on quotation.",
         ],
       },
       {
         title: "Delivery terms",
         text:
-          "Delivered, taxes included (DDP): delivery to your address, duties and import VAT included. FOB: the goods are handed over at the port or airport of departure in China, and your freight forwarder takes over. Up to customs: we carry the goods as far as customs on arrival; you clear them through customs and collect them. For FOB and up to customs, pricing is by quotation.",
+          "Delivered, taxes included (DDP): delivery to your address, duties and import VAT included. FOB: the goods are handed over at the port or airport of departure in China, and your freight forwarder takes over. Up to customs: we carry the goods as far as customs on arrival; you clear them through customs and collect them. For FOB and up to customs, pricing is by quotation. A full container is available in DDP, in DAP (delivered to your address, import duties and taxes paid by you) or in FOB, on quotation.",
       },
       {
         title: "Number of products",
