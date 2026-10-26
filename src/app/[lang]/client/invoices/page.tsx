@@ -96,6 +96,7 @@ export default async function ClientInvoicesPage({
   const labelForType = (t: InvoiceType): string => {
     if (t === InvoiceType.DEPOSIT) return dict.client.orders.invoiceTypeDeposit;
     if (t === InvoiceType.BALANCE) return dict.client.orders.invoiceTypeBalance;
+    if (t === InvoiceType.SHIPPING) return dict.client.orders.invoiceTypeShipping;
     return t;
   };
 

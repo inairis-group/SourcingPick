@@ -268,6 +268,66 @@
         "code": "Państwa kod klienta",
         "codeHint": "Należy go umieścić na każdym kartonie: po nim rozpoznajemy Państwa paczki, gdy docierają do magazynu."
       }
+    },
+    "freightQuote": {
+      "title": "Wycena transportu {reference}",
+      "intro": "Oto cena transportu Państwa towaru. Po jej zaakceptowaniu otrzymają Państwo odpowiednią fakturę za transport.",
+      "reference": "Numer",
+      "amount": "Kwota",
+      "validUntil": "Ważna do",
+      "order": "Zamówienie",
+      "mode": "Rodzaj transportu",
+      "line": "Linia",
+      "formula": "Wariant dostawy",
+      "delay": "Czas transportu",
+      "destination": "Dostawa",
+      "cartons": "Kartony",
+      "billedWeight": "Waga rozliczeniowa",
+      "container": "Kontenery",
+      "products": "Produkty",
+      "notes": "Wiadomość od naszego zespołu",
+      "status": {
+        "SENT": "Do akceptacji",
+        "ACCEPTED": "Zaakceptowana",
+        "DECLINED": "Odrzucona",
+        "CANCELLED": "Anulowana",
+        "EXPIRED": "Wygasła"
+      },
+      "accept": "Zaakceptuj wycenę",
+      "accepting": "Potwierdzanie…",
+      "acceptHint": "Faktura za transport na kwotę {amount} zostanie wystawiona od razu po Państwa akceptacji.",
+      "decline": "Odrzuć",
+      "declineReason": "Dlaczego odrzucają Państwo tę wycenę?",
+      "declineSubmit": "Wyślij odmowę",
+      "back": "Wstecz",
+      "accepted": "Wycena zaakceptowana. Państwa faktura {invoice} jest już dostępna.",
+      "seeInvoices": "Zobacz moje faktury",
+      "seeOrder": "Zobacz zamówienie",
+      "declined": "Odrzucili Państwo tę wycenę. Nasz zespół skontaktuje się z Państwem.",
+      "expired": "Ta wycena wygasła: prosimy o kontakt w sprawie nowej ceny.",
+      "cancelled": "Ta wycena została anulowana przez nasz zespół.",
+      "errors": {
+        "not_found": "Nie znaleziono tej wyceny.",
+        "not_open": "Ta wycena nie czeka już na Państwa odpowiedź.",
+        "expired": "Ta wycena wygasła: prosimy o kontakt w sprawie nowej ceny.",
+        "order_freight_billed": "Transport tego zamówienia jest już zafakturowany.",
+        "reason_required": "Prosimy w kilku słowach napisać, dlaczego odrzucają Państwo wycenę.",
+        "generic": "Wystąpił błąd. Prosimy spróbować ponownie."
+      },
+      "pendingTitle": "Wyceny transportu do akceptacji",
+      "pendingItem": "{reference} · {transport} · {amount}",
+      "open": "Zobacz wycenę",
+      "orderPanelTitle": "Transport tego zamówienia",
+      "email": {
+        "subject": "Państwa wycena transportu {reference}: {amount}",
+        "heading": "Państwa wycena transportu",
+        "intro": "Nasz zespół przygotował cenę transportu Państwa towaru. Prosimy ją sprawdzić i zaakceptować w panelu klienta: faktura zostanie wystawiona od razu po Państwa akceptacji.",
+        "amount": "Kwota",
+        "notesTitle": "Wiadomość od naszego zespołu",
+        "cta": "Zobacz i zaakceptuj wycenę",
+        "footer": "SourcingPick · contact@sourcingpick.com",
+        "sep": ": "
+      }
     }
   },
   "orders": {
@@ -296,7 +356,67 @@
       "intro": "Ten sam rachunek co w publicznym symulatorze, ze szczegółową ceną na ekranie.",
       "result": "Obliczona cena",
       "requests": "Zapytania z kalkulatora",
-      "requestsEmpty": "Brak zapytań."
+      "requestsEmpty": "Brak zapytań.",
+      "quote": {
+        "title": "Wycena transportu dla klienta",
+        "intro": "Wyślij ten wynik jako wycenę: klient akceptuje ją w swoim panelu, a faktura za transport powstaje automatycznie na kwotę tej wyceny w euro.",
+        "client": "Klient",
+        "clientSearch": "Nazwa, e-mail lub kod klienta (SP-…)",
+        "clientNone": "Nie znaleziono klienta.",
+        "change": "Zmień",
+        "order": "Zamówienie",
+        "noOrder": "Bez zamówienia (sam transport)",
+        "orderBilled": "transport już zafakturowany",
+        "prices": "Cena z kalkulatora, z prowizją",
+        "noPrice": "Kalkulator nie podaje ceny dla tego zapytania (wycena indywidualna): wpisz kwotę samodzielnie.",
+        "rateCny": "Kurs 1 RMB w €",
+        "rateUsd": "Kurs 1 $ w €",
+        "rateEcb": "Kurs Europejskiego Banku Centralnego z {date}",
+        "rateEnv": "Kurs z konfiguracji serwera",
+        "rateNone": "Dzisiejszy kurs jest niedostępny: wpisz go ręcznie.",
+        "converted": "Po przeliczeniu na euro",
+        "amount": "Kwota wyceny (€)",
+        "amountHint": "To właśnie tę kwotę klient akceptuje i na nią zostanie wystawiona faktura. Możesz ją dostosować (marża, kontener…).",
+        "validUntil": "Ważna do",
+        "notes": "Wiadomość dla klienta (opcjonalnie)",
+        "send": "Wyślij wycenę klientowi",
+        "sending": "Wysyłanie…",
+        "sent": "Wysłano wycenę {reference} do: {client}.",
+        "needResult": "Najpierw opisz prawidłową wysyłkę w kalkulatorze.",
+        "errors": {
+          "invalid_request": "Opisana wysyłka jest nieprawidłowa: sprawdź kalkulator.",
+          "client_not_found": "Ten klient nie istnieje lub jego konto nie jest kontem klienta.",
+          "order_not_found": "To zamówienie nie należy do tego klienta.",
+          "order_freight_billed": "Transport tego zamówienia jest już zafakturowany.",
+          "invalid_amount": "Podaj kwotę w euro.",
+          "invalid_rate": "Brakuje kursu walut lub wygląda on na błędny.",
+          "invalid_validity": "Data ważności musi przypadać w przyszłości (najwyżej za rok).",
+          "generic": "Nie udało się wysłać wyceny. Spróbuj ponownie."
+        },
+        "listTitle": "Wysłane wyceny transportu",
+        "listEmpty": "Brak wycen transportu.",
+        "cols": {
+          "reference": "Numer",
+          "date": "Data",
+          "client": "Klient",
+          "order": "Zamówienie",
+          "transport": "Transport",
+          "amount": "Kwota",
+          "validUntil": "Ważna do",
+          "status": "Status",
+          "invoice": "Faktura"
+        },
+        "status": {
+          "SENT": "Wysłana",
+          "ACCEPTED": "Zaakceptowana",
+          "DECLINED": "Odrzucona",
+          "CANCELLED": "Anulowana",
+          "EXPIRED": "Wygasła"
+        },
+        "cancel": "Anuluj",
+        "cancelConfirm": "Anulować tę wycenę? Klient nie będzie mógł jej już zaakceptować.",
+        "declinedReason": "Powód odrzucenia: {reason}"
+      }
     }
   }
 }

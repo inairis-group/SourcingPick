@@ -116,6 +116,14 @@ export async function notificationHref(
             : null;
     case "Organization":
       return r === "admin" ? `/${lang}/admin/kyc` : `/${lang}/factory/settings`;
+    case "FreightQuote":
+      // A freight quote from the freight calculator: the client answers it on
+      // its own page; the team follows it on the calculator's list.
+      return r === "client"
+        ? `/${lang}/client/freight-quotes/${contextId}`
+        : r === "admin"
+          ? `/${lang}/admin/freight-calculator#freight-quotes`
+          : null;
     case "QuoteRequest":
       // A lead from the public form. Nobody but the internal team ever has
       // one of these in context.

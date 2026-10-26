@@ -268,6 +268,66 @@
         "code": "Ihr Kundencode",
         "codeHint": "Muss auf jedem Karton stehen: Daran erkennen wir Ihre Packstücke beim Wareneingang."
       }
+    },
+    "freightQuote": {
+      "title": "Frachtangebot {reference}",
+      "intro": "Hier ist der Preis für Ihren Transport. Wenn Sie das Angebot annehmen, erhalten Sie die zugehörige Frachtrechnung.",
+      "reference": "Referenz",
+      "amount": "Betrag",
+      "validUntil": "Gültig bis",
+      "order": "Auftrag",
+      "mode": "Transportart",
+      "line": "Linie",
+      "formula": "Lieferbedingung",
+      "delay": "Laufzeit",
+      "destination": "Lieferung",
+      "cartons": "Kartons",
+      "billedWeight": "Abgerechnetes Gewicht",
+      "container": "Container",
+      "products": "Produkte",
+      "notes": "Nachricht von unserem Team",
+      "status": {
+        "SENT": "Zu bestätigen",
+        "ACCEPTED": "Angenommen",
+        "DECLINED": "Abgelehnt",
+        "CANCELLED": "Storniert",
+        "EXPIRED": "Abgelaufen"
+      },
+      "accept": "Angebot annehmen",
+      "accepting": "Wird bestätigt…",
+      "acceptHint": "Die Frachtrechnung über {amount} wird erstellt, sobald Sie zustimmen.",
+      "decline": "Ablehnen",
+      "declineReason": "Warum lehnen Sie dieses Angebot ab?",
+      "declineSubmit": "Ablehnung senden",
+      "back": "Zurück",
+      "accepted": "Angebot angenommen. Ihre Rechnung {invoice} ist verfügbar.",
+      "seeInvoices": "Meine Rechnungen ansehen",
+      "seeOrder": "Auftrag ansehen",
+      "declined": "Sie haben dieses Angebot abgelehnt. Unser Team meldet sich bei Ihnen.",
+      "expired": "Dieses Angebot ist abgelaufen: Kontaktieren Sie uns für einen neuen Preis.",
+      "cancelled": "Dieses Angebot wurde von unserem Team storniert.",
+      "errors": {
+        "not_found": "Dieses Angebot wurde nicht gefunden.",
+        "not_open": "Dieses Angebot wartet nicht mehr auf Ihre Antwort.",
+        "expired": "Dieses Angebot ist abgelaufen: Kontaktieren Sie uns für einen neuen Preis.",
+        "order_freight_billed": "Die Fracht für diesen Auftrag ist bereits abgerechnet.",
+        "reason_required": "Sagen Sie uns in wenigen Worten, warum Sie ablehnen.",
+        "generic": "Ein Fehler ist aufgetreten. Versuchen Sie es erneut."
+      },
+      "pendingTitle": "Frachtangebote zu bestätigen",
+      "pendingItem": "{reference} · {transport} · {amount}",
+      "open": "Angebot ansehen",
+      "orderPanelTitle": "Fracht für diesen Auftrag",
+      "email": {
+        "subject": "Ihr Frachtangebot {reference}: {amount}",
+        "heading": "Ihr Frachtangebot",
+        "intro": "Unser Team hat den Preis für Ihren Transport kalkuliert. Prüfen Sie das Angebot und nehmen Sie es in Ihrem Kundenbereich an: Die Rechnung wird erstellt, sobald Sie zustimmen.",
+        "amount": "Betrag",
+        "notesTitle": "Nachricht von unserem Team",
+        "cta": "Angebot ansehen und annehmen",
+        "footer": "SourcingPick · contact@sourcingpick.com",
+        "sep": ": "
+      }
     }
   },
   "orders": {
@@ -296,7 +356,67 @@
       "intro": "Dieselbe Berechnung wie im öffentlichen Simulator, mit dem detaillierten Preis auf dem Bildschirm.",
       "result": "Berechneter Preis",
       "requests": "Anfragen aus dem Rechner",
-      "requestsEmpty": "Noch keine Anfragen."
+      "requestsEmpty": "Noch keine Anfragen.",
+      "quote": {
+        "title": "Frachtangebot für einen Kunden",
+        "intro": "Senden Sie diese Berechnung als Angebot: Der Kunde nimmt es in seinem Kundenbereich an, und die Frachtrechnung wird automatisch über den Euro-Betrag dieses Angebots erstellt.",
+        "client": "Kunde",
+        "clientSearch": "Name, E-Mail oder Kundencode (SP-…)",
+        "clientNone": "Kein Kunde gefunden.",
+        "change": "Ändern",
+        "order": "Auftrag",
+        "noOrder": "Ohne Auftrag (nur Fracht)",
+        "orderBilled": "Fracht bereits abgerechnet",
+        "prices": "Preis aus dem Rechner, inklusive Provision",
+        "noPrice": "Der Rechner hat für diese Anfrage keinen Preis (Preis auf Anfrage): Geben Sie den Betrag selbst ein.",
+        "rateCny": "Kurs 1 RMB in €",
+        "rateUsd": "Kurs 1 $ in €",
+        "rateEcb": "Kurs der Europäischen Zentralbank vom {date}",
+        "rateEnv": "Kurs aus der Serverkonfiguration",
+        "rateNone": "Tageskurs nicht verfügbar: Geben Sie ihn ein.",
+        "converted": "In Euro umgerechnet",
+        "amount": "Angebotsbetrag (€)",
+        "amountHint": "Diesen Betrag nimmt der Kunde an, und er wird ihm in Rechnung gestellt. Sie können ihn anpassen (Marge, Container…).",
+        "validUntil": "Gültig bis",
+        "notes": "Nachricht an den Kunden (optional)",
+        "send": "Angebot an den Kunden senden",
+        "sending": "Wird gesendet…",
+        "sent": "Angebot {reference} an {client} gesendet.",
+        "needResult": "Beschreiben Sie zuerst eine gültige Sendung im Rechner.",
+        "errors": {
+          "invalid_request": "Die beschriebene Sendung ist nicht gültig: Prüfen Sie den Rechner.",
+          "client_not_found": "Dieser Kunde existiert nicht oder ist kein Kundenkonto.",
+          "order_not_found": "Dieser Auftrag gehört nicht zu diesem Kunden.",
+          "order_freight_billed": "Die Fracht für diesen Auftrag ist bereits abgerechnet.",
+          "invalid_amount": "Geben Sie einen Betrag in Euro ein.",
+          "invalid_rate": "Ein Wechselkurs fehlt oder scheint falsch.",
+          "invalid_validity": "Das Gültigkeitsdatum muss in der Zukunft liegen (höchstens ein Jahr).",
+          "generic": "Das Angebot konnte nicht gesendet werden. Versuchen Sie es erneut."
+        },
+        "listTitle": "Gesendete Frachtangebote",
+        "listEmpty": "Noch keine Frachtangebote.",
+        "cols": {
+          "reference": "Referenz",
+          "date": "Datum",
+          "client": "Kunde",
+          "order": "Auftrag",
+          "transport": "Transport",
+          "amount": "Betrag",
+          "validUntil": "Gültig bis",
+          "status": "Status",
+          "invoice": "Rechnung"
+        },
+        "status": {
+          "SENT": "Gesendet",
+          "ACCEPTED": "Angenommen",
+          "DECLINED": "Abgelehnt",
+          "CANCELLED": "Storniert",
+          "EXPIRED": "Abgelaufen"
+        },
+        "cancel": "Stornieren",
+        "cancelConfirm": "Dieses Angebot stornieren? Der Kunde kann es dann nicht mehr annehmen.",
+        "declinedReason": "Ablehnungsgrund: {reason}"
+      }
     }
   }
 }
