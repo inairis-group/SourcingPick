@@ -17,6 +17,7 @@ import {
   UserGroup02Icon,
 } from "@hugeicons/core-free-icons";
 import { Link } from "@/components/ui/link";
+import { buttonClass } from "@/components/ui/button";
 import { prisma } from "@/lib/db/client";
 import { requireRole } from "@/lib/permissions/guards";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
@@ -164,6 +165,13 @@ export default async function AdminDashboardPage({
         eyebrow={dict.admin.dashboard.eyebrow}
         title={dict.admin.dashboard.title}
         description={dict.admin.dashboard.description}
+        actions={
+          // The freight calculator, where prices become freight quotes: kept
+          // in reach from the first screen as well as from the menu.
+          <Link href={`/${lang}/admin/freight-calculator`} variant="muted" className={buttonClass({ variant: "primary", size: "md" })}>
+            {dict.admin.freightCalculator.title}
+          </Link>
+        }
       />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
