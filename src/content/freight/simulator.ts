@@ -9,7 +9,7 @@
  * filled in by the component or the e-mail.
  */
 import type { Locale } from "@/lib/i18n/config";
-import { goodsSheet, type ContainerType, type GoodsKey, type Line, type Mode, type QuoteReason } from "@/lib/freight/modes";
+import { goodsSheet, type ContainerType, type Formula, type GoodsKey, type Line, type Mode, type QuoteReason } from "@/lib/freight/modes";
 import type { LineItem } from "@/lib/freight/estimate";
 import { ar } from "./simulator-locales/ar";
 import { de } from "./simulator-locales/de";
@@ -41,8 +41,8 @@ export type FreightSimulatorCopy = {
   };
   formula: {
     label: string;
-    names: { ddp: string; fob: string; customs: string };
-    hints: { ddp: string; fob: string; customs: string };
+    names: Record<Formula, string>;
+    hints: Record<Formula, string>;
   };
   /** The full container's fields. */
   container: {

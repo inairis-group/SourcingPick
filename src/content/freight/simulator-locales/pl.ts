@@ -14,16 +14,17 @@ export const pl: FreightSimulatorCopy = {
     hints: {
       sea: "Najtańszy i właśnie ten polecamy. Paczki: łącznie od 40 do 45 dni; duże paczki i palety: od 30 do 40 dni po wypłynięciu statku.",
       air: "Najszybszy: od 7 do 10 dni roboczych, od 9 do 12 dni dla dużych paczek. Dla małej lub pilnej wysyłki.",
-      container: "Kontener 20-stopowy, 40-stopowy lub 40-stopowy HC wyłącznie na Państwa towar. Cenę podajemy w indywidualnej wycenie.",
+      container: "Kontener 20-stopowy, 40-stopowy lub 40-stopowy HC wyłącznie na Państwa towar, z dostawą w dowolne miejsce na świecie, w DDP, DAP lub FOB. Cenę podajemy w indywidualnej wycenie.",
       truck: "Bardziej ryzykowna: nie polecamy jej. Wyłącznie wycena indywidualna, około 16–20 dni.",
       rail: "Jego również nie polecamy. Wyłącznie wycena indywidualna, od 35 do 38 dni po odjeździe pociągu.",
     },
   },
   formula: {
     label: "Wariant dostawy",
-    names: { ddp: "Dostawa, cło i podatki w cenie", fob: "FOB", customs: "Do odprawy celnej" },
+    names: { ddp: "Dostawa, cło i podatki w cenie", dap: "Dostawa, bez cła i podatków", fob: "FOB", customs: "Do odprawy celnej" },
     hints: {
       ddp: "Dostawa pod Państwa adres, cło i VAT importowy wliczone w cenę (DDP).",
+      dap: "Dostawa pod Państwa adres; cło i podatki importowe pokrywają Państwo (DAP). Cenę podajemy w indywidualnej wycenie.",
       fob: "Przekazanie towaru w porcie lub na lotnisku wysyłki w Chinach; dalej przejmuje go Państwa spedytor. Cenę podajemy w indywidualnej wycenie.",
       customs:
         "Transport do urzędu celnego w miejscu przybycia; odprawę celną i odbiór towaru zapewniają Państwo. Cenę podajemy w indywidualnej wycenie.",
@@ -158,7 +159,7 @@ export const pl: FreightSimulatorCopy = {
       formula: "W wariantach FOB i „Do odprawy celnej” cenę podajemy w indywidualnej wycenie: odpowiemy Państwu e-mailem.",
       mode: "Dla ciężarówki i pociągu cenę podajemy wyłącznie w indywidualnej wycenie: odpowiemy Państwu e-mailem.",
       container:
-        "Dla pełnego kontenera cenę podajemy w indywidualnej wycenie, zależnie od portu docelowego i terminu: odpowiemy Państwu e-mailem.",
+        "Dla pełnego kontenera cenę podajemy w indywidualnej wycenie, zależnie od miejsca docelowego, warunków dostawy i terminu: odpowiemy Państwu e-mailem.",
       country:
         "W wariancie z cłem i podatkami w cenie ta linia nie obsługuje tego kraju: cenę podajemy w indywidualnej wycenie.",
       postcode:
@@ -218,7 +219,8 @@ export const pl: FreightSimulatorCopy = {
           "Statek, duże paczki i palety: dostawa ciężarówką, po cenie strefy Państwa kodu pocztowego. Od 30 do 40 dni po wypłynięciu statku, nie licząc zatorów w portach i kontroli celnej.",
           "Samolot, linia paczkowa: codzienne loty bezpośrednie z Chin kontynentalnych, dostawa przez UPS. Od 7 do 10 dni roboczych.",
           "Samolot, duże paczki: dostawa przez DHL w Niemczech i przez FedEx w pozostałych krajach. Od 9 do 12 dni, bez odszkodowania za opóźnienia.",
-          "Pełny kontener (20-stopowy, 40-stopowy, 40-stopowy HC), ciężarówka i pociąg: wycena indywidualna. Odradzamy ciężarówkę, bardziej ryzykowną, oraz pociąg.",
+          "Pełny kontener (20-stopowy, 40-stopowy, 40-stopowy HC): dostawa w dowolne miejsce na świecie, w DDP, DAP lub FOB, wycena indywidualna.",
+          "Ciężarówka i pociąg: wycena indywidualna. Odradzamy je; ciężarówka jest bardziej ryzykowna.",
         ],
       },
       {
@@ -253,12 +255,13 @@ export const pl: FreightSimulatorCopy = {
           "Statek, duże paczki i palety: 24 kraje, cała Unia Europejska z wyjątkiem Grecji, Cypru i Malty, według strefy kodu pocztowego (A, B lub C); wyspy i obszary oddalone nie są obsługiwane.",
           "Samolot, paczki i duże paczki: 24 kraje, cała Unia Europejska z wyjątkiem Estonii, Cypru i Malty.",
           "Pozostałe kraje, w tym Wielka Brytania, Szwajcaria i Norwegia: wycena indywidualna.",
+          "Pełny kontener: w dowolne miejsce na świecie, wycena indywidualna.",
         ],
       },
       {
         title: "Warianty dostawy",
         text:
-          "Dostawa, cło i podatki w cenie (DDP): dostarczamy towar pod Państwa adres, a cło i VAT importowy są wliczone w cenę. FOB: towar jest przekazywany w porcie lub na lotnisku wysyłki w Chinach, a dalej przejmuje go Państwa spedytor. Do odprawy celnej: transportujemy towar do urzędu celnego w miejscu przybycia, a odprawę celną i odbiór zapewniają Państwo. W wariantach FOB i „Do odprawy celnej” cenę podajemy w indywidualnej wycenie.",
+          "Dostawa, cło i podatki w cenie (DDP): dostarczamy towar pod Państwa adres, a cło i VAT importowy są wliczone w cenę. FOB: towar jest przekazywany w porcie lub na lotnisku wysyłki w Chinach, a dalej przejmuje go Państwa spedytor. Do odprawy celnej: transportujemy towar do urzędu celnego w miejscu przybycia, a odprawę celną i odbiór zapewniają Państwo. W wariantach FOB i „Do odprawy celnej” cenę podajemy w indywidualnej wycenie. Pełny kontener realizujemy w DDP, w DAP (dostawa pod Państwa adres, cło i podatki importowe po Państwa stronie) lub w FOB, w indywidualnej wycenie.",
       },
       {
         title: "Liczba produktów",

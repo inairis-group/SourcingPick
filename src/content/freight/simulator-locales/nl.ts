@@ -14,16 +14,17 @@ export const nl: FreightSimulatorCopy = {
     hints: {
       sea: "De goedkoopste, en die raden wij aan. Pakketten: 40 tot 45 dagen van begin tot eind; grote pakketten en pallets: 30 tot 40 dagen na vertrek van het schip.",
       air: "De snelste: 7 tot 10 werkdagen, 9 tot 12 dagen voor grote pakketten. Voor een kleine of dringende zending.",
-      container: "Een container van 20 voet, 40 voet of 40 voet HC, alleen voor uw goederen. Prijs op offerte.",
+      container: "Een container van 20 voet, 40 voet of 40 voet HC, alleen voor uw goederen, wereldwijd geleverd, in DDP, DAP of FOB. Prijs op offerte.",
       truck: "Riskanter: wij raden het niet aan. Alleen op offerte, ongeveer 16 tot 20 dagen.",
       rail: "Ook die raden wij niet aan. Alleen op offerte, 35 tot 38 dagen na vertrek van de trein.",
     },
   },
   formula: {
     label: "Formule",
-    names: { ddp: "Geleverd, incl. belastingen", fob: "FOB", customs: "Tot de douane" },
+    names: { ddp: "Geleverd, incl. belastingen", dap: "Geleverd, excl. belastingen", fob: "FOB", customs: "Tot de douane" },
     hints: {
       ddp: "Geleverd op uw adres, invoerrechten en invoer-btw inbegrepen (DDP).",
+      dap: "Geleverd op uw adres; invoerrechten en belastingen zijn voor uw rekening (DAP). Prijs op offerte.",
       fob: "Overgedragen in de haven of op de luchthaven van vertrek in China; uw expediteur neemt het daar over. Prijs op offerte.",
       customs: "Vervoerd tot de douane bij aankomst; u klaart de goederen in en haalt ze op. Prijs op offerte.",
     },
@@ -156,7 +157,7 @@ export const nl: FreightSimulatorCopy = {
     reasons: {
       formula: "Bij FOB of levering tot de douane stellen wij een offerte op: u ontvangt ons antwoord per e-mail.",
       mode: "Vrachtwagen en trein gaan alleen op offerte: u ontvangt ons antwoord per e-mail.",
-      container: "Voor een volle container stellen wij een offerte op, afhankelijk van de haven van aankomst en de datum: u ontvangt ons antwoord per e-mail.",
+      container: "Voor een volle container stellen wij een offerte op, afhankelijk van de bestemming, de leveringsvoorwaarde en de datum: u ontvangt ons antwoord per e-mail.",
       country: "Met deze lijn is levering inclusief belastingen naar dit land niet mogelijk: wij stellen een offerte op.",
       postcode:
         "Voer uw postcode in: die bepaalt de prijs van grote pakketten en pallets. Voor eilanden en afgelegen gebieden stellen wij een offerte op.",
@@ -213,7 +214,8 @@ export const nl: FreightSimulatorCopy = {
           "Schip, grote pakketten en pallets: bezorging per vrachtwagen, tegen de prijs van de zone van uw postcode. 30 tot 40 dagen na vertrek van het schip, exclusief congestie in de haven en douanecontrole.",
           "Vliegtuig, pakketlijn: elke dag directe vluchten vanuit het vasteland van China, bezorging door UPS. 7 tot 10 werkdagen.",
           "Vliegtuig, grote pakketten: bezorging door DHL in Duitsland en door FedEx elders. 9 tot 12 dagen, zonder vergoeding bij vertraging.",
-          "Volle container (20 voet, 40 voet, 40 voet HC), vrachtwagen en trein: op offerte. Wij raden de vrachtwagen, die riskanter is, en de trein af.",
+          "Volle container (20 voet, 40 voet, 40 voet HC): wereldwijd geleverd, in DDP, DAP of FOB, op offerte.",
+          "Vrachtwagen en trein: op offerte. Wij raden ze af; de vrachtwagen is riskanter.",
         ],
       },
       {
@@ -248,12 +250,13 @@ export const nl: FreightSimulatorCopy = {
           "Schip, grote pakketten en pallets: 24 landen, de hele Europese Unie behalve Griekenland, Cyprus en Malta, per postcodezone (A, B of C); eilanden en afgelegen gebieden worden niet beleverd.",
           "Vliegtuig, pakketten en grote pakketten: 24 landen, de hele Europese Unie behalve Estland, Cyprus en Malta.",
           "Elders, waaronder het Verenigd Koninkrijk, Zwitserland en Noorwegen: op offerte.",
+          "Volle container: wereldwijd, op offerte.",
         ],
       },
       {
         title: "De formules",
         text:
-          "Geleverd, inclusief belastingen (DDP): levering op uw adres, invoerrechten en invoer-btw inbegrepen. FOB: de goederen worden overgedragen in de haven of op de luchthaven van vertrek in China, uw expediteur neemt het daar over. Tot de douane: wij vervoeren de goederen tot de douane bij aankomst, u klaart ze in en haalt ze op. Bij FOB en bij levering tot de douane stellen wij een offerte op.",
+          "Geleverd, inclusief belastingen (DDP): levering op uw adres, invoerrechten en invoer-btw inbegrepen. FOB: de goederen worden overgedragen in de haven of op de luchthaven van vertrek in China, uw expediteur neemt het daar over. Tot de douane: wij vervoeren de goederen tot de douane bij aankomst, u klaart ze in en haalt ze op. Bij FOB en bij levering tot de douane stellen wij een offerte op. Een volle container leveren wij in DDP, in DAP (geleverd op uw adres, invoerrechten en belastingen voor uw rekening) of in FOB, op offerte.",
       },
       {
         title: "Het aantal producten",

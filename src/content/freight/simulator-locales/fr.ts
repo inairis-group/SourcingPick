@@ -14,16 +14,18 @@ export const fr: FreightSimulatorCopy = {
     hints: {
       sea: "Le moins cher, et notre recommandation. Colis : 40 à 45 jours de bout en bout ; grands colis et palettes : 30 à 40 jours après le départ du bateau.",
       air: "Le plus rapide : 7 à 10 jours ouvrés, 9 à 12 jours pour les grands colis. Pour un envoi petit ou urgent.",
-      container: "Un conteneur 20 pieds, 40 pieds ou 40 pieds HC rien que pour vos marchandises. Prix sur devis.",
+      container:
+        "Un conteneur 20 pieds, 40 pieds ou 40 pieds HC rien que pour vos marchandises, livré partout dans le monde, en DDP, DAP ou FOB. Prix sur devis.",
       truck: "Plus risqué : nous le déconseillons. Sur devis seulement, 16 à 20 jours environ.",
       rail: "Nous le déconseillons aussi. Sur devis seulement, 35 à 38 jours après le départ du train.",
     },
   },
   formula: {
     label: "Formule",
-    names: { ddp: "Livré, taxes incluses", fob: "FOB", customs: "Jusqu’à la douane" },
+    names: { ddp: "Livré, taxes incluses", dap: "Livré, taxes à votre charge", fob: "FOB", customs: "Jusqu’à la douane" },
     hints: {
       ddp: "Livré à votre adresse, droits et TVA d’importation compris (DDP).",
+      dap: "Livré à votre adresse ; les droits et taxes d’importation restent à votre charge (DAP). Prix sur devis.",
       fob: "Remis au port ou à l’aéroport de départ en Chine ; votre transitaire prend le relais. Prix sur devis.",
       customs: "Acheminé jusqu’à la douane d’arrivée ; vous dédouanez et récupérez la marchandise. Prix sur devis.",
     },
@@ -156,7 +158,7 @@ export const fr: FreightSimulatorCopy = {
     reasons: {
       formula: "En FOB ou jusqu’à la douane, le prix se fait sur devis : nous vous répondons par e-mail.",
       mode: "Le camion et le train se font sur devis seulement : nous vous répondons par e-mail.",
-      container: "Un conteneur complet se fait sur devis, selon le port d’arrivée et la date : nous vous répondons par e-mail.",
+      container: "Un conteneur complet se fait sur devis, selon la destination, la formule et la date : nous vous répondons par e-mail.",
       country: "Cette ligne ne livre pas ce pays en taxes incluses : le prix se fait sur devis.",
       postcode:
         "Indiquez votre code postal : il fixe le prix des grands colis et palettes. Les îles et les zones éloignées se font sur devis.",
@@ -213,7 +215,8 @@ export const fr: FreightSimulatorCopy = {
           "Bateau, grands colis et palettes : livraison par camion, au prix de la zone de votre code postal. 30 à 40 jours après le départ du bateau, hors congestion portuaire et contrôle douanier.",
           "Avion, ligne colis : vols directs tous les jours depuis la Chine continentale, livraison par UPS. 7 à 10 jours ouvrés.",
           "Avion, grands colis : livraison par DHL en Allemagne et par FedEx ailleurs. 9 à 12 jours, sans indemnisation des retards.",
-          "Conteneur complet (20 pieds, 40 pieds, 40 pieds HC), camion et train : sur devis. Nous déconseillons le camion, plus risqué, et le train.",
+          "Conteneur complet (20 pieds, 40 pieds, 40 pieds HC) : livré partout dans le monde, en DDP, DAP ou FOB, sur devis.",
+          "Camion et train : sur devis. Nous les déconseillons, le camion est plus risqué.",
         ],
       },
       {
@@ -248,12 +251,13 @@ export const fr: FreightSimulatorCopy = {
           "Bateau, grands colis et palettes : 24 pays, toute l’Union européenne sauf la Grèce, Chypre et Malte, par zone de code postal (A, B ou C) ; les îles et les zones éloignées ne sont pas desservies.",
           "Avion, colis et grands colis : 24 pays, toute l’Union européenne sauf l’Estonie, Chypre et Malte.",
           "Ailleurs, dont le Royaume-Uni, la Suisse et la Norvège : sur devis.",
+          "Conteneur complet : partout dans le monde, sur devis.",
         ],
       },
       {
         title: "Les formules",
         text:
-          "Livré, taxes incluses (DDP) : livraison à votre adresse, droits et TVA d’importation compris. FOB : la marchandise est remise au port ou à l’aéroport de départ en Chine, votre transitaire prend le relais. Jusqu’à la douane : nous l’acheminons jusqu’à la douane d’arrivée, vous la dédouanez et la récupérez. En FOB et jusqu’à la douane, le prix se fait sur devis.",
+          "Livré, taxes incluses (DDP) : livraison à votre adresse, droits et TVA d’importation compris. FOB : la marchandise est remise au port ou à l’aéroport de départ en Chine, votre transitaire prend le relais. Jusqu’à la douane : nous l’acheminons jusqu’à la douane d’arrivée, vous la dédouanez et la récupérez. En FOB et jusqu’à la douane, le prix se fait sur devis. Un conteneur complet se fait en DDP, en DAP (livré à votre adresse, droits et taxes d’importation à votre charge) ou en FOB, sur devis.",
       },
       {
         title: "Le nombre de produits",
