@@ -128,6 +128,14 @@ function buildNav(role: Role, lang: string, dict: Dictionary): AppNav | null {
           { key: "dashboard", href: `${base}/agent/dashboard`, label: n.dashboard, icon: "grid" },
           { key: "requests", href: `${base}/agent/requests`, label: n.requests, icon: "list" },
           { key: "quotes", href: `${base}/agent/quotes`, label: n.quotations, icon: "document" },
+          {
+            // Not drawn by the canvas either: the freight calculator, from
+            // which an agent sends their clients a freight quote (2026-10).
+            key: "freight",
+            href: `${base}/agent/freight-calculator`,
+            label: dict.admin.freightCalculator.title,
+            icon: "calculator",
+          },
           { key: "orders", href: `${base}/agent/orders`, label: n.orders, icon: "cube" },
           { key: "messages", href: `${base}/messages`, label: n.messages, icon: "chat" },
           {

@@ -38,22 +38,49 @@ import { describeTransport } from "./describe";
  * invoice for exactly that amount, or declines it with a reason. Nothing is
  * invoiced before the client has agreed to the figure.
  *
+ * The team is the administrators, who reach every client, and the agents,
+ * who reach the clients they work for (a request or an order assigned to
+ * them) and the quotes they sent.
+ *
  * Every export is an async server action — this file is covered by
  * `scripts/check-use-server.ts`.
  */
+
+type Staff = { id: string; role: Role };
+
+/** An administrator or an agent. */
+async function requireStaff(): Promise<Staff> {
+  const user = await requireRole(Role.ADMIN, Role.AGENT);
+  return { id: user.id, role: user.role };
+}
+
+/** The client organisations a member of the team may quote. */
+function clientsOf(staff: Staff): Prisma.OrganizationWhereInput {
+  if (staff.role === Role.ADMIN) return {};
+  return {
+    OR: [{ clientSourcingRequests: { some: { agentId: staff.id } } }, { clientOrders: { some: { agentId: staff.id } } }],
+  };
+}
+
+/** The orders a member of the team may attach a quote to. */
+function ordersOf(staff: Staff): Prisma.OrderWhereInput {
+  if (staff.role === Role.ADMIN) return {};
+  return { OR: [{ agentId: staff.id }, { request: { agentId: staff.id } }] };
+}
 
 export type ClientOrgHit = { id: string; name: string; clientCode: string | null; email: string | null; country: string };
 export type ClientOrderHit = { id: string; reference: string; status: string; freightBilled: boolean };
 
 /** Client organisations matching a name, an e-mail or a client code. */
 export async function searchFreightQuoteClients(query: string): Promise<ClientOrgHit[]> {
-  await requireRole(Role.ADMIN);
+  const staff = await requireStaff();
   const q = String(query ?? "").trim().slice(0, 100);
   if (q.length < 2) return [];
   const orgs = await prisma.organization.findMany({
     where: {
       type: OrgType.CLIENT,
       deletedAt: null,
+      AND: [clientsOf(staff)],
       OR: [
         { displayName: { contains: q, mode: "insensitive" } },
         { legalName: { contains: q, mode: "insensitive" } },
@@ -76,9 +103,9 @@ export async function searchFreightQuoteClients(query: string): Promise<ClientOr
 
 /** A client's orders, newest first, and whether their freight is already invoiced. */
 export async function freightQuoteClientOrders(orgId: string): Promise<ClientOrderHit[]> {
-  await requireRole(Role.ADMIN);
+  const staff = await requireStaff();
   const orders = await prisma.order.findMany({
-    where: { clientOrgId: String(orgId ?? ""), deletedAt: null },
+    where: { clientOrgId: String(orgId ?? ""), deletedAt: null, AND: [ordersOf(staff)] },
     orderBy: { createdAt: "desc" },
     take: 50,
     select: {
@@ -93,7 +120,7 @@ export async function freightQuoteClientOrders(orgId: string): Promise<ClientOrd
 
 /** The day's rates the form starts from. */
 export async function freightQuoteRates(): Promise<DailyRates> {
-  await requireRole(Role.ADMIN);
+  await requireStaff();
   return dailyRates();
 }
 
@@ -132,7 +159,7 @@ export async function createFreightQuote(input: {
   validUntil: string;
   notes?: string;
 }): Promise<CreateFreightQuoteResult> {
-  const admin = await requireRole(Role.ADMIN);
+  const staff = await requireStaff();
 
   // Priced again here, from what the form describes: the figures the form
   // shows are a preview, never the source.
@@ -142,7 +169,7 @@ export async function createFreightQuote(input: {
   if (!estimate.ok) return { ok: false, error: "invalid_request" };
 
   const org = await prisma.organization.findFirst({
-    where: { id: String(input.organizationId ?? ""), type: OrgType.CLIENT, deletedAt: null },
+    where: { id: String(input.organizationId ?? ""), type: OrgType.CLIENT, deletedAt: null, AND: [clientsOf(staff)] },
     select: { id: true, displayName: true },
   });
   if (!org) return { ok: false, error: "client_not_found" };
@@ -150,7 +177,7 @@ export async function createFreightQuote(input: {
   let order: { id: string; reference: string } | null = null;
   if (input.orderId) {
     order = await prisma.order.findFirst({
-      where: { id: String(input.orderId), clientOrgId: org.id, deletedAt: null },
+      where: { id: String(input.orderId), clientOrgId: org.id, deletedAt: null, AND: [ordersOf(staff)] },
       select: { id: true, reference: true },
     });
     if (!order) return { ok: false, error: "order_not_found" };
@@ -185,7 +212,7 @@ export async function createFreightQuote(input: {
         reference,
         organizationId: org.id,
         orderId: order?.id ?? null,
-        createdById: admin.id,
+        createdById: staff.id,
         request: request as unknown as Prisma.InputJsonValue,
         estimate: estimate as unknown as Prisma.InputJsonValue,
         mode: request.mode,
@@ -210,7 +237,7 @@ export async function createFreightQuote(input: {
   }
 
   await writeAuditLog({
-    actorUserId: admin.id,
+    actorUserId: staff.id,
     action: "freight_quote.sent",
     targetType: "FreightQuote",
     targetId: quoteId,
@@ -265,20 +292,22 @@ export async function createFreightQuote(input: {
   }
 
   revalidatePath("/[lang]/admin/freight-calculator", "page");
+  revalidatePath("/[lang]/agent/freight-calculator", "page");
   revalidatePath("/[lang]/client/dashboard", "page");
   return { ok: true, id: quoteId, reference, client: org.displayName };
 }
 
-/** Withdraw a quote the client has not answered yet. */
+/** Withdraw a quote the client has not answered yet (an agent, only one they sent). */
 export async function cancelFreightQuote(id: string): Promise<{ ok: boolean }> {
-  const admin = await requireRole(Role.ADMIN);
+  const staff = await requireStaff();
   const { count } = await prisma.freightQuote.updateMany({
-    where: { id: String(id ?? ""), status: FreightQuoteStatus.SENT },
+    where: { id: String(id ?? ""), status: FreightQuoteStatus.SENT, ...(staff.role === Role.ADMIN ? {} : { createdById: staff.id }) },
     data: { status: FreightQuoteStatus.CANCELLED, cancelledAt: new Date() },
   });
   if (count === 0) return { ok: false };
-  await writeAuditLog({ actorUserId: admin.id, action: "freight_quote.cancelled", targetType: "FreightQuote", targetId: String(id) });
+  await writeAuditLog({ actorUserId: staff.id, action: "freight_quote.cancelled", targetType: "FreightQuote", targetId: String(id) });
   revalidatePath("/[lang]/admin/freight-calculator", "page");
+  revalidatePath("/[lang]/agent/freight-calculator", "page");
   return { ok: true };
 }
 
@@ -300,7 +329,7 @@ export async function acceptFreightQuote(
   const id = String(form.get("quoteId") ?? "");
   const quote = await prisma.freightQuote.findFirst({
     where: { id, organizationId: user.organizationId },
-    select: { id: true, reference: true, status: true, validUntil: true, orderId: true, amountEurCents: true, mode: true, line: true },
+    select: { id: true, reference: true, status: true, validUntil: true, orderId: true, amountEurCents: true, mode: true, line: true, createdById: true },
   });
   if (!quote) return { ok: false, error: "not_found" };
   if (quote.status !== FreightQuoteStatus.SENT) return { ok: false, error: "not_open" };
@@ -361,13 +390,7 @@ export async function acceptFreightQuote(
     targetId: quote.id,
     payload: { reference: quote.reference, invoiceReference, amountEurCents: quote.amountEurCents },
   });
-  const admins = await prisma.user.findMany({ where: { role: Role.ADMIN, deletedAt: null }, select: { id: true } });
-  if (admins.length > 0) {
-    await emitNotificationToMany(
-      admins.map((a) => a.id),
-      { type: NotificationType.SYSTEM, vars: { systemKey: "freight_quote_accepted", reference: quote.reference }, contextType: "FreightQuote", contextId: quote.id },
-    );
-  }
+  await notifyTeam(quote.createdById, { systemKey: "freight_quote_accepted", reference: quote.reference }, quote.id);
   const clients = await prisma.user.findMany({
     where: { organizationId: user.organizationId, role: Role.CLIENT, deletedAt: null },
     select: { id: true },
@@ -383,6 +406,7 @@ export async function acceptFreightQuote(
   revalidatePath("/[lang]/client/invoices", "page");
   revalidatePath("/[lang]/client/dashboard", "page");
   revalidatePath("/[lang]/admin/freight-calculator", "page");
+  revalidatePath("/[lang]/agent/freight-calculator", "page");
   return { ok: true, invoiceReference };
 }
 
@@ -397,7 +421,7 @@ export async function declineFreightQuote(
   if (reason.length < 5) return { ok: false, error: "reason_required" };
   const quote = await prisma.freightQuote.findFirst({
     where: { id, organizationId: user.organizationId },
-    select: { id: true, reference: true, status: true },
+    select: { id: true, reference: true, status: true, createdById: true },
   });
   if (!quote) return { ok: false, error: "not_found" };
   const { count } = await prisma.freightQuote.updateMany({
@@ -413,16 +437,28 @@ export async function declineFreightQuote(
     targetId: quote.id,
     payload: { reference: quote.reference, reason },
   });
-  const admins = await prisma.user.findMany({ where: { role: Role.ADMIN, deletedAt: null }, select: { id: true } });
-  if (admins.length > 0) {
-    await emitNotificationToMany(
-      admins.map((a) => a.id),
-      { type: NotificationType.SYSTEM, vars: { systemKey: "freight_quote_declined", reference: quote.reference }, contextType: "FreightQuote", contextId: quote.id },
-    );
-  }
+  await notifyTeam(quote.createdById, { systemKey: "freight_quote_declined", reference: quote.reference }, quote.id);
   revalidatePath("/[lang]/client/freight-quotes/[id]", "page");
   revalidatePath("/[lang]/admin/freight-calculator", "page");
+  revalidatePath("/[lang]/agent/freight-calculator", "page");
   return { ok: true };
+}
+
+/** The client's answer, to the administrators and to the agent who sent the quote. */
+async function notifyTeam(
+  createdById: string | null,
+  vars: { systemKey: "freight_quote_accepted" | "freight_quote_declined"; reference: string },
+  quoteId: string,
+) {
+  const team = await prisma.user.findMany({
+    where: { deletedAt: null, OR: [{ role: Role.ADMIN }, ...(createdById ? [{ id: createdById, role: Role.AGENT }] : [])] },
+    select: { id: true },
+  });
+  if (team.length === 0) return;
+  await emitNotificationToMany(
+    team.map((u) => u.id),
+    { type: NotificationType.SYSTEM, vars, contextType: "FreightQuote", contextId: quoteId },
+  );
 }
 
 function countryName(iso: string, lang: Locale): string {
