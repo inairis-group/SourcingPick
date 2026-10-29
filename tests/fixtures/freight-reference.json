@@ -1,0 +1,2310 @@
+[
+  {
+    "name": "sea parcel to France, 20 cartons",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 20,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "sea",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 20,
+          "real": 360,
+          "volumetric": 320,
+          "chargeable": 360,
+          "volume": 1.92
+        }
+      ],
+      "weights": {
+        "cartons": 20,
+        "real": 360,
+        "volumetric": 320,
+        "chargeable": 360,
+        "volume": 1.92
+      },
+      "billedKg": 360,
+      "bracket": "300+",
+      "ok": true,
+      "priced": true,
+      "rate": 11.4,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 4104,
+          "currency": "RMB",
+          "detail": {
+            "kg": 360,
+            "rate": 11.4
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 4104,
+        "EUR": 0,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 123.12,
+        "EUR": 0,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 4227.12,
+        "EUR": 0,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "sea parcel to Germany, single carton",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "10115",
+        "city": "",
+        "country": "DE"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 1,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "sea",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 1,
+          "real": 18,
+          "volumetric": 16,
+          "chargeable": 18,
+          "volume": 0.096
+        }
+      ],
+      "weights": {
+        "cartons": 1,
+        "real": 18,
+        "volumetric": 16,
+        "chargeable": 18,
+        "volume": 0.096
+      },
+      "billedKg": 21,
+      "bracket": "21–70",
+      "ok": true,
+      "priced": true,
+      "rate": 13,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 273,
+          "currency": "RMB",
+          "detail": {
+            "kg": 21,
+            "rate": 13
+          }
+        },
+        {
+          "key": "singleCarton",
+          "amount": 50,
+          "currency": "RMB",
+          "detail": {}
+        }
+      ],
+      "subtotal": {
+        "RMB": 323,
+        "EUR": 0,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 9.69,
+        "EUR": 0,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 332.69,
+        "EUR": 0,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "sea parcel to Italy, DPD size fee, crate and reinforcement",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "20121",
+        "city": "",
+        "country": "IT"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 4,
+          "length": 122,
+          "width": 40,
+          "height": 30,
+          "weight": 25,
+          "units": 0,
+          "battery": false,
+          "reinforce": true
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "sea",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 4,
+          "real": 100,
+          "volumetric": 97.6,
+          "chargeable": 100,
+          "volume": 0.5856
+        }
+      ],
+      "weights": {
+        "cartons": 4,
+        "real": 100,
+        "volumetric": 97.6,
+        "chargeable": 100,
+        "volume": 0.5856
+      },
+      "billedKg": 100,
+      "bracket": "71–299",
+      "ok": true,
+      "priced": true,
+      "rate": 15.3,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 1530,
+          "currency": "RMB",
+          "detail": {
+            "kg": 100,
+            "rate": 15.3
+          }
+        },
+        {
+          "key": "oversize",
+          "amount": 1400,
+          "currency": "RMB",
+          "detail": {
+            "cartons": 4
+          }
+        },
+        {
+          "key": "crate",
+          "amount": 320,
+          "currency": "RMB",
+          "detail": {
+            "cartons": 4,
+            "rate": 80
+          }
+        },
+        {
+          "key": "reinforcement",
+          "amount": 8.85,
+          "currency": "USD",
+          "detail": {
+            "m3": 0.59,
+            "rate": 15
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 3250,
+        "EUR": 0,
+        "USD": 8.85
+      },
+      "commission": {
+        "RMB": 97.5,
+        "EUR": 0,
+        "USD": 0.27
+      },
+      "total": {
+        "RMB": 3347.5,
+        "EUR": 0,
+        "USD": 9.12
+      }
+    }
+  },
+  {
+    "name": "sea, a carton over 300 cm of girth goes to the large-parcel line",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "20121",
+        "city": "",
+        "country": "IT"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 4,
+          "length": 125,
+          "width": 50,
+          "height": 40,
+          "weight": 30,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "seaHeavy",
+      "zone": "A",
+      "products": [
+        {
+          "name": "",
+          "cartons": 4,
+          "real": 120,
+          "volumetric": 166.66666666666666,
+          "chargeable": 166.66666666666666,
+          "volume": 1
+        }
+      ],
+      "weights": {
+        "cartons": 4,
+        "real": 120,
+        "volumetric": 166.66666666666666,
+        "chargeable": 166.66666666666666,
+        "volume": 1
+      },
+      "billedKg": 167,
+      "bracket": "100–199",
+      "ok": true,
+      "priced": true,
+      "rate": 15.7,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 2621.9,
+          "currency": "RMB",
+          "detail": {
+            "kg": 167,
+            "rate": 15.7
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 2621.9,
+        "EUR": 0,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 78.66,
+        "EUR": 0,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 2700.56,
+        "EUR": 0,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "sea parcel to Poland, UPS size fee, declaration",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "00-001",
+        "city": "",
+        "country": "PL"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 10,
+          "length": 105,
+          "width": 40,
+          "height": 40,
+          "weight": 20,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": true,
+      "container": null
+    },
+    "estimate": {
+      "line": "sea",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 10,
+          "real": 200,
+          "volumetric": 280,
+          "chargeable": 280,
+          "volume": 1.68
+        }
+      ],
+      "weights": {
+        "cartons": 10,
+        "real": 200,
+        "volumetric": 280,
+        "chargeable": 280,
+        "volume": 1.68
+      },
+      "billedKg": 280,
+      "bracket": "71–299",
+      "ok": true,
+      "priced": true,
+      "rate": 16.4,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 4592,
+          "currency": "RMB",
+          "detail": {
+            "kg": 280,
+            "rate": 16.4
+          }
+        },
+        {
+          "key": "oversize",
+          "amount": 2400,
+          "currency": "RMB",
+          "detail": {
+            "cartons": 10
+          }
+        },
+        {
+          "key": "declaration",
+          "amount": 350,
+          "currency": "RMB",
+          "detail": {
+            "pages": 1
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 7342,
+        "EUR": 0,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 220.26,
+        "EUR": 0,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 7562.26,
+        "EUR": 0,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "sea parcel, goods classes",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "Tools",
+          "goods": "kg3",
+          "cartons": 5,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "Phones",
+          "goods": "phones",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 40,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "Scooters",
+          "goods": "scooters",
+          "cartons": 3,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 3,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "sea",
+      "zone": null,
+      "products": [
+        {
+          "name": "Tools",
+          "cartons": 5,
+          "real": 90,
+          "volumetric": 80,
+          "chargeable": 90,
+          "volume": 0.48
+        },
+        {
+          "name": "Phones",
+          "cartons": 2,
+          "real": 36,
+          "volumetric": 32,
+          "chargeable": 36,
+          "volume": 0.192
+        },
+        {
+          "name": "Scooters",
+          "cartons": 3,
+          "real": 54,
+          "volumetric": 48,
+          "chargeable": 54,
+          "volume": 0.288
+        }
+      ],
+      "weights": {
+        "cartons": 10,
+        "real": 180,
+        "volumetric": 160,
+        "chargeable": 180,
+        "volume": 0.96
+      },
+      "billedKg": 180,
+      "bracket": "71–299",
+      "ok": true,
+      "priced": true,
+      "rate": 14.3,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 2574,
+          "currency": "RMB",
+          "detail": {
+            "kg": 180,
+            "rate": 14.3
+          }
+        },
+        {
+          "key": "goods",
+          "amount": 270,
+          "currency": "RMB",
+          "detail": {
+            "kg": 90,
+            "rate": 3
+          },
+          "product": 0
+        },
+        {
+          "key": "pieces",
+          "amount": 120,
+          "currency": "RMB",
+          "detail": {
+            "units": 40,
+            "rate": 3
+          },
+          "product": 1
+        },
+        {
+          "key": "units",
+          "amount": 22.5,
+          "currency": "EUR",
+          "detail": {
+            "units": 3,
+            "rate": 7.5
+          },
+          "product": 2
+        }
+      ],
+      "subtotal": {
+        "RMB": 2964,
+        "EUR": 22.5,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 88.92,
+        "EUR": 0.68,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 3052.92,
+        "EUR": 23.18,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "sea heavy to Paris (zone A)",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 6,
+          "length": 80,
+          "width": 60,
+          "height": 60,
+          "weight": 55,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "seaHeavy",
+      "zone": "A",
+      "products": [
+        {
+          "name": "",
+          "cartons": 6,
+          "real": 330,
+          "volumetric": 288,
+          "chargeable": 330,
+          "volume": 1.728
+        }
+      ],
+      "weights": {
+        "cartons": 6,
+        "real": 330,
+        "volumetric": 288,
+        "chargeable": 330,
+        "volume": 1.728
+      },
+      "billedKg": 330,
+      "bracket": "300–500",
+      "ok": true,
+      "priced": true,
+      "rate": 14.9,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 4917,
+          "currency": "RMB",
+          "detail": {
+            "kg": 330,
+            "rate": 14.9
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 4917,
+        "EUR": 0,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 147.51,
+        "EUR": 0,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 5064.51,
+        "EUR": 0,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "sea heavy to Sicily (zone C), long piece",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "90100",
+        "city": "",
+        "country": "IT"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 260,
+          "width": 50,
+          "height": 50,
+          "weight": 80,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "seaHeavy",
+      "zone": "C",
+      "products": [
+        {
+          "name": "",
+          "cartons": 2,
+          "real": 160,
+          "volumetric": 216.66666666666666,
+          "chargeable": 216.66666666666666,
+          "volume": 1.3
+        }
+      ],
+      "weights": {
+        "cartons": 2,
+        "real": 160,
+        "volumetric": 216.66666666666666,
+        "chargeable": 216.66666666666666,
+        "volume": 1.3
+      },
+      "billedKg": 217,
+      "bracket": "200–299",
+      "ok": true,
+      "priced": true,
+      "rate": 18,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 3906,
+          "currency": "RMB",
+          "detail": {
+            "kg": 217,
+            "rate": 18
+          }
+        },
+        {
+          "key": "overlength",
+          "amount": 840,
+          "currency": "RMB",
+          "detail": {
+            "pieces": 2
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 4746,
+        "EUR": 0,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 142.38,
+        "EUR": 0,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 4888.38,
+        "EUR": 0,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "sea heavy to the Netherlands, over a tonne, long piece",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "1011",
+        "city": "",
+        "country": "NL"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 15,
+          "length": 250,
+          "width": 80,
+          "height": 80,
+          "weight": 90,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "seaHeavy",
+      "zone": "A",
+      "products": [
+        {
+          "name": "",
+          "cartons": 15,
+          "real": 1350,
+          "volumetric": 4000.0000000000005,
+          "chargeable": 4000.0000000000005,
+          "volume": 24
+        }
+      ],
+      "weights": {
+        "cartons": 15,
+        "real": 1350,
+        "volumetric": 4000.0000000000005,
+        "chargeable": 4000.0000000000005,
+        "volume": 24
+      },
+      "billedKg": 4000,
+      "bracket": "3000+",
+      "ok": true,
+      "priced": true,
+      "rate": 10.6,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 42400,
+          "currency": "RMB",
+          "detail": {
+            "kg": 4000,
+            "rate": 10.6
+          }
+        },
+        {
+          "key": "overlength",
+          "amount": 3750,
+          "currency": "EUR",
+          "detail": {
+            "pieces": 15
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 42400,
+        "EUR": 3750,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 1272,
+        "EUR": 112.5,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 43672,
+        "EUR": 3862.5,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "sea heavy, six products",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "P1",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 45,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "P2",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 45,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "P3",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 45,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "P4",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 45,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "P5",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 45,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "P6",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 45,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "seaHeavy",
+      "zone": "A",
+      "products": [
+        {
+          "name": "P1",
+          "cartons": 2,
+          "real": 90,
+          "volumetric": 32,
+          "chargeable": 90,
+          "volume": 0.192
+        },
+        {
+          "name": "P2",
+          "cartons": 2,
+          "real": 90,
+          "volumetric": 32,
+          "chargeable": 90,
+          "volume": 0.192
+        },
+        {
+          "name": "P3",
+          "cartons": 2,
+          "real": 90,
+          "volumetric": 32,
+          "chargeable": 90,
+          "volume": 0.192
+        },
+        {
+          "name": "P4",
+          "cartons": 2,
+          "real": 90,
+          "volumetric": 32,
+          "chargeable": 90,
+          "volume": 0.192
+        },
+        {
+          "name": "P5",
+          "cartons": 2,
+          "real": 90,
+          "volumetric": 32,
+          "chargeable": 90,
+          "volume": 0.192
+        },
+        {
+          "name": "P6",
+          "cartons": 2,
+          "real": 90,
+          "volumetric": 32,
+          "chargeable": 90,
+          "volume": 0.192
+        }
+      ],
+      "weights": {
+        "cartons": 12,
+        "real": 540,
+        "volumetric": 192,
+        "chargeable": 540,
+        "volume": 1.152
+      },
+      "billedKg": 540,
+      "bracket": "501–1000",
+      "ok": true,
+      "priced": true,
+      "rate": 14.6,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 7884,
+          "currency": "RMB",
+          "detail": {
+            "kg": 540,
+            "rate": 14.6
+          }
+        },
+        {
+          "key": "extraNames",
+          "amount": 30,
+          "currency": "RMB",
+          "detail": {
+            "names": 1,
+            "rate": 30
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 7914,
+        "EUR": 0,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 237.42,
+        "EUR": 0,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 8151.42,
+        "EUR": 0,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "sea heavy with battery is quoted",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 3,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 50,
+          "units": 0,
+          "battery": true,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "seaHeavy",
+      "zone": "A",
+      "products": [
+        {
+          "name": "",
+          "cartons": 3,
+          "real": 150,
+          "volumetric": 48,
+          "chargeable": 150,
+          "volume": 0.288
+        }
+      ],
+      "weights": {
+        "cartons": 3,
+        "real": 150,
+        "volumetric": 48,
+        "chargeable": 150,
+        "volume": 0.288
+      },
+      "billedKg": 150,
+      "bracket": "100–199",
+      "ok": true,
+      "priced": false,
+      "reason": "heavy_goods"
+    }
+  },
+  {
+    "name": "sea heavy, postcode out of zone",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "20000",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 3,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 50,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "seaHeavy",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 3,
+          "real": 150,
+          "volumetric": 48,
+          "chargeable": 150,
+          "volume": 0.288
+        }
+      ],
+      "weights": {
+        "cartons": 3,
+        "real": 150,
+        "volumetric": 48,
+        "chargeable": 150,
+        "volume": 0.288
+      },
+      "billedKg": 150,
+      "bracket": "100–199",
+      "ok": true,
+      "priced": false,
+      "reason": "postcode"
+    }
+  },
+  {
+    "name": "sea, six products on the parcel line is quoted",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "P1",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "P2",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "P3",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "P4",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "P5",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        },
+        {
+          "name": "P6",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "sea",
+      "zone": null,
+      "products": [
+        {
+          "name": "P1",
+          "cartons": 2,
+          "real": 36,
+          "volumetric": 32,
+          "chargeable": 36,
+          "volume": 0.192
+        },
+        {
+          "name": "P2",
+          "cartons": 2,
+          "real": 36,
+          "volumetric": 32,
+          "chargeable": 36,
+          "volume": 0.192
+        },
+        {
+          "name": "P3",
+          "cartons": 2,
+          "real": 36,
+          "volumetric": 32,
+          "chargeable": 36,
+          "volume": 0.192
+        },
+        {
+          "name": "P4",
+          "cartons": 2,
+          "real": 36,
+          "volumetric": 32,
+          "chargeable": 36,
+          "volume": 0.192
+        },
+        {
+          "name": "P5",
+          "cartons": 2,
+          "real": 36,
+          "volumetric": 32,
+          "chargeable": 36,
+          "volume": 0.192
+        },
+        {
+          "name": "P6",
+          "cartons": 2,
+          "real": 36,
+          "volumetric": 32,
+          "chargeable": 36,
+          "volume": 0.192
+        }
+      ],
+      "weights": {
+        "cartons": 12,
+        "real": 216,
+        "volumetric": 192,
+        "chargeable": 216,
+        "volume": 1.152
+      },
+      "billedKg": 216,
+      "bracket": "71–299",
+      "ok": true,
+      "priced": false,
+      "reason": "too_many_products"
+    }
+  },
+  {
+    "name": "sea, reinforcement in dollars",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 8,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": true
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "sea",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 8,
+          "real": 144,
+          "volumetric": 128,
+          "chargeable": 144,
+          "volume": 0.768
+        }
+      ],
+      "weights": {
+        "cartons": 8,
+        "real": 144,
+        "volumetric": 128,
+        "chargeable": 144,
+        "volume": 0.768
+      },
+      "billedKg": 144,
+      "bracket": "71–299",
+      "ok": true,
+      "priced": true,
+      "rate": 14.3,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 2059.2,
+          "currency": "RMB",
+          "detail": {
+            "kg": 144,
+            "rate": 14.3
+          }
+        },
+        {
+          "key": "crate",
+          "amount": 640,
+          "currency": "RMB",
+          "detail": {
+            "cartons": 8,
+            "rate": 80
+          }
+        },
+        {
+          "key": "reinforcement",
+          "amount": 11.55,
+          "currency": "USD",
+          "detail": {
+            "m3": 0.77,
+            "rate": 15
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 2699.2,
+        "EUR": 0,
+        "USD": 11.55
+      },
+      "commission": {
+        "RMB": 80.98,
+        "EUR": 0,
+        "USD": 0.35
+      },
+      "total": {
+        "RMB": 2780.18,
+        "EUR": 0,
+        "USD": 11.9
+      }
+    }
+  },
+  {
+    "name": "air parcel to Germany",
+    "request": {
+      "formula": "ddp",
+      "mode": "air",
+      "address": {
+        "street": "",
+        "postcode": "80331",
+        "city": "",
+        "country": "DE"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 6,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 15,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "air",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 6,
+          "real": 90,
+          "volumetric": 96,
+          "chargeable": 96,
+          "volume": 0.576
+        }
+      ],
+      "weights": {
+        "cartons": 6,
+        "real": 90,
+        "volumetric": 96,
+        "chargeable": 96,
+        "volume": 0.576
+      },
+      "billedKg": 96,
+      "bracket": "70–99",
+      "ok": true,
+      "priced": true,
+      "rate": 47,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 4512,
+          "currency": "RMB",
+          "detail": {
+            "kg": 96,
+            "rate": 47
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 4512,
+        "EUR": 0,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 135.36,
+        "EUR": 0,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 4647.36,
+        "EUR": 0,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "air parcel to Spain, goods kg5, declaration",
+    "request": {
+      "formula": "ddp",
+      "mode": "air",
+      "address": {
+        "street": "",
+        "postcode": "28001",
+        "city": "",
+        "country": "ES"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "kg5",
+          "cartons": 12,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 20,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": true,
+      "container": null
+    },
+    "estimate": {
+      "line": "air",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 12,
+          "real": 240,
+          "volumetric": 192,
+          "chargeable": 240,
+          "volume": 1.152
+        }
+      ],
+      "weights": {
+        "cartons": 12,
+        "real": 240,
+        "volumetric": 192,
+        "chargeable": 240,
+        "volume": 1.152
+      },
+      "billedKg": 240,
+      "bracket": "100–299",
+      "ok": true,
+      "priced": true,
+      "rate": 50,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 12000,
+          "currency": "RMB",
+          "detail": {
+            "kg": 240,
+            "rate": 50
+          }
+        },
+        {
+          "key": "goods",
+          "amount": 1200,
+          "currency": "RMB",
+          "detail": {
+            "kg": 240,
+            "rate": 5
+          },
+          "product": 0
+        },
+        {
+          "key": "declaration",
+          "amount": 350,
+          "currency": "RMB",
+          "detail": {
+            "pages": 1
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 13550,
+        "EUR": 0,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 406.5,
+        "EUR": 0,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 13956.5,
+        "EUR": 0,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "air parcel with battery is quoted",
+    "request": {
+      "formula": "ddp",
+      "mode": "air",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 3,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 10,
+          "units": 0,
+          "battery": true,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "air",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 3,
+          "real": 30,
+          "volumetric": 48,
+          "chargeable": 48,
+          "volume": 0.288
+        }
+      ],
+      "weights": {
+        "cartons": 3,
+        "real": 30,
+        "volumetric": 48,
+        "chargeable": 48,
+        "volume": 0.288
+      },
+      "billedKg": 48,
+      "bracket": "21–69",
+      "ok": true,
+      "priced": false,
+      "reason": "air_battery"
+    }
+  },
+  {
+    "name": "air heavy to France with battery",
+    "request": {
+      "formula": "ddp",
+      "mode": "air",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 5,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 40,
+          "units": 0,
+          "battery": true,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "airHeavy",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 5,
+          "real": 200,
+          "volumetric": 80,
+          "chargeable": 225,
+          "volume": 0.48
+        }
+      ],
+      "weights": {
+        "cartons": 5,
+        "real": 200,
+        "volumetric": 80,
+        "chargeable": 225,
+        "volume": 0.48
+      },
+      "billedKg": 225,
+      "bracket": "101–499",
+      "ok": true,
+      "priced": true,
+      "rate": 60,
+      "items": [
+        {
+          "key": "freight",
+          "amount": 13500,
+          "currency": "RMB",
+          "detail": {
+            "kg": 225,
+            "rate": 60
+          }
+        }
+      ],
+      "subtotal": {
+        "RMB": 13500,
+        "EUR": 0,
+        "USD": 0
+      },
+      "commission": {
+        "RMB": 405,
+        "EUR": 0,
+        "USD": 0
+      },
+      "total": {
+        "RMB": 13905,
+        "EUR": 0,
+        "USD": 0
+      }
+    }
+  },
+  {
+    "name": "air heavy, 41 pieces is quoted",
+    "request": {
+      "formula": "ddp",
+      "mode": "air",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 41,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 35,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "airHeavy",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 41,
+          "real": 1435,
+          "volumetric": 656,
+          "chargeable": 1845,
+          "volume": 3.936
+        }
+      ],
+      "weights": {
+        "cartons": 41,
+        "real": 1435,
+        "volumetric": 656,
+        "chargeable": 1845,
+        "volume": 3.936
+      },
+      "billedKg": 1845,
+      "bracket": "500+",
+      "ok": true,
+      "priced": false,
+      "reason": "too_many_pieces"
+    }
+  },
+  {
+    "name": "air heavy out of gauge is quoted",
+    "request": {
+      "formula": "ddp",
+      "mode": "air",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 1,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 1000,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "airHeavy",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 1,
+          "real": 1000,
+          "volumetric": 16,
+          "chargeable": 1000,
+          "volume": 0.096
+        }
+      ],
+      "weights": {
+        "cartons": 1,
+        "real": 1000,
+        "volumetric": 16,
+        "chargeable": 1000,
+        "volume": 0.096
+      },
+      "billedKg": 1000,
+      "bracket": "500+",
+      "ok": true,
+      "priced": false,
+      "reason": "out_of_gauge"
+    }
+  },
+  {
+    "name": "FOB is quoted",
+    "request": {
+      "formula": "fob",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 20,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "sea",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 20,
+          "real": 360,
+          "volumetric": 320,
+          "chargeable": 360,
+          "volume": 1.92
+        }
+      ],
+      "weights": {
+        "cartons": 20,
+        "real": 360,
+        "volumetric": 320,
+        "chargeable": 360,
+        "volume": 1.92
+      },
+      "billedKg": 360,
+      "bracket": "300+",
+      "ok": true,
+      "priced": false,
+      "reason": "formula"
+    }
+  },
+  {
+    "name": "delivery to customs is quoted",
+    "request": {
+      "formula": "customs",
+      "mode": "air",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 20,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "air",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 20,
+          "real": 360,
+          "volumetric": 320,
+          "chargeable": 360,
+          "volume": 1.92
+        }
+      ],
+      "weights": {
+        "cartons": 20,
+        "real": 360,
+        "volumetric": 320,
+        "chargeable": 360,
+        "volume": 1.92
+      },
+      "billedKg": 360,
+      "bracket": "300+",
+      "ok": true,
+      "priced": false,
+      "reason": "formula"
+    }
+  },
+  {
+    "name": "truck is quoted",
+    "request": {
+      "formula": "ddp",
+      "mode": "truck",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 20,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": null,
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 20,
+          "real": 360,
+          "volumetric": 320,
+          "chargeable": 360,
+          "volume": 1.92
+        }
+      ],
+      "weights": {
+        "cartons": 20,
+        "real": 360,
+        "volumetric": 320,
+        "chargeable": 360,
+        "volume": 1.92
+      },
+      "billedKg": 360,
+      "bracket": null,
+      "ok": true,
+      "priced": false,
+      "reason": "mode"
+    }
+  },
+  {
+    "name": "rail is quoted",
+    "request": {
+      "formula": "ddp",
+      "mode": "rail",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 20,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": null,
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 20,
+          "real": 360,
+          "volumetric": 320,
+          "chargeable": 360,
+          "volume": 1.92
+        }
+      ],
+      "weights": {
+        "cartons": 20,
+        "real": 360,
+        "volumetric": 320,
+        "chargeable": 360,
+        "volume": 1.92
+      },
+      "billedKg": 360,
+      "bracket": null,
+      "ok": true,
+      "priced": false,
+      "reason": "mode"
+    }
+  },
+  {
+    "name": "full container to the United States, DAP",
+    "request": {
+      "formula": "dap",
+      "mode": "container",
+      "address": {
+        "street": "",
+        "postcode": "10001",
+        "city": "",
+        "country": "US"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 300,
+          "length": 0,
+          "width": 0,
+          "height": 0,
+          "weight": 0,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": {
+        "type": "40hc",
+        "count": 2
+      }
+    },
+    "estimate": {
+      "line": null,
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 300,
+          "real": 0,
+          "volumetric": 0,
+          "chargeable": 3600,
+          "volume": 0
+        }
+      ],
+      "weights": {
+        "cartons": 300,
+        "real": 0,
+        "volumetric": 0,
+        "chargeable": 3600,
+        "volume": 0
+      },
+      "billedKg": 3600,
+      "bracket": null,
+      "ok": true,
+      "priced": false,
+      "reason": "container"
+    }
+  },
+  {
+    "name": "country the sea line does not serve",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "SW1A 1AA",
+        "city": "",
+        "country": "GB"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 20,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "line": "sea",
+      "zone": null,
+      "products": [
+        {
+          "name": "",
+          "cartons": 20,
+          "real": 360,
+          "volumetric": 320,
+          "chargeable": 360,
+          "volume": 1.92
+        }
+      ],
+      "weights": {
+        "cartons": 20,
+        "real": 360,
+        "volumetric": 320,
+        "chargeable": 360,
+        "volume": 1.92
+      },
+      "billedKg": 360,
+      "bracket": "300+",
+      "ok": true,
+      "priced": false,
+      "reason": "country"
+    }
+  },
+  {
+    "name": "refused goods",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "refused",
+          "cartons": 2,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "ok": false,
+      "reason": "refused_goods"
+    }
+  },
+  {
+    "name": "no cartons",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 0,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "ok": false,
+      "reason": "no_products"
+    }
+  },
+  {
+    "name": "missing dimensions is invalid",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "75011",
+        "city": "",
+        "country": "FR"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 2,
+          "length": 0,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "ok": false,
+      "reason": "invalid"
+    }
+  },
+  {
+    "name": "unknown country is invalid",
+    "request": {
+      "formula": "ddp",
+      "mode": "sea",
+      "address": {
+        "street": "",
+        "postcode": "",
+        "city": "",
+        "country": "XX"
+      },
+      "products": [
+        {
+          "name": "",
+          "goods": "ordinary",
+          "cartons": 20,
+          "length": 60,
+          "width": 40,
+          "height": 40,
+          "weight": 18,
+          "units": 0,
+          "battery": false,
+          "reinforce": false
+        }
+      ],
+      "declaration": false,
+      "container": null
+    },
+    "estimate": {
+      "ok": false,
+      "reason": "invalid"
+    }
+  }
+]
